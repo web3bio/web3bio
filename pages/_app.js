@@ -1,7 +1,13 @@
-import '../styles/globals.css'
+import { ApolloProvider } from "@apollo/client";
+import client from "../utils/apollo";
+import "../styles/scss/web3bio.scss";
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+function App({ Component, pageProps }) {
+  return (
+    <ApolloProvider client={client}>
+      <Component {...pageProps} />
+    </ApolloProvider>
+  );
 }
 
-export default MyApp
+export default App;
