@@ -1,7 +1,8 @@
 import Head from 'next/head'
 import Search from '../components/search'
 
-export default function Home({ nft }) {
+export default function Home() {
+  
   return (
     <div>
       <Head>
@@ -14,17 +15,7 @@ export default function Home({ nft }) {
         <div className="web3bio-cover creamwhisper"></div>
         <div className="web3bio-hero">
           <div className="container grid-sm">
-            <div className="columns">
-              <div className="column col-12">
-                <Search />
-                {/* <h2>{nft?.owner.displayName}</h2>
-                {nft?.owner.neighbor.map((identity) => (
-                  <div key={identity.uuid}>
-                    <span>{identity.platform} - {identity.displayName}</span>
-                  </div>
-                ))} */}
-              </div>
-            </div>
+            <Search />
           </div>
         </div>
       </main>
