@@ -1,35 +1,25 @@
 import React from 'react'
 import { gql, useQuery } from '@apollo/client'
-
-const GET_PROFILES_ENS = gql`
-  query {
-    nft(chain: "ethereum", category: "ENS", id: "sujiyan.eth") {
-      uuid
-      owner {
-        uuid
-        platform
-        identity
-        displayName
-      }
-    }
-  }
-`;
+import { GET_PROFILES_ENS } from '../utils/queries'
 
 export default function Search() {
-  const { loading, error, data } = useQuery(GET_PROFILES_ENS)
+  const { loading, error, data } = useQuery(GET_PROFILES_ENS, {
+    variables: { ens: 'nykma.eth' },
+  })
 
-  console.log(data?.nft.owner.displayName)
+  console.log(data)
 
   return (
     <>
       <form autoComplete="off">
-        {loading? <div className='loading'></div> : null}
+        {/* {loading? <div className='loading'></div> : null} */}
         <input
           type="text"
           placeholder="Search Twitter, ENS or Ethereum address"
           className='form-input input-lg'
         />
       </form>
+      {data?.nft.owner.displayName}
       <div></div>
     </>
   )
