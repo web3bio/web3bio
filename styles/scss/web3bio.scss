@@ -108,6 +108,11 @@ body {
 
 //- Web3.bio Header
 .web3bio-header {
+  left: 0;
+  position: fixed;
+  top: 1rem;
+  width: 100%;
+
   .column {
     align-items: center;
     display: flex;
@@ -381,6 +386,41 @@ body {
       box-shadow: none;
       color: rgba($dark-color, .15);
       padding: 1rem;
+    }
+  }
+}
+
+//- Web3.bio Search
+.web3bio-search {
+  .web3bio-form {
+    display: flex;
+    flex-direction: column;
+    height: calc(80vh - 2rem);
+    justify-content: flex-start;
+    transform: translateY(30vh);
+  }
+
+  .form-label {
+    font-size: 3.2rem;
+    font-weight: 900;
+    letter-spacing: -.05rem;
+    line-height: 1;
+    margin-bottom: 1rem;
+
+    @media screen and (max-width: $size-md) {
+      font-size: 2.6rem;
+    }
+  }
+
+  &.focused {
+    .web3bio-form {
+      transform: translateY(0);
+      transition: all .3s ease-in-out;
+    }
+
+    .form-label {
+      font-size: 1.6rem;
+      transition: all .3s ease-in-out;
     }
   }
 }
