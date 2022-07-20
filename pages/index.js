@@ -31,8 +31,10 @@ export default function Home() {
           <div className="container grid-lg">
             <div className="columns">
               <div className="column col-12">
-                <Link href="/" className="web3bio-logo" title="Web3.bio">
-                  <h1>WEB3<br/>BIO</h1>
+                <Link href="/">
+                  <a className="web3bio-logo" title="Web3.bio">
+                    <h1>WEB3<br/>BIO</h1>
+                  </a>
                 </Link>
               </div>
             </div>
