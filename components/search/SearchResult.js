@@ -17,7 +17,7 @@ const SearchResult = ( {searchterm} ) => {
         <>
           {data.nft?.owner.displayName}
           {data.nft?.owner.neighbor.map((avatar) => (
-            <div>
+            <div key={avatar.uuid}>
               {avatar.platform} - {avatar.identity}
             </div>
           ))}

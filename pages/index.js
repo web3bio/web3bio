@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Link from 'next/link'
 import { useState } from 'react'
 import SVG from 'react-inlinesvg'
 import SearchResult from '../components/search/SearchResult'
@@ -30,9 +31,9 @@ export default function Home() {
           <div className="container grid-lg">
             <div className="columns">
               <div className="column col-12">
-                <a href="/" className="web3bio-logo" title="Web3.bio">
+                <Link href="/" className="web3bio-logo" title="Web3.bio">
                   <h1>WEB3<br/>BIO</h1>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
