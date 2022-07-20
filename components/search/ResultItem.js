@@ -9,7 +9,7 @@ class ResultItem extends Component {
   }
 
   render() {
-    const { social } = this.props
+    const { identity } = this.props
 
     return (
       <div className="profile-social profile-widget">

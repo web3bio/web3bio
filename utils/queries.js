@@ -24,26 +24,22 @@ export const GET_PROFILES_ENS = gql`
 export const GET_PROFILES_ETH = gql`
   query($eth: String) {
     identity(platform: "ethereum", identity: $eth) {
-      status
       platform
       identity
-      updatedAt
+      displayName
       nft {
         category
         chain
         id
-        updatedAt
       }
-      neighbor(depth: 3) {
-        status
+      neighbor(depth: 2) {
         platform
         identity
-        updatedAt
+        displayName
         nft {
           category
           chain
           id
-          updatedAt
         }
       }
     }
@@ -55,16 +51,15 @@ export const GET_PROFILES_TWITTER = gql`
     identity(platform: "twitter", identity: $twitter) {
       platform
       identity
-      updatedAt
-      neighbor(depth: 3) {
+      displayName
+      neighbor(depth: 2) {
         platform
         identity
-        updatedAt
+        displayName
         nft {
+          category
           chain
-          contract
           id
-          updatedAt
         }
       }
     }
@@ -74,15 +69,13 @@ export const GET_PROFILES_TWITTER = gql`
 export const GET_PROFILES_NEXT = gql`
   query($nextid: String) {
     identity(platform: "nextid", identity: $nextid) {
-      status
       platform
       identity
-      updatedAt
+      displayName
       nft {
         chain
         contract
         id
-        updatedAt
       }
       neighbor(depth: 3) {
         status
@@ -93,7 +86,6 @@ export const GET_PROFILES_NEXT = gql`
           chain
           contract
           id
-          updatedAt
         }
       }
     }

@@ -2,20 +2,40 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useState } from 'react'
 import SVG from 'react-inlinesvg'
-import SearchResult from '../components/search/SearchResult'
+import SearchResultEns from '../components/search/SearchResultEns'
+import SearchResultEth from '../components/search/SearchResultEth'
+import SearchResultTwitter from '../components/search/SearchResultTwitter'
 
 export default function Home() {
-  const [searchterm, setSearchterm] = useState('')
+  const [searchTerm, setSearchTerm] = useState('')
   const [searchFocus, setSearchFocus] = useState(false)
+  const [searchType, setSearchType] = useState('')
 
-  const handleFocus = () => {
-    setSearchFocus(true)
+  const regexEns = /.*\.eth$/,
+        regexEth = /^0x[a-fA-F0-9]{40}$/,
+        regexTwitter = /(\w{1,15})\b/
+  
+  const handleSearchType = (term) => {
+    switch (true) {
+      case regexEns.test(term):
+        console.log("ENS")
+        return "ENS"
+      case regexEth.test(term):
+        console.log("ETH")
+        return "ETH"
+      case regexTwitter.test(term):
+        console.log("TWITTER")
+        return "TWITTER"
+    }
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setSearchFocus(true)
-    setSearchterm(e.target.searchbox.value)
+    setSearchTerm(e.target.searchbox.value)
+
+    let searchType = handleSearchType(e.target.searchbox.value)
+    setSearchType(searchType)
   }
 
   return (
@@ -59,10 +79,18 @@ export default function Home() {
                 </button>
               </div>
             </form>
-            {searchterm.length > 0 && (
-              <SearchResult searchterm={searchterm} />
-            )}
-
+            {(() => {
+              switch (searchType) {
+                case 'ENS':
+                  return <SearchResultEns searchTerm={searchTerm} />
+                case 'ETH':
+                  return <SearchResultEth searchTerm={searchTerm} />
+                case 'TWITTER':
+                  return <SearchResultTwitter searchTerm={searchTerm} />
+                default:
+                  return null
+              }
+            })()}
           </div>
         </div>
       </main>
