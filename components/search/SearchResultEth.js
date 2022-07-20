@@ -17,7 +17,6 @@ const SearchResultEth = ({searchTerm}) => {
         <>
           <div className="searchresult">
             <div className='h3 text-bold'>{data?.identity.displayName}</div>
-            <div className='h6'>{data?.identity.identity}</div>
           </div>
           <div className="searchresult">
             {data?.identity.neighbor.map((avatar) => (
