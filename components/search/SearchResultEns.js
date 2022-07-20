@@ -1,4 +1,5 @@
 import { useQuery } from '@apollo/client'
+import ResultItem from './ResultItem'
 import { GET_PROFILES_ENS } from '../../utils/queries'
 
 const SearchResultEns = ({searchTerm}) => {
@@ -13,12 +14,15 @@ const SearchResultEns = ({searchTerm}) => {
       )}
       {!loading && (
         <>
-          {data?.nft.owner.displayName}
-          {data?.nft.owner.neighbor.map((avatar) => (
-            <div key={avatar.uuid}>
-              {avatar.platform} - {avatar.identity}
-            </div>
-          ))}
+          <div className="searchresult">
+            <div className='h3 text-bold'>{searchTerm}</div>
+            <div className='h6'>{data?.nft?.owner.displayName}</div>
+          </div>
+          <div className="searchresult">
+            {data?.nft.owner.neighbor.map((avatar) => (
+              <ResultItem identity={avatar} />
+            ))}
+          </div>
         </>
       )}
     </div>

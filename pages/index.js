@@ -65,13 +65,14 @@ export default function Home() {
 
         <div className={searchFocus?'web3bio-search focused':'web3bio-search'}>
           <div className='container grid-xs'>
-            <form className='web3bio-form' onSubmit={handleSubmit} autoComplete='off' role='search'>
+            <form className='search-form' onSubmit={handleSubmit} autoComplete='off' role='search'>
               <label className='form-label' htmlFor="searchbox"><span>Web3 Identity Search</span></label>
               <div className='form-input-group'>
                 <input
                   type='text'
                   placeholder='Search Twitter, ENS or Ethereum address'
                   className='form-input input-lg'
+                  autocorrect="off"
                   id='searchbox'
                 />
                 <button type="submit" title="Submit" className="form-button btn btn-link">

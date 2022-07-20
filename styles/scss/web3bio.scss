@@ -392,7 +392,7 @@ body {
 
 //- Web3.bio Search
 .web3bio-search {
-  .web3bio-form {
+  .search-form {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -427,7 +427,7 @@ body {
   }
 
   &.focused {
-    .web3bio-form {
+    .search-form {
       transform: translateY(0);
       transition: all .3s ease-in-out;
     }
@@ -440,6 +440,31 @@ body {
 
   .searchresult {
     margin-top: 1rem;
+
+    .social {
+      align-items: center;
+      background: rgba($dark-color, .05);
+      border-radius: .2rem;
+      display: inline-flex;
+      font-size: .6rem;
+      line-height: 1rem;
+      margin: .2rem .2rem 0 0;
+      padding: .1rem .3rem .1rem .1rem;
+      text-decoration: none;
+      transition: all .25s ease-in-out;
+      word-break: keep-all;
+
+      &:focus,
+      &:hover {
+        background: rgba($dark-color, .075);
+      }
+
+      .icon {
+        height: 1rem;
+        margin-right: .2rem;
+        width: 1rem;
+      }
+    }
   }
 }
 

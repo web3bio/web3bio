@@ -1,4 +1,5 @@
 import { useQuery } from '@apollo/client'
+import ResultItem from './ResultItem'
 import { GET_PROFILES_TWITTER } from '../../utils/queries'
 
 const SearchResultTwitter = ({searchTerm}) => {
@@ -14,12 +15,19 @@ const SearchResultTwitter = ({searchTerm}) => {
       )}
       {!loading && (
         <>
-          {data?.identity.displayName}
-          {data?.identity.neighbor.map((avatar) => (
-            <div key={avatar.uuid}>
-              {avatar.platform} - {avatar.identity}
+          <div className="searchresult">
+            <div className='h3 text-bold'>{data?.identity.displayName}</div>
+            <div className='h6'>
+              <a href={`https://twitter.com/${data?.identity.identity}`} target="_blank" rel="noopener noreferrer">
+                twitter.com/{data?.identity.identity}
+              </a>
             </div>
-          ))}
+          </div>
+          <div className="searchresult">
+            {data?.identity.neighbor.map((avatar) => (
+              <ResultItem identity={avatar} />
+            ))}
+          </div>
         </>
       )}
     </div>

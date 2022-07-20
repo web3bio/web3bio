@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import Clipboard from 'react-clipboard.js'
 import SVG from 'react-inlinesvg'
-import IconTwitter from '../../assets/icons/icon-twitter.svg'
 
 class ResultItem extends Component {
   constructor(props) {
@@ -11,15 +10,38 @@ class ResultItem extends Component {
   render() {
     const { identity } = this.props
 
-    return (
-      <div className="profile-social profile-widget">
-        { !!social.website? 
-          <a href={social.website} target="_blank" rel="noopener noreferrer" className="profile-social-item tooltip website" title="Website">
-            <SVG src={IconTwitter} className="profile-social-icon icon" />
-          </a> : null
-        }
-      </div>
-    )
+    switch (identity.platform) {
+      case 'ethereum':
+        return (
+          <a className="social ethereum" href={`https://etherscan.io/address/${identity.identity}`} target="_blank" rel="noopener noreferrer">
+            <SVG src="icons/icon-ethereum.svg" className="icon" />
+            {identity.displayName}
+          </a>
+        )
+      case 'twitter':
+        return (
+          <a className="social twitter" href={`https://twitter.com/${identity.identity}`} target="_blank" rel="noopener noreferrer">
+            <SVG src="icons/icon-twitter.svg" className="icon" />
+            {identity.displayName}
+          </a>
+        )
+      case 'github':
+        return (
+          <a className="social github" href={`https://github.com/${identity.identity}`} target="_blank" rel="noopener noreferrer">
+            <SVG src="icons/icon-github.svg" className="icon" />
+            {identity.displayName}
+          </a>
+        )
+      case 'keybase':
+        return (
+          <a className="social keybase" href={`https://keybase.io/${identity.displayName}`} target="_blank" rel="noopener noreferrer">
+            <SVG src="icons/icon-keybase.svg" className="icon" />
+            {identity.displayName}
+          </a>
+        )
+      default:
+        return null
+    }
   }
 
 }

@@ -8,7 +8,7 @@ export const GET_PROFILES_ENS = gql`
         platform
         identity
         displayName
-        neighbor(depth: 2) {
+        neighbor(depth: 3) {
           uuid
           platform
           identity
