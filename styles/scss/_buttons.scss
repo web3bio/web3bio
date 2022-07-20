@@ -77,22 +77,23 @@
 
   // Button Link
   &.btn-link {
-    background: darken($bg-color, 3%);
-    border-color: darken($bg-color, 4%);
-    box-shadow: 0 .1rem .4rem rgba($dark-color, .05);
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
     color: $dark-color;
     min-width: $control-size-sm;
     &:focus,
     &:hover {
-      background: darken($dark-color, 3%);
-      border-color: darken($dark-color, 16%);
-      color: $light-color;
+      background: rgba($dark-color, .025);
+      border-color: transparent;
+      box-shadow: none;
+      color: $dark-color;
     }
     &:active,
     &.active {
-      background: $dark-color;
-      border-color: darken($dark-color, 3%);
-      color: $light-color;
+      background: rgba($dark-color, .075);
+      border-color: transparent;
+      color: $dark-color;
     }
     &.loading {
       &::after {

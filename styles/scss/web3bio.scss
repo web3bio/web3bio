@@ -395,7 +395,6 @@ body {
   .web3bio-form {
     display: flex;
     flex-direction: column;
-    height: calc(80vh - 2rem);
     justify-content: flex-start;
     transform: translateY(30vh);
   }
@@ -412,6 +411,21 @@ body {
     }
   }
 
+  .form-input-group {
+    position: relative;
+  }
+
+  .form-button {
+    align-items: center;
+    display: inline-flex;
+    height: 2rem;
+    padding: 0;
+    position: absolute;
+    right: .2rem;
+    top: .2rem;
+    width: 2rem;
+  }
+
   &.focused {
     .web3bio-form {
       transform: translateY(0);
@@ -422,6 +436,10 @@ body {
       font-size: 1.6rem;
       transition: all .3s ease-in-out;
     }
+  }
+
+  .searchresult {
+    margin-top: 1rem;
   }
 }
 

@@ -6,7 +6,7 @@
   position: relative;
   &::after {
     animation: loading 500ms infinite linear;
-    border: $border-width-lg solid $light-color;
+    border: $border-width-lg solid $dark-color;
     border-radius: 50%;
     border-right-color: transparent;
     border-top-color: transparent;
