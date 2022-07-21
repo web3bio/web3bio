@@ -16,13 +16,19 @@ const SearchResultEns = ({searchTerm}) => {
         <>
           <div className="searchresult">
             <div className='h3 text-bold'>{searchTerm}</div>
-            <div className='h6'>{data?.nft?.owner.displayName}</div>
+            {data?.nft ? (
+                <div className='h6'>{data?.nft.owner.displayName}</div>
+              ): (
+                <div className='h6'>No results</div>
+            )}
           </div>
-          <div className="searchresult">
-            {data?.nft.owner.neighbor.map((avatar) => (
-              <ResultItem identity={avatar} key={avatar.uuid} />
-            ))}
-          </div>
+          {data?.nft ? (
+            <div className="searchresult">
+              {data?.nft.owner.neighbor.map((avatar) => (
+                <ResultItem identity={avatar} key={avatar.uuid} />
+              ))}
+            </div>
+          ): null}
         </>
       )}
     </div>

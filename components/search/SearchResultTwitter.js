@@ -16,18 +16,29 @@ const SearchResultTwitter = ({searchTerm}) => {
       {!loading && (
         <>
           <div className="searchresult">
-            <div className='h3 text-bold'>{data?.identity.displayName}</div>
-            <div className='h6'>
-              <a href={`https://twitter.com/${data?.identity.identity}`} target="_blank" rel="noopener noreferrer">
-                twitter.com/{data?.identity.identity}
-              </a>
+            {data?.identity ? (
+              <>
+                <div className='h3 text-bold'>{data?.identity.displayName}</div>
+                <div className='h6'>
+                  <a href={`https://twitter.com/${data?.identity.identity}`} target="_blank" rel="noopener noreferrer">
+                    twitter.com/{data?.identity.identity}
+                  </a>
+                </div>
+              </>
+            ): (
+              <>
+                <div className='h3 text-bold'>{searchTerm}</div>
+                <div className='h6'>No results</div>
+              </>
+            )}
+          </div>
+          {data?.identity ? (
+            <div className="searchresult">
+              {data?.identity.neighbor.map((avatar) => (
+                <ResultItem identity={avatar} key={avatar.uuid} />
+              ))}
             </div>
-          </div>
-          <div className="searchresult">
-            {data?.identity.neighbor.map((avatar) => (
-              <ResultItem identity={avatar} key={avatar.uuid} />
-            ))}
-          </div>
+          ): null}
         </>
       )}
     </div>

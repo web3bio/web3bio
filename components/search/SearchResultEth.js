@@ -16,13 +16,20 @@ const SearchResultEth = ({searchTerm}) => {
       {!loading && (
         <>
           <div className="searchresult">
+          {data?.identity ? (
             <div className='h3 text-bold'>{data?.identity.displayName}</div>
+          ): (
+            <div className='h3 text-bold'>{searchTerm}</div>
+          )}
+            
           </div>
-          <div className="searchresult">
-            {data?.identity.neighbor.map((avatar) => (
-              <ResultItem identity={avatar} key={avatar.uuid} />
-            ))}
-          </div>
+          {data?.identity ? (
+            <div className="searchresult">
+              {data?.identity.neighbor.map((avatar) => (
+                <ResultItem identity={avatar} key={avatar.uuid} />
+              ))}
+            </div>
+          ): null}
         </>
       )}
     </div>
