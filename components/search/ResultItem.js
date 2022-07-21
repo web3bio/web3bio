@@ -13,28 +13,28 @@ class ResultItem extends Component {
     switch (identity.platform) {
       case 'ethereum':
         return (
-          <a className="social ethereum" href={`https://etherscan.io/address/${identity.identity}`} target="_blank" rel="noopener noreferrer">
+          <a className="social ethereum" key={identity.uuid} href={`https://etherscan.io/address/${identity.identity}`} target="_blank" rel="noopener noreferrer">
             <SVG src="icons/icon-ethereum.svg" className="icon" />
             {identity.displayName}
           </a>
         )
       case 'twitter':
         return (
-          <a className="social twitter" href={`https://twitter.com/${identity.identity}`} target="_blank" rel="noopener noreferrer">
+          <a className="social twitter" key={identity.uuid} href={`https://twitter.com/${identity.identity}`} target="_blank" rel="noopener noreferrer">
             <SVG src="icons/icon-twitter.svg" className="icon" />
             {identity.displayName}
           </a>
         )
       case 'github':
         return (
-          <a className="social github" href={`https://github.com/${identity.identity}`} target="_blank" rel="noopener noreferrer">
+          <a className="social github" key={identity.uuid} href={`https://github.com/${identity.identity}`} target="_blank" rel="noopener noreferrer">
             <SVG src="icons/icon-github.svg" className="icon" />
             {identity.displayName}
           </a>
         )
       case 'keybase':
         return (
-          <a className="social keybase" href={`https://keybase.io/${identity.displayName}`} target="_blank" rel="noopener noreferrer">
+          <a className="social keybase" key={identity.uuid} href={`https://keybase.io/${identity.displayName}`} target="_blank" rel="noopener noreferrer">
             <SVG src="icons/icon-keybase.svg" className="icon" />
             {identity.displayName}
           </a>

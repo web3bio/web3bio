@@ -72,7 +72,7 @@ export default function Home() {
                   type='text'
                   placeholder='Search Twitter, ENS or Ethereum address'
                   className='form-input input-lg'
-                  autocorrect="off"
+                  autoCorrect="off"
                   id='searchbox'
                 />
                 <button type="submit" title="Submit" className="form-button btn btn-link">
