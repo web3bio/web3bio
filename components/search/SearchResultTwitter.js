@@ -25,7 +25,7 @@ const SearchResultTwitter = ({searchTerm}) => {
           </div>
           <div className="searchresult">
             {data?.identity.neighbor.map((avatar) => (
-              <ResultItem identity={avatar} />
+              <ResultItem identity={avatar} key={avatar.uuid} />
             ))}
           </div>
         </>
