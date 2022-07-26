@@ -443,7 +443,7 @@ body {
 
     .social {
       align-items: center;
-      background: rgba($dark-color, .05);
+      background: rgba($light-color, .5);
       border-radius: .2rem;
       display: inline-flex;
       font-size: .6rem;
@@ -456,7 +456,7 @@ body {
 
       &:focus,
       &:hover {
-        background: rgba($dark-color, .075);
+        background: rgba($light-color, .75);
       }
 
       .icon {

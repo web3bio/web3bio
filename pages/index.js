@@ -32,9 +32,10 @@ export default function Home() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setSearchFocus(true)
-    setSearchTerm(e.target.searchbox.value)
+    let searchkeyword = e.target.searchbox.value
+    setSearchTerm(searchkeyword.toLowerCase())
 
-    let searchType = handleSearchType(e.target.searchbox.value)
+    let searchType = handleSearchType(searchkeyword.toLowerCase())
     setSearchType(searchType)
   }
 
