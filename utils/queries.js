@@ -13,6 +13,13 @@ export const GET_PROFILES_ENS = gql`
           platform
           identity
           displayName
+          nft {
+            uuid
+            category
+            chain
+            id
+            updatedAt
+          }
         }
       }
     }
@@ -27,9 +34,11 @@ export const GET_PROFILES_ETH = gql`
       identity
       displayName
       nft {
+        uuid
         category
         chain
         id
+        updatedAt
       }
       neighbor(depth: 2) {
         uuid
@@ -37,9 +46,11 @@ export const GET_PROFILES_ETH = gql`
         identity
         displayName
         nft {
+          uuid
           category
           chain
           id
+          updatedAt
         }
       }
     }
@@ -59,9 +70,11 @@ export const GET_PROFILES_TWITTER = gql`
         identity
         displayName
         nft {
+          uuid
           category
           chain
           id
+          updatedAt
         }
       }
     }
@@ -71,23 +84,21 @@ export const GET_PROFILES_TWITTER = gql`
 export const GET_PROFILES_NEXT = gql`
   query($nextid: String) {
     identity(platform: "nextid", identity: $nextid) {
+      uuid
       platform
       identity
       displayName
-      nft {
-        chain
-        contract
-        id
-      }
       neighbor(depth: 3) {
-        status
+        uuid
         platform
         identity
-        updatedAt
+        displayName
         nft {
+          uuid
+          category
           chain
-          contract
           id
+          updatedAt
         }
       }
     }

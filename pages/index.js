@@ -79,7 +79,7 @@ export default function Home() {
                   id='searchbox'
                 />
                 <button type="submit" title="Submit" className="form-button btn">
-                  <SVG src="icons/icon-search.svg" width={24} height="auto" className="icon" />
+                  <SVG src="icons/icon-search.svg" width={24} height={24} className="icon" />
                 </button>
               </div>
             </form>
@@ -101,7 +101,7 @@ export default function Home() {
           <div className="container grid-lg">
             <div className="columns">
               <div className="column col-12">
-                <div className="mt-4 mb-2">A <a href="https://web3.bio" target="_blank">Web3.bio</a> project crafted with <span className="text-pride">&hearts;</span> · Proudly Built with <a href="https://next.id" target="_blank" rel="noopener noreferrer">Next.ID</a></div>
+                <div className="mt-4 mb-2">A <a href="https://web3.bio" target="_blank" rel="noopener noreferrer">Web3.bio</a> project crafted with <span className="text-pride">&hearts;</span> · Proudly Built with <a href="https://next.id" target="_blank" rel="noopener noreferrer">Next.ID</a></div>
               </div>
             </div>
           </div>

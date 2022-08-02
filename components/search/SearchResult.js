@@ -9,21 +9,36 @@ const SearchResult = ( {searchterm} ) => {
   console.log(data)
 
   return (
-    <div className="searchresult">
+    <>
       {loading && (
-        <div className="loading"></div>
+        <div className="loading-container">
+          <div className="loading"></div>
+        </div>
       )}
       {!loading && (
-        <>
-          {data.nft?.owner.displayName}
-          {data.nft?.owner.neighbor.map((avatar) => (
-            <div key={avatar.uuid}>
-              {avatar.platform} - {avatar.identity}
+        <div className="search-result">
+          <div className="search-result-header">
+            <figure className="avatar" data-initial={searchTerm.substring(0, 2)} ></figure>
+            <div className='content'>
+              <div className='h3 text-bold'>{searchTerm}</div>
+                {data?.nft ? (
+                    <div className='text-gray'><small>{data?.nft.owner.identity}</small></div>
+                  ): (
+                    <div className='text-gray'>No results</div>
+                )}
+              </div>
             </div>
-          ))}
-        </>
+            
+          {results ? (
+            <div className="search-result-body">
+              {results.map((avatar) => (
+                <ResultItem identity={avatar} key={avatar.uuid} />
+              ))}
+            </div>
+          ): null}
+        </div>
       )}
-    </div>
+    </>
   )
 }
 

@@ -13,10 +13,19 @@ class ResultItem extends Component {
     switch (identity.platform) {
       case 'ethereum':
         return (
-          <a className="social ethereum" href={`https://etherscan.io/address/${identity.identity}`} target="_blank" rel="noopener noreferrer">
-            <SVG src="icons/icon-ethereum.svg" className="icon" />
-            {identity.displayName ? identity.displayName:identity.identity}
-          </a>
+          <>
+            <a className="social ethereum" href={`https://etherscan.io/address/${identity.identity}`} target="_blank" rel="noopener noreferrer">
+              <SVG src="icons/icon-ethereum.svg" className="icon" />
+              {identity.displayName ? identity.displayName:identity.identity}
+            </a>
+            {identity.nft ? (
+              <div className="search-result-body">
+                {identity.nft.map((nft) => (
+                  <div key={nft.uuid}>{nft.id}</div>
+                ))}
+              </div>
+            ): null}
+          </>
         )
       case 'twitter':
         return (
