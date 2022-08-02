@@ -7,32 +7,39 @@ const SearchResultEth = ({searchTerm}) => {
     variables: { eth: searchTerm },
   })
   console.log(data)
+  let results = data?.identity.neighbor.filter( (ele, index) => index === data?.identity.neighbor.findIndex( elem => elem.uuid === ele.uuid))
 
   return (
-    <div className="searchresult">
+    <>
       {loading && (
-        <div className="loading"></div>
+        <div className="loading-container">
+          <div className="loading"></div>
+        </div>
       )}
       {!loading && (
-        <>
-          <div className="searchresult">
-          {data?.identity ? (
-            <div className='h3 text-bold'>{data?.identity.displayName}</div>
-          ): (
-            <div className='h3 text-bold'>{searchTerm}</div>
-          )}
+        <div className="search-result">
+          <div className="search-result-header">
+            <figure class="avatar" data-initial={data?.identity.displayName.substring(0, 2)} ></figure>
+            <div className='content'>
+              <div className='h3 text-bold'>{data?.identity.displayName}</div>
+                {data?.identity ? (
+                    <div className='text-gray'><small>{searchTerm}</small></div>
+                  ): (
+                    <div className='text-gray'>No results</div>
+                )}
+              </div>
+            </div>
             
-          </div>
-          {data?.identity ? (
-            <div className="searchresult">
-              {data?.identity.neighbor.map((avatar) => (
+          {results ? (
+            <div className="search-result-body">
+              {results.map((avatar) => (
                 <ResultItem identity={avatar} key={avatar.uuid} />
               ))}
             </div>
           ): null}
-        </>
+        </div>
       )}
-    </div>
+    </>
   )
 }
 

@@ -42,8 +42,8 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>Web5.bio</title>
-        <meta name="description" content="Web5.bio" />
+        {searchTerm ? (<title>{searchTerm} - Web5.bio</title>):(<title>Web5.bio</title>)}
+        <meta name="description" content="Web3 Identity Search" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -52,32 +52,34 @@ export default function Home() {
           <div className="container grid-lg">
             <div className="columns">
               <div className="column col-12">
-                <Link href="/">
-                  <a className="web3bio-logo" title="Web3.bio">
-                    <h1>WEB3<br/>BIO</h1>
-                  </a>
-                </Link>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="web3bio-cover creamwhisper"></div>
+        <div className="web3bio-cover flare"></div>
 
         <div className={searchFocus?'web3bio-search focused':'web3bio-search'}>
           <div className='container grid-xs'>
             <form className='search-form' onSubmit={handleSubmit} autoComplete='off' role='search'>
-              <label className='form-label' htmlFor="searchbox"><span>Web3 Identity Search</span></label>
+              <Link href="/">
+                <a className="web3bio-logo" title="Web5.bio">
+                  <h1 className="text-pride">WEB5<br/>BIO</h1>
+                </a>
+              </Link>
+              <div className='form-label'>Web3 <span>Identity Search</span></div>
               <div className='form-input-group'>
                 <input
                   type='text'
                   placeholder='Search Twitter, ENS or Ethereum address'
                   className='form-input input-lg'
                   autoCorrect="off"
+                  autoFocus
+                  spellCheck="false"
                   id='searchbox'
                 />
-                <button type="submit" title="Submit" className="form-button btn btn-link">
-                  <SVG src="icons/icon-search.svg" className="icon" />
+                <button type="submit" title="Submit" className="form-button btn">
+                  <SVG src="icons/icon-search.svg" width={24} height="auto" className="icon" />
                 </button>
               </div>
             </form>
@@ -93,6 +95,15 @@ export default function Home() {
                   return null
               }
             })()}
+          </div>
+        </div>
+        <div className="web3bio-footer">
+          <div className="container grid-lg">
+            <div className="columns">
+              <div className="column col-12">
+                <div className="mt-4 mb-2">A <a href="https://web3.bio" target="_blank">Web3.bio</a> project crafted with <span className="text-pride">&hearts;</span> · Proudly Built with <a href="https://next.id" target="_blank" rel="noopener noreferrer">Next.ID</a></div>
+              </div>
+            </div>
           </div>
         </div>
       </main>

@@ -36,6 +36,15 @@
 @import "animations";
 @import "utilities";
 
+// Variables
+$pride-color-1: #FBF4EC !default;
+$pride-color-2: #ECD7C8 !default;
+$pride-color-3: #EEA4BC !default;
+$pride-color-4: #BE88C4 !default;
+$pride-color-5: #9186E7 !default;
+$pride-color-6: #92C9F9 !default;
+$pride-color-7: #C7F8FF !default;
+
 /*! Web3bio.css | MIT License */
 body {
   background: $bg-color;
@@ -122,7 +131,7 @@ body {
 
 .web3bio-logo {
   align-items: center;
-  background: $light-color;
+  background: $dark-color;
   border-radius: .8rem;
   box-shadow: 0 .2rem .4rem rgba(0, 0, 0, .1);
   color: $dark-color;
@@ -197,226 +206,54 @@ body {
   }
 }
 
-//- Web3.bio Profile
-.web3bio-profile {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-
-  .profile-avatar {
-    border: .2rem solid $light-color;
-    box-shadow: 0 .1rem 1rem rgba(0, 0, 0, .1);
-  }
-
-  .profile-name {
-    color: $dark-color;
-    font-size: 1.8rem;
-    font-weight: 800;
-    margin-top: 1rem;
-    max-width: $size-sm;
-
-    @media screen and (max-width: $size-md) {
-      font-size: 1.2rem;
-    }
-  }
-
-  .profile-description {
-    color: $dark-color;
-    font-size: .8rem;
-    font-weight: 500;
-    max-width: $size-sm;
-  }
-
-  .profile-widget {
-    .profile-widget-header {
-      color: rgba(darken($primary-color, 40%), .15);
-      font-size: .7rem;
-      font-weight: 900;
-      margin-bottom: .5rem;
-      text-transform: uppercase;
-    }
-  }
-
-  // Social Widget
-  .profile-social {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin: 1rem auto;
-  }
-
-  .profile-social-item {
-    align-items: center;
-    background: $light-color;
-    border-radius: .6rem;
-    box-shadow: 0 .2rem .4rem rgba(0, 0, 0, .05);
-    display: flex;
-    height: 2.8rem;
-    justify-content: center;
-    margin: .5rem;
-    padding: .4rem;
-    transition: all .3s ease;
-    width: 2.8rem;
-
-    &:focus,
-    &:hover {
-      box-shadow: 0 .3rem .6rem rgba(0, 0, 0, .1);
-      transform: translateY(-.1rem);
-    }
-
-    &:active {
-      .profile-social-icon {
-        transform: scale(.95);
-      }
-    }
-
-    .profile-social-icon {
-      color: $dark-color;
-      display: block;
-      height: 1.4rem;
-      transition: all .3s ease;
-      width: 1.4rem;
-    }
-  }
-
-  // Crypto Widget
-  .profile-crypto {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin-top: 2rem;
-    max-width: $size-xs;
-    padding: 1rem 0;
-    width: 100%;
-  }
-
-  .profile-crypto-item {
-    align-items: center;
-    background: $light-color;
-    border-radius: .6rem;
-    box-shadow: 0 .1rem .2rem rgba(0, 0, 0, .05);
-    cursor: pointer;
-    display: flex;
-    margin: .5rem 0;
-    padding: .8rem 1rem;
-    transition: all .3s ease;
-
-    &:focus,
-    &:hover {
-      box-shadow: 0 .3rem .6rem rgba(0, 0, 0, .1);
-      opacity: 1;
-      transform: translateY(-.1rem);
-    }
-
-    .profile-crypto-content {
-      align-items: center;
-      display: flex;
-      flex: 1 1 auto;
-      text-align: left;
-      word-break: break-all;
-      width: 100%;
-    }
-
-    .profile-crypto-icon {
-      color: $primary-color;
-      display: block;
-      flex: 0 0 1.4rem;
-      height: 1.4rem;
-      width: 1.4rem;
-    }
-
-    .profile-crypto-main {
-      flex: 1 1 auto;
-      padding-left: 1rem;
-    }
-
-    .profile-crypto-title {
-      font-size: .7rem;
-      font-weight: 500;
-      line-height: .9rem;
-      user-select: all;
-    }
-
-    .profile-crypto-subtitle {
-      color: $gray-color;
-      font-size: .5rem;
-      font-weight: 500;
-      line-height: .7rem;
-      user-select: none;
-    }
-
-    .profile-crypto-action {
-      align-items: center;
-      display: flex;
-      flex: 0 0 auto;
-      padding: 0 0 0 1rem;
-
-      .icon {
-        height: 1rem;
-        margin-top: .1rem;
-        width: 1rem;
-      }
-    }
-
-    @media screen and (max-width: $size-sm) {
-      align-items: flex-start;
-      flex-direction: column;
-      height: auto;
-
-      .profile-crypto-action {
-        padding: .5rem 0 0 0;
-      }
-    }
-  }
-
-  // NFT Widget
-  .profile-nft {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    max-width: $size-xs;
-    padding: .5rem 0;
-    width: 100%;
-
-    .profile-nft-item {
-      background: rgba($light-color, .15);
-      border: .1rem dashed rgba($dark-color, .15);
-      border-radius: .6rem;
-      box-shadow: none;
-      color: rgba($dark-color, .15);
-      padding: 1rem;
-    }
-  }
-}
-
 //- Web3.bio Search
 .web3bio-search {
   .search-form {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    transform: translateY(30vh);
+    transform: translateY(20vh);
+  }
+
+  .web3bio-logo {
+    margin-bottom: 1rem;
   }
 
   .form-label {
-    font-size: 3.2rem;
+    font-size: 2.4rem;
     font-weight: 900;
     letter-spacing: -.05rem;
     line-height: 1;
     margin-bottom: 1rem;
 
     @media screen and (max-width: $size-md) {
-      font-size: 2.6rem;
+      font-size: 2rem;
+    }
+
+    span {
+      font-weight: 400;
     }
   }
 
   .form-input-group {
+    margin: .3rem 0;
     position: relative;
+
+    .form-input {
+      border: transparent;
+      
+      &:focus {
+        box-shadow: 0 .8rem 4rem rgba($dark-color, .25), 0 .05rem .2rem rgba($dark-color, .1);
+      }
+    }
   }
 
   .form-button {
     align-items: center;
+    background: lighten($bg-color, 3%);
+    border-color: transparent;
+    box-shadow: none;
+    color: lighten($dark-color, 10%);
     display: inline-flex;
     height: 2rem;
     padding: 0;
@@ -424,22 +261,55 @@ body {
     right: .2rem;
     top: .2rem;
     width: 2rem;
+
+    &:focus,
+    &:hover {
+      background: $bg-color;
+    }
+
+    &:active {
+      background: darken($bg-color, 3%);
+    }
   }
 
   &.focused {
     .search-form {
       transform: translateY(0);
-      transition: all .3s ease-in-out;
+      transition: all .2s ease-in-out;
     }
 
     .form-label {
-      font-size: 1.6rem;
-      transition: all .3s ease-in-out;
+      display: none;
     }
   }
 
-  .searchresult {
-    margin-top: 1rem;
+  .loading-container {
+    margin: 2rem auto;
+  }
+
+  .search-result {
+    background: rgba($light-color, .85);
+    border-radius: $border-radius;
+    box-shadow: 0 .05rem .2rem rgba($dark-color, .1);
+    position: relative;
+    z-index: 99;
+
+    .search-result-header {
+      border-bottom: .05rem solid $border-color;
+      display: flex;
+      padding: .8rem;
+
+      .avatar {
+        background: $pride-color-1;
+        border-radius: .5rem;
+        color: darken($pride-color-1, 30%);
+        margin-right: .5rem;
+      }
+    }
+
+    .search-result-body {
+      padding: .8rem;
+    }
 
     .social {
       align-items: center;
@@ -473,224 +343,6 @@ body {
   }
 }
 
-//- Web3.bio Hero
-.web3bio-hero {
-  padding: 3rem 0;
-  text-align: center;
-
-  .h1,
-  h1 {
-    color: $dark-color;
-    font-size: 3.2rem;
-    font-weight: 900;
-    letter-spacing: -.05rem;
-    line-height: 3.6rem;
-    margin: 1rem 0;
-
-    @media screen and (max-width: $size-md) {
-      font-size: 2.6rem;
-      line-height: 2.8rem;
-    }
-
-    span {
-      mix-blend-mode: color-burn;
-    }
-  }
-
-  h1 {
-    strong {
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-image: linear-gradient(25deg, darken(#303FE5, 10%) -15%, darken(#7355E5, 5%) 40%, darken(#E57486, 5%) 115%);
-      font-weight: 900;
-    }
-  }
-
-  h2 {
-    font-size: 1rem;
-    font-weight: 500;
-    line-height: 1.5;
-    margin: 1rem 0 2rem 0;
-  }
-
-  .emoji {
-    font-size: 3.2rem;
-  }
-
-  .web3bio-hero-input {
-    border-radius: $border-radius;
-    box-shadow: 0 .1rem 1.6rem rgba($dark-color, .25);
-    display: flex;
-    margin: 2rem auto;
-    max-width: 24rem;
-    
-    .input-group-addon {
-      border-color: $dark-color;
-      flex: 1 1 auto;
-      text-decoration: none;
-    }
-    
-    .input-group-input {
-      border-color: $dark-color;
-      flex: 1 1 auto;
-      user-select: all;
-    }
-
-    .btn-lg {
-      background-image: linear-gradient(25deg, darken(#303FE5, 10%) -15%, darken(#7355E5, 5%) 40%, darken(#E57486, 5%) 115%);
-      border-color: rgba($dark-color, .75);
-
-      &:focus,
-      &:hover {
-        background-image: linear-gradient(25deg, darken(#303FE5, 20%) -30%, darken(#7355E5, 5%) 40%, darken(#E57486, 20%) 130%);
-      }
-    }
-  }
-
-  .card {
-    margin-bottom: 2rem;
-    margin-top: 2rem;
-  }
-
-  .label {
-    &.label-feature {
-      background: linear-gradient(233deg, rgba($primary-color, .1) 0, rgba($primary-color, 0) 100%);
-    }
-  }
-
-  &.web3bio-data {
-    line-height: 1.15;
-
-    .h2 {
-      font-size: 2rem;
-    }
-
-    .text-title {
-      color: $dark-color;
-    }
-
-    .text-subtitle {
-      color: rgba(darken($primary-color, 40%), .35);
-    }
-  }
-
-  .web3bio-actionbar {
-    margin-bottom: 1rem;
-    margin-top: 2rem;
-  }
-}
-
-//- Web3.bio Settings
-.web3bio-settings {
-  background: $light-color;
-  border-radius: $border-radius;
-  box-shadow: 0 .3rem .6rem rgba(0, 0, 0, .05);
-  margin: 2rem 0;
-  padding: 1rem 2rem;
-  
-  @media screen and (max-width: $size-sm) {
-    padding: 1rem;
-    margin: 2rem 0;
-  }
-
-  form {
-    fieldset {
-      padding: 1rem 0 0 0;
-    }
-
-    .input-group-addon {
-      &.addon-lg {
-        font-size: .7rem;
-        padding-right: .4rem;
-
-        span {
-          color: $gray-color;
-        }
-      }
-
-      & + .form-input {
-        border-left: 0;
-      }
-    }
-  }
-
-  .web3bio-settings-footer {
-    padding: 1rem 0;
-    
-    &.active {
-      bottom: 0;
-      position: sticky;
-
-      .btn {
-        animation: slide-up .25s ease 1;
-        box-shadow: 0 .2rem 2rem $light-color;
-      }
-    }
-  }
-
-  .web3bio-settings-placeholder {
-    background: rgba($light-color, .15);
-    border: .1rem dashed rgba($dark-color, .25);
-    border-radius: .6rem;
-    box-shadow: none;
-    color: rgba($dark-color, .25);
-    margin: 1rem 0;
-    padding: 1rem;
-  }
-}
-
-//- Web3.bio Modal
-.web3bio-modal {
-  bottom: 0;
-  max-width: $size-sm;
-  padding: 1rem;
-  position: fixed;
-  width: 100%;
-  z-index: 999;
-
-  .modal-overlay {
-    background: rgba($dark-color, .15);
-    display: block;
-    height: 100vh;
-    left: 0;
-    position: fixed;
-    top: 0;
-    width: 100vw;
-    z-index: -1;
-  }
-
-  .model-container {
-    animation: slide-up .2s ease 1;
-    max-width: $size-sm;
-    z-index: $zindex-0;
-  }
-
-  .modal-title {
-    align-items: center;
-    display: flex;
-  }
-
-  .modal-body {
-    .h1 {
-      font-size: 3.6rem;
-    }
-
-    .input-group-addon {
-      &.addon-lg {
-        font-size: .7rem;
-        padding-right: .4rem;
-
-        span {
-          color: $gray-color;
-        }
-      }
-
-      & + .form-input {
-        border-left: 0;
-      }
-    }
-  }
-}
 
 //- Web3.bio Toast
 .web3bio-toast {
@@ -718,7 +370,20 @@ body {
 
 //- Web3.bio Footer
 .web3bio-footer {
+  color: $gray-color;
+  font-size: .7rem;
+  font-weight: 500;
   padding-top: 2rem;
   position: sticky;
+  text-align: center;
   top: 100vh;
+}
+
+//- Pride
+.text-pride {
+  background-image: linear-gradient(70deg, #FBF4EC 10%,#ECD7C8 25%,#EEA4BC 36%,#BE88C4 50%,#9186E7 63%,#92C9F9 75%,#C7F8FF 90%);
+  background-clip: text;
+  text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

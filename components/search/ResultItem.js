@@ -15,7 +15,7 @@ class ResultItem extends Component {
         return (
           <a className="social ethereum" href={`https://etherscan.io/address/${identity.identity}`} target="_blank" rel="noopener noreferrer">
             <SVG src="icons/icon-ethereum.svg" className="icon" />
-            {identity.displayName}
+            {identity.displayName ? identity.displayName:identity.identity}
           </a>
         )
       case 'twitter':

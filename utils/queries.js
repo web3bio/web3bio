@@ -22,6 +22,7 @@ export const GET_PROFILES_ENS = gql`
 export const GET_PROFILES_ETH = gql`
   query($eth: String) {
     identity(platform: "ethereum", identity: $eth) {
+      uuid
       platform
       identity
       displayName
@@ -31,6 +32,7 @@ export const GET_PROFILES_ETH = gql`
         id
       }
       neighbor(depth: 2) {
+        uuid
         platform
         identity
         displayName
@@ -47,10 +49,12 @@ export const GET_PROFILES_ETH = gql`
 export const GET_PROFILES_TWITTER = gql`
   query($twitter: String) {
     identity(platform: "twitter", identity: $twitter) {
+      uuid
       platform
       identity
       displayName
       neighbor(depth: 2) {
+        uuid
         platform
         identity
         displayName

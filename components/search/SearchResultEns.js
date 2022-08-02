@@ -7,31 +7,39 @@ const SearchResultEns = ({searchTerm}) => {
     variables: { ens: searchTerm },
   })
 
+  let results = data?.nft.owner.neighbor.filter( (ele, index) => index === data?.nft.owner.neighbor.findIndex( elem => elem.uuid === ele.uuid))
+  
   return (
-    <div className="searchresult">
+    <>
       {loading && (
-        <div className="loading"></div>
+        <div className="loading-container">
+          <div className="loading"></div>
+        </div>
       )}
       {!loading && (
-        <>
-          <div className="searchresult">
-            <div className='h3 text-bold'>{searchTerm}</div>
-            {data?.nft ? (
-                <div className='h6'>{data?.nft.owner.displayName}</div>
-              ): (
-                <div className='h6'>No results</div>
-            )}
-          </div>
-          {data?.nft ? (
-            <div className="searchresult">
-              {data?.nft.owner.neighbor.map((avatar) => (
+        <div className="search-result">
+          <div className="search-result-header">
+            <figure class="avatar" data-initial={searchTerm.substring(0, 2)} ></figure>
+            <div className='content'>
+              <div className='h3 text-bold'>{searchTerm}</div>
+                {data?.nft ? (
+                    <div className='text-gray'><small>{data?.nft.owner.identity}</small></div>
+                  ): (
+                    <div className='text-gray'>No results</div>
+                )}
+              </div>
+            </div>
+            
+          {results ? (
+            <div className="search-result-body">
+              {results.map((avatar) => (
                 <ResultItem identity={avatar} key={avatar.uuid} />
               ))}
             </div>
           ): null}
-        </>
+        </div>
       )}
-    </div>
+    </>
   )
 }
 
