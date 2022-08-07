@@ -294,7 +294,6 @@ body {
     z-index: 99;
 
     .search-result-header {
-      border-bottom: .05rem solid $border-color;
       display: flex;
       padding: .8rem;
 
@@ -302,6 +301,7 @@ body {
         background: $pride-color-1;
         border-radius: .5rem;
         color: darken($pride-color-1, 30%);
+        flex: 0 0 1.6rem;
         margin-right: .5rem;
       }
 
@@ -321,9 +321,14 @@ body {
           width: 1rem;
         }
       }
+
+      .nfts {
+        margin-top: .5rem;
+      }
     }
 
     .search-result-body {
+      border-top: .05rem solid $border-color;
       padding: .8rem;
     }
 
@@ -339,11 +344,15 @@ body {
 
       &:focus,
       &:hover {
-        background: rgba($pride-color-2, .25);
+        background: rgba($pride-color-2, .35);
 
         .actions {
           display: flex;
         }
+      }
+
+      &:active {
+        background: rgba($pride-color-2, .5);
       }
     }
 
@@ -370,15 +379,23 @@ body {
     }
 
     .nfts {
-      margin-bottom: .5rem;
       width: 100%;
 
       .label {
-        background: rgba($pride-color-3, .15);
-        line-height: 1.5;
-        margin-right: .2rem;
+        align-items: center;
+        background: rgba(#7298F8, .05);
+        color: lighten($dark-color, 20%);
+        display: inline-flex;
+        line-height: 1rem;
+        margin: 0 .2rem .2rem 0;
+        padding: .1rem .3rem .1rem .15rem;
         user-select: all;
         @include text-ellipsis();
+
+        svg {
+          color: #7298F8;
+          margin-right: .2rem;
+        }
       }
     }
 

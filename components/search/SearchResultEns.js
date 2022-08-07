@@ -26,13 +26,29 @@ const SearchResultEns = ({searchTerm}) => {
             <figure className="avatar" data-initial={searchTerm.substring(0, 2)} ></figure>
             <div className='content'>
               <div className='content-title text-bold mb-1'>{searchTerm}</div>
-              {data?.nft ? (
-                <div className='content-subtitle text-gray'>
-                  <small>{data?.nft.owner.identity}</small>
-                  <Clipboard component="div" className="action" data-clipboard-text={data?.nft.owner.identity}>
-                    <SVG src="icons/icon-copy.svg" width={20} height={20} />
-                  </Clipboard>
-                </div>
+              {results_owner ? (
+                <>
+                  <div className='content-subtitle text-gray'>
+                    <small>{results_owner.identity}</small>
+                    <Clipboard component="div" className="action" data-clipboard-text={results_owner.identity}>
+                      <SVG src="icons/icon-copy.svg" width={20} height={20} />
+                    </Clipboard>
+                  </div>
+                  {results_owner.nft?.length > 0 && (
+                    <div className="nfts">
+                      {results_owner.nft.map((nft) => (
+                        <>
+                          {nft.category == 'ENS' ? (
+                            <div className="label" key={nft.uuid}>
+                              <SVG src="icons/icon-ens.svg" width={16} height={16} />
+                              {nft.id}
+                            </div>
+                          ) : null }
+                        </>
+                      ))}
+                    </div>
+                  )}
+                </>
               ): (
                 <div className='text-gray'>No results</div>
               )}
@@ -44,12 +60,6 @@ const SearchResultEns = ({searchTerm}) => {
               {results_neighbor.map((avatar) => (
                 <ResultAccountItem identity={avatar} key={avatar.uuid} />
               ))}
-            </div>
-          ): null}
-
-          {results_num == 0 ? (
-            <div className="search-result-body">
-              <ResultAccountItem identity={results_owner} />
             </div>
           ): null}
         </div>
