@@ -8,9 +8,10 @@ const SearchResultEns = ({searchTerm}) => {
   const { loading, error, data } = useQuery(GET_PROFILES_ENS, {
     variables: { ens: searchTerm },
   })
-  let results = data?.nft.owner.neighbor.filter( (ele, index) => index === data?.nft.owner.neighbor.findIndex( elem => elem.uuid === ele.uuid))
-  console.log(data)
-  console.log(results)
+  let results_owner = data?.nft.owner
+  let results_neighbor = results_owner?.neighbor.filter( (ele, index) => index === results_owner?.neighbor.findIndex( elem => elem.uuid === ele.uuid))
+  let results_num = results_neighbor?.length
+  console.log(results_neighbor)
   
   return (
     <>
@@ -38,11 +39,17 @@ const SearchResultEns = ({searchTerm}) => {
             </div>
           </div>
             
-          {results ? (
+          {results_num >= 1 ? (
             <div className="search-result-body">
-              {results.map((avatar) => (
+              {results_neighbor.map((avatar) => (
                 <ResultAccountItem identity={avatar} key={avatar.uuid} />
               ))}
+            </div>
+          ): null}
+
+          {results_num == 0 ? (
+            <div className="search-result-body">
+              <ResultAccountItem identity={results_owner} />
             </div>
           ): null}
         </div>

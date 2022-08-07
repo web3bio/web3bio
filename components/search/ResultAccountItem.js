@@ -27,13 +27,17 @@ class ResultAccountItem extends Component {
                 </Clipboard>
               </div>
             </div>
-            {identity.nft.length > 0 ? (
+            {identity.nft && (
               <div className="nfts">
                 {identity.nft.map((nft) => (
-                  <span className="label mr-1 mb-1" key={nft.uuid}>{nft.id}</span>
+                  <>
+                    {nft.category == 'ENS' ? (
+                      <span className="label mr-1 mb-1" key={nft.uuid}>{nft.id}</span>
+                    ) : null }
+                  </>
                 ))}
               </div>
-            ): null}
+            )}
           </>
         )
       case 'twitter':

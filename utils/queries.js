@@ -8,13 +8,18 @@ export const GET_PROFILES_ENS = gql`
         platform
         identity
         displayName
+        nft {
+          category
+          chain
+          id
+          updatedAt
+        }
         neighbor(depth: 3) {
           uuid
           platform
           identity
           displayName
           nft {
-            uuid
             category
             chain
             id
