@@ -305,6 +305,11 @@ body {
         margin-right: .5rem;
       }
 
+      .content-title {
+        font-size: 1rem;
+        line-height: 1rem;
+      }
+
       .content-subtitle {
         align-items: center;
         display: flex;
@@ -367,6 +372,14 @@ body {
     .nfts {
       margin-bottom: .5rem;
       width: 100%;
+
+      .label {
+        background: rgba($pride-color-3, .15);
+        line-height: 1.5;
+        margin-right: .2rem;
+        user-select: all;
+        @include text-ellipsis();
+      }
     }
 
     .actions {
@@ -379,11 +392,6 @@ body {
         font-size: .5rem;
         line-height: 1.2rem;
       }
-    }
-
-    .label {
-      background: rgba($pride-color-3, .15);
-      user-select: all;
     }
 
     .h4 {

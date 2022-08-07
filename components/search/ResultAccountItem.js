@@ -15,24 +15,26 @@ class ResultAccountItem extends Component {
         return (
           <>
             <div className="social-item">
-              <a className="social ethereum" href={`https://etherscan.io/address/${identity.identity}`} target="_blank" rel="noopener noreferrer">
+              <a className="social ethereum" href={`https://etherscan.io/address/${identity.displayName ? identity.displayName : identity.identity}`} target="_blank" rel="noopener noreferrer">
                 <div className='icon'>
                   <SVG src="icons/icon-ethereum.svg" width={18} height={18} />
                 </div>
-                <div className="text-ellipsis">{identity.identity}</div>
+                <div className="text-ellipsis">
+                  {identity.displayName ? identity.displayName : identity.identity}
+                </div>
               </a>
               <div className="actions">
-                <Clipboard className="btn btn-sm btn-link action" data-clipboard-text={identity.identity}>
+                <Clipboard className="btn btn-sm btn-link action" data-clipboard-text={identity.displayName ? identity.displayName : identity.identity}>
                   COPY
                 </Clipboard>
               </div>
             </div>
-            {identity.nft && (
+            {identity.nft.length > 0 && (
               <div className="nfts">
                 {identity.nft.map((nft) => (
                   <>
                     {nft.category == 'ENS' ? (
-                      <span className="label mr-1 mb-1" key={nft.uuid}>{nft.id}</span>
+                      <span className="label" key={nft.uuid}>{nft.id}</span>
                     ) : null }
                   </>
                 ))}
