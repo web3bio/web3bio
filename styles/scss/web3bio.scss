@@ -9,8 +9,6 @@
 
 // Elements
 @import "typography";
-@import "asian";
-@import "tables";
 @import "buttons";
 @import "forms";
 @import "labels";
@@ -241,6 +239,7 @@ body {
 
     .form-input {
       border: transparent;
+      padding-right: 2.4rem;
       
       &:focus {
         box-shadow: 0 .8rem 4rem rgba($dark-color, .25), 0 .05rem .2rem rgba($dark-color, .1);
@@ -305,37 +304,89 @@ body {
         color: darken($pride-color-1, 30%);
         margin-right: .5rem;
       }
+
+      .content-subtitle {
+        align-items: center;
+        display: flex;
+
+        .action {
+          cursor: pointer;
+          height: 1rem;
+          margin-left: .2rem;
+          width: 1rem;
+        }
+      }
     }
 
     .search-result-body {
       padding: .8rem;
     }
 
+    .social-item {
+      background: rgba($pride-color-2, .15);
+      border-radius: $border-radius;
+      display: flex;
+      width: 100%;
+
+      &:not(:last-child) {
+        margin-bottom: .2rem;
+      }
+
+      &:focus,
+      &:hover {
+        background: rgba($pride-color-2, .25);
+
+        .actions {
+          display: flex;
+        }
+      }
+    }
+
     .social {
       align-items: center;
       border-radius: .2rem;
       display: inline-flex;
+      flex: 1;
       font-size: .6rem;
       line-height: 1rem;
-      margin: .2rem .2rem 0 0;
       padding: .1rem .3rem .1rem .1rem;
       text-decoration: none;
       transition: all .25s ease-in-out;
-      word-break: keep-all;
-
-      &:focus,
-      &:hover {
-        background: rgba($light-color, .75);
-      }
 
       .icon {
-        height: 1rem;
+        border-radius: $border-radius;
+        color: $dark-color;
+        font-size: .7rem;
+        height: 1.4rem;
         margin-right: .2rem;
-        width: 1rem;
+        padding: .25rem;
+        width: 1.4rem;
       }
     }
 
-    .h3 {
+    .nfts {
+      margin-bottom: .5rem;
+      width: 100%;
+    }
+
+    .actions {
+      display: none;
+      padding: .1rem;
+
+      .action {
+        align-items: center;
+        display: inline-flex;
+        font-size: .5rem;
+        line-height: 1.2rem;
+      }
+    }
+
+    .label {
+      background: rgba($pride-color-3, .15);
+      user-select: all;
+    }
+
+    .h4 {
       line-height: 1;
       word-break: break-all;
     }

@@ -44,7 +44,7 @@ export default function Home() {
       <Head>
         {searchTerm ? (<title>{searchTerm} - Web5.bio</title>):(<title>Web5.bio</title>)}
         <meta name="description" content="Web3 Identity Search" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       </Head>
 
       <main className='web3bio-container'>
@@ -71,7 +71,7 @@ export default function Home() {
               <div className='form-input-group'>
                 <input
                   type='text'
-                  placeholder='Search Twitter, ENS or Ethereum address'
+                  placeholder='Search Twitter, ENS or Ethereum'
                   className='form-input input-lg'
                   autoCorrect="off"
                   autoFocus

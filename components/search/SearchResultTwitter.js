@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import ResultItem from './ResultItem'
+import ResultAccountItem from './ResultAccountItem'
 import { GET_PROFILES_TWITTER } from '../../utils/queries'
 
 const SearchResultTwitter = ({searchTerm}) => {
@@ -21,7 +21,7 @@ const SearchResultTwitter = ({searchTerm}) => {
           <div className="search-result-header">
             <figure className="avatar" data-initial={data?.identity.displayName.substring(0, 2)} ></figure>
             <div className='content'>
-              <div className='h3 text-bold'>{data?.identity.displayName}</div>
+              <div className='h4 text-bold mb-1'>{data?.identity.displayName}</div>
               {data?.identity ? (
                   <div className='text-gray'><small>@{searchTerm}</small></div>
                 ): (
@@ -33,7 +33,7 @@ const SearchResultTwitter = ({searchTerm}) => {
           {results ? (
             <div className="search-result-body">
               {results.map((avatar) => (
-                <ResultItem identity={avatar} key={avatar.uuid} />
+                <ResultAccountItem identity={avatar} key={avatar.uuid} />
               ))}
             </div>
           ): null}
