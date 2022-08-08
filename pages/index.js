@@ -11,7 +11,7 @@ export default function Home() {
   const [searchFocus, setSearchFocus] = useState(false)
   const [searchType, setSearchType] = useState('')
 
-  const regexEns = /.*\.eth$/,
+  const regexEns = /.*\.eth|.xyz$/,
         regexEth = /^0x[a-fA-F0-9]{40}$/,
         regexTwitter = /(\w{1,15})\b/
   

@@ -218,7 +218,7 @@ body {
   }
 
   .form-label {
-    font-size: 2.4rem;
+    font-size: 2.2rem;
     font-weight: 900;
     letter-spacing: -.05rem;
     line-height: 1;
@@ -305,6 +305,11 @@ body {
         margin-right: .5rem;
       }
 
+      .content {
+        flex: 1;
+        width: calc(100% - 2.1rem);
+      }
+
       .content-title {
         font-size: 1rem;
         line-height: 1rem;
@@ -320,10 +325,6 @@ body {
           margin-left: .2rem;
           width: 1rem;
         }
-      }
-
-      .nfts {
-        margin-top: .5rem;
       }
     }
 
@@ -354,6 +355,10 @@ body {
       &:active {
         background: rgba($pride-color-2, .5);
       }
+
+      & + .nfts {
+        margin-bottom: .5rem;
+      }
     }
 
     .social {
@@ -378,24 +383,29 @@ body {
       }
     }
 
-    .nfts {
-      width: 100%;
-
-      .label {
-        align-items: center;
-        background: rgba(#7298F8, .05);
-        color: lighten($dark-color, 20%);
-        display: inline-flex;
-        line-height: 1rem;
-        margin: 0 .2rem .2rem 0;
-        padding: .1rem .3rem .1rem .15rem;
+    .label-ens {
+      align-items: center;
+      background: rgba($pride-color-6, .1);
+      border-radius: .3rem;
+      color: lighten($dark-color, 20%);
+      display: inline-flex;
+      font-size: 90%;
+      line-height: 1rem;
+      margin: .2rem .2rem 0 0;
+      padding: .1rem .3rem .1rem .15rem;
+      max-width: 100%;
+     
+      span {
+        overflow: hidden;
+        text-overflow: ellipsis;
         user-select: all;
-        @include text-ellipsis();
-
-        svg {
-          color: #7298F8;
-          margin-right: .2rem;
-        }
+        white-space: nowrap;
+      }
+      
+      svg {
+        color: $pride-color-6;
+        flex: 0 0 .7rem;
+        margin-right: .2rem;
       }
     }
 

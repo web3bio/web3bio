@@ -9,16 +9,22 @@ export const GET_PROFILES_ENS = gql`
         identity
         displayName
         nft {
+          uuid
           category
           chain
           id
-          updatedAt
         }
         neighbor(depth: 3) {
           uuid
           platform
           identity
           displayName
+          nft {
+            uuid
+            category
+            chain
+            id
+          }
         }
       }
     }
@@ -37,13 +43,18 @@ export const GET_PROFILES_ETH = gql`
         category
         chain
         id
-        updatedAt
       }
       neighbor(depth: 3) {
         uuid
         platform
         identity
         displayName
+        nft {
+          uuid
+          category
+          chain
+          id
+        }
       }
     }
   }
@@ -66,7 +77,6 @@ export const GET_PROFILES_TWITTER = gql`
           category
           chain
           id
-          updatedAt
         }
       }
     }
