@@ -21,7 +21,7 @@ const SearchResultEns = ({searchTerm}) => {
 
   return (
     results ? (
-      <ResultAccount resultsOwner={resultsOwner} resultsNeighbor={resultsNeighbor} />
+      <ResultAccount searchTerm={searchTerm} resultsOwner={resultsOwner} resultsNeighbor={resultsNeighbor} />
     ) : (
       <div className="empty">
         <div className="empty-icon h1">🙀</div>

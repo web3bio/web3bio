@@ -298,10 +298,12 @@ body {
       padding: .8rem;
 
       .avatar {
-        background: $pride-color-1;
+        align-items: center;
+        background: linear-gradient(70deg, $pride-color-1 -10%,$pride-color-2 5%,$pride-color-3 36%,$pride-color-4 50%,$pride-color-5 63%,$pride-color-6 95%,$pride-color-7 110%);
         border-radius: .5rem;
-        color: darken($pride-color-1, 30%);
+        display: flex;
         flex: 0 0 1.6rem;
+        justify-content: center;
         margin-right: .5rem;
       }
 
@@ -466,7 +468,7 @@ body {
 
 //- Pride
 .text-pride {
-  background-image: linear-gradient(70deg, #FBF4EC 10%,#ECD7C8 25%,#EEA4BC 36%,#BE88C4 50%,#9186E7 63%,#92C9F9 75%,#C7F8FF 90%);
+  background-image: linear-gradient(70deg, $pride-color-1 10%,$pride-color-2 25%,$pride-color-3 36%,$pride-color-4 50%,$pride-color-5 63%,$pride-color-6 75%,$pride-color-7 90%);
   background-clip: text;
   text-fill-color: transparent;
   -webkit-background-clip: text;

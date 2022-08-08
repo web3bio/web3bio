@@ -20,7 +20,7 @@ const SearchResultTwitter = ({searchTerm}) => {
 
   return (
     resultsOwner ? (
-      <ResultAccount resultsOwner={resultsOwner} resultsNeighbor={resultsNeighbor} />
+      <ResultAccount searchTerm={searchTerm} resultsOwner={resultsOwner} resultsNeighbor={resultsNeighbor} />
     ) : (
       <div className="empty">
         <div className="empty-icon h1">🙀</div>

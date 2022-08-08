@@ -10,11 +10,25 @@ class ResultAccount extends Component {
 
   render() {
     const { resultsOwner, resultsNeighbor } = this.props
+    let resultsAvatar
+    switch (resultsOwner.platform) {
+      case 'ethereum':
+        resultsAvatar = 'icons/icon-ethereum.svg'
+        break;
+      case 'twitter':
+        resultsAvatar = 'icons/icon-twitter.svg'
+        break;
+      case 'github':
+        resultsAvatar = 'icons/icon-github.svg'
+        break;
+    }
 
     return (
       <div className="search-result">
         <div className="search-result-header">
-          <figure className="avatar" data-initial={resultsOwner.displayName.substring(0, 2)} ></figure>
+          <figure className="avatar text-pride">
+            <SVG src={resultsAvatar} width={20} height={20} />
+          </figure>
           <div className='content'>
             <div className='content-title text-bold mb-1'>{resultsOwner.displayName}</div>
             <div className='content-subtitle text-gray'>
