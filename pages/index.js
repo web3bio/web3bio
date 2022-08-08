@@ -101,7 +101,12 @@ export default function Home() {
           <div className="container grid-lg">
             <div className="columns">
               <div className="column col-12">
-                <div className="mt-4 mb-2">A <a href="https://web3.bio" target="_blank" rel="noopener noreferrer">Web3.bio</a> project crafted with <span className="text-pride">&hearts;</span> · Proudly Built with <a href="https://next.id" target="_blank" rel="noopener noreferrer">Next.ID</a></div>
+                <div className="mt-4">
+                  A <a href="https://web3.bio" target="_blank" rel="noopener noreferrer">Web3.bio</a> project crafted with <span className="text-pride">&hearts;</span> · Proudly Built with <a href="https://next.id" target="_blank" rel="noopener noreferrer">Next.ID</a>
+                </div>
+                <div className="footer-feedback mt-4">
+                  <a href="https://feedback.web5.bio/" className="btn btn btn-sm" target="_blank" rel="noopener noreferrer">👋 Feedback</a>
+                </div>
               </div>
             </div>
           </div>

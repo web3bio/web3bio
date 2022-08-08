@@ -327,6 +327,10 @@ body {
           margin-left: .2rem;
           width: 1rem;
         }
+
+        & + .nfts {
+          margin-top: .5rem;
+        }
       }
     }
 
@@ -464,6 +468,14 @@ body {
   position: sticky;
   text-align: center;
   top: 100vh;
+
+  .footer-feedback {
+    @media screen and (min-width: $size-md) {
+      bottom: .5rem;
+      position: fixed;
+      right: .5rem;
+    }
+  }
 }
 
 //- Pride
