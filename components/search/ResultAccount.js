@@ -9,7 +9,7 @@ class ResultAccount extends Component {
   }
 
   render() {
-    const { resultsOwner, resultsNeighbor } = this.props
+    const { searchTerm, resultsOwner, resultsNeighbor } = this.props
     let resultsAvatar
     switch (resultsOwner.platform) {
       case 'ethereum':
@@ -30,7 +30,7 @@ class ResultAccount extends Component {
             <SVG src={resultsAvatar} width={20} height={20} />
           </figure>
           <div className='content'>
-            <div className='content-title text-bold mb-1'>{resultsOwner.displayName}</div>
+            <div className='content-title text-bold mb-1'>{resultsOwner.displayName ? resultsOwner.displayName : searchTerm }</div>
             <div className='content-subtitle text-gray'>
               <small>{resultsOwner.identity}</small>
               <Clipboard component="div" className="action" data-clipboard-text={resultsOwner.identity}>
