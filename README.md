@@ -1,6 +1,6 @@
 # Web5.bio
 
-![](./public/logo-web5bio.png)
+![](./public/logo-web5bio.png){: style="width:92px;height:92px;border-radius:8px;"}
 
 Web5.bio is a Web3 and Web 2.0 identity search service which is powered by [Next.ID](https://next.id). Web5.bio will provide a list of relevant identities when you are searching any Twitter handle, Ethereum address, or ENS domain. 
 
@@ -8,11 +8,11 @@ We're gradually making updates to Web5.bio. You may expect new features and data
 
 ## Why it is called Web5.bio?
 
-Web2 + Web3 = Web5
+Web2 + Web3 = Web5.
 
 ## What are the data sources?
 
-Web5.bio is powered by [Next.ID](https://next.id) Relation Service. The Relation Service is an aggregator and query service of Web2 and Web3 identities. All identity data is indexed from public Verifiable connections and on-chain records.
+Web5.bio is powered by [Next.ID](https://next.id) Relation Service. The Relation Service is an aggregator and query service of Web2 and Web3 identities. Next.ID is indexing all identity data from public verifiable connections and on-chain records.
 
 The supported identity platforms:
 
@@ -23,8 +23,11 @@ The supported identity platforms:
 - GitHub
 - Lens (soon)
 
+The queries can be found here `utils/queries.js`. You can read [the Next.ID docs](https://docs.next.id/?utm_source=web5bio) to learn more.
+
 ## Can I remove my data?
 
+No yet. Next.ID is indexing identity data from public verifiable connections and on-chain records. Revalidating data support is on the roadmap.
 
 ## Local Dev
 
@@ -33,3 +36,10 @@ Run the development server:
 ```bash
 npm i && npm run dev
 ```
+```bash
+yarn && yarn dev
+```
+
+## Contributing
+
+Feel free to submit a pull request to propose bug fixes and improvements. Help is always appreciated. You may give feature feedbacks or bug report [at feedback.web5.bio](https://feedback.web5.bio/) as well. 
