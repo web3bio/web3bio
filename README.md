@@ -1,6 +1,6 @@
 # Web5.bio
 
-![](./public/logo-web5bio.png){: style="width:92px;height:92px;border-radius:8px;"}
+![](./public/logo-web5bio.png)
 
 Web5.bio is a Web3 and Web 2.0 identity search service which is powered by [Next.ID](https://next.id). Web5.bio will provide a list of relevant identities when you are searching any Twitter handle, Ethereum address, or ENS domain. 
 
