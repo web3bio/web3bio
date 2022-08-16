@@ -475,6 +475,17 @@ body {
       position: fixed;
       right: .5rem;
     }
+
+    span {
+      transition: transform .15s ease-in-out;
+    }
+
+    &:focus,
+    &:hover {
+      span {
+        transform: scale(1.5) rotate(-10deg);
+      }
+    }
   }
 }
 
