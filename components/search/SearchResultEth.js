@@ -1,5 +1,6 @@
 import { useQuery } from '@apollo/client'
 import ResultAccount from './ResultAccount'
+import { Loading, Empty } from '../shared'
 import { GET_PROFILES_ETH } from '../../utils/queries'
 
 const SearchResultEth = ({searchTerm}) => {
@@ -7,11 +8,7 @@ const SearchResultEth = ({searchTerm}) => {
     variables: { eth: searchTerm },
   })
 
-  if (loading) return (
-    <div className="loading-container">
-      <div className="loading"></div>
-    </div>
-  )
+  if (loading) return (<Loading />)
   if (error) return `Error! ${error}`
 
   let resultsOwner = data?.identity
@@ -22,11 +19,7 @@ const SearchResultEth = ({searchTerm}) => {
     resultsOwner ? (
       <ResultAccount searchTerm={searchTerm} resultsOwner={resultsOwner} resultsNeighbor={resultsNeighbor} />
     ) : (
-      <div className="empty">
-        <div className="empty-icon h1">🙀</div>
-        <p className="empty-title h4">No results found</p>
-        <p className="empty-subtitle">Please try different identity keyword.</p>
-      </div>
+      <Empty />
     )
   )
 }

@@ -84,14 +84,14 @@
     min-width: $control-size-sm;
     &:focus,
     &:hover {
-      background: rgba($dark-color, .025);
+      background: rgba($dark-color, .05);
       border-color: transparent;
       box-shadow: none;
       color: $dark-color;
     }
     &:active,
     &.active {
-      background: rgba($dark-color, .075);
+      background: rgba($dark-color, .1);
       border-color: transparent;
       color: $dark-color;
     }

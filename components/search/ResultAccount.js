@@ -1,64 +1,44 @@
 import React, { Component } from 'react'
 import ResultAccountItem from './ResultAccountItem'
-import Clipboard from 'react-clipboard.js'
-import SVG from 'react-inlinesvg'
 
 class ResultAccount extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isCopied: false
+    }
+    this.onCopySuccess = this.onCopySuccess.bind(this)
+  }
+
+  onCopySuccess() {
+    this.setState({
+      isCopied: true
+    })
+    setTimeout(() => {
+      this.setState({
+        isCopied: false
+      })
+    }, 2000)
   }
 
   render() {
     const { searchTerm, resultsOwner, resultsNeighbor } = this.props
-    let resultsAvatar
-    switch (resultsOwner.platform) {
-      case 'ethereum':
-        resultsAvatar = 'icons/icon-ethereum.svg'
-        break;
-      case 'twitter':
-        resultsAvatar = 'icons/icon-twitter.svg'
-        break;
-      case 'github':
-        resultsAvatar = 'icons/icon-github.svg'
-        break;
-    }
 
     return (
       <div className="search-result">
         <div className="search-result-header">
-          <figure className="avatar text-pride">
-            <SVG src={resultsAvatar} width={20} height={20} />
-          </figure>
-          <div className='content'>
-            <div className='content-title text-bold mb-1'>{resultsOwner.displayName ? resultsOwner.displayName : searchTerm }</div>
-            <div className='content-subtitle text-gray'>
-              <small>{resultsOwner.identity}</small>
-              <Clipboard component="div" className="action" data-clipboard-text={resultsOwner.identity}>
-                <SVG src="icons/icon-copy.svg" width={20} height={20} />
-              </Clipboard>
-            </div>
-            {resultsOwner.nft?.length > 0 && (
-              <div className="nfts">
-                {resultsOwner.nft.map((nft) =>
-                  {return nft.category == 'ENS' ? (
-                      <div className="label-ens" key={nft.uuid}>
-                        <SVG src="icons/icon-ens.svg" width={16} height={16} />
-                        <span>{nft.id}</span>
-                      </div>
-                    ) : null }
-                )}
-              </div>
-            )}
-          </div>
+          <div className="text-gray">Search results for <span className="text-underline">{searchTerm}</span>:</div>
         </div>
-          
-        {resultsNeighbor.length >= 1 ? (
-          <div className="search-result-body">
-            {resultsNeighbor.map((avatar) => (
-              <ResultAccountItem identity={avatar} key={avatar.uuid} />
-            ))}
-          </div>
-        ): null}
+        <div className="search-result-body">
+          <ResultAccountItem identity={resultsOwner} />
+          {resultsNeighbor.length >= 1 ? (
+            <>
+              {resultsNeighbor.map((avatar) => (
+                <ResultAccountItem identity={avatar} key={avatar.uuid} />
+              ))}
+            </>
+          ): null}
+        </div>
       </div>
     )
       

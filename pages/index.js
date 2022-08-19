@@ -53,9 +53,11 @@ export default function Home() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    router.push({
-      query: { s: e.target.searchbox.value },
-    })
+    if (e.target.searchbox.value) {
+      router.push({
+        query: { s: e.target.searchbox.value },
+      })
+    }
   }
 
   return (
