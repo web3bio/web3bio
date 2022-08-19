@@ -24,6 +24,5 @@ export const FormatAddress = ({address}) => {
   }
   const oriAddr = address,
         chars = 4
-  let shortenAddr = `${oriAddr.substring(0, chars + 2)}...${oriAddr.substring(oriAddr.length - chars)}`
-  return <div>{shortenAddr}</div>
+  return `${oriAddr.substring(0, chars + 2)}...${oriAddr.substring(oriAddr.length - chars)}`
 };
