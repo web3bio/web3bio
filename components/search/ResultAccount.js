@@ -39,16 +39,14 @@ class ResultAccount extends Component {
             </div>
             {resultsOwner.nft?.length > 0 && (
               <div className="nfts">
-                {resultsOwner.nft.map((nft) => (
-                  <>
-                    {nft.category == 'ENS' ? (
+                {resultsOwner.nft.map((nft) =>
+                  {return nft.category == 'ENS' ? (
                       <div className="label-ens" key={nft.uuid}>
-                        <SVG src="icons/icon-ens.svg" width={14} height={14} />
+                        <SVG src="icons/icon-ens.svg" width={16} height={16} />
                         <span>{nft.id}</span>
                       </div>
                     ) : null }
-                  </>
-                ))}
+                )}
               </div>
             )}
           </div>

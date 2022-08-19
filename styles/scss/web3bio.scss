@@ -211,6 +211,7 @@ body {
     flex-direction: column;
     justify-content: flex-start;
     transform: translateY(20vh);
+    transition: all .25s ease-in-out;
   }
 
   .web3bio-logo {
@@ -274,7 +275,6 @@ body {
   &.focused {
     .search-form {
       transform: translateY(0);
-      transition: all .2s ease-in-out;
     }
 
     .form-label {
@@ -287,6 +287,7 @@ body {
   }
 
   .search-result {
+    animation: slide-down .2s ease 1;
     background: rgba($light-color, .85);
     border-radius: $border-radius;
     box-shadow: 0 .05rem .2rem rgba($dark-color, .1);

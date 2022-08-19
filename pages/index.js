@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useRouter } from 'next/router'
+import { useState, useEffect } from 'react'
 import SVG from 'react-inlinesvg'
 import SearchResultEns from '../components/search/SearchResultEns'
 import SearchResultEth from '../components/search/SearchResultEth'
@@ -10,10 +11,31 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState('')
   const [searchFocus, setSearchFocus] = useState(false)
   const [searchType, setSearchType] = useState('')
+  const router = useRouter()
 
   const regexEns = /.*\.eth|.xyz$/,
         regexEth = /^0x[a-fA-F0-9]{40}$/,
         regexTwitter = /(\w{1,15})\b/
+
+  useEffect(() => {
+    if(router.isReady) {
+      if(router.query.s) {
+        setSearchFocus(true)
+        console.log(router.query.s)
+  
+        let searchkeyword = router.query.s.toLowerCase()
+        setSearchTerm(searchkeyword)
+    
+        let searchType = handleSearchType(searchkeyword)
+        setSearchType(searchType)
+      } else {
+        setSearchFocus(false)
+        setSearchTerm('')
+        setSearchType('')
+      }
+    };
+    
+  }, [router])
   
   const handleSearchType = (term) => {
     switch (true) {
@@ -30,13 +52,10 @@ export default function Home() {
   }
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    setSearchFocus(true)
-    let searchkeyword = e.target.searchbox.value
-    setSearchTerm(searchkeyword.toLowerCase())
-
-    let searchType = handleSearchType(searchkeyword.toLowerCase())
-    setSearchType(searchType)
+    e.preventDefault()
+    router.push({
+      query: { s: e.target.searchbox.value },
+    })
   }
 
   return (
@@ -62,7 +81,10 @@ export default function Home() {
         <div className={searchFocus?'web3bio-search focused':'web3bio-search'}>
           <div className='container grid-xs'>
             <form className='search-form' onSubmit={handleSubmit} autoComplete='off' role='search'>
-              <Link href="/">
+              <Link href={{
+                pathname: '/',
+                query: {},
+              }}>
                 <a className="web3bio-logo" title="Web5.bio">
                   <h1 className="text-pride">WEB5<br/>BIO</h1>
                 </a>
@@ -71,7 +93,9 @@ export default function Home() {
               <div className='form-input-group'>
                 <input
                   type='text'
+                  name='s'
                   placeholder='Search Twitter, ENS or Ethereum'
+                  defaultValue={searchTerm}
                   className='form-input input-lg'
                   autoCorrect="off"
                   autoFocus

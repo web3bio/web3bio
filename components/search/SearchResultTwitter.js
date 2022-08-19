@@ -15,7 +15,7 @@ const SearchResultTwitter = ({searchTerm}) => {
   if (error) return `Error! ${error}`
 
   let resultsOwner = data?.identity
-  let resultsNeighbor = resultsOwner?.neighbor.filter( (ele, index) => index === resultsOwner?.neighbor.findIndex( elem => elem.uuid == ele.uuid || resultsOwner.uuid == ele.uuid))
+  let resultsNeighbor = resultsOwner?.neighbor.filter((ele, index) => index === resultsOwner?.neighbor.findIndex( elem => elem.uuid == ele.uuid || resultsOwner.uuid == ele.uuid))
   console.log(resultsOwner, resultsNeighbor)
 
   return (
