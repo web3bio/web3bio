@@ -19,6 +19,10 @@ export const GET_PROFILES_ENS = gql`
           platform
           identity
           displayName
+          neighborWithTraversal(depth: 1) {
+            fetcher
+            source
+          }
           nft {
             uuid
             category

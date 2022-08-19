@@ -8,8 +8,8 @@ import SearchResultEth from '../components/search/SearchResultEth'
 import SearchResultTwitter from '../components/search/SearchResultTwitter'
 
 export default function Home() {
-  const [searchTerm, setSearchTerm] = useState('')
   const [searchFocus, setSearchFocus] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('')
   const [searchType, setSearchType] = useState('')
   const router = useRouter()
 

@@ -37,10 +37,10 @@ class ResultAccountItem extends Component {
                 <SVG src='icons/icon-ethereum.svg' width={20} height={20} />
               </figure>
               <div className='content'>
-                <div className='content-title text-bold'>{identity.displayName}</div>
+                <div className='content-title text-bold'>{identity.displayName ? identity.displayName : FormatAddress({address: identity.identity})}</div>
                 <div className='content-subtitle text-gray'>
                   <div className="address hide-xs">{identity.identity}</div>
-                  <div className="address show-xs"><FormatAddress address={identity.identity} /></div>
+                  <div className="address show-xs">{FormatAddress({address: identity.identity})}</div>
                   <Clipboard component="div" className="action" data-clipboard-text={identity.identity} onSuccess={this.onCopySuccess}>
                     <SVG src="icons/icon-copy.svg" width={20} height={20} />
                     {isCopied && (<div className='tooltip-copy'>COPIED</div>)}
