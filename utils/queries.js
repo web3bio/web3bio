@@ -87,13 +87,19 @@ export const GET_PROFILES_TWITTER = gql`
   }
 `;
 
-export const GET_PROFILES_NEXT = gql`
-  query($nextid: String) {
-    identity(platform: "nextid", identity: $nextid) {
+export const GET_PROFILES_QUERY = gql`
+  query($platform: String, $identity: String) {
+    identity(platform: $platform, identity: $identity) {
       uuid
       platform
       identity
       displayName
+      nft {
+        uuid
+        category
+        chain
+        id
+      }
       neighbor(depth: 3) {
         uuid
         platform
@@ -104,7 +110,6 @@ export const GET_PROFILES_NEXT = gql`
           category
           chain
           id
-          updatedAt
         }
       }
     }

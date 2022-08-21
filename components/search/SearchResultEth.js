@@ -1,11 +1,14 @@
 import { useQuery } from '@apollo/client'
 import ResultAccount from './ResultAccount'
 import { Loading, Empty } from '../shared'
-import { GET_PROFILES_ETH } from '../../utils/queries'
+import { GET_PROFILES_QUERY } from '../../utils/queries'
 
 const SearchResultEth = ({searchTerm}) => {
-  const { loading, error, data } = useQuery(GET_PROFILES_ETH, {
-    variables: { eth: searchTerm },
+  const { loading, error, data } = useQuery(GET_PROFILES_QUERY, {
+    variables: {
+      platform: "ethereum",
+      identity: searchTerm
+    },
   })
 
   if (loading) return (<Loading />)

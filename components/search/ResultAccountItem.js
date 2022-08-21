@@ -75,7 +75,7 @@ class ResultAccountItem extends Component {
           <div className="social-item twitter">
             <Link href={{
               pathname: '/',
-              query: {s: identity.identity},
+              query: {s: identity.identity}
             }}>
               <a className="social">
                 <div className='icon'>

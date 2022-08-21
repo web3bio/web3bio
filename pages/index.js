@@ -18,22 +18,21 @@ export default function Home() {
         regexTwitter = /(\w{1,15})\b/
 
   useEffect(() => {
-    if(router.isReady) {
-      if(router.query.s) {
-        setSearchFocus(true)
-        console.log(router.query.s)
+    if(!router.isReady) return;
+    if(router.query.s) {
+      setSearchFocus(true)
+      console.log(router.query.s)
+
+      let searchkeyword = router.query.s.toLowerCase()
+      setSearchTerm(searchkeyword)
   
-        let searchkeyword = router.query.s.toLowerCase()
-        setSearchTerm(searchkeyword)
-    
-        let searchType = handleSearchType(searchkeyword)
-        setSearchType(searchType)
-      } else {
-        setSearchFocus(false)
-        setSearchTerm('')
-        setSearchType('')
-      }
-    };
+      let searchType = handleSearchType(searchkeyword)
+      setSearchType(searchType)
+    } else {
+      setSearchFocus(false)
+      setSearchTerm('')
+      setSearchType('')
+    }
     
   }, [router])
   
@@ -64,19 +63,11 @@ export default function Home() {
     <div>
       <Head>
         {searchTerm ? (<title>{searchTerm} - Web5.bio</title>):(<title>Web5.bio</title>)}
-        <meta name="description" content="Web3 Identity Search" />
+        <meta name="description" content="Web5.bio is a Web3 and Web 2.0 identity search service which is powered by Next.ID. Web5.bio will provide a list of relevant identities when you are searching any Twitter handle, Ethereum address, or ENS domain." />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       </Head>
 
       <main className='web3bio-container'>
-        <div className="web3bio-header">
-          <div className="container grid-lg">
-            <div className="columns">
-              <div className="column col-12">
-              </div>
-            </div>
-          </div>
-        </div>
 
         <div className="web3bio-cover flare"></div>
 

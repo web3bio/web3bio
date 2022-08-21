@@ -1,11 +1,14 @@
 import { useQuery } from '@apollo/client'
 import ResultAccount from './ResultAccount'
 import { Loading, Empty } from '../shared'
-import { GET_PROFILES_TWITTER } from '../../utils/queries'
+import { GET_PROFILES_QUERY } from '../../utils/queries'
 
 const SearchResultTwitter = ({searchTerm}) => {
-  const { loading, error, data } = useQuery(GET_PROFILES_TWITTER, {
-    variables: { twitter: searchTerm },
+  const { loading, error, data } = useQuery(GET_PROFILES_QUERY, {
+    variables: {
+      platform: "twitter",
+      identity: searchTerm
+    },
   })
 
   if (loading) return (<Loading />)
