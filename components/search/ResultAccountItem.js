@@ -74,12 +74,10 @@ class ResultAccountItem extends Component {
             </div>
             {resultsSources.length > 0 && (
               <div className="social-footer">
-                <small className="text-uppercase text-gray">
-                  <span className='mr-1'><SVG src="icons/icon-sources.svg" width={20} height={20} /> </span>
-                  {resultsSources.map((traversal) =>
-                    (<span key='traversal.source' className='mr-1'>{traversal.source}</span>)
-                  )}
-                </small>
+                <SVG src="icons/icon-sources.svg" width={20} height={20} title="Data sources"/>
+                {resultsSources.map((traversal) =>
+                  (<span key='traversal.source' className='text-uppercase mr-1'>{traversal.source}</span>)
+                )}
               </div>
             )}
           </div>
@@ -111,12 +109,10 @@ class ResultAccountItem extends Component {
             </div>
             {resultsSources.length > 0 && (
               <div className="social-footer">
-                <small className="text-uppercase text-gray">
-                  <span className='mr-1'>SOURCES: </span>
-                  {resultsSources.map((traversal) =>
-                    (<span key='traversal.source' className='mr-1'>{traversal.source}</span>)
-                  )}
-                </small>
+                <SVG src="icons/icon-sources.svg" width={20} height={20} title="Data sources"/>
+                {resultsSources.map((traversal) =>
+                  (<span key='traversal.source' className='text-uppercase mr-1'>{traversal.source}</span>)
+                )}
               </div>
             )}
           </div>
@@ -143,12 +139,10 @@ class ResultAccountItem extends Component {
             </div>
             {resultsSources.length > 0 && (
               <div className="social-footer">
-                <small className="text-uppercase text-gray">
-                  <span className='mr-1'>SOURCES: </span>
-                  {resultsSources.map((traversal) =>
-                    (<span key='traversal.source' className='mr-1'>{traversal.source}</span>)
-                  )}
-                </small>
+                <SVG src="icons/icon-sources.svg" width={20} height={20} title="Data sources"/>
+                {resultsSources.map((traversal) =>
+                  (<span key='traversal.source' className='text-uppercase mr-1'>{traversal.source}</span>)
+                )}
               </div>
             )}
           </div>
@@ -175,12 +169,10 @@ class ResultAccountItem extends Component {
             </div>
             {resultsSources.length > 0 && (
               <div className="social-footer">
-                <small className="text-uppercase text-gray">
-                  <span className='mr-1'>SOURCES: </span>
-                  {resultsSources.map((traversal) =>
-                    (<span key='traversal.source' className='mr-1'>{traversal.source}</span>)
-                  )}
-                </small>
+                <SVG src="icons/icon-sources.svg" width={20} height={20} title="Data sources"/>
+                {resultsSources.map((traversal) =>
+                  (<span key='traversal.source' className='text-uppercase mr-1'>{traversal.source}</span>)
+                )}
               </div>
             )}
           </div>
