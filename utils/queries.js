@@ -14,20 +14,24 @@ export const GET_PROFILES_ENS = gql`
           chain
           id
         }
+        neighborWithTraversal(depth: 1) {
+          fetcher
+          source
+        }
         neighbor(depth: 3) {
           uuid
           platform
           identity
           displayName
-          neighborWithTraversal(depth: 1) {
-            fetcher
-            source
-          }
           nft {
             uuid
             category
             chain
             id
+          }
+          neighborWithTraversal(depth: 1) {
+            fetcher
+            source
           }
         }
       }

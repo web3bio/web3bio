@@ -28,7 +28,7 @@ class ResultAccountItem extends Component {
     const { identity } = this.props
     const { isCopied } = this.state
 
-    let resultsSources = identity.neighborWithTraversal?.filter((ele, index) => index === identity.neighborWithTraversal.findIndex( elem => elem.source == ele.source ))
+    let resultsSources = identity.neighborWithTraversal?.filter((ele, index) => index === identity.neighborWithTraversal?.findIndex( elem => elem.source == ele.source ))
 
     switch (identity.platform) {
       case 'ethereum':
