@@ -12,13 +12,13 @@ const SearchResultEns = ({searchTerm}) => {
   if (error) return `Error! ${error}`
 
   let results = data?.nft
-  let resultsOwner = results?.owner
-  let resultsNeighbor = results?.owner.neighbor.filter( (ele, index) => index === results?.owner.neighbor.findIndex( elem => elem.uuid == ele.uuid || results?.owner.uuid == ele.uuid))
-  console.log(resultsOwner, resultsNeighbor)
+  let resultOwner = results?.owner
+  let resultNeighbor = results?.owner.neighbor.filter( (ele, index) => index === results?.owner.neighbor.findIndex( elem => elem.uuid == ele.uuid || results?.owner.uuid == ele.uuid))
+  console.log(resultOwner, resultNeighbor)
 
   return (
     results ? (
-      <ResultAccount searchTerm={searchTerm} resultsOwner={resultsOwner} resultsNeighbor={resultsNeighbor} />
+      <ResultAccount searchTerm={searchTerm} resultOwner={resultOwner} resultNeighbor={resultNeighbor} />
     ) : (
       <Empty />
     )

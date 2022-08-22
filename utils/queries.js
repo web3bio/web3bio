@@ -35,58 +35,6 @@ export const GET_PROFILES_ENS = gql`
   }
 `;
 
-export const GET_PROFILES_ETH = gql`
-  query($eth: String) {
-    identity(platform: "ethereum", identity: $eth) {
-      uuid
-      platform
-      identity
-      displayName
-      nft {
-        uuid
-        category
-        chain
-        id
-      }
-      neighbor(depth: 3) {
-        uuid
-        platform
-        identity
-        displayName
-        nft {
-          uuid
-          category
-          chain
-          id
-        }
-      }
-    }
-  }
-`;
-
-export const GET_PROFILES_TWITTER = gql`
-  query($twitter: String) {
-    identity(platform: "twitter", identity: $twitter) {
-      uuid
-      platform
-      identity
-      displayName
-      neighbor(depth: 2) {
-        uuid
-        platform
-        identity
-        displayName
-        nft {
-          uuid
-          category
-          chain
-          id
-        }
-      }
-    }
-  }
-`;
-
 export const GET_PROFILES_QUERY = gql`
   query($platform: String, $identity: String) {
     identity(platform: $platform, identity: $identity) {
@@ -100,6 +48,10 @@ export const GET_PROFILES_QUERY = gql`
         chain
         id
       }
+      neighborWithTraversal(depth: 1) {
+        fetcher
+        source
+      }
       neighbor(depth: 3) {
         uuid
         platform
@@ -110,6 +62,10 @@ export const GET_PROFILES_QUERY = gql`
           category
           chain
           id
+        }
+        neighborWithTraversal(depth: 1) {
+          fetcher
+          source
         }
       }
     }

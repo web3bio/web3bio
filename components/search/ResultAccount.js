@@ -7,7 +7,7 @@ class ResultAccount extends Component {
   }
 
   render() {
-    const { searchTerm, resultsOwner, resultsNeighbor } = this.props
+    const { searchTerm, resultOwner, resultNeighbor } = this.props
 
     return (
       <div className="search-result">
@@ -17,10 +17,10 @@ class ResultAccount extends Component {
           </div>
         </div>
         <div className="search-result-body">
-          <ResultAccountItem identity={resultsOwner} />
-          {resultsNeighbor.length >= 1 ? (
+          <ResultAccountItem identity={resultOwner} />
+          {resultNeighbor.length >= 1 ? (
             <>
-              {resultsNeighbor.map((avatar) => (
+              {resultNeighbor.map((avatar) => (
                 <ResultAccountItem identity={avatar} key={avatar.uuid} />
               ))}
             </>

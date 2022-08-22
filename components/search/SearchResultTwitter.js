@@ -14,13 +14,13 @@ const SearchResultTwitter = ({searchTerm}) => {
   if (loading) return (<Loading />)
   if (error) return `Error! ${error}`
 
-  let resultsOwner = data?.identity
-  let resultsNeighbor = resultsOwner?.neighbor.filter((ele, index) => index === resultsOwner?.neighbor.findIndex( elem => elem.uuid == ele.uuid || resultsOwner.uuid == ele.uuid))
-  console.log(resultsOwner, resultsNeighbor)
+  let resultOwner = data?.identity
+  let resultNeighbor = resultOwner?.neighbor.filter((ele, index) => index === resultOwner?.neighbor.findIndex( elem => elem.uuid == ele.uuid || resultOwner.uuid == ele.uuid))
+  // console.log(resultOwner, resultNeighbor)
 
   return (
-    resultsOwner ? (
-      <ResultAccount searchTerm={searchTerm} resultsOwner={resultsOwner} resultsNeighbor={resultsNeighbor} />
+    resultOwner ? (
+      <ResultAccount searchTerm={searchTerm} resultOwner={resultOwner} resultNeighbor={resultNeighbor} />
     ) : (
       <Empty />
     )

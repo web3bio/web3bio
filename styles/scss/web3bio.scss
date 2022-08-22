@@ -258,6 +258,7 @@ body {
   .search-result-header {
     font-size: .6rem;
     padding: .8rem;
+    word-wrap: break-word;
   }
 
   .search-result-body {
@@ -265,14 +266,53 @@ body {
   }
 
   .social-item {
-    background: rgba($pride-color-6, .05);
+    background: rgba($gray-color, .05);
     border-radius: $border-radius;
     display: flex;
+    flex-direction: column;
+    transition: all .2s ease-in;
     width: 100%;
 
+    &:not(:last-child) {
+      margin-bottom: .2rem;
+    }
+
+    &:focus,
+    &:hover {
+      background: rgba($gray-color, .1);
+
+      .actions {
+        display: flex;
+      }
+
+      .social-footer {
+        display: flex;
+      }
+    }
+
+    &:active {
+      background: rgba($gray-color, .15);
+    }
+
+    .social-main {
+      display: flex;
+      width: 100%;
+    }
+
+    .social-footer {
+      color: $gray-color;
+      display: none;
+      height: 1rem;
+      justify-content: flex-end;
+      margin-bottom: .4rem;
+      padding: .2rem;
+    }
+
     &.ethereum {
-      flex-direction: column;
-      padding: .4rem;
+      .social-main {
+        flex-direction: column;
+        padding: .4rem;
+      }
 
       .avatar {
         align-items: center;
@@ -298,10 +338,6 @@ body {
         font-size: .6rem;
         line-height: 1rem;
 
-        .address {
-          
-        }
-
         .action {
           cursor: pointer;
           flex: 0 1;
@@ -315,23 +351,6 @@ body {
       .nfts {
         margin-top: .4rem;
       }
-    }
-
-    &:not(:last-child) {
-      margin-bottom: .2rem;
-    }
-
-    &:focus,
-    &:hover {
-      background: rgba($pride-color-6, .15);
-
-      .actions {
-        display: flex;
-      }
-    }
-
-    &:active {
-      background: rgba($pride-color-6, .25);
     }
   }
 
@@ -393,7 +412,7 @@ body {
     .action {
       align-items: center;
       display: inline-flex;
-      font-size: .5rem;
+      font-size: .55rem;
       line-height: 1.2rem;
       position: relative;
     }
