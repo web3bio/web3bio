@@ -28,8 +28,6 @@ class ResultAccountItem extends Component {
     const { identity, sources } = this.props
     const { isCopied } = this.state
 
-    console.log(sources)
-
     switch (identity.platform) {
       case 'ethereum':
         return (

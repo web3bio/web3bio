@@ -14,7 +14,7 @@ export const GET_PROFILES_ENS = gql`
           chain
           id
         }
-        neighbor(depth: 3) {
+        neighbor(depth: 5) {
           sources
           identity {
             uuid
@@ -47,7 +47,7 @@ export const GET_PROFILES_QUERY = gql`
         chain
         id
       }
-      neighbor(depth: 3) {
+      neighbor(depth: 5) {
         sources
         identity {
           uuid
