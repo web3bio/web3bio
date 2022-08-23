@@ -14,24 +14,19 @@ export const GET_PROFILES_ENS = gql`
           chain
           id
         }
-        neighborWithTraversal(depth: 1) {
-          fetcher
-          source
-        }
         neighbor(depth: 3) {
-          uuid
-          platform
-          identity
-          displayName
-          nft {
+          sources
+          identity {
             uuid
-            category
-            chain
-            id
-          }
-          neighborWithTraversal(depth: 1) {
-            fetcher
-            source
+            platform
+            identity
+            displayName
+            nft {
+              uuid
+              category
+              chain
+              id
+            }
           }
         }
       }
@@ -52,24 +47,19 @@ export const GET_PROFILES_QUERY = gql`
         chain
         id
       }
-      neighborWithTraversal(depth: 1) {
-        fetcher
-        source
-      }
       neighbor(depth: 3) {
-        uuid
-        platform
-        identity
-        displayName
-        nft {
+        sources
+        identity {
           uuid
-          category
-          chain
-          id
-        }
-        neighborWithTraversal(depth: 1) {
-          fetcher
-          source
+          platform
+          identity
+          displayName
+          nft {
+            uuid
+            category
+            chain
+            id
+          }
         }
       }
     }

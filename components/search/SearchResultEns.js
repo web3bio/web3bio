@@ -13,8 +13,8 @@ const SearchResultEns = ({searchTerm}) => {
 
   let results = data?.nft
   let resultOwner = results?.owner
-  let resultNeighbor = results?.owner.neighbor.filter( (ele, index) => index === results?.owner.neighbor.findIndex( elem => elem.uuid == ele.uuid || results?.owner.uuid == ele.uuid))
-  console.log(resultOwner, resultNeighbor)
+  let resultNeighbor = resultOwner.neighbor.filter((ele, index) => index === resultOwner.neighbor.findIndex(elem => elem.identity.uuid == ele.identity.uuid || results?.owner.uuid == ele.identity.uuid))
+  console.log(results, resultNeighbor)
 
   return (
     results ? (

@@ -21,7 +21,7 @@ class ResultAccount extends Component {
           {resultNeighbor.length >= 1 ? (
             <>
               {resultNeighbor.map((avatar) => (
-                <ResultAccountItem identity={avatar} key={avatar.uuid} />
+                <ResultAccountItem identity={avatar.identity} sources={avatar.sources} key={avatar.identity.uuid} />
               ))}
             </>
           ): null}

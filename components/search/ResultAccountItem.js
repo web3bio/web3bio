@@ -25,10 +25,10 @@ class ResultAccountItem extends Component {
   }
 
   render() {
-    const { identity } = this.props
+    const { identity, sources } = this.props
     const { isCopied } = this.state
 
-    let resultsSources = identity.neighborWithTraversal?.filter((ele, index) => index === identity.neighborWithTraversal?.findIndex( elem => elem.source == ele.source ))
+    console.log(sources)
 
     switch (identity.platform) {
       case 'ethereum':
@@ -40,7 +40,9 @@ class ResultAccountItem extends Component {
                   <SVG src='icons/icon-ethereum.svg' width={20} height={20} />
                 </figure>
                 <div className='content'>
-                  <div className='content-title text-bold'>{identity.displayName ? identity.displayName : FormatAddress({address: identity.identity})}</div>
+                  <div className='content-title text-bold'>
+                    {identity.displayName ? identity.displayName : FormatAddress({address: identity.identity})}
+                  </div>
                   <div className='content-subtitle text-gray'>
                     <div className="address hide-xs">{identity.identity}</div>
                     <div className="address show-xs">{FormatAddress({address: identity.identity})}</div>
@@ -72,11 +74,11 @@ class ResultAccountItem extends Component {
                 </div>
               )}
             </div>
-            {resultsSources.length > 0 && (
+            {sources && (
               <div className="social-footer">
                 <SVG src="icons/icon-sources.svg" width={20} height={20} title="Data sources"/>
-                {resultsSources.map((traversal) =>
-                  (<span key='traversal.source' className='text-uppercase mr-1'>{traversal.source}</span>)
+                {sources.map((source) =>
+                  (<span key='source' className='text-uppercase mr-1'>{source}</span>)
                 )}
               </div>
             )}
@@ -107,11 +109,11 @@ class ResultAccountItem extends Component {
                 </Clipboard>
               </div>
             </div>
-            {resultsSources.length > 0 && (
+            {sources && (
               <div className="social-footer">
                 <SVG src="icons/icon-sources.svg" width={20} height={20} title="Data sources"/>
-                {resultsSources.map((traversal) =>
-                  (<span key='traversal.source' className='text-uppercase mr-1'>{traversal.source}</span>)
+                {sources.map((source) =>
+                  (<span key='source' className='text-uppercase mr-1'>{source}</span>)
                 )}
               </div>
             )}
@@ -137,11 +139,11 @@ class ResultAccountItem extends Component {
                 </Clipboard>
               </div>
             </div>
-            {resultsSources.length > 0 && (
+            {sources && (
               <div className="social-footer">
                 <SVG src="icons/icon-sources.svg" width={20} height={20} title="Data sources"/>
-                {resultsSources.map((traversal) =>
-                  (<span key='traversal.source' className='text-uppercase mr-1'>{traversal.source}</span>)
+                {sources.map((source) =>
+                  (<span key='source' className='text-uppercase mr-1'>{source}</span>)
                 )}
               </div>
             )}
@@ -167,11 +169,11 @@ class ResultAccountItem extends Component {
                 </Clipboard>
               </div>
             </div>
-            {resultsSources.length > 0 && (
+            {sources && (
               <div className="social-footer">
                 <SVG src="icons/icon-sources.svg" width={20} height={20} title="Data sources"/>
-                {resultsSources.map((traversal) =>
-                  (<span key='traversal.source' className='text-uppercase mr-1'>{traversal.source}</span>)
+                {sources.map((source) =>
+                  (<span key='source' className='text-uppercase mr-1'>{source}</span>)
                 )}
               </div>
             )}
