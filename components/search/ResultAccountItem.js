@@ -76,7 +76,7 @@ class ResultAccountItem extends Component {
               <div className="social-footer">
                 <SVG src="icons/icon-sources.svg" width={20} height={20} title="Data sources"/>
                 {sources.map((source) =>
-                  (<span key='source' className='text-uppercase mr-1'>{source}</span>)
+                  (<span key={source} className='text-uppercase mr-1'>{source}</span>)
                 )}
               </div>
             )}
@@ -111,7 +111,7 @@ class ResultAccountItem extends Component {
               <div className="social-footer">
                 <SVG src="icons/icon-sources.svg" width={20} height={20} title="Data sources"/>
                 {sources.map((source) =>
-                  (<span key='source' className='text-uppercase mr-1'>{source}</span>)
+                  (<span key={source} className='text-uppercase mr-1'>{source}</span>)
                 )}
               </div>
             )}
@@ -149,7 +149,7 @@ class ResultAccountItem extends Component {
               <div className="social-footer">
                 <SVG src="icons/icon-sources.svg" width={20} height={20} title="Data sources"/>
                 {sources.map((source) =>
-                  (<span key='source' className='text-uppercase mr-1'>{source}</span>)
+                  (<span key={source} className='text-uppercase mr-1'>{source}</span>)
                 )}
               </div>
             )}
@@ -187,7 +187,7 @@ class ResultAccountItem extends Component {
               <div className="social-footer">
                 <SVG src="icons/icon-sources.svg" width={20} height={20} title="Data sources"/>
                 {sources.map((source) =>
-                  (<span key='source' className='text-uppercase mr-1'>{source}</span>)
+                  (<span key={source} className='text-uppercase mr-1'>{source}</span>)
                 )}
               </div>
             )}

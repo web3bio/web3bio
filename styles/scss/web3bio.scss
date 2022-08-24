@@ -262,8 +262,10 @@ body {
   }
 
   .search-result-body {
+    display: flex;
+    flex-direction: column;
     padding: 0 .8rem .8rem .8rem;
-  }
+  } 
 
   .social-item {
     background: rgba($gray-color, .05);
@@ -280,6 +282,7 @@ body {
     &:focus,
     &:hover {
       background: rgba($gray-color, .1);
+      transform: translateY(-.2rem);
 
       .actions {
         display: flex;
@@ -311,6 +314,7 @@ body {
     }
 
     &.ethereum {
+
       .social-main {
         flex-direction: column;
         padding: .4rem;

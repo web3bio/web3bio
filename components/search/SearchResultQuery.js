@@ -15,13 +15,24 @@ const SearchResultQuery = ({searchTerm, searchPlatform}) => {
   if (loading) return (<Loading />)
   if (error) return `Error! ${error}`
 
-  let resultOwner = data?.identity
-  let resultNeighbor = resultOwner?.neighbor.filter((ele, index) => index === resultOwner?.neighbor.findIndex(elem => elem.identity.uuid == ele.identity.uuid || resultOwner?.uuid == ele.identity.uuid))
-  console.log(resultOwner, resultNeighbor)
+  const results = data?.identity
+  let resultOwner = {
+    identity: {
+      uuid: results?.uuid,
+      platform: results?.platform,
+      identity: results?.identity,
+      displayName: results?.displayName,
+      nft: results?.nft
+    }
+  }
+  let resultNeighbor = [...results?.neighbor]
+      resultNeighbor.unshift(resultOwner)
+      resultNeighbor = resultNeighbor.filter((ele, index) => index === resultNeighbor.findIndex(elem => elem.identity.uuid == ele.identity.uuid))
+  console.log(resultNeighbor)
 
   return (
     resultOwner ? (
-      <ResultAccount searchTerm={searchTerm} resultOwner={resultOwner} resultNeighbor={resultNeighbor} />
+      <ResultAccount searchTerm={searchTerm} resultNeighbor={resultNeighbor} />
     ) : (
       <Empty />
     )
