@@ -57,7 +57,9 @@ export default function Home() {
     e.preventDefault()
     if (e.target.searchbox.value) {
       router.push({
-        query: { s: e.target.searchbox.value },
+        query: {
+          s: e.target.searchbox.value
+        },
       })
     }
   }
@@ -104,11 +106,13 @@ export default function Home() {
               </div>
             </form>
             {(() => {
-              switch (searchPlatform) {
-                case 'ENS':
-                  return <SearchResultEns searchTerm={searchTerm} />
-                default:
-                  return <SearchResultQuery searchTerm={searchTerm} searchPlatform={searchPlatform} />
+              if (searchTerm) {
+                switch (searchPlatform) {
+                  case 'ENS':
+                    return <SearchResultEns searchTerm={searchTerm} />
+                  default:
+                    return <SearchResultQuery searchTerm={searchTerm} searchPlatform={searchPlatform} />
+                }
               }
             })()}
           </div>
