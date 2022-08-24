@@ -4,13 +4,12 @@ import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import SVG from 'react-inlinesvg'
 import SearchResultEns from '../components/search/SearchResultEns'
-import SearchResultEth from '../components/search/SearchResultEth'
-import SearchResultTwitter from '../components/search/SearchResultTwitter'
+import SearchResultQuery from '../components/search/SearchResultQuery'
 
 export default function Home() {
   const [searchFocus, setSearchFocus] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
-  const [searchType, setSearchType] = useState('')
+  const [searchPlatform, setsearchPlatform] = useState('')
   const router = useRouter()
 
   const regexEns = /.*\.eth|.xyz$/,
@@ -23,30 +22,34 @@ export default function Home() {
       setSearchFocus(true)
       console.log(router.query.s)
 
-      let searchkeyword = router.query.s.toLowerCase()
+      const searchkeyword = router.query.s.toLowerCase()
       setSearchTerm(searchkeyword)
-  
-      let searchType = handleSearchType(searchkeyword)
-      setSearchType(searchType)
+
+      if(!router.query.platform) {
+        let searchPlatform = handlesearchPlatform(searchkeyword)
+        setsearchPlatform(searchPlatform)
+      } else {
+        setsearchPlatform(router.query.platform.toLowerCase())
+      }
     } else {
       setSearchFocus(false)
       setSearchTerm('')
-      setSearchType('')
+      setsearchPlatform('')
     }
     
   }, [router])
   
-  const handleSearchType = (term) => {
+  const handlesearchPlatform = (term) => {
     switch (true) {
       case regexEns.test(term):
         console.log("ENS")
         return "ENS"
       case regexEth.test(term):
-        console.log("ETH")
-        return "ETH"
+        console.log("ethereum")
+        return "ethereum"
       case regexTwitter.test(term):
-        console.log("TWITTER")
-        return "TWITTER"
+        console.log("twitter")
+        return "twitter"
     }
   }
 
@@ -101,15 +104,11 @@ export default function Home() {
               </div>
             </form>
             {(() => {
-              switch (searchType) {
+              switch (searchPlatform) {
                 case 'ENS':
                   return <SearchResultEns searchTerm={searchTerm} />
-                case 'ETH':
-                  return <SearchResultEth searchTerm={searchTerm} />
-                case 'TWITTER':
-                  return <SearchResultTwitter searchTerm={searchTerm} />
                 default:
-                  return null
+                  return <SearchResultQuery searchTerm={searchTerm} searchPlatform={searchPlatform} />
               }
             })()}
           </div>

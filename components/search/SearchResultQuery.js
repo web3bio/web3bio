@@ -3,10 +3,11 @@ import ResultAccount from './ResultAccount'
 import { Loading, Empty } from '../shared'
 import { GET_PROFILES_QUERY } from '../../utils/queries'
 
-const SearchResultTwitter = ({searchTerm}) => {
+const SearchResultQuery = ({searchTerm, searchPlatform}) => {
+  console.log(searchTerm, searchPlatform)
   const { loading, error, data } = useQuery(GET_PROFILES_QUERY, {
     variables: {
-      platform: "twitter",
+      platform: searchPlatform,
       identity: searchTerm
     },
   })
@@ -27,4 +28,4 @@ const SearchResultTwitter = ({searchTerm}) => {
   )
 }
 
-export default SearchResultTwitter;
+export default SearchResultQuery;

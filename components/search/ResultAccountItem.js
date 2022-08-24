@@ -121,12 +121,20 @@ class ResultAccountItem extends Component {
         return (
           <div className="social-item github">
             <div className="social-main">
-              <a className="social" href={`https://github.com/${identity.identity}`} target="_blank" rel="noopener noreferrer">
-                <div className='icon'>
-                  <SVG src="icons/icon-github.svg" width={20} height={20} />
-                </div>
-                <div className='content-title'>{identity.displayName}</div>
-              </a>
+              <Link href={{
+                pathname: '/',
+                query: {
+                  s: identity.identity,
+                  platform: identity.platform
+                }
+              }}>
+                <a className="social">
+                  <div className='icon'>
+                    <SVG src="icons/icon-github.svg" width={20} height={20} />
+                  </div>
+                  <div className='content-title'>{identity.displayName}</div>
+                </a>
+              </Link>
               <div className="actions">
                 <a className="btn btn-sm btn-link action" href={`https://github.com/${identity.identity}`} target="_blank" rel="noopener noreferrer">
                   OPEN
@@ -151,12 +159,20 @@ class ResultAccountItem extends Component {
         return (
           <div className="social-item keybase">
             <div className="social-main">
-              <a className="social" href={`https://keybase.io/${identity.displayName}`} target="_blank" rel="noopener noreferrer">
-                <div className='icon'>
-                  <SVG src="icons/icon-keybase.svg" width={20} height={20} />
-                </div>
-                <div className='content-title'>{identity.displayName}</div>
-              </a>
+              <Link href={{
+                pathname: '/',
+                query: {
+                  s: identity.identity,
+                  platform: identity.platform
+                }
+              }}>
+                <a className="social">
+                  <div className='icon'>
+                    <SVG src="icons/icon-keybase.svg" width={20} height={20} />
+                  </div>
+                  <div className='content-title'>{identity.displayName}</div>
+                </a>
+              </Link>
               <div className="actions">
                 <a className="btn btn-sm btn-link action" href={`https://keybase.io/${identity.displayName}`} target="_blank" rel="noopener noreferrer">
                   OPEN
