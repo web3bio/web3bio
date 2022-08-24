@@ -272,6 +272,7 @@ body {
     border-radius: $border-radius;
     display: flex;
     flex-direction: column;
+    position: relative;
     transition: all .2s ease-in;
     width: 100%;
 
@@ -289,9 +290,7 @@ body {
       }
 
       .social-footer {
-        align-items: center;
         display: flex;
-        font-size: .55rem;
       }
     }
 
@@ -301,20 +300,26 @@ body {
 
     .social-main {
       display: flex;
+      padding: .4rem;
       width: 100%;
     }
 
     .social-footer {
+      align-items: center;
+      background: rgba($gray-color, .15);
+      border-radius: .2rem;
       color: $gray-color;
       display: none;
-      height: 1rem;
+      font-size: .5rem;
+      height: .8rem;
       justify-content: flex-end;
-      margin-bottom: .4rem;
-      padding: .2rem;
+      padding: .2rem 0;
+      position: absolute;
+      right: 0;
+      top: -.4rem;
     }
 
     &.ethereum {
-
       .social-main {
         flex-direction: column;
         padding: .4rem;
