@@ -27,7 +27,7 @@ const SearchResultEns = ({searchTerm}) => {
   console.log(resultNeighbor)
   
   return (
-    resultOwner ? (
+    resultNeighbor ? (
       <ResultAccount searchTerm={searchTerm} resultNeighbor={resultNeighbor} />
     ) : (
       <Empty />

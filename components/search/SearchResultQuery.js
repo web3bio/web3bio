@@ -24,14 +24,18 @@ const SearchResultQuery = ({searchTerm, searchPlatform}) => {
       displayName: results?.displayName,
       nft: results?.nft
     }
+  },
+
+  resultNeighbor = []
+  if (results?.neighbor) {
+    resultNeighbor = [...results?.neighbor]
   }
-  let resultNeighbor = [...results?.neighbor]
-      resultNeighbor.unshift(resultOwner)
-      resultNeighbor = resultNeighbor.filter((ele, index) => index === resultNeighbor.findIndex(elem => elem.identity.uuid == ele.identity.uuid))
+  resultNeighbor.unshift(resultOwner)
+  resultNeighbor = resultNeighbor.filter((ele, index) => index === resultNeighbor.findIndex(elem => elem.identity.uuid == ele.identity.uuid))
   console.log(resultNeighbor)
 
   return (
-    resultOwner ? (
+    resultNeighbor ? (
       <ResultAccount searchTerm={searchTerm} resultNeighbor={resultNeighbor} />
     ) : (
       <Empty />
