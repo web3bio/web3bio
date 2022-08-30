@@ -35,7 +35,7 @@ const SearchResultQuery = ({searchTerm, searchPlatform}) => {
   console.log(resultNeighbor)
 
   return (
-    resultNeighbor ? (
+    results ? (
       <ResultAccount searchTerm={searchTerm} resultNeighbor={resultNeighbor} />
     ) : (
       <Empty />
