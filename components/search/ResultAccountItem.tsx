@@ -6,7 +6,7 @@ import SVG from "react-inlinesvg";
 
 export function ResultAccountItem(props) {
   const onCopySuccess = () => {
-    setIsCopied(false)
+    setIsCopied(true)
     setTimeout(() => {
       setIsCopied(false)
     }, 1500);
