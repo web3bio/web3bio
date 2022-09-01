@@ -1,6 +1,6 @@
 import React, { Component, useState } from "react";
 import Link from "next/link";
-import { FormatAddress } from "../shared";
+import { formatAddress } from "../../utils/utils";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 
@@ -30,12 +30,12 @@ export function ResultAccountItem(props) {
                 <div className="content-title text-bold">
                   {identity.displayName
                     ? identity.displayName
-                    : FormatAddress({ address: identity.identity })}
+                    : formatAddress({ address: identity.identity })}
                 </div>
                 <div className="content-subtitle text-gray">
                   <div className="address hide-xs">{identity.identity}</div>
                   <div className="address show-xs">
-                    {FormatAddress({ address: identity.identity })}
+                    {formatAddress({ address: identity.identity })}
                   </div>
                   <Clipboard
                     component="div"

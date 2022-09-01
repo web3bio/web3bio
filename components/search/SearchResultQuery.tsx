@@ -1,6 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { ResultAccount } from "./ResultAccount";
-import { Loading, Empty } from "../shared";
+import { Loading } from "../shared/Loading";
+import { Empty } from "../shared/Empty";
 import { GET_PROFILES_QUERY } from "../../utils/queries";
 
 export const SearchResultQuery = ({ searchTerm, searchPlatform }) => {
