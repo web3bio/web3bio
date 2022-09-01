@@ -6,13 +6,9 @@ import SVG from "react-inlinesvg";
 
 export function ResultAccountItem(props) {
   const onCopySuccess = () => {
-    this.setState({
-      isCopied: true,
-    });
+    setIsCopied(false)
     setTimeout(() => {
-      this.setState({
-        isCopied: false,
-      });
+      setIsCopied(false)
     }, 1500);
   };
   const { identity, sources } = props;
@@ -41,7 +37,7 @@ export function ResultAccountItem(props) {
                     component="div"
                     className="action"
                     data-clipboard-text={identity.identity}
-                    onSuccess={this.onCopySuccess}
+                    onSuccess={onCopySuccess}
                   >
                     <SVG src="icons/icon-copy.svg" width={20} height={20} />
                     {isCopied && <div className="tooltip-copy">COPIED</div>}
@@ -124,7 +120,7 @@ export function ResultAccountItem(props) {
               <Clipboard
                 className="btn btn-sm btn-link action"
                 data-clipboard-text={identity.identity}
-                onSuccess={this.onCopySuccess}
+                onSuccess={onCopySuccess}
               >
                 COPY
                 {isCopied && <div className="tooltip-copy">COPIED</div>}
@@ -180,7 +176,7 @@ export function ResultAccountItem(props) {
               <Clipboard
                 className="btn btn-sm btn-link action"
                 data-clipboard-text={identity.identity}
-                onSuccess={this.onCopySuccess}
+                onSuccess={onCopySuccess}
               >
                 COPY
                 {isCopied && <div className="tooltip-copy">COPIED</div>}
@@ -236,7 +232,7 @@ export function ResultAccountItem(props) {
               <Clipboard
                 className="btn btn-sm btn-link action"
                 data-clipboard-text={identity.displayName}
-                onSuccess={this.onCopySuccess}
+                onSuccess={onCopySuccess}
               >
                 COPY
                 {isCopied && <div className="tooltip-copy">COPIED</div>}
