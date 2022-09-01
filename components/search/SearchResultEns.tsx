@@ -2,6 +2,7 @@ import { useQuery } from "@apollo/client";
 import { ResultAccount } from "./ResultAccount";
 import { Loading } from "../shared/Loading";
 import { Empty } from "../shared/Empty";
+import { Error } from "../shared/Error";
 import { GET_PROFILES_ENS } from "../../utils/queries";
 
 export const SearchResultEns = ({ searchTerm }) => {
@@ -10,7 +11,7 @@ export const SearchResultEns = ({ searchTerm }) => {
   });
 
   if (loading) return <Loading />;
-  if (error) return `Error! ${error}`;
+  if (error) return <Error text={error} />;
 
   const results = data?.nft.owner;
   let resultOwner = {

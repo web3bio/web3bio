@@ -2,6 +2,7 @@ import { useQuery } from "@apollo/client";
 import { ResultAccount } from "./ResultAccount";
 import { Loading } from "../shared/Loading";
 import { Empty } from "../shared/Empty";
+import { Error } from "../shared/Error";
 import { GET_PROFILES_QUERY } from "../../utils/queries";
 
 export const SearchResultQuery = ({ searchTerm, searchPlatform }) => {
@@ -14,7 +15,7 @@ export const SearchResultQuery = ({ searchTerm, searchPlatform }) => {
   });
 
   if (loading) return <Loading />;
-  if (error) return `Error! ${error}`;
+  if (error) return <Error text={error} />;
 
   const results = data?.identity;
   let resultOwner = {

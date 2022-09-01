@@ -16,28 +16,6 @@ export default function Home() {
     regexEth = /^0x[a-fA-F0-9]{40}$/,
     regexTwitter = /(\w{1,15})\b/;
 
-  useEffect(() => {
-    if (!router.isReady) return;
-    if (router.query.s) {
-      setSearchFocus(true);
-      console.log(router.query.s);
-
-      const searchkeyword = router.query.s.toLowerCase();
-      setSearchTerm(searchkeyword);
-
-      if (!router.query.platform) {
-        let searchPlatform = handlesearchPlatform(searchkeyword);
-        setsearchPlatform(searchPlatform);
-      } else {
-        setsearchPlatform(router.query.platform.toLowerCase());
-      }
-    } else {
-      setSearchFocus(false);
-      setSearchTerm("");
-      setsearchPlatform("");
-    }
-  }, [router]);
-
   const handlesearchPlatform = (term) => {
     switch (true) {
       case regexEns.test(term):
@@ -51,6 +29,26 @@ export default function Home() {
         return "twitter";
     }
   };
+  useEffect(() => {
+    if (!router.isReady) return;
+    if (router.query.s) {
+      setSearchFocus(true);
+      // todo: check the type of router querys
+      const searchkeyword = (router.query.s as string).toLowerCase();
+      setSearchTerm(searchkeyword);
+
+      if (!router.query.platform) {
+        let searchPlatform = handlesearchPlatform(searchkeyword);
+        setsearchPlatform(searchPlatform);
+      } else {
+        setsearchPlatform((router.query.platform as string).toLowerCase());
+      }
+    } else {
+      setSearchFocus(false);
+      setSearchTerm("");
+      setsearchPlatform("");
+    }
+  }, [router.isReady, router.query.s, router.query.platform]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
