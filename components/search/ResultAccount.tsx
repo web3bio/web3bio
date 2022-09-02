@@ -1,5 +1,6 @@
 import React from "react";
 import { ResultAccountItem } from "./ResultAccountItem";
+import { ResultGraph } from "./ResultGraph";
 
 export function ResultAccount(props) {
   const { searchTerm, resultNeighbor } = props;
@@ -10,6 +11,7 @@ export function ResultAccount(props) {
           Search results for{" "}
           <span className="text-underline">{searchTerm}</span>:
         </div>
+        <div className="btn">Graph</div>
       </div>
       <div className="search-result-body">
         {resultNeighbor.length > 0 ? (
@@ -24,6 +26,7 @@ export function ResultAccount(props) {
           </>
         ) : null}
       </div>
+      <ResultGraph/>
     </div>
   );
 }

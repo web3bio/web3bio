@@ -256,6 +256,9 @@ body {
   z-index: 99;
 
   .search-result-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     font-size: .6rem;
     padding: .8rem;
     word-wrap: break-word;

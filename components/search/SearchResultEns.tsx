@@ -12,7 +12,8 @@ export const SearchResultEns = ({ searchTerm }) => {
 
   if (loading) return <Loading />;
   if (error) return <Error text={error} />;
-
+  if(!data?.nft) return <Empty />
+  
   const results = data?.nft.owner;
   let resultOwner = {
     identity: {

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@antv/g6": "^4.7.0",
     "@apollo/client": "^3.6.9",
     "graphql": "^16.5.0",
     "next": "12.2.2",
