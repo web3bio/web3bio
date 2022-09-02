@@ -254,7 +254,25 @@ body {
   box-shadow: 0 .05rem .2rem rgba($dark-color, .1);
   position: relative;
   z-index: 99;
-
+  .graph-mask{
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, .5);
+    .graph-cotainer{
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+      background: #fff;
+      border-radius: 0.4rem;
+      box-shadow: 0 .05rem .2rem rgba($dark-color, .1);
+    }
+  }
   .search-result-header {
     display: flex;
     align-items: center;

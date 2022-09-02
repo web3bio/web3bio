@@ -1,55 +1,31 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import G6 from "@antv/g6";
 
+interface ResultGraphProps {
+  onClose: () => void;
+}
 const data = {
   nodes: [
     { id: "node0", size: 50 },
-    { id: "node1", size: 30 },
-    { id: "node2", size: 30 },
-    { id: "node3", size: 30 },
-    { id: "node4", size: 30, isLeaf: true },
-    { id: "node5", size: 30, isLeaf: true },
-    { id: "node6", size: 15, isLeaf: true },
-    { id: "node7", size: 15, isLeaf: true },
-    { id: "node8", size: 15, isLeaf: true },
-    { id: "node9", size: 15, isLeaf: true },
-    { id: "node10", size: 15, isLeaf: true },
-    { id: "node11", size: 15, isLeaf: true },
-    { id: "node12", size: 15, isLeaf: true },
-    { id: "node13", size: 15, isLeaf: true },
-    { id: "node14", size: 15, isLeaf: true },
-    { id: "node15", size: 15, isLeaf: true },
-    { id: "node16", size: 15, isLeaf: true },
+    { id: "node1", size: 30, isLeaf: true },
+    { id: "node2", size: 30, isLeaf: true },
   ],
   edges: [
-    { source: "node0", target: "node1" },
-    { source: "node0", target: "node2" },
-    { source: "node0", target: "node3" },
-    { source: "node0", target: "node4" },
-    { source: "node0", target: "node5" },
-    { source: "node1", target: "node6" },
-    { source: "node1", target: "node7" },
-    { source: "node2", target: "node8" },
-    { source: "node2", target: "node9" },
-    { source: "node2", target: "node10" },
-    { source: "node2", target: "node11" },
-    { source: "node2", target: "node12" },
-    { source: "node2", target: "node13" },
-    { source: "node3", target: "node14" },
-    { source: "node3", target: "node15" },
-    { source: "node3", target: "node16" },
+    { source: "node0", target: "node1", id: "link1" },
+    { source: "node0", target: "node2", id: "link2" },
   ],
 };
 
-export const ResultGraph = () => {
+export const ResultGraph = (props: ResultGraphProps) => {
+  const { onClose } = props;
   const ref = React.useRef(null);
   let graph = null;
   useEffect(() => {
     if (!graph) {
       // eslint-disable-next-line react/no-find-dom-node
       const container = ReactDOM.findDOMNode(ref.current);
-      const graph = new G6.Graph({
+      graph = new G6.Graph({
         container,
         width: 400,
         height: 400,
@@ -88,7 +64,10 @@ export const ResultGraph = () => {
       });
       graph.data({
         nodes: data.nodes,
-        edges: data.edges,
+        edges: data.edges.map(function (edge, i) {
+          edge.id = "edge" + i;
+          return Object.assign({}, edge);
+        }),
       });
       graph.render();
 
@@ -118,7 +97,18 @@ export const ResultGraph = () => {
         model.fy = e.y;
       };
     }
-  }, [graph]);
+  });
 
-  return <div ref={ref}></div>;
+  return (
+    <div className="graph-mask" onClick={onClose}>
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+        className="graph-cotainer"
+        ref={ref}
+      ></div>
+    </div>
+  );
 };
