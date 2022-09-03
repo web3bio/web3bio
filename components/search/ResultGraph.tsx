@@ -53,6 +53,7 @@ export const ResultGraph = (props) => {
         nodes: nodes,
         edges: links,
       });
+
       graph.render();
 
       graph.on("node:dragstart", function (e) {
