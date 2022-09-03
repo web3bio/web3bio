@@ -1,10 +1,14 @@
 import React, { useState } from "react";
+import { useLinks } from "../hooks/useLinks";
+import { useNodes } from "../hooks/useNodes";
 import { ResultAccountItem } from "./ResultAccountItem";
 import { ResultGraph } from "./ResultGraph";
 
 export function ResultAccount(props) {
-  const { searchTerm, resultNeighbor } = props;
+  const { searchTerm, resultNeighbor, searchPlatform } = props;
   const [open, setOpen] = useState(false);
+  const { links } = useLinks(searchPlatform, searchTerm);
+  const nodes = useNodes(resultNeighbor);
   return (
     <div className="search-result">
       <div className="search-result-header">
@@ -29,7 +33,13 @@ export function ResultAccount(props) {
           </>
         ) : null}
       </div>
-      {open && <ResultGraph onClose={() => setOpen(false)} />}
+      {open && (
+        <ResultGraph
+          links={links}
+          nodes={nodes}
+          onClose={() => setOpen(false)}
+        />
+      )}
     </div>
   );
 }

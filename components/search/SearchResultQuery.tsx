@@ -42,7 +42,11 @@ export const SearchResultQuery = ({ searchTerm, searchPlatform }) => {
   console.log(resultNeighbor);
 
   return results ? (
-    <ResultAccount searchTerm={searchTerm} resultNeighbor={resultNeighbor} />
+    <ResultAccount
+      searchPlatform={searchPlatform}
+      searchTerm={searchTerm}
+      resultNeighbor={resultNeighbor}
+    />
   ) : (
     <Empty />
   );

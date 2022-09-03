@@ -2,29 +2,16 @@ import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import G6 from "@antv/g6";
 
-interface ResultGraphProps {
-  onClose: () => void;
-}
-const data = {
-  nodes: [
-    { id: "node0", size: 50 },
-    { id: "node1", size: 30, isLeaf: true },
-    { id: "node2", size: 30, isLeaf: true },
-  ],
-  edges: [
-    { source: "node0", target: "node1", id: "link1" },
-    { source: "node0", target: "node2", id: "link2" },
-  ],
-};
-
-export const ResultGraph = (props: ResultGraphProps) => {
-  const { onClose } = props;
+export const ResultGraph = (props) => {
+  const { onClose, links, nodes } = props;
   const ref = React.useRef(null);
+  console.log(nodes, links, "graph");
   let graph = null;
   useEffect(() => {
     if (!graph) {
       // eslint-disable-next-line react/no-find-dom-node
       const container = ReactDOM.findDOMNode(ref.current);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       graph = new G6.Graph({
         container,
         width: 400,
@@ -63,11 +50,8 @@ export const ResultGraph = (props: ResultGraphProps) => {
         },
       });
       graph.data({
-        nodes: data.nodes,
-        edges: data.edges.map(function (edge, i) {
-          edge.id = "edge" + i;
-          return Object.assign({}, edge);
-        }),
+        nodes: nodes,
+        edges: links,
       });
       graph.render();
 

@@ -1,7 +1,7 @@
-import { gql } from '@apollo/client'
+import { gql } from "@apollo/client";
 
 export const GET_PROFILES_ENS = gql`
-  query($ens: String) {
+  query ($ens: String) {
     nft(chain: "ethereum", category: "ENS", id: $ens) {
       owner {
         uuid
@@ -35,7 +35,7 @@ export const GET_PROFILES_ENS = gql`
 `;
 
 export const GET_PROFILES_QUERY = gql`
-  query($platform: String, $identity: String) {
+  query ($platform: String, $identity: String) {
     identity(platform: $platform, identity: $identity) {
       uuid
       platform
@@ -60,6 +60,34 @@ export const GET_PROFILES_QUERY = gql`
             chain
             id
           }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_IDENTITY_GRAPH_DATA = gql`
+  query findOneIdentity($platform: String, $identity: String) {
+    identity(platform: $platform, identity: $identity) {
+      status
+      uuid
+      displayName
+      createdAt
+      addedAt
+      updatedAt
+      neighborWithTraversal(depth: 3) {
+        source
+        from {
+          uuid
+          platform
+          identity
+          displayName
+        }
+        to {
+          uuid
+          platform
+          identity
+          displayName
         }
       }
     }
