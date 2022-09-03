@@ -5,9 +5,9 @@ import { ResultAccountItem } from "./ResultAccountItem";
 import { ResultGraph } from "./ResultGraph";
 
 export function ResultAccount(props) {
-  const { searchTerm, resultNeighbor, searchPlatform } = props;
+  const { searchTerm, resultNeighbor, searchPlatform,type } = props;
   const [open, setOpen] = useState(false);
-  const { links } = useLinks(searchPlatform, searchTerm);
+  const { links } = useLinks(searchPlatform, searchTerm,type);
   const nodes = useNodes(resultNeighbor);
   return (
     <div className="search-result">

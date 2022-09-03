@@ -12,8 +12,8 @@ export const SearchResultEns = ({ searchTerm }) => {
 
   if (loading) return <Loading />;
   if (error) return <Error text={error} />;
-  if(!data?.nft) return <Empty />
-  
+  if (!data?.nft) return <Empty />;
+
   const results = data?.nft.owner;
   let resultOwner = {
     identity: {
@@ -36,7 +36,11 @@ export const SearchResultEns = ({ searchTerm }) => {
   console.log(resultNeighbor);
 
   return results ? (
-    <ResultAccount searchTerm={searchTerm} resultNeighbor={resultNeighbor} />
+    <ResultAccount
+      type="ens"
+      searchTerm={searchTerm}
+      resultNeighbor={resultNeighbor}
+    />
   ) : (
     <Empty />
   );

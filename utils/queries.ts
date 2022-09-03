@@ -93,3 +93,32 @@ export const GET_IDENTITY_GRAPH_DATA = gql`
     }
   }
 `;
+
+export const GET_IDENTITY_GRAPH_DATA_ENS = gql`
+  query findOneNFTWithOwnerNeighbor($ens: String) {
+    nft(chain: "ethereum", category: "ENS", id: $ens) {
+      owner {
+        platform
+        identity
+        nft {
+          category
+          chain
+          id
+        }
+        neighborWithTraversal(depth: 3) {
+          source
+          from {
+            platform
+            identity
+            uuid
+          }
+          to {
+            platform
+            identity
+            uuid
+          }
+        }
+      }
+    }
+  }
+`;

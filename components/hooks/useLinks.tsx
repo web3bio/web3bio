@@ -1,16 +1,30 @@
 import { useQuery } from "@apollo/client";
-import { GET_IDENTITY_GRAPH_DATA } from "../../utils/queries";
+import {
+  GET_IDENTITY_GRAPH_DATA,
+  GET_IDENTITY_GRAPH_DATA_ENS,
+} from "../../utils/queries";
 
-export const useLinks = (platform: string, identity: string) => {
-  const { loading, error, data } = useQuery(GET_IDENTITY_GRAPH_DATA, {
-    variables: {
-      platform,
-      identity,
-    },
-  });
+export const useLinks = (platform: string, identity: string, type?: string) => {
+  const { loading, error, data } = useQuery(
+    type === "ens" ? GET_IDENTITY_GRAPH_DATA_ENS : GET_IDENTITY_GRAPH_DATA,
+    {
+      variables:
+        type === "ens"
+          ? {
+              ens: identity,
+            }
+          : {
+              platform,
+              identity,
+            },
+    }
+  );
   const links = [];
   if (data) {
-    const source = data.identity.neighborWithTraversal;
+    const source =
+      type === "ens"
+        ? data.nft.owner.neighborWithTraversal
+        : data.identity.neighborWithTraversal;
     if (source) {
       source.map((x) => {
         links.push({

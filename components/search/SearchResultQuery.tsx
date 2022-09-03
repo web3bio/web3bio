@@ -40,10 +40,9 @@ export const SearchResultQuery = ({ searchTerm, searchPlatform }) => {
       )
   );
   console.log(resultNeighbor);
-
+ 
   return results ? (
     <ResultAccount
-      searchPlatform={searchPlatform}
       searchTerm={searchTerm}
       resultNeighbor={resultNeighbor}
     />
