@@ -46,7 +46,7 @@ export const ResultGraph = (props) => {
           color: "#5B8FF9",
         },
         modes: {
-          default: ["drag-canvas"],
+          default: ["drag-combo"],
         },
       });
       graph.data({
@@ -68,7 +68,7 @@ export const ResultGraph = (props) => {
         e.item.get("model").fy = null;
       });
 
-      if (typeof window !== "undefined")
+      if (typeof window !== undefined)
         window.onresize = () => {
           if (!graph || graph.get("destroyed")) return;
           if (!container || !container.scrollWidth || !container.scrollHeight)
