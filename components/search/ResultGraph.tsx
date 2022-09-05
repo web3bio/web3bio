@@ -14,8 +14,8 @@ export const ResultGraph = (props) => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
       graph = new G6.Graph({
         container,
-        width: 400,
-        height: 400,
+        width: container.scrollWidth,
+        height: container.scrollHeight,
         layout: {
           type: "force",
           preventOverlap: true,
