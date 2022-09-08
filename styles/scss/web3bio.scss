@@ -201,7 +201,7 @@ body {
     .form-input {
       border: transparent;
       padding-right: 2.4rem;
-      
+
       &:focus {
         box-shadow: 0 .8rem 4rem rgba($dark-color, .25), 0 .05rem .2rem rgba($dark-color, .1);
       }
@@ -254,24 +254,17 @@ body {
   box-shadow: 0 .05rem .2rem rgba($dark-color, .1);
   position: relative;
   z-index: 99;
-  .graph-mask{
+
+  .graph-container {
     position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background: rgba(0, 0, 0, .5);
-    .graph-cotainer{
-      position: absolute;
-      width: 70%;
-      height: 60%;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%,-50%);
-      background: #fff;
-      border-radius: 0.4rem;
-      box-shadow: 0 .05rem .2rem rgba($dark-color, .1);
-    }
+    width: 80%;
+    height: 80%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: #2b2f33;
+    border-radius: 0.4rem;
+    box-shadow: 0 1rem 5rem rgb(0, 0, 0);
   }
   .search-result-header {
     display: flex;
@@ -286,7 +279,7 @@ body {
     display: flex;
     flex-direction: column;
     padding: 0 .8rem .8rem .8rem;
-  } 
+  }
 
   .social-item {
     background: rgba($gray-color, .05);
@@ -423,13 +416,13 @@ body {
     max-width: 100%;
     padding: .1rem .3rem .1rem .15rem;
     text-decoration: none;
-   
+
     span {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-    
+
     svg {
       color: $pride-color-6;
       flex: 0 0 .7rem;
@@ -513,7 +506,7 @@ body {
 
 //- Pride
 .text-pride {
-  background-image: linear-gradient(70deg, $pride-color-1 10%,$pride-color-2 25%,$pride-color-3 36%,$pride-color-4 50%,$pride-color-5 63%,$pride-color-6 75%,$pride-color-7 90%);
+  background-image: linear-gradient(70deg, $pride-color-1 10%, $pride-color-2 25%, $pride-color-3 36%, $pride-color-4 50%, $pride-color-5 63%, $pride-color-6 75%, $pride-color-7 90%);
   background-clip: text;
   text-fill-color: transparent;
   -webkit-background-clip: text;
@@ -521,7 +514,7 @@ body {
 }
 
 .bg-pride {
-  background: linear-gradient(70deg, $pride-color-1 -10%,$pride-color-2 5%,$pride-color-3 36%,$pride-color-4 50%,$pride-color-5 63%,$pride-color-6 95%,$pride-color-7 110%);
+  background: linear-gradient(70deg, $pride-color-1 -10%, $pride-color-2 5%, $pride-color-3 36%, $pride-color-4 50%, $pride-color-5 63%, $pride-color-6 95%, $pride-color-7 110%);
 }
 
 .tooltip-copy {

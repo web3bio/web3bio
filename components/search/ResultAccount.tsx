@@ -5,9 +5,9 @@ import { ResultAccountItem } from "./ResultAccountItem";
 import { ResultGraph } from "./ResultGraph";
 
 export function ResultAccount(props) {
-  const { searchTerm, resultNeighbor, searchPlatform,type } = props;
+  const { searchTerm, resultNeighbor, searchPlatform, type } = props;
   const [open, setOpen] = useState(false);
-  const { links } = useLinks(searchPlatform, searchTerm,type);
+  const { links } = useLinks(searchPlatform, searchTerm, type);
   const nodes = useNodes(resultNeighbor);
   return (
     <div className="search-result">
@@ -35,9 +35,11 @@ export function ResultAccount(props) {
       </div>
       {open && (
         <ResultGraph
-          links={links}
-          nodes={nodes}
-          onClose={() => setOpen(false)}
+          data={{
+            nodes: nodes,
+            edges: links,
+          }}
+          // onClose={() => setOpen(false)}
         />
       )}
     </div>

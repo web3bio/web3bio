@@ -396,7 +396,7 @@ const CanvasMenu: React.FC<{
       window.addEventListener('keydown', escListener.bind(this));
       return window.removeEventListener('keydown', escListener.bind(this));
     }
-  }, []);
+  });
 
   const iconStyle = {
     disable: { color: 'rgba(255, 255, 255, 0.85)' },

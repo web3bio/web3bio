@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { colorSets, global } from './graphCom/LargeGraphRegister';
-import { uniqueId } from '@antv/util';
-import CanvasMenu from './graphCom/CanvasMenu';
-import LegendPanel from './graphCom/LegendPanel';
+import React, { useEffect, useState } from "react";
+import { colorSets, global } from "./graphCom/LargeGraphRegister";
+import { uniqueId } from "@antv/util";
+import CanvasMenu from "./graphCom/CanvasMenu";
+import LegendPanel from "./graphCom/LegendPanel";
 
-const isBrowser = typeof window !== 'undefined';
-const G6 = isBrowser ? require('@antv/g6') : null;
-const insertCss = isBrowser ? require('insert-css') : null;
+const isBrowser = typeof window !== "undefined";
+const G6 = isBrowser ? require("@antv/g6") : null;
+const insertCss = isBrowser ? require("insert-css") : null;
 
+let graph = null;
 let labelPropagation = null;
 let louvain = null;
 let findShortestPath = null;
@@ -50,14 +51,13 @@ if (isBrowser) {
 	`);
 }
 
-const NODESIZEMAPPING = 'degree';
+const NODESIZEMAPPING = "degree";
 const SMALLGRAPHLABELMAXLENGTH = 5;
 let labelMaxLength = SMALLGRAPHLABELMAXLENGTH;
 const DEFAULTNODESIZE = 20;
 const DEFAULTAGGREGATEDNODESIZE = 53;
 const NODE_LIMIT = 40; // TODO: find a proper number for maximum node number on the canvas
 
-let graph = null;
 let originData;
 let currentUnproccessedData = { nodes: [], edges: [] };
 let nodeMap = {};
@@ -68,7 +68,7 @@ let cachePositions = {};
 let manipulatePosition = undefined;
 let descreteNodeCenter;
 let layout = {
-  type: '',
+  type: "",
   instance: null,
   destroyed: true,
 };
@@ -95,23 +95,23 @@ const clearFocusItemState = (graph) => {
 
 // 清除图上所有节点的 focus 状态及相应样式
 const clearFocusNodeState = (graph) => {
-  const focusNodes = graph.findAllByState('node', 'focus');
+  const focusNodes = graph.findAllByState("node", "focus");
   focusNodes.forEach((fnode) => {
-    graph.setItemState(fnode, 'focus', false); // false
+    graph.setItemState(fnode, "focus", false); // false
   });
 };
 
 // 清除图上所有边的 focus 状态及相应样式
 const clearFocusEdgeState = (graph) => {
-  const focusEdges = graph.findAllByState('edge', 'focus');
+  const focusEdges = graph.findAllByState("edge", "focus");
   focusEdges.forEach((fedge) => {
-    graph.setItemState(fedge, 'focus', false);
+    graph.setItemState(fedge, "focus", false);
   });
 };
 
 // 截断长文本。length 为文本截断后长度，elipsis 是后缀
-const formatText = (text, length = 5, elipsis = '...') => {
-  if (!text) return '';
+const formatText = (text, length = 5, elipsis = "...") => {
+  if (!text) return "";
   if (text.length > length) {
     return `${text.substr(0, length)}${elipsis}`;
   }
@@ -119,7 +119,8 @@ const formatText = (text, length = 5, elipsis = '...') => {
 };
 
 const labelFormatter = (text: string, minLength: number = 10): string => {
-  if (text && text.split('').length > minLength) return `${text.substr(0, minLength)}...`;
+  if (text && text.split("").length > minLength)
+    return `${text.substr(0, minLength)}...`;
   return text;
 };
 
@@ -130,7 +131,7 @@ const processNodesEdges = (
   height,
   largeGraphMode,
   edgeLabelVisible,
-  isNewGraph = false,
+  isNewGraph = false
 ) => {
   if (!nodes || nodes.length === 0) return {};
   const currentNodeMap = {};
@@ -139,17 +140,17 @@ const processNodesEdges = (
   const paddingLeft = paddingRatio * width;
   const paddingTop = paddingRatio * height;
   nodes.forEach((node) => {
-    node.type = node.level === 0 ? 'real-node' : 'aggregated-node';
+    node.type = node.level === 0 ? "real-node" : "aggregated-node";
     node.isReal = node.level === 0 ? true : false;
     node.label = `${node.id}`;
     node.labelLineNum = undefined;
     node.oriLabel = node.label;
-    node.label = formatText(node.label, labelMaxLength, '...');
+    node.label = formatText(node.label, labelMaxLength, "...");
     node.degree = 0;
     node.inDegree = 0;
     node.outDegree = 0;
     if (currentNodeMap[node.id]) {
-      console.warn('node exists already!', node.id);
+      console.warn("node exists already!", node.id);
       node.id = `${node.id}${Math.random()}`;
     }
     currentNodeMap[node.id] = node;
@@ -162,8 +163,10 @@ const processNodesEdges = (
     } else {
       node.new = isNewGraph ? false : true;
       if (manipulatePosition && !node.x && !node.y) {
-        node.x = manipulatePosition.x + 30 * Math.cos(Math.random() * Math.PI * 2);
-        node.y = manipulatePosition.y + 30 * Math.sin(Math.random() * Math.PI * 2);
+        node.x =
+          manipulatePosition.x + 30 * Math.cos(Math.random() * Math.PI * 2);
+        node.y =
+          manipulatePosition.y + 30 * Math.sin(Math.random() * Math.PI * 2);
       }
     }
   });
@@ -174,17 +177,27 @@ const processNodesEdges = (
   edges.forEach((edge) => {
     // to avoid the dulplicated id to nodes
     if (!edge.id) edge.id = `edge-${uniqueId()}`;
-    else if (edge.id.split('-')[0] !== 'edge') edge.id = `edge-${edge.id}`;
+    else if (edge.id.split("-")[0] !== "edge") edge.id = `edge-${edge.id}`;
     // TODO: delete the following line after the queried data is correct
     if (!currentNodeMap[edge.source] || !currentNodeMap[edge.target]) {
-      console.warn('edge source target does not exist', edge.source, edge.target, edge.id);
+      console.warn(
+        "edge source target does not exist",
+        edge.source,
+        edge.target,
+        edge.id
+      );
       return;
     }
     const sourceNode = currentNodeMap[edge.source];
     const targetNode = currentNodeMap[edge.target];
 
     if (!sourceNode || !targetNode)
-      console.warn('source or target is not defined!!!', edge, sourceNode, targetNode);
+      console.warn(
+        "source or target is not defined!!!",
+        edge,
+        sourceNode,
+        targetNode
+      );
 
     // calculate the degree
     sourceNode.degree++;
@@ -207,7 +220,7 @@ const processNodesEdges = (
     node.size = isRealNode ? DEFAULTNODESIZE : DEFAULTAGGREGATEDNODESIZE;
     node.isReal = isRealNode;
     node.labelCfg = {
-      position: 'bottom',
+      position: "bottom",
       offset: 5,
       style: {
         fill: global.node.labelCfg.style.fill,
@@ -230,24 +243,27 @@ const processNodesEdges = (
     // set edges' style
     const targetNode = currentNodeMap[edge.target];
 
-    const size = ((edge.count - minCount) / countRange) * edgeSizeRange + minEdgeSize || 1;
+    const size =
+      ((edge.count - minCount) / countRange) * edgeSizeRange + minEdgeSize || 1;
     edge.size = size;
 
     const arrowWidth = Math.max(size / 2 + 2, 3);
     const arrowLength = 10;
     const arrowBeging = targetNode.size + arrowLength;
-    let arrowPath = `M ${arrowBeging},0 L ${arrowBeging + arrowLength},-${arrowWidth} L ${
+    let arrowPath = `M ${arrowBeging},0 L ${
       arrowBeging + arrowLength
-    },${arrowWidth} Z`;
+    },-${arrowWidth} L ${arrowBeging + arrowLength},${arrowWidth} Z`;
     let d = targetNode.size / 2 + arrowLength;
     if (edge.source === edge.target) {
-      edge.type = 'loop';
+      edge.type = "loop";
       arrowPath = undefined;
     }
     const sourceNode = currentNodeMap[edge.source];
     const isRealEdge = targetNode.isReal && sourceNode.isReal;
     edge.isReal = isRealEdge;
-    const stroke = isRealEdge ? global.edge.style.realEdgeStroke : global.edge.style.stroke;
+    const stroke = isRealEdge
+      ? global.edge.style.realEdgeStroke
+      : global.edge.style.stroke;
     const opacity = isRealEdge
       ? global.edge.style.realEdgeOpacity
       : global.edge.style.strokeOpacity;
@@ -256,7 +272,7 @@ const processNodesEdges = (
     edge.style = {
       stroke,
       strokeOpacity: opacity,
-      cursor: 'pointer',
+      cursor: "pointer",
       lineAppendWidth: Math.max(edge.size || 5, 5),
       fillOpacity: 1,
       lineDash,
@@ -281,7 +297,7 @@ const processNodesEdges = (
       },
     };
     if (!edge.oriLabel) edge.oriLabel = edge.label;
-    if (largeGraphMode || !edgeLabelVisible) edge.label = '';
+    if (largeGraphMode || !edgeLabelVisible) edge.label = "";
     else {
       edge.label = labelFormatter(edge.label, labelMaxLength);
     }
@@ -290,25 +306,33 @@ const processNodesEdges = (
     const sourceDis = sourceNode.size / 2 + 20;
     const targetDis = targetNode.size / 2 + 20;
     if (sourceNode.x && !targetNode.x) {
-      targetNode.x = sourceNode.x + sourceDis * Math.cos(Math.random() * Math.PI * 2);
+      targetNode.x =
+        sourceNode.x + sourceDis * Math.cos(Math.random() * Math.PI * 2);
     }
     if (sourceNode.y && !targetNode.y) {
-      targetNode.y = sourceNode.y + sourceDis * Math.sin(Math.random() * Math.PI * 2);
+      targetNode.y =
+        sourceNode.y + sourceDis * Math.sin(Math.random() * Math.PI * 2);
     }
     if (targetNode.x && !sourceNode.x) {
-      sourceNode.x = targetNode.x + targetDis * Math.cos(Math.random() * Math.PI * 2);
+      sourceNode.x =
+        targetNode.x + targetDis * Math.cos(Math.random() * Math.PI * 2);
     }
     if (targetNode.y && !sourceNode.y) {
-      sourceNode.y = targetNode.y + targetDis * Math.sin(Math.random() * Math.PI * 2);
+      sourceNode.y =
+        targetNode.y + targetDis * Math.sin(Math.random() * Math.PI * 2);
     }
 
     if (!sourceNode.x && !sourceNode.y && manipulatePosition) {
-      sourceNode.x = manipulatePosition.x + 30 * Math.cos(Math.random() * Math.PI * 2);
-      sourceNode.y = manipulatePosition.y + 30 * Math.sin(Math.random() * Math.PI * 2);
+      sourceNode.x =
+        manipulatePosition.x + 30 * Math.cos(Math.random() * Math.PI * 2);
+      sourceNode.y =
+        manipulatePosition.y + 30 * Math.sin(Math.random() * Math.PI * 2);
     }
     if (!targetNode.x && !targetNode.y && manipulatePosition) {
-      targetNode.x = manipulatePosition.x + 30 * Math.cos(Math.random() * Math.PI * 2);
-      targetNode.y = manipulatePosition.y + 30 * Math.sin(Math.random() * Math.PI * 2);
+      targetNode.x =
+        manipulatePosition.x + 30 * Math.cos(Math.random() * Math.PI * 2);
+      targetNode.y =
+        manipulatePosition.y + 30 * Math.sin(Math.random() * Math.PI * 2);
     }
   });
 
@@ -318,12 +342,14 @@ const processNodesEdges = (
   };
   descreteNodes.forEach((node) => {
     if (!node.x && !node.y) {
-      node.x = descreteNodeCenter.x + 30 * Math.cos(Math.random() * Math.PI * 2);
-      node.y = descreteNodeCenter.y + 30 * Math.sin(Math.random() * Math.PI * 2);
+      node.x =
+        descreteNodeCenter.x + 30 * Math.cos(Math.random() * Math.PI * 2);
+      node.y =
+        descreteNodeCenter.y + 30 * Math.sin(Math.random() * Math.PI * 2);
     }
   });
 
-  G6.Util.processParallelEdges(edges, 12.5, 'custom-quadratic', 'custom-line');
+  G6.Util.processParallelEdges(edges, 12.5, "custom-quadratic", "custom-line");
   return {
     maxDegree,
     edges,
@@ -350,7 +376,7 @@ const getForceLayoutConfig = (graph, largeGraphMode, configSettings?) => {
   if (!nodeSpacing && nodeSpacing !== 0) nodeSpacing = 5;
 
   const config = {
-    type: 'gForce',
+    type: "gForce",
     minMovement: 0.01,
     maxIteration: 5000,
     preventOverlap,
@@ -407,11 +433,11 @@ const getForceLayoutConfig = (graph, largeGraphMode, configSettings?) => {
     },
   };
 
-  if (nodeSize) config['nodeSize'] = nodeSize;
-  if (collideStrength) config['collideStrength'] = collideStrength;
-  if (alpha) config['alpha'] = alpha;
-  if (alphaDecay) config['alphaDecay'] = alphaDecay;
-  if (alphaMin) config['alphaMin'] = alphaMin;
+  if (nodeSize) config["nodeSize"] = nodeSize;
+  if (collideStrength) config["collideStrength"] = collideStrength;
+  if (alpha) config["alpha"] = alpha;
+  if (alphaDecay) config["alphaDecay"] = alphaDecay;
+  if (alphaMin) config["alphaMin"] = alphaMin;
 
   return config;
 };
@@ -439,7 +465,7 @@ const handleRefreshGraph = (
   height,
   largeGraphMode,
   edgeLabelVisible,
-  isNewGraph,
+  isNewGraph
 ) => {
   if (!graphData || !graph) return;
   clearFocusItemState(graph);
@@ -462,7 +488,7 @@ const handleRefreshGraph = (
     height,
     largeGraphMode,
     edgeLabelVisible,
-    isNewGraph,
+    isNewGraph
   );
 
   edges = processRes.edges;
@@ -481,7 +507,7 @@ const handleRefreshGraph = (
     layout.instance.destroy();
     const layoutConfig: any = getForceLayoutConfig(graph, true);
     layoutConfig.center = [width / 2, height / 2];
-    layout.instance = new G6.Layout['gForce'](layoutConfig);
+    layout.instance = new G6.Layout["gForce"](layoutConfig);
   }
 
   // force 需要使用不同 id 的对象才能进行全新的布局，否则会使用原来的引用。因此复制一份节点和边作为 force 的布局数据
@@ -507,7 +533,7 @@ const getMixedGraph = (
   nodeMap,
   aggregatedNodeMap,
   expandArray,
-  collapseArray,
+  collapseArray
 ) => {
   let nodes = [],
     edges = [];
@@ -541,7 +567,7 @@ const getMixedGraph = (
         source: edge.source,
         target: targetClusterId,
         id: `edge-${uniqueId()}`,
-        label: '',
+        label: "",
       };
       edges.push(vedge);
     } else if (isTargetInExpandArray) {
@@ -550,7 +576,7 @@ const getMixedGraph = (
         target: edge.target,
         source: sourceClusterId,
         id: `edge-${uniqueId()}`,
-        label: '',
+        label: "",
       };
       edges.push(vedge);
     }
@@ -570,13 +596,17 @@ const getNeighborMixedGraph = (
   currentData,
   nodeMap,
   aggregatedNodeMap,
-  maxNeighborNumPerNode = 5,
+  maxNeighborNumPerNode = 5
 ) => {
   // update the manipulate position for center gravity of the new nodes
   manipulatePosition = { x: centerNodeModel.x, y: centerNodeModel.y };
 
   // the neighborSubGraph does not include the centerNodeModel. the elements are all generated new nodes and edges
-  const neighborSubGraph = generateNeighbors(centerNodeModel, step, maxNeighborNumPerNode);
+  const neighborSubGraph = generateNeighbors(
+    centerNodeModel,
+    step,
+    maxNeighborNumPerNode
+  );
   // update the origin data
   originData.nodes = originData.nodes.concat(neighborSubGraph.nodes);
   originData.edges = originData.edges.concat(neighborSubGraph.edges);
@@ -599,7 +629,11 @@ const getNeighborMixedGraph = (
   return currentData;
 };
 
-const generateNeighbors = (centerNodeModel, step, maxNeighborNumPerNode = 5) => {
+const generateNeighbors = (
+  centerNodeModel,
+  step,
+  maxNeighborNumPerNode = 5
+) => {
   if (step <= 0) return undefined;
   let nodes = [],
     edges = [];
@@ -624,7 +658,11 @@ const generateNeighbors = (centerNodeModel, step, maxNeighborNumPerNode = 5) => 
       label: `${source}-${target}`,
     };
     edges.push(neighborEdge);
-    const subNeighbors = generateNeighbors(neighborNode, step - 1, maxNeighborNumPerNode);
+    const subNeighbors = generateNeighbors(
+      neighborNode,
+      step - 1,
+      maxNeighborNumPerNode
+    );
     if (subNeighbors) {
       nodes = nodes.concat(subNeighbors.nodes);
       edges = edges.concat(subNeighbors.edges);
@@ -638,7 +676,7 @@ const getExtractNodeMixedGraph = (
   originData,
   nodeMap,
   aggregatedNodeMap,
-  currentUnproccessedData,
+  currentUnproccessedData
 ) => {
   const extractNodeId = extractNodeData.id;
   // const extractNodeClusterId = extractNodeData.clusterId;
@@ -691,7 +729,12 @@ const examAncestors = (model, expandedArray, length, keepTags) => {
   }
 };
 
-const manageExpandCollapseArray = (nodeNumber, model, collapseArray, expandArray) => {
+const manageExpandCollapseArray = (
+  nodeNumber,
+  model,
+  collapseArray,
+  expandArray
+) => {
   manipulatePosition = { x: model.x, y: model.y };
 
   // 维护 expandArray，若当前画布节点数高于上限，移出 expandedArray 中非 model 祖先的节点)
@@ -731,7 +774,7 @@ const manageExpandCollapseArray = (nodeNumber, model, collapseArray, expandArray
         expandArray.splice(shiftNodeIdx, 1);
       }
       // const removedNode = expandedArray.splice(shiftNodeIdx, 1); // splice returns an array
-      const idSplits = foundNode.id.split('-');
+      const idSplits = foundNode.id.split("-");
       let collapseNodeId;
       // 去掉最后一个后缀
       for (let i = 0; i < idSplits.length - 1; i++) {
@@ -757,7 +800,7 @@ const manageExpandCollapseArray = (nodeNumber, model, collapseArray, expandArray
   // 加入当前需要展开的节点
   expandArray.push(currentNode);
 
-  graph.get('canvas').setCursor('default');
+  graph.get("canvas").setCursor("default");
   return { expandArray, collapseArray };
 };
 
@@ -775,7 +818,9 @@ const cacheNodePositions = (nodes) => {
   return positionMap;
 };
 
-const LargeGraph = () => {
+
+export const ResultGraph = (props) => {
+  console.log(props.uuid, "ggg");
 
   const container = React.useRef<HTMLDivElement>(null);
 
@@ -803,27 +848,27 @@ const LargeGraph = () => {
   };
 
   const bindListener = (graph) => {
-    graph.on('keydown', (evt) => {
+    graph.on("keydown", (evt) => {
       const code = evt.key;
       if (!code) {
         return;
       }
-      if (code.toLowerCase() === 'shift') {
+      if (code.toLowerCase() === "shift") {
         shiftKeydown = true;
       } else {
         shiftKeydown = false;
       }
     });
-    graph.on('keyup', (evt) => {
+    graph.on("keyup", (evt) => {
       const code = evt.key;
       if (!code) {
         return;
       }
-      if (code.toLowerCase() === 'shift') {
+      if (code.toLowerCase() === "shift") {
         shiftKeydown = false;
       }
     });
-    graph.on('node:mouseenter', (evt: any) => {
+    graph.on("node:mouseenter", (evt: any) => {
       const { item } = evt;
       const model = item.getModel();
       const currentLabel = model.label;
@@ -832,11 +877,11 @@ const LargeGraph = () => {
         label: model.oriLabel,
       });
       model.oriLabel = currentLabel;
-      graph.setItemState(item, 'hover', true);
+      graph.setItemState(item, "hover", true);
       item.toFront();
     });
 
-    graph.on('node:mouseleave', (evt: any) => {
+    graph.on("node:mouseleave", (evt: any) => {
       const { item } = evt;
       const model = item.getModel();
       const currentLabel = model.label;
@@ -844,10 +889,10 @@ const LargeGraph = () => {
         label: model.oriLabel,
       });
       model.oriLabel = currentLabel;
-      graph.setItemState(item, 'hover', false);
+      graph.setItemState(item, "hover", false);
     });
 
-    graph.on('edge:mouseenter', (evt: any) => {
+    graph.on("edge:mouseenter", (evt: any) => {
       const { item } = evt;
       const model = item.getModel();
       const currentLabel = model.label;
@@ -860,7 +905,7 @@ const LargeGraph = () => {
       item.getTarget().toFront();
     });
 
-    graph.on('edge:mouseleave', (evt: any) => {
+    graph.on("edge:mouseleave", (evt: any) => {
       const { item } = evt;
       const model = item.getModel();
       const currentLabel = model.label;
@@ -870,41 +915,41 @@ const LargeGraph = () => {
       model.oriLabel = currentLabel;
     });
     // click node to show the detail drawer
-    graph.on('node:click', (evt: any) => {
+    graph.on("node:click", (evt: any) => {
       stopLayout();
       if (!shiftKeydown) clearFocusItemState(graph);
       else clearFocusEdgeState(graph);
       const { item } = evt;
 
       // highlight the clicked node, it is down by click-select
-      graph.setItemState(item, 'focus', true);
+      graph.setItemState(item, "focus", true);
 
       if (!shiftKeydown) {
         // 将相关边也高亮
         const relatedEdges = item.getEdges();
         relatedEdges.forEach((edge) => {
-          graph.setItemState(edge, 'focus', true);
+          graph.setItemState(edge, "focus", true);
         });
       }
     });
 
     // click edge to show the detail of integrated edge drawer
-    graph.on('edge:click', (evt: any) => {
+    graph.on("edge:click", (evt: any) => {
       stopLayout();
       if (!shiftKeydown) clearFocusItemState(graph);
       const { item } = evt;
       // highlight the clicked edge
-      graph.setItemState(item, 'focus', true);
+      graph.setItemState(item, "focus", true);
     });
 
     // click canvas to cancel all the focus state
-    graph.on('canvas:click', (evt: any) => {
+    graph.on("canvas:click", (evt: any) => {
       clearFocusItemState(graph);
     });
   };
 
   const searchNode = (id) => {
-    if (!graph || graph.get('destroyed')) return false;
+    if (!graph || graph.get("destroyed")) return false;
     const item = graph.findById(id);
     const originNodeData = nodeMap[id];
     if (!item && originNodeData) {
@@ -915,7 +960,7 @@ const LargeGraph = () => {
         originData,
         nodeMap,
         aggregatedNodeMap,
-        currentUnproccessedData,
+        currentUnproccessedData
       );
       handleRefreshGraph(
         graph,
@@ -924,28 +969,32 @@ const LargeGraph = () => {
         CANVAS_HEIGHT,
         largeGraphMode,
         true,
-        false,
+        false
       );
     }
     if (!item) return false;
-    if (item && item.getType() !== 'node') return false;
+    if (item && item.getType() !== "node") return false;
     graph.focusItem(item, true);
     clearFocusItemState(graph);
-    graph.setItemState(item, 'focus', true);
+    graph.setItemState(item, "focus", true);
     return true;
   };
 
   const findPath = () => {
-    if (!graph || graph.get('destroyed')) return false;
-    const selectedNodes = graph.findAllByState('node', 'focus');
+    if (!graph || graph.get("destroyed")) return false;
+    const selectedNodes = graph.findAllByState("node", "focus");
     if (selectedNodes.length !== 2) {
-      alert('Please Select only Two Nodes two Find the Path!');
+      alert("Please Select only Two Nodes two Find the Path!");
       return;
     }
 
     // find the path and highlight the nodes and edges along the path
     clearFocusItemState(graph);
-    const { path } = findShortestPath(graph, selectedNodes[0].getID(), selectedNodes[1].getID());
+    const { path } = findShortestPath(
+      graph,
+      selectedNodes[0].getID(),
+      selectedNodes[1].getID()
+    );
     graph.getEdges().forEach((edge) => {
       const edgeModel = edge.getModel();
       const source = edgeModel.source;
@@ -955,19 +1004,21 @@ const LargeGraph = () => {
       if (sourceInPathIdx === -1 || targetInPathIdx === -1) return;
       if (Math.abs(sourceInPathIdx - targetInPathIdx) === 1) {
         edge.toFront();
-        graph.setItemState(edge, 'focus', true);
+        graph.setItemState(edge, "focus", true);
       }
     });
     path.forEach((id) => {
       const pathNode = graph.findById(id);
       pathNode.toFront();
-      graph.setItemState(pathNode, 'focus', true);
+      graph.setItemState(pathNode, "focus", true);
     });
   };
 
   useEffect(() => {
     if (!graph) {
-      fetch('https://gw.alipayobjects.com/os/antvdemo/assets/data/relations.json')
+      fetch(
+        "https://gw.alipayobjects.com/os/antvdemo/assets/data/relations.json"
+      )
         .then((res) => res.json())
         .then((data) => {
           if (container && container.current) {
@@ -977,19 +1028,19 @@ const LargeGraph = () => {
 
           originData = data;
           nodeMap = {};
-          const clusteredData = louvain(data, false, 'weight');
+          const clusteredData = louvain(data, false, "weight");
           const aggregatedData = { nodes: [], edges: [] };
           clusteredData.clusters.forEach((cluster, i) => {
             cluster.nodes.forEach((node) => {
               node.level = 0;
               node.label = node.id;
-              node.type = '';
+              node.type = "";
               node.colorSet = colorSets[i];
               nodeMap[node.id] = node;
             });
             const cnode = {
               id: cluster.id,
-              type: 'aggregated-node',
+              type: "aggregated-node",
               count: cluster.nodes.length,
               level: 1,
               label: cluster.id,
@@ -1003,15 +1054,15 @@ const LargeGraph = () => {
             const cedge = {
               ...clusterEdge,
               size: Math.log(clusterEdge.count as number),
-              label: '',
+              label: "",
               id: `edge-${uniqueId()}`,
             };
             if (cedge.source === cedge.target) {
-              cedge.type = 'loop';
+              cedge.type = "loop";
               cedge.loopCfg = {
                 dist: 20,
               };
-            } else cedge.type = 'line';
+            } else cedge.type = "line";
             aggregatedData.edges.push(cedge);
           });
 
@@ -1029,12 +1080,13 @@ const LargeGraph = () => {
             CANVAS_HEIGHT,
             largeGraphMode,
             true,
-            true,
+            true
           );
 
           const contextMenu = new G6.Menu({
             shouldBegin(evt) {
-              if (evt.target && evt.target.isCanvas && evt.target.isCanvas()) return true;
+              if (evt.target && evt.target.isCanvas && evt.target.isCanvas())
+                return true;
               if (evt.item) return true;
               return false;
             },
@@ -1049,7 +1101,7 @@ const LargeGraph = () => {
               const itemType = item?.getType();
               const model = item?.getModel();
               if (itemType && model) {
-                if (itemType === 'node') {
+                if (itemType === "node") {
                   if (model.level !== 0) {
                     return `<ul>
                       <li id='expand'>expand the aggregation point</li>
@@ -1073,19 +1125,19 @@ const LargeGraph = () => {
             },
             handleMenuClick: (target, item) => {
               const model = item?.getModel();
-              const liIdStrs = target.id.split('-');
+              const liIdStrs = target.id.split("-");
               let mixedGraphData;
               switch (liIdStrs[0]) {
-                case 'hide':
+                case "hide":
                   graph.hideItem(item);
                   hiddenItemIds.push(model.id);
                   break;
-                case 'expand':
+                case "expand":
                   const newArray = manageExpandCollapseArray(
                     graph.getNodes().length,
                     model,
                     collapseArray,
-                    expandArray,
+                    expandArray
                   );
                   expandArray = newArray.expandArray;
                   collapseArray = newArray.collapseArray;
@@ -1095,12 +1147,15 @@ const LargeGraph = () => {
                     nodeMap,
                     aggregatedNodeMap,
                     expandArray,
-                    collapseArray,
+                    collapseArray
                   );
                   break;
-                case 'collapse':
+                case "collapse":
                   const aggregatedNode = aggregatedNodeMap[model.clusterId];
-                  manipulatePosition = { x: aggregatedNode.x, y: aggregatedNode.y };
+                  manipulatePosition = {
+                    x: aggregatedNode.x,
+                    y: aggregatedNode.y,
+                  };
                   collapseArray.push(aggregatedNode);
                   for (let i = 0; i < expandArray.length; i++) {
                     if (expandArray[i].id === model.clusterId) {
@@ -1114,10 +1169,10 @@ const LargeGraph = () => {
                     nodeMap,
                     aggregatedNodeMap,
                     expandArray,
-                    collapseArray,
+                    collapseArray
                   );
                   break;
-                case 'collapseAll':
+                case "collapseAll":
                   expandArray = [];
                   collapseArray = [];
                   mixedGraphData = getMixedGraph(
@@ -1126,10 +1181,10 @@ const LargeGraph = () => {
                     nodeMap,
                     aggregatedNodeMap,
                     expandArray,
-                    collapseArray,
+                    collapseArray
                   );
                   break;
-                case 'neighbor':
+                case "neighbor":
                   const expandNeighborSteps = parseInt(liIdStrs[1]);
                   mixedGraphData = getNeighborMixedGraph(
                     model,
@@ -1139,10 +1194,10 @@ const LargeGraph = () => {
                     currentUnproccessedData,
                     nodeMap,
                     aggregatedNodeMap,
-                    10,
+                    10
                   );
                   break;
-                case 'show':
+                case "show":
                   showItems(graph);
                   break;
                 default:
@@ -1158,7 +1213,7 @@ const LargeGraph = () => {
                   CANVAS_HEIGHT,
                   largeGraphMode,
                   true,
-                  false,
+                  false
                 );
               }
             },
@@ -1169,7 +1224,7 @@ const LargeGraph = () => {
             offsetY: 0,
             // the types of items that allow the menu show up
             // 在哪些类型的元素上响应
-            itemTypes: ['node', 'edge', 'canvas'],
+            itemTypes: ["node", "edge", "canvas"],
           });
 
           graph = new G6.Graph({
@@ -1182,42 +1237,42 @@ const LargeGraph = () => {
             modes: {
               default: [
                 {
-                  type: 'drag-canvas',
+                  type: "drag-canvas",
                   enableOptimize: true,
                 },
                 {
-                  type: 'zoom-canvas',
+                  type: "zoom-canvas",
                   enableOptimize: true,
                   optimizeZoom: 0.01,
                 },
-                'drag-node',
-                'shortcuts-call',
+                "drag-node",
+                "shortcuts-call",
               ],
               lassoSelect: [
                 {
-                  type: 'zoom-canvas',
+                  type: "zoom-canvas",
                   enableOptimize: true,
                 },
                 {
-                  type: 'lasso-select',
-                  selectedState: 'focus',
-                  trigger: 'drag',
+                  type: "lasso-select",
+                  selectedState: "focus",
+                  trigger: "drag",
                 },
               ],
               fisheyeMode: [],
             },
             defaultNode: {
-              type: 'aggregated-node',
+              type: "aggregated-node",
               size: DEFAULTNODESIZE,
             },
             plugins: [contextMenu],
           });
 
-          graph.get('canvas').set('localRefresh', false);
+          graph.get("canvas").set("localRefresh", false);
 
           const layoutConfig: any = getForceLayoutConfig(graph, largeGraphMode);
           layoutConfig.center = [CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2];
-          layout.instance = new G6.Layout['gForce'](layoutConfig);
+          layout.instance = new G6.Layout["gForce"](layoutConfig);
           layout.instance.init({
             nodes: currentUnproccessedData.nodes,
             edges: processedEdges,
@@ -1230,20 +1285,20 @@ const LargeGraph = () => {
           setGraphInstance(graph);
         });
     }
-  });
+  }, [graph]);
 
   // hide the edge label
   useEffect(() => {
-    if (!graph || graph.get('destroyed')) return;
+    if (!graph || graph.get("destroyed")) return;
     graph.getEdges().forEach((edge) => {
       const oriLabel: string = edge.getModel().oriLabel as string;
       edge.update({
-        label: edgeLabelVisible ? labelFormatter(oriLabel, labelMaxLength) : '',
+        label: edgeLabelVisible ? labelFormatter(oriLabel, labelMaxLength) : "",
       });
     });
   }, [edgeLabelVisible]);
 
-  if (typeof window !== 'undefined')
+  if (typeof window !== "undefined")
     window.onresize = () => {
       if (container && container.current) {
         CANVAS_WIDTH = container.current.offsetWidth;
@@ -1256,11 +1311,8 @@ const LargeGraph = () => {
     };
   return (
     <>
-      <div
-        ref={container}
-        style={{ backgroundColor: '#2b2f33', height: 'calc(100vh - 100px)', width: '70%' }}
-      />
-      <LegendPanel />
+      <div className="graph-container" ref={container} />
+      {/* <LegendPanel />
       {graphInstance && (
         <>
           <CanvasMenu
@@ -1276,9 +1328,7 @@ const LargeGraph = () => {
             handleFindPath={findPath}
           />
         </>
-      )}
+      )} */}
     </>
   );
 };
-
-export default LargeGraph;

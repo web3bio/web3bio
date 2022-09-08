@@ -30,8 +30,9 @@ export const useLinks = (platform: string, identity: string, type?: string) => {
         links.push({
           source: x.from.uuid,
           target: x.to.uuid,
-          type: x.source,
-          id: `${x.from.uuid}-${x.to.uuid}`,
+          // type: x.source,
+          // id: `${x.from.uuid}-${x.to.uuid}`,
+          // label:`${x.from.uuid}-${x.to.uuid}`,
         });
       });
     }
