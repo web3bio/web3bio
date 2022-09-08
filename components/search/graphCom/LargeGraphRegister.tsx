@@ -10,7 +10,7 @@ const duration = 2000;
 const animateOpacity = 0.6;
 const animateBackOpacity = 0.1;
 const virtualEdgeOpacity = 0.1;
-const realEdgeOpacity = 0.2;
+const realEdgeOpacity = 0.8;
 
 const darkBackColor = "rgb(43, 47, 51)";
 const disableColor = "#777";
@@ -83,56 +83,53 @@ if (G6) {
     "aggregated-node",
     {
       draw(cfg: any, group) {
-        let width = 60,
-          height = 60;
+        let r = 100;
+        if (isNumber(cfg.size)) {
+          r = (cfg.size as number) / 2;
+        } else if (isArray(cfg.size)) {
+          r = cfg.size[0] / 2;
+        }
         const style = cfg.style || {};
         const colorSet = cfg.colorSet || colorSets[0];
         // halo for hover
-        group.addShape("rect", {
+        group.addShape("circle", {
           attrs: {
-            x: -width * 0.55,
-            y: -height * 0.55,
-            width: width * 1.1,
-            height: height * 1.1,
-            fill: colorSet.mainFill,
+            x: 0,
+            y: 0,
+            r: r + 5,
+            fill: style.fill || colorSet.mainFill || "#2B384E",
             opacity: 0.9,
             lineWidth: 0,
-            radius: (height / 2 || 13) * 1.2,
           },
           name: "halo-shape",
           visible: false,
         });
 
         // focus stroke for hover
-        group.addShape("rect", {
+        group.addShape("circle", {
           attrs: {
-            x: -width * 0.55,
-            y: -height * 0.55,
-            width: width * 1.1,
-            height: height * 1.1,
-            fill: colorSet.mainFill, // '#3B4043',
-            stroke: "#AAB7C4",
+            x: 0,
+            y: 0,
+            r: r + 5,
+            fill: style.fill || colorSet.mainFill || "#2B384E",
+            stroke: "#fff",
+            strokeOpacity: 0.85,
             lineWidth: 1,
-            lineOpacty: 0.85,
-            radius: (height / 2 || 13) * 1.2,
           },
           name: "stroke-shape",
           visible: false,
         });
 
-        const keyShape = group.addShape("rect", {
+        const keyShape = group.addShape("circle", {
           attrs: {
             ...style,
-            x: -width / 2,
-            y: -height / 2,
-            width,
-            height,
-            fill: colorSet.mainFill, // || '#3B4043',
+            x: 0,
+            y: 0,
+            r,
+            fill: colorSet.mainFill,
             stroke: colorSet.mainStroke,
             lineWidth: 2,
             cursor: "pointer",
-            radius: height / 2 || 13,
-            lineDash: [2, 2],
           },
           name: "aggregated-node-keyShape",
         });
@@ -149,10 +146,10 @@ if (G6) {
             textAlign: "center",
             textBaseline: "middle",
             cursor: "pointer",
-            fontSize: 12,
+            fontSize: 14,
             fill: "#fff",
             opacity: 0.85,
-            fontWeight: 400,
+            fontWeight: 600,
           },
           name: "count-shape",
           className: "count-shape",
@@ -163,8 +160,8 @@ if (G6) {
         if (cfg.new) {
           group.addShape("circle", {
             attrs: {
-              x: width / 2 - 3,
-              y: -height / 2 + 3,
+              x: r - 3,
+              y: -r + 3,
               r: 4,
               fill: "#6DD400",
               lineWidth: 0.5,
