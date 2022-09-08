@@ -39,7 +39,7 @@ export function ResultAccount(props) {
             nodes: nodes,
             edges: links,
           }}
-          // onClose={() => setOpen(false)}
+          onClose={() => setOpen(false)}
         />
       )}
     </div>
