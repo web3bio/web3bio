@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { colorSets, global } from "./graphCom/LargeGraphRegister";
 import { uniqueId } from "@antv/util";
-import CanvasMenu from "./graphCom/CanvasMenu";
-import LegendPanel from "./graphCom/LegendPanel";
 
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
@@ -948,72 +946,6 @@ export const ResultGraph = (props) => {
     });
   };
 
-  const searchNode = (id) => {
-    if (!graph || graph.get("destroyed")) return false;
-    const item = graph.findById(id);
-    const originNodeData = nodeMap[id];
-    if (!item && originNodeData) {
-      // does not exit the current mixed graph but in the origin data
-      cachePositions = cacheNodePositions(graph.getNodes());
-      currentUnproccessedData = getExtractNodeMixedGraph(
-        originNodeData,
-        originData,
-        nodeMap,
-        aggregatedNodeMap,
-        currentUnproccessedData
-      );
-      handleRefreshGraph(
-        graph,
-        currentUnproccessedData,
-        CANVAS_WIDTH,
-        CANVAS_HEIGHT,
-        largeGraphMode,
-        true,
-        false
-      );
-    }
-    if (!item) return false;
-    if (item && item.getType() !== "node") return false;
-    graph.focusItem(item, true);
-    clearFocusItemState(graph);
-    graph.setItemState(item, "focus", true);
-    return true;
-  };
-
-  const findPath = () => {
-    if (!graph || graph.get("destroyed")) return false;
-    const selectedNodes = graph.findAllByState("node", "focus");
-    if (selectedNodes.length !== 2) {
-      alert("Please Select only Two Nodes two Find the Path!");
-      return;
-    }
-
-    // find the path and highlight the nodes and edges along the path
-    clearFocusItemState(graph);
-    const { path } = findShortestPath(
-      graph,
-      selectedNodes[0].getID(),
-      selectedNodes[1].getID()
-    );
-    graph.getEdges().forEach((edge) => {
-      const edgeModel = edge.getModel();
-      const source = edgeModel.source;
-      const target = edgeModel.target;
-      const sourceInPathIdx = path.indexOf(source);
-      const targetInPathIdx = path.indexOf(target);
-      if (sourceInPathIdx === -1 || targetInPathIdx === -1) return;
-      if (Math.abs(sourceInPathIdx - targetInPathIdx) === 1) {
-        edge.toFront();
-        graph.setItemState(edge, "focus", true);
-      }
-    });
-    path.forEach((id) => {
-      const pathNode = graph.findById(id);
-      pathNode.toFront();
-      graph.setItemState(pathNode, "focus", true);
-    });
-  };
-
   useEffect(() => {
     if (!graph) {
       fetch(
@@ -1285,7 +1217,7 @@ export const ResultGraph = (props) => {
           setGraphInstance(graph);
         });
     }
-  }, [graph]);
+  });
 
   // hide the edge label
   useEffect(() => {
