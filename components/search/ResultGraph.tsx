@@ -56,7 +56,7 @@ let originData;
 let currentUnproccessedData = { nodes: [], edges: [] };
 let nodeMap = {};
 let aggregatedNodeMap = {};
-let hiddenItemIds = []; // 隐藏的元素 id 数组
+let hiddenItemIds = [];
 let largeGraphMode = true;
 let cachePositions = {};
 let manipulatePosition = undefined;
@@ -72,11 +72,10 @@ let CANVAS_WIDTH = 800,
   CANVAS_HEIGHT = 800;
 
 const descendCompare = (p) => {
-  // 这是比较函数
   return function (m, n) {
     const a = m[p];
     const b = n[p];
-    return b - a; // 降序
+    return b - a;
   };
 };
 
@@ -901,7 +900,7 @@ export const ResultGraph = (props) => {
   };
 
   useEffect(() => {
-    if (!graph) {
+    if (!graph && props.open) {
       const data = props.data;
       if (container && container.current) {
         CANVAS_WIDTH = container.current.offsetWidth;
@@ -915,7 +914,7 @@ export const ResultGraph = (props) => {
       clusteredData.clusters.forEach((cluster, i) => {
         cluster.nodes.forEach((node) => {
           node.level = 0;
-          node.label = node.id;
+          node.label = node.label;
           node.type = "";
           node.colorSet = colorSets[i];
           nodeMap[node.id] = node;
@@ -986,15 +985,12 @@ export const ResultGraph = (props) => {
             if (itemType === "node") {
               if (model.level !== 0) {
                 return `<ul>
-                      <li id='expand'>expand the aggregation point</li>
+                      <li id='expand'>expand identity</li>
                       <li id='hide'>hide this node</li>
                     </ul>`;
               } else {
                 return `<ul>
-                      <li id='collapse'>The cluster to which the aggregation belongs</li>
-                      <li id='neighbor-1'>extended one-degree relationship</li>
-                      <li id='neighbor-2'>extended second-degree relationship</li>
-                      <li id='neighbor-3'>extended third-degree relationship</li>
+                      <li id='collapse'>aggregate identity</li>
                       <li id='hide'>hide this node</li>
                     </ul>`;
               }
@@ -1166,7 +1162,7 @@ export const ResultGraph = (props) => {
       graph.render();
       setGraphInstance(graph);
     }
-  },[props.data]);
+  }, [props.data, props.open]);
 
   // hide the edge label
   useEffect(() => {
@@ -1192,10 +1188,14 @@ export const ResultGraph = (props) => {
     };
   return (
     <div className="graph-mask" onClick={props.onClose}>
-      <div className="graph-container" ref={container} onClick={(e)=>{
-        e.stopPropagation()
-        e.preventDefault()
-      }} />
+      <div
+        className="graph-container"
+        ref={container}
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+      />
     </div>
   );
 };

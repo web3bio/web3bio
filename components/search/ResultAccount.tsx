@@ -40,6 +40,7 @@ export function ResultAccount(props) {
             edges: links,
           }}
           onClose={() => setOpen(false)}
+          open={open}
         />
       )}
     </div>
