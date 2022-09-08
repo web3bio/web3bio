@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
     "@antv/g6": "^4.7.0",
     "@apollo/client": "^3.6.9",
     "graphql": "^16.5.0",
