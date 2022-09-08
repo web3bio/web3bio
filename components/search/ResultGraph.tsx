@@ -282,7 +282,7 @@ const processNodesEdges = (
       style: {
         stroke: global.edge.labelCfg.style.stroke,
         fill: global.edge.labelCfg.style.fill,
-        lineWidth: 4,
+        lineWidth: 10,
         fontSize: 12,
         lineAppendWidth: 10,
         opacity: 1,
@@ -810,11 +810,8 @@ const cacheNodePositions = (nodes) => {
 };
 
 export const ResultGraph = (props) => {
-  console.log(props.data, "ggg");
-
   const container = React.useRef<HTMLDivElement>(null);
   const [edgeLabelVisible, setEdgeLabelVisible] = useState(false);
-  const [graphInstance, setGraphInstance] = useState(null);
 
   // todo: to open the layout or not
   // const stopLayout = () => {
@@ -900,268 +897,266 @@ export const ResultGraph = (props) => {
   };
 
   useEffect(() => {
-    if (!graph && props.open) {
-      const data = props.data;
-      if (container && container.current) {
-        CANVAS_WIDTH = container.current.offsetWidth;
-        CANVAS_HEIGHT = container.current.offsetHeight;
-      }
-
-      originData = props.data;
-      nodeMap = {};
-      const clusteredData = louvain(data, false, "weight");
-      const aggregatedData = { nodes: [], edges: [] };
-      clusteredData.clusters.forEach((cluster, i) => {
-        cluster.nodes.forEach((node) => {
-          node.level = 0;
-          node.label = node.label;
-          node.type = "";
-          node.colorSet = colorSets[i];
-          nodeMap[node.id] = node;
-        });
-        const cnode = {
-          id: cluster.id,
-          type: "aggregated-node",
-          count: cluster.nodes.length,
-          level: 1,
-          label: cluster.id,
-          colorSet: colorSets[i],
-          idx: i,
+    if (graph || !props.open || !props.data.edges.length) return;
+    const data = props.data;
+    if (container && container.current) {
+      CANVAS_WIDTH = container.current.offsetWidth;
+      CANVAS_HEIGHT = container.current.offsetHeight;
+    }
+    originData = props.data;
+    nodeMap = {};
+    const clusteredData = louvain(data, false, "weight");
+    const aggregatedData = { nodes: [], edges: [] };
+    clusteredData.clusters.forEach((cluster, i) => {
+      cluster.nodes.forEach((node) => {
+        node.level = 0;
+        node.label = node.label;
+        node.type = "";
+        node.colorSet = colorSets[i];
+        nodeMap[node.id] = node;
+      });
+      console.log(cluster, "node");
+      const cnode = {
+        id: cluster.id,
+        type: "aggregated-node",
+        count: cluster.nodes.length,
+        level: 1,
+        label: cluster.label,
+        colorSet: colorSets[i],
+        idx: i,
+      };
+      aggregatedNodeMap[cluster.id] = cnode;
+      aggregatedData.nodes.push(cnode);
+    });
+    clusteredData.clusterEdges.forEach((clusterEdge) => {
+      const cedge = {
+        ...clusterEdge,
+        size: Math.log(clusterEdge.count as number),
+        label: "",
+        id: `edge-${uniqueId()}`,
+      };
+      if (cedge.source === cedge.target) {
+        cedge.type = "loop";
+        cedge.loopCfg = {
+          dist: 20,
         };
-        aggregatedNodeMap[cluster.id] = cnode;
-        aggregatedData.nodes.push(cnode);
-      });
-      clusteredData.clusterEdges.forEach((clusterEdge) => {
-        const cedge = {
-          ...clusterEdge,
-          size: Math.log(clusterEdge.count as number),
-          label: "",
-          id: `edge-${uniqueId()}`,
-        };
-        if (cedge.source === cedge.target) {
-          cedge.type = "loop";
-          cedge.loopCfg = {
-            dist: 20,
-          };
-        } else cedge.type = "line";
-        aggregatedData.edges.push(cedge);
-      });
+      } else cedge.type = "line";
+      aggregatedData.edges.push(cedge);
+    });
 
-      data.edges.forEach((edge) => {
-        edge.label = `${edge.source}-${edge.target}`;
-        edge.id = `edge-${uniqueId()}`;
-      });
+    data.edges.forEach((edge) => {
+      edge.label = `${edge.source}-${edge.target}`;
+      edge.id = `edge-${uniqueId()}`;
+    });
 
-      currentUnproccessedData = aggregatedData;
+    currentUnproccessedData = aggregatedData;
 
-      const { edges: processedEdges } = processNodesEdges(
-        currentUnproccessedData.nodes,
-        currentUnproccessedData.edges,
-        CANVAS_WIDTH,
-        CANVAS_HEIGHT,
-        largeGraphMode,
-        true,
-        true
-      );
+    const { edges: processedEdges } = processNodesEdges(
+      currentUnproccessedData.nodes,
+      currentUnproccessedData.edges,
+      CANVAS_WIDTH,
+      CANVAS_HEIGHT,
+      largeGraphMode,
+      true,
+      true
+    );
 
-      const contextMenu = new G6.Menu({
-        shouldBegin(evt) {
-          if (evt.target && evt.target.isCanvas && evt.target.isCanvas())
-            return true;
-          if (evt.item) return true;
-          return false;
-        },
-        getContent(evt) {
-          const { item } = evt;
-          if (evt.target && evt.target.isCanvas && evt.target.isCanvas()) {
-            return `<ul>
+    const contextMenu = new G6.Menu({
+      shouldBegin(evt) {
+        if (evt.target && evt.target.isCanvas && evt.target.isCanvas())
+          return true;
+        if (evt.item) return true;
+        return false;
+      },
+      getContent(evt) {
+        const { item } = evt;
+        if (evt.target && evt.target.isCanvas && evt.target.isCanvas()) {
+          return `<ul>
                   <li id='show'>show all hide nodes</li>
                   <li id='collapseAll'>Aggregate all clusters</li>
                 </ul>`;
-          } else if (!item) return;
-          const itemType = item?.getType();
-          const model = item?.getModel();
-          if (itemType && model) {
-            if (itemType === "node") {
-              if (model.level !== 0) {
-                return `<ul>
+        } else if (!item) return;
+        const itemType = item?.getType();
+        const model = item?.getModel();
+        if (itemType && model) {
+          if (itemType === "node") {
+            if (model.level !== 0) {
+              return `<ul>
                       <li id='expand'>expand identity</li>
                       <li id='hide'>hide this node</li>
                     </ul>`;
-              } else {
-                return `<ul>
+            } else {
+              return `<ul>
                       <li id='collapse'>aggregate identity</li>
                       <li id='hide'>hide this node</li>
                     </ul>`;
-              }
-            } else {
-              return `<ul>
+            }
+          } else {
+            return `<ul>
                     <li id='hide'>hide this edge</li>
                   </ul>`;
-            }
           }
-        },
-        handleMenuClick: (target, item) => {
-          const model = item?.getModel();
-          const liIdStrs = target.id.split("-");
-          let mixedGraphData;
-          switch (liIdStrs[0]) {
-            case "hide":
-              graph.hideItem(item);
-              hiddenItemIds.push(model.id);
-              break;
-            case "expand":
-              const newArray = manageExpandCollapseArray(
-                graph.getNodes().length,
-                model,
-                collapseArray,
-                expandArray
-              );
-              expandArray = newArray.expandArray;
-              collapseArray = newArray.collapseArray;
-              mixedGraphData = getMixedGraph(
-                clusteredData,
-                data,
-                nodeMap,
-                aggregatedNodeMap,
-                expandArray,
-                collapseArray
-              );
-              break;
-            case "collapse":
-              const aggregatedNode = aggregatedNodeMap[model.clusterId];
-              manipulatePosition = {
-                x: aggregatedNode.x,
-                y: aggregatedNode.y,
-              };
-              collapseArray.push(aggregatedNode);
-              for (let i = 0; i < expandArray.length; i++) {
-                if (expandArray[i].id === model.clusterId) {
-                  expandArray.splice(i, 1);
-                  break;
-                }
-              }
-              mixedGraphData = getMixedGraph(
-                clusteredData,
-                data,
-                nodeMap,
-                aggregatedNodeMap,
-                expandArray,
-                collapseArray
-              );
-              break;
-            case "collapseAll":
-              expandArray = [];
-              collapseArray = [];
-              mixedGraphData = getMixedGraph(
-                clusteredData,
-                data,
-                nodeMap,
-                aggregatedNodeMap,
-                expandArray,
-                collapseArray
-              );
-              break;
-            case "neighbor":
-              const expandNeighborSteps = parseInt(liIdStrs[1]);
-              mixedGraphData = getNeighborMixedGraph(
-                model,
-                expandNeighborSteps,
-                data,
-                clusteredData,
-                currentUnproccessedData,
-                nodeMap,
-                aggregatedNodeMap,
-                10
-              );
-              break;
-            case "show":
-              showItems(graph);
-              break;
-            default:
-              break;
-          }
-          if (mixedGraphData) {
-            cachePositions = cacheNodePositions(graph.getNodes());
-            currentUnproccessedData = mixedGraphData;
-            handleRefreshGraph(
-              graph,
-              currentUnproccessedData,
-              CANVAS_WIDTH,
-              CANVAS_HEIGHT,
-              largeGraphMode,
-              true,
-              false
+        }
+      },
+      handleMenuClick: (target, item) => {
+        const model = item?.getModel();
+        const liIdStrs = target.id.split("-");
+        let mixedGraphData;
+        switch (liIdStrs[0]) {
+          case "hide":
+            graph.hideItem(item);
+            hiddenItemIds.push(model.id);
+            break;
+          case "expand":
+            const newArray = manageExpandCollapseArray(
+              graph.getNodes().length,
+              model,
+              collapseArray,
+              expandArray
             );
-          }
-        },
-        // offsetX and offsetY include the padding of the parent container
-        // 需要加上父级容器的 padding-left 16 与自身偏移量 10
-        offsetX: 16 + 10,
-        // 需要加上父级容器的 padding-top 24 、画布兄弟元素高度、与自身偏移量 10
-        offsetY: 0,
-        // the types of items that allow the menu show up
-        // 在哪些类型的元素上响应
-        itemTypes: ["node", "edge", "canvas"],
-      });
+            expandArray = newArray.expandArray;
+            collapseArray = newArray.collapseArray;
+            mixedGraphData = getMixedGraph(
+              clusteredData,
+              data,
+              nodeMap,
+              aggregatedNodeMap,
+              expandArray,
+              collapseArray
+            );
+            break;
+          case "collapse":
+            const aggregatedNode = aggregatedNodeMap[model.clusterId];
+            manipulatePosition = {
+              x: aggregatedNode.x,
+              y: aggregatedNode.y,
+            };
+            collapseArray.push(aggregatedNode);
+            for (let i = 0; i < expandArray.length; i++) {
+              if (expandArray[i].id === model.clusterId) {
+                expandArray.splice(i, 1);
+                break;
+              }
+            }
+            mixedGraphData = getMixedGraph(
+              clusteredData,
+              data,
+              nodeMap,
+              aggregatedNodeMap,
+              expandArray,
+              collapseArray
+            );
+            break;
+          case "collapseAll":
+            expandArray = [];
+            collapseArray = [];
+            mixedGraphData = getMixedGraph(
+              clusteredData,
+              data,
+              nodeMap,
+              aggregatedNodeMap,
+              expandArray,
+              collapseArray
+            );
+            break;
+          case "neighbor":
+            const expandNeighborSteps = parseInt(liIdStrs[1]);
+            mixedGraphData = getNeighborMixedGraph(
+              model,
+              expandNeighborSteps,
+              data,
+              clusteredData,
+              currentUnproccessedData,
+              nodeMap,
+              aggregatedNodeMap,
+              10
+            );
+            break;
+          case "show":
+            showItems(graph);
+            break;
+          default:
+            break;
+        }
+        if (mixedGraphData) {
+          cachePositions = cacheNodePositions(graph.getNodes());
+          currentUnproccessedData = mixedGraphData;
+          handleRefreshGraph(
+            graph,
+            currentUnproccessedData,
+            CANVAS_WIDTH,
+            CANVAS_HEIGHT,
+            largeGraphMode,
+            true,
+            false
+          );
+        }
+      },
+      // offsetX and offsetY include the padding of the parent container
+      // 需要加上父级容器的 padding-left 16 与自身偏移量 10
+      offsetX: 16 + 10,
+      // 需要加上父级容器的 padding-top 24 、画布兄弟元素高度、与自身偏移量 10
+      offsetY: 0,
+      // the types of items that allow the menu show up
+      // 在哪些类型的元素上响应
+      itemTypes: ["node", "edge", "canvas"],
+    });
 
-      graph = new G6.Graph({
-        container: container.current as HTMLElement,
-        width: CANVAS_WIDTH,
-        height: CANVAS_HEIGHT,
-        linkCenter: true,
-        minZoom: 0.1,
-        groupByTypes: false,
-        modes: {
-          default: [
-            {
-              type: "drag-canvas",
-              enableOptimize: true,
-            },
-            {
-              type: "zoom-canvas",
-              enableOptimize: true,
-              optimizeZoom: 0.01,
-            },
-            "drag-node",
-            "shortcuts-call",
-          ],
-          lassoSelect: [
-            {
-              type: "zoom-canvas",
-              enableOptimize: true,
-            },
-            {
-              type: "lasso-select",
-              selectedState: "focus",
-              trigger: "drag",
-            },
-          ],
-          fisheyeMode: [],
-        },
-        defaultNode: {
-          type: "aggregated-node",
-          size: DEFAULTNODESIZE,
-        },
-        plugins: [contextMenu],
-      });
+    graph = new G6.Graph({
+      container: container.current as HTMLElement,
+      width: CANVAS_WIDTH,
+      height: CANVAS_HEIGHT,
+      linkCenter: true,
+      minZoom: 0.1,
+      groupByTypes: false,
+      modes: {
+        default: [
+          {
+            type: "drag-canvas",
+            enableOptimize: true,
+          },
+          {
+            type: "zoom-canvas",
+            enableOptimize: true,
+            optimizeZoom: 0.01,
+          },
+          "drag-node",
+          "shortcuts-call",
+        ],
+        lassoSelect: [
+          {
+            type: "zoom-canvas",
+            enableOptimize: true,
+          },
+          {
+            type: "lasso-select",
+            selectedState: "focus",
+            trigger: "drag",
+          },
+        ],
+        fisheyeMode: [],
+      },
+      defaultNode: {
+        type: "aggregated-node",
+        size: DEFAULTNODESIZE,
+      },
+      plugins: [contextMenu],
+    });
 
-      graph.get("canvas").set("localRefresh", false);
+    graph.get("canvas").set("localRefresh", false);
 
-      const layoutConfig: any = getForceLayoutConfig(graph, largeGraphMode);
-      layoutConfig.center = [CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2];
-      layout.instance = new G6.Layout["gForce"](layoutConfig);
-      layout.instance.init({
-        nodes: currentUnproccessedData.nodes,
-        edges: processedEdges,
-      });
-      layout.instance.execute();
+    const layoutConfig: any = getForceLayoutConfig(graph, largeGraphMode);
+    layoutConfig.center = [CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2];
+    layout.instance = new G6.Layout["gForce"](layoutConfig);
+    layout.instance.init({
+      nodes: currentUnproccessedData.nodes,
+      edges: processedEdges,
+    });
+    layout.instance.execute();
 
-      bindListener(graph);
-      graph.data({ nodes: aggregatedData.nodes, edges: processedEdges });
-      graph.render();
-      setGraphInstance(graph);
-    }
+    bindListener(graph);
+    graph.data({ nodes: aggregatedData.nodes, edges: processedEdges });
+    graph.render();
   }, [props.data, props.open]);
 
   // hide the edge label

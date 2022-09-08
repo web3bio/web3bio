@@ -12,16 +12,16 @@ const animateBackOpacity = 0.1;
 const virtualEdgeOpacity = 0.1;
 const realEdgeOpacity = 0.8;
 
-const darkBackColor = "rgb(43, 47, 51)";
+const darkBackColor = "rgb(20, 20, 20)";
 const disableColor = "#777";
 const theme = "dark";
 const subjectColors = [
-  "#3D76DD",
-  "#19A576",
-  "#65789B",
-  "#B98700",
-  "#5349E0",
-  "#5AB8DB",
+  "#FFFFFF",
+  "#019eeb",
+  "#006afc",
+  "#07ee80",
+  "#ff5fc9",
+  "#ad00ff",
   "#7B48A1",
   "#D77622",
   "#008685",
@@ -40,7 +40,7 @@ export const colorSets = G6
 export const global = {
   node: {
     style: {
-      fill: "#2B384E",
+      fill: "#fff",
     },
     labelCfg: {
       style: {
@@ -50,7 +50,7 @@ export const global = {
     },
     stateStyles: {
       focus: {
-        fill: "#2B384E",
+        fill: "#fff",
       },
     },
   },
@@ -126,9 +126,9 @@ if (G6) {
             x: 0,
             y: 0,
             r,
-            fill: colorSet.mainFill,
             stroke: colorSet.mainStroke,
-            lineWidth: 2,
+            fill: style.fill || colorSet.mainFill || "#2B384E",
+            lineWidth: 3,
             cursor: "pointer",
           },
           name: "aggregated-node-keyShape",
@@ -138,6 +138,7 @@ if (G6) {
         if (cfg.labelCfg) {
           labelStyle = Object.assign(labelStyle, cfg.labelCfg.style);
         }
+
         group.addShape("text", {
           attrs: {
             text: `${cfg.count}`,
@@ -149,7 +150,7 @@ if (G6) {
             fontSize: 14,
             fill: "#fff",
             opacity: 0.85,
-            fontWeight: 600,
+            fontWeight: 700,
           },
           name: "count-shape",
           className: "count-shape",
