@@ -8,6 +8,17 @@ export const useNodes = (rawData) => {
       // type: cur.sources ?? [],
       // size: curIdx === 0 ? 30 : 15,
     });
+    if (cur.identity.nft) {
+      cur.identity.nft.forEach((x) => {
+        pre.push({
+          id: x.uuid,
+          label: x.id,
+          cluster: curIdx + 1,
+          type: x.category,
+          chain: x.chain,
+        });
+      });
+    }
     return pre;
   }, []);
 };

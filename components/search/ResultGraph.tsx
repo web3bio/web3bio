@@ -814,9 +814,9 @@ export const ResultGraph = (props) => {
   const [edgeLabelVisible, setEdgeLabelVisible] = useState(false);
 
   // todo: to open the layout or not
-  // const stopLayout = () => {
-  //   layout.instance.stop();
-  // };
+  const stopLayout = () => {
+    layout.instance.stop();
+  };
 
   const bindListener = (graph) => {
     graph.on("node:mouseenter", (evt: any) => {
@@ -867,7 +867,7 @@ export const ResultGraph = (props) => {
     });
     // click node to show the detail drawer
     graph.on("node:click", (evt: any) => {
-      // stopLayout();
+      stopLayout();
       clearFocusItemState(graph);
       const { item } = evt;
 
@@ -883,7 +883,7 @@ export const ResultGraph = (props) => {
 
     // click edge to show the detail of integrated edge drawer
     graph.on("edge:click", (evt: any) => {
-      // stopLayout();
+      stopLayout();
       clearFocusItemState(graph);
       const { item } = evt;
       // highlight the clicked edge
@@ -906,6 +906,7 @@ export const ResultGraph = (props) => {
     originData = props.data;
     nodeMap = {};
     const clusteredData = louvain(data, false, "weight");
+    console.log("clusterData:", clusteredData, "graph raw:", props.data);
     const aggregatedData = { nodes: [], edges: [] };
     clusteredData.clusters.forEach((cluster, i) => {
       cluster.nodes.forEach((node) => {
@@ -915,7 +916,6 @@ export const ResultGraph = (props) => {
         node.colorSet = colorSets[i];
         nodeMap[node.id] = node;
       });
-      console.log(cluster, "node");
       const cnode = {
         id: cluster.id,
         type: "aggregated-node",
@@ -1157,7 +1157,7 @@ export const ResultGraph = (props) => {
     bindListener(graph);
     graph.data({ nodes: aggregatedData.nodes, edges: processedEdges });
     graph.render();
-  }, [props.data, props.open]);
+  });
 
   // hide the edge label
   useEffect(() => {

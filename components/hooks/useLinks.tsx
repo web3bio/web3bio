@@ -19,6 +19,7 @@ export const useLinks = (platform: string, identity: string, type?: string) => {
             },
     }
   );
+  console.log(data,'hhh')
   const links = [];
   if (data) {
     const source =
