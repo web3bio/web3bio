@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { colorSets, global } from "./graphCom/LargeGraphRegister";
 import { uniqueId } from "@antv/util";
+import { Loading } from "../shared/Loading";
+import { Error } from "../shared/Error";
 
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
@@ -663,53 +665,6 @@ const generateNeighbors = (
   return { nodes, edges };
 };
 
-const getExtractNodeMixedGraph = (
-  extractNodeData,
-  originData,
-  nodeMap,
-  aggregatedNodeMap,
-  currentUnproccessedData
-) => {
-  const extractNodeId = extractNodeData.id;
-  // const extractNodeClusterId = extractNodeData.clusterId;
-  // push to the current rendering data
-  currentUnproccessedData.nodes.push(extractNodeData);
-  // update the count of aggregatedNodeMap, when to revert?
-  // aggregatedNodeMap[extractNodeClusterId].count --;
-
-  // extract the related edges
-  originData.edges.forEach((edge) => {
-    if (edge.source === extractNodeId) {
-      const targetClusterId = nodeMap[edge.target].clusterId;
-      if (!aggregatedNodeMap[targetClusterId].expanded) {
-        // did not expand, create an virtual edge fromt he extract node to the cluster
-        currentUnproccessedData.edges.push({
-          id: uniqueId(),
-          source: extractNodeId,
-          target: targetClusterId,
-        });
-      } else {
-        // if the cluster is already expanded, push the origin edge
-        currentUnproccessedData.edges.push(edge);
-      }
-    } else if (edge.target === extractNodeId) {
-      const sourceClusterId = nodeMap[edge.source].clusterId;
-      if (!aggregatedNodeMap[sourceClusterId].expanded) {
-        // did not expand, create an virtual edge fromt he extract node to the cluster
-        currentUnproccessedData.edges.push({
-          id: uniqueId(),
-          target: extractNodeId,
-          source: sourceClusterId,
-        });
-      } else {
-        // if the cluster is already expanded, push the origin edge
-        currentUnproccessedData.edges.push(edge);
-      }
-    }
-  });
-  return currentUnproccessedData;
-};
-
 const examAncestors = (model, expandedArray, length, keepTags) => {
   for (let i = 0; i < length; i++) {
     const expandedNode = expandedArray[i];
@@ -897,7 +852,9 @@ export const ResultGraph = (props) => {
   };
 
   useEffect(() => {
-    if (graph || !props.open || !props.data.edges.length) return;
+    if (graph && !props.open) {
+      console.log(graph, props.open, "open");
+    }
     const data = props.data;
     if (container && container.current) {
       CANVAS_WIDTH = container.current.offsetWidth;
@@ -1183,14 +1140,24 @@ export const ResultGraph = (props) => {
     };
   return (
     <div className="graph-mask" onClick={props.onClose}>
-      <div
-        className="graph-container"
-        ref={container}
-        onClick={(e) => {
-          e.stopPropagation();
-          e.preventDefault();
-        }}
-      />
+      {props.graph.loading ? (
+        <div className="graph-container">
+          <Loading />
+        </div>
+      ) : props.graph.error ? (
+        <div className="graph-container">
+          <Error text={props.graph.error} />
+        </div>
+      ) : (
+        <div
+          className="graph-container"
+          ref={container}
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+          }}
+        />
+      )}
     </div>
   );
 };

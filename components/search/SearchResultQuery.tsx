@@ -6,7 +6,6 @@ import { Error } from "../shared/Error";
 import { GET_PROFILES_QUERY } from "../../utils/queries";
 
 export const SearchResultQuery = ({ searchTerm, searchPlatform }) => {
-  console.log(searchTerm, searchPlatform);
   const { loading, error, data } = useQuery(GET_PROFILES_QUERY, {
     variables: {
       platform: searchPlatform,
@@ -39,7 +38,6 @@ export const SearchResultQuery = ({ searchTerm, searchPlatform }) => {
         (elem) => elem.identity.uuid == ele.identity.uuid
       )
   );
-  console.log(resultNeighbor);
  
   return results ? (
     <ResultAccount
