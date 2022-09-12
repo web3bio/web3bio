@@ -15,7 +15,7 @@ export const useGraphData = (value, platform, type) => {
             }
           : {
               platform,
-              value,
+              identity: value,
             },
     }
   );

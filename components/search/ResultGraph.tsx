@@ -3,6 +3,7 @@ import { colorSets, global } from "./graphCom/LargeGraphRegister";
 import { uniqueId } from "@antv/util";
 import { Loading } from "../shared/Loading";
 import { Error } from "../shared/Error";
+import { useGraphData } from "../hooks/useGraphData";
 
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
@@ -765,9 +766,10 @@ const cacheNodePositions = (nodes) => {
 };
 
 export const ResultGraph = (props) => {
+  const { value, platform, type, onClose } = props;
   const container = React.useRef<HTMLDivElement>(null);
   const [edgeLabelVisible, setEdgeLabelVisible] = useState(false);
-
+  const result = useGraphData(value, platform, type);
   // todo: to open the layout or not
   const stopLayout = () => {
     layout.instance.stop();
@@ -851,24 +853,70 @@ export const ResultGraph = (props) => {
     });
   };
 
+  const resolveGraphData = (source) => {
+    const nodes = [];
+    const edges = [];
+    source.forEach((x) => {
+      const from = x.from;
+      const to = x.to;
+      edges.push({
+        source: from.uuid,
+        target: to.uuid,
+        label: x.source,
+        id: uniqueId(),
+      });
+      from.nft?.forEach((y) => {
+        edges.push({
+          source: from.uuid,
+          target: y.uuid,
+          label: "hold",
+          id: uniqueId(),
+        });
+      });
+      to.nft?.forEach((y) => {
+        edges.push({
+          source: from.uuid,
+          target: y.uuid,
+          label: "hold",
+          id: uniqueId(),
+        });
+      });
+      nodes.push({
+        id: to.uuid,
+        label: to.displayName ?? to.identity,
+        platfrom: to.platform,
+        clusterId: uniqueId(),
+        nodes: to.nft.map((k) => ({
+          id: k.uuid,
+          label: k.id,
+          category: k.category,
+          chain: k.chain,
+        })),
+      });
+    });
+    return { nodes, edges };
+  };
+
   useEffect(() => {
-    if (graph && !props.open) {
-      console.log(graph, props.open, "open");
-    }
-    const data = props.data;
+    if (!result.data) return;
     if (container && container.current) {
       CANVAS_WIDTH = container.current.offsetWidth;
       CANVAS_HEIGHT = container.current.offsetHeight;
     }
-    originData = props.data;
+    const data = resolveGraphData(
+      type === "ens"
+        ? result.data.nft.owner.neighborWithTraversal
+        : result.data.identity.neighborWithTraversal
+    );
+    console.log(data, "ssss");
+    originData = result.data;
     nodeMap = {};
-    const clusteredData = louvain(data, false, "weight");
-    console.log("clusterData:", clusteredData, "graph raw:", props.data);
+    const clusteredData = { clusters: data.nodes, clusterEdges: data.edges };
+    console.log("clusterData:", clusteredData);
     const aggregatedData = { nodes: [], edges: [] };
     clusteredData.clusters.forEach((cluster, i) => {
       cluster.nodes.forEach((node) => {
         node.level = 0;
-        node.label = node.label;
         node.type = "";
         node.colorSet = colorSets[i];
         nodeMap[node.id] = node;
@@ -901,10 +949,10 @@ export const ResultGraph = (props) => {
       aggregatedData.edges.push(cedge);
     });
 
-    data.edges.forEach((edge) => {
-      edge.label = `${edge.source}-${edge.target}`;
-      edge.id = `edge-${uniqueId()}`;
-    });
+    // data.edges.forEach((edge) => {
+    //   edge.label = `${edge.source}-${edge.target}`;
+    //   edge.id = `edge-${uniqueId()}`;
+    // });
 
     currentUnproccessedData = aggregatedData;
 
@@ -1114,6 +1162,8 @@ export const ResultGraph = (props) => {
     bindListener(graph);
     graph.data({ nodes: aggregatedData.nodes, edges: processedEdges });
     graph.render();
+
+    return graph.clear();
   });
 
   // hide the edge label
@@ -1138,15 +1188,16 @@ export const ResultGraph = (props) => {
         graph.changeSize(CANVAS_WIDTH, CANVAS_HEIGHT);
       }
     };
+
   return (
-    <div className="graph-mask" onClick={props.onClose}>
-      {props.graph.loading ? (
+    <div className="graph-mask" onClick={onClose}>
+      {result.loading ? (
         <div className="graph-container">
           <Loading />
         </div>
-      ) : props.graph.error ? (
+      ) : result.error ? (
         <div className="graph-container">
-          <Error text={props.graph.error} />
+          <Error text={result.error} />
         </div>
       ) : (
         <div
