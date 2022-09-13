@@ -132,21 +132,14 @@ export default function Home() {
                 </button>
               </div>
             </form>
-            {(() => {
-              if (searchTerm) {
-                switch (searchPlatform) {
-                  case "ENS":
-                    return <SearchResultEns searchTerm={searchTerm} />;
-                  default:
-                    return (
-                      <SearchResultQuery
-                        searchTerm={searchTerm}
-                        searchPlatform={searchPlatform}
-                      />
-                    );
-                }
-              }
-            })()}
+            {searchTerm && searchPlatform === "ENS" ? (
+              <SearchResultEns searchTerm={searchTerm} />
+            ) : (
+              <SearchResultQuery
+                searchTerm={searchTerm}
+                searchPlatform={searchPlatform}
+              />
+            )}
           </div>
         </div>
         <div className="web3bio-footer">
