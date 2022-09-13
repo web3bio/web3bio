@@ -25,13 +25,14 @@ export const SearchResultEns = ({ searchTerm }) => {
         nft: results?.nft,
       },
     };
+
     const temp = [...results?.neighbor];
     temp.unshift(resultOwner);
     setResultNeighbor(
       temp.filter(
         (ele, index) =>
           index ===
-          resultNeighbor.findIndex(
+          temp.findIndex(
             (elem) => elem.identity.uuid == ele.identity.uuid
           )
       )

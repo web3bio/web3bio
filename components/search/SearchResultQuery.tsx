@@ -4,6 +4,7 @@ import { Loading } from "../shared/Loading";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
 import { GET_PROFILES_QUERY } from "../../utils/queries";
+import { useEffect, useState } from "react";
 
 export const SearchResultQuery = ({ searchTerm, searchPlatform }) => {
   const { loading, error, data } = useQuery(GET_PROFILES_QUERY, {
@@ -12,12 +13,12 @@ export const SearchResultQuery = ({ searchTerm, searchPlatform }) => {
       identity: searchTerm,
     },
   });
+  const [resultNeighbor, setResultNeighbor] = useState([]);
 
-  if (loading) return <Loading />;
-  if (error) return <Error text={error} />;
-
-  const results = data?.identity;
-  let resultOwner = {
+  useEffect(() => {
+    if (!data || !data.identity) return;
+    const results = data?.identity;
+    const resultOwner = {
       identity: {
         uuid: results?.uuid,
         platform: results?.platform,
@@ -25,26 +26,25 @@ export const SearchResultQuery = ({ searchTerm, searchPlatform }) => {
         displayName: results?.displayName,
         nft: results?.nft,
       },
-    },
-    resultNeighbor = [];
-  if (results?.neighbor) {
-    resultNeighbor = [...results?.neighbor];
-  }
-  resultNeighbor.unshift(resultOwner);
-  resultNeighbor = resultNeighbor.filter(
-    (ele, index) =>
-      index ===
-      resultNeighbor.findIndex(
-        (elem) => elem.identity.uuid == ele.identity.uuid
-      )
-  );
- 
-  return results ? (
-    <ResultAccount
-      searchTerm={searchTerm}
-      resultNeighbor={resultNeighbor}
-    />
-  ) : (
-    <Empty />
+    };
+    if (results?.neighbor) {
+      const temp = [...results?.neighbor];
+      temp.unshift(resultOwner);
+      setResultNeighbor(
+        temp.filter(
+          (ele, index) =>
+            index ===
+            temp.findIndex((elem) => elem.identity.uuid == ele.identity.uuid)
+        )
+      );
+    }
+  }, [data]);
+
+  if (loading) return <Loading />;
+  if (error) return <Error text={error} />;
+  if (!data?.identity) return <Empty />;
+  
+  return (
+    <ResultAccount searchTerm={searchTerm} resultNeighbor={resultNeighbor} />
   );
 };
