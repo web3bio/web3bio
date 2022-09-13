@@ -132,7 +132,7 @@ export default function Home() {
                 </button>
               </div>
             </form>
-            {searchTerm && searchPlatform === "ENS" ? (
+            {searchPlatform === "ENS" ? (
               <SearchResultEns searchTerm={searchTerm} />
             ) : (
               <SearchResultQuery

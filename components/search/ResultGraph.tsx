@@ -1,9 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Loading } from "../shared/Loading";
 import { Error } from "../shared/Error";
-import { useGraphData } from "../hooks/useGraphData";
 import _ from "lodash";
 import { Empty } from "../shared/Empty";
+import { useQuery } from "@apollo/client";
+import {
+  GET_IDENTITY_GRAPH_DATA,
+  GET_IDENTITY_GRAPH_DATA_ENS,
+  GET_PROFILES_ENS,
+} from "../../utils/queries";
 
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
@@ -98,124 +103,138 @@ const resolveGraphData = (source) => {
 export const ResultGraph = (props) => {
   const { value, platform, type, onClose } = props;
   const container = React.useRef<HTMLDivElement>(null);
-  const result = useGraphData(value, platform, type);
-
-  useEffect(() => {
-    if (graph) return;
-    if (container && container.current) {
-      CANVAS_WIDTH = container.current.offsetWidth;
-      CANVAS_HEIGHT = container.current.offsetHeight;
+  const { data, loading, error } = useQuery(
+    type === "ens" ? GET_IDENTITY_GRAPH_DATA_ENS : GET_IDENTITY_GRAPH_DATA,
+    {
+      variables:
+        type === "ens"
+          ? {
+              ens: value,
+            }
+          : {
+              platform,
+              identity: value,
+            },
     }
-    const data = resolveGraphData(
-      type === "ens"
-        ? result.data.nft.owner.neighborWithTraversal
-        : result.data.identity.neighborWithTraversal
-    );
-    console.log(data, "graphData");
+  );
 
-    graph = new G6.Graph({
-      container: container.current,
-      CANVAS_WIDTH,
-      CANVAS_HEIGHT,
-      layout: {
-        type: "force",
-        preventOverlap: true,
-        linkDistance: (d) => {
-          if (d.source.id === "node0") {
-            return 100;
-          }
-          return 30;
-        },
-        nodeStrength: (d) => {
-          if (d.isLeaf) {
-            return -50;
-          }
-          return -10;
-        },
-        edgeStrength: (d) => {
-          if (
-            d.source.id === "node1" ||
-            d.source.id === "node2" ||
-            d.source.id === "node3"
-          ) {
-            return 0.7;
-          }
-          return 0.1;
-        },
-      },
-      defaultNode: {
-        color: "#5B8FF9",
-      },
-      modes: {
-        default: ["drag-canvas"],
-      },
-    });
+  console.log("data", data);
+  // useEffect(() => {
+  //   if (graph || !data) return;
+  //   if (container && container.current) {
+  //     CANVAS_WIDTH = container.current.offsetWidth;
+  //     CANVAS_HEIGHT = container.current.offsetHeight;
+  //   }
+  //   const res = resolveGraphData(
+  //     type === "ens"
+  //       ? data.nft.owner.neighborWithTraversal
+  //       : data.identity.neighborWithTraversal
+  //   );
+  //   console.log(res, "graphData");
 
-    graph.data({
-      nodes: data.nodes,
-      edges: data.edges.map(function (edge, i) {
-        edge.id = "edge" + i;
-        return Object.assign({}, edge);
-      }),
-    });
-    graph.render();
+  //   graph = new G6.Graph({
+  //     container: container.current,
+  //     CANVAS_WIDTH,
+  //     CANVAS_HEIGHT,
+  //     layout: {
+  //       type: "force",
+  //       preventOverlap: true,
+  //       linkDistance: (d) => {
+  //         if (d.source.id === "node0") {
+  //           return 100;
+  //         }
+  //         return 30;
+  //       },
+  //       nodeStrength: (d) => {
+  //         if (d.isLeaf) {
+  //           return -50;
+  //         }
+  //         return -10;
+  //       },
+  //       edgeStrength: (d) => {
+  //         if (
+  //           d.source.id === "node1" ||
+  //           d.source.id === "node2" ||
+  //           d.source.id === "node3"
+  //         ) {
+  //           return 0.7;
+  //         }
+  //         return 0.1;
+  //       },
+  //     },
+  //     defaultNode: {
+  //       color: "#5B8FF9",
+  //     },
+  //     modes: {
+  //       default: ["drag-canvas"],
+  //     },
+  //   });
 
-    graph.on("node:dragstart", function (e) {
-      graph.layout();
-      refreshDragedNodePosition(e);
-    });
-    graph.on("node:drag", function (e) {
-      console.log("drag");
-      refreshDragedNodePosition(e);
-    });
-    graph.on("node:dragend", function (e) {
-      e.item.get("model").fx = null;
-      e.item.get("model").fy = null;
-    });
+  //   graph.data({
+  //     nodes: res.nodes,
+  //     edges: res.edges.map(function (edge, i) {
+  //       edge.id = "edge" + i;
+  //       return Object.assign({}, edge);
+  //     }),
+  //   });
+  //   graph.render();
 
-    function refreshDragedNodePosition(e) {
-      const model = e.item.get("model");
-      model.fx = e.x;
-      model.fy = e.y;
-    }
+  //   graph.on("node:dragstart", function (e) {
+  //     graph.layout();
+  //     refreshDragedNodePosition(e);
+  //   });
+  //   graph.on("node:drag", function (e) {
+  //     console.log("drag");
+  //     refreshDragedNodePosition(e);
+  //   });
+  //   graph.on("node:dragend", function (e) {
+  //     e.item.get("model").fx = null;
+  //     e.item.get("model").fy = null;
+  //   });
 
-    // return graph.clear();
-  }, []);
+  //   function refreshDragedNodePosition(e) {
+  //     const model = e.item.get("model");
+  //     model.fx = e.x;
+  //     model.fy = e.y;
+  //   }
 
-  if (result.loading)
+  //   // return graph.clear();
+  // }, []);
+  if (loading)
     return (
-      <div className="graph-mask">
+      <div className="graph-mask" onClick={onClose}>
         <div className="graph-container">
           <Loading />
         </div>
       </div>
     );
-  if (result.error)
+  if (error)
     return (
-      <div className="graph-mask">
+      <div className="graph-mask" onClick={onClose}>
         <div className="graph-container">
-          <Error text={result.error} />
+          <Error text={error} />
         </div>
       </div>
     );
-  if (result.data)
+  if (!data)
     return (
       <div className="graph-mask" onClick={onClose}>
-        <div
-          className="graph-container"
-          ref={container}
-          onClick={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
-          }}
-        />
+        <div className="graph-container">
+          <Empty />
+        </div>
       </div>
     );
+
   return (
-    <div className="graph-mask">
-      <div className="graph-container">
-        <Empty />
-      </div>
+    <div className="graph-mask" onClick={onClose}>
+      <div
+        className="graph-container"
+        ref={container}
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+      />
     </div>
   );
 };

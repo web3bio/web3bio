@@ -117,30 +117,28 @@ export const GET_IDENTITY_GRAPH_DATA_ENS = gql`
           chain
           id
         }
-        neighborWithTraversal(depth: 5) {
+        neighborWithTraversal(depth: 3) {
           source
           from {
             platform
             identity
             uuid
-            displayName
             nft {
-              uuid
               category
               chain
               id
+              uuid
             }
           }
           to {
             platform
             identity
             uuid
-            displayName
             nft {
-              uuid
               category
               chain
               id
+              uuid
             }
           }
         }

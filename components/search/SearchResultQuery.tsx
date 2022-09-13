@@ -43,8 +43,12 @@ export const SearchResultQuery = ({ searchTerm, searchPlatform }) => {
   if (loading) return <Loading />;
   if (error) return <Error text={error} />;
   if (!data?.identity) return <Empty />;
-  
+
   return (
-    <ResultAccount searchTerm={searchTerm} resultNeighbor={resultNeighbor} />
+    <ResultAccount
+      searchPlatform={searchPlatform}
+      searchTerm={searchTerm}
+      resultNeighbor={resultNeighbor}
+    />
   );
 };
