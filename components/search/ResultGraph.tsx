@@ -8,6 +8,7 @@ import {
   GET_IDENTITY_GRAPH_DATA,
   GET_IDENTITY_GRAPH_ENS,
 } from "../../utils/queries";
+import { useGraph } from "./hooks/useGraph";
 
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
@@ -101,141 +102,110 @@ const resolveGraphData = (source) => {
 
 export const ResultGraph = (props) => {
   const { value, platform, type, onClose } = props;
+  
   const container = React.useRef<HTMLDivElement>(null);
+  const {loading, error,data} = useGraph(value,platform,type)
 
-  const { loading, error, data } = useQuery(
-    type === "ens" ? GET_IDENTITY_GRAPH_ENS : GET_IDENTITY_GRAPH_DATA,
-    {
-      variables:
-        type === "ens"
-          ? {
-              ens: value,
-            }
-          : {
-              platform,
-              identity: value,
-            },
+  // todo: kill the infinite loop
+  console.log(loading, error,data)
+  useEffect(() => {
+    if (graph || !data) return;
+    if (container && container.current) {
+      CANVAS_WIDTH = container.current.offsetWidth;
+      CANVAS_HEIGHT = container.current.offsetHeight;
     }
-  );
-
-  console.log(loading, data, "ggg", value);
-
-  // useEffect(() => {
-  //   if (graph || !data) return;
-  //   if (container && container.current) {
-  //     CANVAS_WIDTH = container.current.offsetWidth;
-  //     CANVAS_HEIGHT = container.current.offsetHeight;
-  //   }
-  //   const res = resolveGraphData(
-  //     type === "ens"
-  //       ? data.nft.owner.neighborWithTraversal
-  //       : data.identity.neighborWithTraversal
-  //   );
-  //   console.log(res, "graphData");
-
-  //   graph = new G6.Graph({
-  //     container: container.current,
-  //     CANVAS_WIDTH,
-  //     CANVAS_HEIGHT,
-  //     layout: {
-  //       type: "force",
-  //       preventOverlap: true,
-  //       linkDistance: (d) => {
-  //         if (d.source.id === "node0") {
-  //           return 100;
-  //         }
-  //         return 30;
-  //       },
-  //       nodeStrength: (d) => {
-  //         if (d.isLeaf) {
-  //           return -50;
-  //         }
-  //         return -10;
-  //       },
-  //       edgeStrength: (d) => {
-  //         if (
-  //           d.source.id === "node1" ||
-  //           d.source.id === "node2" ||
-  //           d.source.id === "node3"
-  //         ) {
-  //           return 0.7;
-  //         }
-  //         return 0.1;
-  //       },
-  //     },
-  //     defaultNode: {
-  //       color: "#5B8FF9",
-  //     },
-  //     modes: {
-  //       default: ["drag-canvas"],
-  //     },
-  //   });
-
-  //   graph.data({
-  //     nodes: res.nodes,
-  //     edges: res.edges.map(function (edge, i) {
-  //       edge.id = "edge" + i;
-  //       return Object.assign({}, edge);
-  //     }),
-  //   });
-  //   graph.render();
-
-  //   graph.on("node:dragstart", function (e) {
-  //     graph.layout();
-  //     refreshDragedNodePosition(e);
-  //   });
-  //   graph.on("node:drag", function (e) {
-  //     console.log("drag");
-  //     refreshDragedNodePosition(e);
-  //   });
-  //   graph.on("node:dragend", function (e) {
-  //     e.item.get("model").fx = null;
-  //     e.item.get("model").fy = null;
-  //   });
-
-  //   function refreshDragedNodePosition(e) {
-  //     const model = e.item.get("model");
-  //     model.fx = e.x;
-  //     model.fy = e.y;
-  //   }
-
-  //   // return graph.clear();
-  // }, []);
-  if (loading)
-    return (
-      <div className="graph-mask" onClick={onClose}>
-        <div className="graph-container">
-          <Loading />
-        </div>
-      </div>
+    const res = resolveGraphData(
+      type === "ens"
+        ? data.nft.owner.neighborWithTraversal
+        : data.identity.neighborWithTraversal
     );
-  if (error)
-    return (
-      <div className="graph-mask" onClick={onClose}>
-        <div className="graph-container">
-          <Error text={error} />
-        </div>
-      </div>
-    );
-  if (!data)
-    return (
-      <div className="graph-mask" onClick={onClose}>
-        <div className="graph-container">
-          <Empty />
-        </div>
-      </div>
-    );
+    console.log(res, "graphData");
+
+    graph = new G6.Graph({
+      container: container.current,
+      CANVAS_WIDTH,
+      CANVAS_HEIGHT,
+      layout: {
+        type: "force",
+        preventOverlap: true,
+        linkDistance: (d) => {
+          if (d.source.id === "node0") {
+            return 100;
+          }
+          return 30;
+        },
+        nodeStrength: (d) => {
+          if (d.isLeaf) {
+            return -50;
+          }
+          return -10;
+        },
+        edgeStrength: (d) => {
+          if (
+            d.source.id === "node1" ||
+            d.source.id === "node2" ||
+            d.source.id === "node3"
+          ) {
+            return 0.7;
+          }
+          return 0.1;
+        },
+      },
+      defaultNode: {
+        color: "#5B8FF9",
+      },
+      modes: {
+        default: ["drag-canvas"],
+      },
+    });
+
+    graph.data({
+      nodes: res.nodes,
+      edges: res.edges.map(function (edge, i) {
+        edge.id = "edge" + i;
+        return Object.assign({}, edge);
+      }),
+    });
+    graph.render();
+
+    graph.on("node:dragstart", function (e) {
+      graph.layout();
+      refreshDragedNodePosition(e);
+    });
+    graph.on("node:drag", function (e) {
+      console.log("drag");
+      refreshDragedNodePosition(e);
+    });
+    graph.on("node:dragend", function (e) {
+      e.item.get("model").fx = null;
+      e.item.get("model").fy = null;
+    });
+
+    function refreshDragedNodePosition(e) {
+      const model = e.item.get("model");
+      model.fx = e.x;
+      model.fy = e.y;
+    }
+
+    return graph.clear();
+  }, []);
 
   return (
     <div className="graph-mask" onClick={onClose}>
-      <div
-        className="graph-container"
-        ref={container}
-        onClick={(e) => {
-          e.stopPropagation();
-          e.preventDefault();
-        }}
-      />
+      {(!data && (
+        <div className="graph-container">
+          {loading ? <Loading /> : error ? <Error text={error} /> : <Empty />}
+        </div>
+      )) || (
+        <div
+          className="graph-container"
+          ref={container}
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+          }}
+        />
+      )}
     </div>
   );
 };
