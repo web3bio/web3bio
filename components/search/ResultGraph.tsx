@@ -101,7 +101,7 @@ export const ResultGraph = (props) => {
   const result = useGraphData(value, platform, type);
 
   useEffect(() => {
-    if (!result.data || graph) return;
+    if (graph) return;
     if (container && container.current) {
       CANVAS_WIDTH = container.current.offsetWidth;
       CANVAS_HEIGHT = container.current.offsetHeight;
@@ -173,25 +173,14 @@ export const ResultGraph = (props) => {
       e.item.get("model").fy = null;
     });
 
+    function refreshDragedNodePosition(e) {
+      const model = e.item.get("model");
+      model.fx = e.x;
+      model.fy = e.y;
+    }
+
     // return graph.clear();
-  }, [result, type]);
-
-  function refreshDragedNodePosition(e) {
-    const model = e.item.get("model");
-    model.fx = e.x;
-    model.fy = e.y;
-  }
-
-  if (typeof window !== "undefined")
-    window.onresize = () => {
-      if (container && container.current) {
-        CANVAS_WIDTH = container.current.offsetWidth;
-        CANVAS_HEIGHT = container.current.offsetHeight;
-      }
-      if (graph) {
-        graph.changeSize(CANVAS_WIDTH, CANVAS_HEIGHT);
-      }
-    };
+  }, []);
 
   if (result.loading)
     return (
