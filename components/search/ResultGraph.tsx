@@ -6,8 +6,7 @@ import { Empty } from "../shared/Empty";
 import { useQuery } from "@apollo/client";
 import {
   GET_IDENTITY_GRAPH_DATA,
-  GET_IDENTITY_GRAPH_DATA_ENS,
-  GET_PROFILES_ENS,
+  GET_IDENTITY_GRAPH_ENS,
 } from "../../utils/queries";
 
 const isBrowser = typeof window !== "undefined";
@@ -103,8 +102,9 @@ const resolveGraphData = (source) => {
 export const ResultGraph = (props) => {
   const { value, platform, type, onClose } = props;
   const container = React.useRef<HTMLDivElement>(null);
-  const { data, loading, error } = useQuery(
-    type === "ens" ? GET_IDENTITY_GRAPH_DATA_ENS : GET_IDENTITY_GRAPH_DATA,
+
+  const { loading, error, data } = useQuery(
+    type === "ens" ? GET_IDENTITY_GRAPH_ENS : GET_IDENTITY_GRAPH_DATA,
     {
       variables:
         type === "ens"
@@ -118,7 +118,8 @@ export const ResultGraph = (props) => {
     }
   );
 
-  console.log("data", data);
+  console.log(loading, data, "ggg", value);
+
   // useEffect(() => {
   //   if (graph || !data) return;
   //   if (container && container.current) {
