@@ -19,5 +19,6 @@ export const useGraphData = (value, platform, type) => {
             },
     }
   );
+  console.log(data,'raw')
   return { loading, error, data };
 };

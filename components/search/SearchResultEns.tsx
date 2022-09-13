@@ -4,12 +4,13 @@ import { Loading } from "../shared/Loading";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
 import { GET_PROFILES_ENS } from "../../utils/queries";
+import _ from 'lodash'
 
 export const SearchResultEns = ({ searchTerm }) => {
   const { loading, error, data } = useQuery(GET_PROFILES_ENS, {
     variables: { ens: searchTerm },
   });
-
+  
   if (loading) return <Loading />;
   if (error) return <Error text={error} />;
   if (!data?.nft) return <Empty />;
