@@ -8,13 +8,18 @@ import {
   GET_IDENTITY_GRAPH_DATA,
   GET_IDENTITY_GRAPH_ENS,
 } from "../../utils/queries";
-import { useGraph } from "./hooks/useGraph";
 
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
 const insertCss = isBrowser ? require("insert-css") : null;
-
+const labelMaxLength = 5;
+const largeGraphMode = true;
 let graph = null;
+let layout = {
+  type: "",
+  instance: null,
+  destroyed: true,
+};
 
 if (isBrowser) {
   insertCss(`
@@ -72,6 +77,7 @@ const labelFormatter = (text: string, minLength: number = 10): string => {
 const resolveGraphData = (source) => {
   const nodes = [];
   const edges = [];
+  console.log(source, "source");
   source.forEach((x, idx) => {
     const from = x.from;
     const to = x.to;
@@ -79,6 +85,8 @@ const resolveGraphData = (source) => {
       source: from.uuid,
       target: to.uuid,
       label: x.source,
+      id: `${from.uuid}-${to.uuid}`,
+      level: 1,
     });
     nodes.push({
       id: to.uuid,
@@ -86,6 +94,38 @@ const resolveGraphData = (source) => {
       platfrom: to.platform,
       nft: to.nft,
       level: 1,
+    });
+    to.nft.forEach((k) => {
+      nodes.push({
+        id: k.uuid,
+        label: k.id,
+        category: k.category,
+        chain: k.chian,
+        level: 0,
+      });
+      edges.push({
+        source: to.uuid,
+        target: k.uuid,
+        label: k.__typename,
+        id: `${to.uuid}-${k.uuid}`,
+        level: 0,
+      });
+    });
+    from.nft.forEach((k) => {
+      nodes.push({
+        id: k.uuid,
+        label: k.id,
+        category: k.category,
+        chain: k.chian,
+        level: 0,
+      });
+      edges.push({
+        source: from.uuid,
+        target: k.uuid,
+        label: k.__typename,
+        id: `${from.uuid}-${k.uuid}`,
+        level: 0,
+      });
     });
     nodes.push({
       id: from.uuid,
@@ -98,6 +138,81 @@ const resolveGraphData = (source) => {
   const _nodes = _.uniqBy(nodes, "id");
   const _edges = _.uniqBy(edges, "id");
   return { nodes: _nodes, edges: _edges };
+};
+
+const getForceLayoutConfig = (graph, largeGraphMode, configSettings?) => {
+  let {
+    linkDistance,
+    edgeStrength,
+    nodeStrength,
+    nodeSpacing,
+    preventOverlap,
+    nodeSize,
+    collideStrength,
+    alpha,
+    alphaDecay,
+    alphaMin,
+  } = configSettings || { preventOverlap: true };
+
+  if (!linkDistance && linkDistance !== 0) linkDistance = 225;
+  if (!edgeStrength && edgeStrength !== 0) edgeStrength = 50;
+  if (!nodeStrength && nodeStrength !== 0) nodeStrength = 200;
+  if (!nodeSpacing && nodeSpacing !== 0) nodeSpacing = 5;
+
+  const config = {
+    type: "gForce",
+    minMovement: 0.01,
+    maxIteration: 5000,
+    preventOverlap,
+    damping: 0.99,
+    linkDistance: (d) => {
+      let dist = linkDistance;
+      const sourceNode = d.source;
+      const targetNode = d.source;
+      // // 两端都是聚合点
+      // if (sourceNode.level && targetNode.level) dist = linkDistance * 3;
+      // // 一端是聚合点，一端是真实节点
+      // else if (sourceNode.level || targetNode.level) dist = linkDistance * 1.5;
+      if (!sourceNode.level && !targetNode.level) dist = linkDistance * 0.3;
+      return dist;
+    },
+    edgeStrength: (d) => {
+      return edgeStrength;
+    },
+    nodeStrength: (d) => {
+      return nodeStrength;
+    },
+    nodeSize: (d) => {
+      if (!nodeSize && d.size) return d.size;
+      return 50;
+    },
+    nodeSpacing: (d) => {
+      if (d.degree === 0) return nodeSpacing * 2;
+      if (d.level) return nodeSpacing;
+      return nodeSpacing;
+    },
+    onLayoutEnd: () => {
+      if (largeGraphMode) {
+        graph.getEdges().forEach((edge) => {
+          if (!edge.oriLabel) return;
+          edge.update({
+            label: labelFormatter(edge.oriLabel, labelMaxLength),
+          });
+        });
+      }
+    },
+    tick: () => {
+      graph.refreshPositions();
+    },
+  };
+
+  if (nodeSize) config["nodeSize"] = nodeSize;
+  if (collideStrength) config["collideStrength"] = collideStrength;
+  if (alpha) config["alpha"] = alpha;
+  if (alphaDecay) config["alphaDecay"] = alphaDecay;
+  if (alphaMin) config["alphaMin"] = alphaMin;
+
+  return config;
 };
 
 export const ResultGraph = (props) => {
@@ -120,9 +235,7 @@ export const ResultGraph = (props) => {
 
   // todo: kill the infinite loop
   useEffect(() => {
-    console.log(loading, error, data, called, "ggg");
     fetchGraph();
-
     if (graph || !data) return;
     if (container && container.current) {
       CANVAS_WIDTH = container.current.offsetWidth;
@@ -139,39 +252,52 @@ export const ResultGraph = (props) => {
       container: container.current,
       CANVAS_WIDTH,
       CANVAS_HEIGHT,
-      layout: {
-        type: "force",
-        preventOverlap: true,
-        linkDistance: (d) => {
-          if (d.source.id === "node0") {
-            return 100;
-          }
-          return 30;
-        },
-        nodeStrength: (d) => {
-          if (d.isLeaf) {
-            return -50;
-          }
-          return -10;
-        },
-        edgeStrength: (d) => {
-          if (
-            d.source.id === "node1" ||
-            d.source.id === "node2" ||
-            d.source.id === "node3"
-          ) {
-            return 0.7;
-          }
-          return 0.1;
-        },
-      },
       defaultNode: {
         color: "#5B8FF9",
       },
+      linkCenter: true,
+      minZoom: 0.1,
+      groupByTypes: false,
       modes: {
-        default: ["drag-canvas"],
+        default: [
+          {
+            type: "drag-canvas",
+            enableOptimize: true,
+          },
+          {
+            type: "zoom-canvas",
+            enableOptimize: true,
+            optimizeZoom: 0.01,
+          },
+          "drag-node",
+          "shortcuts-call",
+        ],
+        lassoSelect: [
+          {
+            type: "zoom-canvas",
+            enableOptimize: true,
+            optimizeZoom: 0.01,
+          },
+          {
+            type: "lasso-select",
+            selectedState: "focus",
+            trigger: "drag",
+          },
+        ],
+        fisheyeMode: [],
       },
     });
+
+    graph.get("canvas").set("localRefresh", false);
+
+    const layoutConfig: any = getForceLayoutConfig(graph, largeGraphMode);
+    layoutConfig.center = [CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2];
+    layout.instance = new G6.Layout["gForce"](layoutConfig);
+    layout.instance.init({
+      nodes: res.nodes,
+      edges: res.edges,
+    });
+    layout.instance.execute();
 
     graph.data({
       nodes: res.nodes,
@@ -183,7 +309,7 @@ export const ResultGraph = (props) => {
     graph.render();
 
     graph.on("node:dragstart", function (e) {
-      graph.layout();
+      // graph.layout();
       refreshDragedNodePosition(e);
     });
     graph.on("node:drag", function (e) {
@@ -195,13 +321,11 @@ export const ResultGraph = (props) => {
       e.item.get("model").fy = null;
     });
 
-    function refreshDragedNodePosition(e) {
+    const refreshDragedNodePosition = (e) => {
       const model = e.item.get("model");
       model.fx = e.x;
       model.fy = e.y;
-    }
-
-    return graph.clear();
+    };
   }, [called, data, error, fetchGraph, loading, type]);
 
   return (

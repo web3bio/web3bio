@@ -107,8 +107,8 @@ export const GET_IDENTITY_GRAPH_DATA = gql`
 `;
 
 export const GET_IDENTITY_GRAPH_ENS = gql`
-  query GET_IDENTITY_GRAPH_ENS {
-    nft(chain: "ethereum", category: "ENS", id: "nykma.eth") {
+  query GET_IDENTITY_GRAPH_ENS ($id: String) {
+    nft(chain: "ethereum", category: "ENS", id: $id) {
       owner {
         platform
         identity
