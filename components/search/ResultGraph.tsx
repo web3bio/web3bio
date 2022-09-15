@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Loading } from "../shared/Loading";
 import { Error } from "../shared/Error";
 import _ from "lodash";
 import { Empty } from "../shared/Empty";
-import { useLazyQuery, useQuery } from "@apollo/client";
-import ens from '../../public/img/bg-mauve.jpg'
+import { useLazyQuery } from "@apollo/client";
 import {
   GET_IDENTITY_GRAPH_DATA,
   GET_IDENTITY_GRAPH_ENS,
@@ -12,7 +11,6 @@ import {
 
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
-const insertCss = isBrowser ? require("insert-css") : null;
 const labelMaxLength = 5;
 const largeGraphMode = true;
 let graph = null;
@@ -21,41 +19,6 @@ let layout = {
   instance: null,
   destroyed: true,
 };
-
-if (isBrowser) {
-  insertCss(`
-		.g6-component-contextmenu {
-			position: absolute;
-			z-index: 2;
-			list-style-type: none;
-			background-color: #363b40;
-			border-radius: 6px;
-			font-size: 14px;
-			color: hsla(0,0%,100%,.85);
-			width: fit-content;
-			transition: opacity .2s;
-			text-align: center;
-			padding: 0px 20px 0px 20px;
-			box-shadow: 0 5px 18px 0 rgba(0, 0, 0, 0.6);
-			border: 0px;
-		}
-		.g6-component-contextmenu ul {
-			padding-left: 0px;
-			margin: 0;
-		}
-		.g6-component-contextmenu li {
-			cursor: pointer;
-			list-style-type: none;
-			list-style: none;
-			margin-left: 0;
-			line-height: 38px;
-	}
-		}
-		.g6-component-contextmenu li:hover {
-			color: #aaa;
-		}
-	`);
-}
 
 let CANVAS_WIDTH = 800,
   CANVAS_HEIGHT = 800;
@@ -86,7 +49,7 @@ const resolveGraphData = (source) => {
       target: to.uuid,
       label: x.source,
       id: `${from.uuid}-${to.uuid}`,
-      level: 1,
+      size: 8,
     });
     nodes.push({
       id: to.uuid,
@@ -108,7 +71,7 @@ const resolveGraphData = (source) => {
         target: k.uuid,
         label: k.__typename,
         id: `${to.uuid}-${k.uuid}`,
-        level: 0,
+        size: 5,
       });
     });
     from.nft.forEach((k) => {
@@ -124,7 +87,7 @@ const resolveGraphData = (source) => {
         target: k.uuid,
         label: k.__typename,
         id: `${from.uuid}-${k.uuid}`,
-        level: 0,
+        size: 5,
       });
     });
     nodes.push({
@@ -154,10 +117,10 @@ const getForceLayoutConfig = (graph, largeGraphMode, configSettings?) => {
     alphaMin,
   } = configSettings || { preventOverlap: true };
 
-  if (!linkDistance && linkDistance !== 0) linkDistance = 355;
-  if (!edgeStrength && edgeStrength !== 0) edgeStrength = 30;
+  if (!linkDistance && linkDistance !== 0) linkDistance = 1000;
+  if (!edgeStrength && edgeStrength !== 0) edgeStrength = 20;
   if (!nodeStrength && nodeStrength !== 0) nodeStrength = 200;
-  if (!nodeSpacing && nodeSpacing !== 0) nodeSpacing = 50;
+  if (!nodeSpacing && nodeSpacing !== 0) nodeSpacing = 500;
 
   const config = {
     type: "gForce",
@@ -189,17 +152,13 @@ const getForceLayoutConfig = (graph, largeGraphMode, configSettings?) => {
     },
     onLayoutEnd: () => {
       if (largeGraphMode) {
+        console.log('large')
         graph.getEdges().forEach((edge) => {
           if (!edge.oriLabel) return;
           edge.update({
             label: labelFormatter(edge.oriLabel, labelMaxLength),
           });
         });
-        graph.getNodes().forEach((node)=>{
-          node.update({
-            label:formatText(node.label)
-          })
-        })
       }
     },
     tick: () => {
@@ -267,6 +226,19 @@ export const ResultGraph = (props) => {
           position: "bottom",
         },
       },
+      defaultEdge: {
+        style: {
+          endArrow: true,
+          startArrow: true,
+        },
+        labelCfg: {
+          autoRotate: true,
+          style: {
+            stroke: "#fff",
+            lineWidth: 5,
+          },
+        },
+      },
       linkCenter: true,
       minZoom: 0.1,
       groupByTypes: false,
@@ -312,7 +284,10 @@ export const ResultGraph = (props) => {
     layout.instance.execute();
 
     graph.data({
-      nodes: res.nodes,
+      nodes: res.nodes.map(function (node, i) {
+        node.label = formatText(node.label);
+        return node;
+      }),
       edges: res.edges.map(function (edge, i) {
         edge.id = "edge" + i;
         return Object.assign({}, edge);
@@ -320,24 +295,36 @@ export const ResultGraph = (props) => {
     });
     graph.render();
 
-    graph.on("node:dragstart", function (e) {
-      // graph.layout();
-      refreshDragedNodePosition(e);
-    });
-    graph.on("node:drag", function (e) {
-      console.log("drag");
-      refreshDragedNodePosition(e);
-    });
-    graph.on("node:dragend", function (e) {
-      e.item.get("model").fx = null;
-      e.item.get("model").fy = null;
-    });
+    const bindListener = () => {
+      graph.on("node:dragstart", function (e) {
+        // graph.layout();
+        refreshDragedNodePosition(e);
+      });
+      graph.on("node:drag", function (e) {
+        console.log("drag");
+        refreshDragedNodePosition(e);
+      });
+      graph.on("node:dragend", function (e) {
+        e.item.get("model").fx = null;
+        e.item.get("model").fy = null;
+      });
 
+      graph.on("node:click", (evt) => {
+        const { item } = evt;
+        graph.setItemState(item, "selected", true);
+      });
+      graph.on("canvas:click", (evt) => {
+        graph.getNodes().forEach((node) => {
+          graph.clearItemStates(node);
+        });
+      });
+    };
     const refreshDragedNodePosition = (e) => {
       const model = e.item.get("model");
       model.fx = e.x;
       model.fy = e.y;
     };
+    bindListener();
   }, [called, data, error, fetchGraph, loading, type]);
 
   return (
