@@ -4,6 +4,7 @@ import { Error } from "../shared/Error";
 import _ from "lodash";
 import { Empty } from "../shared/Empty";
 import { useLazyQuery, useQuery } from "@apollo/client";
+import ens from '../../public/img/bg-mauve.jpg'
 import {
   GET_IDENTITY_GRAPH_DATA,
   GET_IDENTITY_GRAPH_ENS,
@@ -77,7 +78,6 @@ const labelFormatter = (text: string, minLength: number = 10): string => {
 const resolveGraphData = (source) => {
   const nodes = [];
   const edges = [];
-  console.log(source, "source");
   source.forEach((x, idx) => {
     const from = x.from;
     const to = x.to;
@@ -154,10 +154,10 @@ const getForceLayoutConfig = (graph, largeGraphMode, configSettings?) => {
     alphaMin,
   } = configSettings || { preventOverlap: true };
 
-  if (!linkDistance && linkDistance !== 0) linkDistance = 225;
-  if (!edgeStrength && edgeStrength !== 0) edgeStrength = 50;
+  if (!linkDistance && linkDistance !== 0) linkDistance = 355;
+  if (!edgeStrength && edgeStrength !== 0) edgeStrength = 30;
   if (!nodeStrength && nodeStrength !== 0) nodeStrength = 200;
-  if (!nodeSpacing && nodeSpacing !== 0) nodeSpacing = 5;
+  if (!nodeSpacing && nodeSpacing !== 0) nodeSpacing = 50;
 
   const config = {
     type: "gForce",
@@ -169,10 +169,6 @@ const getForceLayoutConfig = (graph, largeGraphMode, configSettings?) => {
       let dist = linkDistance;
       const sourceNode = d.source;
       const targetNode = d.source;
-      // // 两端都是聚合点
-      // if (sourceNode.level && targetNode.level) dist = linkDistance * 3;
-      // // 一端是聚合点，一端是真实节点
-      // else if (sourceNode.level || targetNode.level) dist = linkDistance * 1.5;
       if (!sourceNode.level && !targetNode.level) dist = linkDistance * 0.3;
       return dist;
     },
@@ -199,6 +195,11 @@ const getForceLayoutConfig = (graph, largeGraphMode, configSettings?) => {
             label: labelFormatter(edge.oriLabel, labelMaxLength),
           });
         });
+        graph.getNodes().forEach((node)=>{
+          node.update({
+            label:formatText(node.label)
+          })
+        })
       }
     },
     tick: () => {
@@ -253,7 +254,18 @@ export const ResultGraph = (props) => {
       CANVAS_WIDTH,
       CANVAS_HEIGHT,
       defaultNode: {
-        color: "#5B8FF9",
+        // todo: img node
+        // img: "https://pixabay.com/vectors/twitter-tweet-twitter-bird-312464/",
+        type: "circle",
+        size: 30,
+        // clipCfg: {
+        //   show: true,
+        //   type: "circle",
+        //   r: 100,
+        // },
+        labelCfg: {
+          position: "bottom",
+        },
       },
       linkCenter: true,
       minZoom: 0.1,
