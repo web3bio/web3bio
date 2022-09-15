@@ -8,6 +8,7 @@ import {
   GET_IDENTITY_GRAPH_DATA,
   GET_IDENTITY_GRAPH_ENS,
 } from "../../utils/queries";
+import { colorSets, global } from "./graphCom/LargeGraphRegister";
 
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
@@ -152,7 +153,7 @@ const getForceLayoutConfig = (graph, largeGraphMode, configSettings?) => {
     },
     onLayoutEnd: () => {
       if (largeGraphMode) {
-        console.log('large')
+        console.log("large");
         graph.getEdges().forEach((edge) => {
           if (!edge.oriLabel) return;
           edge.update({
@@ -174,6 +175,14 @@ const getForceLayoutConfig = (graph, largeGraphMode, configSettings?) => {
 
   return config;
 };
+
+const processNodesEdges = (nodes,edges)=>{
+  // todo: processs edges and nodes
+  nodes.forEach(node=>{
+    node.label = formatText(node.label)
+  })
+  console.log(nodes, edges)
+}
 
 export const ResultGraph = (props) => {
   const { value, platform, type, onClose } = props;
@@ -213,30 +222,9 @@ export const ResultGraph = (props) => {
       CANVAS_WIDTH,
       CANVAS_HEIGHT,
       defaultNode: {
-        // todo: img node
-        // img: "https://pixabay.com/vectors/twitter-tweet-twitter-bird-312464/",
-        type: "circle",
-        size: 30,
-        // clipCfg: {
-        //   show: true,
-        //   type: "circle",
-        //   r: 100,
-        // },
+        type: "aggregated-node",
         labelCfg: {
           position: "bottom",
-        },
-      },
-      defaultEdge: {
-        style: {
-          endArrow: true,
-          startArrow: true,
-        },
-        labelCfg: {
-          autoRotate: true,
-          style: {
-            stroke: "#fff",
-            lineWidth: 5,
-          },
         },
       },
       linkCenter: true,
@@ -268,7 +256,6 @@ export const ResultGraph = (props) => {
             trigger: "drag",
           },
         ],
-        fisheyeMode: [],
       },
     });
 
@@ -282,15 +269,13 @@ export const ResultGraph = (props) => {
       edges: res.edges,
     });
     layout.instance.execute();
-
+    processNodesEdges(res.nodes,res.edges)
     graph.data({
-      nodes: res.nodes.map(function (node, i) {
-        node.label = formatText(node.label);
-        return node;
-      }),
+      nodes: res.nodes
+      ,
       edges: res.edges.map(function (edge, i) {
         edge.id = "edge" + i;
-        return Object.assign({}, edge);
+        return edge;
       }),
     });
     graph.render();
