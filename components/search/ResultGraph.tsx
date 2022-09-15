@@ -3,7 +3,7 @@ import { Loading } from "../shared/Loading";
 import { Error } from "../shared/Error";
 import _ from "lodash";
 import { Empty } from "../shared/Empty";
-import { useQuery } from "@apollo/client";
+import { useLazyQuery, useQuery } from "@apollo/client";
 import {
   GET_IDENTITY_GRAPH_DATA,
   GET_IDENTITY_GRAPH_ENS,
@@ -102,13 +102,27 @@ const resolveGraphData = (source) => {
 
 export const ResultGraph = (props) => {
   const { value, platform, type, onClose } = props;
-  
   const container = React.useRef<HTMLDivElement>(null);
-  const {loading, error,data} = useGraph(value,platform,type)
+  const [fetchGraph, { loading, called, error, data }] = useLazyQuery(
+    type === "ens" ? GET_IDENTITY_GRAPH_ENS : GET_IDENTITY_GRAPH_DATA,
+    {
+      variables:
+        type === "ens"
+          ? {
+              id: value,
+            }
+          : {
+              platform,
+              identity: value,
+            },
+    }
+  );
 
   // todo: kill the infinite loop
-  console.log(loading, error,data)
   useEffect(() => {
+    console.log(loading, error, data, called, "ggg");
+    fetchGraph();
+
     if (graph || !data) return;
     if (container && container.current) {
       CANVAS_WIDTH = container.current.offsetWidth;
@@ -188,7 +202,7 @@ export const ResultGraph = (props) => {
     }
 
     return graph.clear();
-  }, []);
+  }, [called, data, error, fetchGraph, loading, type]);
 
   return (
     <div className="graph-mask" onClick={onClose}>

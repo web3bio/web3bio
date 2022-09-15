@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const GET_PROFILES_ENS = gql`
-  query ($ens: String) {
+  query GET_PROFILES_ENS ($ens: String) {
     nft(chain: "ethereum", category: "ENS", id: $ens) {
       owner {
         uuid
@@ -35,7 +35,7 @@ export const GET_PROFILES_ENS = gql`
 `;
 
 export const GET_PROFILES_QUERY = gql`
-  query ($platform: String, $identity: String) {
+  query GET_PROFILES_QUERY ($platform: String, $identity: String) {
     identity(platform: $platform, identity: $identity) {
       uuid
       platform
@@ -67,7 +67,7 @@ export const GET_PROFILES_QUERY = gql`
 `;
 
 export const GET_IDENTITY_GRAPH_DATA = gql`
-  query findOneIdentity($platform: String, $identity: String) {
+  query GET_IDENTITY_GRAPH_DATA ($platform: String, $identity: String) {
     identity(platform: $platform, identity: $identity) {
       status
       uuid
@@ -107,8 +107,8 @@ export const GET_IDENTITY_GRAPH_DATA = gql`
 `;
 
 export const GET_IDENTITY_GRAPH_ENS = gql`
-  query ($id: String) {
-    nft(chain: "ethereum", category: "ENS", id: $id) {
+  query GET_IDENTITY_GRAPH_ENS {
+    nft(chain: "ethereum", category: "ENS", id: "nykma.eth") {
       owner {
         platform
         identity
