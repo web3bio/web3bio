@@ -118,6 +118,7 @@ export const GET_IDENTITY_GRAPH_ENS = gql`
             platform
             identity
             uuid
+            displayName
             nft {
               category
               chain
@@ -129,6 +130,7 @@ export const GET_IDENTITY_GRAPH_ENS = gql`
             platform
             identity
             uuid
+            displayName
             nft {
               category
               chain

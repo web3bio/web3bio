@@ -60,7 +60,17 @@ export default function Home() {
       });
     }
   };
-
+  const resolveRenderSearch = () => {
+    if (!searchPlatform) return null;
+    return searchPlatform === "ENS" ? (
+      <SearchResultEns searchTerm={searchTerm} />
+    ) : (
+      <SearchResultQuery
+        searchTerm={searchTerm}
+        searchPlatform={searchPlatform}
+      />
+    );
+  };
   return (
     <div>
       <Head>
@@ -132,14 +142,7 @@ export default function Home() {
                 </button>
               </div>
             </form>
-            {searchPlatform === "ENS" ? (
-              <SearchResultEns searchTerm={searchTerm} />
-            ) : (
-              <SearchResultQuery
-                searchTerm={searchTerm}
-                searchPlatform={searchPlatform}
-              />
-            )}
+            {resolveRenderSearch()}
           </div>
         </div>
         <div className="web3bio-footer">

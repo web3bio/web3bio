@@ -15,7 +15,6 @@ const G6 = isBrowser ? require("@antv/g6") : null;
 const insertCss = isBrowser ? require("insert-css") : null;
 let graph = null;
 
-
 if (isBrowser) {
   insertCss(`
   .g6-component-tooltip{
@@ -28,7 +27,7 @@ if (isBrowser) {
 			transition: opacity .2s;
 			text-align: left;
 			padding: 4px 8px;
-			box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.6);
+			box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.3);
 			border: 0px;
   }
 		.g6-component-tooltip ul {
@@ -44,11 +43,91 @@ if (isBrowser) {
 	`);
 }
 
+const colorsMap = {
+  twitter: "#019eeb",
+  nextid: "#ad00ff",
+  keybase: "#07ee80",
+  ethereum: "#006afc",
+  reddit: "#ff5fc9",
+  ens: "#008685",
+  github: "#e5e5e5",
+  unknown: "#000000",
+};
+
 let CANVAS_WIDTH = 800,
   CANVAS_HEIGHT = 800;
 
+const legendData = {
+  nodes: [
+    {
+      id: "nextid",
+      label: "NextID",
+      order: 0,
+      style: {
+        fill: colorsMap["nextid"],
+      },
+    },
+    {
+      id: "twitter",
+      label: "Twitter",
+      order: 1,
+      style: {
+        fill: colorsMap["twitter"],
+      },
+    },
+    {
+      id: "ethereum",
+      label: "Ethereum",
+      order: 2,
+      style: {
+        fill: colorsMap["ethereum"],
+      },
+    },
+    {
+      id: "keybase",
+      label: "Keybase",
+      order: 3,
+      style: {
+        fill: colorsMap["keybase"],
+      },
+    },
+    {
+      id: "ens",
+      label: "ENS",
+      order: 7,
+      style: {
+        fill: colorsMap["ens"],
+      },
+    },
+    {
+      id: "reddit",
+      label: "Reddit",
+      order: 4,
+      style: {
+        fill: colorsMap["reddit"],
+      },
+    },
+    {
+      id: "github",
+      label: "Github",
+      order: 5,
+      style: {
+        fill: colorsMap["github"],
+      },
+    },
+    {
+      id: "unknown",
+      label: "Unknown",
+      order: 6,
+      style: {
+        fill: colorsMap["unknown"],
+      },
+    },
+  ],
+};
+
 // 截断长文本。length 为文本截断后长度，elipsis 是后缀
-const formatText = (text, length = 5, elipsis = "...") => {
+const formatText = (text, length = 10, elipsis = "..") => {
   if (!text) return "";
   if (text.length > length) {
     return `${text.substr(0, length)}${elipsis}`;
@@ -68,42 +147,30 @@ const resolveGraphData = (source) => {
   source.forEach((x, idx) => {
     const from = x.from;
     const to = x.to;
+    console.log(x, "node");
     nodes.push({
       id: to.uuid,
       label: to.displayName ?? to.identity,
-      platfrom: to.platform,
-      nft: to.nft,
+      platform: to.platform,
+      source: x.source,
+      ens: to.displayName,
+      identity: to.identity,
       level: 1,
     });
     nodes.push({
       id: from.uuid,
       label: from.displayName ?? from.identity,
-      platfrom: from.platform,
-      nft: from.nft,
-      size: 40,
+      platform: from.platform,
+      source: x.source,
+      ens: from.displayName,
+      identity: from.identity,
+      level: 1,
     });
     edges.push({
       source: from.uuid,
       target: to.uuid,
       label: x.source,
       id: `${from.uuid}-${to.uuid}`,
-    });
-
-    to.nft.forEach((k) => {
-      if (k.category === "ENS") {
-        nodes.push({
-          id: k.uuid,
-          label: k.id,
-          category: k.category,
-          chain: k.chian,
-        });
-        edges.push({
-          source: to.uuid,
-          target: k.uuid,
-          label: k.__typename,
-          id: `${to.uuid}-${k.uuid}`,
-        });
-      }
     });
     from.nft.forEach((k) => {
       if (k.category === "ENS") {
@@ -112,12 +179,32 @@ const resolveGraphData = (source) => {
           label: k.id,
           category: k.category,
           chain: k.chian,
+          holder: from.identity,
+          platform: "ens",
         });
         edges.push({
           source: from.uuid,
           target: k.uuid,
-          label: k.__typename,
+          label: "hold",
           id: `${from.uuid}-${k.uuid}`,
+        });
+      }
+    });
+    to.nft.forEach((k) => {
+      if (k.category === "ENS") {
+        nodes.push({
+          id: k.uuid,
+          label: k.id,
+          category: k.category,
+          chain: k.chian,
+          holder: to.identity,
+          platform: "ens",
+        });
+        edges.push({
+          source: to.uuid,
+          target: k.uuid,
+          label: "hold",
+          id: `${to.uuid}-${k.uuid}`,
         });
       }
     });
@@ -130,9 +217,16 @@ const resolveGraphData = (source) => {
 const processNodesEdges = (nodes, edges) => {
   // todo: processs edges and nodes
   nodes.forEach((node) => {
+    if(node.level === 1){
+      node.size = 30
+    }
+    node.style = {
+      lineWidth: 4,
+      fill: "#fff",
+      stroke: colorsMap[node.platform],
+    };
     node.label = formatText(node.label);
   });
-  console.log(nodes, edges);
 };
 
 export const ResultGraph = (props) => {
@@ -167,20 +261,44 @@ export const ResultGraph = (props) => {
     );
 
     const tooltip = new G6.Tooltip({
-      offsetX: 0,
-      offsetY: 0,
+      offsetX: -120,
+      offsetY: -150,
       getContent(e) {
         const outDiv = document.createElement("div");
-        outDiv.innerHTML = `
+        if (e.item.getModel().level) {
+          outDiv.innerHTML = `
           <ul>
-            <li>ENS: ${e.item.getModel().label || e.item.getModel().id}</li>
-            <li>Identity: ${
-              e.item.getModel().label || e.item.getModel().id
-            }</li>
+            <li>DisplayName: ${e.item.getModel().ens || "Unknown"}</li>
+            <li>Identity: ${e.item.getModel().identity || "Unknown"}</li>
+            <li>Source: ${e.item.getModel().source || "Unknown"}</li>
           </ul>`;
+        } else {
+          outDiv.innerHTML = `
+          <ul>
+            <li>ENS: ${e.item.getModel().id || "Unknown"}</li>
+            <li>Holder: ${e.item.getModel().holder || "Unknown"}</li>
+          </ul>`;
+        }
+
         return outDiv;
       },
       itemTypes: ["node"],
+    });
+    const legend = new G6.Legend({
+      data: legendData,
+      align: "center",
+      layout: "horizontal", // vertical
+      position: "bottom-left",
+      offsetY: -120,
+      offsetX: -100,
+      padding: [4, 16, 8, 16],
+      containerStyle: {
+        fill: "#fff",
+      },
+      title: " ",
+      titleConfig: {
+        offsetY: -8,
+      },
     });
 
     graph = new G6.Graph({
@@ -188,7 +306,7 @@ export const ResultGraph = (props) => {
       CANVAS_WIDTH,
       CANVAS_HEIGHT,
       defaultNode: {
-        type: "aggregated-node",
+        size: 20,
         labelCfg: {
           position: "bottom",
         },
@@ -196,27 +314,18 @@ export const ResultGraph = (props) => {
       defaultEdge: {
         style: {
           endArrow: {
-            path: G6.Arrow.triangle(8, 8, 8), // 使用内置箭头路径函数，参数为箭头的 宽度、长度、偏移量（默认为 0，与 d 对应）
-            d: 8,
-            fill: "#acaeaf",
-            stroke: "#acaeaf",
-            opacity: 0.5,
+            path: "M 0,0 L 8,4 L 8,-4 Z",
+            fill: "#e2e2e2",
           },
         },
       },
       linkCenter: true,
       minZoom: 0.1,
-      groupByTypes: false,
       layout: {
         type: "radial",
-        linkDistance: 500, // 可选，边长
-        maxIteration: 1000, // 可选
-        // focusNode: "node11", // 可选
-        unitRadius: 100, // 可选
-        preventOverlap: true, // 可选，必须配合 nodeSize
-        nodeSize: 30, // 可选
-        strictRadial: true, // 可选
-        workerEnabled: true,
+        unitRadius: 70,
+        preventOverlap: true,
+        strictRadial: false,
       },
       modes: {
         default: [
@@ -230,22 +339,9 @@ export const ResultGraph = (props) => {
             optimizeZoom: 0.01,
           },
           "drag-node",
-          "shortcuts-call",
-        ],
-        lassoSelect: [
-          {
-            type: "zoom-canvas",
-            enableOptimize: true,
-            optimizeZoom: 0.01,
-          },
-          {
-            type: "lasso-select",
-            selectedState: "focus",
-            trigger: "drag",
-          },
         ],
       },
-      plugins: [tooltip],
+      plugins: [tooltip, legend],
     });
 
     graph.get("canvas").set("localRefresh", false);
@@ -295,12 +391,12 @@ export const ResultGraph = (props) => {
       model.fy = e.y;
     };
     bindListener();
-  }, [called, data, error, fetchGraph, loading, type]);
+  }, [data, called, type, fetchGraph]);
 
   return (
     <div className="graph-mask" onClick={onClose}>
       {(!data && (
-        <div className="graph-container">
+        <div className="graph-container graph-container-placeholder">
           {loading ? <Loading /> : error ? <Error text={error} /> : <Empty />}
         </div>
       )) || (
