@@ -306,7 +306,6 @@ export const ResultGraph = (props) => {
       CANVAS_WIDTH,
       CANVAS_HEIGHT,
       defaultNode: {
-        size: 20,
         labelCfg: {
           position: "bottom",
         },
@@ -322,10 +321,8 @@ export const ResultGraph = (props) => {
       linkCenter: true,
       minZoom: 0.1,
       layout: {
-        type: "radial",
-        unitRadius: 70,
-        preventOverlap: true,
-        strictRadial: false,
+        type: "circular",
+        ordering: "degree",
       },
       modes: {
         default: [
