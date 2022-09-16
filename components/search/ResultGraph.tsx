@@ -126,18 +126,11 @@ const legendData = {
   ],
 };
 
-// 截断长文本。length 为文本截断后长度，elipsis 是后缀
 const formatText = (text, length = 10, elipsis = "..") => {
   if (!text) return "";
   if (text.length > length) {
     return `${text.substr(0, length)}${elipsis}`;
   }
-  return text;
-};
-
-const labelFormatter = (text: string, minLength: number = 10): string => {
-  if (text && text.split("").length > minLength)
-    return `${text.substr(0, minLength)}...`;
   return text;
 };
 
