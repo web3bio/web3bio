@@ -92,14 +92,6 @@ const legendData = {
       },
     },
     {
-      id: "ens",
-      label: "ENS",
-      order: 7,
-      style: {
-        fill: colorsMap["ens"],
-      },
-    },
-    {
       id: "reddit",
       label: "Reddit",
       order: 4,
@@ -116,9 +108,17 @@ const legendData = {
       },
     },
     {
+      id: "ens",
+      label: "ENS",
+      order: 6,
+      style: {
+        fill: colorsMap["ens"],
+      },
+    },
+    {
       id: "unknown",
       label: "Unknown",
-      order: 6,
+      order: 7,
       style: {
         fill: colorsMap["unknown"],
       },
@@ -217,11 +217,11 @@ const resolveGraphData = (source) => {
 const processNodesEdges = (nodes, edges) => {
   // todo: processs edges and nodes
   nodes.forEach((node) => {
-    if(node.level === 1){
-      node.size = 30
+    if (node.level === 1) {
+      node.size = 35;
     }
     node.style = {
-      lineWidth: 4,
+      lineWidth: 3,
       fill: "#fff",
       stroke: colorsMap[node.platform],
     };
