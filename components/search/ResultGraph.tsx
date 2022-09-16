@@ -12,14 +12,37 @@ import { colorSets, global } from "./graphCom/LargeGraphRegister";
 
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
-const labelMaxLength = 5;
-const largeGraphMode = true;
+const insertCss = isBrowser ? require("insert-css") : null;
 let graph = null;
-let layout = {
-  type: "",
-  instance: null,
-  destroyed: true,
-};
+
+
+if (isBrowser) {
+  insertCss(`
+  .g6-component-tooltip{
+    position: absolute;
+			z-index: 2;
+			list-style-type: none;
+			border-radius: 6px;
+			font-size: 0.3rem;
+			width: fit-content;
+			transition: opacity .2s;
+			text-align: left;
+			padding: 4px 8px;
+			box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.6);
+			border: 0px;
+  }
+		.g6-component-tooltip ul {
+			padding-left: 0px;
+			margin: 0;
+		}
+		.g6-component-tooltip li {
+			cursor: pointer;
+			list-style-type: none;
+			list-style: none;
+			margin-left: 0;
+	}
+	`);
+}
 
 let CANVAS_WIDTH = 800,
   CANVAS_HEIGHT = 800;
@@ -45,21 +68,27 @@ const resolveGraphData = (source) => {
   source.forEach((x, idx) => {
     const from = x.from;
     const to = x.to;
-    edges.push({
-      source: from.uuid,
-      target: to.uuid,
-      label: x.source,
-      id: `${from.uuid}-${to.uuid}`,
-      size: 8,
-    });
     nodes.push({
       id: to.uuid,
       label: to.displayName ?? to.identity,
       platfrom: to.platform,
       nft: to.nft,
       level: 1,
+    });
+    nodes.push({
+      id: from.uuid,
+      label: from.displayName ?? from.identity,
+      platfrom: from.platform,
+      nft: from.nft,
       size: 40,
     });
+    edges.push({
+      source: from.uuid,
+      target: to.uuid,
+      label: x.source,
+      id: `${from.uuid}-${to.uuid}`,
+    });
+
     to.nft.forEach((k) => {
       if (k.category === "ENS") {
         nodes.push({
@@ -67,14 +96,12 @@ const resolveGraphData = (source) => {
           label: k.id,
           category: k.category,
           chain: k.chian,
-          level: 0,
         });
         edges.push({
           source: to.uuid,
           target: k.uuid,
           label: k.__typename,
           id: `${to.uuid}-${k.uuid}`,
-          size: 5,
         });
       }
     });
@@ -85,100 +112,19 @@ const resolveGraphData = (source) => {
           label: k.id,
           category: k.category,
           chain: k.chian,
-          level: 0,
         });
         edges.push({
           source: from.uuid,
           target: k.uuid,
           label: k.__typename,
           id: `${from.uuid}-${k.uuid}`,
-          size: 5,
         });
       }
-    });
-    nodes.push({
-      id: from.uuid,
-      label: from.displayName ?? from.identity,
-      platfrom: from.platform,
-      nft: from.nft,
-      size: 40,
     });
   });
   const _nodes = _.uniqBy(nodes, "id");
   const _edges = _.uniqBy(edges, "id");
   return { nodes: _nodes, edges: _edges };
-};
-
-const getForceLayoutConfig = (graph, largeGraphMode, configSettings?) => {
-  let {
-    linkDistance,
-    edgeStrength,
-    nodeStrength,
-    nodeSpacing,
-    preventOverlap,
-    nodeSize,
-    collideStrength,
-    alpha,
-    alphaDecay,
-    alphaMin,
-  } = configSettings || { preventOverlap: true };
-
-  if (!linkDistance && linkDistance !== 0) linkDistance = 1000;
-  if (!edgeStrength && edgeStrength !== 0) edgeStrength = 20;
-  if (!nodeStrength && nodeStrength !== 0) nodeStrength = 200;
-  if (!nodeSpacing && nodeSpacing !== 0) nodeSpacing = 500;
-
-  const config = {
-    type: "gForce",
-    minMovement: 0.01,
-    maxIteration: 5000,
-    preventOverlap,
-    damping: 0.99,
-    linkDistance: (d) => {
-      let dist = linkDistance;
-      const sourceNode = d.source;
-      const targetNode = d.source;
-      if (!sourceNode.level && !targetNode.level) dist = linkDistance * 0.3;
-      return dist;
-    },
-    edgeStrength: (d) => {
-      return edgeStrength;
-    },
-    nodeStrength: (d) => {
-      return nodeStrength;
-    },
-    nodeSize: (d) => {
-      if (!nodeSize && d.size) return d.size;
-      return 50;
-    },
-    nodeSpacing: (d) => {
-      if (d.degree === 0) return nodeSpacing * 2;
-      if (d.level) return nodeSpacing;
-      return nodeSpacing;
-    },
-    onLayoutEnd: () => {
-      if (largeGraphMode) {
-        console.log("large");
-        graph.getEdges().forEach((edge) => {
-          if (!edge.oriLabel) return;
-          edge.update({
-            label: labelFormatter(edge.oriLabel, labelMaxLength),
-          });
-        });
-      }
-    },
-    tick: () => {
-      graph.refreshPositions();
-    },
-  };
-
-  if (nodeSize) config["nodeSize"] = nodeSize;
-  if (collideStrength) config["collideStrength"] = collideStrength;
-  if (alpha) config["alpha"] = alpha;
-  if (alphaDecay) config["alphaDecay"] = alphaDecay;
-  if (alphaMin) config["alphaMin"] = alphaMin;
-
-  return config;
 };
 
 const processNodesEdges = (nodes, edges) => {
@@ -207,7 +153,6 @@ export const ResultGraph = (props) => {
     }
   );
 
-  // todo: kill the infinite loop
   useEffect(() => {
     fetchGraph();
     if (graph || !data) return;
@@ -220,7 +165,23 @@ export const ResultGraph = (props) => {
         ? data.nft.owner.neighborWithTraversal
         : data.identity.neighborWithTraversal
     );
-    console.log(res, "graphData");
+
+    const tooltip = new G6.Tooltip({
+      offsetX: 0,
+      offsetY: 0,
+      getContent(e) {
+        const outDiv = document.createElement("div");
+        outDiv.innerHTML = `
+          <ul>
+            <li>ENS: ${e.item.getModel().label || e.item.getModel().id}</li>
+            <li>Identity: ${
+              e.item.getModel().label || e.item.getModel().id
+            }</li>
+          </ul>`;
+        return outDiv;
+      },
+      itemTypes: ["node"],
+    });
 
     graph = new G6.Graph({
       container: container.current,
@@ -232,18 +193,29 @@ export const ResultGraph = (props) => {
           position: "bottom",
         },
       },
+      defaultEdge: {
+        style: {
+          endArrow: {
+            path: G6.Arrow.triangle(8, 8, 8), // 使用内置箭头路径函数，参数为箭头的 宽度、长度、偏移量（默认为 0，与 d 对应）
+            d: 8,
+            fill: "#acaeaf",
+            stroke: "#acaeaf",
+            opacity: 0.5,
+          },
+        },
+      },
       linkCenter: true,
       minZoom: 0.1,
       groupByTypes: false,
       layout: {
         type: "radial",
-        linkDistance: 50, // 可选，边长
+        linkDistance: 500, // 可选，边长
         maxIteration: 1000, // 可选
         // focusNode: "node11", // 可选
         unitRadius: 100, // 可选
         preventOverlap: true, // 可选，必须配合 nodeSize
         nodeSize: 30, // 可选
-        strictRadial: false, // 可选
+        strictRadial: true, // 可选
         workerEnabled: true,
       },
       modes: {
@@ -273,35 +245,23 @@ export const ResultGraph = (props) => {
           },
         ],
       },
+      plugins: [tooltip],
     });
 
     graph.get("canvas").set("localRefresh", false);
 
-    // const layoutConfig: any = getForceLayoutConfig(graph, largeGraphMode);
-    // layoutConfig.center = [CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2];
-    // layout.instance = new G6.Layout["gForce"](layoutConfig);
-    // layout.instance.init({
-    //   nodes: res.nodes,
-    //   edges: res.edges,
-    // });
-    // layout.instance.execute();
     processNodesEdges(res.nodes, res.edges);
     graph.data({
       nodes: res.nodes,
-      edges: res.edges.map(function (edge, i) {
-        edge.id = "edge" + i;
-        return edge;
-      }),
+      edges: res.edges,
     });
     graph.render();
 
     const bindListener = () => {
       graph.on("node:dragstart", function (e) {
-        // graph.layout();
         refreshDragedNodePosition(e);
       });
       graph.on("node:drag", function (e) {
-        console.log("drag");
         refreshDragedNodePosition(e);
       });
       graph.on("node:dragend", function (e) {
@@ -318,6 +278,16 @@ export const ResultGraph = (props) => {
           graph.clearItemStates(node);
         });
       });
+
+      if (typeof window !== "undefined")
+        window.onresize = () => {
+          if (!graph || graph.get("destroyed")) return;
+          if (!container.current) return;
+          graph.changeSize(
+            container.current.scrollWidth,
+            container.current.scrollHeight - 30
+          );
+        };
     };
     const refreshDragedNodePosition = (e) => {
       const model = e.item.get("model");
