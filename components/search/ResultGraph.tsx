@@ -58,45 +58,50 @@ const resolveGraphData = (source) => {
       platfrom: to.platform,
       nft: to.nft,
       level: 1,
+      size: 40,
     });
     to.nft.forEach((k) => {
-      nodes.push({
-        id: k.uuid,
-        label: k.id,
-        category: k.category,
-        chain: k.chian,
-        level: 0,
-      });
-      edges.push({
-        source: to.uuid,
-        target: k.uuid,
-        label: k.__typename,
-        id: `${to.uuid}-${k.uuid}`,
-        size: 5,
-      });
+      if (k.category === "ENS") {
+        nodes.push({
+          id: k.uuid,
+          label: k.id,
+          category: k.category,
+          chain: k.chian,
+          level: 0,
+        });
+        edges.push({
+          source: to.uuid,
+          target: k.uuid,
+          label: k.__typename,
+          id: `${to.uuid}-${k.uuid}`,
+          size: 5,
+        });
+      }
     });
     from.nft.forEach((k) => {
-      nodes.push({
-        id: k.uuid,
-        label: k.id,
-        category: k.category,
-        chain: k.chian,
-        level: 0,
-      });
-      edges.push({
-        source: from.uuid,
-        target: k.uuid,
-        label: k.__typename,
-        id: `${from.uuid}-${k.uuid}`,
-        size: 5,
-      });
+      if (k.category === "ENS") {
+        nodes.push({
+          id: k.uuid,
+          label: k.id,
+          category: k.category,
+          chain: k.chian,
+          level: 0,
+        });
+        edges.push({
+          source: from.uuid,
+          target: k.uuid,
+          label: k.__typename,
+          id: `${from.uuid}-${k.uuid}`,
+          size: 5,
+        });
+      }
     });
     nodes.push({
       id: from.uuid,
       label: from.displayName ?? from.identity,
       platfrom: from.platform,
       nft: from.nft,
-      level: 1,
+      size: 40,
     });
   });
   const _nodes = _.uniqBy(nodes, "id");
@@ -176,13 +181,13 @@ const getForceLayoutConfig = (graph, largeGraphMode, configSettings?) => {
   return config;
 };
 
-const processNodesEdges = (nodes,edges)=>{
+const processNodesEdges = (nodes, edges) => {
   // todo: processs edges and nodes
-  nodes.forEach(node=>{
-    node.label = formatText(node.label)
-  })
-  console.log(nodes, edges)
-}
+  nodes.forEach((node) => {
+    node.label = formatText(node.label);
+  });
+  console.log(nodes, edges);
+};
 
 export const ResultGraph = (props) => {
   const { value, platform, type, onClose } = props;
@@ -230,6 +235,17 @@ export const ResultGraph = (props) => {
       linkCenter: true,
       minZoom: 0.1,
       groupByTypes: false,
+      layout: {
+        type: "radial",
+        linkDistance: 50, // 可选，边长
+        maxIteration: 1000, // 可选
+        // focusNode: "node11", // 可选
+        unitRadius: 100, // 可选
+        preventOverlap: true, // 可选，必须配合 nodeSize
+        nodeSize: 30, // 可选
+        strictRadial: false, // 可选
+        workerEnabled: true,
+      },
       modes: {
         default: [
           {
@@ -261,18 +277,17 @@ export const ResultGraph = (props) => {
 
     graph.get("canvas").set("localRefresh", false);
 
-    const layoutConfig: any = getForceLayoutConfig(graph, largeGraphMode);
-    layoutConfig.center = [CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2];
-    layout.instance = new G6.Layout["gForce"](layoutConfig);
-    layout.instance.init({
-      nodes: res.nodes,
-      edges: res.edges,
-    });
-    layout.instance.execute();
-    processNodesEdges(res.nodes,res.edges)
+    // const layoutConfig: any = getForceLayoutConfig(graph, largeGraphMode);
+    // layoutConfig.center = [CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2];
+    // layout.instance = new G6.Layout["gForce"](layoutConfig);
+    // layout.instance.init({
+    //   nodes: res.nodes,
+    //   edges: res.edges,
+    // });
+    // layout.instance.execute();
+    processNodesEdges(res.nodes, res.edges);
     graph.data({
-      nodes: res.nodes
-      ,
+      nodes: res.nodes,
       edges: res.edges.map(function (edge, i) {
         edge.id = "edge" + i;
         return edge;
