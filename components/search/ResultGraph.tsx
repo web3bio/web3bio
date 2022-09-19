@@ -1,7 +1,6 @@
 import React, { memo, useEffect } from "react";
 import _ from "lodash";
 
-
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
 const insertCss = isBrowser ? require("insert-css") : null;
@@ -266,6 +265,7 @@ const RenderResultGraph = (props) => {
         offsetY: -8,
       },
     });
+    processNodesEdges(res.nodes, res.edges);
 
     graph = new G6.Graph({
       container: container.current,
@@ -277,12 +277,15 @@ const RenderResultGraph = (props) => {
         },
       },
       defaultEdge: {
-        style: {
+        style:{
           endArrow: {
-            path: "M 0,0 L 8,4 L 8,-4 Z",
-            fill: "#e2e2e2",
+            path: 'M 0,0 L 10,5 L 10,-5 Z',
+            d: -15,
+            fill: '#666',
+            stroke: '#666',
+            opacity: 0.8,
           },
-        },
+        }
       },
       linkCenter: true,
       minZoom: 0.1,
@@ -309,7 +312,6 @@ const RenderResultGraph = (props) => {
 
     graph.get("canvas").set("localRefresh", false);
 
-    processNodesEdges(res.nodes, res.edges);
     graph.data({
       nodes: res.nodes,
       edges: res.edges,
