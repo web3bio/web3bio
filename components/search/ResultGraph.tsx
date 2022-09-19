@@ -126,7 +126,7 @@ const legendData = {
   ],
 };
 
-const formatText = (text, length = 10, elipsis = "..") => {
+const formatText = (text, length = 15, elipsis = "..") => {
   if (!text) return "";
   if (text.length > length) {
     return `${text.substr(0, length)}${elipsis}`;
@@ -241,7 +241,7 @@ export const ResultGraph = (props) => {
   );
 
   useEffect(() => {
-    fetchGraph();
+    if (!called) fetchGraph();
     if (graph || !data) return;
     if (container && container.current) {
       CANVAS_WIDTH = container.current.offsetWidth;
@@ -381,6 +381,8 @@ export const ResultGraph = (props) => {
       model.fy = e.y;
     };
     bindListener();
+
+    return () => graph.destroy();
   }, [data, called, type, fetchGraph]);
 
   return (
