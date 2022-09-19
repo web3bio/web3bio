@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React, { memo, useEffect, useMemo } from "react";
 import { Loading } from "../shared/Loading";
 import { Error } from "../shared/Error";
 import _ from "lodash";
 import { Empty } from "../shared/Empty";
-import { useQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
@@ -135,7 +135,6 @@ const resolveGraphData = (source) => {
   source.forEach((x, idx) => {
     const from = x.from;
     const to = x.to;
-    console.log(x, "node");
     nodes.push({
       id: to.uuid,
       label: to.displayName ?? to.identity,
@@ -217,14 +216,15 @@ const processNodesEdges = (nodes, edges) => {
   });
 };
 
-export const ResultGraph = (props) => {
+// eslint-disable-next-line react/display-name
+export const ResultGraph = memo<any>((props) => {
   const { gql, onClose, variables } = props;
   const container = React.useRef<HTMLDivElement>(null);
-  const { loading, error, data } = useQuery(gql, {
+  const [fetchGraph, { loading, error, data }] = useLazyQuery(gql, {
     variables,
   });
-
-  useEffect(() => {
+  useMemo(() => {
+    fetchGraph();
     if (graph || !data) return;
     if (container && container.current) {
       CANVAS_WIDTH = container.current.offsetWidth;
@@ -325,7 +325,6 @@ export const ResultGraph = (props) => {
       edges: res.edges,
     });
     graph.render();
-
     const bindListener = () => {
       graph.on("node:dragstart", function (e) {
         refreshDragedNodePosition(e);
@@ -363,13 +362,13 @@ export const ResultGraph = (props) => {
       model.fx = e.x;
       model.fy = e.y;
     };
-    bindListener();
 
+    bindListener();
     return () => {
       graph.destroy();
       graph = null;
     };
-  }, [data, variables]);
+  }, [data, variables, fetchGraph]);
 
   return (
     <div className="graph-mask" onClick={onClose}>
@@ -389,4 +388,4 @@ export const ResultGraph = (props) => {
       )}
     </div>
   );
-};
+});
