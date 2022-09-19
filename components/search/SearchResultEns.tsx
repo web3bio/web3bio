@@ -3,16 +3,15 @@ import { ResultAccount } from "./ResultAccount";
 import { Loading } from "../shared/Loading";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
-import { GET_IDENTITY_GRAPH_ENS, GET_PROFILES_ENS } from "../../utils/queries";
+import { GET_PROFILES_ENS } from "../../utils/queries";
 import _ from "lodash";
-import { useEffect, useState } from "react";
-
-export const SearchResultEns = ({ searchTerm }) => {
+import { memo, useEffect, useState } from "react";
+const RenderResultEns = ({ searchTerm }) => {
   const { loading, error, data } = useQuery(GET_PROFILES_ENS, {
     variables: { ens: searchTerm },
   });
   const [resultNeighbor, setResultNeighbor] = useState([]);
-
+  console.log(data, "data");
   useEffect(() => {
     if (!data || !data.nft) return;
     const results = data?.nft.owner;
@@ -32,12 +31,10 @@ export const SearchResultEns = ({ searchTerm }) => {
       temp.filter(
         (ele, index) =>
           index ===
-          temp.findIndex(
-            (elem) => elem.identity.uuid == ele.identity.uuid
-          )
+          temp.findIndex((elem) => elem.identity.uuid == ele.identity.uuid)
       )
     );
-  }, [data]);
+  }, [data, searchTerm]);
 
   if (loading) return <Loading />;
   if (error) return <Error text={error} />;
@@ -46,10 +43,9 @@ export const SearchResultEns = ({ searchTerm }) => {
     <ResultAccount
       searchTerm={searchTerm}
       resultNeighbor={resultNeighbor}
-      graphGql={GET_IDENTITY_GRAPH_ENS}
-      graphVariables={{
-        id: searchTerm,
-      }}
+      graphData={data.nft.owner.neighborWithTraversal || []}
     />
   );
 };
+
+export const SearchResultEns = memo(RenderResultEns);

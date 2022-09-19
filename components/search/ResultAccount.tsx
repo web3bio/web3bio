@@ -1,16 +1,14 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { ResultAccountItem } from "./ResultAccountItem";
 import { ResultGraph } from "./ResultGraph";
 
-export function ResultAccount(props) {
+const  RenderAccount =(props)=> {
   const {
     searchTerm,
     resultNeighbor,
-    graphGql,
-    graphVariables,
+    graphData
   } = props;
   const [open, setOpen] = useState(false);
-
   return (
     <div className="search-result">
       <div className="search-result-header">
@@ -38,10 +36,11 @@ export function ResultAccount(props) {
       {open && (
         <ResultGraph
           onClose={() => setOpen(false)}
-          gql={graphGql}
-          variables={graphVariables}
+          data={graphData}
         />
       )}
     </div>
   );
 }
+
+export const ResultAccount = memo(RenderAccount)

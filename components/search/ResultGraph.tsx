@@ -1,9 +1,6 @@
-import React, { memo, useEffect, useMemo } from "react";
-import { Loading } from "../shared/Loading";
-import { Error } from "../shared/Error";
+import React, { memo, useEffect } from "react";
 import _ from "lodash";
-import { Empty } from "../shared/Empty";
-import { useLazyQuery } from "@apollo/client";
+
 
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
@@ -217,24 +214,17 @@ const processNodesEdges = (nodes, edges) => {
 };
 
 // eslint-disable-next-line react/display-name
-export const ResultGraph = memo<any>((props) => {
-  const { gql, onClose, variables } = props;
+const RenderResultGraph = (props) => {
+  const { data, onClose } = props;
   const container = React.useRef<HTMLDivElement>(null);
-  const [fetchGraph, { loading, error, data }] = useLazyQuery(gql, {
-    variables,
-  });
-  useMemo(() => {
-    fetchGraph();
+
+  useEffect(() => {
     if (graph || !data) return;
     if (container && container.current) {
       CANVAS_WIDTH = container.current.offsetWidth;
       CANVAS_HEIGHT = container.current.offsetHeight;
     }
-    const res = resolveGraphData(
-      variables.id
-        ? data.nft.owner.neighborWithTraversal
-        : data.identity.neighborWithTraversal
-    );
+    const res = resolveGraphData(data);
 
     const tooltip = new G6.Tooltip({
       offsetX: -120,
@@ -368,15 +358,11 @@ export const ResultGraph = memo<any>((props) => {
       graph.destroy();
       graph = null;
     };
-  }, [data, variables, fetchGraph]);
+  }, [data]);
 
   return (
     <div className="graph-mask" onClick={onClose}>
-      {(!data && (
-        <div className="graph-container graph-container-placeholder">
-          {loading ? <Loading /> : error ? <Error text={error} /> : <Empty />}
-        </div>
-      )) || (
+      {data && (
         <div
           className="graph-container"
           ref={container}
@@ -388,4 +374,6 @@ export const ResultGraph = memo<any>((props) => {
       )}
     </div>
   );
-});
+};
+
+export const ResultGraph = memo(RenderResultGraph);
