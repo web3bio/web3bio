@@ -3,7 +3,7 @@ import { Loading } from "../shared/Loading";
 import { Error } from "../shared/Error";
 import _ from "lodash";
 import { Empty } from "../shared/Empty";
-import { useLazyQuery } from "@apollo/client";
+import { useLazyQuery, useQuery } from "@apollo/client";
 import {
   GET_IDENTITY_GRAPH_DATA,
   GET_IDENTITY_GRAPH_ENS,
@@ -222,32 +222,18 @@ const processNodesEdges = (nodes, edges) => {
 };
 
 export const ResultGraph = (props) => {
-  const { value, platform, type, onClose } = props;
+  const { gql, onClose, variables } = props;
   const container = React.useRef<HTMLDivElement>(null);
-  const [fetchGraph, { loading, called, error, data }] = useLazyQuery(
-    type === "ens" ? GET_IDENTITY_GRAPH_ENS : GET_IDENTITY_GRAPH_DATA,
-    {
-      variables:
-        type === "ens"
-          ? {
-              id: value,
-            }
-          : {
-              platform,
-              identity: value,
-            },
-    }
-  );
+  const { loading, error, data } = useQuery(gql, { variables });
 
   useEffect(() => {
-    if (!called) fetchGraph();
     if (graph || !data) return;
     if (container && container.current) {
       CANVAS_WIDTH = container.current.offsetWidth;
       CANVAS_HEIGHT = container.current.offsetHeight;
     }
     const res = resolveGraphData(
-      type === "ens"
+      variables.id
         ? data.nft.owner.neighborWithTraversal
         : data.identity.neighborWithTraversal
     );
@@ -381,8 +367,11 @@ export const ResultGraph = (props) => {
     };
     bindListener();
 
-    return () => graph.destroy();
-  }, [data, called, type, fetchGraph]);
+    return () => {
+      graph.destroy();
+      graph = null;
+    };
+  }, [data, called, variables]);
 
   return (
     <div className="graph-mask" onClick={onClose}>

@@ -3,7 +3,7 @@ import { ResultAccount } from "./ResultAccount";
 import { Loading } from "../shared/Loading";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
-import { GET_PROFILES_ENS } from "../../utils/queries";
+import { GET_IDENTITY_GRAPH_ENS, GET_PROFILES_ENS } from "../../utils/queries";
 import _ from "lodash";
 import { useEffect, useState } from "react";
 
@@ -44,9 +44,12 @@ export const SearchResultEns = ({ searchTerm }) => {
   if (!data?.nft) return <Empty />;
   return (
     <ResultAccount
-      type="ens"
       searchTerm={searchTerm}
       resultNeighbor={resultNeighbor}
+      graphGql={GET_IDENTITY_GRAPH_ENS}
+      graphVariables={{
+        id: searchTerm,
+      }}
     />
   );
 };

@@ -3,11 +3,11 @@ import { ResultAccount } from "./ResultAccount";
 import { Loading } from "../shared/Loading";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
-import { GET_PROFILES_QUERY } from "../../utils/queries";
+import { GET_IDENTITY_GRAPH_DATA, GET_PROFILES_QUERY } from "../../utils/queries";
 import { useEffect, useState } from "react";
 
 export const SearchResultQuery = ({ searchTerm, searchPlatform }) => {
-  const { loading, error, data } = useQuery(GET_PROFILES_QUERY, {
+  const { loading, error, data,called } = useQuery(GET_PROFILES_QUERY, {
     variables: {
       platform: searchPlatform,
       identity: searchTerm,
@@ -39,7 +39,7 @@ export const SearchResultQuery = ({ searchTerm, searchPlatform }) => {
         )
       );
     }
-  }, [data]);
+  }, [data,called]);
 
   if (loading) return <Loading />;
   if (error) return <Error text={error} />;
@@ -50,6 +50,11 @@ export const SearchResultQuery = ({ searchTerm, searchPlatform }) => {
       searchPlatform={searchPlatform}
       searchTerm={searchTerm}
       resultNeighbor={resultNeighbor}
+      graphGql={GET_IDENTITY_GRAPH_DATA}
+      graphVariables={{
+        platform: searchPlatform,
+        identity: searchTerm
+      }}
     />
   );
 };

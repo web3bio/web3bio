@@ -3,8 +3,16 @@ import { ResultAccountItem } from "./ResultAccountItem";
 import { ResultGraph } from "./ResultGraph";
 
 export function ResultAccount(props) {
-  const { searchTerm, resultNeighbor, searchPlatform, type } = props;
+  const {
+    searchTerm,
+    resultNeighbor,
+    searchPlatform,
+    type,
+    graphGql,
+    graphVariables,
+  } = props;
   const [open, setOpen] = useState(false);
+
   return (
     <div className="search-result">
       <div className="search-result-header">
@@ -31,10 +39,9 @@ export function ResultAccount(props) {
       </div>
       {open && (
         <ResultGraph
-          value={searchTerm}
-          platform={searchPlatform}
-          type={type}
           onClose={() => setOpen(false)}
+          gql={graphGql}
+          variables={graphVariables}
         />
       )}
     </div>
