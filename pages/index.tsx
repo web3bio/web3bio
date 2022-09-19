@@ -13,9 +13,9 @@ export default function Home() {
   const router = useRouter();
 
   const regexEns = /.*\.eth|.xyz$/,
-        regexLens = /.*\.lens$/,
-        regexEth = /^0x[a-fA-F0-9]{40}$/,
-        regexTwitter = /(\w{1,15})\b/;
+    regexLens = /.*\.lens$/,
+    regexEth = /^0x[a-fA-F0-9]{40}$/,
+    regexTwitter = /(\w{1,15})\b/;
 
   const handlesearchPlatform = (term) => {
     switch (true) {
@@ -63,17 +63,6 @@ export default function Home() {
         },
       });
     }
-  };
-  const resolveRenderSearch = () => {
-    if (!searchPlatform) return null;
-    return searchPlatform === "ENS" ? (
-      <SearchResultEns searchTerm={searchTerm} />
-    ) : (
-      <SearchResultQuery
-        searchTerm={searchTerm}
-        searchPlatform={searchPlatform}
-      />
-    );
   };
   return (
     <div>
@@ -146,7 +135,16 @@ export default function Home() {
                 </button>
               </div>
             </form>
-            {resolveRenderSearch()}
+            {searchPlatform ? (
+              searchPlatform === "ENS" ? (
+                <SearchResultEns searchTerm={searchTerm} />
+              ) : (
+                <SearchResultQuery
+                  searchTerm={searchTerm}
+                  searchPlatform={searchPlatform}
+                />
+              )
+            ) : null}
           </div>
         </div>
         <div className="web3bio-footer">
