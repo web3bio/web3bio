@@ -12,7 +12,7 @@ export function ResultAccount(props) {
           Search results for{" "}
           <span className="text-underline">{searchTerm}</span>:
         </div>
-        <div className="btn" onClick={() => setOpen(true)}>
+        <div className="btn btn-link btn-sm" onClick={() => setOpen(true)}>
           Graph
         </div>
       </div>

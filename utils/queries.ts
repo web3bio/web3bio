@@ -8,6 +8,12 @@ export const GET_PROFILES_ENS = gql`
         platform
         identity
         displayName
+        ownedBy {
+          uuid
+          platform
+          identity
+          displayName
+        }
         nft {
           uuid
           category
@@ -21,6 +27,12 @@ export const GET_PROFILES_ENS = gql`
             platform
             identity
             displayName
+            ownedBy {
+              uuid
+              platform
+              identity
+              displayName
+            }
             nft {
               uuid
               category
@@ -41,6 +53,12 @@ export const GET_PROFILES_QUERY = gql`
       platform
       identity
       displayName
+      ownedBy {
+        uuid
+        platform
+        identity
+        displayName
+      }
       nft {
         uuid
         category
@@ -54,6 +72,12 @@ export const GET_PROFILES_QUERY = gql`
           platform
           identity
           displayName
+          ownedBy {
+            uuid
+            platform
+            identity
+            displayName
+          }
           nft {
             uuid
             category

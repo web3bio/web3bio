@@ -39,7 +39,6 @@ export const SearchResultEns = ({ searchTerm }) => {
     );
   }, [data]);
 
-  
   if (loading) return <Loading />;
   if (error) return <Error text={error} />;
   if (!data?.nft) return <Empty />;

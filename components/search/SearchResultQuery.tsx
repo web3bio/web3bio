@@ -24,6 +24,7 @@ export const SearchResultQuery = ({ searchTerm, searchPlatform }) => {
         platform: results?.platform,
         identity: results?.identity,
         displayName: results?.displayName,
+        ownedBy: results?.ownedBy,
         nft: results?.nft,
       },
     };

@@ -350,7 +350,7 @@ body {
       top: -.4rem;
     }
 
-    &.ethereum {
+    &.social-web3 {
       .social-main {
         flex-direction: column;
         padding: .4rem;
@@ -389,9 +389,12 @@ body {
           width: 1rem;
         }
       }
+    }
 
-      .nfts {
-        margin-top: .4rem;
+    &.lens {
+      .bg-lens {
+        background: #BDFC5A;
+        color: #204F24;
       }
     }
   }
@@ -429,7 +432,7 @@ body {
     display: inline-flex;
     font-size: 90%;
     line-height: .8rem;
-    margin: .1rem .1rem 0 0;
+    margin: .2rem .2rem 0 0;
     max-width: 100%;
     padding: .1rem .3rem .1rem .15rem;
     text-decoration: none;
