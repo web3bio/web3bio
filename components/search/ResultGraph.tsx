@@ -8,7 +8,6 @@ import {
   GET_IDENTITY_GRAPH_DATA,
   GET_IDENTITY_GRAPH_ENS,
 } from "../../utils/queries";
-import { colorSets, global } from "./graphCom/LargeGraphRegister";
 
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
