@@ -3,11 +3,7 @@ import { Loading } from "../shared/Loading";
 import { Error } from "../shared/Error";
 import _ from "lodash";
 import { Empty } from "../shared/Empty";
-import { useLazyQuery, useQuery } from "@apollo/client";
-import {
-  GET_IDENTITY_GRAPH_DATA,
-  GET_IDENTITY_GRAPH_ENS,
-} from "../../utils/queries";
+import { useQuery } from "@apollo/client";
 
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
@@ -224,7 +220,9 @@ const processNodesEdges = (nodes, edges) => {
 export const ResultGraph = (props) => {
   const { gql, onClose, variables } = props;
   const container = React.useRef<HTMLDivElement>(null);
-  const { loading, error, data } = useQuery(gql, { variables });
+  const { loading, error, data } = useQuery(gql, {
+    variables,
+  });
 
   useEffect(() => {
     if (graph || !data) return;
@@ -371,7 +369,7 @@ export const ResultGraph = (props) => {
       graph.destroy();
       graph = null;
     };
-  }, [data, called, variables]);
+  }, [data, variables]);
 
   return (
     <div className="graph-mask" onClick={onClose}>

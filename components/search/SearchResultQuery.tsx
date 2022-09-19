@@ -47,7 +47,6 @@ export const SearchResultQuery = ({ searchTerm, searchPlatform }) => {
 
   return (
     <ResultAccount
-      searchPlatform={searchPlatform}
       searchTerm={searchTerm}
       resultNeighbor={resultNeighbor}
       graphGql={GET_IDENTITY_GRAPH_DATA}

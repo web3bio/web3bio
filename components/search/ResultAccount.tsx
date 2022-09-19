@@ -6,8 +6,6 @@ export function ResultAccount(props) {
   const {
     searchTerm,
     resultNeighbor,
-    searchPlatform,
-    type,
     graphGql,
     graphVariables,
   } = props;
