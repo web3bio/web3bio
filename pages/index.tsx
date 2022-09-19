@@ -13,14 +13,18 @@ export default function Home() {
   const router = useRouter();
 
   const regexEns = /.*\.eth|.xyz$/,
-    regexEth = /^0x[a-fA-F0-9]{40}$/,
-    regexTwitter = /(\w{1,15})\b/;
+        regexLens = /.*\.lens$/,
+        regexEth = /^0x[a-fA-F0-9]{40}$/,
+        regexTwitter = /(\w{1,15})\b/;
 
   const handlesearchPlatform = (term) => {
     switch (true) {
       case regexEns.test(term):
         console.log("ENS");
         return "ENS";
+      case regexLens.test(term):
+        console.log("lens");
+        return "lens";
       case regexEth.test(term):
         console.log("ethereum");
         return "ethereum";
