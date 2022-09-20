@@ -1,5 +1,6 @@
 import React, { memo, useEffect } from "react";
 import _ from "lodash";
+import { formatText } from "../../utils/utils";
 
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
@@ -117,13 +118,7 @@ const legendData = {
   ],
 };
 
-const formatText = (text, length = 15, elipsis = "..") => {
-  if (!text) return "";
-  if (text.length > length) {
-    return `${text.substr(0, length)}${elipsis}`;
-  }
-  return text;
-};
+
 
 const resolveGraphData = (source) => {
   const nodes = [];

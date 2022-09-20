@@ -1,14 +1,14 @@
-import React, { Component, useState } from "react";
+import React, { memo, useState } from "react";
 import Link from "next/link";
-import { formatAddress } from "../../utils/utils";
+import { formatAddress, formatText } from "../../utils/utils";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 
-export function ResultAccountItem(props) {
+const RenderAccountItem = (props) => {
   const onCopySuccess = () => {
-    setIsCopied(true)
+    setIsCopied(true);
     setTimeout(() => {
-      setIsCopied(false)
+      setIsCopied(false);
     }, 1500);
   };
   const { identity, sources } = props;
@@ -55,10 +55,11 @@ export function ResultAccountItem(props) {
             </div>
             {identity.nft?.length > 0 && (
               <div className="nfts">
-                {identity.nft.map((nft) => {
+                {identity.nft.map((nft,idx) => {
+                  console.log(nft,'ggg')
                   return nft.category == "ENS" ? (
                     <Link
-                      key={nft.uuid}
+                      key={idx}
                       href={{
                         pathname: "/",
                         query: { s: nft.id },
@@ -66,7 +67,7 @@ export function ResultAccountItem(props) {
                     >
                       <a className="label-ens" title={nft.id}>
                         <SVG src="icons/icon-ens.svg" width={16} height={16} />
-                        <span>{nft.id}</span>
+                        <span>{formatText(nft.id)}</span>
                       </a>
                     </Link>
                   ) : null;
@@ -106,7 +107,9 @@ export function ResultAccountItem(props) {
                     : formatAddress({ address: identity.identity })}
                 </div>
                 <div className="content-subtitle text-gray">
-                  <div className="address hide-xs">{identity.ownedBy.displayName}</div>
+                  <div className="address hide-xs">
+                    {identity.ownedBy.displayName}
+                  </div>
                   <div className="address show-xs">
                     {identity.ownedBy.displayName}
                   </div>
@@ -333,63 +336,65 @@ export function ResultAccountItem(props) {
           )}
         </div>
       );
-      case "reddit":
-        return (
-          <div className="social-item reddit">
-            <div className="social-main">
-              <Link
-                href={{
-                  pathname: "/",
-                  query: {
-                    s: identity.identity,
-                    platform: identity.platform,
-                  },
-                }}
+    case "reddit":
+      return (
+        <div className="social-item reddit">
+          <div className="social-main">
+            <Link
+              href={{
+                pathname: "/",
+                query: {
+                  s: identity.identity,
+                  platform: identity.platform,
+                },
+              }}
+            >
+              <a className="social">
+                <div className="icon">
+                  <SVG src="icons/icon-reddit.svg" width={20} height={20} />
+                </div>
+                <div className="content-title">{identity.displayName}</div>
+              </a>
+            </Link>
+            <div className="actions">
+              <a
+                className="btn btn-sm btn-link action"
+                href={`https://www.reddit.com/user/${identity.displayName}`}
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                <a className="social">
-                  <div className="icon">
-                    <SVG src="icons/icon-reddit.svg" width={20} height={20} />
-                  </div>
-                  <div className="content-title">{identity.displayName}</div>
-                </a>
-              </Link>
-              <div className="actions">
-                <a
-                  className="btn btn-sm btn-link action"
-                  href={`https://www.reddit.com/user/${identity.displayName}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  OPEN
-                </a>
-                <Clipboard
-                  className="btn btn-sm btn-link action"
-                  data-clipboard-text={identity.displayName}
-                  onSuccess={onCopySuccess}
-                >
-                  COPY
-                  {isCopied && <div className="tooltip-copy">COPIED</div>}
-                </Clipboard>
-              </div>
+                OPEN
+              </a>
+              <Clipboard
+                className="btn btn-sm btn-link action"
+                data-clipboard-text={identity.displayName}
+                onSuccess={onCopySuccess}
+              >
+                COPY
+                {isCopied && <div className="tooltip-copy">COPIED</div>}
+              </Clipboard>
             </div>
-            {sources && (
-              <div className="social-footer">
-                <SVG
-                  src="icons/icon-sources.svg"
-                  width={20}
-                  height={20}
-                  title="Data sources"
-                />
-                {sources.map((source) => (
-                  <span key={source} className="text-uppercase mr-1">
-                    {source}
-                  </span>
-                ))}
-              </div>
-            )}
           </div>
-        );
+          {sources && (
+            <div className="social-footer">
+              <SVG
+                src="icons/icon-sources.svg"
+                width={20}
+                height={20}
+                title="Data sources"
+              />
+              {sources.map((source) => (
+                <span key={source} className="text-uppercase mr-1">
+                  {source}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      );
     default:
       return null;
   }
-}
+};
+
+export const ResultAccountItem = memo(RenderAccountItem);
