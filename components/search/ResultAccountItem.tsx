@@ -59,7 +59,7 @@ const RenderAccountItem = (props) => {
                   console.log(nft,'ggg')
                   return nft.category == "ENS" ? (
                     <Link
-                      key={idx}
+                      key={`${nft.uuid}-${idx}`}
                       href={{
                         pathname: "/",
                         query: { s: nft.id },
