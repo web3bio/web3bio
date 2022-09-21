@@ -56,7 +56,6 @@ const RenderAccountItem = (props) => {
             {identity.nft?.length > 0 && (
               <div className="nfts">
                 {identity.nft.map((nft,idx) => {
-                  console.log(nft,'ggg')
                   return nft.category == "ENS" ? (
                     <Link
                       key={`${nft.uuid}-${idx}`}
