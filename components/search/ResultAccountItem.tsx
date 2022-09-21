@@ -1,6 +1,6 @@
 import React, { memo, useState } from "react";
 import Link from "next/link";
-import { formatAddress, formatText } from "../../utils/utils";
+import { formatAddress } from "../../utils/utils";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 
@@ -26,12 +26,12 @@ const RenderAccountItem = (props) => {
                 <div className="content-title text-bold">
                   {identity.displayName
                     ? identity.displayName
-                    : formatAddress({ address: identity.identity })}
+                    : formatAddress(identity.identity)}
                 </div>
                 <div className="content-subtitle text-gray">
                   <div className="address hide-xs">{identity.identity}</div>
                   <div className="address show-xs">
-                    {formatAddress({ address: identity.identity })}
+                    {formatAddress(identity.identity)}
                   </div>
                   <Clipboard
                     component="div"
@@ -45,6 +45,7 @@ const RenderAccountItem = (props) => {
                   <a
                     className="action text-gray"
                     href={`https://etherscan.io/address/${identity.identity}`}
+                    title="Open in Etherscan Explorer"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -56,7 +57,6 @@ const RenderAccountItem = (props) => {
             {identity.nft?.length > 0 && (
               <div className="nfts">
                 {identity.nft.map((nft,idx) => {
-                  console.log(nft,'ggg')
                   return nft.category == "ENS" ? (
                     <Link
                       key={`${nft.uuid}-${idx}`}
@@ -67,7 +67,7 @@ const RenderAccountItem = (props) => {
                     >
                       <a className="label-ens" title={nft.id}>
                         <SVG src="icons/icon-ens.svg" width={16} height={16} />
-                        <span>{formatText(nft.id)}</span>
+                        <span>{nft.id}</span>
                       </a>
                     </Link>
                   ) : null;
@@ -102,34 +102,30 @@ const RenderAccountItem = (props) => {
               </figure>
               <div className="content">
                 <div className="content-title text-bold">
-                  {identity.displayName
-                    ? identity.displayName
-                    : formatAddress({ address: identity.identity })}
+                  {identity.displayName}
                 </div>
                 <div className="content-subtitle text-gray">
                   <div className="address hide-xs">
-                    {identity.ownedBy.displayName}
+                    {identity.ownedBy.displayName
+                      ? identity.ownedBy.displayName
+                      : identity.ownedBy.identity}
                   </div>
                   <div className="address show-xs">
-                    {identity.ownedBy.displayName}
+                    {identity.ownedBy.displayName
+                      ? identity.ownedBy.displayName
+                      : formatAddress(identity.ownedBy.identity)}
                   </div>
                   <Clipboard
                     component="div"
                     className="action"
-                    data-clipboard-text={identity.ownedBy.displayName}
+                    data-clipboard-text={identity.ownedBy.displayName
+                      ? identity.ownedBy.displayName
+                      : identity.ownedBy.identity}
                     onSuccess={onCopySuccess}
                   >
                     <SVG src="icons/icon-copy.svg" width={20} height={20} />
                     {isCopied && <div className="tooltip-copy">COPIED</div>}
                   </Clipboard>
-                  {/* <a
-                    className="action text-gray"
-                    href={`https://www.lensfrens.xyz/${identity.identity}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <SVG src="icons/icon-open.svg" width={20} height={20} />
-                  </a> */}
                 </div>
               </div>
             </div>
@@ -192,6 +188,7 @@ const RenderAccountItem = (props) => {
               <a
                 className="btn btn-sm btn-link action"
                 href={`https://twitter.com/${identity.identity}`}
+                title="Open Twitter"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -248,6 +245,7 @@ const RenderAccountItem = (props) => {
               <a
                 className="btn btn-sm btn-link action"
                 href={`https://github.com/${identity.identity}`}
+                title="Open GitHub"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -304,6 +302,7 @@ const RenderAccountItem = (props) => {
               <a
                 className="btn btn-sm btn-link action"
                 href={`https://keybase.io/${identity.displayName}`}
+                title="Open Keybase"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -360,6 +359,7 @@ const RenderAccountItem = (props) => {
               <a
                 className="btn btn-sm btn-link action"
                 href={`https://www.reddit.com/user/${identity.displayName}`}
+                title="Open Reddit"
                 target="_blank"
                 rel="noopener noreferrer"
               >

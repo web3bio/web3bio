@@ -314,7 +314,7 @@ body {
     &:focus,
     &:hover {
       background: rgba($gray-color, .1);
-      transform: translateY(-.2rem);
+      transform: translateY(-.1rem);
 
       .actions {
         display: flex;
@@ -337,17 +337,17 @@ body {
 
     .social-footer {
       align-items: center;
-      background: rgba($gray-color, .15);
-      border-radius: .2rem;
+      background: linear-gradient(-135deg, rgba($dark-color, .05), transparent);
+      border-radius: .1rem;
       color: $gray-color;
       display: none;
       font-size: .5rem;
-      height: .8rem;
+      height: .6rem;
       justify-content: flex-end;
-      padding: .2rem 0;
+      padding: 0;
       position: absolute;
       right: 0;
-      top: -.4rem;
+      top: -.2rem;
     }
 
     &.social-web3 {

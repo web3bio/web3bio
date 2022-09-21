@@ -1,6 +1,6 @@
 import React, { memo, useEffect } from "react";
 import _ from "lodash";
-import { formatText } from "../../utils/utils";
+import { formatAddress } from "../../utils/utils";
 
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
@@ -9,35 +9,35 @@ let graph = null;
 
 if (isBrowser) {
   insertCss(`
-  .g6-component-tooltip{
+  .g6-component-tooltip {
     position: absolute;
 			z-index: 2;
 			list-style-type: none;
 			border-radius: 6px;
-			font-size: 0.3rem;
+			font-size: .6rem;
 			width: fit-content;
 			transition: opacity .2s;
 			text-align: left;
 			padding: 4px 8px;
-			box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.3);
-			border: 0px;
+			box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .15);
+			border: 0;
   }
-		.g6-component-tooltip ul {
-			padding-left: 0px;
-			margin: 0;
-		}
-		.g6-component-tooltip li {
-			cursor: pointer;
-			list-style-type: none;
-			list-style: none;
-			margin-left: 0;
+  .g6-component-tooltip ul {
+    padding-left: 0;
+    margin: 0;
+  }
+  .g6-component-tooltip li {
+    cursor: pointer;
+    list-style-type: none;
+    list-style: none;
+    margin: 0;
 	}
 	`);
 }
 
 const colorsMap = {
   twitter: "#019eeb",
-  nextid: "#ad00ff",
+  nextid: "#1C68F3",
   keybase: "#07ee80",
   ethereum: "#006afc",
   reddit: "#ff5fc9",
@@ -53,7 +53,7 @@ const legendData = {
   nodes: [
     {
       id: "nextid",
-      label: "NextID",
+      label: "Next.ID",
       order: 0,
       style: {
         fill: colorsMap["nextid"],
@@ -93,7 +93,7 @@ const legendData = {
     },
     {
       id: "github",
-      label: "Github",
+      label: "GitHub",
       order: 5,
       style: {
         fill: colorsMap["github"],
@@ -131,7 +131,7 @@ const resolveGraphData = (source) => {
       label: to.displayName ?? to.identity,
       platform: to.platform,
       source: x.source,
-      ens: to.displayName,
+      displayName: to.displayName,
       identity: to.identity,
       level: 1,
     });
@@ -140,7 +140,7 @@ const resolveGraphData = (source) => {
       label: from.displayName ?? from.identity,
       platform: from.platform,
       source: x.source,
-      ens: from.displayName,
+      displayName: from.displayName,
       identity: from.identity,
       level: 1,
     });
@@ -156,14 +156,14 @@ const resolveGraphData = (source) => {
           id: k.uuid,
           label: k.id,
           category: k.category,
-          chain: k.chian,
+          chain: k.chain,
           holder: from.identity,
           platform: "ens",
         });
         edges.push({
           source: from.uuid,
           target: k.uuid,
-          label: "hold",
+          // label: "hold",
           id: `${from.uuid}-${k.uuid}`,
         });
       }
@@ -174,14 +174,14 @@ const resolveGraphData = (source) => {
           id: k.uuid,
           label: k.id,
           category: k.category,
-          chain: k.chian,
+          chain: k.chain,
           holder: to.identity,
           platform: "ens",
         });
         edges.push({
           source: to.uuid,
           target: k.uuid,
-          label: "hold",
+          // label: "hold",
           id: `${to.uuid}-${k.uuid}`,
         });
       }
@@ -196,14 +196,26 @@ const processNodesEdges = (nodes, edges) => {
   // todo: processs edges and nodes
   nodes.forEach((node) => {
     if (node.level === 1) {
-      node.size = 35;
+      // identity
+      node.size = 96;
+      node.style = {
+        lineWidth: 2,
+        fill: "#fff",
+        stroke: "#333",
+      };
+    } else {
+      // ENS
+      node.size = 16;
+      node.labelCfg = {
+        position: "bottom",
+      };
+      node.style = {
+        lineWidth: 2,
+        fill: "#fff",
+        stroke: "#333",
+      };
     }
-    node.style = {
-      lineWidth: 3,
-      fill: "#fff",
-      stroke: colorsMap[node.platform],
-    };
-    node.label = formatText(node.label);
+    node.label = formatAddress(node.label);
   });
 };
 
@@ -228,14 +240,15 @@ const RenderResultGraph = (props) => {
         if (e.item.getModel().level) {
           outDiv.innerHTML = `
           <ul>
-            <li>DisplayName: ${e.item.getModel().ens || "Unknown"}</li>
+            <li>DisplayName: ${e.item.getModel().displayName || "Unknown"}</li>
             <li>Identity: ${e.item.getModel().identity || "Unknown"}</li>
+            <li>Platform: ${e.item.getModel().platform || "Unknown"}</li>
             <li>Source: ${e.item.getModel().source || "Unknown"}</li>
           </ul>`;
         } else {
           outDiv.innerHTML = `
           <ul>
-            <li>ENS: ${e.item.getModel().id || "Unknown"}</li>
+            <li>ENS: ${e.item.getModel().label || "Unknown"}</li>
             <li>Holder: ${e.item.getModel().holder || "Unknown"}</li>
           </ul>`;
         }
@@ -249,15 +262,15 @@ const RenderResultGraph = (props) => {
       align: "center",
       layout: "horizontal", // vertical
       position: "bottom-left",
-      offsetY: -120,
-      offsetX: -100,
+      offsetY: -80,
+      offsetX: -140,
       padding: [4, 16, 8, 16],
       containerStyle: {
         fill: "#fff",
       },
       title: " ",
       titleConfig: {
-        offsetY: -8,
+        offsetY: -10,
       },
     });
     processNodesEdges(res.nodes, res.edges);
@@ -266,38 +279,29 @@ const RenderResultGraph = (props) => {
       container: container.current,
       CANVAS_WIDTH,
       CANVAS_HEIGHT,
-      defaultNode: {
-        labelCfg: {
-          position: "bottom",
-        },
-      },
       defaultEdge: {
         style:{
           endArrow: {
-            path: 'M 0,0 L 10,5 L 10,-5 Z',
-            d: -15,
+            path: 'M 0,0 L 5,2.5 L 5,-2.5 Z',
             fill: '#666',
             stroke: '#666',
-            opacity: 0.8,
+            opacity: .5,
           },
         }
       },
-      linkCenter: true,
-      minZoom: 0.1,
+      fitCenter: true,
       layout: {
-        type: "circular",
-        ordering: "degree",
+        type: 'gForce',
+        preventOverlap: true,
+        linkDistance: 150,
+        linkCenter: true,
+        edgeStrength: 150,
       },
       modes: {
         default: [
           {
             type: "drag-canvas",
             enableOptimize: true,
-          },
-          {
-            type: "zoom-canvas",
-            enableOptimize: true,
-            optimizeZoom: 0.01,
           },
           "drag-node",
         ],
