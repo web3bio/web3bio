@@ -50,8 +50,32 @@ const colorsMap = {
   unknown: "#000000",
 };
 
+const platformMap = {
+  twitter: "Twitter",
+  nextid: "Next.ID",
+  keybase: "Keybase",
+  ethereum: "Ethereum",
+  reddit: "Reddit",
+  ens: "ENS",
+  lens: "Lens",
+  github: "GitHub",
+  unknown: "Unknown",
+};
+
+const sourceMap = {
+  nextid: "Next.ID",
+  keybase: "Keybase",
+  rss3: "RSS3",
+  reddit: "Reddit",
+  ens: "ENS",
+  lens: "Lens",
+  cyberconnect: "CyberConnect",
+  sybil: "Sybil",
+  unknown: "Unknown",
+};
+
 let CANVAS_WIDTH = 800,
-  CANVAS_HEIGHT = 800;
+    CANVAS_HEIGHT = 800;
 
 const resolveGraphData = (source) => {
   const nodes = [];
@@ -61,27 +85,28 @@ const resolveGraphData = (source) => {
     const to = x.to;
     nodes.push({
       id: to.uuid,
-      label: to.displayName ?? to.identity,
+      label: formatAddress(to.displayName ?? to.identity),
       platform: to.platform,
       source: x.source,
       displayName: to.displayName,
       identity: to.identity,
-      level: 1,
+      isIdentity: true,
     });
     nodes.push({
       id: from.uuid,
-      label: from.displayName ?? from.identity,
+      label: formatAddress(from.displayName ?? from.identity),
       platform: from.platform,
       source: x.source,
       displayName: from.displayName,
       identity: from.identity,
-      level: 1,
+      isIdentity: true,
     });
     edges.push({
       source: from.uuid,
       target: to.uuid,
-      label: x.source,
+      label: sourceMap[x.source],
       id: `${from.uuid}-${to.uuid}`,
+      isIdentity: true,
     });
     from.nft.forEach((k) => {
       if (k.category === "ENS") {
@@ -128,13 +153,13 @@ const resolveGraphData = (source) => {
 const processNodesEdges = (nodes, edges) => {
   // todo: processs edges and nodes
   nodes.forEach((node) => {
-    if (node.level === 1) {
-      // identity
+    if (node.isIdentity) {
+      // Identity
       node.size = 96;
       node.style = {
         lineWidth: 2,
-        fill: "#fff",
-        stroke: "#333",
+        fill: "rgba(0, 0, 0, .05)",
+        stroke: "rgba(0, 0, 0, .05)",
       };
     } else {
       // ENS
@@ -144,14 +169,24 @@ const processNodesEdges = (nodes, edges) => {
       };
       node.style = {
         lineWidth: 2,
-        fill: "#fff",
-        stroke: "#333",
+        fill: "rgba(0, 0, 0, .05)",
+        stroke: "rgba(0, 0, 0, .05)",
       };
     }
     node.type = "identity-node";
     node.label = formatAddress(node.label);
   });
-  G6.Util.processParallelEdges(edges, 12.5);
+  edges.forEach((edge) => {
+    if (edge.isIdentity) {
+      // Identity
+      edge.type = "quadratic";
+      edge.curveOffset = 0;
+    } else {
+      // ENS
+      edge.type = "line";
+    }
+  });
+  // G6.Util.processParallelEdges(edges);
 };
 
 // eslint-disable-next-line react/display-name
@@ -172,13 +207,13 @@ const RenderResultGraph = (props) => {
       offsetY: -150,
       getContent(e) {
         const outDiv = document.createElement("div");
-        if (e.item.getModel().level) {
+        if (e.item.getModel().isIdentity) {
           outDiv.innerHTML = `
           <ul>
             <li>DisplayName: ${e.item.getModel().displayName || "Unknown"}</li>
             <li>Identity: ${e.item.getModel().identity || "Unknown"}</li>
-            <li>Platform: ${e.item.getModel().platform || "Unknown"}</li>
-            <li>Source: ${e.item.getModel().source || "Unknown"}</li>
+            <li>Platform: ${platformMap[e.item.getModel().platform || "unknown"]}</li>
+            <li>Source: ${sourceMap[e.item.getModel().source || "unknown"]}</li>
           </ul>`;
         } else {
           outDiv.innerHTML = `
@@ -199,30 +234,56 @@ const RenderResultGraph = (props) => {
       container: container.current,
       CANVAS_WIDTH,
       CANVAS_HEIGHT,
-      // defaultEdge: {
-      //   style: {
-      //     endArrow: {
-      //       path: "M 0,0 L 5,2.5 L 5,-2.5 Z",
-      //       fill: "#2B384E",
-      //       stroke: global.edge.labelCfg.style.stroke,
-      //       opacity: 0.5,
-      //     },
-      //   },
-      // },
+      defaultEdge: {
+        labelCfg: {
+          autoRotate: true,
+          style: {
+            stroke: '#fff',
+            fill: "#999",
+            fontSize: "10px",
+          },
+        },
+        style: {
+          endArrow: {
+            path: "M 0,0 L 5,2.5 L 5,-2.5 Z",
+            fill: "#2B384E",
+            stroke: global.edge.labelCfg.style.stroke,
+            opacity: 0.5,
+          },
+        },
+      },
       fitCenter: true,
       layout: {
         type: "gForce",
         preventOverlap: true,
-        linkDistance: 150,
-        linkCenter: true,
-        edgeStrength: 150,
+        linkDistance: (d) => {
+          if (d.isIdentity) {
+            return 240;
+          }
+          return 180;
+        },
+        nodeSpacing: (d) => {
+          if (d.isIdentity) {
+            return 240;
+          }
+          return 180;
+        },
+        nodeStrength: (d) => {
+          if (d.isIdentity) {
+            return 480;
+          }
+          return 180;
+        },
+        edgeStrength: (d) => {
+          if (d.isIdentity) {
+            return 30;
+          }
+          return 20;
+        },
       },
       modes: {
         default: [
-          {
-            type: "drag-canvas",
-            enableOptimize: true,
-          },
+          "drag-canvas",
           "drag-node",
         ],
       },

@@ -30,10 +30,11 @@ const resolvePlatformIcon = (platform) => {
   return (
     {
       twitter: "/icons/icon-twitter.svg",
-      nextid: "#1C68F3",
+      nextid: "",
       keybase: "/icons/icon-keybase.svg",
       ethereum: "/icons/icon-ethereum.svg",
       reddit: "/icons/icon-reddit.svg",
+      lens: "/icons/icon-lens.svg",
       ens: "/icons/icon-ens.svg",
       github: "/icons/icon-github.svg",
     }[platform] || ""
@@ -112,8 +113,8 @@ export const register = () => {
               y: 0,
               r,
               fill: "#fff",
-              stroke: "#000",
-              lineWidth: 3,
+              stroke: "#333",
+              lineWidth: 2,
               cursor: "pointer",
             },
             name: "aggregated-node-keyShape",
@@ -140,72 +141,62 @@ export const register = () => {
               attrs: {
                 text,
                 x: 0,
-                y: 5,
+                y: 6,
                 textAlign: "center",
                 textBaseLine: "alphabetic",
                 cursor: "pointer",
                 fontSize,
-                fill: "#000",
+                fill: "#333",
                 opacity: 0.85,
-                fontWeight: 600,
               },
               name: "text-shape",
               className: "text-shape",
             });
           }
           // tag for new node
-          if (true) {
-            group.addShape("image", {
-              attrs: {
-                x: r - r / 3,
-                y: -r - r / 5,
-                width: cfg.level ? 30 : 15,
-                height: cfg.level ? 30 : 15,
-                img: resolvePlatformIcon(cfg.platform),
-              },
-              name: "image-shape",
-            });
+          if (cfg.platform !== "unknown") {
+            if (cfg.isIdentity) {
+              group.addShape("circle", {
+                attrs: {
+                  x: r - 12,
+                  y: - r + 12,
+                  r: 18,
+                  fill: "#dedede",
+                  zIndex: 9,
+                },
+                name: "image-shape",
+                className: "image-shape",
+                zIndex: 9,
+              });
+              group.addShape("image", {
+                attrs: {
+                  x: r - 24,
+                  y: - r,
+                  width: 24,
+                  height: 24,
+                  img: resolvePlatformIcon(cfg.platform),
+                },
+                name: "image-shape",
+                className: "image-shape",
+                zIndex: 99,
+              });
+            } else {
+              group.addShape("image", {
+                attrs: {
+                  x: - 8,
+                  y: - 8,
+                  width: 16,
+                  height: 16,
+                  img: resolvePlatformIcon(cfg.platform),
+                },
+                name: "image-shape",
+                className: "image-shape",
+                zIndex: 99,
+              });
+            }
           }
-
           return keyShape;
         },
-        // setState: (name, value, item) => {
-        //   const group = item.get("group");
-        //   if (name === "layoutEnd" && value) {
-        //     const labelShape = group.find(
-        //       (e) => e.get("name") === "text-shape"
-        //     );
-        //     if (labelShape) labelShape.set("visible", true);
-        //   } else if (name === "hover") {
-        //     if (item.hasState("focus")) {
-        //       return;
-        //     }
-        //     const halo = group.find((e) => e.get("name") === "halo-shape");
-        //     const keyShape: any = item.getKeyShape();
-        //     const colorSet = item.getModel().colorSet || colorSets[0];
-        //     if (value) {
-        //       halo && halo.show();
-        //       keyShape.attr("fill", colorSet.activeFill);
-        //     } else {
-        //       halo && halo.hide();
-        //       keyShape.attr("fill", colorSet.mainFill);
-        //     }
-        //   } else if (name === "focus") {
-        //     const stroke = group.find((e) => e.get("name") === "stroke-shape");
-        //     const label = group.find((e) => e.get("name") === "text-shape");
-        //     const keyShape: any = item.getKeyShape();
-        //     const colorSet = item.getModel().colorSet || colorSets[0];
-        //     if (value) {
-        //       stroke && stroke.show();
-        //       keyShape.attr("fill", colorSet.selectedFill);
-        //       label && label.attr("fontWeight", 800);
-        //     } else {
-        //       stroke && stroke.hide();
-        //       keyShape.attr("fill", colorSet.mainFill); // '#2B384E'
-        //       label && label.attr("fontWeight", 400);
-        //     }
-        //   }
-        // },
         update: undefined,
       },
       "aggregated-node"
@@ -214,111 +205,111 @@ export const register = () => {
     // todo: config the line style
 
     // // Custom the quadratic edge for multiple edges between one node pair
-    // G6.registerEdge(
-    //   "custom-quadratic",
-    //   {
-    //     setState: (name, value, item) => {
-    //       const group = item.get("group");
-    //       const model = item.getModel();
-    //       if (name === "focus") {
-    //         const back = group.find((ele) => ele.get("name") === "back-line");
-    //         if (back) {
-    //           back.stopAnimate();
-    //           back.remove();
-    //           back.destroy();
-    //         }
-    //         const keyShape = group.find(
-    //           (ele) => ele.get("name") === "edge-shape"
-    //         );
-    //         const arrow: any = model.style.endArrow;
-    //         if (value) {
-    //           if (keyShape.cfg.animation) {
-    //             keyShape.stopAnimate(true);
-    //           }
-    //           keyShape.attr({
-    //             strokeOpacity: animateOpacity,
-    //             opacity: animateOpacity,
-    //             stroke: "#fff",
-    //             endArrow: {
-    //               ...arrow,
-    //               stroke: "#fff",
-    //               fill: "#fff",
-    //             },
-    //           });
-    //           if (model.isReal) {
-    //             const { lineWidth, path, endArrow, stroke } = keyShape.attr();
-    //             const back = group.addShape("path", {
-    //               attrs: {
-    //                 lineWidth,
-    //                 path,
-    //                 stroke,
-    //                 endArrow,
-    //                 opacity: animateBackOpacity,
-    //               },
-    //               name: "back-line",
-    //             });
-    //             back.toBack();
-    //             const length = keyShape.getTotalLength();
-    //             keyShape.animate(
-    //               (ratio) => {
-    //                 // the operations in each frame. Ratio ranges from 0 to 1 indicating the prograss of the animation. Returns the modified configurations
-    //                 const startLen = ratio * length;
-    //                 // Calculate the lineDash
-    //                 const cfg = {
-    //                   lineDash: [startLen, length - startLen],
-    //                 };
-    //                 return cfg;
-    //               },
-    //               {
-    //                 repeat: true, // Whether executes the animation repeatly
-    //                 duration, // the duration for executing once
-    //               }
-    //             );
-    //           } else {
-    //             let index = 0;
-    //             const lineDash = keyShape.attr("lineDash");
-    //             const totalLength = lineDash[0] + lineDash[1];
-    //             keyShape.animate(
-    //               () => {
-    //                 index++;
-    //                 if (index > totalLength) {
-    //                   index = 0;
-    //                 }
-    //                 const res = {
-    //                   lineDash,
-    //                   lineDashOffset: -index,
-    //                 };
-    //                 // returns the modified configurations here, lineDash and lineDashOffset here
-    //                 return res;
-    //               },
-    //               {
-    //                 repeat: true, // whether executes the animation repeatly
-    //                 duration, // the duration for executing once
-    //               }
-    //             );
-    //           }
-    //         } else {
-    //           keyShape.stopAnimate();
-    //           const stroke = "#acaeaf";
-    //           const opacity = model.isReal
-    //             ? realEdgeOpacity
-    //             : virtualEdgeOpacity;
-    //           keyShape.attr({
-    //             stroke,
-    //             strokeOpacity: opacity,
-    //             opacity,
-    //             endArrow: {
-    //               ...arrow,
-    //               stroke,
-    //               fill: stroke,
-    //             },
-    //           });
-    //         }
-    //       }
-    //     },
-    //   },
-    //   "quadratic"
-    // );
+    G6.registerEdge(
+      "custom-quadratic",
+      {
+        setState: (name, value, item) => {
+          const group = item.get("group");
+          const model = item.getModel();
+          if (name === "focus") {
+            const back = group.find((ele) => ele.get("name") === "back-line");
+            if (back) {
+              back.stopAnimate();
+              back.remove();
+              back.destroy();
+            }
+            const keyShape = group.find(
+              (ele) => ele.get("name") === "edge-shape"
+            );
+            const arrow: any = model.style.endArrow;
+            if (value) {
+              if (keyShape.cfg.animation) {
+                keyShape.stopAnimate(true);
+              }
+              keyShape.attr({
+                strokeOpacity: animateOpacity,
+                opacity: animateOpacity,
+                stroke: "#fff",
+                endArrow: {
+                  ...arrow,
+                  stroke: "#fff",
+                  fill: "#fff",
+                },
+              });
+              if (model.isReal) {
+                const { lineWidth, path, endArrow, stroke } = keyShape.attr();
+                const back = group.addShape("path", {
+                  attrs: {
+                    lineWidth,
+                    path,
+                    stroke,
+                    endArrow,
+                    opacity: animateBackOpacity,
+                  },
+                  name: "back-line",
+                });
+                back.toBack();
+                const length = keyShape.getTotalLength();
+                keyShape.animate(
+                  (ratio) => {
+                    // the operations in each frame. Ratio ranges from 0 to 1 indicating the prograss of the animation. Returns the modified configurations
+                    const startLen = ratio * length;
+                    // Calculate the lineDash
+                    const cfg = {
+                      lineDash: [startLen, length - startLen],
+                    };
+                    return cfg;
+                  },
+                  {
+                    repeat: true, // Whether executes the animation repeatly
+                    duration, // the duration for executing once
+                  }
+                );
+              } else {
+                let index = 0;
+                const lineDash = keyShape.attr("lineDash");
+                const totalLength = lineDash[0] + lineDash[1];
+                keyShape.animate(
+                  () => {
+                    index++;
+                    if (index > totalLength) {
+                      index = 0;
+                    }
+                    const res = {
+                      lineDash,
+                      lineDashOffset: -index,
+                    };
+                    // returns the modified configurations here, lineDash and lineDashOffset here
+                    return res;
+                  },
+                  {
+                    repeat: true, // whether executes the animation repeatly
+                    duration, // the duration for executing once
+                  }
+                );
+              }
+            } else {
+              keyShape.stopAnimate();
+              const stroke = "#acaeaf";
+              const opacity = model.isReal
+                ? realEdgeOpacity
+                : virtualEdgeOpacity;
+              keyShape.attr({
+                stroke,
+                strokeOpacity: opacity,
+                opacity,
+                endArrow: {
+                  ...arrow,
+                  stroke,
+                  fill: stroke,
+                },
+              });
+            }
+          }
+        },
+      },
+      "quadratic"
+    );
 
     // // Custom the line edge for single edge between one node pair
     // G6.registerEdge(
