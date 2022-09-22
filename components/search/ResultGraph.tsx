@@ -151,7 +151,7 @@ const processNodesEdges = (nodes, edges) => {
     node.type = "identity-node";
     node.label = formatAddress(node.label);
   });
-  G6.Util.processParallelEdges(edges, 12.5, "custom-quadratic", "custom-line");
+  G6.Util.processParallelEdges(edges, 12.5);
 };
 
 // eslint-disable-next-line react/display-name
