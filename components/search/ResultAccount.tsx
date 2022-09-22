@@ -1,6 +1,7 @@
 import React, { memo, useState } from "react";
 import { ResultAccountItem } from "./ResultAccountItem";
 import { ResultGraph } from "./ResultGraph";
+import Temp from './ResultGraphTemp'
 
 const  RenderAccount =(props)=> {
   const {
@@ -39,6 +40,7 @@ const  RenderAccount =(props)=> {
           data={graphData}
         />
       )}
+      <Temp/>
     </div>
   );
 }

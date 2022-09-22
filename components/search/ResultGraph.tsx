@@ -1,7 +1,7 @@
 import React, { memo, useEffect } from "react";
 import _ from "lodash";
 import { formatAddress } from "../../utils/utils";
-
+import { colorSets, global, register } from "./GraphUtils/LargeRegister";
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
 const insertCss = isBrowser ? require("insert-css") : null;
@@ -35,6 +35,10 @@ if (isBrowser) {
 	`);
 }
 
+if (G6) {
+  register();
+}
+
 const colorsMap = {
   twitter: "#019eeb",
   nextid: "#1C68F3",
@@ -48,77 +52,6 @@ const colorsMap = {
 
 let CANVAS_WIDTH = 800,
   CANVAS_HEIGHT = 800;
-
-const legendData = {
-  nodes: [
-    {
-      id: "nextid",
-      label: "Next.ID",
-      order: 0,
-      style: {
-        fill: colorsMap["nextid"],
-      },
-    },
-    {
-      id: "twitter",
-      label: "Twitter",
-      order: 1,
-      style: {
-        fill: colorsMap["twitter"],
-      },
-    },
-    {
-      id: "ethereum",
-      label: "Ethereum",
-      order: 2,
-      style: {
-        fill: colorsMap["ethereum"],
-      },
-    },
-    {
-      id: "keybase",
-      label: "Keybase",
-      order: 3,
-      style: {
-        fill: colorsMap["keybase"],
-      },
-    },
-    {
-      id: "reddit",
-      label: "Reddit",
-      order: 4,
-      style: {
-        fill: colorsMap["reddit"],
-      },
-    },
-    {
-      id: "github",
-      label: "GitHub",
-      order: 5,
-      style: {
-        fill: colorsMap["github"],
-      },
-    },
-    {
-      id: "ens",
-      label: "ENS",
-      order: 6,
-      style: {
-        fill: colorsMap["ens"],
-      },
-    },
-    {
-      id: "unknown",
-      label: "Unknown",
-      order: 7,
-      style: {
-        fill: colorsMap["unknown"],
-      },
-    },
-  ],
-};
-
-
 
 const resolveGraphData = (source) => {
   const nodes = [];
@@ -217,6 +150,10 @@ const processNodesEdges = (nodes, edges) => {
     }
     node.label = formatAddress(node.label);
   });
+  edges.forEach((edge)=>{
+    edge.type = 'custom-line'
+  })
+  G6.Util.processParallelEdges(edges, 12.5, "custom-quadratic", "custom-line");
 };
 
 // eslint-disable-next-line react/display-name
@@ -257,41 +194,26 @@ const RenderResultGraph = (props) => {
       },
       itemTypes: ["node"],
     });
-    const legend = new G6.Legend({
-      data: legendData,
-      align: "center",
-      layout: "horizontal", // vertical
-      position: "bottom-left",
-      offsetY: -80,
-      offsetX: -140,
-      padding: [4, 16, 8, 16],
-      containerStyle: {
-        fill: "#fff",
-      },
-      title: " ",
-      titleConfig: {
-        offsetY: -10,
-      },
-    });
+
     processNodesEdges(res.nodes, res.edges);
 
     graph = new G6.Graph({
       container: container.current,
       CANVAS_WIDTH,
       CANVAS_HEIGHT,
-      defaultEdge: {
-        style:{
-          endArrow: {
-            path: 'M 0,0 L 5,2.5 L 5,-2.5 Z',
-            fill: '#666',
-            stroke: '#666',
-            opacity: .5,
-          },
-        }
-      },
+      // defaultEdge: {
+      //   style: {
+      //     endArrow: {
+      //       path: "M 0,0 L 5,2.5 L 5,-2.5 Z",
+      //       fill: "#2B384E",
+      //       stroke: global.edge.labelCfg.style.stroke,
+      //       opacity: 0.5,
+      //     },
+      //   },
+      // },
       fitCenter: true,
       layout: {
-        type: 'gForce',
+        type: "gForce",
         preventOverlap: true,
         linkDistance: 150,
         linkCenter: true,
@@ -306,7 +228,7 @@ const RenderResultGraph = (props) => {
           "drag-node",
         ],
       },
-      plugins: [tooltip, legend],
+      plugins: [tooltip],
     });
 
     graph.get("canvas").set("localRefresh", false);
