@@ -138,7 +138,7 @@ const processNodesEdges = (nodes, edges) => {
       };
     } else {
       // ENS
-      node.size = 16;
+      node.size = 26;
       node.labelCfg = {
         position: "bottom",
       };
@@ -148,11 +148,9 @@ const processNodesEdges = (nodes, edges) => {
         stroke: "#333",
       };
     }
+    node.type = "identity-node";
     node.label = formatAddress(node.label);
   });
-  edges.forEach((edge)=>{
-    edge.type = 'custom-line'
-  })
   G6.Util.processParallelEdges(edges, 12.5, "custom-quadratic", "custom-line");
 };
 
@@ -253,10 +251,18 @@ const RenderResultGraph = (props) => {
       graph.on("node:click", (evt) => {
         const { item } = evt;
         graph.setItemState(item, "selected", true);
+
+        const relatedEdges = item.getEdges();
+        relatedEdges.forEach((edge) => {
+          graph.setItemState(edge, "selected", true);
+        });
       });
       graph.on("canvas:click", (evt) => {
         graph.getNodes().forEach((node) => {
           graph.clearItemStates(node);
+        });
+        graph.getEdges().forEach((edge) => {
+          graph.clearItemStates(edge);
         });
       });
 
