@@ -51,21 +51,11 @@ const colorsMap = {
   unknown: "#000000",
 };
 
-const platformMap = {
+const sourceMap = {
   twitter: "Twitter",
   nextid: "Next.ID",
   keybase: "Keybase",
   ethereum: "Ethereum",
-  reddit: "Reddit",
-  ens: "ENS",
-  lens: "Lens",
-  github: "GitHub",
-  unknown: "Unknown",
-};
-
-const sourceMap = {
-  nextid: "Next.ID",
-  keybase: "Keybase",
   rss3: "RSS3",
   reddit: "Reddit",
   ens: "ENS",
@@ -73,6 +63,7 @@ const sourceMap = {
   cyberconnect: "CyberConnect",
   sybil: "Sybil",
   unknown: "Unknown",
+  github: "GitHub",
 };
 
 let CANVAS_WIDTH = 800,
@@ -176,6 +167,11 @@ const processNodesEdges = (nodes, edges) => {
     }
     node.type = "identity-node";
     node.label = formatAddress(node.label);
+    if (node.platform && node.platform.toLowerCase() === "ethereum") {
+      node.label = `${node.displayName || node.identity} \n ${
+        node.displayName ? formatAddress(node.identity) : ""
+      }`;
+    }
   });
   edges.forEach((edge) => {
     if (edge.isIdentity) {
@@ -214,7 +210,7 @@ const RenderResultGraph = (props) => {
             <li>DisplayName: ${e.item.getModel().displayName || "Unknown"}</li>
             <li>Identity: ${e.item.getModel().identity || "Unknown"}</li>
             <li>Platform: ${
-              platformMap[e.item.getModel().platform || "unknown"]
+              sourceMap[e.item.getModel().platform || "unknown"]
             }</li>
             <li>Source: ${sourceMap[e.item.getModel().source || "unknown"]}</li>
           </ul>`;
