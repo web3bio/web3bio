@@ -276,11 +276,17 @@ body {
       border-radius: 0.4rem;
       box-shadow: 0 .4rem 2rem rgba(0, 0, 0, .5);
     }
-    .graph-container-placeholder{
+    .loading-mask{
+      position: absolute;
+      width: 100%;
+      height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
+      z-index: 99;
+      background: #fff;
     }
+   
   }
 
   .search-result-header {
@@ -443,8 +449,7 @@ body {
       white-space: nowrap;
     }
 
-    svg {
-      color: $pride-color-6;
+    img {
       flex: 0 0 .7rem;
       margin-right: .2rem;
     }

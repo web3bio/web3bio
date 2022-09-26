@@ -1,7 +1,9 @@
-import React, { memo, useEffect } from "react";
+import React, { memo, useEffect, useState } from "react";
 import _ from "lodash";
 import { formatAddress } from "../../utils/utils";
-import { colorSets, global, register } from "./GraphUtils/LargeRegister";
+import { colorsMap, platformsMap } from "../../utils/maps"
+import { register } from "./GraphUtils/LargeRegister";
+import { Loading } from "../shared/Loading";
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
 const insertCss = isBrowser ? require("insert-css") : null;
@@ -39,43 +41,8 @@ if (G6) {
   register();
 }
 
-const colorsMap = {
-  twitter: "#019eeb",
-  nextid: "#1C68F3",
-  keybase: "#07ee80",
-  ethereum: "#006afc",
-  reddit: "#ff5fc9",
-  ens: "#008685",
-  github: "#e5e5e5",
-  unknown: "#000000",
-};
-
-const platformMap = {
-  twitter: "Twitter",
-  nextid: "Next.ID",
-  keybase: "Keybase",
-  ethereum: "Ethereum",
-  reddit: "Reddit",
-  ens: "ENS",
-  lens: "Lens",
-  github: "GitHub",
-  unknown: "Unknown",
-};
-
-const sourceMap = {
-  nextid: "Next.ID",
-  keybase: "Keybase",
-  rss3: "RSS3",
-  reddit: "Reddit",
-  ens: "ENS",
-  lens: "Lens",
-  cyberconnect: "CyberConnect",
-  sybil: "Sybil",
-  unknown: "Unknown",
-};
-
 let CANVAS_WIDTH = 800,
-    CANVAS_HEIGHT = 800;
+  CANVAS_HEIGHT = 800;
 
 const resolveGraphData = (source) => {
   const nodes = [];
@@ -104,7 +71,7 @@ const resolveGraphData = (source) => {
     edges.push({
       source: from.uuid,
       target: to.uuid,
-      label: sourceMap[x.source],
+      label: platformsMap[x.source],
       id: `${from.uuid}-${to.uuid}`,
       isIdentity: true,
     });
@@ -158,32 +125,68 @@ const processNodesEdges = (nodes, edges) => {
       node.size = 96;
       node.style = {
         lineWidth: 2,
-        fill: "rgba(0, 0, 0, .05)",
-        stroke: "rgba(0, 0, 0, .05)",
+      };
+      node.stateStyles = {
+        selected: {
+          stroke: colorsMap[node.platform],
+          fill: colorsMap[node.platform],
+          fillOpacity: .1,
+          lineWidth: 2,
+          shadowColor: "transparent",
+          zIndex: 999,
+        },
       };
     } else {
       // ENS
-      node.size = 26;
+      node.size = 24;
       node.labelCfg = {
+        labelLineNum: 1,
         position: "bottom",
       };
       node.style = {
         lineWidth: 2,
-        fill: "rgba(0, 0, 0, .05)",
+        fill: colorsMap[node.platform],
         stroke: "rgba(0, 0, 0, .05)",
+      };
+      node.stateStyles = {
+        selected: {
+          lineWidth: 2,
+          shadowColor: 'transparent',
+          zIndex: 999,
+        },
       };
     }
     node.type = "identity-node";
     node.label = formatAddress(node.label);
+    if (node.platform && node.platform.toLowerCase() === "ethereum") {
+      node.label = `${node.displayName || node.identity} ${
+        node.displayName ? `\n${formatAddress(node.identity)}` : ""
+      }`;
+      node.labelLineNum = 2
+    }
   });
   edges.forEach((edge) => {
     if (edge.isIdentity) {
       // Identity
       edge.type = "quadratic";
       edge.curveOffset = 0;
+      edge.stateStyles = {
+        selected: {
+          stroke: '#cecece',
+          shadowColor: 'transparent',
+          zIndex: 999,
+        },
+      };
     } else {
       // ENS
       edge.type = "line";
+      edge.stateStyles = {
+        selected: {
+          stroke: '#cecece',
+          shadowColor: 'transparent',
+          zIndex: 999,
+        },
+      };
     }
   });
   // G6.Util.processParallelEdges(edges);
@@ -193,7 +196,7 @@ const processNodesEdges = (nodes, edges) => {
 const RenderResultGraph = (props) => {
   const { data, onClose } = props;
   const container = React.useRef<HTMLDivElement>(null);
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     if (graph || !data) return;
     if (container && container.current) {
@@ -210,16 +213,18 @@ const RenderResultGraph = (props) => {
         if (e.item.getModel().isIdentity) {
           outDiv.innerHTML = `
           <ul>
-            <li>DisplayName: ${e.item.getModel().displayName || "Unknown"}</li>
-            <li>Identity: ${e.item.getModel().identity || "Unknown"}</li>
-            <li>Platform: ${platformMap[e.item.getModel().platform || "unknown"]}</li>
-            <li>Source: ${sourceMap[e.item.getModel().source || "unknown"]}</li>
+            <li>DisplayName: ${e.item.getModel().displayName || "-"}</li>
+            <li>Identity: ${e.item.getModel().identity || "-"}</li>
+            <li>Platform: ${
+              platformsMap[e.item.getModel().platform || "unknown"]
+            }</li>
+            <li>Source: ${platformsMap[e.item.getModel().source || "unknown"]}</li>
           </ul>`;
         } else {
           outDiv.innerHTML = `
           <ul>
             <li>ENS: ${e.item.getModel().label || "Unknown"}</li>
-            <li>Holder: ${e.item.getModel().holder || "Unknown"}</li>
+            <li>Owner: ${e.item.getModel().holder || "Unknown"}</li>
           </ul>`;
         }
 
@@ -238,7 +243,8 @@ const RenderResultGraph = (props) => {
         labelCfg: {
           autoRotate: true,
           style: {
-            stroke: '#fff',
+            stroke: "#fff",
+            linWidth: 4,
             fill: "#999",
             fontSize: "10px",
           },
@@ -246,16 +252,15 @@ const RenderResultGraph = (props) => {
         style: {
           endArrow: {
             path: "M 0,0 L 5,2.5 L 5,-2.5 Z",
-            fill: "#2B384E",
-            stroke: global.edge.labelCfg.style.stroke,
-            opacity: 0.5,
+            fill: "#cecece",
+            stroke: "#cecece",
           },
         },
       },
-      fitCenter: true,
       layout: {
         type: "gForce",
         preventOverlap: true,
+        // gpuEnabled: true,
         linkDistance: (d) => {
           if (d.isIdentity) {
             return 240;
@@ -279,6 +284,9 @@ const RenderResultGraph = (props) => {
             return 30;
           }
           return 20;
+        },
+        onLayoutEnd: () => {
+          setLoading(false);
         },
       },
       modes: {
@@ -360,7 +368,13 @@ const RenderResultGraph = (props) => {
             e.stopPropagation();
             e.preventDefault();
           }}
-        />
+        >
+          {loading && (
+            <div className="loading-mask">
+              <Loading />
+            </div>
+          )}
+        </div>
       )}
     </div>
   );
