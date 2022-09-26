@@ -9,8 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
+    "@antv/g6": "^4.7.0",
+    "@antv/g6-react-node": "^1.4.5",
     "@apollo/client": "^3.6.9",
-    "graphql": "^16.5.0",
+    "graphql": "^15.8.0",
+    "lodash": "^4.17.21",
     "next": "12.2.2",
     "nextjs-google-analytics": "^2.0.0",
     "react": "18.2.0",
@@ -20,7 +24,10 @@
     "sass": "^1.53.0"
   },
   "devDependencies": {
+    "@types/node": "^18.7.14",
+    "@types/react": "^18.0.18",
     "eslint": "8.19.0",
-    "eslint-config-next": "12.2.2"
+    "eslint-config-next": "12.2.2",
+    "typescript": "^4.8.2"
   }
 }

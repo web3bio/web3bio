@@ -201,7 +201,7 @@ body {
     .form-input {
       border: transparent;
       padding-right: 2.4rem;
-      
+
       &:focus {
         box-shadow: 0 .8rem 4rem rgba($dark-color, .25), 0 .05rem .2rem rgba($dark-color, .1);
       }
@@ -255,7 +255,44 @@ body {
   position: relative;
   z-index: 99;
 
+  .graph-mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .graph-container {
+      position: relative;
+      width: 80%;
+      height: 80%;
+      background: #fff;
+      border-radius: 0.4rem;
+      box-shadow: 0 .4rem 2rem rgba(0, 0, 0, .5);
+    }
+    .loading-mask{
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99;
+      background: #fff;
+    }
+   
+  }
+
   .search-result-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     font-size: .6rem;
     padding: .8rem;
     word-wrap: break-word;
@@ -265,7 +302,7 @@ body {
     display: flex;
     flex-direction: column;
     padding: 0 .8rem .8rem .8rem;
-  } 
+  }
 
   .social-item {
     background: rgba($gray-color, .05);
@@ -283,7 +320,7 @@ body {
     &:focus,
     &:hover {
       background: rgba($gray-color, .1);
-      transform: translateY(-.2rem);
+      transform: translateY(-.1rem);
 
       .actions {
         display: flex;
@@ -306,20 +343,20 @@ body {
 
     .social-footer {
       align-items: center;
-      background: rgba($gray-color, .15);
-      border-radius: .2rem;
+      background: linear-gradient(-135deg, rgba($dark-color, .05), transparent);
+      border-radius: .1rem;
       color: $gray-color;
       display: none;
       font-size: .5rem;
-      height: .8rem;
+      height: .6rem;
       justify-content: flex-end;
-      padding: .2rem 0;
+      padding: 0;
       position: absolute;
       right: 0;
-      top: -.4rem;
+      top: -.2rem;
     }
 
-    &.ethereum {
+    &.social-web3 {
       .social-main {
         flex-direction: column;
         padding: .4rem;
@@ -358,9 +395,12 @@ body {
           width: 1rem;
         }
       }
+    }
 
-      .nfts {
-        margin-top: .4rem;
+    &.lens {
+      .bg-lens {
+        background: #BDFC5A;
+        color: #204F24;
       }
     }
   }
@@ -398,19 +438,18 @@ body {
     display: inline-flex;
     font-size: 90%;
     line-height: .8rem;
-    margin: .1rem .1rem 0 0;
+    margin: .2rem .2rem 0 0;
     max-width: 100%;
     padding: .1rem .3rem .1rem .15rem;
     text-decoration: none;
-   
+
     span {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-    
-    svg {
-      color: $pride-color-6;
+
+    img {
       flex: 0 0 .7rem;
       margin-right: .2rem;
     }
@@ -492,7 +531,7 @@ body {
 
 //- Pride
 .text-pride {
-  background-image: linear-gradient(70deg, $pride-color-1 10%,$pride-color-2 25%,$pride-color-3 36%,$pride-color-4 50%,$pride-color-5 63%,$pride-color-6 75%,$pride-color-7 90%);
+  background-image: linear-gradient(70deg, $pride-color-1 10%, $pride-color-2 25%, $pride-color-3 36%, $pride-color-4 50%, $pride-color-5 63%, $pride-color-6 75%, $pride-color-7 90%);
   background-clip: text;
   text-fill-color: transparent;
   -webkit-background-clip: text;
@@ -500,7 +539,7 @@ body {
 }
 
 .bg-pride {
-  background: linear-gradient(70deg, $pride-color-1 -10%,$pride-color-2 5%,$pride-color-3 36%,$pride-color-4 50%,$pride-color-5 63%,$pride-color-6 95%,$pride-color-7 110%);
+  background: linear-gradient(70deg, $pride-color-1 -10%, $pride-color-2 5%, $pride-color-3 36%, $pride-color-4 50%, $pride-color-5 63%, $pride-color-6 95%, $pride-color-7 110%);
 }
 
 .tooltip-copy {
