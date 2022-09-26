@@ -14,7 +14,7 @@ const RenderAccount = (props) => {
         </div>
         {graphData.length > 0 && (
           <div className="btn btn-link btn-sm" onClick={() => setOpen(true)}>
-            Graph
+            Open Identity Graph
           </div>
         )}
       </div>

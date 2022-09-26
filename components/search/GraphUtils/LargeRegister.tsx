@@ -13,7 +13,7 @@ const resolvePlatformIcon = (platform) => {
       keybase: "/icons/icon-keybase-w.svg",
       ethereum: "/icons/icon-ethereum-w.svg",
       reddit: "/icons/icon-reddit-w.svg",
-      ens: "/icons/icon-ens.svg",
+      ens: "/icons/icon-ens-w.svg",
       lens: "/icons/icon-lens-w.svg",
       github: "/icons/icon-github-w.svg",
     }[platform] || ""
@@ -42,8 +42,10 @@ export const register = () => {
               x: 0,
               y: 0,
               r,
-              fill: "#fff",
+              fill: colorsMap[cfg.platform],
+              fillOpacity: 0,
               stroke: colorsMap[cfg.platform],
+              opacity: 1,
               lineWidth: 2,
               cursor: "pointer",
             },
@@ -76,7 +78,7 @@ export const register = () => {
                 textBaseLine: "middle",
                 cursor: "pointer",
                 fontSize: 12,
-                fill: "#333",
+                fill: "#121212",
                 opacity: 1,
                 zIndex: 999,
               },
@@ -112,6 +114,16 @@ export const register = () => {
                 className: "image-shape",
               });
             } else {
+              group.addShape("circle", {
+                attrs: {
+                  x: 0,
+                  y: 0,
+                  r: 12,
+                  fill: colorsMap[cfg.platform],
+                  zIndex: 9,
+                },
+                name: "image-shape",
+              });
               group.addShape("image", {
                 attrs: {
                   x: -8,
