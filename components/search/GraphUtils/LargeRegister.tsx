@@ -105,7 +105,7 @@ export const register = () => {
                   height: 20,
                   img: resolvePlatformIcon(cfg.platform),
                   zIndex: 9,
-                  cursor:'pointer'
+                  cursor: "pointer",
                 },
                 draggable: true,
                 name: "image-shape",
@@ -120,7 +120,7 @@ export const register = () => {
                   height: 16,
                   img: resolvePlatformIcon(cfg.platform),
                   zIndex: 9,
-                  cursor:'pointer'
+                  cursor: "pointer",
                 },
                 draggable: true,
                 name: "image-shape",
