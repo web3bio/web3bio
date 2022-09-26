@@ -1,7 +1,8 @@
-import React, { memo, useEffect } from "react";
+import React, { memo, useEffect, useState } from "react";
 import _ from "lodash";
 import { formatAddress } from "../../utils/utils";
 import { colorSets, global, register } from "./GraphUtils/LargeRegister";
+import { Loading } from "../shared/Loading";
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
 const insertCss = isBrowser ? require("insert-css") : null;
@@ -75,7 +76,7 @@ const sourceMap = {
 };
 
 let CANVAS_WIDTH = 800,
-    CANVAS_HEIGHT = 800;
+  CANVAS_HEIGHT = 800;
 
 const resolveGraphData = (source) => {
   const nodes = [];
@@ -193,7 +194,7 @@ const processNodesEdges = (nodes, edges) => {
 const RenderResultGraph = (props) => {
   const { data, onClose } = props;
   const container = React.useRef<HTMLDivElement>(null);
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     if (graph || !data) return;
     if (container && container.current) {
@@ -212,7 +213,9 @@ const RenderResultGraph = (props) => {
           <ul>
             <li>DisplayName: ${e.item.getModel().displayName || "Unknown"}</li>
             <li>Identity: ${e.item.getModel().identity || "Unknown"}</li>
-            <li>Platform: ${platformMap[e.item.getModel().platform || "unknown"]}</li>
+            <li>Platform: ${
+              platformMap[e.item.getModel().platform || "unknown"]
+            }</li>
             <li>Source: ${sourceMap[e.item.getModel().source || "unknown"]}</li>
           </ul>`;
         } else {
@@ -238,7 +241,7 @@ const RenderResultGraph = (props) => {
         labelCfg: {
           autoRotate: true,
           style: {
-            stroke: '#fff',
+            stroke: "#fff",
             fill: "#999",
             fontSize: "10px",
           },
@@ -256,6 +259,7 @@ const RenderResultGraph = (props) => {
       layout: {
         type: "gForce",
         preventOverlap: true,
+        // gpuEnabled: true,
         linkDistance: (d) => {
           if (d.isIdentity) {
             return 240;
@@ -280,12 +284,12 @@ const RenderResultGraph = (props) => {
           }
           return 20;
         },
+        onLayoutEnd: () => {
+          setLoading(false);
+        },
       },
       modes: {
-        default: [
-          "drag-canvas",
-          "drag-node",
-        ],
+        default: ["drag-canvas", "drag-node"],
       },
       plugins: [tooltip],
     });
@@ -360,7 +364,13 @@ const RenderResultGraph = (props) => {
             e.stopPropagation();
             e.preventDefault();
           }}
-        />
+        >
+          {loading && (
+            <div className="loading-mask">
+              <Loading />
+            </div>
+          )}
+        </div>
       )}
     </div>
   );
