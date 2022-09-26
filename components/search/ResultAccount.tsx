@@ -2,12 +2,8 @@ import React, { memo, useState } from "react";
 import { ResultAccountItem } from "./ResultAccountItem";
 import { ResultGraph } from "./ResultGraph";
 
-const  RenderAccount =(props)=> {
-  const {
-    searchTerm,
-    resultNeighbor,
-    graphData
-  } = props;
+const RenderAccount = (props) => {
+  const { searchTerm, resultNeighbor, graphData } = props;
   const [open, setOpen] = useState(false);
   return (
     <div className="search-result">
@@ -16,9 +12,11 @@ const  RenderAccount =(props)=> {
           Search results for{" "}
           <span className="text-underline">{searchTerm}</span>:
         </div>
-        <div className="btn btn-link btn-sm" onClick={() => setOpen(true)}>
-          Graph
-        </div>
+        {graphData.length > 0 && (
+          <div className="btn btn-link btn-sm" onClick={() => setOpen(true)}>
+            Graph
+          </div>
+        )}
       </div>
       <div className="search-result-body">
         {resultNeighbor.length > 0 ? (
@@ -33,14 +31,9 @@ const  RenderAccount =(props)=> {
           </>
         ) : null}
       </div>
-      {open && (
-        <ResultGraph
-          onClose={() => setOpen(false)}
-          data={graphData}
-        />
-      )}
+      {open && <ResultGraph onClose={() => setOpen(false)} data={graphData} />}
     </div>
   );
-}
+};
 
-export const ResultAccount = memo(RenderAccount)
+export const ResultAccount = memo(RenderAccount);

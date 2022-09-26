@@ -294,7 +294,7 @@ const RenderResultGraph = (props) => {
       modes: {
         default: [
           "drag-canvas",
-          "drag-node"
+          "drag-node",
         ],
       },
       plugins: [tooltip],

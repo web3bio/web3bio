@@ -1,6 +1,6 @@
 import isArray from "@antv/util/lib/is-array";
 import isNumber from "@antv/util/lib/is-number";
-import { colorsMap } from "../../../utils/maps"
+import { colorsMap } from "../../../utils/maps";
 
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
@@ -90,7 +90,7 @@ export const register = () => {
               group.addShape("circle", {
                 attrs: {
                   x: r - 14,
-                  y: - r + 14,
+                  y: -r + 14,
                   r: 14,
                   fill: colorsMap[cfg.platform],
                   zIndex: 9,
@@ -100,25 +100,29 @@ export const register = () => {
               group.addShape("image", {
                 attrs: {
                   x: r - 24,
-                  y: - r + 4,
+                  y: -r + 4,
                   width: 20,
                   height: 20,
                   img: resolvePlatformIcon(cfg.platform),
                   zIndex: 9,
+                  cursor:'pointer'
                 },
+                draggable: true,
                 name: "image-shape",
                 className: "image-shape",
               });
             } else {
               group.addShape("image", {
                 attrs: {
-                  x: - 8,
-                  y: - 8,
+                  x: -8,
+                  y: -8,
                   width: 16,
                   height: 16,
                   img: resolvePlatformIcon(cfg.platform),
                   zIndex: 9,
+                  cursor:'pointer'
                 },
+                draggable: true,
                 name: "image-shape",
               });
             }
@@ -127,7 +131,7 @@ export const register = () => {
         },
         update: undefined,
       },
-      "aggregated-node"
+      "node"
     ); // 这样可以继承 aggregated-node 的 setState
 
     // todo: config the line style
