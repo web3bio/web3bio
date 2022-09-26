@@ -1,14 +1,14 @@
-import React, { Component, useState } from "react";
+import React, { memo, useState } from "react";
 import Link from "next/link";
 import { formatAddress } from "../../utils/utils";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 
-export function ResultAccountItem(props) {
+const RenderAccountItem = (props) => {
   const onCopySuccess = () => {
-    setIsCopied(true)
+    setIsCopied(true);
     setTimeout(() => {
-      setIsCopied(false)
+      setIsCopied(false);
     }, 1500);
   };
   const { identity, sources } = props;
@@ -26,12 +26,12 @@ export function ResultAccountItem(props) {
                 <div className="content-title text-bold">
                   {identity.displayName
                     ? identity.displayName
-                    : formatAddress({ address: identity.identity })}
+                    : formatAddress(identity.identity)}
                 </div>
                 <div className="content-subtitle text-gray">
                   <div className="address hide-xs">{identity.identity}</div>
                   <div className="address show-xs">
-                    {formatAddress({ address: identity.identity })}
+                    {formatAddress(identity.identity)}
                   </div>
                   <Clipboard
                     component="div"
@@ -45,6 +45,7 @@ export function ResultAccountItem(props) {
                   <a
                     className="action text-gray"
                     href={`https://etherscan.io/address/${identity.identity}`}
+                    title="Open in Etherscan Explorer"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -55,10 +56,10 @@ export function ResultAccountItem(props) {
             </div>
             {identity.nft?.length > 0 && (
               <div className="nfts">
-                {identity.nft.map((nft) => {
+                {identity.nft.map((nft,idx) => {
                   return nft.category == "ENS" ? (
                     <Link
-                      key={nft.uuid}
+                      key={`${nft.uuid}-${idx}`}
                       href={{
                         pathname: "/",
                         query: { s: nft.id },
@@ -101,32 +102,30 @@ export function ResultAccountItem(props) {
               </figure>
               <div className="content">
                 <div className="content-title text-bold">
-                  {identity.displayName
-                    ? identity.displayName
-                    : formatAddress({ address: identity.identity })}
+                  {identity.displayName}
                 </div>
                 <div className="content-subtitle text-gray">
-                  <div className="address hide-xs">{identity.ownedBy.displayName}</div>
+                  <div className="address hide-xs">
+                    {identity.ownedBy.displayName
+                      ? identity.ownedBy.displayName
+                      : identity.ownedBy.identity}
+                  </div>
                   <div className="address show-xs">
-                    {identity.ownedBy.displayName}
+                    {identity.ownedBy.displayName
+                      ? identity.ownedBy.displayName
+                      : formatAddress(identity.ownedBy.identity)}
                   </div>
                   <Clipboard
                     component="div"
                     className="action"
-                    data-clipboard-text={identity.ownedBy.displayName}
+                    data-clipboard-text={identity.ownedBy.displayName
+                      ? identity.ownedBy.displayName
+                      : identity.ownedBy.identity}
                     onSuccess={onCopySuccess}
                   >
                     <SVG src="icons/icon-copy.svg" width={20} height={20} />
                     {isCopied && <div className="tooltip-copy">COPIED</div>}
                   </Clipboard>
-                  {/* <a
-                    className="action text-gray"
-                    href={`https://www.lensfrens.xyz/${identity.identity}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <SVG src="icons/icon-open.svg" width={20} height={20} />
-                  </a> */}
                 </div>
               </div>
             </div>
@@ -189,6 +188,7 @@ export function ResultAccountItem(props) {
               <a
                 className="btn btn-sm btn-link action"
                 href={`https://twitter.com/${identity.identity}`}
+                title="Open Twitter"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -245,6 +245,7 @@ export function ResultAccountItem(props) {
               <a
                 className="btn btn-sm btn-link action"
                 href={`https://github.com/${identity.identity}`}
+                title="Open GitHub"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -301,6 +302,7 @@ export function ResultAccountItem(props) {
               <a
                 className="btn btn-sm btn-link action"
                 href={`https://keybase.io/${identity.displayName}`}
+                title="Open Keybase"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -333,63 +335,66 @@ export function ResultAccountItem(props) {
           )}
         </div>
       );
-      case "reddit":
-        return (
-          <div className="social-item reddit">
-            <div className="social-main">
-              <Link
-                href={{
-                  pathname: "/",
-                  query: {
-                    s: identity.identity,
-                    platform: identity.platform,
-                  },
-                }}
+    case "reddit":
+      return (
+        <div className="social-item reddit">
+          <div className="social-main">
+            <Link
+              href={{
+                pathname: "/",
+                query: {
+                  s: identity.identity,
+                  platform: identity.platform,
+                },
+              }}
+            >
+              <a className="social">
+                <div className="icon">
+                  <SVG src="icons/icon-reddit.svg" width={20} height={20} />
+                </div>
+                <div className="content-title">{identity.displayName}</div>
+              </a>
+            </Link>
+            <div className="actions">
+              <a
+                className="btn btn-sm btn-link action"
+                href={`https://www.reddit.com/user/${identity.displayName}`}
+                title="Open Reddit"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                <a className="social">
-                  <div className="icon">
-                    <SVG src="icons/icon-reddit.svg" width={20} height={20} />
-                  </div>
-                  <div className="content-title">{identity.displayName}</div>
-                </a>
-              </Link>
-              <div className="actions">
-                <a
-                  className="btn btn-sm btn-link action"
-                  href={`https://www.reddit.com/user/${identity.displayName}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  OPEN
-                </a>
-                <Clipboard
-                  className="btn btn-sm btn-link action"
-                  data-clipboard-text={identity.displayName}
-                  onSuccess={onCopySuccess}
-                >
-                  COPY
-                  {isCopied && <div className="tooltip-copy">COPIED</div>}
-                </Clipboard>
-              </div>
+                OPEN
+              </a>
+              <Clipboard
+                className="btn btn-sm btn-link action"
+                data-clipboard-text={identity.displayName}
+                onSuccess={onCopySuccess}
+              >
+                COPY
+                {isCopied && <div className="tooltip-copy">COPIED</div>}
+              </Clipboard>
             </div>
-            {sources && (
-              <div className="social-footer">
-                <SVG
-                  src="icons/icon-sources.svg"
-                  width={20}
-                  height={20}
-                  title="Data sources"
-                />
-                {sources.map((source) => (
-                  <span key={source} className="text-uppercase mr-1">
-                    {source}
-                  </span>
-                ))}
-              </div>
-            )}
           </div>
-        );
+          {sources && (
+            <div className="social-footer">
+              <SVG
+                src="icons/icon-sources.svg"
+                width={20}
+                height={20}
+                title="Data sources"
+              />
+              {sources.map((source) => (
+                <span key={source} className="text-uppercase mr-1">
+                  {source}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      );
     default:
       return null;
   }
-}
+};
+
+export const ResultAccountItem = memo(RenderAccountItem);
