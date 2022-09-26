@@ -1,7 +1,8 @@
 import React, { memo, useEffect, useState } from "react";
 import _ from "lodash";
 import { formatAddress } from "../../utils/utils";
-import { colorSets, global, register } from "./GraphUtils/LargeRegister";
+import { colorsMap, platformsMap } from "../../utils/maps"
+import { register } from "./GraphUtils/LargeRegister";
 import { Loading } from "../shared/Loading";
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
@@ -40,32 +41,6 @@ if (G6) {
   register();
 }
 
-const colorsMap = {
-  twitter: "#019eeb",
-  nextid: "#1C68F3",
-  keybase: "#07ee80",
-  ethereum: "#006afc",
-  reddit: "#ff5fc9",
-  ens: "#008685",
-  github: "#e5e5e5",
-  unknown: "#000000",
-};
-
-const sourceMap = {
-  twitter: "Twitter",
-  nextid: "Next.ID",
-  keybase: "Keybase",
-  ethereum: "Ethereum",
-  rss3: "RSS3",
-  reddit: "Reddit",
-  ens: "ENS",
-  lens: "Lens",
-  cyberconnect: "CyberConnect",
-  sybil: "Sybil",
-  unknown: "Unknown",
-  github: "GitHub",
-};
-
 let CANVAS_WIDTH = 800,
   CANVAS_HEIGHT = 800;
 
@@ -96,7 +71,7 @@ const resolveGraphData = (source) => {
     edges.push({
       source: from.uuid,
       target: to.uuid,
-      label: sourceMap[x.source],
+      label: platformsMap[x.source],
       id: `${from.uuid}-${to.uuid}`,
       isIdentity: true,
     });
@@ -153,10 +128,20 @@ const processNodesEdges = (nodes, edges) => {
         fill: "rgba(0, 0, 0, .05)",
         stroke: "rgba(0, 0, 0, .05)",
       };
+      node.stateStyles = {
+        selected: {
+          fill: "#fff",
+          stroke: colorsMap[node.platform],
+          lineWidth: 2,
+          shadowColor: colorsMap[node.platform],
+          zIndex: 999,
+        },
+      };
     } else {
       // ENS
       node.size = 26;
       node.labelCfg = {
+        labelLineNum: 1,
         position: "bottom",
       };
       node.style = {
@@ -164,13 +149,21 @@ const processNodesEdges = (nodes, edges) => {
         fill: "rgba(0, 0, 0, .05)",
         stroke: "rgba(0, 0, 0, .05)",
       };
+      node.stateStyles = {
+        selected: {
+          lineWidth: 2,
+          shadowColor: 'transparent',
+          zIndex: 999,
+        },
+      };
     }
     node.type = "identity-node";
     node.label = formatAddress(node.label);
     if (node.platform && node.platform.toLowerCase() === "ethereum") {
-      node.label = `${node.displayName || node.identity} \n ${
-        node.displayName ? formatAddress(node.identity) : ""
+      node.label = `${node.displayName || node.identity} ${
+        node.displayName ? `\n${formatAddress(node.identity)}` : ""
       }`;
+      node.labelLineNum = 2
     }
   });
   edges.forEach((edge) => {
@@ -178,9 +171,23 @@ const processNodesEdges = (nodes, edges) => {
       // Identity
       edge.type = "quadratic";
       edge.curveOffset = 0;
+      edge.stateStyles = {
+        selected: {
+          stroke: '#999',
+          shadowColor: 'transparent',
+          zIndex: 999,
+        },
+      };
     } else {
       // ENS
       edge.type = "line";
+      edge.stateStyles = {
+        selected: {
+          stroke: '#999',
+          shadowColor: 'transparent',
+          zIndex: 999,
+        },
+      };
     }
   });
   // G6.Util.processParallelEdges(edges);
@@ -207,18 +214,18 @@ const RenderResultGraph = (props) => {
         if (e.item.getModel().isIdentity) {
           outDiv.innerHTML = `
           <ul>
-            <li>DisplayName: ${e.item.getModel().displayName || "Unknown"}</li>
-            <li>Identity: ${e.item.getModel().identity || "Unknown"}</li>
+            <li>DisplayName: ${e.item.getModel().displayName || "-"}</li>
+            <li>Identity: ${e.item.getModel().identity || "-"}</li>
             <li>Platform: ${
-              sourceMap[e.item.getModel().platform || "unknown"]
+              platformsMap[e.item.getModel().platform || "unknown"]
             }</li>
-            <li>Source: ${sourceMap[e.item.getModel().source || "unknown"]}</li>
+            <li>Source: ${platformsMap[e.item.getModel().source || "unknown"]}</li>
           </ul>`;
         } else {
           outDiv.innerHTML = `
           <ul>
             <li>ENS: ${e.item.getModel().label || "Unknown"}</li>
-            <li>Holder: ${e.item.getModel().holder || "Unknown"}</li>
+            <li>Owner: ${e.item.getModel().holder || "Unknown"}</li>
           </ul>`;
         }
 
@@ -238,6 +245,7 @@ const RenderResultGraph = (props) => {
           autoRotate: true,
           style: {
             stroke: "#fff",
+            linWidth: 4,
             fill: "#999",
             fontSize: "10px",
           },
@@ -246,12 +254,11 @@ const RenderResultGraph = (props) => {
           endArrow: {
             path: "M 0,0 L 5,2.5 L 5,-2.5 Z",
             fill: "#2B384E",
-            stroke: global.edge.labelCfg.style.stroke,
+            stroke: "#2B384E",
             opacity: 0.5,
           },
         },
       },
-      fitCenter: true,
       layout: {
         type: "gForce",
         preventOverlap: true,
@@ -285,7 +292,10 @@ const RenderResultGraph = (props) => {
         },
       },
       modes: {
-        default: ["drag-canvas", "drag-node"],
+        default: [
+          "drag-canvas",
+          "drag-node"
+        ],
       },
       plugins: [tooltip],
     });

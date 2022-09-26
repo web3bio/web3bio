@@ -66,7 +66,7 @@ const RenderAccountItem = (props) => {
                       }}
                     >
                       <a className="label-ens" title={nft.id}>
-                        <SVG src="icons/icon-ens.svg" width={16} height={16} />
+                        <img src="icons/icon-ens.svg" width={16} height={16} />
                         <span>{nft.id}</span>
                       </a>
                     </Link>
@@ -129,26 +129,6 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
             </div>
-            {identity.nft?.length > 0 && (
-              <div className="nfts">
-                {identity.nft.map((nft) => {
-                  return nft.category == "ENS" ? (
-                    <Link
-                      key={nft.uuid}
-                      href={{
-                        pathname: "/",
-                        query: { s: nft.id },
-                      }}
-                    >
-                      <a className="label-ens" title={nft.id}>
-                        <SVG src="icons/icon-ens.svg" width={16} height={16} />
-                        <span>{nft.id}</span>
-                      </a>
-                    </Link>
-                  ) : null;
-                })}
-              </div>
-            )}
           </div>
           {sources && (
             <div className="social-footer">
