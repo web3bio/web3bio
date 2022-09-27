@@ -13,7 +13,7 @@ const insertCss = isBrowser ? require("insert-css") : null;
 if (isBrowser) {
   insertCss(`
   .g6-component-tooltip {
-    position: absolute;
+      position: relative;
 			z-index: 2;
 			list-style-type: none;
 			border-radius: 6px;
@@ -210,7 +210,7 @@ const RenderResultGraph = (props) => {
 
     const tooltip = new G6.Tooltip({
       getContent(e) {
-        console.log(e,'ggg')
+        console.log(e, "ggg");
         const outDiv = document.createElement("div");
         if (e.item.getModel().isIdentity) {
           outDiv.innerHTML = `
@@ -234,7 +234,7 @@ const RenderResultGraph = (props) => {
 
         return outDiv;
       },
-      fixToNode: [-1, -0.5],
+      fixToNode: [0.5, 0.5],
       itemTypes: ["node"],
     });
 
@@ -360,6 +360,10 @@ const RenderResultGraph = (props) => {
 
   return (
     <div className="graph-mask" onClick={onClose}>
+      <div className="graph-title">
+        <SVG src="icons/icon-view.svg" width={"1.5rem"} />
+        Identity Graph for <strong>{title}</strong>
+      </div>
       {data && (
         <div
           className="graph-container"
@@ -369,10 +373,6 @@ const RenderResultGraph = (props) => {
             e.preventDefault();
           }}
         >
-          <div className="graph-title">
-            <SVG src="icons/icon-view.svg" width={"1.5rem"} />
-            Identity Graph for <strong>{title}</strong>
-          </div>
           {loading && (
             <div className="loading-mask">
               <Loading />
