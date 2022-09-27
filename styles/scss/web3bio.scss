@@ -283,6 +283,9 @@ body {
         transform: translateX(-50%);
         font-size: 1rem;
         font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
       }
     }
 

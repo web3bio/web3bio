@@ -4,38 +4,10 @@ import { formatAddress } from "../../utils/utils";
 import { colorsMap, platformsMap } from "../../utils/maps";
 import { register } from "./GraphUtils/LargeRegister";
 import { Loading } from "../shared/Loading";
+import SVG from "react-inlinesvg";
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
-const insertCss = isBrowser ? require("insert-css") : null;
 let graph = null;
-
-if (isBrowser) {
-  insertCss(`
-  .g6-component-tooltip {
-    position: absolute;
-			z-index: 2;
-			list-style-type: none;
-			border-radius: 6px;
-			font-size: .6rem;
-			width: fit-content;
-			transition: opacity .2s;
-			text-align: left;
-			padding: 4px 8px;
-			box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .15);
-			border: 0;
-  }
-  .g6-component-tooltip ul {
-    padding-left: 0;
-    margin: 0;
-  }
-  .g6-component-tooltip li {
-    cursor: pointer;
-    list-style-type: none;
-    list-style: none;
-    margin: 0;
-	}
-	`);
-}
 
 if (G6) {
   register();
@@ -130,7 +102,7 @@ const processNodesEdges = (nodes, edges) => {
         selected: {
           stroke: colorsMap[node.platform],
           fill: colorsMap[node.platform],
-          fillOpacity: .1,
+          fillOpacity: 0.1,
           lineWidth: 2,
           shadowColor: "transparent",
           zIndex: 999,
@@ -172,8 +144,8 @@ const processNodesEdges = (nodes, edges) => {
       edge.curveOffset = 0;
       edge.stateStyles = {
         selected: {
-          stroke: '#cecece',
-          shadowColor: 'transparent',
+          stroke: "#cecece",
+          shadowColor: "transparent",
           zIndex: 999,
         },
       };
@@ -182,8 +154,8 @@ const processNodesEdges = (nodes, edges) => {
       edge.type = "line";
       edge.stateStyles = {
         selected: {
-          stroke: '#cecece',
-          shadowColor: 'transparent',
+          stroke: "#cecece",
+          shadowColor: "transparent",
           zIndex: 999,
         },
       };
@@ -206,8 +178,8 @@ const RenderResultGraph = (props) => {
     const res = resolveGraphData(data);
 
     const tooltip = new G6.Tooltip({
-      offsetX: -120,
-      offsetY: -150,
+      offsetX: 0,
+      offsetY: 0,
       getContent(e) {
         const outDiv = document.createElement("div");
         if (e.item.getModel().isIdentity) {
@@ -232,6 +204,7 @@ const RenderResultGraph = (props) => {
 
         return outDiv;
       },
+      fixToNode: [-1, -0.5],
       itemTypes: ["node"],
     });
 
@@ -368,7 +341,10 @@ const RenderResultGraph = (props) => {
             e.preventDefault();
           }}
         >
-          <div className="graph-title">Identity Graph for <strong>{title}</strong></div>
+          <div className="graph-title">
+            <SVG src="icons/icon-view.svg" width={'1.5rem'}  />
+            Identity Graph for <strong>{title}</strong>
+          </div>
           {loading && (
             <div className="loading-mask">
               <Loading />
