@@ -160,10 +160,10 @@ const processNodesEdges = (nodes, edges) => {
     node.type = "identity-node";
     node.label = formatAddress(node.label);
     if (node.platform && node.platform.toLowerCase() === "ethereum") {
-      node.label = `${node.displayName || node.identity} ${
+      node.label = `${node.displayName || formatAddress(node.identity)} ${
         node.displayName ? `\n${formatAddress(node.identity)}` : ""
       }`;
-      node.labelLineNum = 2;
+      node.labelLineNum = node.displayName ? 2 : 1;
     }
   });
   edges.forEach((edge) => {
@@ -210,7 +210,6 @@ const RenderResultGraph = (props) => {
 
     const tooltip = new G6.Tooltip({
       getContent(e) {
-        console.log(e, "ggg");
         const outDiv = document.createElement("div");
         if (e.item.getModel().isIdentity) {
           outDiv.innerHTML = `
