@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from "react";
 import _ from "lodash";
 import { formatAddress } from "../../utils/utils";
-import { colorsMap, platformsMap } from "../../utils/maps"
+import { colorsMap, platformsMap } from "../../utils/maps";
 import { register } from "./GraphUtils/LargeRegister";
 import { Loading } from "../shared/Loading";
 const isBrowser = typeof window !== "undefined";
@@ -152,7 +152,7 @@ const processNodesEdges = (nodes, edges) => {
       node.stateStyles = {
         selected: {
           lineWidth: 2,
-          shadowColor: 'transparent',
+          shadowColor: "transparent",
           zIndex: 999,
         },
       };
@@ -163,7 +163,7 @@ const processNodesEdges = (nodes, edges) => {
       node.label = `${node.displayName || node.identity} ${
         node.displayName ? `\n${formatAddress(node.identity)}` : ""
       }`;
-      node.labelLineNum = 2
+      node.labelLineNum = 2;
     }
   });
   edges.forEach((edge) => {
@@ -173,8 +173,8 @@ const processNodesEdges = (nodes, edges) => {
       edge.curveOffset = 0;
       edge.stateStyles = {
         selected: {
-          stroke: '#999',
-          shadowColor: 'transparent',
+          stroke: "#999",
+          shadowColor: "transparent",
           zIndex: 999,
         },
       };
@@ -183,8 +183,8 @@ const processNodesEdges = (nodes, edges) => {
       edge.type = "line";
       edge.stateStyles = {
         selected: {
-          stroke: '#999',
-          shadowColor: 'transparent',
+          stroke: "#999",
+          shadowColor: "transparent",
           zIndex: 999,
         },
       };
@@ -195,7 +195,7 @@ const processNodesEdges = (nodes, edges) => {
 
 // eslint-disable-next-line react/display-name
 const RenderResultGraph = (props) => {
-  const { data, onClose } = props;
+  const { data, onClose, title } = props;
   const container = React.useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -219,7 +219,9 @@ const RenderResultGraph = (props) => {
             <li>Platform: ${
               platformsMap[e.item.getModel().platform || "unknown"]
             }</li>
-            <li>Source: ${platformsMap[e.item.getModel().source || "unknown"]}</li>
+            <li>Source: ${
+              platformsMap[e.item.getModel().source || "unknown"]
+            }</li>
           </ul>`;
         } else {
           outDiv.innerHTML = `
@@ -292,10 +294,7 @@ const RenderResultGraph = (props) => {
         },
       },
       modes: {
-        default: [
-          "drag-canvas",
-          "drag-node",
-        ],
+        default: ["drag-canvas", "drag-node"],
       },
       plugins: [tooltip],
     });
@@ -371,6 +370,7 @@ const RenderResultGraph = (props) => {
             e.preventDefault();
           }}
         >
+          <div className="graph-title">Identity Graph for <strong>{title}</strong></div>
           {loading && (
             <div className="loading-mask">
               <Loading />
