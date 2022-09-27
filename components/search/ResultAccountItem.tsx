@@ -94,7 +94,7 @@ const RenderAccountItem = (props) => {
       );
     case "lens":
       return (
-        <div className="social-item social-web3 lens">
+        <div className="social-item lens">
           <div className="social-main">
             <div className="social">
               <figure className="avatar bg-lens">
@@ -129,6 +129,17 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
             </div>
+            <div className="actions">
+              <a
+                className="btn btn-sm btn-link action"
+                href={`https://www.lensfrens.xyz/${identity.identity}`}
+                title="Open LensFrens"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
+              </a>
+            </div>
           </div>
           {sources && (
             <div className="social-footer">
@@ -161,7 +172,7 @@ const RenderAccountItem = (props) => {
                 <div className="icon">
                   <SVG src="icons/icon-twitter.svg" width={20} height={20} />
                 </div>
-                <div className="content-title">{identity.displayName}</div>
+                <div className="title">{identity.displayName}</div>
               </a>
             </Link>
             <div className="actions">
@@ -172,16 +183,8 @@ const RenderAccountItem = (props) => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                OPEN
+                <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
               </a>
-              <Clipboard
-                className="btn btn-sm btn-link action"
-                data-clipboard-text={identity.identity}
-                onSuccess={onCopySuccess}
-              >
-                COPY
-                {isCopied && <div className="tooltip-copy">COPIED</div>}
-              </Clipboard>
             </div>
           </div>
           {sources && (
@@ -218,7 +221,7 @@ const RenderAccountItem = (props) => {
                 <div className="icon">
                   <SVG src="icons/icon-github.svg" width={20} height={20} />
                 </div>
-                <div className="content-title">{identity.displayName}</div>
+                <div className="title">{identity.displayName}</div>
               </a>
             </Link>
             <div className="actions">
@@ -229,16 +232,8 @@ const RenderAccountItem = (props) => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                OPEN
+                <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
               </a>
-              <Clipboard
-                className="btn btn-sm btn-link action"
-                data-clipboard-text={identity.identity}
-                onSuccess={onCopySuccess}
-              >
-                COPY
-                {isCopied && <div className="tooltip-copy">COPIED</div>}
-              </Clipboard>
             </div>
           </div>
           {sources && (
@@ -275,7 +270,7 @@ const RenderAccountItem = (props) => {
                 <div className="icon">
                   <SVG src="icons/icon-keybase.svg" width={20} height={20} />
                 </div>
-                <div className="content-title">{identity.displayName}</div>
+                <div className="title">{identity.displayName}</div>
               </a>
             </Link>
             <div className="actions">
@@ -286,16 +281,8 @@ const RenderAccountItem = (props) => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                OPEN
+                <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
               </a>
-              <Clipboard
-                className="btn btn-sm btn-link action"
-                data-clipboard-text={identity.displayName}
-                onSuccess={onCopySuccess}
-              >
-                COPY
-                {isCopied && <div className="tooltip-copy">COPIED</div>}
-              </Clipboard>
             </div>
           </div>
           {sources && (
@@ -332,7 +319,7 @@ const RenderAccountItem = (props) => {
                 <div className="icon">
                   <SVG src="icons/icon-reddit.svg" width={20} height={20} />
                 </div>
-                <div className="content-title">{identity.displayName}</div>
+                <div className="title">{identity.displayName}</div>
               </a>
             </Link>
             <div className="actions">
@@ -343,16 +330,8 @@ const RenderAccountItem = (props) => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                OPEN
+                <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
               </a>
-              <Clipboard
-                className="btn btn-sm btn-link action"
-                data-clipboard-text={identity.displayName}
-                onSuccess={onCopySuccess}
-              >
-                COPY
-                {isCopied && <div className="tooltip-copy">COPIED</div>}
-              </Clipboard>
             </div>
           </div>
           {sources && (

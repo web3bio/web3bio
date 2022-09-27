@@ -125,28 +125,27 @@ const processNodesEdges = (nodes, edges) => {
       node.size = 96;
       node.style = {
         lineWidth: 2,
-        fill: "rgba(0, 0, 0, .05)",
-        stroke: "rgba(0, 0, 0, .05)",
       };
       node.stateStyles = {
         selected: {
-          fill: "#fff",
           stroke: colorsMap[node.platform],
+          fill: colorsMap[node.platform],
+          fillOpacity: .1,
           lineWidth: 2,
-          shadowColor: colorsMap[node.platform],
+          shadowColor: "transparent",
           zIndex: 999,
         },
       };
     } else {
       // ENS
-      node.size = 26;
+      node.size = 24;
       node.labelCfg = {
         labelLineNum: 1,
         position: "bottom",
       };
       node.style = {
         lineWidth: 2,
-        fill: "rgba(0, 0, 0, .05)",
+        fill: colorsMap[node.platform],
         stroke: "rgba(0, 0, 0, .05)",
       };
       node.stateStyles = {
@@ -173,8 +172,8 @@ const processNodesEdges = (nodes, edges) => {
       edge.curveOffset = 0;
       edge.stateStyles = {
         selected: {
-          stroke: "#999",
-          shadowColor: "transparent",
+          stroke: '#cecece',
+          shadowColor: 'transparent',
           zIndex: 999,
         },
       };
@@ -183,8 +182,8 @@ const processNodesEdges = (nodes, edges) => {
       edge.type = "line";
       edge.stateStyles = {
         selected: {
-          stroke: "#999",
-          shadowColor: "transparent",
+          stroke: '#cecece',
+          shadowColor: 'transparent',
           zIndex: 999,
         },
       };
@@ -255,9 +254,8 @@ const RenderResultGraph = (props) => {
         style: {
           endArrow: {
             path: "M 0,0 L 5,2.5 L 5,-2.5 Z",
-            fill: "#2B384E",
-            stroke: "#2B384E",
-            opacity: 0.5,
+            fill: "#cecece",
+            stroke: "#cecece",
           },
         },
       },

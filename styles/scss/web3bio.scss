@@ -306,6 +306,15 @@ body {
     font-size: .6rem;
     padding: .8rem;
     word-wrap: break-word;
+
+    .btn {
+      align-items: center;
+      display: inline-flex;
+      
+      svg {
+        margin-right: .2rem;
+      }
+    }
   }
 
   .search-result-body {
@@ -346,9 +355,19 @@ body {
     }
 
     .social-main {
+      align-items: center;
       display: flex;
       padding: .4rem;
       width: 100%;
+
+      .avatar {
+        align-items: center;
+        border-radius: .5rem;
+        display: flex;
+        flex: 0 0 1.6rem;
+        justify-content: center;
+        margin-right: .4rem;
+      }
     }
 
     .social-footer {
@@ -368,42 +387,8 @@ body {
 
     &.social-web3 {
       .social-main {
+        align-items: flex-start;
         flex-direction: column;
-        padding: .4rem;
-      }
-
-      .avatar {
-        align-items: center;
-        border-radius: .5rem;
-        display: flex;
-        flex: 0 0 1.6rem;
-        justify-content: center;
-        margin-right: .4rem;
-      }
-
-      .content {
-        flex: 1;
-      }
-
-      .content-title {
-        font-size: .9rem;
-        line-height: 1.2rem;
-      }
-
-      .content-subtitle {
-        align-items: center;
-        display: flex;
-        font-size: .6rem;
-        line-height: 1rem;
-
-        .action {
-          cursor: pointer;
-          flex: 0 1;
-          height: 1rem;
-          margin-left: .2rem;
-          position: relative;
-          width: 1rem;
-        }
       }
     }
 
@@ -436,7 +421,32 @@ body {
       width: 1.6rem;
     }
 
+    .content {
+      flex: 1;
+    }
+
     .content-title {
+      font-size: .9rem;
+      line-height: 1.2rem;
+    }
+
+    .content-subtitle {
+      align-items: center;
+      display: flex;
+      font-size: .6rem;
+      line-height: 1rem;
+
+      .action {
+        cursor: pointer;
+        flex: 0 1;
+        height: 1rem;
+        margin-left: .2rem;
+        position: relative;
+        width: 1rem;
+      }
+    }
+
+    .title {
       font-size: .7rem;
     }
   }
@@ -463,6 +473,10 @@ body {
       flex: 0 0 .7rem;
       margin-right: .2rem;
     }
+  }
+
+  .nfts {
+    width: 100%;
   }
 
   .actions {
@@ -514,7 +528,7 @@ body {
   color: $gray-color;
   font-size: .7rem;
   font-weight: 500;
-  padding-top: 2rem;
+  padding-top: .5rem;
   position: sticky;
   text-align: center;
   top: 100vh;

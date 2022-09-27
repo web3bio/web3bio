@@ -1,6 +1,7 @@
 import React, { memo, useState } from "react";
 import { ResultAccountItem } from "./ResultAccountItem";
 import { ResultGraph } from "./ResultGraph";
+import SVG from "react-inlinesvg";
 
 const RenderAccount = (props) => {
   const { searchTerm, resultNeighbor, graphData } = props;
@@ -14,7 +15,7 @@ const RenderAccount = (props) => {
         </div>
         {graphData.length > 0 && (
           <div className="btn btn-link btn-sm" onClick={() => setOpen(true)}>
-            Graph
+            <SVG src="icons/icon-view.svg" width={20} height={20} /> Identity Graph
           </div>
         )}
       </div>
