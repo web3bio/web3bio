@@ -8,6 +8,35 @@ import SVG from "react-inlinesvg";
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
 let graph = null;
+const insertCss = isBrowser ? require("insert-css") : null;
+
+if (isBrowser) {
+  insertCss(`
+  .g6-component-tooltip {
+    position: absolute;
+			z-index: 2;
+			list-style-type: none;
+			border-radius: 6px;
+			font-size: .6rem;
+			width: fit-content;
+			transition: opacity .2s;
+			text-align: left;
+			padding: 4px 8px;
+			box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .15);
+			border: 0;
+  }
+  .g6-component-tooltip ul {
+    padding-left: 0;
+    margin: 0;
+  }
+  .g6-component-tooltip li {
+    cursor: pointer;
+    list-style-type: none;
+    list-style: none;
+    margin: 0;
+	}
+	`);
+}
 
 if (G6) {
   register();
@@ -177,10 +206,11 @@ const RenderResultGraph = (props) => {
     }
     const res = resolveGraphData(data);
 
+    processNodesEdges(res.nodes, res.edges);
+
     const tooltip = new G6.Tooltip({
-      offsetX: 0,
-      offsetY: 0,
       getContent(e) {
+        console.log(e,'ggg')
         const outDiv = document.createElement("div");
         if (e.item.getModel().isIdentity) {
           outDiv.innerHTML = `
@@ -207,8 +237,6 @@ const RenderResultGraph = (props) => {
       fixToNode: [-1, -0.5],
       itemTypes: ["node"],
     });
-
-    processNodesEdges(res.nodes, res.edges);
 
     graph = new G6.Graph({
       container: container.current,
@@ -342,7 +370,7 @@ const RenderResultGraph = (props) => {
           }}
         >
           <div className="graph-title">
-            <SVG src="icons/icon-view.svg" width={'1.5rem'}  />
+            <SVG src="icons/icon-view.svg" width={"1.5rem"} />
             Identity Graph for <strong>{title}</strong>
           </div>
           {loading && (
