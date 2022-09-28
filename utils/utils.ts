@@ -1,5 +1,5 @@
 export const formatText = (string, length?) => {
-  const len = length ?? 11;
+  const len = length ?? 12;
   if (string.length <= len) {
     return string;
   }

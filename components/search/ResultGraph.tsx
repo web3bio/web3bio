@@ -161,7 +161,7 @@ const processNodesEdges = (nodes, edges) => {
     node.type = "identity-node";
     node.label = formatText(node.label);
     if (node.platform && node.platform.toLowerCase() === "ethereum") {
-      node.label = `${node.displayName || formatText(node.identity, 9)} ${
+      node.label = `${node.displayName || formatText(node.identity)} ${
         node.displayName ? `\n${formatText(node.identity)}` : ""
       }`;
       node.labelLineNum = node.displayName ? 2 : 1;
