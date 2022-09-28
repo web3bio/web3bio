@@ -360,10 +360,12 @@ const RenderResultGraph = (props) => {
         window.onresize = () => {
           if (!graph || graph.get("destroyed")) return;
           if (!container.current) return;
+
           graph.changeSize(
-            container.current.scrollWidth,
-            container.current.scrollHeight - 30
+            container.current.offsetWidth,
+            container.current.offsetHeight
           );
+          graph.layout()
         };
     };
     const clearFocusItemState = (graph) => {
