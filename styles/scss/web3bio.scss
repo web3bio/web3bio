@@ -271,13 +271,13 @@ body {
     .graph-title {
       position: fixed;
       left: 50%;
-      top: 15%;
+      top: calc(10% + 1rem);
       transform: translateX(-50%);
-      font-size: 1rem;
+      font-size: .8rem;
       font-weight: 500;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.2rem;
       z-index: 999;
       pointer-events: none;
       user-select: none;
@@ -302,9 +302,6 @@ body {
         background: #fff;
       }
     }
-
-
-
   }
 
   .search-result-header {
@@ -313,11 +310,16 @@ body {
     justify-content: space-between;
     font-size: .6rem;
     padding: .8rem;
-    word-wrap: break-word;
+
+    .search-result-text {
+      word-break: break-all;
+      word-wrap: break-word;
+    }
 
     .btn {
       align-items: center;
       display: inline-flex;
+      flex-shrink: 0;
 
       svg {
         margin-right: .2rem;

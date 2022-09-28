@@ -158,6 +158,55 @@ const RenderAccountItem = (props) => {
           )}
         </div>
       );
+      case "dotbit":
+        return (
+          <div className="social-item dotbit">
+            <div className="social-main">
+              <Link
+                href={{
+                  pathname: "/",
+                  query: {
+                    s: identity.identity,
+                    platform: identity.platform,
+                  },
+                }}
+              >
+                <a className="social">
+                  <div className="icon">
+                    <SVG src="icons/icon-dotbit.svg" width={20} height={20} />
+                  </div>
+                  <div className="title">{identity.displayName}</div>
+                </a>
+              </Link>
+              <div className="actions">
+                <a
+                  className="btn btn-sm btn-link action"
+                  href={`https://${identity.displayName}.cc`}
+                  title="Open Keybase"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
+                </a>
+              </div>
+            </div>
+            {sources && (
+              <div className="social-footer">
+                <SVG
+                  src="icons/icon-sources.svg"
+                  width={20}
+                  height={20}
+                  title="Data sources"
+                />
+                {sources.map((source) => (
+                  <span key={source} className="text-uppercase mr-1">
+                    {source}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        );
     case "twitter":
       return (
         <div className="social-item twitter">
