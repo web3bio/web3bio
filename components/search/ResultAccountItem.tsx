@@ -1,8 +1,8 @@
 import React, { memo, useState } from "react";
 import Link from "next/link";
-import { formatAddress } from "../../utils/utils";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
+import { formatText } from "../../utils/utils";
 
 const RenderAccountItem = (props) => {
   const onCopySuccess = () => {
@@ -26,12 +26,12 @@ const RenderAccountItem = (props) => {
                 <div className="content-title text-bold">
                   {identity.displayName
                     ? identity.displayName
-                    : formatAddress(identity.identity)}
+                    : formatText(identity.identity)}
                 </div>
                 <div className="content-subtitle text-gray">
                   <div className="address hide-xs">{identity.identity}</div>
                   <div className="address show-xs">
-                    {formatAddress(identity.identity)}
+                    {formatText(identity.identity)}
                   </div>
                   <Clipboard
                     component="div"
@@ -113,7 +113,7 @@ const RenderAccountItem = (props) => {
                   <div className="address show-xs">
                     {identity.ownedBy.displayName
                       ? identity.ownedBy.displayName
-                      : formatAddress(identity.ownedBy.identity)}
+                      : formatText(identity.ownedBy.identity)}
                   </div>
                   <Clipboard
                     component="div"

@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from "react";
 import _ from "lodash";
-import { formatAddress } from "../../utils/utils";
+import { formatText } from "../../utils/utils";
 import { colorsMap, platformsMap } from "../../utils/maps";
 import { register } from "./GraphUtils/LargeRegister";
 import { Loading } from "../shared/Loading";
@@ -53,7 +53,7 @@ const resolveGraphData = (source) => {
     const to = x.to;
     nodes.push({
       id: to.uuid,
-      label: formatAddress(to.displayName ?? to.identity),
+      label: formatText(to.displayName ?? to.identity),
       platform: to.platform,
       source: x.source,
       displayName: to.displayName,
@@ -62,7 +62,7 @@ const resolveGraphData = (source) => {
     });
     nodes.push({
       id: from.uuid,
-      label: formatAddress(from.displayName ?? from.identity),
+      label: formatText(from.displayName ?? from.identity),
       platform: from.platform,
       source: x.source,
       displayName: from.displayName,
@@ -158,10 +158,10 @@ const processNodesEdges = (nodes, edges) => {
       };
     }
     node.type = "identity-node";
-    node.label = formatAddress(node.label);
+    node.label = formatText(node.label);
     if (node.platform && node.platform.toLowerCase() === "ethereum") {
-      node.label = `${node.displayName || formatAddress(node.identity)} ${
-        node.displayName ? `\n${formatAddress(node.identity)}` : ""
+      node.label = `${node.displayName || formatText(node.identity, 9)} ${
+        node.displayName ? `\n${formatText(node.identity)}` : ""
       }`;
       node.labelLineNum = node.displayName ? 2 : 1;
     }
