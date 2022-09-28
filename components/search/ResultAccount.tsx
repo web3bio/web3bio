@@ -9,7 +9,7 @@ const RenderAccount = (props) => {
   return (
     <div className="search-result">
       <div className="search-result-header">
-        <div className="text-gray">
+        <div className="search-result-text text-gray">
           Search results for{" "}
           <span className="text-underline">{searchTerm}</span>:
         </div>
@@ -32,7 +32,7 @@ const RenderAccount = (props) => {
           </>
         ) : null}
       </div>
-      {open && <ResultGraph onClose={() => setOpen(false)} data={graphData} />}
+      {open && <ResultGraph onClose={() => setOpen(false)} data={graphData} title={searchTerm} />}
     </div>
   );
 };

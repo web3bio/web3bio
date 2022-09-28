@@ -1,8 +1,8 @@
 import React, { memo, useState } from "react";
 import Link from "next/link";
-import { formatAddress } from "../../utils/utils";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
+import { formatText } from "../../utils/utils";
 
 const RenderAccountItem = (props) => {
   const onCopySuccess = () => {
@@ -26,12 +26,12 @@ const RenderAccountItem = (props) => {
                 <div className="content-title text-bold">
                   {identity.displayName
                     ? identity.displayName
-                    : formatAddress(identity.identity)}
+                    : formatText(identity.identity)}
                 </div>
                 <div className="content-subtitle text-gray">
                   <div className="address hide-xs">{identity.identity}</div>
                   <div className="address show-xs">
-                    {formatAddress(identity.identity)}
+                    {formatText(identity.identity)}
                   </div>
                   <Clipboard
                     component="div"
@@ -113,7 +113,7 @@ const RenderAccountItem = (props) => {
                   <div className="address show-xs">
                     {identity.ownedBy.displayName
                       ? identity.ownedBy.displayName
-                      : formatAddress(identity.ownedBy.identity)}
+                      : formatText(identity.ownedBy.identity)}
                   </div>
                   <Clipboard
                     component="div"
@@ -158,6 +158,54 @@ const RenderAccountItem = (props) => {
           )}
         </div>
       );
+      case "dotbit":
+        return (
+          <div className="social-item dotbit">
+            <div className="social-main">
+              <Link
+                href={{
+                  pathname: "/",
+                  query: {
+                    s: identity.identity
+                  },
+                }}
+              >
+                <a className="social">
+                  <div className="icon">
+                    <SVG src="icons/icon-dotbit.svg" width={20} height={20} />
+                  </div>
+                  <div className="title">{identity.displayName}</div>
+                </a>
+              </Link>
+              <div className="actions">
+                <a
+                  className="btn btn-sm btn-link action"
+                  href={`https://data.did.id/${identity.displayName}`}
+                  title="Open Keybase"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
+                </a>
+              </div>
+            </div>
+            {sources && (
+              <div className="social-footer">
+                <SVG
+                  src="icons/icon-sources.svg"
+                  width={20}
+                  height={20}
+                  title="Data sources"
+                />
+                {sources.map((source) => (
+                  <span key={source} className="text-uppercase mr-1">
+                    {source}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        );
     case "twitter":
       return (
         <div className="social-item twitter">

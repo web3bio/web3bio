@@ -1,18 +1,20 @@
 import React, { memo, useEffect, useState } from "react";
 import _ from "lodash";
-import { formatAddress } from "../../utils/utils";
-import { colorsMap, platformsMap } from "../../utils/maps"
+import { formatText } from "../../utils/utils";
+import { colorsMap, platformsMap } from "../../utils/maps";
 import { register } from "./GraphUtils/LargeRegister";
 import { Loading } from "../shared/Loading";
+import SVG from "react-inlinesvg";
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
-const insertCss = isBrowser ? require("insert-css") : null;
 let graph = null;
+let shiftKeydown = false;
+const insertCss = isBrowser ? require("insert-css") : null;
 
 if (isBrowser) {
   insertCss(`
   .g6-component-tooltip {
-    position: absolute;
+      position: relative;
 			z-index: 2;
 			list-style-type: none;
 			border-radius: 6px;
@@ -52,7 +54,7 @@ const resolveGraphData = (source) => {
     const to = x.to;
     nodes.push({
       id: to.uuid,
-      label: formatAddress(to.displayName ?? to.identity),
+      label: formatText(to.displayName ?? to.identity),
       platform: to.platform,
       source: x.source,
       displayName: to.displayName,
@@ -61,7 +63,7 @@ const resolveGraphData = (source) => {
     });
     nodes.push({
       id: from.uuid,
-      label: formatAddress(from.displayName ?? from.identity),
+      label: formatText(from.displayName ?? from.identity),
       platform: from.platform,
       source: x.source,
       displayName: from.displayName,
@@ -130,7 +132,7 @@ const processNodesEdges = (nodes, edges) => {
         selected: {
           stroke: colorsMap[node.platform],
           fill: colorsMap[node.platform],
-          fillOpacity: .1,
+          fillOpacity: 0.1,
           lineWidth: 2,
           shadowColor: "transparent",
           zIndex: 999,
@@ -151,18 +153,18 @@ const processNodesEdges = (nodes, edges) => {
       node.stateStyles = {
         selected: {
           lineWidth: 2,
-          shadowColor: 'transparent',
+          shadowColor: "transparent",
           zIndex: 999,
         },
       };
     }
     node.type = "identity-node";
-    node.label = formatAddress(node.label);
+    node.label = formatText(node.label);
     if (node.platform && node.platform.toLowerCase() === "ethereum") {
-      node.label = `${node.displayName || node.identity} ${
-        node.displayName ? `\n${formatAddress(node.identity)}` : ""
+      node.label = `${node.displayName || formatText(node.identity)} ${
+        node.displayName ? `\n${formatText(node.identity)}` : ""
       }`;
-      node.labelLineNum = 2
+      node.labelLineNum = node.displayName ? 2 : 1;
     }
   });
   edges.forEach((edge) => {
@@ -172,8 +174,8 @@ const processNodesEdges = (nodes, edges) => {
       edge.curveOffset = 0;
       edge.stateStyles = {
         selected: {
-          stroke: '#cecece',
-          shadowColor: 'transparent',
+          stroke: "#cecece",
+          shadowColor: "transparent",
           zIndex: 999,
         },
       };
@@ -182,8 +184,8 @@ const processNodesEdges = (nodes, edges) => {
       edge.type = "line";
       edge.stateStyles = {
         selected: {
-          stroke: '#cecece',
-          shadowColor: 'transparent',
+          stroke: "#cecece",
+          shadowColor: "transparent",
           zIndex: 999,
         },
       };
@@ -194,7 +196,7 @@ const processNodesEdges = (nodes, edges) => {
 
 // eslint-disable-next-line react/display-name
 const RenderResultGraph = (props) => {
-  const { data, onClose } = props;
+  const { data, onClose, title } = props;
   const container = React.useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -205,9 +207,9 @@ const RenderResultGraph = (props) => {
     }
     const res = resolveGraphData(data);
 
+    processNodesEdges(res.nodes, res.edges);
+
     const tooltip = new G6.Tooltip({
-      offsetX: -120,
-      offsetY: -150,
       getContent(e) {
         const outDiv = document.createElement("div");
         if (e.item.getModel().isIdentity) {
@@ -218,7 +220,9 @@ const RenderResultGraph = (props) => {
             <li>Platform: ${
               platformsMap[e.item.getModel().platform || "unknown"]
             }</li>
-            <li>Source: ${platformsMap[e.item.getModel().source || "unknown"]}</li>
+            <li>Source: ${
+              platformsMap[e.item.getModel().source || "unknown"]
+            }</li>
           </ul>`;
         } else {
           outDiv.innerHTML = `
@@ -230,10 +234,9 @@ const RenderResultGraph = (props) => {
 
         return outDiv;
       },
+      fixToNode: [0.5, 0.5],
       itemTypes: ["node"],
     });
-
-    processNodesEdges(res.nodes, res.edges);
 
     graph = new G6.Graph({
       container: container.current,
@@ -290,10 +293,7 @@ const RenderResultGraph = (props) => {
         },
       },
       modes: {
-        default: [
-          "drag-canvas",
-          "drag-node",
-        ],
+        default: ["drag-canvas", "drag-node"],
       },
       plugins: [tooltip],
     });
@@ -306,6 +306,26 @@ const RenderResultGraph = (props) => {
     });
     graph.render();
     const bindListener = () => {
+      graph.on("keydown", (evt) => {
+        const code = evt.key;
+        if (!code) {
+          return;
+        }
+        if (code.toLowerCase() === "shift") {
+          shiftKeydown = true;
+        } else {
+          shiftKeydown = false;
+        }
+      });
+      graph.on("keyup", (evt) => {
+        const code = evt.key;
+        if (!code) {
+          return;
+        }
+        if (code.toLowerCase() === "shift") {
+          shiftKeydown = false;
+        }
+      });
       graph.on("node:dragstart", function (e) {
         refreshDragedNodePosition(e);
       });
@@ -318,6 +338,7 @@ const RenderResultGraph = (props) => {
       });
 
       graph.on("node:click", (evt) => {
+        if (!shiftKeydown) clearFocusItemState(graph);
         const { item } = evt;
         graph.setItemState(item, "selected", true);
 
@@ -339,11 +360,24 @@ const RenderResultGraph = (props) => {
         window.onresize = () => {
           if (!graph || graph.get("destroyed")) return;
           if (!container.current) return;
+
           graph.changeSize(
-            container.current.scrollWidth,
-            container.current.scrollHeight - 30
+            container.current.offsetWidth,
+            container.current.offsetHeight
           );
+          graph.layout()
         };
+    };
+    const clearFocusItemState = (graph) => {
+      if (!graph) return;
+      const focusNodes = graph.findAllByState("node", "selected");
+      focusNodes.forEach((fnode) => {
+        graph.setItemState(fnode, "selected", false);
+      });
+      const focusEdges = graph.findAllByState("edge", "selected");
+      focusEdges.forEach((fedge) => {
+        graph.setItemState(fedge, "selected", false);
+      });
     };
     const refreshDragedNodePosition = (e) => {
       const model = e.item.get("model");
@@ -360,6 +394,10 @@ const RenderResultGraph = (props) => {
 
   return (
     <div className="graph-mask" onClick={onClose}>
+      <div className="graph-title">
+        <SVG src="icons/icon-view.svg" width={"1.5rem"} />
+        Identity Graph for <strong>{title}</strong>
+      </div>
       {data && (
         <div
           className="graph-container"

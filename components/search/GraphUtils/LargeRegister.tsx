@@ -16,6 +16,7 @@ const resolvePlatformIcon = (platform) => {
       ens: "/icons/icon-ens-w.svg",
       lens: "/icons/icon-lens-w.svg",
       github: "/icons/icon-github-w.svg",
+      dotbit: "/icons/icon-dotbit-w.svg",
     }[platform] || ""
   );
 };
@@ -42,8 +43,7 @@ export const register = () => {
               x: 0,
               y: 0,
               r,
-              fill: colorsMap[cfg.platform],
-              fillOpacity: 0,
+              fill: "#fff",
               stroke: colorsMap[cfg.platform],
               opacity: 1,
               lineWidth: 2,
