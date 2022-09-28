@@ -8,6 +8,7 @@ import SVG from "react-inlinesvg";
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
 let graph = null;
+let shiftKeydown = false;
 const insertCss = isBrowser ? require("insert-css") : null;
 
 if (isBrowser) {
@@ -305,6 +306,26 @@ const RenderResultGraph = (props) => {
     });
     graph.render();
     const bindListener = () => {
+      graph.on("keydown", (evt) => {
+        const code = evt.key;
+        if (!code) {
+          return;
+        }
+        if (code.toLowerCase() === "shift") {
+          shiftKeydown = true;
+        } else {
+          shiftKeydown = false;
+        }
+      });
+      graph.on("keyup", (evt) => {
+        const code = evt.key;
+        if (!code) {
+          return;
+        }
+        if (code.toLowerCase() === "shift") {
+          shiftKeydown = false;
+        }
+      });
       graph.on("node:dragstart", function (e) {
         refreshDragedNodePosition(e);
       });
@@ -317,6 +338,7 @@ const RenderResultGraph = (props) => {
       });
 
       graph.on("node:click", (evt) => {
+        if (!shiftKeydown) clearFocusItemState(graph);
         const { item } = evt;
         graph.setItemState(item, "selected", true);
 
@@ -343,6 +365,17 @@ const RenderResultGraph = (props) => {
             container.current.scrollHeight - 30
           );
         };
+    };
+    const clearFocusItemState = (graph) => {
+      if (!graph) return;
+      const focusNodes = graph.findAllByState("node", "selected");
+      focusNodes.forEach((fnode) => {
+        graph.setItemState(fnode, "selected", false);
+      });
+      const focusEdges = graph.findAllByState("edge", "selected");
+      focusEdges.forEach((fedge) => {
+        graph.setItemState(fedge, "selected", false);
+      });
     };
     const refreshDragedNodePosition = (e) => {
       const model = e.item.get("model");
