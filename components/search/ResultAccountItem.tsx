@@ -166,8 +166,7 @@ const RenderAccountItem = (props) => {
                 href={{
                   pathname: "/",
                   query: {
-                    s: identity.identity,
-                    platform: identity.platform,
+                    s: identity.identity
                   },
                 }}
               >
@@ -181,7 +180,7 @@ const RenderAccountItem = (props) => {
               <div className="actions">
                 <a
                   className="btn btn-sm btn-link action"
-                  href={`https://${identity.displayName}.cc`}
+                  href={`https://data.did.id/${identity.displayName}`}
                   title="Open Keybase"
                   target="_blank"
                   rel="noopener noreferrer"
