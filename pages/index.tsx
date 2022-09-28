@@ -14,6 +14,7 @@ export default function Home() {
 
   const regexEns = /.*\.eth|.xyz$/,
     regexLens = /.*\.lens$/,
+    regexDotbit = /.*\.bit$/,
     regexEth = /^0x[a-fA-F0-9]{40}$/,
     regexTwitter = /(\w{1,15})\b/;
 
@@ -25,6 +26,9 @@ export default function Home() {
       case regexLens.test(term):
         console.log("lens");
         return "lens";
+      case regexDotbit.test(term):
+        console.log("dotbit");
+        return "dotbit";
       case regexEth.test(term):
         console.log("ethereum");
         return "ethereum";

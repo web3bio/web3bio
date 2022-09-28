@@ -7,6 +7,7 @@ export const colorsMap = {
   ens: "#5298FF",
   lens: "#BDFC5A",
   github: "#000000",
+  dotbit: "#0e7dff",
   unknown: "#121212",
 };
 
@@ -19,6 +20,7 @@ export const platformsMap = {
   ens: "ENS",
   lens: "Lens",
   github: "GitHub",
+  dotbit: ".bit",
   rss3: "RSS3",
   cyberconnect: "CyberConnect",
   sybil: "Sybil",
