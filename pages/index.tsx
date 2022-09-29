@@ -114,7 +114,7 @@ export default function Home() {
               </div>
               <div className="form-input-group">
                 <input
-                  key={String(Date.now())}
+                  key={searchTerm}
                   type="text"
                   name="s"
                   placeholder="Search Twitter, ENS or Ethereum"
