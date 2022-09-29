@@ -3,6 +3,7 @@ import Link from "next/link";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { formatText } from "../../utils/utils";
+import { RenderSourceFooter } from "./SourcesFooter";
 
 const RenderAccountItem = (props) => {
   const onCopySuccess = () => {
@@ -56,7 +57,7 @@ const RenderAccountItem = (props) => {
             </div>
             {identity.nft?.length > 0 && (
               <div className="nfts">
-                {identity.nft.map((nft,idx) => {
+                {identity.nft.map((nft, idx) => {
                   return nft.category == "ENS" ? (
                     <Link
                       key={`${nft.uuid}-${idx}`}
@@ -75,21 +76,7 @@ const RenderAccountItem = (props) => {
               </div>
             )}
           </div>
-          {sources && (
-            <div className="social-footer">
-              <SVG
-                src="icons/icon-sources.svg"
-                width={20}
-                height={20}
-                title="Data sources"
-              />
-              {sources.map((source) => (
-                <span key={source} className="text-uppercase mr-1">
-                  {source}
-                </span>
-              ))}
-            </div>
-          )}
+          <RenderSourceFooter sources={sources} />
         </div>
       );
     case "lens":
@@ -118,9 +105,11 @@ const RenderAccountItem = (props) => {
                   <Clipboard
                     component="div"
                     className="action"
-                    data-clipboard-text={identity.ownedBy.displayName
-                      ? identity.ownedBy.displayName
-                      : identity.ownedBy.identity}
+                    data-clipboard-text={
+                      identity.ownedBy.displayName
+                        ? identity.ownedBy.displayName
+                        : identity.ownedBy.identity
+                    }
                     onSuccess={onCopySuccess}
                   >
                     <SVG src="icons/icon-copy.svg" width={20} height={20} />
@@ -141,71 +130,43 @@ const RenderAccountItem = (props) => {
               </a>
             </div>
           </div>
-          {sources && (
-            <div className="social-footer">
-              <SVG
-                src="icons/icon-sources.svg"
-                width={20}
-                height={20}
-                title="Data sources"
-              />
-              {sources.map((source) => (
-                <span key={source} className="text-uppercase mr-1">
-                  {source}
-                </span>
-              ))}
-            </div>
-          )}
+          <RenderSourceFooter sources={sources} />
         </div>
       );
-      case "dotbit":
-        return (
-          <div className="social-item dotbit">
-            <div className="social-main">
-              <Link
-                href={{
-                  pathname: "/",
-                  query: {
-                    s: identity.identity
-                  },
-                }}
+    case "dotbit":
+      return (
+        <div className="social-item dotbit">
+          <div className="social-main">
+            <Link
+              href={{
+                pathname: "/",
+                query: {
+                  s: identity.identity,
+                },
+              }}
+            >
+              <a className="social">
+                <div className="icon">
+                  <SVG src="icons/icon-dotbit.svg" width={20} height={20} />
+                </div>
+                <div className="title">{identity.displayName}</div>
+              </a>
+            </Link>
+            <div className="actions">
+              <a
+                className="btn btn-sm btn-link action"
+                href={`https://data.did.id/${identity.displayName}`}
+                title="Open Keybase"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                <a className="social">
-                  <div className="icon">
-                    <SVG src="icons/icon-dotbit.svg" width={20} height={20} />
-                  </div>
-                  <div className="title">{identity.displayName}</div>
-                </a>
-              </Link>
-              <div className="actions">
-                <a
-                  className="btn btn-sm btn-link action"
-                  href={`https://data.did.id/${identity.displayName}`}
-                  title="Open Keybase"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
-                </a>
-              </div>
+                <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
+              </a>
             </div>
-            {sources && (
-              <div className="social-footer">
-                <SVG
-                  src="icons/icon-sources.svg"
-                  width={20}
-                  height={20}
-                  title="Data sources"
-                />
-                {sources.map((source) => (
-                  <span key={source} className="text-uppercase mr-1">
-                    {source}
-                  </span>
-                ))}
-              </div>
-            )}
           </div>
-        );
+          <RenderSourceFooter sources={sources} />
+        </div>
+      );
     case "twitter":
       return (
         <div className="social-item twitter">
@@ -235,21 +196,7 @@ const RenderAccountItem = (props) => {
               </a>
             </div>
           </div>
-          {sources && (
-            <div className="social-footer">
-              <SVG
-                src="icons/icon-sources.svg"
-                width={20}
-                height={20}
-                title="Data sources"
-              />
-              {sources.map((source) => (
-                <span key={source} className="text-uppercase mr-1">
-                  {source}
-                </span>
-              ))}
-            </div>
-          )}
+          <RenderSourceFooter sources={sources} />
         </div>
       );
     case "github":
@@ -284,21 +231,7 @@ const RenderAccountItem = (props) => {
               </a>
             </div>
           </div>
-          {sources && (
-            <div className="social-footer">
-              <SVG
-                src="icons/icon-sources.svg"
-                width={20}
-                height={20}
-                title="Data sources"
-              />
-              {sources.map((source) => (
-                <span key={source} className="text-uppercase mr-1">
-                  {source}
-                </span>
-              ))}
-            </div>
-          )}
+          <RenderSourceFooter sources={sources} />
         </div>
       );
     case "keybase":
@@ -333,21 +266,7 @@ const RenderAccountItem = (props) => {
               </a>
             </div>
           </div>
-          {sources && (
-            <div className="social-footer">
-              <SVG
-                src="icons/icon-sources.svg"
-                width={20}
-                height={20}
-                title="Data sources"
-              />
-              {sources.map((source) => (
-                <span key={source} className="text-uppercase mr-1">
-                  {source}
-                </span>
-              ))}
-            </div>
-          )}
+          <RenderSourceFooter sources={sources} />
         </div>
       );
     case "reddit":
@@ -382,21 +301,7 @@ const RenderAccountItem = (props) => {
               </a>
             </div>
           </div>
-          {sources && (
-            <div className="social-footer">
-              <SVG
-                src="icons/icon-sources.svg"
-                width={20}
-                height={20}
-                title="Data sources"
-              />
-              {sources.map((source) => (
-                <span key={source} className="text-uppercase mr-1">
-                  {source}
-                </span>
-              ))}
-            </div>
-          )}
+          <RenderSourceFooter sources={sources} />
         </div>
       );
     default:
