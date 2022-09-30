@@ -85,6 +85,7 @@ const resolveGraphData = (source) => {
           category: k.category,
           chain: k.chain,
           holder: from.identity,
+          identity: k.id,
           platform: "ens",
         });
         edges.push({
@@ -227,7 +228,7 @@ const RenderResultGraph = (props) => {
         } else {
           outDiv.innerHTML = `
           <ul>
-            <li>ENS: ${e.item.getModel().label || "Unknown"}</li>
+            <li>ENS: ${e.item.getModel().identity || "Unknown"}</li>
             <li>Owner: ${e.item.getModel().holder || "Unknown"}</li>
           </ul>`;
         }
