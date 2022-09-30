@@ -11,7 +11,6 @@ const RenderResultEns = ({ searchTerm }) => {
     variables: { ens: searchTerm },
   });
   const [resultNeighbor, setResultNeighbor] = useState([]);
-  console.log(data, "data");
   useEffect(() => {
     if (!data || !data.nft) return;
     const results = data?.nft.owner;

@@ -44,7 +44,6 @@ export default function Home() {
       // todo: check the type of router querys
       const searchkeyword = (router.query.s as string).toLowerCase();
       setSearchTerm(searchkeyword);
-
       if (!router.query.platform) {
         let searchPlatform = handlesearchPlatform(searchkeyword);
         setsearchPlatform(searchPlatform);
@@ -115,6 +114,7 @@ export default function Home() {
               </div>
               <div className="form-input-group">
                 <input
+                  key={searchTerm}
                   type="text"
                   name="s"
                   placeholder="Search Twitter, ENS or Ethereum"
