@@ -1,0 +1,1 @@
+export const RSS3_END_POINT = ''
