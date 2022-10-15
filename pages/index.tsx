@@ -77,7 +77,7 @@ export default function Home() {
         )}
         <meta
           name="description"
-          content="Web5.bio is a Web3 and Web 2.0 identity search service which is powered by Next.ID. Web5.bio will provide a list of relevant identities when you are searching any Twitter handle, Ethereum address, or ENS domain."
+          content="Web5.bio is a Web3 and Web 2.0 Identity Graph search service which is powered by Next.ID. Web5.bio will provide a list of relevant identities when you are searching any Twitter handle, Ethereum address, ENS domain or Lens Profile."
         />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       </Head>

@@ -9,7 +9,7 @@ const resolvePlatformIcon = (platform) => {
   return (
     {
       twitter: "/icons/icon-twitter-w.svg",
-      nextid: "/icons/icon-nextid.svg",
+      nextid: "/icons/icon-nextid-w.svg",
       keybase: "/icons/icon-keybase-w.svg",
       ethereum: "/icons/icon-ethereum-w.svg",
       reddit: "/icons/icon-reddit-w.svg",

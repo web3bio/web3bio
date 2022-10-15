@@ -13,24 +13,24 @@ const insertCss = isBrowser ? require("insert-css") : null;
 
 if (isBrowser) {
   insertCss(`
-  .g6-component-tooltip {
-      position: relative;
-			z-index: 2;
-			list-style-type: none;
-			border-radius: 6px;
-			font-size: .6rem;
-			width: fit-content;
-			transition: opacity .2s;
-			text-align: left;
-			padding: 4px 8px;
-			box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .15);
-			border: 0;
+  .web5bio-tooltip {
+    background: #fff;
+    z-index: 999;
+    list-style-type: none;
+    border-radius: 8px;
+    font-size: .6rem;
+    width: fit-content;
+    transition: opacity .2s;
+    text-align: left;
+    padding: 4px 8px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .15);
+    border: 0;
   }
-  .g6-component-tooltip ul {
+  .web5bio-tooltip ul {
     padding-left: 0;
     margin: 0;
   }
-  .g6-component-tooltip li {
+  .web5bio-tooltip li {
     cursor: pointer;
     list-style-type: none;
     list-style: none;
@@ -199,6 +199,7 @@ const processNodesEdges = (nodes, edges) => {
 const RenderResultGraph = (props) => {
   const { data, onClose, title } = props;
   const container = React.useRef<HTMLDivElement>(null);
+  const tooltipContainer = React.useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     if (graph || !data) return;
@@ -211,6 +212,8 @@ const RenderResultGraph = (props) => {
     processNodesEdges(res.nodes, res.edges);
 
     const tooltip = new G6.Tooltip({
+      className: "web5bio-tooltip",
+      container: tooltipContainer.current,
       getContent(e) {
         const outDiv = document.createElement("div");
         if (e.item.getModel().isIdentity) {
@@ -235,7 +238,7 @@ const RenderResultGraph = (props) => {
 
         return outDiv;
       },
-      fixToNode: [0.5, 0.5],
+      fixToNode: [1, 0],
       itemTypes: ["node"],
     });
 
@@ -394,11 +397,7 @@ const RenderResultGraph = (props) => {
   }, [data]);
 
   return (
-    <div className="graph-mask" onClick={onClose}>
-      <div className="graph-title">
-        <SVG src="icons/icon-view.svg" width={"1.5rem"} />
-        Identity Graph for <strong>{title}</strong>
-      </div>
+    <div className="graph-mask" ref={tooltipContainer} onClick={onClose}>
       {data && (
         <div
           className="graph-container"
@@ -408,6 +407,15 @@ const RenderResultGraph = (props) => {
             e.preventDefault();
           }}
         >
+          <div className="graph-header">
+            <div className="graph-title">
+              <SVG src="icons/icon-view.svg" width="20" height="20" />
+              <span className="ml-2">Identity Graph for<strong className="ml-1">{title}</strong></span>
+            </div>
+            <div className="btn btn-link graph-close" onClick={onClose}>
+              <SVG src="icons/icon-close.svg" width="20" height="20" />
+            </div>
+          </div>
           {loading && (
             <div className="loading-mask">
               <Loading />
