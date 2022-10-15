@@ -268,33 +268,55 @@ body {
     align-items: center;
     justify-content: center;
 
-    .graph-title {
-      position: fixed;
-      left: 50%;
-      top: calc(10% + 1rem);
-      transform: translateX(-50%);
-      font-size: .8rem;
-      font-weight: 500;
-      display: flex;
+    .graph-header {
       align-items: center;
-      gap: 0.2rem;
+      display: flex;
+      font-size: .7rem;
+      justify-content: space-between;
+      left: .5rem;
+      position: absolute;
+      right: .5rem;
+      top: .5rem;
       z-index: 999;
-      pointer-events: none;
-      user-select: none;
+
+      .graph-title {
+        align-items: center;
+        border-radius: .4rem;
+        display: flex;
+        line-height: 1rem;
+        padding: .4rem;
+        pointer-events: none;
+        user-select: none;
+        word-break: break-all;
+      }
+
+      .graph-close {
+        align-items: center;
+        display: flex;
+      }
+
+      svg {
+        flex-shrink: 0;
+      }
     }
 
     .graph-container {
-      position: initial;
-      width: 80%;
-      height: 80%;
       background: #fff;
-      border-radius: 0.4rem;
+      border-radius: .4rem;
       box-shadow: 0 .4rem 2rem rgba(0, 0, 0, .5);
-
+      height: 94%;
+      max-height: 40rem;
+      max-width: 64rem;
+      position: relative;
+      width: 94%;
+      
       .loading-mask {
+        border-radius: .4rem;
         position: absolute;
-        width: 80%;
-        height: 80%;
+        height: 94%;
+        max-height: 40rem;
+        max-width: 64rem;
+        width: 94%;
         display: flex;
         align-items: center;
         justify-content: center;
