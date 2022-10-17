@@ -117,7 +117,7 @@ export default function Home() {
                   key={searchTerm}
                   type="text"
                   name="s"
-                  placeholder="Search Twitter, ENS or Ethereum"
+                  placeholder="Search Twitter, Lens, ENS or Ethereum"
                   defaultValue={searchTerm}
                   className="form-input input-lg"
                   autoCorrect="off"
@@ -156,6 +156,34 @@ export default function Home() {
             <div className="columns">
               <div className="column col-12">
                 <div className="mt-4">
+                  <a
+                    href="https://twitter.com/web3bio"
+                    className="btn-link ml-2 mr-2"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <SVG
+                      src="icons/icon-twitter.svg"
+                      width={20}
+                      height={20}
+                      className="icon"
+                    />
+                  </a>
+                  <a
+                    href="https://github.com/web3bio/web5bio"
+                    className="btn-link ml-2 mr-2"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <SVG
+                      src="icons/icon-github.svg"
+                      width={20}
+                      height={20}
+                      className="icon"
+                    />
+                  </a>
+                </div>
+                <div className="mt-2">
                   A{" "}
                   <a
                     href="https://web3.bio"
@@ -165,7 +193,7 @@ export default function Home() {
                     Web3.bio
                   </a>{" "}
                   project crafted with{" "}
-                  <span className="text-pride">&hearts;</span> · Proudly built
+                  <span className="text-pride">&hearts;</span>{" "}·{" "}Proudly built
                   with{" "}
                   <a
                     href="https://next.id"
@@ -173,16 +201,6 @@ export default function Home() {
                     rel="noopener noreferrer"
                   >
                     Next.ID
-                  </a>
-                </div>
-                <div className="footer-feedback mt-4">
-                  <a
-                    href="https://feedback.web5.bio/"
-                    className="btn btn btn-sm"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <span className="mr-2">👋</span> Feedback
                   </a>
                 </div>
               </div>

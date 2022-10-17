@@ -20,6 +20,7 @@ The supported identity platforms:
 - Ethereum Name Service (ENS)
 - Twitter
 - Keybase
+- Reddit
 - GitHub
 - Lens
 - .bit (Soon)
@@ -47,4 +48,4 @@ yarn && yarn dev
 
 ## Contributing
 
-Feel free to submit a pull request to propose bug fixes and improvements. Help is always appreciated. You may give feature feedbacks or bug report [at feedback.web5.bio](https://feedback.web5.bio/) as well. 
+Feel free to submit a pull request to propose bug fixes and improvements. Help is always appreciated. You may give feature feedbacks or bug report to [Web5.bio Twitter](https://twitter.com/web3bio) as well. 
