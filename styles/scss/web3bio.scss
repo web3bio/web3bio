@@ -45,7 +45,7 @@ $pride-color-7: #C7F8FF !default;
 
 /*! Web3bio.css | MIT License */
 body {
-  background: $bg-color;
+  background: $light-color;
   overflow-x: hidden;
 }
 
@@ -57,19 +57,65 @@ body {
 
 //- Web3.bio Cover
 .web3bio-cover {
-  background: no-repeat center top;
-  background-size: cover;
+  background-image:
+    radial-gradient(at 40% 33%, $pride-color-1 0px, transparent 50%),
+    radial-gradient(at 82% 10%, $pride-color-2 0px, transparent 50%),
+    radial-gradient(at 17% 11%, $pride-color-3 0px, transparent 50%),
+    radial-gradient(at 48% 2%, $pride-color-4 0px, transparent 50%),
+    radial-gradient(at 39% 67%, $pride-color-5 0px, transparent 50%),
+    radial-gradient(at 86% 58%, $pride-color-6 0px, transparent 50%),
+    radial-gradient(at 61% 57%, $pride-color-7 0px, transparent 50%);
   display: block;
   filter: blur(3rem);
-  height: 60vh;
+  height: 80vh;
   left: 0;
+  opacity: .75;
   position: fixed;
-  top: 20vh;
+  top: 10vh;
   width: 100%;
   z-index: -1;
 
-  &.flare {
-    background-image: url('/img/bg-flare.jpg');
+  &::after,
+  &::before {
+    border-radius: 50%;
+    content: "";
+    display: block;
+    filter: blur(3rem);
+    height: 50vh;
+    position: fixed;
+    width: 50vh;
+    z-index: 1;
+  }
+
+  &::before {
+    animation: bg-animation 32s ease-in-out infinite;
+    animation-delay: -8s;
+    background: linear-gradient(-45deg, $pride-color-1 5%, $pride-color-2 50%, $pride-color-4 95%);
+    left: 10vh;
+    bottom: 0;
+  }
+
+  &::after {
+    animation: bg-animation 16s ease-in-out infinite;
+    animation-delay: 8s;
+    background: linear-gradient(-45deg, $pride-color-5 5%, $pride-color-6 50%, $pride-color-7 95%);
+    top: 0;
+    right: 10vh;
+  }
+}
+
+@keyframes bg-animation {
+  0% {
+    opacity: 1;
+    transform: skewX(30deg) translateX(-40vh);
+  }
+  50% {
+    opacity: .75;
+    transform: skewX(-30deg) translateX(40vh);
+  }
+  100% {
+    opacity: 1;
+    transform: skewX(30deg) translateX(-40vh);
   }
 }
 
@@ -557,7 +603,7 @@ body {
 
 //- Web3.bio Footer
 .web3bio-footer {
-  color: $gray-color;
+  color: $gray-color-dark;
   font-size: .7rem;
   font-weight: 500;
   padding-top: .5rem;
