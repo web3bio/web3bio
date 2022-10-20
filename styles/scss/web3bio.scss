@@ -591,3 +591,12 @@ body {
   transform: translate(-50%, 0);
   z-index: $zindex-3;
 }
+
+.panel-container {
+  background: #FFFFFF;
+  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  padding: 2rem;
+  width: 528px;
+  min-height: 300px;
+}

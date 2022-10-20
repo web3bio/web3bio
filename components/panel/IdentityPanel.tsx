@@ -1,7 +1,7 @@
 import { memo } from "react"
 
 const IdentityPanelRender = ()=>{
-    return <div>2222</div>
+    return <div className="panel-container">2222</div>
 }
 
 
