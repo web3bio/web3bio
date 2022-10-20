@@ -1,7 +1,6 @@
 import React, { memo, useState } from "react";
 import { ResultAccountItem } from "./ResultAccountItem";
 import { ResultGraph } from "../graph/ResultGraph";
-import { formatText } from "../../utils/utils";
 import SVG from "react-inlinesvg";
 
 const RenderAccount = (props) => {
