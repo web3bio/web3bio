@@ -1,8 +1,25 @@
 import { memo, useState } from "react";
 import SVG from "react-inlinesvg";
+import { getEnumAsArray } from "../../utils/utils";
+import { NFTsTab } from "./NFTsTab";
+import { ProfileTab } from "./ProfileTab";
+
+enum TabsMap {
+  profile = "Profile",
+  nfts = "NFTs",
+  feeds = "Feeds",
+}
+
 const IdentityPanelRender = (props) => {
   const { onClose } = props;
-  const [activeTab,setActiveTab] = useState('profile')
+  const [activeTab, setActiveTab] = useState('profile');
+  const renderContent = () => {
+    return {
+      [TabsMap.profile]: <ProfileTab />,
+      [TabsMap.nfts]: <NFTsTab />,
+      [TabsMap.feeds]: <ProfileTab />,
+    }[activeTab];
+  };
   return (
     <div className="panel-container">
       <div className="panel-identity-basic">
@@ -27,21 +44,21 @@ const IdentityPanelRender = (props) => {
       </div>
       <div className="panel-tab-contianer">
         <ul className="panel-tab">
-          <li className="tab-item">
-            <a href="#">Profile</a>
-          </li>
-          <li className="tab-item">
-            <a href="#">NFTs</a>
-          </li>
-          <li className="tab-item">
-            <a href="#">Feeds</a>
-          </li>
+          {getEnumAsArray(TabsMap).map((x, idx) => {
+            return (
+              <li
+                key={x.key}
+                className={activeTab === x.key ? "tab-item active" : "tab-item"}
+                onClick={() => setActiveTab(x.key)}
+              >
+                <a href="#">{x.value}</a>
+              </li>
+            );
+          })}
         </ul>
       </div>
 
-      <div className="panel-body">
-        222
-      </div>
+      <div className="panel-body">{renderContent()}</div>
     </div>
   );
 };
