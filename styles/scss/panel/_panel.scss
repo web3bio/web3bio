@@ -1,0 +1,83 @@
+.panel-container {
+    background: #FFFFFF;
+    box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    padding: 30px;
+    width: 528px;
+    min-height: 85vh;
+    position: absolute;
+    bottom: 0;
+    z-index: 100;
+
+    .panel-identity-basic {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+
+        .identity-avatar-container {
+            width: 100%;
+            height: 100%;
+            max-width: 64px;
+            max-height: 64px;
+            filter: drop-shadow(0px 4px 24px rgba(0, 0, 0, 0.15));
+            border-radius: 12px;
+
+            img {
+                width: 100%;
+                height: 100%;
+                border-radius: 12px;
+            }
+        }
+
+        .identity-basic-info {
+            .displayName {
+                font-weight: 900;
+                font-size: 20px;
+                line-height: 28px;
+                color: #121212;
+            }
+
+            .identity {
+                display: flex;
+                font-weight: 400;
+                font-size: 12px;
+                line-height: 20px;
+                color: #121212;
+                opacity: 0.5;
+                gap: 10px;
+                align-items: center;
+
+                .copy-icon {
+                    cursor: pointer;
+                }
+            }
+        }
+
+    }
+}
+
+// Record Social Media Item
+.record-item {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    background: rgba(18, 18, 18, 0.08);
+    box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+
+    .record-item-img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 20px;
+    }
+}
+
+.collection-nft-item {
+    width: 80px;
+    height: 80px;
+    filter: drop-shadow(0px 4px 24px rgba(0, 0, 0, 0.1));
+    border-radius: 12px;
+}

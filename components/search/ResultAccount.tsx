@@ -2,10 +2,12 @@ import React, { memo, useState } from "react";
 import { ResultAccountItem } from "./ResultAccountItem";
 import { ResultGraph } from "../graph/ResultGraph";
 import SVG from "react-inlinesvg";
+import { IdentityPanel } from "../panel/IdentityPanel";
 
 const RenderAccount = (props) => {
   const { searchTerm, resultNeighbor, graphData } = props;
   const [open, setOpen] = useState(false);
+  const [showPanbel, setShowPanel] = useState(true);
   return (
     <div className="search-result">
       <div className="search-result-header">
@@ -31,7 +33,14 @@ const RenderAccount = (props) => {
           </>
         ) : null}
       </div>
-      {open && <ResultGraph onClose={() => setOpen(false)} data={graphData} title={searchTerm} />}
+      {open && (
+        <ResultGraph
+          onClose={() => setOpen(false)}
+          data={graphData}
+          title={searchTerm}
+        />
+      )}
+      {showPanbel && <IdentityPanel onClose={() => setShowPanel(false)} />}
     </div>
   );
 };

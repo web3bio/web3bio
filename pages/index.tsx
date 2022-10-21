@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import SVG from "react-inlinesvg";
+import { IdentityPanel } from "../components/panel/IdentityPanel";
 import { SearchResultEns } from "../components/search/SearchResultEns";
 import { SearchResultQuery } from "../components/search/SearchResultQuery";
 
@@ -149,6 +150,7 @@ export default function Home() {
                 />
               )
             ) : null}
+            <IdentityPanel />
           </div>
         </div>
         <div className="web3bio-footer">
@@ -193,7 +195,7 @@ export default function Home() {
                     Web3.bio
                   </a>{" "}
                   project crafted with{" "}
-                  <span className="text-pride">&hearts;</span>{" "}·{" "}Proudly built
+                  <span className="text-pride">&hearts;</span> · Proudly built
                   with{" "}
                   <a
                     href="https://next.id"
