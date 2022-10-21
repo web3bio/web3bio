@@ -12,7 +12,7 @@ enum TabsMap {
 
 const IdentityPanelRender = (props) => {
   const { onClose } = props;
-  const [activeTab, setActiveTab] = useState('profile');
+  const [activeTab, setActiveTab] = useState(TabsMap.profile);
   const renderContent = () => {
     return {
       [TabsMap.profile]: <ProfileTab />,
@@ -45,11 +45,14 @@ const IdentityPanelRender = (props) => {
       <div className="panel-tab-contianer">
         <ul className="panel-tab">
           {getEnumAsArray(TabsMap).map((x, idx) => {
+            console.log(x, "gggg");
             return (
               <li
-                key={x.key}
-                className={activeTab === x.key ? "tab-item active" : "tab-item"}
-                onClick={() => setActiveTab(x.key)}
+                key={idx}
+                className={
+                  activeTab === x.value ? "tab-item active" : "tab-item"
+                }
+                onClick={() => setActiveTab(x.value)}
               >
                 <a href="#">{x.value}</a>
               </li>
