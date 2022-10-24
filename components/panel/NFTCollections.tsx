@@ -2,7 +2,7 @@ import { memo } from "react";
 import { CollectionSwitcher } from "./CollectionSwitcher";
 
 const RenderNFTCollections = (props) => {
-  const { list = [1] } = props;
+  const { list = [1, 2, 3, 4,5,6] } = props;
   return (
     <div className="nft-collection-container">
       <div className="nft-collection-title">NFT COLLECTION</div>

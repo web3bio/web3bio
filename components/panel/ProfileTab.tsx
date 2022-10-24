@@ -1,6 +1,7 @@
 import { memo } from "react";
 import SVG from "react-inlinesvg";
 import { NFTCollections } from "./NFTCollections";
+import { Poaps } from "./Poaps";
 
 const RenderProfileTab = () => {
   return (
@@ -21,6 +22,7 @@ const RenderProfileTab = () => {
       </div>
 
       <NFTCollections />
+      <Poaps />
     </div>
   );
 };
