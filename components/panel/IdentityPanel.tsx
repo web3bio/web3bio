@@ -7,7 +7,7 @@ import { ProfileTab } from "./ProfileTab";
 enum TabsMap {
   profile = "Profile",
   nfts = "NFTs",
-  feeds = "Feeds",
+  // feeds = "Feeds",
 }
 
 const IdentityPanelRender = (props) => {
@@ -17,7 +17,7 @@ const IdentityPanelRender = (props) => {
     return {
       [TabsMap.profile]: <ProfileTab />,
       [TabsMap.nfts]: <NFTsTab />,
-      [TabsMap.feeds]: <ProfileTab />,
+      // [TabsMap.feeds]: <ProfileTab />,
     }[activeTab];
   };
   return (

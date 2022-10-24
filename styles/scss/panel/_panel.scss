@@ -59,6 +59,7 @@
 // Record Social Media Item
 .records {
     margin: 20px 0;
+
     .record-item {
         position: relative;
         width: 36px;
@@ -79,7 +80,7 @@
 }
 
 .nft-collection-container {
-    margin: 20px 0;
+    margin: 40px 0;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -137,11 +138,10 @@
         max-width: 100%;
         box-sizing: border-box;
         margin-top: 10px;
+
         .collection-nft-item {
             width: 80px;
-            height: 80px;
             min-width: 80px;
-            filter: drop-shadow(0px 4px 24px rgba(0, 0, 0, 0.1));
             border-radius: 12px;
 
             img {
@@ -149,7 +149,39 @@
                 height: 100%;
                 border-radius: 12px;
             }
+        }
+    }
 
+    .nft-detail-list {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 10px;
+            color: #000000;
+            text-transform: uppercase;
+
+            img {
+                width: 140px;
+                height: 140px;
+                filter: drop-shadow(0px 4px 24px rgba(0, 0, 0, 0.1));
+                border-radius: 12px;
+            }
+
+            .collection-name {
+                font-weight: 400;
+                line-height: 20px;
+            }
+
+            .nft-name {
+                font-weight: 700;
+                line-height: 20px;
+            }
         }
     }
 
