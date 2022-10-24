@@ -7,7 +7,7 @@ import { IdentityPanel } from "../panel/IdentityPanel";
 const RenderAccount = (props) => {
   const { searchTerm, resultNeighbor, graphData } = props;
   const [open, setOpen] = useState(false);
-  const [showPanbel, setShowPanel] = useState(true);
+  const [showPanbel, setShowPanel] = useState(false);
   return (
     <div className="search-result">
       <div className="search-result-header">
@@ -28,6 +28,10 @@ const RenderAccount = (props) => {
                 identity={avatar.identity}
                 sources={avatar.sources}
                 key={avatar.identity.uuid}
+                showPanel={(item)=>{
+                  console.log(item)
+                  setShowPanel(true)
+                }}
               />
             ))}
           </>

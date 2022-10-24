@@ -5,9 +5,29 @@
     padding: 30px;
     width: 528px;
     min-height: 85vh;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     z-index: 100;
+    left: 50%;
+    transform: translateX(-50%);
+
+    .close-icon-box {
+        position: absolute;
+        right: 5%;
+        top: 3%;
+
+        .close-icon {
+            width: 16px;
+            height: 16px;
+            opacity: .5;
+            transition: opacity .2s ease 0s;
+            cursor: pointer;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+    }
 
     .panel-identity-basic {
         display: flex;

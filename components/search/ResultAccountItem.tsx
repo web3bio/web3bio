@@ -119,6 +119,11 @@ const RenderAccountItem = (props) => {
               </div>
             </div>
             <div className="actions">
+              <a className="btn btn-sm btn-link action" onClick={(e)=>{
+                e.preventDefault();
+                e.stopPropagation();
+                props.showPanel(identity)
+              }}>DETAIL</a>
               <a
                 className="btn btn-sm btn-link action"
                 href={`https://www.lensfrens.xyz/${identity.identity}`}

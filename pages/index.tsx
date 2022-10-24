@@ -150,7 +150,6 @@ export default function Home() {
                 />
               )
             ) : null}
-            <IdentityPanel />
           </div>
         </div>
         <div className="web3bio-footer">
