@@ -44,7 +44,7 @@ const RenderAccount = (props) => {
           title={searchTerm}
         />
       )}
-      {showPanbel && <IdentityPanel onClose={() => setShowPanel(false)} />}
+      {showPanbel && <IdentityPanel onClose={() => setShowPanel(false)}  />}
     </div>
   );
 };

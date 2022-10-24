@@ -6,10 +6,27 @@
     width: 528px;
     min-height: 85vh;
     position: fixed;
-    bottom: 0;
+    bottom: -100%;
     z-index: 100;
     left: 50%;
     transform: translateX(-50%);
+    animation: slide-in 0.4s forwards;
+
+    @keyframes slide-in {
+        0% {
+            bottom: -100%;
+        }
+
+        100% {
+            bottom: 0;
+        }
+    }
+
+    .leave {
+        animation: slide-in 0.4s forwards reverse;
+    }
+
+
 
     .close-icon-box {
         position: absolute;
