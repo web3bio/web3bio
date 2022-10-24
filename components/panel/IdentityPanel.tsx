@@ -45,7 +45,6 @@ const IdentityPanelRender = (props) => {
       <div className="panel-tab-contianer">
         <ul className="panel-tab">
           {getEnumAsArray(TabsMap).map((x, idx) => {
-            console.log(x, "gggg");
             return (
               <li
                 key={idx}
