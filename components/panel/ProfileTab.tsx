@@ -19,6 +19,22 @@ const RenderProfileTab = () => {
             height={24}
           />
         </div>
+        <div className="record-item">
+          <SVG
+            className="record-item-img"
+            src="icons/icon-github.svg"
+            width={24}
+            height={24}
+          />
+        </div>
+        <div className="record-item">
+          <SVG
+            className="record-item-img"
+            src="icons/social-instagram.svg"
+            width={24}
+            height={24}
+          />
+        </div>
       </div>
 
       <NFTCollections />

@@ -10,22 +10,24 @@ const RenderNFTCollections = (props) => {
   } = props;
   return (
     <div className="nft-collection-container">
-      <div className="nft-collection-title">NFT COLLECTION</div>
+      <div className="nft-collection-title">NFT COLLECTIONS</div>
       <CollectionSwitcher />
-      {isDetail && (
+      {(isDetail && (
         <div className="nft-detail-list">
           {detailList.map((x, idx) => {
-            <div key={idx} className="detail-item">
-              <img
-                src="https://img.seadn.io/files/04a1b99e1478e40ffbfe5a02f68ae02d.png?fit=max&w=1000"
-                alt=""
-              />
-              <div className="collection-name">BEANZ Official</div>
-              <div className="nft-name">Bean #3270</div>
-            </div>
+            return (
+              <div key={idx} className="detail-item">
+                <img
+                  src="https://img.seadn.io/files/04a1b99e1478e40ffbfe5a02f68ae02d.png?fit=max&w=1000"
+                  alt=""
+                />
+                <div className="collection-name">BEANZ Official</div>
+                <div className="nft-name">Bean #3270</div>
+              </div>
+            );
           })}
         </div>
-      ) || (
+      )) || (
         <div className="nft-list">
           {list.map((x, idx) => {
             return (

@@ -59,6 +59,9 @@
 // Record Social Media Item
 .records {
     margin: 20px 0;
+    display: flex;
+    gap: 20px;
+    align-items: center;
 
     .record-item {
         position: relative;
@@ -67,6 +70,7 @@
         background: rgba(18, 18, 18, 0.08);
         box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.05);
         border-radius: 10px;
+        cursor: pointer;
 
         .record-item-img {
             position: absolute;
@@ -102,6 +106,7 @@
         display: flex;
         align-items: center;
         gap: 4px;
+        margin-bottom: 10px;
 
         .collection-img {
             width: 20px;
@@ -156,12 +161,12 @@
         width: 100%;
         display: flex;
         flex-wrap: wrap;
+        gap: 20px;
 
         .detail-item {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            gap: 10px;
             font-size: 10px;
             color: #000000;
             text-transform: uppercase;
@@ -171,6 +176,7 @@
                 height: 140px;
                 filter: drop-shadow(0px 4px 24px rgba(0, 0, 0, 0.1));
                 border-radius: 12px;
+                margin-bottom: 10px;
             }
 
             .collection-name {
