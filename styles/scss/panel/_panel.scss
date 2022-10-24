@@ -6,19 +6,19 @@
     width: 528px;
     min-height: 78vh;
     position: fixed;
-    bottom: -100%;
     z-index: 100;
     left: 50%;
-    transform: translateX(-50%);
+    bottom: 0;
+    transform: translate(-50%, -100%);
     animation: slide-in 0.4s forwards;
 
     @keyframes slide-in {
         0% {
-            bottom: -100%;
+            transform: translate(-50%, 100%);
         }
 
         100% {
-            bottom: 0;
+            transform: translate(-50%, 0%);
         }
     }
 
