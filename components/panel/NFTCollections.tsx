@@ -17,10 +17,12 @@ const RenderNFTCollections = (props) => {
           {detailList.map((x, idx) => {
             return (
               <div key={idx} className="detail-item">
-                <img
-                  src="https://img.seadn.io/files/04a1b99e1478e40ffbfe5a02f68ae02d.png?fit=max&w=1000"
-                  alt=""
-                />
+                <div className="img-container">
+                  <img
+                    src="https://img.seadn.io/files/04a1b99e1478e40ffbfe5a02f68ae02d.png?fit=max&w=1000"
+                    alt=""
+                  />
+                </div>
                 <div className="collection-name">BEANZ Official</div>
                 <div className="nft-name">Bean #3270</div>
               </div>
