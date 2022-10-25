@@ -11,30 +11,30 @@ const RenderProfileTab = () => {
         mastodon.cloud ; Engineer; Journalist; FOSS/Anti996; 中文/日本語
       </div>
       <div className="records">
-        <div className="record-item">
+        <button className="form-button btn " style={{ position: "relative" }}>
           <SVG
-            className="record-item-img"
             src="icons/icon-twitter.svg"
             width={24}
             height={24}
+            className="icon"
           />
-        </div>
-        <div className="record-item">
+        </button>
+        <button className="form-button btn " style={{ position: "relative" }}>
           <SVG
-            className="record-item-img"
             src="icons/icon-github.svg"
             width={24}
             height={24}
+            className="icon"
           />
-        </div>
-        <div className="record-item">
+        </button>
+        <button className="form-button btn " style={{ position: "relative" }}>
           <SVG
-            className="record-item-img"
             src="icons/social-instagram.svg"
             width={24}
             height={24}
+            className="icon"
           />
-        </div>
+        </button>
       </div>
 
       <NFTCollections />

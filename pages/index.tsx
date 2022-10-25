@@ -3,7 +3,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import SVG from "react-inlinesvg";
-import { IdentityPanel } from "../components/panel/IdentityPanel";
 import { SearchResultEns } from "../components/search/SearchResultEns";
 import { SearchResultQuery } from "../components/search/SearchResultQuery";
 
