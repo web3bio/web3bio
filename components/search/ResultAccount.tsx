@@ -32,7 +32,6 @@ const RenderAccount = (props) => {
           </>
         ) : null}
       </div>
-      
       {open && <ResultGraph onClose={() => setOpen(false)} data={graphData} title={searchTerm} />}
     </div>
   );
