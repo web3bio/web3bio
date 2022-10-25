@@ -3,7 +3,8 @@
     box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.1);
     border-radius: 0.5rem;
     padding: 30px;
-    width: 528px;
+    width: 100%;
+    max-width: 528px;
     min-height: 78vh;
     position: fixed;
     z-index: 100;
@@ -277,25 +278,26 @@
     align-items: center;
     background: transparent;
     display: flex;
-    flex-wrap: wrap;
+    flex: 1;
     list-style: none;
     margin: 20px 0;
     gap: 24px;
-
+    overflow: hidden;
+    
     .tab-item {
-        width: 50px;
+        min-width: 60px;
         margin-top: 0;
-
         a {
             border-bottom: 2px solid transparent;
             display: block;
-            margin: 0 8px 0 0;
+            padding: 0 4px;
             text-decoration: none;
             font-weight: 400;
             font-size: 14px;
             line-height: 22px;
             color: #121212;
             opacity: 0.5;
+            text-align: center;
 
             &:focus,
             &:hover {
