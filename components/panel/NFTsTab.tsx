@@ -1,7 +1,10 @@
 import { memo } from "react";
+import { useNFTCollectionsByAddress } from "../apis/nftscan";
 import { NFTCollections } from "./NFTCollections";
 
-const RenderNFTsTab = () => {
+const RenderNFTsTab = (props) => {
+  const {address} = props
+  const {data,error} = useNFTCollectionsByAddress(address)
   return (
     <div>
       <NFTCollections isDetail />
