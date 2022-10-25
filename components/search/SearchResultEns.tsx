@@ -34,15 +34,29 @@ const RenderResultEns = ({ searchTerm }) => {
       )
     );
   }, [data, searchTerm]);
+  console.log(resultNeighbor, "ggg");
 
   if (loading) return <Loading />;
   if (error) return <Error text={error} />;
   if (!data?.nft) return <Empty />;
+
   return (
     <ResultAccount
       searchTerm={searchTerm}
       resultNeighbor={resultNeighbor}
-      graphData={data.nft.owner.neighborWithTraversal || []}
+      graphData={
+        data.nft.owner.neighborWithTraversal.length
+          ? data.nft.owner.neighborWithTraversal
+          : [
+              resultNeighbor.length > 0
+                ? {
+                    from: resultNeighbor[0].identity,
+                    to: resultNeighbor[0].identity,
+                    source: "nextid",
+                  }
+                : {},
+            ]
+      }
     />
   );
 };
