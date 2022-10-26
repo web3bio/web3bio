@@ -1,13 +1,14 @@
 import { memo, useState } from "react";
 import SVG from "react-inlinesvg";
 import { getEnumAsArray } from "../../utils/utils";
+import { FeedsTab } from "./FeedsTab";
 import { NFTsTab } from "./NFTsTab";
 import { ProfileTab } from "./ProfileTab";
 
 enum TabsMap {
   profile = "Profile",
   nfts = "NFTs",
-  // feeds = "Feeds",
+  feeds = "Feeds",
 }
 
 const IdentityPanelRender = (props) => {
@@ -17,7 +18,7 @@ const IdentityPanelRender = (props) => {
     return {
       [TabsMap.profile]: <ProfileTab />,
       [TabsMap.nfts]: <NFTsTab />,
-      // [TabsMap.feeds]: <ProfileTab />,
+      [TabsMap.feeds]: <FeedsTab />,
     }[activeTab];
   };
   return (

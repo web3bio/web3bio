@@ -1,5 +1,4 @@
 import { memo } from "react";
-import { useNFTCollectionsByAddress } from "../apis/nftscan";
 import { NFTCollections } from "./NFTCollections";
 
 const RenderNFTsTab = (props) => {

@@ -5,6 +5,7 @@ import { Poaps } from "./Poaps";
 
 const RenderProfileTab = (props) => {
   const {address} = props
+  
   return (
     <div>
       <div className="profile-description">
