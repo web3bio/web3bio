@@ -34,7 +34,6 @@ const RenderResultEns = ({ searchTerm }) => {
       )
     );
   }, [data, searchTerm]);
-
   if (loading) return <Loading />;
   if (error) return <Error text={error} />;
   if (!data?.nft) return <Empty />;
