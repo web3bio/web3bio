@@ -34,7 +34,6 @@ const RenderResultEns = ({ searchTerm }) => {
       )
     );
   }, [data, searchTerm]);
-  console.log(resultNeighbor, "ggg");
 
   if (loading) return <Loading />;
   if (error) return <Error text={error} />;
