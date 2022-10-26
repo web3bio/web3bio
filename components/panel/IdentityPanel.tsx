@@ -13,12 +13,12 @@ enum TabsMap {
 
 const IdentityPanelRender = (props) => {
   const { onClose } = props;
-  const [activeTab, setActiveTab] = useState(TabsMap.profile);
+  const [activeTab, setActiveTab] = useState(TabsMap.feeds);
   const renderContent = () => {
     return {
-      [TabsMap.profile]: <ProfileTab />,
-      [TabsMap.nfts]: <NFTsTab />,
+      // [TabsMap.profile]: <ProfileTab />,
       [TabsMap.feeds]: <FeedsTab />,
+      [TabsMap.nfts]: <NFTsTab />,
     }[activeTab];
   };
   return (
