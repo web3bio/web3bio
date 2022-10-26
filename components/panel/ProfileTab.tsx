@@ -3,7 +3,8 @@ import SVG from "react-inlinesvg";
 import { NFTCollections } from "./NFTCollections";
 import { Poaps } from "./Poaps";
 
-const RenderProfileTab = () => {
+const RenderProfileTab = (props) => {
+  const {address} = props
   return (
     <div>
       <div className="profile-description">

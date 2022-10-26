@@ -11,8 +11,8 @@ const fetcher = (url) => {
 };
 
 export const useNFTCollectionsByAddress = (address: string) => {
-  return useSWR(
-    NFTSCAN_BASE_API_ENDPOINT + `account/own/all/${address}?erc_type=erc721`,
-    fetcher
-  );
+  const URL =
+    NFTSCAN_BASE_API_ENDPOINT + `account/own/all/${address}?erc_type=erc721`;
+  console.log(URL,'url')
+  return useSWR(URL, fetcher);
 };

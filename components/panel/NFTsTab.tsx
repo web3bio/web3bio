@@ -4,7 +4,6 @@ import { NFTCollections } from "./NFTCollections";
 
 const RenderNFTsTab = (props) => {
   const {address} = props
-  const {data,error} = useNFTCollectionsByAddress(address)
   return (
     <div>
       <NFTCollections isDetail />
