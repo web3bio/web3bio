@@ -3,12 +3,11 @@ import SVG from "react-inlinesvg";
 import { getEnumAsArray } from "../../utils/utils";
 import { FeedsTab } from "./FeedsTab";
 import { NFTsTab } from "./NFTsTab";
-import { ProfileTab } from "./ProfileTab";
 
 enum TabsMap {
-  profile = "Profile",
-  nfts = "NFTs",
+  // profile = "Profile",
   feeds = "Feeds",
+  nfts = "NFTs",
 }
 
 const IdentityPanelRender = (props) => {
@@ -16,7 +15,6 @@ const IdentityPanelRender = (props) => {
   const [activeTab, setActiveTab] = useState(TabsMap.feeds);
   const renderContent = () => {
     return {
-      // [TabsMap.profile]: <ProfileTab />,
       [TabsMap.feeds]: <FeedsTab />,
       [TabsMap.nfts]: <NFTsTab />,
     }[activeTab];
