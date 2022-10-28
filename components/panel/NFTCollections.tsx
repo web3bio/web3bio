@@ -4,6 +4,7 @@ import useSWR from "swr";
 import fallbackIcon from "/logo-web5bio.png";
 import { NFTSCANFetcher, NFTSCAN_BASE_API_ENDPOINT } from "../apis/nftscan";
 import { CollectionSwitcher } from "./CollectionSwitcher";
+import { resolveIPFS_URL } from "../../utils/ipfs";
 
 function useNFTCollections(address: string) {
   const { data, error } = useSWR<any>(
@@ -45,16 +46,14 @@ export const NFTCollections = (props) => {
               </div>
               <div className="nft-item-coantiner">
                 {x.assets.map((y, ydx) => {
-                  const resolvedMediaURL =
-                    y.image_uri || y.content_uri || y.external_link;
                   console.log(y, "asset_url", x);
+                  const mediaURL = resolveIPFS_URL(
+                    y.image_uri ?? y.content_uri
+                  );
                   return (
                     <div key={ydx} className="detail-item">
                       <div className="img-container">
-                        <img
-                          src={resolvedMediaURL}
-                          alt="nft-icon"
-                        />
+                        <img src={mediaURL} alt="nft-icon" />
                       </div>
                       <div className="collection-name">{x.contract_name}</div>
                       <div className="nft-name">{y.name}</div>
