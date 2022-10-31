@@ -29,7 +29,7 @@ const NFTDialogRender = (props) => {
   const _asset = data.data;
   const metadata = JSON.parse(_asset.metadata_json);
   const mediaurl = resolveIPFS_URL(metadata.image);
-  console.log(metadata, "ggg");
+  console.log(metadata, "metadata");
   return (
     <div className="panel-container" style={{ overflow: "hidden auto" }}>
       <div className="close-icon-box" onClick={onClose}>

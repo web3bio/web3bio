@@ -24,7 +24,7 @@ var NFTDialogRender = function (props) {
     var _asset = data.data;
     var metadata = JSON.parse(_asset.metadata_json);
     var mediaurl = ipfs_1.resolveIPFS_URL(metadata.image);
-    console.log(metadata, "ggg");
+    console.log(metadata, "metadata");
     return (React.createElement("div", { className: "panel-container", style: { overflow: "hidden auto" } },
         React.createElement("div", { className: "close-icon-box", onClick: onClose },
             React.createElement(react_inlinesvg_1["default"], { className: "close-icon", src: "icons/icon-close.svg" })),

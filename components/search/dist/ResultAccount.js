@@ -18,7 +18,6 @@ var RenderAccount = function (props) {
                 " ",
                 "Visualize"))),
         react_1["default"].createElement("div", { className: "search-result-body" }, resultNeighbor.length > 0 ? (react_1["default"].createElement(react_1["default"].Fragment, null, resultNeighbor.map(function (avatar) { return (react_1["default"].createElement(ResultAccountItem_1.ResultAccountItem, { identity: avatar.identity, sources: avatar.sources, key: avatar.identity.uuid, showPanel: function (item) {
-                console.log(item);
                 setShowPanel(true);
             } })); }))) : null),
         open && (react_1["default"].createElement(ResultGraph_1.ResultGraph, { onClose: function () { return setOpen(false); }, data: graphData, title: searchTerm })),

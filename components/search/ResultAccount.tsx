@@ -30,7 +30,6 @@ const RenderAccount = (props) => {
                 sources={avatar.sources}
                 key={avatar.identity.uuid}
                 showPanel={(item) => {
-                  console.log(item);
                   setShowPanel(true);
                 }}
               />

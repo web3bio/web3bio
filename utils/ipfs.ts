@@ -63,7 +63,7 @@ export function resolveIPFS_URL(cidOrURL: string | undefined): string | undefine
                     }
                 }
             } catch (error) {
-                console.log({
+                console.error({
                     error,
                 })
                 // do nothing
