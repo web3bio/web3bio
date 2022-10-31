@@ -13,6 +13,6 @@ var RenderNFTsTab = function (props) {
                 setAsset(a);
                 setDialogOpen(true);
             }, isDetail: true }),
-        React.createElement(NFTDialog_1.NFTDialog, { asset: asset, open: dialogOpen, onClose: function () { return setDialogOpen(false); } })));
+        dialogOpen && (React.createElement(NFTDialog_1.NFTDialog, { asset: asset, open: dialogOpen, onClose: function () { return setDialogOpen(false); } }))));
 };
 exports.NFTsTab = react_1.memo(RenderNFTsTab);

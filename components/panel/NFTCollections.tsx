@@ -46,7 +46,6 @@ export const NFTCollections = (props) => {
               </div>
               <div className="nft-item-coantiner">
                 {x.assets.map((y, ydx) => {
-                  console.log(y, "asset_url", x);
                   const mediaURL = resolveIPFS_URL(
                     y.image_uri ?? y.content_uri
                   );
@@ -60,10 +59,7 @@ export const NFTCollections = (props) => {
                             url: x.logo_url,
                             name: x.contract_name,
                           },
-                          asset: {
-                            url: mediaURL,
-                            ...y,
-                          },
+                          asset: y
                         })
                       }
                     >

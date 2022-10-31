@@ -15,11 +15,13 @@ const RenderNFTsTab = (props) => {
         }}
         isDetail
       />
-      <NFTDialog
-        asset={asset}
-        open={dialogOpen}
-        onClose={() => setDialogOpen(false)}
-      />
+      {dialogOpen && (
+        <NFTDialog
+          asset={asset}
+          open={dialogOpen}
+          onClose={() => setDialogOpen(false)}
+        />
+      )}
     </div>
   );
 };
