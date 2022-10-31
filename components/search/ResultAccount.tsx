@@ -16,7 +16,7 @@ const RenderAccount = (props) => {
         </div>
         {graphData.length > 0 && (
           <div className="btn btn-link btn-sm" onClick={() => setOpen(true)}>
-            <SVG src={"../assets/icons/icon-view.svg"} width={20} height={20} />{" "}
+            <SVG src={"/icons/icon-view.svg"} width={20} height={20} />{" "}
             Visualize
           </div>
         )}

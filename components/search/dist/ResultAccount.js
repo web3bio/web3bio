@@ -14,7 +14,7 @@ var RenderAccount = function (props) {
         react_1["default"].createElement("div", { className: "search-result-header" },
             react_1["default"].createElement("div", { className: "search-result-text text-gray" }, "Identity Graph results:"),
             graphData.length > 0 && (react_1["default"].createElement("div", { className: "btn btn-link btn-sm", onClick: function () { return setOpen(true); } },
-                react_1["default"].createElement(react_inlinesvg_1["default"], { src: "../assets/icons/icon-view.svg", width: 20, height: 20 }),
+                react_1["default"].createElement(react_inlinesvg_1["default"], { src: "/icons/icon-view.svg", width: 20, height: 20 }),
                 " ",
                 "Visualize"))),
         react_1["default"].createElement("div", { className: "search-result-body" }, resultNeighbor.length > 0 ? (react_1["default"].createElement(react_1["default"].Fragment, null, resultNeighbor.map(function (avatar) { return (react_1["default"].createElement(ResultAccountItem_1.ResultAccountItem, { identity: avatar.identity, sources: avatar.sources, key: avatar.identity.uuid, showPanel: function (item) {

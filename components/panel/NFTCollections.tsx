@@ -54,13 +54,18 @@ export const NFTCollections = (props) => {
                     <div
                       key={ydx}
                       className="detail-item"
-                      onClick={() => onShowDetail({
-                        collection:{
-                          url: x.logo_url,
-                          name:x.contract_name
-                        },
-                        asset:y
-                      })}
+                      onClick={() =>
+                        onShowDetail({
+                          collection: {
+                            url: x.logo_url,
+                            name: x.contract_name,
+                          },
+                          asset: {
+                            url: mediaURL,
+                            ...y,
+                          },
+                        })
+                      }
                     >
                       <div className="img-container">
                         <img src={mediaURL} alt="nft-icon" />

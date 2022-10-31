@@ -291,7 +291,6 @@
 
 .nft-dialog-basic {
   display: flex;
-  align-items: center;
   gap: 30px;
 }
 .nft-dialog-basic .nft-dialog-asset-player {

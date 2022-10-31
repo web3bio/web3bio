@@ -10,7 +10,7 @@ var NFTDialogRender = function (props) {
         React.createElement("div", { className: "close-icon-box", onClick: onClose },
             React.createElement(react_inlinesvg_1["default"], { className: "close-icon", src: "icons/icon-close.svg" })),
         React.createElement("div", { className: "nft-dialog-basic" },
-            React.createElement("img", { className: "nft-dialog-asset-player", src: asset.image_uri }),
+            React.createElement("img", { className: "nft-dialog-asset-player", src: asset.url }),
             React.createElement("div", { className: "nft-dialog-info" },
                 React.createElement("div", { className: "nft-dialog-collection" },
                     React.createElement("img", { className: "avatar", src: asset.collection.url, alt: "" }),
