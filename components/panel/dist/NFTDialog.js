@@ -15,8 +15,9 @@ function useAsset(address, tokenId) {
     };
 }
 var NFTDialogRender = function (props) {
-    var open = props.open, onClose = props.onClose, asset = props.asset;
+    var onClose = props.onClose, asset = props.asset;
     var _a = useAsset(asset.asset.contract_address, asset.asset.token_id), data = _a.data, isLoading = _a.isLoading, isError = _a.isError;
+    var resolveOpenseaLink = "https://opensea.io/assets/ethereum/" + asset.asset.contract_address + "/" + asset.asset.token_id;
     if (isLoading || !data)
         return React.createElement("div", { className: "panel-container" }, "Loading...");
     if (isError)
@@ -35,7 +36,7 @@ var NFTDialogRender = function (props) {
                     React.createElement("img", { className: "avatar", src: asset.collection.url, alt: "collection" }),
                     React.createElement("div", { className: "title" }, asset.collection.name)),
                 React.createElement("div", { className: "nft-name" }, metadata.name),
-                React.createElement("button", { className: "form-button btn ", style: { position: "relative" } },
+                React.createElement("button", { onClickCapture: function () { return window.open(resolveOpenseaLink, "_blank"); }, className: "form-button btn ", style: { position: "relative" } },
                     React.createElement(react_inlinesvg_1["default"], { src: "/icons/social-opensea.svg", width: 24, height: 24, className: "icon" })))),
         React.createElement("div", { className: "nft-dialog-scroll-box" },
             React.createElement("div", { className: "nft-dialog-des-box" },

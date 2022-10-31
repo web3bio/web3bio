@@ -16,12 +16,12 @@ function useAsset(address: string, tokenId: string | number) {
   };
 }
 const NFTDialogRender = (props) => {
-  const { open, onClose, asset } = props;
+  const { onClose, asset } = props;
   const { data, isLoading, isError } = useAsset(
     asset.asset.contract_address,
     asset.asset.token_id
   );
-
+  const resolveOpenseaLink = `https://opensea.io/assets/ethereum/${asset.asset.contract_address}/${asset.asset.token_id}`;
   if (isLoading || !data)
     return <div className="panel-container">Loading...</div>;
   if (isError) return <div className="panel-container">failed to load</div>;
@@ -48,7 +48,11 @@ const NFTDialogRender = (props) => {
             <div className="title">{asset.collection.name}</div>
           </div>
           <div className="nft-name">{metadata.name}</div>
-          <button className="form-button btn " style={{ position: "relative" }}>
+          <button
+            onClickCapture={() => window.open(resolveOpenseaLink, "_blank")}
+            className="form-button btn "
+            style={{ position: "relative" }}
+          >
             <SVG
               src={"/icons/social-opensea.svg"}
               width={24}
