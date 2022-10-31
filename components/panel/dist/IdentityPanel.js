@@ -6,7 +6,6 @@ var react_inlinesvg_1 = require("react-inlinesvg");
 var utils_1 = require("../../utils/utils");
 var FeedsTab_1 = require("./FeedsTab");
 var NFTsTab_1 = require("./NFTsTab");
-var icon_close_svg_1 = require("../assets/icons/icon-close.svg");
 var TabsMap;
 (function (TabsMap) {
     // profile = "Profile",
@@ -25,7 +24,7 @@ var IdentityPanelRender = function (props) {
     };
     return (React.createElement("div", { className: "panel-container" },
         React.createElement("div", { className: "close-icon-box", onClick: onClose },
-            React.createElement(react_inlinesvg_1["default"], { className: "close-icon", src: icon_close_svg_1["default"] })),
+            React.createElement(react_inlinesvg_1["default"], { className: "close-icon", src: '/icons/icon-close.svg' })),
         React.createElement("div", { className: "panel-identity-basic" },
             React.createElement("div", { className: "identity-avatar-container" },
                 React.createElement("img", { src: "https://pbs.twimg.com/profile_images/1582110337569935362/xrMkOl7h_400x400.jpg", alt: "" })),

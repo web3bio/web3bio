@@ -15,28 +15,19 @@ exports.register = void 0;
 var is_array_1 = require("@antv/util/lib/is-array");
 var is_number_1 = require("@antv/util/lib/is-number");
 var maps_1 = require("../../../utils/maps");
-var icon_twitter_w_svg_1 = require("../../assets/icons/icon-twitter-w.svg");
-var icon_nextid_w_svg_1 = require("../../assets/icons/icon-nextid-w.svg");
-var icon_keybase_w_svg_1 = require("../../assets/icons/icon-keybase-w.svg");
-var icon_ethereum_w_svg_1 = require("../../assets/icons/icon-ethereum-w.svg");
-var icon_reddit_w_svg_1 = require("../../assets/icons/icon-reddit-w.svg");
-var icon_ens_w_svg_1 = require("../../assets/icons/icon-ens-w.svg");
-var icon_lens_w_svg_1 = require("../../assets/icons/icon-lens-w.svg");
-var icon_github_w_svg_1 = require("../../assets/icons/icon-github-w.svg");
-var icon_dotbit_w_svg_1 = require("../../assets/icons/icon-dotbit-w.svg");
 var isBrowser = typeof window !== "undefined";
 var G6 = isBrowser ? require("@antv/g6") : null;
 var resolvePlatformIcon = function (platform) {
     return ({
-        twitter: icon_twitter_w_svg_1["default"],
-        nextid: icon_nextid_w_svg_1["default"],
-        keybase: icon_keybase_w_svg_1["default"],
-        ethereum: icon_ethereum_w_svg_1["default"],
-        reddit: icon_reddit_w_svg_1["default"],
-        ens: icon_ens_w_svg_1["default"],
-        lens: icon_lens_w_svg_1["default"],
-        github: icon_github_w_svg_1["default"],
-        dotbit: icon_dotbit_w_svg_1["default"]
+        twitter: "/icons/icon-twitter-w.svg",
+        nextid: "/icons/icon-nextid-w.svg",
+        keybase: "/icons/icon-keybase-w.svg",
+        ethereum: "/icons/icon-ethereum-w.svg",
+        reddit: "/icons/icon-reddit-w.svg",
+        ens: "/icons/icon-ens-w.svg",
+        lens: "/icons/icon-lens-w.svg",
+        github: "/icons/icon-github-w.svg",
+        dotbit: "/icons/icon-dotbit-w.svg"
     }[platform] || "");
 };
 exports.register = function () {

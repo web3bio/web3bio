@@ -8,8 +8,6 @@ var maps_1 = require("../../utils/maps");
 var LargeRegister_1 = require("./GraphUtils/LargeRegister");
 var Loading_1 = require("../shared/Loading");
 var react_inlinesvg_1 = require("react-inlinesvg");
-var icon_view_svg_1 = require("../assets/icons/icon-view.svg");
-var icon_close_svg_1 = require("../assets/icons/icon-close.svg");
 var isBrowser = typeof window !== "undefined";
 var G6 = isBrowser ? require("@antv/g6") : null;
 var graph = null;
@@ -355,12 +353,12 @@ var RenderResultGraph = function (props) {
         } },
         react_1["default"].createElement("div", { className: "graph-header" },
             react_1["default"].createElement("div", { className: "graph-title" },
-                react_1["default"].createElement(react_inlinesvg_1["default"], { src: icon_view_svg_1["default"], width: "20", height: "20" }),
+                react_1["default"].createElement(react_inlinesvg_1["default"], { src: '/icons/icon-view.svg', width: "20", height: "20" }),
                 react_1["default"].createElement("span", { className: "ml-2" },
                     "Identity Graph for",
                     react_1["default"].createElement("strong", { className: "ml-1" }, title))),
             react_1["default"].createElement("div", { className: "btn btn-link graph-close", onClick: onClose },
-                react_1["default"].createElement(react_inlinesvg_1["default"], { src: icon_close_svg_1["default"], width: "20", height: "20" }))),
+                react_1["default"].createElement(react_inlinesvg_1["default"], { src: '/icons/icon-close.svg', width: "20", height: "20" }))),
         loading && (react_1["default"].createElement("div", { className: "loading-mask" },
             react_1["default"].createElement(Loading_1.Loading, null)))))));
 };

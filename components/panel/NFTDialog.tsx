@@ -1,7 +1,6 @@
 import { memo } from "react";
 import SVG from "react-inlinesvg";
 import { IconButton } from "../shared/IconButton";
-import OpenseaIcon from '../assets/icons/social-opensea.svg'
 
 const NFTDialogRender = (props) => {
   const { open, onClose, asset } = props;
@@ -20,7 +19,7 @@ const NFTDialogRender = (props) => {
               <div className="title">{asset.collection.name}</div>
             </div>
             <div className="nft-name">{asset.asset.name}</div>
-            <IconButton url={OpenseaIcon} />
+            <IconButton url={"/icons/social-opensea.svg"} />
           </div>
         </div>
       </div>
