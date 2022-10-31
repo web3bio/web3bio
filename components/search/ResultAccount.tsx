@@ -16,7 +16,8 @@ const RenderAccount = (props) => {
         </div>
         {graphData.length > 0 && (
           <div className="btn btn-link btn-sm" onClick={() => setOpen(true)}>
-            <SVG src="icons/icon-view.svg" width={20} height={20} /> Visualize
+            <SVG src={"../assets/icons/icon-view.svg"} width={20} height={20} />{" "}
+            Visualize
           </div>
         )}
       </div>
@@ -28,9 +29,9 @@ const RenderAccount = (props) => {
                 identity={avatar.identity}
                 sources={avatar.sources}
                 key={avatar.identity.uuid}
-                showPanel={(item)=>{
-                  console.log(item)
-                  setShowPanel(true)
+                showPanel={(item) => {
+                  console.log(item);
+                  setShowPanel(true);
                 }}
               />
             ))}
@@ -44,7 +45,7 @@ const RenderAccount = (props) => {
           title={searchTerm}
         />
       )}
-      {showPanbel && <IdentityPanel onClose={() => setShowPanel(false)}  />}
+      {showPanbel && <IdentityPanel onClose={() => setShowPanel(false)} />}
     </div>
   );
 };

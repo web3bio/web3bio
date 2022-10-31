@@ -5,6 +5,7 @@ var react_1 = require("react");
 var swr_1 = require("swr");
 var nftscan_1 = require("../apis/nftscan");
 var CollectionSwitcher_1 = require("./CollectionSwitcher");
+var ipfs_1 = require("../../utils/ipfs");
 function useNFTCollections(address) {
     var _a = swr_1["default"](nftscan_1.NFTSCAN_BASE_API_ENDPOINT + ("account/own/all/" + address + "?erc_type=erc721"), nftscan_1.NFTSCANFetcher), data = _a.data, error = _a.error;
     return {
@@ -14,9 +15,9 @@ function useNFTCollections(address) {
     };
 }
 exports.NFTCollections = function (props) {
-    var _a = props.list, list = _a === void 0 ? [1, 2, 3, 4, 5, 6] : _a, isDetail = props.isDetail;
-    var _b = react_1.useState([]), collections = _b[0], setCollections = _b[1];
-    var _c = useNFTCollections("0x934b510d4c9103e6a87aef13b816fb080286d649"), data = _c.data, isLoading = _c.isLoading, isError = _c.isError;
+    var onShowDetail = props.onShowDetail;
+    var _a = react_1.useState([]), collections = _a[0], setCollections = _a[1];
+    var _b = useNFTCollections("0x934b510d4c9103e6a87aef13b816fb080286d649"), data = _b.data, isLoading = _b.isLoading, isError = _b.isError;
     if (isLoading)
         return React.createElement("div", null, "Loading...");
     if (isError)
@@ -31,11 +32,18 @@ exports.NFTCollections = function (props) {
                         " ",
                         x.contract_name)),
                 React.createElement("div", { className: "nft-item-coantiner" }, x.assets.map(function (y, ydx) {
-                    var resolvedMediaURL = y.image_uri || y.content_uri || y.external_link;
+                    var _a;
                     console.log(y, "asset_url", x);
-                    return (React.createElement("div", { key: ydx, className: "detail-item" },
+                    var mediaURL = ipfs_1.resolveIPFS_URL((_a = y.image_uri) !== null && _a !== void 0 ? _a : y.content_uri);
+                    return (React.createElement("div", { key: ydx, className: "detail-item", onClick: function () { return onShowDetail({
+                            collection: {
+                                url: x.logo_url,
+                                name: x.contract_name
+                            },
+                            asset: y
+                        }); } },
                         React.createElement("div", { className: "img-container" },
-                            React.createElement("img", { src: resolvedMediaURL, alt: "nft-icon" })),
+                            React.createElement("img", { src: mediaURL, alt: "nft-icon" })),
                         React.createElement("div", { className: "collection-name" }, x.contract_name),
                         React.createElement("div", { className: "nft-name" }, y.name)));
                 }))));

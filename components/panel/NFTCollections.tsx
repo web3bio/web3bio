@@ -19,7 +19,7 @@ function useNFTCollections(address: string) {
 }
 
 export const NFTCollections = (props) => {
-  const { list = [1, 2, 3, 4, 5, 6], isDetail } = props;
+  const { onShowDetail } = props;
   const [collections, setCollections] = useState([]);
   const { data, isLoading, isError } = useNFTCollections(
     "0x934b510d4c9103e6a87aef13b816fb080286d649"
@@ -51,7 +51,17 @@ export const NFTCollections = (props) => {
                     y.image_uri ?? y.content_uri
                   );
                   return (
-                    <div key={ydx} className="detail-item">
+                    <div
+                      key={ydx}
+                      className="detail-item"
+                      onClick={() => onShowDetail({
+                        collection:{
+                          url: x.logo_url,
+                          name:x.contract_name
+                        },
+                        asset:y
+                      })}
+                    >
                       <div className="img-container">
                         <img src={mediaURL} alt="nft-icon" />
                       </div>

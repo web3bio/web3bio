@@ -5,6 +5,8 @@ import { colorsMap, platformsMap } from "../../utils/maps";
 import { register } from "./GraphUtils/LargeRegister";
 import { Loading } from "../shared/Loading";
 import SVG from "react-inlinesvg";
+import ViewIcon from "../assets/icons/icon-view.svg";
+import CloseIcon from "../assets/icons/icon-close.svg";
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
 let graph = null;
@@ -369,7 +371,7 @@ const RenderResultGraph = (props) => {
             container.current.offsetWidth,
             container.current.offsetHeight
           );
-          graph.layout()
+          graph.layout();
         };
     };
     const clearFocusItemState = (graph) => {
@@ -409,11 +411,13 @@ const RenderResultGraph = (props) => {
         >
           <div className="graph-header">
             <div className="graph-title">
-              <SVG src="icons/icon-view.svg" width="20" height="20" />
-              <span className="ml-2">Identity Graph for<strong className="ml-1">{title}</strong></span>
+              <SVG src={ViewIcon} width="20" height="20" />
+              <span className="ml-2">
+                Identity Graph for<strong className="ml-1">{title}</strong>
+              </span>
             </div>
             <div className="btn btn-link graph-close" onClick={onClose}>
-              <SVG src="icons/icon-close.svg" width="20" height="20" />
+              <SVG src={CloseIcon} width="20" height="20" />
             </div>
           </div>
           {loading && (

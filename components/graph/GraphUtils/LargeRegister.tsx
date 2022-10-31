@@ -1,6 +1,15 @@
 import isArray from "@antv/util/lib/is-array";
 import isNumber from "@antv/util/lib/is-number";
 import { colorsMap } from "../../../utils/maps";
+import TwitterIcon from "../../assets/icons/icon-twitter-w.svg";
+import NextIdIcon from "../../assets/icons/icon-nextid-w.svg";
+import KeybaseIcon from "../../assets/icons/icon-keybase-w.svg";
+import EthereumIcon from "../../assets/icons/icon-ethereum-w.svg";
+import RedditIcon from "../../assets/icons/icon-reddit-w.svg";
+import ENSIcon from "../../assets/icons/icon-ens-w.svg";
+import LENSIcon from "../../assets/icons/icon-lens-w.svg";
+import GithubIcon from "../../assets/icons/icon-github-w.svg";
+import DotbitIcon from "../../assets/icons/icon-dotbit-w.svg";
 
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
@@ -8,15 +17,15 @@ const G6 = isBrowser ? require("@antv/g6") : null;
 const resolvePlatformIcon = (platform) => {
   return (
     {
-      twitter: "/icons/icon-twitter-w.svg",
-      nextid: "/icons/icon-nextid-w.svg",
-      keybase: "/icons/icon-keybase-w.svg",
-      ethereum: "/icons/icon-ethereum-w.svg",
-      reddit: "/icons/icon-reddit-w.svg",
-      ens: "/icons/icon-ens-w.svg",
-      lens: "/icons/icon-lens-w.svg",
-      github: "/icons/icon-github-w.svg",
-      dotbit: "/icons/icon-dotbit-w.svg",
+      twitter: TwitterIcon,
+      nextid: NextIdIcon,
+      keybase: KeybaseIcon,
+      ethereum: EthereumIcon,
+      reddit: RedditIcon,
+      ens: ENSIcon,
+      lens: LENSIcon,
+      github: GithubIcon,
+      dotbit: DotbitIcon,
     }[platform] || ""
   );
 };
