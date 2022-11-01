@@ -96,13 +96,13 @@ export default function Home() {
                   query: {},
                 }}
               >
-                <div className="web3bio-logo" title="Web5.bio">
+                <a className="web3bio-logo" title="Web5.bio">
                   <h1 className="text-pride">
                     WEB5
                     <br />
                     BIO
                   </h1>
-                </div>
+                </a>
               </Link>
               <div className="form-label">
                 Web3 <span>Identity Search</span>
