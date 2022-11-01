@@ -1,8 +1,10 @@
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useSWR from "swr";
+import fallbackIcon from "/logo-web5bio.png";
 import { NFTSCANFetcher, NFTSCAN_BASE_API_ENDPOINT } from "../apis/nftscan";
 import { CollectionSwitcher } from "./CollectionSwitcher";
+import { resolveIPFS_URL } from "../../utils/ipfs";
 
 function useNFTCollections(address: string) {
   const { data, error } = useSWR<any>(
@@ -17,69 +19,63 @@ function useNFTCollections(address: string) {
 }
 
 export const NFTCollections = (props) => {
-  const {
-    list = [1, 2, 3, 4, 5, 6],
-    isDetail,
-    detailList = [1, 2, 3, 4, 5],
-  } = props;
+  const { onShowDetail } = props;
   const [collections, setCollections] = useState([]);
   const { data, isLoading, isError } = useNFTCollections(
     "0x934b510d4c9103e6a87aef13b816fb080286d649"
   );
-
-  useEffect(() => {
-    if (!data || !data.data) return;
-    setCollections(
-      data.data.map((x) => ({
-        logoUrl: x.logo_url,
-        name: x.contract_name,
-        address: x.contract_address,
-      }))
-    );
-  }, [data]);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>failed to load</div>;
 
   return (
     <div className="nft-collection-container">
-      <div className="nft-collection-title">NFT COLLECTIONS</div>
       <CollectionSwitcher
         collections={collections}
         currentSelect={collections[0]}
         onSelect={(e) => console.log("onSelect:", encodeURI)}
       />
-      {(isDetail && (
-        <div className="nft-detail-list">
-          {detailList.map((x, idx) => {
-            return (
-              <div key={idx} className="detail-item">
-                <div className="img-container">
-                  <img
-                    src="https://img.seadn.io/files/04a1b99e1478e40ffbfe5a02f68ae02d.png?fit=max&w=1000"
-                    alt=""
-                  />
-                </div>
-                <div className="collection-name">BEANZ Official</div>
-                <div className="nft-name">Bean #3270</div>
+
+      <div className="nft-collection-list">
+        {data.data.map((x, idx) => {
+          return (
+            <div className="collection-item" key={idx}>
+              <div className="nft-collection-title-box">
+                <img className="collection-logo" src={x.logo_url} alt="" />
+                <div className="nft-collection-title"> {x.contract_name}</div>
               </div>
-            );
-          })}
-        </div>
-      )) || (
-        <div className="nft-list">
-          {list.map((x, idx) => {
-            return (
-              <div key={idx} className="collection-nft-item">
-                <img
-                  src="https://img.seadn.io/files/4148fc4a3513f9297087bb7d5816d69e.png?fit=max&w=1000"
-                  alt="nft-item"
-                />
+              <div className="nft-item-coantiner">
+                {x.assets.map((y, ydx) => {
+                  const mediaURL = resolveIPFS_URL(
+                    y.image_uri ?? y.content_uri
+                  );
+                  return (
+                    <div
+                      key={ydx}
+                      className="detail-item"
+                      onClick={() =>
+                        onShowDetail({
+                          collection: {
+                            url: x.logo_url,
+                            name: x.contract_name,
+                          },
+                          asset: y
+                        })
+                      }
+                    >
+                      <div className="img-container">
+                        <img src={mediaURL} alt="nft-icon" />
+                      </div>
+                      <div className="collection-name">{x.contract_name}</div>
+                      <div className="nft-name">{y.name}</div>
+                    </div>
+                  );
+                })}
               </div>
-            );
-          })}
-        </div>
-      )}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

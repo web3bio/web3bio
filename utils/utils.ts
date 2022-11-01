@@ -25,3 +25,4 @@ export function getEnumAsArray<T extends object>(enumObject: T) {
           .map((key) => ({ key, value: enumObject[key as keyof T] }))
   )
 }
+

@@ -21,19 +21,14 @@ export default function Home() {
   const handlesearchPlatform = (term) => {
     switch (true) {
       case regexEns.test(term):
-        console.log("ENS");
         return "ENS";
       case regexLens.test(term):
-        console.log("lens");
         return "lens";
       case regexDotbit.test(term):
-        console.log("dotbit");
         return "dotbit";
       case regexEth.test(term):
-        console.log("ethereum");
         return "ethereum";
       case regexTwitter.test(term):
-        console.log("twitter");
         return "twitter";
     }
   };

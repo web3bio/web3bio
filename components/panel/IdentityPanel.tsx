@@ -20,9 +20,9 @@ const IdentityPanelRender = (props) => {
     }[activeTab];
   };
   return (
-    <div className={"panel-container"}>
+    <div className="panel-container">
       <div className="close-icon-box" onClick={onClose}>
-        <SVG className="close-icon" src="icons/icon-close.svg" />
+        <SVG className="close-icon" src={'/icons/icon-close.svg'} />
       </div>
       <div className="panel-identity-basic">
         <div className="identity-avatar-container">
