@@ -66,10 +66,10 @@ const RenderAccountItem = (props) => {
                         query: { s: nft.id },
                       }}
                     >
-                      <a className="label-ens" title={nft.id}>
+                      <div className="label-ens" title={nft.id}>
                         <img src="icons/icon-ens.svg" width={16} height={16} />
                         <span>{nft.id}</span>
-                      </a>
+                      </div>
                     </Link>
                   ) : null;
                 })}
@@ -150,12 +150,12 @@ const RenderAccountItem = (props) => {
                 },
               }}
             >
-              <a className="social">
+              <div className="social">
                 <div className="icon">
                   <SVG src="icons/icon-dotbit.svg" width={20} height={20} />
                 </div>
                 <div className="title">{identity.displayName}</div>
-              </a>
+              </div>
             </Link>
             <div className="actions">
               <a
@@ -182,12 +182,12 @@ const RenderAccountItem = (props) => {
                 query: { s: identity.identity },
               }}
             >
-              <a className="social">
+              <div className="social">
                 <div className="icon">
                   <SVG src="icons/icon-twitter.svg" width={20} height={20} />
                 </div>
                 <div className="title">{identity.displayName}</div>
-              </a>
+              </div>
             </Link>
             <div className="actions">
               <a
@@ -217,12 +217,12 @@ const RenderAccountItem = (props) => {
                 },
               }}
             >
-              <a className="social">
+              <div className="social">
                 <div className="icon">
                   <SVG src="icons/icon-github.svg" width={20} height={20} />
                 </div>
                 <div className="title">{identity.displayName}</div>
-              </a>
+              </div>
             </Link>
             <div className="actions">
               <a
@@ -252,12 +252,12 @@ const RenderAccountItem = (props) => {
                 },
               }}
             >
-              <a className="social">
+              <div className="social">
                 <div className="icon">
                   <SVG src="icons/icon-keybase.svg" width={20} height={20} />
                 </div>
                 <div className="title">{identity.displayName}</div>
-              </a>
+              </div>
             </Link>
             <div className="actions">
               <a
@@ -287,12 +287,12 @@ const RenderAccountItem = (props) => {
                 },
               }}
             >
-              <a className="social">
+              <div className="social">
                 <div className="icon">
                   <SVG src="icons/icon-reddit.svg" width={20} height={20} />
                 </div>
                 <div className="title">{identity.displayName}</div>
-              </a>
+              </div>
             </Link>
             <div className="actions">
               <a
