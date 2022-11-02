@@ -22,7 +22,7 @@ const RenderFeedsTab = (props) => {
   const { data, isLoading, isError } = useFeeds(address);
   if (isLoading) return <Loading />;
   if (isError) return <Error text={isError} />;
-  if (!data) return <Empty />;
+  if (!data || !data.result) return <Empty />;
 
   console.log("Feeds from rss3:", data);
   return (

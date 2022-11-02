@@ -35,10 +35,10 @@ var RenderNFTCollections = function (props) {
             React.createElement(Loading_1.Loading, null)));
     if (isError)
         return React.createElement(Error_1.Error, { text: isError });
-    if (!data)
+    if (!data || !data.data)
         return React.createElement(Empty_1.Empty, null);
     return (React.createElement("div", { className: "nft-collection-container" },
-        React.createElement(CollectionSwitcher_1.CollectionSwitcher, { collections: collections, currentSelect: collections[0], onSelect: function (e) { return console.log("onSelect:", encodeURI); } }),
+        collections && (React.createElement(CollectionSwitcher_1.CollectionSwitcher, { collections: collections, currentSelect: collections[0], onSelect: function (e) { return console.log("onSelect:", encodeURI); } })),
         React.createElement("div", { className: "nft-collection-list" }, data.data.map(function (x, idx) {
             return (React.createElement("div", { className: "collection-item", key: idx },
                 React.createElement("div", { className: "nft-collection-title-box" },

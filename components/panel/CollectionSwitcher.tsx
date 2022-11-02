@@ -1,12 +1,13 @@
 import Image from "next/image";
 import { memo } from "react";
+import { Dropdown } from "../shared/Dropdown";
 
 const RenderCollectionSwitcher = (props) => {
   const { collections, currentSelect, onSelect } = props;
-  console.log(collections,'gggg')
+
   return (
     <div className="collection-switcher">
-      <Image
+      {/* <Image
         width={20}
         height={20}
         className="collection-img"
@@ -16,7 +17,9 @@ const RenderCollectionSwitcher = (props) => {
       <div className="collection-name">Collections</div>
       <div className="collection-switch-arrow">
         <Image width={8} height={8} src="/icons/switch.svg" alt="" />
-      </div>
+      </div> */}
+
+      <Dropdown items={collections} active={currentSelect} />
     </div>
   );
 };

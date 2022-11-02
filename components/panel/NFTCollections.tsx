@@ -43,15 +43,17 @@ const RenderNFTCollections = (props) => {
       </div>
     );
   if (isError) return <Error text={isError} />;
-  if (!data) return <Empty />;
+  if (!data || !data.data) return <Empty />;
 
   return (
     <div className="nft-collection-container">
-      <CollectionSwitcher
-        collections={collections}
-        currentSelect={collections[0]}
-        onSelect={(e) => console.log("onSelect:", encodeURI)}
-      />
+      {collections && (
+        <CollectionSwitcher
+          collections={collections}
+          currentSelect={collections[0]}
+          onSelect={(e) => console.log("onSelect:", encodeURI)}
+        />
+      )}
 
       <div className="nft-collection-list">
         {data.data.map((x, idx) => {

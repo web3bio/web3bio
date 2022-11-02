@@ -23,7 +23,7 @@ var RenderFeedsTab = function (props) {
         return React.createElement(Loading_1.Loading, null);
     if (isError)
         return React.createElement(Error_1.Error, { text: isError });
-    if (!data)
+    if (!data || !data.result)
         return React.createElement(Empty_1.Empty, null);
     console.log("Feeds from rss3:", data);
     return (React.createElement("div", null,
