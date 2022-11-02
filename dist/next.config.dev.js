@@ -1,8 +1,9 @@
+"use strict";
+
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+var nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  images: {},
+  images: {}
 };
-
 module.exports = nextConfig;

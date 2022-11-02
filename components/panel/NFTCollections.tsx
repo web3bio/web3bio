@@ -1,12 +1,10 @@
-import Image from "next/image";
-import { useState } from "react";
+import { memo, useState } from "react";
 import useSWR from "swr";
-import fallbackIcon from "/logo-web5bio.png";
 import { NFTSCANFetcher, NFTSCAN_BASE_API_ENDPOINT } from "../apis/nftscan";
 import { CollectionSwitcher } from "./CollectionSwitcher";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 
-function useNFTCollections(address: string) {
+function useCollections(address: string) {
   const { data, error } = useSWR<any>(
     NFTSCAN_BASE_API_ENDPOINT + `account/own/all/${address}?erc_type=erc721`,
     NFTSCANFetcher
@@ -18,10 +16,10 @@ function useNFTCollections(address: string) {
   };
 }
 
-export const NFTCollections = (props) => {
+const RenderNFTCollections = (props) => {
   const { onShowDetail } = props;
   const [collections, setCollections] = useState([]);
-  const { data, isLoading, isError } = useNFTCollections(
+  const { data, isLoading, isError } = useCollections(
     "0x934b510d4c9103e6a87aef13b816fb080286d649"
   );
 
@@ -41,7 +39,10 @@ export const NFTCollections = (props) => {
           return (
             <div className="collection-item" key={idx}>
               <div className="nft-collection-title-box">
-                <img className="collection-logo" src={x.logo_url} alt="" />
+                <picture>
+                  <source srcSet={x.logo_url} type="image/webp" />
+                  <img className="collection-logo" src={x.logo_url} alt="" />
+                </picture>
                 <div className="nft-collection-title"> {x.contract_name}</div>
               </div>
               <div className="nft-item-coantiner">
@@ -59,12 +60,14 @@ export const NFTCollections = (props) => {
                             url: x.logo_url,
                             name: x.contract_name,
                           },
-                          asset: y
+                          asset: y,
                         })
                       }
                     >
                       <div className="img-container">
-                        <img src={mediaURL} alt="nft-icon" />
+                        <picture>
+                          <img src={mediaURL} alt="nft-icon" />
+                        </picture>
                       </div>
                       <div className="collection-name">{x.contract_name}</div>
                       <div className="nft-name">{y.name}</div>
@@ -79,3 +82,5 @@ export const NFTCollections = (props) => {
     </div>
   );
 };
+
+export const NFTCollections = memo(RenderNFTCollections);

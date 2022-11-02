@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { memo } from "react";
 
 const RenderPoaps = (props) => {
@@ -9,7 +10,7 @@ const RenderPoaps = (props) => {
         {poapList.map((x, idx) => {
           return (
             <div key={idx} className="collection-nft-item">
-              <img
+              <Image
                 src="https://i.seadn.io/gcs/files/ad509bd6fb10b3f256481d1c0b297cf9.jpg?auto=format&w=384"
                 alt=""
               />

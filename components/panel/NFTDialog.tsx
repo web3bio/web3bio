@@ -37,14 +37,24 @@ const NFTDialogRender = (props) => {
       </div>
 
       <div className="nft-dialog-basic">
-        <img className="nft-dialog-asset-player" src={mediaurl} alt="avatar" />
+        <picture>
+          <source srcSet={mediaurl} />
+          <img
+            className="nft-dialog-asset-player"
+            src={mediaurl}
+            alt="avatar"
+          />
+        </picture>
         <div className="nft-dialog-info">
           <div className="nft-dialog-collection">
-            <img
-              className="avatar"
-              src={asset.collection.url}
-              alt="collection"
-            />
+            <picture>
+              <source srcSet={asset.collection.url} />
+              <img
+                className="avatar"
+                src={asset.collection.url}
+                alt="collection"
+              />
+            </picture>
             <div className="title">{asset.collection.name}</div>
           </div>
           <div className="nft-name">{metadata.name}</div>

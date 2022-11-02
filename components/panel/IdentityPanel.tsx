@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { memo, useState } from "react";
 import SVG from "react-inlinesvg";
 import { getEnumAsArray } from "../../utils/utils";
@@ -22,14 +23,16 @@ const IdentityPanelRender = (props) => {
   return (
     <div className="panel-container">
       <div className="close-icon-box" onClick={onClose}>
-        <SVG className="close-icon" src={'/icons/icon-close.svg'} />
+        <SVG className="close-icon" src={"/icons/icon-close.svg"} />
       </div>
       <div className="panel-identity-basic">
         <div className="identity-avatar-container">
-          <img
-            src="https://pbs.twimg.com/profile_images/1582110337569935362/xrMkOl7h_400x400.jpg"
-            alt=""
-          />
+          <picture>
+            <img
+              src="https://pbs.twimg.com/profile_images/1582110337569935362/xrMkOl7h_400x400.jpg"
+              alt="prifile_avatar"
+            />
+          </picture>
         </div>
         <div className="identity-basic-info">
           <div className="displayName">sujiyan.eth</div>

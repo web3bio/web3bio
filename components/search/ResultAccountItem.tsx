@@ -1,4 +1,5 @@
 import React, { memo, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
@@ -67,7 +68,12 @@ const RenderAccountItem = (props) => {
                       }}
                     >
                       <div className="label-ens" title={nft.id}>
-                        <img src="icons/icon-ens.svg" width={16} height={16} />
+                        <Image
+                          src="/icons/icon-ens.svg"
+                          width={16}
+                          height={16}
+                          alt="ens"
+                        />
                         <span>{nft.id}</span>
                       </div>
                     </Link>
@@ -119,11 +125,16 @@ const RenderAccountItem = (props) => {
               </div>
             </div>
             <div className="actions">
-              <a className="btn btn-sm btn-link action" onClick={(e)=>{
-                e.preventDefault();
-                e.stopPropagation();
-                props.showPanel(identity)
-              }}>DETAIL</a>
+              <a
+                className="btn btn-sm btn-link action"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  props.showPanel(identity);
+                }}
+              >
+                DETAIL
+              </a>
               <a
                 className="btn btn-sm btn-link action"
                 href={`https://www.lensfrens.xyz/${identity.identity}`}
