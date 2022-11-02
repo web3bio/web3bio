@@ -189,22 +189,26 @@
         gap: 10px;
         margin: 20px 0px;
         color: #000000;
+
         .common-title {
             font-weight: 900;
             font-size: 14px;
             line-height: 1.43;
             text-transform: uppercase;
         }
+
         .description-content {
             font-weight: 400;
             font-size: 12px;
             line-height: 1.67;
 
         }
+
         .traits-box {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
+
             .traits-card {
                 background: #FFFFFF;
                 border: 1px solid rgba(18, 18, 18, 0.08);
@@ -213,11 +217,13 @@
                 color: #000000;
                 text-transform: uppercase;
                 padding: 4px 10px;
+
                 .trait-type {
                     font-weight: 400;
                     font-size: 10px;
                     line-height: 2;
                 }
+
                 .trait-value {
                     font-weight: 700;
                     font-size: 13px;
@@ -238,19 +244,18 @@
     align-items: flex-start;
     gap: 10px;
     width: 100%;
-    max-height: 70vh;
-    overflow-y: auto;
+    overflow: hidden;
 
 
     .collection-switcher {
         background: #ECECEC;
         border-radius: 8px;
-        padding: 4px;
         display: flex;
         align-items: center;
         gap: 4px;
         margin-bottom: 10px;
         cursor: pointer;
+        min-width: 150px;
 
         &:hover {
             box-shadow: 0 .2rem .4rem rgba(0, 0, 0, .05);
@@ -282,6 +287,72 @@
             img {
                 width: 8px;
                 margin-right: 4px;
+            }
+        }
+
+        // dropdown
+        .dropdown-box {
+            border-radius: 4px;
+            border: 1px solid #eee;
+            color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            font-size: 14px;
+            width: 100%;
+            cursor: pointer;
+
+            .dropdown-menu {
+                position: absolute;
+                top: 35px;
+                width: 100%;
+                text-align: center;
+                background: #fff;
+                border-radius: 4px;
+                border: 1px solid #ddd;
+            }
+
+            .dropdown-button {
+                width: 100%;
+                text-align: center;
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 6px;
+            }
+
+            .dropdown-button,
+            .menu>div {
+                height: 30px;
+                line-height: 30px;
+            }
+
+            .dropdown-menu>div.active {
+                background: #c6eafd;
+            }
+
+            .dropdown-menu>div:hover {
+                background: #e7f8eb;
+            }
+
+            .dropdown-triangle_button {
+                width: 26px;
+                border-left: 1px solid #ddd;
+                height: 100%;
+                position: absolute;
+                right: 0px;
+                top: 0px;
+            }
+
+            .dropdown-triangle {
+                display: inline-block;
+                width: 0;
+                height: 0;
+                border-left: 6px solid transparent;
+                border-right: 6px solid transparent;
+                border-top: 6px solid #282c34;
             }
         }
     }
@@ -324,6 +395,8 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 20px;
+        max-height: 70vh;
+        overflow-y: auto;
 
         .collection-item {
             .nft-collection-title-box {

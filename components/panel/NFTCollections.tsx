@@ -22,9 +22,12 @@ function useCollections(address: string) {
 const RenderNFTCollections = (props) => {
   const { onShowDetail } = props;
   const [collections, setCollections] = useState([]);
+  const [anchorName, setAnchorName] = useState("");
   const { data, isLoading, isError } = useCollections(
     "0x934b510d4c9103e6a87aef13b816fb080286d649"
   );
+  const [activeCollection, setActiveCollection] = useState(null);
+
   useEffect(() => {
     if (data && data.data) {
       setCollections(
@@ -34,8 +37,14 @@ const RenderNFTCollections = (props) => {
           url: x.logo_url,
         }))
       );
+      if (anchorName) {
+        const anchorElement = document.getElementById(anchorName);
+        if (anchorElement) {
+          anchorElement.scrollIntoView({ block: "start", behavior: "smooth" });
+        }
+      }
     }
-  }, [data]);
+  }, [data, anchorName]);
   if (isLoading)
     return (
       <div className="panel-container">
@@ -44,21 +53,23 @@ const RenderNFTCollections = (props) => {
     );
   if (isError) return <Error text={isError} />;
   if (!data || !data.data) return <Empty />;
-
   return (
     <div className="nft-collection-container">
-      {collections && (
+      {collections && collections.length && (
         <CollectionSwitcher
           collections={collections}
-          currentSelect={collections[0]}
-          onSelect={(e) => console.log("onSelect:", encodeURI)}
+          currentSelect={activeCollection ?? collections[0]}
+          onSelect={(v) => {
+            setActiveCollection(v);
+            setAnchorName(v.key);
+          }}
         />
       )}
 
       <div className="nft-collection-list">
         {data.data.map((x, idx) => {
           return (
-            <div className="collection-item" key={idx}>
+            <div className="collection-item" key={idx} id={x.contract_address}>
               <div className="nft-collection-title-box">
                 <picture>
                   <source srcSet={x.logo_url} type="image/webp" />

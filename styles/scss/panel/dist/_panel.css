@@ -201,18 +201,17 @@
   align-items: flex-start;
   gap: 10px;
   width: 100%;
-  max-height: 70vh;
-  overflow-y: auto;
+  overflow: hidden;
 }
 .nft-collection-container .collection-switcher {
   background: #ECECEC;
   border-radius: 8px;
-  padding: 4px;
   display: flex;
   align-items: center;
   gap: 4px;
   margin-bottom: 10px;
   cursor: pointer;
+  min-width: 150px;
   transition: all 0.2s ease-in-out 0s;
 }
 .nft-collection-container .collection-switcher:hover {
@@ -240,6 +239,63 @@
 .nft-collection-container .collection-switcher .collection-switch-arrow img {
   width: 8px;
   margin-right: 4px;
+}
+.nft-collection-container .collection-switcher .dropdown-box {
+  border-radius: 4px;
+  border: 1px solid #eee;
+  color: #1a1a1a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  font-size: 14px;
+  width: 100%;
+  cursor: pointer;
+}
+.nft-collection-container .collection-switcher .dropdown-box .dropdown-menu {
+  position: absolute;
+  top: 35px;
+  width: 100%;
+  text-align: center;
+  background: #fff;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+.nft-collection-container .collection-switcher .dropdown-box .dropdown-button {
+  width: 100%;
+  text-align: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+.nft-collection-container .collection-switcher .dropdown-box .dropdown-button,
+.nft-collection-container .collection-switcher .dropdown-box .menu > div {
+  height: 30px;
+  line-height: 30px;
+}
+.nft-collection-container .collection-switcher .dropdown-box .dropdown-menu > div.active {
+  background: #c6eafd;
+}
+.nft-collection-container .collection-switcher .dropdown-box .dropdown-menu > div:hover {
+  background: #e7f8eb;
+}
+.nft-collection-container .collection-switcher .dropdown-box .dropdown-triangle_button {
+  width: 26px;
+  border-left: 1px solid #ddd;
+  height: 100%;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+.nft-collection-container .collection-switcher .dropdown-box .dropdown-triangle {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #282c34;
 }
 .nft-collection-container .nft-list {
   display: flex;
@@ -274,6 +330,8 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 20px;
+  max-height: 70vh;
+  overflow-y: auto;
 }
 .nft-collection-container .nft-collection-list .collection-item .nft-collection-title-box {
   display: flex;

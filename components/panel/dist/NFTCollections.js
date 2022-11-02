@@ -20,7 +20,9 @@ function useCollections(address) {
 var RenderNFTCollections = function (props) {
     var onShowDetail = props.onShowDetail;
     var _a = react_1.useState([]), collections = _a[0], setCollections = _a[1];
-    var _b = useCollections("0x934b510d4c9103e6a87aef13b816fb080286d649"), data = _b.data, isLoading = _b.isLoading, isError = _b.isError;
+    var _b = react_1.useState(""), anchorName = _b[0], setAnchorName = _b[1];
+    var _c = useCollections("0x934b510d4c9103e6a87aef13b816fb080286d649"), data = _c.data, isLoading = _c.isLoading, isError = _c.isError;
+    var _d = react_1.useState(null), activeCollection = _d[0], setActiveCollection = _d[1];
     react_1.useEffect(function () {
         if (data && data.data) {
             setCollections(data.data.map(function (x) { return ({
@@ -28,8 +30,14 @@ var RenderNFTCollections = function (props) {
                 name: x.contract_name,
                 url: x.logo_url
             }); }));
+            if (anchorName) {
+                var anchorElement = document.getElementById(anchorName);
+                if (anchorElement) {
+                    anchorElement.scrollIntoView({ block: "start", behavior: "smooth" });
+                }
+            }
         }
-    }, [data]);
+    }, [data, anchorName]);
     if (isLoading)
         return (React.createElement("div", { className: "panel-container" },
             React.createElement(Loading_1.Loading, null)));
@@ -38,9 +46,12 @@ var RenderNFTCollections = function (props) {
     if (!data || !data.data)
         return React.createElement(Empty_1.Empty, null);
     return (React.createElement("div", { className: "nft-collection-container" },
-        collections && (React.createElement(CollectionSwitcher_1.CollectionSwitcher, { collections: collections, currentSelect: collections[0], onSelect: function (e) { return console.log("onSelect:", encodeURI); } })),
+        collections && collections.length && (React.createElement(CollectionSwitcher_1.CollectionSwitcher, { collections: collections, currentSelect: activeCollection !== null && activeCollection !== void 0 ? activeCollection : collections[0], onSelect: function (v) {
+                setActiveCollection(v);
+                setAnchorName(v.key);
+            } })),
         React.createElement("div", { className: "nft-collection-list" }, data.data.map(function (x, idx) {
-            return (React.createElement("div", { className: "collection-item", key: idx },
+            return (React.createElement("div", { className: "collection-item", key: idx, id: x.contract_address },
                 React.createElement("div", { className: "nft-collection-title-box" },
                     React.createElement("picture", null,
                         React.createElement("source", { srcSet: x.logo_url, type: "image/webp" }),
