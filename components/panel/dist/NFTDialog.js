@@ -6,6 +6,9 @@ var react_inlinesvg_1 = require("react-inlinesvg");
 var swr_1 = require("swr");
 var ipfs_1 = require("../../utils/ipfs");
 var nftscan_1 = require("../apis/nftscan");
+var Empty_1 = require("../shared/Empty");
+var Loading_1 = require("../shared/Loading");
+var Error_1 = require("../shared/Error");
 function useAsset(address, tokenId) {
     var _a = swr_1["default"](nftscan_1.NFTSCAN_BASE_API_ENDPOINT + ("assets/" + address + "/" + tokenId), nftscan_1.NFTSCANFetcher), data = _a.data, error = _a.error;
     return {
@@ -22,6 +25,13 @@ var NFTDialogRender = function (props) {
         return React.createElement("div", { className: "panel-container" }, "Loading...");
     if (isError)
         return React.createElement("div", { className: "panel-container" }, "failed to load");
+    if (isLoading)
+        return (React.createElement("div", { className: "panel-container" },
+            React.createElement(Loading_1.Loading, null)));
+    if (isError)
+        return React.createElement(Error_1.Error, { text: isError });
+    if (!data)
+        return React.createElement(Empty_1.Empty, null);
     var _asset = data.data;
     var metadata = JSON.parse(_asset.metadata_json);
     var mediaurl = ipfs_1.resolveIPFS_URL(metadata.image);

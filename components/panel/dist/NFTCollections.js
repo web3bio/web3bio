@@ -6,6 +6,9 @@ var swr_1 = require("swr");
 var nftscan_1 = require("../apis/nftscan");
 var CollectionSwitcher_1 = require("./CollectionSwitcher");
 var ipfs_1 = require("../../utils/ipfs");
+var Loading_1 = require("../shared/Loading");
+var Empty_1 = require("../shared/Empty");
+var Error_1 = require("../shared/Error");
 function useCollections(address) {
     var _a = swr_1["default"](nftscan_1.NFTSCAN_BASE_API_ENDPOINT + ("account/own/all/" + address + "?erc_type=erc721"), nftscan_1.NFTSCANFetcher), data = _a.data, error = _a.error;
     return {
@@ -18,10 +21,22 @@ var RenderNFTCollections = function (props) {
     var onShowDetail = props.onShowDetail;
     var _a = react_1.useState([]), collections = _a[0], setCollections = _a[1];
     var _b = useCollections("0x934b510d4c9103e6a87aef13b816fb080286d649"), data = _b.data, isLoading = _b.isLoading, isError = _b.isError;
+    react_1.useEffect(function () {
+        if (data && data.data) {
+            setCollections(data.data.map(function (x) { return ({
+                key: x.contract_address,
+                name: x.contract_name,
+                url: x.logo_url
+            }); }));
+        }
+    }, [data]);
     if (isLoading)
-        return React.createElement("div", null, "Loading...");
+        return (React.createElement("div", { className: "panel-container" },
+            React.createElement(Loading_1.Loading, null)));
     if (isError)
-        return React.createElement("div", null, "failed to load");
+        return React.createElement(Error_1.Error, { text: isError });
+    if (!data)
+        return React.createElement(Empty_1.Empty, null);
     return (React.createElement("div", { className: "nft-collection-container" },
         React.createElement(CollectionSwitcher_1.CollectionSwitcher, { collections: collections, currentSelect: collections[0], onSelect: function (e) { return console.log("onSelect:", encodeURI); } }),
         React.createElement("div", { className: "nft-collection-list" }, data.data.map(function (x, idx) {

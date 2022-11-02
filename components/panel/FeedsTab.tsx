@@ -1,6 +1,9 @@
 import { memo } from "react";
 import useSWR from "swr";
 import { RSS3Fetcher, RSS3_END_POINT } from "../apis/rss3";
+import { Empty } from "../shared/Empty";
+import { Loading } from "../shared/Loading";
+import { Error } from "../shared/Error";
 
 function useFeeds(address: string) {
   const { data, error } = useSWR<any>(
@@ -16,11 +19,11 @@ function useFeeds(address: string) {
 }
 const RenderFeedsTab = (props) => {
   const { address } = props;
-  const { data, isLoading, isError } = useFeeds(
-    "0x934b510d4c9103e6a87aef13b816fb080286d649"
-  );
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>failed to load</div>;
+  const { data, isLoading, isError } = useFeeds(address);
+  if (isLoading) return <Loading />;
+  if (isError) return <Error text={isError} />;
+  if (!data) return <Empty />;
+
   console.log("Feeds from rss3:", data);
   return (
     <div>

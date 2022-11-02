@@ -5,6 +5,7 @@ var image_1 = require("next/image");
 var react_1 = require("react");
 var RenderCollectionSwitcher = function (props) {
     var collections = props.collections, currentSelect = props.currentSelect, onSelect = props.onSelect;
+    console.log(collections, 'gggg');
     return (React.createElement("div", { className: "collection-switcher" },
         React.createElement(image_1["default"], { width: 20, height: 20, className: "collection-img", src: "/img/collection.png", alt: "" }),
         React.createElement("div", { className: "collection-name" }, "Collections"),

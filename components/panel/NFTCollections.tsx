@@ -1,8 +1,11 @@
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import useSWR from "swr";
 import { NFTSCANFetcher, NFTSCAN_BASE_API_ENDPOINT } from "../apis/nftscan";
 import { CollectionSwitcher } from "./CollectionSwitcher";
 import { resolveIPFS_URL } from "../../utils/ipfs";
+import { Loading } from "../shared/Loading";
+import { Empty } from "../shared/Empty";
+import { Error } from "../shared/Error";
 
 function useCollections(address: string) {
   const { data, error } = useSWR<any>(
@@ -22,9 +25,25 @@ const RenderNFTCollections = (props) => {
   const { data, isLoading, isError } = useCollections(
     "0x934b510d4c9103e6a87aef13b816fb080286d649"
   );
-
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>failed to load</div>;
+  useEffect(() => {
+    if (data && data.data) {
+      setCollections(
+        data.data.map((x) => ({
+          key: x.contract_address,
+          name: x.contract_name,
+          url: x.logo_url,
+        }))
+      );
+    }
+  }, [data]);
+  if (isLoading)
+    return (
+      <div className="panel-container">
+        <Loading />
+      </div>
+    );
+  if (isError) return <Error text={isError} />;
+  if (!data) return <Empty />;
 
   return (
     <div className="nft-collection-container">

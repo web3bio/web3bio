@@ -1,9 +1,11 @@
-import { resolve } from "node:path/win32";
 import { memo } from "react";
 import SVG from "react-inlinesvg";
 import useSWR from "swr";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 import { NFTSCANFetcher, NFTSCAN_BASE_API_ENDPOINT } from "../apis/nftscan";
+import { Empty } from "../shared/Empty";
+import { Loading } from "../shared/Loading";
+import { Error } from "../shared/Error";
 function useAsset(address: string, tokenId: string | number) {
   const { data, error } = useSWR<any>(
     NFTSCAN_BASE_API_ENDPOINT + `assets/${address}/${tokenId}`,
@@ -25,6 +27,15 @@ const NFTDialogRender = (props) => {
   if (isLoading || !data)
     return <div className="panel-container">Loading...</div>;
   if (isError) return <div className="panel-container">failed to load</div>;
+
+  if (isLoading)
+    return (
+      <div className="panel-container">
+        <Loading />
+      </div>
+    );
+  if (isError) return <Error text={isError} />;
+  if (!data) return <Empty />;
 
   const _asset = data.data;
   const metadata = JSON.parse(_asset.metadata_json);

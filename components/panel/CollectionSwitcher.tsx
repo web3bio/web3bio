@@ -3,6 +3,7 @@ import { memo } from "react";
 
 const RenderCollectionSwitcher = (props) => {
   const { collections, currentSelect, onSelect } = props;
+  console.log(collections,'gggg')
   return (
     <div className="collection-switcher">
       <Image
