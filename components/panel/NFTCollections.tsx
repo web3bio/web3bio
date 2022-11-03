@@ -45,25 +45,22 @@ const RenderNFTCollections = (props) => {
       }
     }
   }, [data, anchorName]);
-  if (isLoading)
-    return (
-      <div className="panel-container">
-        <Loading />
-      </div>
-    );
+  if (isLoading) return <Loading />;
   if (isError) return <Error text={isError} />;
   if (!data || !data.data) return <Empty />;
   return (
     <div className="nft-collection-container">
       {collections && collections.length && (
-        <CollectionSwitcher
-          collections={collections}
-          currentSelect={activeCollection ?? collections[0]}
-          onSelect={(v) => {
-            setActiveCollection(v);
-            setAnchorName(v.key);
-          }}
-        />
+        <div style={{ marginLeft: 30 }}>
+          <CollectionSwitcher
+            collections={collections}
+            currentSelect={activeCollection ?? collections[0]}
+            onSelect={(v) => {
+              setActiveCollection(v);
+              setAnchorName(v.key);
+            }}
+          />
+        </div>
       )}
 
       <div className="nft-collection-list">
@@ -82,6 +79,8 @@ const RenderNFTCollections = (props) => {
                   const mediaURL = resolveIPFS_URL(
                     y.image_uri ?? y.content_uri
                   );
+
+                  console.log(mediaURL, "mediaURL");
                   return (
                     <div
                       key={ydx}

@@ -62,6 +62,7 @@ var RenderNFTCollections = function (props) {
                 React.createElement("div", { className: "nft-item-coantiner" }, x.assets.map(function (y, ydx) {
                     var _a;
                     var mediaURL = ipfs_1.resolveIPFS_URL((_a = y.image_uri) !== null && _a !== void 0 ? _a : y.content_uri);
+                    console.log(mediaURL, 'mediaURL');
                     return (React.createElement("div", { key: ydx, className: "detail-item", onClick: function () {
                             return onShowDetail({
                                 collection: {
