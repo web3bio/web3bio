@@ -20,12 +20,10 @@ function useCollections(address: string) {
 }
 
 const RenderNFTCollections = (props) => {
-  const { onShowDetail } = props;
+  const { onShowDetail, identity } = props;
   const [collections, setCollections] = useState([]);
   const [anchorName, setAnchorName] = useState("");
-  const { data, isLoading, isError } = useCollections(
-    "0x934b510d4c9103e6a87aef13b816fb080286d649"
-  );
+  const { data, isLoading, isError } = useCollections(identity.identity);
   const [activeCollection, setActiveCollection] = useState(null);
 
   useEffect(() => {

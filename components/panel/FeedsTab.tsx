@@ -18,8 +18,8 @@ function useFeeds(address: string) {
   };
 }
 const RenderFeedsTab = (props) => {
-  const { address } = props;
-  const { data, isLoading, isError } = useFeeds(address);
+  const { address,identity } = props;
+  const { data, isLoading, isError } = useFeeds(identity.identity);
   if (isLoading) return <Loading />;
   if (isError) return <Error text={isError} />;
   if (!data || !data.result) return <Empty />;

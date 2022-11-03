@@ -53,6 +53,16 @@ const RenderAccountItem = (props) => {
                   >
                     <SVG src="icons/icon-open.svg" width={20} height={20} />
                   </a>
+                  <a
+                    className=" action"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      props.showPanel(identity);
+                    }}
+                  >
+                    DETAIL
+                  </a>
                 </div>
               </div>
             </div>
@@ -82,6 +92,7 @@ const RenderAccountItem = (props) => {
               </div>
             )}
           </div>
+
           <RenderSourceFooter sources={sources} />
         </div>
       );
@@ -125,16 +136,6 @@ const RenderAccountItem = (props) => {
               </div>
             </div>
             <div className="actions">
-              <a
-                className="btn btn-sm btn-link action"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  props.showPanel(identity);
-                }}
-              >
-                DETAIL
-              </a>
               <a
                 className="btn btn-sm btn-link action"
                 href={`https://www.lensfrens.xyz/${identity.identity}`}

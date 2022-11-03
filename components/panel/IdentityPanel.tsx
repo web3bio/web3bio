@@ -12,12 +12,12 @@ enum TabsMap {
 }
 
 const IdentityPanelRender = (props) => {
-  const { onClose } = props;
+  const { onClose,identity } = props;
   const [activeTab, setActiveTab] = useState(TabsMap.feeds);
   const renderContent = () => {
     return {
-      [TabsMap.feeds]: <FeedsTab />,
-      [TabsMap.nfts]: <NFTsTab />,
+      [TabsMap.feeds]: <FeedsTab identity={identity} />,
+      [TabsMap.nfts]: <NFTsTab identity={identity} />,
     }[activeTab];
   };
   return (
@@ -35,9 +35,9 @@ const IdentityPanelRender = (props) => {
           </picture>
         </div>
         <div className="identity-basic-info">
-          <div className="displayName">sujiyan.eth</div>
+          <div className="displayName">{identity.displayName}</div>
           <div className="identity">
-            0x983110309620D911731Ac0932219af06091b6744
+            {identity.identity}
             <SVG
               className="copy-icon"
               src="icons/icon-copy.svg"

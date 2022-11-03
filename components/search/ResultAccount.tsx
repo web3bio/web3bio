@@ -8,6 +8,7 @@ const RenderAccount = (props) => {
   const { searchTerm, resultNeighbor, graphData } = props;
   const [open, setOpen] = useState(false);
   const [showPanbel, setShowPanel] = useState(false);
+  const [identity, setIdentity] = useState(undefined);
   return (
     <div className="search-result">
       <div className="search-result-header">
@@ -30,6 +31,7 @@ const RenderAccount = (props) => {
                 sources={avatar.sources}
                 key={avatar.identity.uuid}
                 showPanel={(item) => {
+                  setIdentity(item);
                   setShowPanel(true);
                 }}
               />
@@ -44,7 +46,12 @@ const RenderAccount = (props) => {
           title={searchTerm}
         />
       )}
-      {showPanbel && <IdentityPanel onClose={() => setShowPanel(false)} />}
+      {showPanbel && (
+        <IdentityPanel
+          identity={identity}
+          onClose={() => setShowPanel(false)}
+        />
+      )}
     </div>
   );
 };
