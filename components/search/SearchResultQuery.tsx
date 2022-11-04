@@ -3,9 +3,7 @@ import { ResultAccount } from "./ResultAccount";
 import { Loading } from "../shared/Loading";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
-import {
-  GET_PROFILES_QUERY,
-} from "../../utils/queries";
+import { GET_PROFILES_QUERY } from "../../utils/queries";
 import { useEffect, useState } from "react";
 
 export const SearchResultQuery = ({ searchTerm, searchPlatform }) => {
@@ -30,8 +28,20 @@ export const SearchResultQuery = ({ searchTerm, searchPlatform }) => {
         nft: results?.nft,
       },
     };
-    if (results?.neighbor) {
-      const temp = [...results?.neighbor];
+    if (results?.neighborWithTraversal) {
+      const temp = results?.neighborWithTraversal.reduce((pre, cur) => {
+        pre.push({
+          identity: cur.from,
+          sources: [cur.source],
+          __typename: "IdentityWithSource",
+        });
+        pre.push({
+          identity: cur.to,
+          sources: [cur.source],
+          __typename: "IdentityWithSource",
+        });
+        return pre;
+      }, []);
       temp.unshift(resultOwner);
       setResultNeighbor(
         temp.filter(
