@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const GET_PROFILES_ENS = gql`
-  query GET_PROFILES_ENS ($ens: String) {
+  query GET_PROFILES_ENS($ens: String) {
     nft(chain: "ethereum", category: "ENS", id: $ens) {
       owner {
         uuid
@@ -20,27 +20,6 @@ export const GET_PROFILES_ENS = gql`
           chain
           id
         }
-        neighbor(depth: 5) {
-          sources
-          identity {
-            uuid
-            platform
-            identity
-            displayName
-            ownedBy {
-              uuid
-              platform
-              identity
-              displayName
-            }
-            nft {
-              uuid
-              category
-              chain
-              id
-            }
-          }
-        }
         neighborWithTraversal(depth: 5) {
           source
           from {
@@ -54,6 +33,12 @@ export const GET_PROFILES_ENS = gql`
               id
               uuid
             }
+            ownedBy {
+              uuid
+              platform
+              identity
+              displayName
+            }
           }
           to {
             platform
@@ -66,6 +51,12 @@ export const GET_PROFILES_ENS = gql`
               id
               uuid
             }
+            ownedBy {
+              uuid
+              platform
+              identity
+              displayName
+            }
           }
         }
       }
@@ -74,7 +65,7 @@ export const GET_PROFILES_ENS = gql`
 `;
 
 export const GET_PROFILES_QUERY = gql`
-  query GET_PROFILES_QUERY ($platform: String, $identity: String) {
+  query GET_PROFILES_QUERY($platform: String, $identity: String) {
     identity(platform: $platform, identity: $identity) {
       uuid
       platform
@@ -92,9 +83,27 @@ export const GET_PROFILES_QUERY = gql`
         chain
         id
       }
-      neighbor(depth: 5) {
-        sources
-        identity {
+      neighborWithTraversal(depth: 5) {
+        source
+        from {
+          uuid
+          platform
+          identity
+          displayName
+          ownedBy {
+            uuid
+            platform
+            identity
+            displayName
+          }
+          nft {
+            uuid
+            category
+            chain
+            id
+          }
+        }
+        to {
           uuid
           platform
           identity
@@ -113,36 +122,6 @@ export const GET_PROFILES_QUERY = gql`
           }
         }
       }
-      neighborWithTraversal(depth: 5) {
-        source
-        from {
-          uuid
-          platform
-          identity
-          displayName
-          nft {
-            uuid
-            category
-            chain
-            id
-          }
-        }
-        to {
-          uuid
-          platform
-          identity
-          displayName
-          nft {
-            uuid
-            category
-            chain
-            id
-          }
-        }
-      }
     }
   }
 `;
-
-
-

@@ -24,7 +24,19 @@ const RenderResultEns = ({ searchTerm }) => {
       },
     };
 
-    const temp = [...results?.neighbor];
+    const temp = results?.neighborWithTraversal.reduce((pre, cur) => {
+      pre.push({
+        identity: cur.from,
+        sources: [cur.source],
+        __typename: "IdentityWithSource",
+      });
+      pre.push({
+        identity: cur.to,
+        sources: [cur.source],
+        __typename: "IdentityWithSource",
+      });
+      return pre;
+    }, []);
     temp.unshift(resultOwner);
     setResultNeighbor(
       temp.filter(
