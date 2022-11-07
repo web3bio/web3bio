@@ -4,6 +4,7 @@ import { RSS3Fetcher, RSS3_END_POINT } from "../apis/rss3";
 import { Empty } from "../shared/Empty";
 import { Loading } from "../shared/Loading";
 import { Error } from "../shared/Error";
+import { FeedItem } from "./FeedItem";
 
 function useFeeds(address: string) {
   const { data, error } = useSWR<any>(
@@ -18,7 +19,7 @@ function useFeeds(address: string) {
   };
 }
 const RenderFeedsTab = (props) => {
-  const { address,identity } = props;
+  const { address, identity } = props;
   const { data, isLoading, isError } = useFeeds(identity.identity);
   if (isLoading) return <Loading />;
   if (isError) return <Error text={isError} />;
@@ -27,17 +28,10 @@ const RenderFeedsTab = (props) => {
   console.log("Feeds from rss3:", data);
   return (
     <div className="feeds-container-box">
-      <div>Social Feeds</div>
+      <div className="feeds-title">Social Feeds</div>
       <div className="feeds-container">
         {data.result.map((x, idx) => {
-          return (
-            <div key={idx} style={{ borderBottom: "1px solid black" }}>
-              <ul>
-                <li>owner: {x.owner}</li>
-                <li>tag: {x.tag}</li>
-              </ul>
-            </div>
-          );
+          return <FeedItem key={idx} feed={x} />;
         })}
       </div>
     </div>

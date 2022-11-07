@@ -24,9 +24,7 @@ const NFTDialogRender = (props) => {
     asset.asset.token_id
   );
   const resolveOpenseaLink = `https://opensea.io/assets/ethereum/${asset.asset.contract_address}/${asset.asset.token_id}`;
-  if (isLoading || !data)
-    return <div className="panel-container">Loading...</div>;
-  if (isError) return <div className="panel-container">failed to load</div>;
+
 
   if (isLoading)
     return (
@@ -40,7 +38,6 @@ const NFTDialogRender = (props) => {
   const _asset = data.data;
   const metadata = JSON.parse(_asset.metadata_json);
   const mediaurl = resolveIPFS_URL(metadata.image);
-  console.log(metadata, "metadata");
   return (
     <div className="panel-container" style={{ overflow: "hidden auto" }}>
       <div className="close-icon-box" onClick={onClose}>

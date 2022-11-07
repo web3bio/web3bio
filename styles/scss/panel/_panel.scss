@@ -184,6 +184,7 @@
 .nft-dialog-scroll-box {
     overflow-y: auto;
     padding: 0 30px;
+
     .nft-dialog-des-box {
         display: flex;
         flex-direction: column;
@@ -311,7 +312,7 @@
                 background: #fff;
                 border-radius: 4px;
                 top: 35px;
-                border: 1px solid #ddd;                
+                border: 1px solid #ddd;
             }
 
             .dropdown-button {
@@ -382,7 +383,7 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 20px;
-        max-height: 70vh;
+        max-height: 57vh;
         overflow-y: auto;
         padding: 0 30px;
         width: 100%;
@@ -512,8 +513,94 @@
 .feeds-container-box {
     padding: 0 30px;
 
+    .feeds-title {
+        font-weight: 900;
+        font-size: 14px;
+        line-height: 1.43;
+        text-transform: uppercase;
+    }
+
     .feeds-container {
         max-height: 60vh;
+        margin-top: 20px;
         overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .feed-item-box {
+            display: flex;
+            width: 100%;
+            align-items: flex-start;
+            gap: 10px;
+
+            .feed-type-badge {
+                width: 24px;
+                height: 24px;
+                background: rgba(18, 18, 18, 0.08);
+                box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.05);
+                border-radius: 8px;
+            }
+
+            .feed-item {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+
+                .feed-item-header {
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+
+                    .feed-type-intro {
+                        display: flex;
+                        align-items: center;
+                        font-weight: 400;
+                        font-size: 14px;
+                        line-height: 22px;
+
+                        .strong {
+                            font-weight: 900;
+                            margin: 0 4px;
+                        }
+                    }
+                }
+
+                .feed-item-main {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+
+                    .feed-nft-img {
+                        width: 64px;
+                        height: 64px;
+                        box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.15);
+                        border-radius: 12px;
+                    }
+
+                    .feed-nft-info {
+                        display: flex;
+                        flex-direction: column;
+
+                        .nft-title {
+                            font-weight: 700;
+                            font-size: 14px;
+                            line-height: 22px;
+                        }
+
+                        .nft-collection-title {
+                            font-weight: 400;
+                            font-size: 12px;
+                            line-height: 20px;
+                            color: #121212;
+                            opacity: 0.5;
+                        }
+                    }
+                }
+            }
+
+
+        }
     }
 }

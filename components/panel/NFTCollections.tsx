@@ -78,7 +78,6 @@ const RenderNFTCollections = (props) => {
                     y.image_uri ?? y.content_uri
                   );
 
-                  console.log(mediaURL, "mediaURL");
                   return (
                     <div
                       key={ydx}
