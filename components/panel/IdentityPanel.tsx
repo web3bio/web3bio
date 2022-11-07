@@ -5,21 +5,28 @@ import { getEnumAsArray } from "../../utils/utils";
 import { FeedsTab } from "./FeedsTab";
 import { NFTsTab } from "./NFTsTab";
 
-enum TabsMap {
+export enum TabsMap {
   // profile = "Profile",
   feeds = "Feeds",
   nfts = "NFTs",
 }
 
 const IdentityPanelRender = (props) => {
-  const { onClose,identity } = props;
-  const [activeTab, setActiveTab] = useState(TabsMap.feeds);
+  const { onClose, identity, onTabChange, curTab } = props;
+  const [activeTab, setActiveTab] = useState(curTab || TabsMap.feeds);
+  const [curAsset, setCurAsset] = useState(null);
   const renderContent = () => {
     return {
       [TabsMap.feeds]: <FeedsTab identity={identity} />,
-      [TabsMap.nfts]: <NFTsTab identity={identity} />,
+      [TabsMap.nfts]: (
+        <NFTsTab defaultOpen={!!curAsset} onShowDetail={resolveOnShowDetail} identity={identity} />
+      ),
     }[activeTab];
   };
+
+  const resolveOnShowDetail = (asset)=>{
+    console.log(asset,'asset')
+  }
   return (
     <div className="panel-container">
       <div className="close-icon-box" onClick={onClose}>
@@ -56,7 +63,10 @@ const IdentityPanelRender = (props) => {
                 className={
                   activeTab === x.value ? "tab-item active" : "tab-item"
                 }
-                onClick={() => setActiveTab(x.value)}
+                onClick={() => {
+                  setActiveTab(x.value);
+                  onTabChange(x.value);
+                }}
               >
                 <a href="#">{x.value}</a>
               </li>

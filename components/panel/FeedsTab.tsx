@@ -27,7 +27,7 @@ const RenderFeedsTab = (props) => {
   console.log("Feeds from rss3:", data);
   return (
     <div className="feeds-container-box">
-      <div>Feeds See FUll DETAIL in Console</div>
+      <div>Social Feeds</div>
       <div className="feeds-container">
         {data.result.map((x, idx) => {
           return (
