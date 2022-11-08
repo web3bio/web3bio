@@ -1,38 +1,39 @@
 import { memo } from "react";
-import { formatText } from "../../utils/utils";
+import { CollectibleCard, isCollectibleFeed } from "./feedCards/CollectibleCard";
+import { CommentCard, isCommentFeed } from "./feedCards/CommentCard";
+import { DonationCard, isDonationFeed } from "./feedCards/DonationCard";
+import { isLiquidityFeed,LiquidityCard  } from "./feedCards/LiqudityCard";
+import { isNoteFeed, NoteCard } from "./feedCards/NoteCard";
+import { isProfileFeed, ProfileCard } from "./feedCards/ProfileCard";
+import { isProposeFeed, ProposeCard } from "./feedCards/ProposeCard";
+import {
+  isTokenTransferFeed as isTokenOperationFeed,
+  TokenOperationCard,
+} from "./feedCards/TokenOperationCard";
+import { isTokenSwapFeed, TokenSwapCard } from "./feedCards/TokenSwapCard";
+import { isVoteFeed, VoteCard } from "./feedCards/VoteCard";
 
 const RenderFeedItem = (props) => {
-  const { feed } = props;
-  return (
-    <div className="feed-item-box">
-      <div className="feed-type-badge"></div>
-      <div className="feed-item">
-        <div className="feed-item-header">
-          <div className="feed-type-intro">
-            <div className="strong">{formatText(feed.address_from ?? "")}</div>
-            sold an NFT to
-            <div className="strong">{formatText(feed.address_to ?? "")}</div>
-            for
-            <div className="strong">0.02ETH</div>
-          </div>
-        </div>
-        <div className="feed-item-main">
-          <picture>
-            <img
-              className="feed-nft-img"
-              src="https://gateway.ipfscdn.io/ipfs/Qmaib4bYVGxXzCLAprXFSktPH45BLr8kNGWJGHDbK925Rq/1369.webp"
-              alt="nft"
-            />
-          </picture>
-          <div className="feed-nft-info">
-            <div className="nft-title">TurtleCase Gang #51</div>
-            <div className="nft-collection-title">Your second face.</div>
-          </div>
-        </div>
-        <div>7hrs</div>
-      </div>
-    </div>
-  );
+  const { feed, ...rest } = props;
+  if (isTokenOperationFeed(feed))
+    return <TokenOperationCard feed={feed} {...rest} />;
+  if (isTokenSwapFeed(feed)) return <TokenSwapCard feed={feed} {...rest} />;
+
+  if (isLiquidityFeed(feed)) return <LiquidityCard feed={feed} {...rest} />;
+
+  if (isCollectibleFeed(feed)) return <CollectibleCard feed={feed} {...rest} />
+
+  if (isDonationFeed(feed)) return <DonationCard feed={feed} {...rest} />
+
+  if (isNoteFeed(feed)) return <NoteCard feed={feed} {...rest} />
+
+  if (isCommentFeed(feed)) return <CommentCard feed={feed} {...rest} />
+
+  if (isProfileFeed(feed)) return <ProfileCard feed={feed} {...rest} />
+
+  if (isProposeFeed(feed)) return <ProposeCard feed={feed} {...rest} />
+
+  if (isVoteFeed(feed)) return <VoteCard feed={feed} {...rest} />
 };
 
 export const FeedItem = memo(RenderFeedItem);
