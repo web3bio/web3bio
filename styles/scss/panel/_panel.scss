@@ -597,6 +597,13 @@
                             font-size: 14px;
                             line-height: 22px;
                         }
+                        .nft-subtitle{
+                            font-weight: 400;
+                            display: -webkit-box;
+                            -webkit-box-orient: vertical;
+                            -webkit-line-clamp: 2;
+                            overflow: hidden;
+                        }
 
                         .nft-collection-title {
                             font-weight: 400;

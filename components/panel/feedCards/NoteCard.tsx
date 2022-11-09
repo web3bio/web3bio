@@ -25,9 +25,16 @@ const RenderNoteCard = (props) => {
             <div className="strong">{action.platform || "unknown"}</div>
           </div>
         </div>
-
-        {metadata?.title && <div className="nft-title">{metadata.title}</div>}
-        {metadata?.body && <div>{metadata.body}</div>}
+        <div className="feed-item-main">
+          <div className="feed-nft-info">
+            {metadata?.title && (
+              <div className="nft-title">{metadata.title}</div>
+            )}
+            {metadata?.body && (
+              <div className="nft-subtitle">{metadata.body}</div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
