@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { formatTimestamp } from "../../../utils/date";
 import { formatText, formatValue, isSameAddress } from "../../../utils/utils";
 import { Tag, Type } from "../../apis/rss3/types";
 
@@ -11,12 +12,12 @@ export const isTokenTransferFeed = (feed) => {
 
 const RenderTokenOperationCard = (props) => {
   const { feed, identity } = props;
-  console.log(identity,'gg')
+  console.log(identity, "gg");
   const action = feed.actions[0];
   const metadata = action.metadata;
-  const isFromOwner = isSameAddress(identity, action.address_from);
+  const isFromOwner = isSameAddress(identity.identity, action.address_from);
   const context =
-    feed.type === Type.Burn ? "burn" : isFromOwner ? "send" : "claim";
+    feed.type === Type.Burn ? "burn" : isFromOwner ? "send to" : "claim from";
   return (
     <div className="feed-item-box">
       <div className="feed-type-badge"></div>
@@ -41,7 +42,7 @@ const RenderTokenOperationCard = (props) => {
             </div>
           </div>
         ) : null}
-        <div>7hrs</div>
+        <div>{formatTimestamp(feed.timestamp)}</div>
       </div>
     </div>
   );
