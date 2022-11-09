@@ -16,7 +16,7 @@ import { isVoteFeed, VoteCard } from "./feedCards/VoteCard";
 const RenderFeedItem = (props) => {
   const { feed, identity } = props;
   if (isTokenOperationFeed(feed))
-    return <TokenOperationCard feed={feed} identity={identity} />;
+    return <TokenOperationCard feed={feed} identity />;
   if (isTokenSwapFeed(feed)) return <TokenSwapCard feed={feed} identity />;
 
   if (isLiquidityFeed(feed)) return <LiquidityCard feed={feed}  />;
@@ -25,7 +25,7 @@ const RenderFeedItem = (props) => {
 
   if (isDonationFeed(feed)) return <DonationCard feed={feed}  />
 
-  if (isNoteFeed(feed)) return <NoteCard feed={feed}  />
+  if (isNoteFeed(feed)) return <NoteCard feed={feed} identity  />
 
   if (isCommentFeed(feed)) return <CommentCard feed={feed}  />
 
