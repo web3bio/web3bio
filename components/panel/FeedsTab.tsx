@@ -35,7 +35,7 @@ const RenderFeedsTab = (props) => {
           return (
             <div key={idx}>
               <FeedItem identity={identity} feed={x} />
-              <div>{formatTimestamp(x.timestamp)}</div>
+              <div className="feed-timestamp">{formatTimestamp(x.timestamp)}</div>
             </div>
           );
         })}
