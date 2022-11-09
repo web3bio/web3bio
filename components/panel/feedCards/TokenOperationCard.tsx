@@ -42,7 +42,6 @@ const RenderTokenOperationCard = (props) => {
             </div>
           </div>
         ) : null}
-        <div>{formatTimestamp(feed.timestamp)}</div>
       </div>
     </div>
   );

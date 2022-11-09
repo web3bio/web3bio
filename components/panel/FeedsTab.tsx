@@ -5,6 +5,7 @@ import { Empty } from "../shared/Empty";
 import { Loading } from "../shared/Loading";
 import { Error } from "../shared/Error";
 import { FeedItem } from "./FeedItem";
+import { formatTimestamp } from "../../utils/date";
 
 function useFeeds(address: string) {
   const { data, error } = useSWR<any>(
@@ -31,7 +32,12 @@ const RenderFeedsTab = (props) => {
       <div className="feeds-title">Social Feeds</div>
       <div className="feeds-container">
         {data.result.map((x, idx) => {
-          return <FeedItem identity={identity} key={idx} feed={x} />;
+          return (
+            <div key={idx}>
+              <FeedItem identity={identity} feed={x} />
+              <div>{formatTimestamp(x.timestamp)}</div>
+            </div>
+          );
         })}
       </div>
     </div>
