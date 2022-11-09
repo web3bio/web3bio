@@ -32,7 +32,7 @@ const RenderCommentFeed = (props) => {
             <picture>
               <img
                 className="feed-nft-img"
-                style={{ width: 64 }}
+                style={{ width: 64, height: 64 }}
                 src={commentTarget.media[0].address}
                 alt="comment"
               />

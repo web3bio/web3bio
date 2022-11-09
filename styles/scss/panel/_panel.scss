@@ -581,7 +581,8 @@
                         box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.15);
                         border-radius: 12px;
                     }
-                    .feed-swap-img{
+
+                    .feed-swap-img {
                         width: 24px;
                         box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.15);
                         border-radius: 12px;
@@ -596,8 +597,13 @@
                             font-weight: 700;
                             font-size: 14px;
                             line-height: 22px;
+                            display: -webkit-box;
+                            -webkit-box-orient: vertical;
+                            -webkit-line-clamp: 1;
+                            overflow: hidden;
                         }
-                        .nft-subtitle{
+
+                        .nft-subtitle {
                             font-weight: 400;
                             display: -webkit-box;
                             -webkit-box-orient: vertical;

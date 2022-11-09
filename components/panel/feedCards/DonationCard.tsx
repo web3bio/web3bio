@@ -1,4 +1,5 @@
-import { memo } from "react";
+import { memo, useState } from "react";
+import { formatText, formatValue } from "../../../utils/utils";
 import { Tag } from "../../apis/rss3/types";
 
 export function isDonationFeed(feed) {
@@ -6,7 +7,45 @@ export function isDonationFeed(feed) {
 }
 
 const RenderDonationCard = (props) => {
-  return <div>donate</div>;
+  const { feed, identity, actionIndex } = props;
+  const [index, setIndex] = useState(0);
+  const activeActionIndex = actionIndex ?? index;
+  const action = feed.actions[activeActionIndex];
+  const metadata = action.metadata;
+  const user = feed.owner;
+  return (
+    <div className="feed-item-box">
+      <div className="feed-type-badge"></div>
+      <div className="feed-item">
+        <div className="feed-item-header">
+          <div className="feed-type-intro">
+            <div className="strong">{formatText(user ?? "")}</div>
+            donated
+            <div className="strong">
+              {formatValue(metadata?.token)} {metadata?.token?.symbol ?? ""}
+            </div>
+          </div>
+        </div>
+
+        {metadata && (
+          <div className={"feed-item-main"}>
+            <picture>
+              <img
+                className="feed-nft-img"
+                style={{ width: 64, height: 64 }}
+                src={metadata.logo}
+                alt="comment"
+              />
+            </picture>
+            <div className="feed-nft-info">
+              <div className="nft-title">{metadata?.title}</div>
+              <div className="nft-subtitle">{metadata?.description}</div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export const DonationCard = memo(RenderDonationCard);
