@@ -5,7 +5,7 @@ export function isVoteFeed(feed) {
     return feed.tag === Tag.Governance && feed.type === Type.Vote
 }
 
-const RenderVoteFeed = ()=>{
+const RenderVoteFeed = (props)=>{
     return <div>
         vote
     </div>

@@ -31,7 +31,7 @@ const RenderFeedsTab = (props) => {
       <div className="feeds-title">Social Feeds</div>
       <div className="feeds-container">
         {data.result.map((x, idx) => {
-          return <FeedItem key={idx} feed={x} />;
+          return <FeedItem identity={identity} key={idx} feed={x} />;
         })}
       </div>
     </div>

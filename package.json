@@ -13,6 +13,7 @@
     "@antv/g6": "^4.7.0",
     "@antv/g6-react-node": "^1.4.5",
     "@apollo/client": "^3.6.9",
+    "bignumber.js": "^9.1.0",
     "graphql": "^15.8.0",
     "lodash": "^4.17.21",
     "next": "^13.0.1",

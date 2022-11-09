@@ -4,7 +4,7 @@ export function isCollectibleFeed(feed) {
     return feed.tag === Tag.Collectible
 }
 
-const RenderCollectibleCard = ()=>{
+const RenderCollectibleCard = (props)=>{
     return <div>collectible</div>
 }
 

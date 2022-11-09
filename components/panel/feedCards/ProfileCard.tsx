@@ -5,7 +5,8 @@ export function isProfileFeed(feed) {
     return feed.tag === Tag.Social && feed.type === Type.Profile
 }
 
-const RenderProfileFeed = ()=>{
+const RenderProfileFeed = (props)=>{
+    
     return <div>
         profile
     </div>

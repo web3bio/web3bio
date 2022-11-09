@@ -5,7 +5,7 @@ export function isNoteFeed(feed) {
     return feed.tag === Tag.Social && [Type.Post, Type.Revise].includes(feed.type)
 }
 
-const RenderNoteCard = ()=>{
+const RenderNoteCard = (props)=>{
     return <div>
         note
     </div>

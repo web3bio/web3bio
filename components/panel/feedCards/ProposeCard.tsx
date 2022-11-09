@@ -5,7 +5,7 @@ export function isProposeFeed(feed) {
   return feed.tag === Tag.Governance && feed.type === Type.Propose;
 }
 
-const RenderProposeCard = () => {
+const RenderProposeCard = (props) => {
   return <div>propose</div>;
 };
 

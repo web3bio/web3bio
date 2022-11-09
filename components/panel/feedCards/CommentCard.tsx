@@ -5,7 +5,7 @@ export function isCommentFeed(feed) {
     return feed.tag === Tag.Social && feed.type === Type.Comment
 }
 
-const RenderCommentFeed = ()=>{
+const RenderCommentFeed = (props)=>{
     return <div>
         comment
     </div>

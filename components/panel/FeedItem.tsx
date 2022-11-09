@@ -14,26 +14,26 @@ import { isTokenSwapFeed, TokenSwapCard } from "./feedCards/TokenSwapCard";
 import { isVoteFeed, VoteCard } from "./feedCards/VoteCard";
 
 const RenderFeedItem = (props) => {
-  const { feed, ...rest } = props;
+  const { feed, identity } = props;
   if (isTokenOperationFeed(feed))
-    return <TokenOperationCard feed={feed} {...rest} />;
-  if (isTokenSwapFeed(feed)) return <TokenSwapCard feed={feed} {...rest} />;
+    return <TokenOperationCard feed={feed} identity={identity} />;
+  if (isTokenSwapFeed(feed)) return <TokenSwapCard feed={feed} identity />;
 
-  if (isLiquidityFeed(feed)) return <LiquidityCard feed={feed} {...rest} />;
+  if (isLiquidityFeed(feed)) return <LiquidityCard feed={feed}  />;
 
-  if (isCollectibleFeed(feed)) return <CollectibleCard feed={feed} {...rest} />
+  if (isCollectibleFeed(feed)) return <CollectibleCard feed={feed}  />
 
-  if (isDonationFeed(feed)) return <DonationCard feed={feed} {...rest} />
+  if (isDonationFeed(feed)) return <DonationCard feed={feed}  />
 
-  if (isNoteFeed(feed)) return <NoteCard feed={feed} {...rest} />
+  if (isNoteFeed(feed)) return <NoteCard feed={feed}  />
 
-  if (isCommentFeed(feed)) return <CommentCard feed={feed} {...rest} />
+  if (isCommentFeed(feed)) return <CommentCard feed={feed}  />
 
-  if (isProfileFeed(feed)) return <ProfileCard feed={feed} {...rest} />
+  if (isProfileFeed(feed)) return <ProfileCard feed={feed}  />
 
-  if (isProposeFeed(feed)) return <ProposeCard feed={feed} {...rest} />
+  if (isProposeFeed(feed)) return <ProposeCard feed={feed}  />
 
-  if (isVoteFeed(feed)) return <VoteCard feed={feed} {...rest} />
+  if (isVoteFeed(feed)) return <VoteCard feed={feed}  />
 };
 
 export const FeedItem = memo(RenderFeedItem);

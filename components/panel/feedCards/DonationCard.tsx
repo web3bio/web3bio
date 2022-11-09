@@ -5,7 +5,7 @@ export function isDonationFeed(feed) {
   return feed.tag === Tag.Donation;
 }
 
-const RenderDonationCard = () => {
+const RenderDonationCard = (props) => {
   return <div>donate</div>;
 };
 
