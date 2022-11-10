@@ -3,17 +3,20 @@ import { ResultAccount } from "./ResultAccount";
 import { Loading } from "../shared/Loading";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
-import { GET_PROFILES_ENS } from "../../utils/queries";
+import { GET_PROFILES_DOMAIN } from "../../utils/queries";
 import _ from "lodash";
 import { memo, useEffect, useState } from "react";
-const RenderResultEns = ({ searchTerm }) => {
-  const { loading, error, data } = useQuery(GET_PROFILES_ENS, {
-    variables: { ens: searchTerm },
+const RenderResultDomain = ({ searchTerm, searchPlatform }) => {
+  const { loading, error, data } = useQuery(GET_PROFILES_DOMAIN, {
+    variables: {
+      platform: searchPlatform,
+      identity: searchTerm,
+    },
   });
   const [resultNeighbor, setResultNeighbor] = useState([]);
   useEffect(() => {
-    if (!data || !data.nft) return;
-    const results = data?.nft.owner;
+    if (!data || !data.domain) return;
+    const results = data?.domain.owner;
     const resultOwner = {
       identity: {
         uuid: results?.uuid,
@@ -48,15 +51,15 @@ const RenderResultEns = ({ searchTerm }) => {
   }, [data, searchTerm]);
   if (loading) return <Loading />;
   if (error) return <Error text={error} />;
-  if (!data?.nft) return <Empty />;
+  if (!data?.domain) return <Empty />;
 
   return (
     <ResultAccount
       searchTerm={searchTerm}
       resultNeighbor={resultNeighbor}
       graphData={
-        data.nft.owner.neighborWithTraversal.length
-          ? data.nft.owner.neighborWithTraversal
+        data.domain.owner.neighborWithTraversal.length
+          ? data.domain.owner.neighborWithTraversal
           : [
               resultNeighbor.length > 0
                 ? {
@@ -71,4 +74,4 @@ const RenderResultEns = ({ searchTerm }) => {
   );
 };
 
-export const SearchResultEns = memo(RenderResultEns);
+export const SearchResultDomain = memo(RenderResultDomain);
