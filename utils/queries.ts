@@ -1,33 +1,27 @@
 import { gql } from "@apollo/client";
 
-export const GET_PROFILES_ENS = gql`
-  query GET_PROFILES_ENS($ens: String) {
-    nft(chain: "ethereum", category: "ENS", id: $ens) {
+export const GET_PROFILES_DOMAIN = gql`
+  query GET_PROFILES_DOMAIN($platform: String, $identity: String) {
+    domain(domainSystem: $platform, name: $identity) {
       owner {
         uuid
         platform
         identity
         displayName
-        ownedBy {
-          uuid
-          platform
-          identity
-          displayName
-        }
-        nft {
+        nft(category: ["ENS"]) {
           uuid
           category
           chain
           id
         }
-        neighborWithTraversal(depth: 5) {
+        neighborWithTraversal(depth: 7) {
           source
           from {
             platform
             identity
             uuid
             displayName
-            nft {
+            nft(category: ["ENS"]) {
               category
               chain
               id
@@ -45,7 +39,7 @@ export const GET_PROFILES_ENS = gql`
             identity
             uuid
             displayName
-            nft {
+            nft(category: ["ENS"]) {
               category
               chain
               id
@@ -77,13 +71,13 @@ export const GET_PROFILES_QUERY = gql`
         identity
         displayName
       }
-      nft {
+      nft(category: ["ENS"]) {
         uuid
         category
         chain
         id
       }
-      neighborWithTraversal(depth: 5) {
+      neighborWithTraversal(depth: 7) {
         source
         from {
           uuid
@@ -96,7 +90,7 @@ export const GET_PROFILES_QUERY = gql`
             identity
             displayName
           }
-          nft {
+          nft(category: ["ENS"]) {
             uuid
             category
             chain
@@ -114,7 +108,7 @@ export const GET_PROFILES_QUERY = gql`
             identity
             displayName
           }
-          nft {
+          nft(category: ["ENS"]) {
             uuid
             category
             chain
