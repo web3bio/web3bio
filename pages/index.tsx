@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import SVG from "react-inlinesvg";
-import { SearchResultEns } from "../components/search/SearchResultEns";
+import { SearchResultDomain } from "../components/search/SearchResultDomain";
 import { SearchResultQuery } from "../components/search/SearchResultQuery";
 
 export default function Home() {
@@ -140,8 +140,11 @@ export default function Home() {
               </div>
             </form>
             {searchPlatform ? (
-              searchPlatform === "ENS" ? (
-                <SearchResultEns searchTerm={searchTerm} />
+              searchPlatform === "ENS" || searchPlatform === "dotbit" ? (
+                <SearchResultDomain 
+                  searchTerm={searchTerm}
+                  searchPlatform={searchPlatform}
+                />
               ) : (
                 <SearchResultQuery
                   searchTerm={searchTerm}
@@ -155,10 +158,10 @@ export default function Home() {
           <div className="container grid-lg">
             <div className="columns">
               <div className="column col-12">
-                <div className="mt-4">
+                <div className="mt-4 mb-4">
                   <a
                     href="https://twitter.com/web3bio"
-                    className="btn-link ml-2 mr-2"
+                    className="btn-link text-dark ml-2 mr-2"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -193,7 +196,7 @@ export default function Home() {
                     Web3.bio
                   </a>{" "}
                   project crafted with{" "}
-                  <span className="text-pride">&hearts;</span>{" "}·{" "}Proudly built
+                  <span className="text-pride">&hearts;</span>{" "}·{" "}Built
                   with{" "}
                   <a
                     href="https://next.id"
