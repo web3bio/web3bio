@@ -140,7 +140,7 @@ export default function Home() {
               </div>
             </form>
             {searchPlatform ? (
-              searchPlatform === "ENS" ? (
+              searchPlatform === "ENS" || searchPlatform === "dotbit" ? (
                 <SearchResultDomain 
                   searchTerm={searchTerm}
                   searchPlatform={searchPlatform}
