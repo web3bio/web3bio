@@ -141,7 +141,8 @@
         min-height: 200px;
         box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.15);
         border-radius: 12px;
-        img{
+
+        img {
             border-radius: 12px;
         }
     }
@@ -173,6 +174,7 @@
             text-transform: uppercase;
             color: #000000;
             margin-bottom: 10px;
+            max-width: 200px;
         }
 
 
@@ -441,6 +443,19 @@
                             border-radius: 12px;
                             transition: transform .4s ease 0s;
                         }
+
+                        &:hover video {
+                            transform: scale(1.02);
+                            box-shadow: 0px 4px 10px rgb(0 0 0 / 30%);
+                        }
+
+                        video {
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                            border-radius: 12px;
+                            transition: transform .4s ease 0s;
+                        }
                     }
 
                     .collection-name {
@@ -528,7 +543,8 @@
         display: flex;
         flex-direction: column;
         gap: 20px;
-        .feed-timestamp{
+
+        .feed-timestamp {
             width: fit-content;
             margin-left: 34px;
             opacity: .5;

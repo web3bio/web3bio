@@ -26,7 +26,6 @@ const IdentityPanelRender = (props) => {
 
   const resolveOnShowDetail = (asset)=>{
     // todo: to resolve url && nft dialog
-    console.log(asset,'asset')
   }
   return (
     <div className="panel-container">

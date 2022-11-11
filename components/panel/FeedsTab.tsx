@@ -26,7 +26,6 @@ const RenderFeedsTab = (props) => {
   if (isError) return <Error text={isError} />;
   if (!data || !data.result) return <Empty />;
 
-  console.log("Feeds from rss3:", data);
   return (
     <div className="feeds-container-box">
       <div className="feeds-title">Social Feeds</div>

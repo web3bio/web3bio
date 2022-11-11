@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { DefaultIcon } from "./Default";
 import { ImageLoader } from "./ImageLoader";
 import { Video } from "./Video";
 
@@ -16,11 +17,14 @@ const isVideo = (type) => {
   return type === "vedio/mp4";
 };
 
+
+
+
 const RenderNFTAssetPlayer = (props) => {
   const { type, className, src } = props;
   return (
     <div className={className}>
-      {IsImage(type) ? <ImageLoader src={src} /> : <Video src={src} />}
+      {IsImage(type) ? <ImageLoader src={src || DefaultIcon} /> : <Video src={src} />}
     </div>
   );
 };

@@ -64,7 +64,7 @@ const RenderNFTCollections = (props) => {
 
       <div className="nft-collection-list">
         {data.data.map((x, idx) => {
-          console.log(x,'collection')
+          console.log(x, "collection");
           return (
             <div className="collection-item" key={idx} id={x.contract_address}>
               <div className="nft-collection-title-box">
@@ -77,9 +77,10 @@ const RenderNFTCollections = (props) => {
               </div>
               <div className="nft-item-coantiner">
                 {x.assets.map((y, ydx) => {
-                  const mediaURL = resolveIPFS_URL(
-                    y.image_uri ?? y.content_uri
-                  );
+                  const mediaURL =
+                    y.content_type === "video/mp4"
+                      ? resolveIPFS_URL(y.content_uri ?? y.image_uri)
+                      : resolveIPFS_URL(y.image_uri ?? y.content_uri);
                   return (
                     <div
                       key={ydx}
@@ -95,11 +96,11 @@ const RenderNFTCollections = (props) => {
                         })
                       }
                     >
-                      <div className="img-container">
-                        <picture>
-                          <img src={mediaURL} alt="nft-icon" />
-                        </picture>
-                      </div>
+                      <NFTAssetPlayer
+                        className={"img-container"}
+                        type={y.content_type ?? "image/png"}
+                        src={mediaURL}
+                      />
                       <div className="collection-name">{x.contract_name}</div>
                       <div className="nft-name">{y.name}</div>
                     </div>

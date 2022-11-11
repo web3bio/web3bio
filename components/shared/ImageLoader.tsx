@@ -1,10 +1,6 @@
 import { ImgHTMLAttributes, useState, SyntheticEvent } from "react";
+import { DefaultIcon } from "./Default";
 import { Loading } from "./Loading";
-
-const DefaultIcon = new URL(
-  "./assets/defaultIcon.png",
-  import.meta.url
-).toString();
 
 export function ImageLoader(props: ImgHTMLAttributes<HTMLImageElement>) {
   const [loaded, setLoaded] = useState(false);
@@ -17,14 +13,17 @@ export function ImageLoader(props: ImgHTMLAttributes<HTMLImageElement>) {
         {...props}
         onLoad={() => setLoaded(Boolean(props.src))}
         onError={onErrorHandle}
-        loading="lazy"
-        decoding="async"
-        width={'100%'}
-        height={'100%'}
-        style={{ display: loaded || !props.src ? "block" : "none" , objectFit:'fill' }}
+        // loading="lazy"
+        // decoding="async"
+        width={"100%"}
+        height={"100%"}
+        style={{
+          display: loaded || !props.src ? "block" : "none",
+          objectFit: "fill",
+        }}
         alt=""
       />
-      {!loaded && Boolean(props.src) ? <Loading /> : null}
+      {!loaded && Boolean(props.src) ? <Loading style={{ margin: 0 }} /> : null}
     </picture>
   );
 }

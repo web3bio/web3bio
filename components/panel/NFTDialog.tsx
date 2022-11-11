@@ -7,6 +7,7 @@ import { Empty } from "../shared/Empty";
 import { Loading } from "../shared/Loading";
 import { Error } from "../shared/Error";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
+import { formatText } from "../../utils/utils";
 function useAsset(address: string, tokenId: string | number) {
   const { data, error } = useSWR<any>(
     NFTSCAN_BASE_API_ENDPOINT + `assets/${address}/${tokenId}`,
@@ -42,7 +43,7 @@ const NFTDialogRender = (props) => {
 
       <div className="nft-dialog-basic">
         <NFTAssetPlayer
-          type={_asset.content_type || 'image/png'}
+          type={_asset.content_type || "image/png"}
           className="nft-dialog-asset-player"
           src={mediaurl}
         />
@@ -50,16 +51,16 @@ const NFTDialogRender = (props) => {
           <div className="nft-dialog-collection">
             <picture>
               <source srcSet={asset.collection.url} />
-              <img
+              <NFTAssetPlayer
+                type="image/png"
                 className="avatar"
                 src={asset.collection.url}
-                alt="collection"
               />
             </picture>
             <div className="title">{asset.collection.name}</div>
           </div>
           <div className="nft-name">
-            {asset.asset.name || `#${asset.asset.token_id}`}
+            {formatText(asset.asset.name || `#${asset.asset.token_id}`)}
           </div>
           <button
             onClickCapture={() => window.open(resolveOpenseaLink, "_blank")}
