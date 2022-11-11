@@ -6,6 +6,7 @@ import { resolveIPFS_URL } from "../../utils/ipfs";
 import { Loading } from "../shared/Loading";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
+import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
 function useCollections(address: string) {
   const { data, error } = useSWR<any>(
@@ -63,13 +64,15 @@ const RenderNFTCollections = (props) => {
 
       <div className="nft-collection-list">
         {data.data.map((x, idx) => {
+          console.log(x,'collection')
           return (
             <div className="collection-item" key={idx} id={x.contract_address}>
               <div className="nft-collection-title-box">
-                <picture>
-                  <source srcSet={x.logo_url} type="image/webp" />
-                  <img className="collection-logo" src={x.logo_url} alt="" />
-                </picture>
+                <NFTAssetPlayer
+                  type={"image/png"}
+                  className="collection-logo"
+                  src={x.logo_url}
+                />
                 <div className="nft-collection-title"> {x.contract_name}</div>
               </div>
               <div className="nft-item-coantiner">
@@ -77,7 +80,6 @@ const RenderNFTCollections = (props) => {
                   const mediaURL = resolveIPFS_URL(
                     y.image_uri ?? y.content_uri
                   );
-
                   return (
                     <div
                       key={ydx}
@@ -89,6 +91,7 @@ const RenderNFTCollections = (props) => {
                             name: x.contract_name,
                           },
                           asset: y,
+                          mediaURL: mediaURL,
                         })
                       }
                     >

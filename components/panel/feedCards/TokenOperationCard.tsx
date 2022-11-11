@@ -12,7 +12,6 @@ export const isTokenTransferFeed = (feed) => {
 
 const RenderTokenOperationCard = (props) => {
   const { feed, identity } = props;
-  console.log(identity, "gg");
   const action = feed.actions[0];
   const metadata = action.metadata;
   const isFromOwner = isSameAddress(identity.identity, action.address_from);

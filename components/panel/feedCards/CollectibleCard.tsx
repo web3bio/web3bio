@@ -25,9 +25,11 @@ const RenderCollectibleCard = (props) => {
           summary: (
             <div className="feed-type-intro">
               <div className="strong">{formatText(user ?? "")}</div>
-              minted an NFT{" "}
-              {metadata.cost &&
-                `for ${formatValue(metadata?.cost)} ${metadata.cost.symbol}`}
+              minted an NFT
+              <div className="strong">
+                {metadata.cost &&
+                  `for ${formatValue(metadata?.cost)} ${metadata.cost.symbol}`}
+              </div>
             </div>
           ),
         };

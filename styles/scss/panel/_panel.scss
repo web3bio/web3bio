@@ -141,6 +141,9 @@
         min-height: 200px;
         box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.15);
         border-radius: 12px;
+        img{
+            border-radius: 12px;
+        }
     }
 
     .nft-dialog-info {
@@ -153,10 +156,6 @@
             display: flex;
             align-items: center;
             gap: 4px;
-
-            .avatar {
-                border-radius: 4px;
-            }
 
             .title {
                 font-weight: 400;
