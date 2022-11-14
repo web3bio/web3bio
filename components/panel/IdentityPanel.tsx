@@ -1,32 +1,57 @@
 import Image from "next/image";
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import SVG from "react-inlinesvg";
+import { useAsync } from "react-use";
 import { getEnumAsArray } from "../../utils/utils";
+import { resolveENSDomain } from "../apis/alchemy";
 import { FeedsTab } from "./FeedsTab";
 import { NFTsTab } from "./NFTsTab";
+import { ProfileTab } from "./ProfileTab";
 
 export enum TabsMap {
-  // profile = "Profile",
+  profile = "Profile",
   feeds = "Feeds",
   nfts = "NFTs",
 }
 
 const IdentityPanelRender = (props) => {
   const { onClose, identity, onTabChange, curTab } = props;
-  const [activeTab, setActiveTab] = useState(curTab || TabsMap.feeds);
+  const [activeTab, setActiveTab] = useState(curTab || TabsMap.profile);
   const [curAsset, setCurAsset] = useState(null);
   const renderContent = () => {
     return {
+      [TabsMap.profile]: (
+        <ProfileTab
+          identity={identity}
+          nfts={
+            nfts.value
+              ? nfts.value.find(
+                  (x) =>
+                    x.title.toLocaleLowerCase() ==
+                    identity.displayName.toLowerCase()
+                )
+              : []
+          }
+        />
+      ),
       [TabsMap.feeds]: <FeedsTab identity={identity} />,
       [TabsMap.nfts]: (
-        <NFTsTab defaultOpen={!!curAsset} onShowDetail={resolveOnShowDetail} identity={identity} />
+        <NFTsTab
+          defaultOpen={!!curAsset}
+          onShowDetail={resolveOnShowDetail}
+          identity={identity}
+        />
       ),
     }[activeTab];
   };
 
-  const resolveOnShowDetail = (asset)=>{
+  const nfts = useAsync(async () => {
+    return await resolveENSDomain(identity.identity);
+  });
+
+  const resolveOnShowDetail = (asset) => {
     // todo: to resolve url && nft dialog
-  }
+  };
   return (
     <div className="panel-container">
       <div className="close-icon-box" onClick={onClose}>

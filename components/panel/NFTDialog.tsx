@@ -35,6 +35,7 @@ const NFTDialogRender = (props) => {
     resolveIPFS_URL(asset.mediaURL) || metadata
       ? resolveIPFS_URL(metadata.image)
       : null;
+  console.log('current asset', asset)
   return (
     <div className="panel-container" style={{ overflow: "hidden auto" }}>
       <div className="close-icon-box" onClick={onClose}>

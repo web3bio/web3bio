@@ -1,13 +1,11 @@
 import { memo } from "react";
 import SVG from "react-inlinesvg";
-import { NFTCollections } from "./NFTCollections";
-import { Poaps } from "./Poaps";
 
 const RenderProfileTab = (props) => {
-  const {address} = props
-  
+  const { nfts, identity } = props;
+  console.log(nfts, "nfts");
   return (
-    <div>
+    <div className="profile-container">
       <div className="profile-description">
         sujiyan.eth founder of @realmasknetwork $Mask; maintain mstdn.jp
         mastodon.cloud ; Engineer; Journalist; FOSS/Anti996; 中文/日本語
@@ -39,8 +37,8 @@ const RenderProfileTab = (props) => {
         </button>
       </div>
 
-      <NFTCollections />
-      <Poaps />
+      {/* <NFTCollections identity={identity} />
+      <Poaps /> */}
     </div>
   );
 };

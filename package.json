@@ -13,6 +13,7 @@
     "@antv/g6": "^4.7.0",
     "@antv/g6-react-node": "^1.4.5",
     "@apollo/client": "^3.6.9",
+    "alchemy-sdk": "^2.2.1",
     "bignumber.js": "^9.1.0",
     "date-fns": "^2.29.3",
     "graphql": "^15.8.0",

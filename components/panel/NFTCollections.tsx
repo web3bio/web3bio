@@ -64,7 +64,6 @@ const RenderNFTCollections = (props) => {
 
       <div className="nft-collection-list">
         {data.data.map((x, idx) => {
-          console.log(x, "collection");
           return (
             <div className="collection-item" key={idx} id={x.contract_address}>
               <div className="nft-collection-title-box">

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { memo } from "react";
+import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
 const RenderPoaps = (props) => {
   const { poapList = [1, 2, 3] } = props;
@@ -10,10 +11,7 @@ const RenderPoaps = (props) => {
         {poapList.map((x, idx) => {
           return (
             <div key={idx} className="collection-nft-item">
-              <Image
-                src="https://i.seadn.io/gcs/files/ad509bd6fb10b3f256481d1c0b297cf9.jpg?auto=format&w=384"
-                alt=""
-              />
+              <NFTAssetPlayer src="https://i.seadn.io/gcs/files/ad509bd6fb10b3f256481d1c0b297cf9.jpg?auto=format&w=384" />
             </div>
           );
         })}

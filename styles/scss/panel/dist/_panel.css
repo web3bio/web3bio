@@ -78,6 +78,11 @@
   cursor: pointer;
 }
 
+.profile-container{
+  padding: 0 40px;
+  box-sizing: border-box;
+}
+
 .records {
   margin: 20px 0;
   display: flex;
