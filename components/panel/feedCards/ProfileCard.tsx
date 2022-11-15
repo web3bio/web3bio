@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { formatText } from "../../../utils/utils";
 import { Tag, Type } from "../../apis/rss3/types";
+import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
 
 export function isProfileFeed(feed) {
   return feed.tag === Tag.Social && feed.type === Type.Profile;
@@ -27,14 +28,12 @@ const RenderProfileFeed = (props) => {
 
         {metadata && (
           <div className={"feed-item-main"}>
-            <picture>
-              <img
-                className="feed-nft-img"
-                style={{ width: imageSize, height: imageSize }}
-                src={metadata.profile_uri[0]}
-                alt="profile"
-              />
-            </picture>
+            <NFTAssetPlayer
+              className="feed-nft-img"
+              style={{ width: imageSize, height: imageSize }}
+              src={metadata.profile_uri[0]}
+              type='image/png'
+            />
             <div className="feed-nft-info">
               <div className="nft-title">
                 {metadata.name || metadata.handle}

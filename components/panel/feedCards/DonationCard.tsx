@@ -1,6 +1,7 @@
 import { memo, useState } from "react";
 import { formatText, formatValue } from "../../../utils/utils";
 import { Tag } from "../../apis/rss3/types";
+import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
 
 export function isDonationFeed(feed) {
   return feed.tag === Tag.Donation;
@@ -29,14 +30,12 @@ const RenderDonationCard = (props) => {
 
         {metadata && (
           <div className={"feed-item-main"}>
-            <picture>
-              <img
-                className="feed-nft-img"
-                style={{ width: 64, height: 64 }}
-                src={metadata.logo}
-                alt="comment"
-              />
-            </picture>
+            <NFTAssetPlayer
+              className="feed-nft-img"
+              style={{ width: 64, height: 64 }}
+              src={metadata.logo}
+            />
+            <picture></picture>
             <div className="feed-nft-info">
               <div className="nft-title">{metadata?.title}</div>
               <div className="nft-subtitle">{metadata?.description}</div>

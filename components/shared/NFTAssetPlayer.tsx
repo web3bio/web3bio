@@ -21,7 +21,7 @@ const isVideo = (type) => {
 
 
 const RenderNFTAssetPlayer = (props) => {
-  const { type, className, src } = props;
+  const { type = 'image/png', className, src } = props;
   return (
     <div className={className}>
       {IsImage(type) ? <ImageLoader src={src || DefaultIcon} /> : <Video src={src} />}

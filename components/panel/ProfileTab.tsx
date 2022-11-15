@@ -1,9 +1,17 @@
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import SVG from "react-inlinesvg";
+import { provider, ENSInstance } from "../../utils/ens";
 
 const RenderProfileTab = (props) => {
-  const { nfts, identity } = props;
-  console.log(nfts, "nfts");
+  const { identity } = props;
+  console.log(provider, "gggg");
+  useEffect(() => {
+    // const setProvider = async () => {
+    //   await ENSInstance.setProvider(provider);
+    // };
+    // setProvider();
+    // console.log(ENSInstance,'gggg')
+  }, []);
   return (
     <div className="profile-container">
       <div className="profile-description">

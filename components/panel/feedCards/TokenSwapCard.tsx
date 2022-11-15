@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { formatValue } from "../../../utils/utils";
 import { Tag, Type } from "../../apis/rss3/types";
+import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
 export function isTokenSwapFeed(feed) {
   return feed.tag === Tag.Exchange && feed.type === Type.Swap;
 }
@@ -25,21 +26,17 @@ const RenderTokenSwapCard = (props) => {
 
         {metadata ? (
           <div className={"feed-item-main"}>
-            <div>
-              <picture>
-                <img
-                  className="feed-swap-img"
-                  src={metadata.from.image}
-                  alt="ft1"
-                />
-              </picture>
-              <picture>
-                <img
-                  className="feed-swap-img"
-                  src={metadata.to.image}
-                  alt="ft2"
-                />
-              </picture>
+            <div style={{ display: "flex" }}>
+              <NFTAssetPlayer
+                className="feed-swap-img"
+                src={metadata.from.image}
+                alt="ft1"
+              />
+              <NFTAssetPlayer
+                className="feed-swap-img"
+                src={metadata.to.image}
+                alt="ft2"
+              />
             </div>
 
             <div className="feed-nft-info">

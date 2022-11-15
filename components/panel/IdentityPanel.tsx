@@ -3,7 +3,6 @@ import { memo, useEffect, useState } from "react";
 import SVG from "react-inlinesvg";
 import { useAsync } from "react-use";
 import { getEnumAsArray } from "../../utils/utils";
-import { resolveENSDomain } from "../apis/alchemy";
 import { FeedsTab } from "./FeedsTab";
 import { NFTsTab } from "./NFTsTab";
 import { ProfileTab } from "./ProfileTab";
@@ -23,15 +22,7 @@ const IdentityPanelRender = (props) => {
       [TabsMap.profile]: (
         <ProfileTab
           identity={identity}
-          nfts={
-            nfts.value
-              ? nfts.value.find(
-                  (x) =>
-                    x.title.toLocaleLowerCase() ==
-                    identity.displayName.toLowerCase()
-                )
-              : []
-          }
+         
         />
       ),
       [TabsMap.feeds]: <FeedsTab identity={identity} />,
@@ -44,10 +35,6 @@ const IdentityPanelRender = (props) => {
       ),
     }[activeTab];
   };
-
-  const nfts = useAsync(async () => {
-    return await resolveENSDomain(identity.identity);
-  });
 
   const resolveOnShowDetail = (asset) => {
     // todo: to resolve url && nft dialog

@@ -2,6 +2,7 @@ import { memo } from "react";
 import { formatTimestamp } from "../../../utils/date";
 import { formatText, formatValue, isSameAddress } from "../../../utils/utils";
 import { Tag, Type } from "../../apis/rss3/types";
+import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
 
 export const isTokenTransferFeed = (feed) => {
   return (
@@ -31,9 +32,11 @@ const RenderTokenOperationCard = (props) => {
 
         {metadata ? (
           <div className={"feed-item-main"}>
-            <picture>
-              <img className="feed-nft-img" src={metadata.image} alt="ft" />
-            </picture>
+            <NFTAssetPlayer
+              className="feed-nft-img"
+              src={metadata.image}
+              type="image/png"
+            />
             <div className="feed-nft-info">
               <div className="nft-title">
                 {formatValue(metadata)} {metadata.symbol}

@@ -1,6 +1,7 @@
 import { memo, useMemo } from "react";
 import { formatText, formatValue, isSameAddress } from "../../../utils/utils";
 import { CardType, Tag, Type } from "../../apis/rss3/types";
+import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
 export function isCollectibleFeed(feed) {
   return feed.tag === Tag.Collectible;
 }
@@ -105,14 +106,12 @@ const RenderCollectibleCard = (props) => {
 
         {metadata ? (
           <div className={"feed-item-main"}>
-            <picture>
-              <img
-                className="feed-nft-img"
-                width={imageSize}
-                src={metadata.image}
-                alt="ft"
-              />
-            </picture>
+            <NFTAssetPlayer
+              className="feed-nft-img"
+              src={metadata.image}
+              type='image/png'
+            />
+
             <div className="feed-nft-info">
               <div className="nft-title">
                 {formatValue(metadata)} {metadata.symbol}

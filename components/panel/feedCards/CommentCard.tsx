@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { formatText } from "../../../utils/utils";
 import { Tag, Type } from "../../apis/rss3/types";
+import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
 
 export function isCommentFeed(feed) {
   return feed.tag === Tag.Social && feed.type === Type.Comment;
@@ -29,14 +30,11 @@ const RenderCommentFeed = (props) => {
 
         {commentTarget && (
           <div className={"feed-item-main"}>
-            <picture>
-              <img
-                className="feed-nft-img"
-                style={{ width: 64, height: 64 }}
-                src={commentTarget.media[0].address}
-                alt="comment"
-              />
-            </picture>
+            <NFTAssetPlayer
+              className="feed-nft-img"
+              src={commentTarget.media[0].address}
+            />
+            <picture></picture>
             <div className="feed-nft-info">{commentTarget?.body}</div>
           </div>
         )}
