@@ -6,11 +6,11 @@ const RenderProfileTab = (props) => {
   const { identity } = props;
   console.log(provider, "gggg");
   useEffect(() => {
-    // const setProvider = async () => {
-    //   await ENSInstance.setProvider(provider);
-    // };
-    // setProvider();
-    // console.log(ENSInstance,'gggg')
+    const setProvider = async () => {
+      await ENSInstance.setProvider(provider);
+    };
+    setProvider();
+    console.log(ENSInstance,'gggg')
   }, []);
   return (
     <div className="profile-container">

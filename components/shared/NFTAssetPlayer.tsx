@@ -17,14 +17,19 @@ const isVideo = (type) => {
   return type === "vedio/mp4";
 };
 
-
-
-
 const RenderNFTAssetPlayer = (props) => {
-  const { type = 'image/png', className, src } = props;
+  const { type = "image/png", className, src, width, height } = props;
   return (
     <div className={className}>
-      {IsImage(type) ? <ImageLoader src={src || DefaultIcon} /> : <Video src={src} />}
+      {IsImage(type) ? (
+        <ImageLoader
+          width={width ?? 24}
+          height={height ?? 24}
+          src={src || DefaultIcon}
+        />
+      ) : (
+        <Video src={src} />
+      )}
     </div>
   );
 };
