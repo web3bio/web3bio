@@ -1,5 +1,6 @@
 import { memo, useState } from "react";
 import Image from "next/image";
+import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
 const RenderCollectionSwitcher = (props) => {
   const { collections, currentSelect, onSelect } = props;
@@ -23,9 +24,7 @@ const RenderCollectionSwitcher = (props) => {
           className="dropdown-button"
           onClick={() => setDisplayMenu(!displayMenu)}
         >
-          <picture className="collection-img">
-            <img className="collection-img" src={active.url} alt="" />
-          </picture>
+          <NFTAssetPlayer className="collection-img" src={active.url} />
           <div className="collection-name">{active.name}</div>
           <div className="collection-switch-arrow">
             <Image width={8} height={8} src="/icons/switch.svg" alt="" />
@@ -43,14 +42,9 @@ const RenderCollectionSwitcher = (props) => {
                 }
                 key={item.key}
               >
-                <picture className="collection-img">
-                  <img className="collection-img" src={item.url} alt="" />
-                </picture>
-
+                <NFTAssetPlayer className="collection-img" src={item.url} />
                 <div className="collection-name">{item.name}</div>
-                <div>
-                   {/* not see */}
-                </div>
+                <div>{/* not see */}</div>
               </div>
             ))}
           </div>
