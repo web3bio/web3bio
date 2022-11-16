@@ -13,7 +13,7 @@
     "@antv/g6": "^4.7.0",
     "@antv/g6-react-node": "^1.4.5",
     "@apollo/client": "^3.6.9",
-    "@ensdomains/ensjs": "^3.0.0-alpha.34",
+    "@ensdomains/ensjs": "^2.1.0",
     "alchemy-sdk": "^2.2.1",
     "bignumber.js": "^9.1.0",
     "date-fns": "^2.29.3",

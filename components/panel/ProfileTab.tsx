@@ -1,14 +1,17 @@
 import { memo, useEffect } from "react";
 import SVG from "react-inlinesvg";
 import { useAsync } from "react-use";
-import { ENSInstance } from "../../utils/ens";
+import { ens } from "../../utils/ens";
+
 
 const RenderProfileTab = (props) => {
   const { identity } = props;
-  const res = useAsync(async()=>{
-    return await ENSInstance.getProfile(identity.identity)
-  })
-  console.log(res,'ens')
+
+  const res = useAsync(async () => {
+    console.log(ens,'ggg')
+    return await ens.name("brantly.eth").getText('com.github');
+  });
+  console.log(res, "ens");
 
   return (
     <div className="profile-container">
