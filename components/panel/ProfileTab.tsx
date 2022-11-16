@@ -1,17 +1,15 @@
 import { memo, useEffect } from "react";
 import SVG from "react-inlinesvg";
-import { provider, ENSInstance } from "../../utils/ens";
+import { useAsync } from "react-use";
+import { ENSInstance } from "../../utils/ens";
 
 const RenderProfileTab = (props) => {
   const { identity } = props;
-  console.log(provider, "gggg");
-  useEffect(() => {
-    const setProvider = async () => {
-      await ENSInstance.setProvider(provider);
-    }; 
-    setProvider();
-    console.log(ENSInstance,'gggg')
-  }, []);
+  const res = useAsync(async()=>{
+    return await ENSInstance.getProfile(identity.identity)
+  })
+  console.log(res,'ens')
+
   return (
     <div className="profile-container">
       <div className="profile-description">
