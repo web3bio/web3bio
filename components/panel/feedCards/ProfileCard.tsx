@@ -12,7 +12,7 @@ const RenderProfileFeed = (props) => {
   const user = feed.owner || identity.identity;
   const action = feed.actions[0];
   const metadata = action.metadata;
-  const imageSize = 64;
+  const imageSize = 40;
 
   return (
     <div className="feed-item-box">
@@ -30,7 +30,8 @@ const RenderProfileFeed = (props) => {
           <div className={"feed-item-main"}>
             <NFTAssetPlayer
               className="feed-nft-img"
-              style={{ width: imageSize, height: imageSize }}
+              width={imageSize}
+              height={imageSize}
               src={metadata.profile_uri[0]}
               type='image/png'
             />

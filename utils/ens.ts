@@ -1,7 +1,7 @@
 import { ENS } from "@ensdomains/ensjs";
 import { ethers } from "ethers";
 
-const EthereumRPC = "https://mainnet.infura.io/v3/";
+const EthereumRPC = "https://eth-mainnet.g.alchemy.com/v2/";
 
 const provider = new ethers.providers.JsonRpcProvider(EthereumRPC, 1);
 

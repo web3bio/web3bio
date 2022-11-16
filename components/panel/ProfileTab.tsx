@@ -8,7 +8,7 @@ const RenderProfileTab = (props) => {
   useEffect(() => {
     const setProvider = async () => {
       await ENSInstance.setProvider(provider);
-    };
+    }; 
     setProvider();
     console.log(ENSInstance,'gggg')
   }, []);
