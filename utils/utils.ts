@@ -71,8 +71,27 @@ export function formatBalance(
   return raw.includes(".") ? raw.replace(/0+$/, "").replace(/\.$/, "") : raw;
 }
 
+export function isSameAddress(
+  address?: string | undefined,
+  otherAddress?: string | undefined
+): boolean {
+  if (!address || !otherAddress) return false;
+  return address.toLowerCase() === otherAddress.toLowerCase();
+}
 
-export function isSameAddress(address?: string | undefined, otherAddress?: string | undefined): boolean {
-  if (!address || !otherAddress) return false
-  return address.toLowerCase() === otherAddress.toLowerCase()
+export function resolveSocialMediaLink(name, type) {
+  switch (type) {
+    case "github":
+      return `https://github.com/${name}`;
+    case "twitter":
+      return `https://twitter.com/${name}`;
+    case "telegram":
+      return `https://t.me/${name}`;
+    case "reddit":
+      return `https://www.reddit.com/user/${name}`;
+    case "discord":
+      return `https://discord.gg/${name}`;
+    default:
+      return `https://twitter.com/${name}`;
+  }
 }

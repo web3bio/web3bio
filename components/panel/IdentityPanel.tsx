@@ -5,6 +5,10 @@ import { getEnumAsArray } from "../../utils/utils";
 import { FeedsTab } from "./FeedsTab";
 import { NFTsTab } from "./NFTsTab";
 import { ProfileTab } from "./ProfileTab";
+import { useAsync } from "react-use";
+import { ens } from "../../utils/ens";
+import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
+import { Loading } from "../shared/Loading";
 
 export enum TabsMap {
   profile = "Profile",
@@ -17,6 +21,10 @@ const IdentityPanelRender = (props) => {
   const [activeTab, setActiveTab] = useState(curTab || TabsMap.profile);
   const [curAsset, setCurAsset] = useState(null);
   const [copied, setCopied] = useState(null);
+
+  const { value: avatar, loading: avatarLoading } = useAsync(async () => {
+    return await ens.name(identity.displayName).getText("avatar");
+  });
   const onCopySuccess = () => {
     setCopied(true);
     setTimeout(() => {
@@ -47,12 +55,7 @@ const IdentityPanelRender = (props) => {
       </div>
       <div className="panel-identity-basic">
         <div className="identity-avatar-container">
-          <picture>
-            <img
-              src="https://pbs.twimg.com/profile_images/1582110337569935362/xrMkOl7h_400x400.jpg"
-              alt="prifile_avatar"
-            />
-          </picture>
+          {avatarLoading ? <Loading /> : <NFTAssetPlayer src={avatar ?? ""} />}
         </div>
         <div className="identity-basic-info">
           <div className="displayName">{identity.displayName}</div>

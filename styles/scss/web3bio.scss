@@ -291,7 +291,10 @@ body {
   }
 
   .loading-container {
-    margin: 2rem auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 }
 
@@ -661,5 +664,3 @@ body {
   transform: translate(-50%, 0);
   z-index: $zindex-3;
 }
-
-

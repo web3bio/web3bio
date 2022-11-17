@@ -54,6 +54,7 @@
         padding-left: 30px;
 
         .identity-avatar-container {
+            position: relative;
             width: 100%;
             height: 100%;
             max-width: 64px;
@@ -482,6 +483,10 @@
 .profile-container {
     padding: 0 40px;
     box-sizing: border-box;
+    .profile-basic-info-loading{
+        position: relative;
+        min-height: 30vh;
+    }
 }
 
 // Tabs
