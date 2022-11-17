@@ -8,7 +8,7 @@ const provider = new ethers.providers.JsonRpcProvider(EthereumRPC, 1);
 const ens = new ENS({ provider, ensAddress: getEnsAddress("1") });
 
 const globalRecordKeys = {
-  base: ["avatar", "description", "display"],
+  base: ["avatar", "description"],
   socialMedia: [
     "com.github",
     "com.discord",

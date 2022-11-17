@@ -9,6 +9,7 @@ import { useAsync } from "react-use";
 import { ens } from "../../utils/ens";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { Loading } from "../shared/Loading";
+import { resolveIPFS_URL } from "../../utils/ipfs";
 
 export enum TabsMap {
   profile = "Profile",
@@ -55,7 +56,7 @@ const IdentityPanelRender = (props) => {
       </div>
       <div className="panel-identity-basic">
         <div className="identity-avatar-container">
-          {avatarLoading ? <Loading /> : <NFTAssetPlayer src={avatar ?? ""} />}
+          {avatarLoading ? <Loading /> : <NFTAssetPlayer src={resolveIPFS_URL(avatar) ?? ""} />}
         </div>
         <div className="identity-basic-info">
           <div className="displayName">{identity.displayName}</div>

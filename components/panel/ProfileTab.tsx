@@ -60,6 +60,17 @@ const RenderProfileTab = (props) => {
   });
   console.log(ensRecords, "ens");
 
+  const openSocialMediaLink = (url: string, type: string) => {
+    let resolvedURL = "";
+    if (url.startsWith("https")) {
+      resolvedURL = url;
+    } else {
+      resolvedURL = resolveSocialMediaLink(url, type);
+    }
+
+    window.open(resolvedURL, "_blank");
+  };
+
   return (
     <div className="profile-container">
       {ensLoading || !ensRecords ? (
@@ -79,15 +90,12 @@ const RenderProfileTab = (props) => {
                     key={idx}
                     className="form-button btn"
                     style={{ position: "relative" }}
-                    onClick={() =>
-                      window.open(
-                        resolveSocialMediaLink(
-                          ensRecords.socialMedia[x],
-                          socialButtonMapping[x].type
-                        ),
-                        "_blank"
-                      )
-                    }
+                    onClick={() => {
+                      openSocialMediaLink(
+                        ensRecords.socialMedia[x],
+                        socialButtonMapping[x].type
+                      );
+                    }}
                   >
                     <SVG
                       src={socialButtonMapping[x].icon}
