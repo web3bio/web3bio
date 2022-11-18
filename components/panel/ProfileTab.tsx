@@ -4,6 +4,7 @@ import { useAsync } from "react-use";
 import { ens, globalRecordKeys } from "../../utils/ens";
 import { resolveSocialMediaLink } from "../../utils/utils";
 import { Loading } from "../shared/Loading";
+import { NFTOverview } from "./NFTOverview";
 import { Poaps } from "./Poaps";
 
 interface ENSRecords {
@@ -58,7 +59,6 @@ const RenderProfileTab = (props) => {
     }
     return obj;
   });
-  console.log(ensRecords, "ens");
 
   const openSocialMediaLink = (url: string, type: string) => {
     let resolvedURL = "";
@@ -111,7 +111,7 @@ const RenderProfileTab = (props) => {
         </div>
       )}
 
-      {/* <NFTCollections identity={identity} /> */}
+      <NFTOverview identity={identity} />
       <Poaps identity={identity} />
     </div>
   );

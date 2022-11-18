@@ -252,7 +252,14 @@
     gap: 10px;
     width: 100%;
     overflow: hidden;
-
+    margin: 20px 0;
+    .nft-collection-title {
+        font-weight: 900;
+        font-size: 14px;
+        line-height: 20px;
+        text-transform: uppercase;
+        color: #000000;
+    }
 
     .collection-switcher {
         background: #ECECEC;
@@ -486,6 +493,7 @@
     .profile-basic-info-loading{
         position: relative;
         min-height: 30vh;
+        margin-bottom: 40px;
     }
 }
 

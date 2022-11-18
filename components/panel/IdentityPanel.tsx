@@ -12,8 +12,8 @@ import { Loading } from "../shared/Loading";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 
 export enum TabsMap {
-  profile = "Profile",
   feeds = "Feeds",
+  profile = "Profile",
   nfts = "NFTs",
 }
 
