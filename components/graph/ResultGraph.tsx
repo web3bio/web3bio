@@ -397,7 +397,7 @@ const RenderResultGraph = (props) => {
   }, [data]);
 
   return (
-    <div className="graph-mask" ref={tooltipContainer} onClick={onClose}>
+    <div className="identity-graph-modal" ref={tooltipContainer} onClick={onClose}>
       {data && (
         <div
           className="graph-container"
@@ -414,7 +414,7 @@ const RenderResultGraph = (props) => {
                 Identity Graph for<strong className="ml-1">{title}</strong>
               </span>
             </div>
-            <div className="btn btn-link graph-close" onClick={onClose}>
+            <div className="btn btn-link btn-close" onClick={onClose}>
               <SVG src={'/icons/icon-close.svg'} width="20" height="20" />
             </div>
           </div>

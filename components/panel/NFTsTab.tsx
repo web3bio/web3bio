@@ -7,7 +7,7 @@ const RenderNFTsTab = (props) => {
   const [dialogOpen, setDialogOpen] = useState(defaultOpen);
   const [asset, setAsset] = useState("");
   return (
-    <div>
+    <>
       <NFTCollections
         identity={identity}
         onShowDetail={(a) => {
@@ -24,7 +24,7 @@ const RenderNFTsTab = (props) => {
           onClose={() => setDialogOpen(false)}
         />
       )}
-    </div>
+    </>
   );
 };
 

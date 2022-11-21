@@ -44,26 +44,21 @@ const RenderAccountItem = (props) => {
                     <SVG src="icons/icon-copy.svg" width={20} height={20} />
                     {isCopied && <div className="tooltip-copy">COPIED</div>}
                   </Clipboard>
-                  <a
-                    className="action text-gray"
-                    href={`https://etherscan.io/address/${identity.identity}`}
-                    title="Open in Etherscan Explorer"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <SVG src="icons/icon-open.svg" width={20} height={20} />
-                  </a>
-                  <a
-                    className=" action"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      props.showPanel(identity);
-                    }}
-                  >
-                    DETAIL
-                  </a>
                 </div>
+              </div>
+              <div className="actions">
+                <button
+                  className="btn btn-sm btn-link action"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    props.showPanel(identity);
+                  }}
+                  title="Open Identity Panel"
+                >
+                  <SVG src="icons/icon-open.svg" width={20} height={20} />
+                  Open
+                </button>
               </div>
             </div>
             {identity.nft?.length > 0 && (

@@ -9,11 +9,12 @@ import { useAsync } from "react-use";
 import { ens } from "../../utils/ens";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { Loading } from "../shared/Loading";
+import { formatText } from "../../utils/utils";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 
 export enum TabsMap {
-  feeds = "Feeds",
   profile = "Profile",
+  feeds = "Feeds",
   nfts = "NFTs",
 }
 
@@ -50,52 +51,64 @@ const IdentityPanelRender = (props) => {
     // todo: to resolve url && nft dialog
   };
   return (
-    <div className="panel-container">
-      <div className="close-icon-box" onClick={onClose}>
-        <SVG className="close-icon" src={"/icons/icon-close.svg"} />
-      </div>
-      <div className="panel-identity-basic">
-        <div className="identity-avatar-container">
-          {avatarLoading ? <Loading /> : <NFTAssetPlayer src={resolveIPFS_URL(avatar) ?? ""} />}
-        </div>
-        <div className="identity-basic-info">
-          <div className="displayName">{identity.displayName}</div>
-          <div className="identity">
-            {identity.identity}
-            <Clipboard
-              component="div"
-              className="action"
-              data-clipboard-text={identity.identity}
-              onSuccess={onCopySuccess}
-            >
-              <SVG src="icons/icon-copy.svg" width={20} height={20} />
-              {copied && <div className="tooltip-copy">COPIED</div>}
-            </Clipboard>
+    <div className="identity-panel">
+      <div className="panel-container">
+        <div className="panel-header">
+          <div className="social">
+            <div className="identity-avatar">
+              {avatarLoading ? <Loading /> : <NFTAssetPlayer src={resolveIPFS_URL(avatar) ?? ""} />}
+            </div>
+            <div className="identity-content content">
+              <div className="content-title text-bold">
+                {identity.displayName
+                  ? identity.displayName
+                  : formatText(identity.identity)}
+              </div>
+              <div className="content-subtitle text-gray">
+                <div className="address hide-xs">{identity.identity}</div>
+                <div className="address show-xs">
+                  {formatText(identity.identity)}
+                </div>
+                <Clipboard
+                  component="div"
+                  className="action"
+                  data-clipboard-text={identity.identity}
+                  onSuccess={onCopySuccess}
+                >
+                  <SVG src="icons/icon-copy.svg" width={20} height={20} />
+                  {copied && <div className="tooltip-copy">COPIED</div>}
+                </Clipboard>
+              </div>
+            </div>
           </div>
+          <div className="btn btn-link btn-close" onClick={onClose}>
+            <SVG src={'/icons/icon-close.svg'} width="20" height="20" />
+          </div>
+          <ul className="panel-tab">
+            {getEnumAsArray(TabsMap).map((x, idx) => {
+              return (
+                <li
+                  key={idx}
+                  className={
+                    activeTab === x.value ? "tab-item active" : "tab-item"
+                  }
+                >
+                  <a 
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setActiveTab(x.value);
+                      onTabChange(x.value);
+                    }}
+                  >{x.value}</a>
+                </li>
+              );
+            })}
+          </ul>
         </div>
-      </div>
-      <div className="panel-tab-contianer">
-        <ul className="panel-tab">
-          {getEnumAsArray(TabsMap).map((x, idx) => {
-            return (
-              <li
-                key={idx}
-                className={
-                  activeTab === x.value ? "tab-item active" : "tab-item"
-                }
-                onClick={() => {
-                  setActiveTab(x.value);
-                  onTabChange(x.value);
-                }}
-              >
-                <a href="#">{x.value}</a>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
 
-      <div className="panel-body">{renderContent()}</div>
+        <div className="panel-body">{renderContent()}</div>
+      </div>
     </div>
   );
 };
