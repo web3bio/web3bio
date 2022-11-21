@@ -6,6 +6,20 @@ import SVG from "react-inlinesvg";
 import { SearchResultDomain } from "../components/search/SearchResultDomain";
 import { SearchResultQuery } from "../components/search/SearchResultQuery";
 
+// export async function getStaticPaths() {
+//   return {
+//     paths: [{ params: { id: '1' } }, { params: { id: '2' } }],
+//     fallback: false, // can also be true or 'blocking'
+//   }
+// }
+
+// export async function getStaticProps(context) {
+//   return {
+//     props: { post: {} },
+//   }
+// }
+
+
 export default function Home() {
   const [searchFocus, setSearchFocus] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");

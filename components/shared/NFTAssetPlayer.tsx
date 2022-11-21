@@ -9,7 +9,7 @@ const IsImage = (type) => {
     "image/jepg",
     "image/jpg",
     "image/svg",
-    "text/html",
+    "text/html"
   ].includes(type);
 };
 

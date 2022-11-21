@@ -47,6 +47,23 @@ const RenderNFTCollections = (props) => {
   if (isLoading) return <Loading />;
   if (isError) return <Error text={isError} />;
   if (!data || !data.data) return <Empty />;
+
+  const resolveMediaURL = (asset) => {
+    if (asset && asset.metadata_json) {
+      const json = JSON.parse(asset.metadata_json);
+      const origin = json.image || json.content_uri;
+      if (origin) {
+        return origin.includes("base64")
+          ? origin
+          : resolveIPFS_URL(origin);
+      }
+    }
+    if (asset && ["text/mp4"].includes(asset.content_type)) {
+      return resolveIPFS_URL(asset.content_uri ?? asset.image_uri);
+    }
+    return resolveIPFS_URL(asset.image_uri ?? asset.content_uri);
+  };
+  console.log(data.data, "collections");
   return (
     <div className="nft-collection-container">
       {collections && collections.length && (
@@ -76,10 +93,7 @@ const RenderNFTCollections = (props) => {
               </div>
               <div className="nft-item-coantiner">
                 {x.assets.map((y, ydx) => {
-                  const mediaURL =
-                    y.content_type === "video/mp4"
-                      ? resolveIPFS_URL(y.content_uri ?? y.image_uri)
-                      : resolveIPFS_URL(y.image_uri ?? y.content_uri);
+                  const mediaURL = resolveMediaURL(y);
                   return (
                     <div
                       key={ydx}
@@ -97,7 +111,7 @@ const RenderNFTCollections = (props) => {
                     >
                       <NFTAssetPlayer
                         className={"img-container"}
-                        type={y.content_type ?? "image/png"}
+                        type={"image/png"}
                         src={mediaURL}
                       />
                       <div className="collection-name">{x.contract_name}</div>
