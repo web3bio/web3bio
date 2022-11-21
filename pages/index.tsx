@@ -6,20 +6,6 @@ import SVG from "react-inlinesvg";
 import { SearchResultDomain } from "../components/search/SearchResultDomain";
 import { SearchResultQuery } from "../components/search/SearchResultQuery";
 
-// export async function getStaticPaths() {
-//   return {
-//     paths: [{ params: { id: '1' } }, { params: { id: '2' } }],
-//     fallback: false, // can also be true or 'blocking'
-//   }
-// }
-
-// export async function getStaticProps(context) {
-//   return {
-//     props: { post: {} },
-//   }
-// }
-
-
 export default function Home() {
   const [searchFocus, setSearchFocus] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -90,7 +76,6 @@ export default function Home() {
         />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       </Head>
-
       <main className="web3bio-container">
         <div className="web3bio-cover flare"></div>
 
@@ -150,7 +135,7 @@ export default function Home() {
             </form>
             {searchPlatform ? (
               searchPlatform === "ENS" || searchPlatform === "dotbit" ? (
-                <SearchResultDomain 
+                <SearchResultDomain
                   searchTerm={searchTerm}
                   searchPlatform={searchPlatform}
                 />
@@ -205,8 +190,7 @@ export default function Home() {
                     Web3.bio
                   </a>{" "}
                   project crafted with{" "}
-                  <span className="text-pride">&hearts;</span>{" "}·{" "}Built
-                  with{" "}
+                  <span className="text-pride">&hearts;</span> · Built with{" "}
                   <a
                     href="https://next.id"
                     target="_blank"
