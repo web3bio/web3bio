@@ -26,7 +26,6 @@
 @import "modals";
 @import "navs";
 @import "pagination";
-@import "tabs";
 @import "toasts";
 @import "tooltips";
 
@@ -51,7 +50,7 @@ body {
 
 .web3bio-container {
   min-height: 100vh;
-  padding: 1rem .5rem;
+  padding: .5rem;
   width: 100vw;
 }
 
@@ -67,11 +66,11 @@ body {
     radial-gradient(at 61% 57%, $pride-color-7 0px, transparent 50%);
   display: block;
   filter: blur(1rem);
-  height: 90vh;
+  height: 100vh;
   left: 0;
   opacity: .75;
   position: fixed;
-  top: 5vh;
+  top: 0;
   width: 100vw;
   z-index: -1;
 
@@ -306,77 +305,6 @@ body {
   position: relative;
   z-index: 99;
 
-  .graph-mask {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, .5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .graph-header {
-      align-items: center;
-      display: flex;
-      font-size: .7rem;
-      justify-content: space-between;
-      left: .5rem;
-      position: absolute;
-      right: .5rem;
-      top: .5rem;
-      z-index: 999;
-
-      .graph-title {
-        align-items: center;
-        border-radius: .4rem;
-        display: flex;
-        line-height: 1rem;
-        padding: .4rem;
-        pointer-events: none;
-        user-select: none;
-        word-break: break-all;
-      }
-
-      .graph-close {
-        align-items: center;
-        display: flex;
-      }
-
-      svg {
-        flex-shrink: 0;
-      }
-    }
-
-    .graph-container {
-      background: #fff;
-      border-radius: .4rem;
-      box-shadow: 0 .4rem 2rem rgba(0, 0, 0, .5);
-      height: 94%;
-      max-height: 40rem;
-      max-width: 64rem;
-      position: relative;
-      width: 94%;
-
-      .loading-mask {
-        border-radius: .4rem;
-        position: absolute;
-        height: 94%;
-        max-height: 40rem;
-        max-width: 64rem;
-        width: 94%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 99;
-        background: #fff;
-      }
-    }
-  }
-
   .search-result-header {
     display: flex;
     align-items: center;
@@ -483,57 +411,6 @@ body {
     }
   }
 
-  .social {
-    align-items: center;
-    border-radius: .2rem;
-    display: flex;
-    flex: 1;
-    font-size: .6rem;
-    line-height: 1rem;
-    padding: .1rem .3rem .1rem .1rem;
-    text-decoration: none;
-    transition: all .25s ease-in-out;
-
-    .icon {
-      border-radius: $border-radius;
-      color: $dark-color;
-      font-size: .7rem;
-      height: 1.6rem;
-      margin-right: .2rem;
-      padding: .3rem;
-      width: 1.6rem;
-    }
-
-    .content {
-      flex: 1;
-    }
-
-    .content-title {
-      font-size: .9rem;
-      line-height: 1.2rem;
-    }
-
-    .content-subtitle {
-      align-items: center;
-      display: flex;
-      font-size: .6rem;
-      line-height: 1rem;
-
-      .action {
-        cursor: pointer;
-        flex: 0 1;
-        height: 1rem;
-        margin-left: .2rem;
-        position: relative;
-        width: 1rem;
-      }
-    }
-
-    .title {
-      font-size: .7rem;
-    }
-  }
-
   .label-ens {
     align-items: center;
     border-radius: .3rem;
@@ -581,6 +458,333 @@ body {
   }
 }
 
+.social {
+  align-items: center;
+  border-radius: .2rem;
+  display: flex;
+  flex: 1;
+  font-size: .6rem;
+  line-height: 1rem;
+  padding: .1rem .3rem .1rem .1rem;
+  text-decoration: none;
+  transition: all .25s ease-in-out;
+
+  .icon {
+    border-radius: $border-radius;
+    color: $dark-color;
+    font-size: .7rem;
+    height: 1.6rem;
+    margin-right: .2rem;
+    padding: .3rem;
+    width: 1.6rem;
+  }
+
+  .content {
+    flex: 1;
+  }
+
+  .content-title {
+    font-size: .9rem;
+    line-height: 1.2rem;
+  }
+
+  .content-subtitle {
+    align-items: center;
+    display: flex;
+    font-size: .6rem;
+    line-height: 1rem;
+
+    .action {
+      cursor: pointer;
+      flex: 0 1;
+      height: 1rem;
+      margin-left: .2rem;
+      position: relative;
+      width: 1rem;
+    }
+  }
+
+  .title {
+    font-size: .7rem;
+  }
+}
+
+// Identity Graph
+.identity-graph-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, .5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .graph-header {
+    align-items: center;
+    display: flex;
+    font-size: .7rem;
+    justify-content: space-between;
+    left: .5rem;
+    position: absolute;
+    right: .5rem;
+    top: .5rem;
+    z-index: 999;
+
+    .graph-title {
+      align-items: center;
+      border-radius: .4rem;
+      display: flex;
+      line-height: 1rem;
+      padding: .4rem;
+      pointer-events: none;
+      user-select: none;
+      word-break: break-all;
+    }
+  }
+
+  .graph-container {
+    background: #fff;
+    border-radius: .4rem;
+    box-shadow: 0 .4rem 2rem rgba(0, 0, 0, .5);
+    height: 94%;
+    max-height: 40rem;
+    max-width: 64rem;
+    position: relative;
+    width: 94%;
+
+    .loading-mask {
+      border-radius: .4rem;
+      position: absolute;
+      height: 94%;
+      max-height: 40rem;
+      max-width: 64rem;
+      width: 94%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99;
+      background: #fff;
+    }
+  }
+}
+
+// Identity Panel
+.identity-panel {
+  height: calc(100vh - 1rem);
+  left: -1rem;
+  position: absolute;
+  right: -1rem;
+  top: 1rem;
+}
+
+.panel-container {
+  animation: slide-in .35s forwards;
+  background: #fff;
+  border-radius: .5rem;
+  box-shadow: 0 .2rem 1rem rgba(0, 0, 0, .15);
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 1rem);
+  padding: 0;
+  position: sticky;
+  top: 1rem;
+  transform: translateY(-100%);
+  z-index: 100;
+  
+  @keyframes slide-in {
+    0% {
+      transform: translateY(100%);
+    }
+
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  &.leave {
+    animation: slide-in .4s forwards reverse;
+  }
+
+  .panel-header {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1rem 0 1rem;
+    z-index: 99;
+
+    .identity-avatar {
+      align-items: center;
+      border-radius: .5rem;
+      display: flex;
+      height: 2.4rem;
+      flex: 0 0 2.4rem;
+      justify-content: center;
+      margin-right: .5rem;
+      width: 2.4rem;
+
+      img {
+        border-radius: .5rem;
+      }
+    }
+  }
+
+  .panel-body {
+    display: flex;
+    flex: 1 1;
+    flex-direction: column;
+    height: auto;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  .panel-tab {
+    align-items: center;
+    background: transparent;
+    display: flex;
+    list-style: none;
+    margin: .5rem 0 0 0;
+    overflow: hidden;
+
+    .tab-item {
+      flex: 1 1 100%;
+      margin-top: 0;
+      text-align: center;
+
+      a {
+        border-bottom: .1rem solid $border-color;
+        display: block;
+        padding: 0 .2rem;
+        text-decoration: none;
+        font-weight: 500;
+        line-height: 1.8rem;
+        color: $dark-color;
+        opacity: .5;
+        text-align: center;
+
+        &:focus,
+        &:hover {
+          border-bottom-color: $dark-color;
+          opacity: 1;
+          transition: all .2s ease;
+        }
+      }
+
+      &.active a,
+      a.active {
+        border-bottom-color: $dark-color;
+        font-weight: 700;
+        opacity: 1;
+      }
+    }
+  }
+
+  .btn-close {
+    position: absolute;
+    right: .5rem;
+    top: .5rem;
+    z-index: 999;
+  }
+}
+
+// NFT Collections
+.collection-switcher {
+  background: #fff;
+  box-shadow: 0 .1rem 1rem rgba($dark-color, .1);
+
+  .collection-list {
+    display: flex;
+    overflow-x: auto;
+    padding: .5rem 1rem;
+  
+    .collection-item {
+      flex: 0 0;
+      height: 2rem;
+      margin-right: .5rem;
+      width: 2rem;
+  
+      .collection-img {
+        border-radius: .5rem;
+        height: 2rem;
+        width: 2rem;
+  
+        img {
+          border-radius: .5rem;
+        }
+      }
+    }
+  }
+}
+
+.nft-collection {
+  flex: 1 1;
+  height: 100%;
+  overflow-y: auto;
+  padding: 0 1rem;
+  
+  .nft-collection-list {
+    .nft-collection-item {
+      margin-top: .5rem;
+    }
+
+    .collection-title {
+      align-items: center;
+      display: flex;
+      padding: .5rem 0;
+
+      .collection-logo {
+        height: 1.2rem;
+        margin-right: .25rem;
+        width: 1.2rem;
+
+        img {
+          border-radius: .5rem;
+          box-shadow: 0 .1rem .8rem rgba($dark-color, .15);
+        }
+      }
+
+      .collection-name {
+        font-size: .7rem;
+        font-weight: 700;
+      }
+    }
+
+    .nft-list {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 -.5rem;
+
+      .nft-container {
+        flex: 0 0 33.3333%;
+        padding: .5rem;
+        width: 33.3333%;
+      }
+
+      .nft-item {
+        .img-container {
+          margin-bottom: .5rem;
+
+          img {
+            border-radius: .5rem;
+            box-shadow: 0 .1rem .5rem rgba($dark-color, .25);
+          }
+        }
+
+        .collection-name {
+          font-size: .65rem;
+        }
+
+        .nft-name {
+          font-size: .7rem;
+          font-weight: 700;
+        }
+      }
+    }
+  }
+}
+
 
 //- Web3.bio Toast
 .web3bio-toast {
@@ -611,7 +815,7 @@ body {
   color: $gray-color;
   font-size: .7rem;
   font-weight: 500;
-  padding-top: .5rem;
+  padding: .5rem;
   position: sticky;
   text-align: center;
   top: 100vh;

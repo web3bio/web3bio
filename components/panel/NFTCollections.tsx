@@ -66,66 +66,67 @@ const RenderNFTCollections = (props) => {
   };
   console.log(data.data, "collections");
   return (
-    <div className="nft-collection-container">
+    <>
       {collections && collections.length && (
-        <div style={{ marginLeft: 30 }}>
-          <CollectionSwitcher
-            collections={collections}
-            currentSelect={activeCollection ?? collections[0]}
-            onSelect={(v) => {
-              setActiveCollection(v);
-              setAnchorName(v.key);
-            }}
-          />
-        </div>
+        <CollectionSwitcher
+          collections={collections}
+          currentSelect={activeCollection ?? collections[0]}
+          onSelect={(v) => {
+            setActiveCollection(v);
+            setAnchorName(v.key);
+          }}
+        />
       )}
-
-      <div className="nft-collection-list">
-        {data.data.map((x, idx) => {
-          return (
-            <div className="collection-item" key={idx} id={x.contract_address}>
-              <div className="nft-collection-title-box">
-                <NFTAssetPlayer
-                  type={"image/png"}
-                  className="collection-logo"
-                  src={x.logo_url}
-                />
-                <div className="nft-collection-title"> {x.contract_name}</div>
+      <div className="nft-collection">
+        <div className="nft-collection-list">
+          {data.data.map((x, idx) => {
+            return (
+              <div className="nft-collection-item" key={idx} id={x.contract_address}>
+                <div className="collection-title">
+                  <NFTAssetPlayer
+                    type={"image/png"}
+                    className="collection-logo"
+                    src={x.logo_url}
+                  />
+                  <div className="collection-name"> {x.contract_name}</div>
+                </div>
+                <div className="nft-list">
+                  {x.assets.map((y, ydx) => {
+                    const mediaURL = resolveMediaURL(y);
+                    return (
+                      <div
+                        key={ydx}
+                        className="nft-container c-hand"
+                        onClick={() =>
+                          onShowDetail({
+                            collection: {
+                              url: x.logo_url,
+                              name: x.contract_name,
+                            },
+                            asset: y,
+                            mediaURL: mediaURL,
+                          })
+                        }
+                      >
+                        <div className="nft-item">
+                          <NFTAssetPlayer
+                            className={"img-container"}
+                            type={"image/png"}
+                            src={mediaURL}
+                          />
+                          <div className="collection-name">{x.contract_name}</div>
+                          <div className="nft-name">{y.name}</div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-              <div className="nft-item-coantiner">
-                {x.assets.map((y, ydx) => {
-                  const mediaURL = resolveMediaURL(y);
-                  return (
-                    <div
-                      key={ydx}
-                      className="detail-item"
-                      onClick={() =>
-                        onShowDetail({
-                          collection: {
-                            url: x.logo_url,
-                            name: x.contract_name,
-                          },
-                          asset: y,
-                          mediaURL: mediaURL,
-                        })
-                      }
-                    >
-                      <NFTAssetPlayer
-                        className={"img-container"}
-                        type={"image/png"}
-                        src={mediaURL}
-                      />
-                      <div className="collection-name">{x.contract_name}</div>
-                      <div className="nft-name">{y.name}</div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

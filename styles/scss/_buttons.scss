@@ -123,28 +123,19 @@
     width: 100%;
   }
 
-  // Button Clear
-  &.btn-clear {
-    background: transparent;
-    border: 0;
-    color: currentColor;
-    height: $unit-5;
-    line-height: $unit-4;
-    margin-left: $unit-1;
-    margin-right: -2px;
-    opacity: 1;
-    padding: $unit-h;
-    text-decoration: none;
-    width: $unit-5;
+  // Button Close
+  &.btn-close {
+    padding: $control-padding-y;
+    width: $control-size;
 
-    &:focus,
-    &:hover {
-      background: rgba($bg-color, .5);
-      opacity: .95;
+    &.btn-sm {
+      padding: $control-padding-y-sm;
+      width: $control-size-sm;
     }
-
-    &::before {
-      content: "\2715";
+  
+    &.btn-lg {
+      padding: $control-padding-y-lg;
+      width: $control-size-lg;
     }
   }
 }

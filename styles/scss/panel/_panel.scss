@@ -1,105 +1,4 @@
-.panel-container {
-    background: #FFFFFF;
-    box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.1);
-    border-radius: 0.5rem;
-    padding-top: 30px;
-    width: 100%;
-    max-width: 528px;
-    height: 85vh;
-    position: fixed;
-    z-index: 100;
-    left: 50%;
-    bottom: 0;
-    transform: translate(-50%, -100%);
-    animation: slide-in 0.4s forwards;
 
-    @keyframes slide-in {
-        0% {
-            transform: translate(-50%, 100%);
-        }
-
-        100% {
-            transform: translate(-50%, 0%);
-        }
-    }
-
-    .leave {
-        animation: slide-in 0.4s forwards reverse;
-    }
-
-
-
-    .close-icon-box {
-        position: absolute;
-        right: 5%;
-        top: 3%;
-
-        .close-icon {
-            width: 16px;
-            height: 16px;
-            opacity: .5;
-            transition: opacity .2s ease 0s;
-            cursor: pointer;
-
-            &:hover {
-                opacity: 1;
-            }
-        }
-    }
-
-    .panel-identity-basic {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-        padding-left: 30px;
-
-        .identity-avatar-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            max-width: 64px;
-            max-height: 64px;
-            border-radius: 12px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
-
-            img {
-                width: 100%;
-                height: 100%;
-                border-radius: 12px;
-            }
-        }
-
-        .identity-basic-info {
-            .displayName {
-                font-weight: 900;
-                font-size: 20px;
-                line-height: 28px;
-                color: #121212;
-            }
-
-            .identity {
-                display: flex;
-                font-weight: 400;
-                font-size: 12px;
-                line-height: 20px;
-                color: #121212;
-                opacity: 0.5;
-                gap: 10px;
-                align-items: center;
-                .action{
-                    position: relative;
-                    display: flex;
-                    align-items: center;
-                    cursor: pointer;
-                }
-                .copy-icon {
-                    cursor: pointer;
-                }
-            }
-        }
-
-    }
-}
 
 // Record Social Media Item
 .records {
@@ -136,7 +35,7 @@
 .nft-dialog-basic {
     display: flex;
     gap: 30px;
-    padding: 0 30px;
+    padding: 0;
 
     .nft-dialog-asset-player {
         width: 200px;
@@ -188,7 +87,7 @@
 
 .nft-dialog-scroll-box {
     overflow-y: auto;
-    padding: 0 30px;
+    padding: 0;
 
     .nft-dialog-des-box {
         display: flex;
@@ -390,107 +289,108 @@
 
     }
 
-    .nft-collection-list {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 20px;
-        max-height: 57vh;
-        overflow-y: auto;
-        padding: 0 30px;
-        width: 100%;
+//     .nft-collection-list {
+//         display: flex;
+//         flex-direction: column;
+//         align-items: flex-start;
+//         gap: 20px;
+//         max-height: 57vh;
+//         overflow-y: auto;
+//         padding: 0;
+//         width: 100%;
 
-        .collection-item {
-            .nft-collection-title-box {
-                display: flex;
-                gap: 10px;
-                align-items: center;
-                margin-bottom: 20px;
+//         .collection-item {
+//             .nft-collection-title-box {
+//                 display: flex;
+//                 gap: 10px;
+//                 align-items: center;
+//                 margin-bottom: 20px;
 
-                .nft-collection-title {
-                    font-weight: 900;
-                    font-size: 14px;
-                    line-height: 20px;
-                    text-transform: uppercase;
-                    color: #000000;
-                }
+//                 .nft-collection-title {
+//                     font-weight: 900;
+//                     font-size: 14px;
+//                     line-height: 20px;
+//                     text-transform: uppercase;
+//                     color: #000000;
+//                 }
 
-                .collection-logo {
-                    width: 20px;
-                    height: 20px;
-                }
-            }
+//                 .collection-logo {
+//                     width: 20px;
+//                     height: 20px;
+//                 }
+//             }
 
-            .nft-item-coantiner {
-                display: flex;
-                gap: 20px;
-                flex-wrap: wrap;
+//             .nft-item-coantiner {
+//                 display: flex;
+//                 gap: 20px;
+//                 flex-wrap: wrap;
 
-                .detail-item {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: flex-start;
-                    font-size: 10px;
-                    color: #000000;
-                    text-transform: uppercase;
+//                 .detail-item {
+//                     display: flex;
+//                     flex-direction: column;
+//                     align-items: flex-start;
+//                     font-size: 10px;
+//                     color: #000000;
+//                     text-transform: uppercase;
 
-                    .img-container {
-                        position: relative;
-                        width: 140px;
-                        height: 140px;
-                        box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.1);
-                        border-radius: 12px;
-                        margin-bottom: 10px;
-                        cursor: pointer;
+//                     .img-container {
+//                         position: relative;
+//                         width: 140px;
+//                         height: 140px;
+//                         box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.1);
+//                         border-radius: 12px;
+//                         margin-bottom: 10px;
+//                         cursor: pointer;
 
-                        &:hover img {
-                            transform: scale(1.02);
-                            box-shadow: 0px 4px 10px rgb(0 0 0 / 30%);
-                        }
+//                         &:hover img {
+//                             transform: scale(1.02);
+//                             box-shadow: 0px 4px 10px rgb(0 0 0 / 30%);
+//                         }
 
-                        img {
-                            width: 100%;
-                            height: 100%;
-                            object-fit: cover;
-                            border-radius: 12px;
-                            transition: transform .4s ease 0s;
-                        }
+//                         img {
+//                             width: 100%;
+//                             height: 100%;
+//                             object-fit: cover;
+//                             border-radius: 12px;
+//                             transition: transform .4s ease 0s;
+//                         }
 
-                        &:hover video {
-                            transform: scale(1.02);
-                            box-shadow: 0px 4px 10px rgb(0 0 0 / 30%);
-                        }
+//                         &:hover video {
+//                             transform: scale(1.02);
+//                             box-shadow: 0px 4px 10px rgb(0 0 0 / 30%);
+//                         }
 
-                        video {
-                            width: 100%;
-                            height: 100%;
-                            object-fit: cover;
-                            border-radius: 12px;
-                            transition: transform .4s ease 0s;
-                        }
-                    }
+//                         video {
+//                             width: 100%;
+//                             height: 100%;
+//                             object-fit: cover;
+//                             border-radius: 12px;
+//                             transition: transform .4s ease 0s;
+//                         }
+//                     }
 
-                    .collection-name {
-                        font-weight: 400;
-                        line-height: 20px;
-                    }
+//                     .collection-name {
+//                         font-weight: 400;
+//                         line-height: 20px;
+//                     }
 
-                    .nft-name {
-                        font-weight: 700;
-                        line-height: 20px;
-                    }
-                }
+//                     .nft-name {
+//                         font-weight: 700;
+//                         line-height: 20px;
+//                     }
+//                 }
 
-            }
+//             }
 
-        }
+//         }
 
-    }
+//     }
 }
 
 .profile-container {
-    padding: 0 40px;
+    padding: 0;
     box-sizing: border-box;
+
     .profile-basic-info-loading{
         position: relative;
         min-height: 30vh;
@@ -498,54 +398,8 @@
     }
 }
 
-// Tabs
-.panel-tab {
-    align-items: center;
-    background: transparent;
-    display: flex;
-    flex: 1;
-    list-style: none;
-    margin: 20px 0;
-    gap: 24px;
-    overflow: hidden;
-    padding: 0 30px;
-
-    .tab-item {
-        min-width: 60px;
-        margin-top: 0;
-
-        a {
-            border-bottom: 2px solid transparent;
-            display: block;
-            padding: 0 4px;
-            text-decoration: none;
-            font-weight: 400;
-            font-size: 14px;
-            line-height: 22px;
-            color: #121212;
-            opacity: 0.5;
-            text-align: center;
-
-            &:focus,
-            &:hover {
-                border-bottom-color: #121212;
-                opacity: 1;
-                font-weight: 700;
-                transition: all .1s linear 0s;
-            }
-        }
-
-        &.active a,
-        a.active {
-            border-bottom-color: #121212;
-            opacity: 1;
-            font-weight: 700;
-        }
-    }
-}
-
 .feeds-container-box {
-    padding: 0 30px;
+    padding: 0;
 
     .feeds-title {
         font-weight: 900;
@@ -556,7 +410,6 @@
 
     .feeds-container {
         max-width: 100%;
-        max-height: 60vh;
         margin-top: 20px;
         overflow-y: auto;
         overflow-x: hidden;
