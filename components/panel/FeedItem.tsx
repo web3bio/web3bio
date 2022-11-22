@@ -13,6 +13,18 @@ import {
 } from "./feedCards/TokenOperationCard";
 import { isTokenSwapFeed, TokenSwapCard } from "./feedCards/TokenSwapCard";
 
+export const isSupportedFeed = (feed) => {
+  return (
+    isTokenOperationFeed(feed) ||
+    isTokenSwapFeed(feed) ||
+    isCollectibleFeed(feed) ||
+    isDonationFeed(feed) ||
+    isNoteFeed(feed) ||
+    isCommentFeed(feed) ||
+    isProfileFeed(feed)
+  );
+};
+
 const RenderFeedItem = (props) => {
   const { feed, identity } = props;
   if (isTokenOperationFeed(feed))

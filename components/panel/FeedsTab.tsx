@@ -4,7 +4,7 @@ import { RSS3Fetcher, RSS3_END_POINT } from "../apis/rss3";
 import { Empty } from "../shared/Empty";
 import { Loading } from "../shared/Loading";
 import { Error } from "../shared/Error";
-import { FeedItem } from "./FeedItem";
+import { FeedItem, isSupportedFeed } from "./FeedItem";
 import { formatTimestamp } from "../../utils/date";
 
 function useFeeds(address: string) {
@@ -32,10 +32,14 @@ const RenderFeedsTab = (props) => {
       <div className="feeds-container">
         {data.result.map((x, idx) => {
           return (
-            <div key={idx}>
-              <FeedItem identity={identity} feed={x} />
-              <div className="feed-timestamp">{formatTimestamp(x.timestamp)}</div>
-            </div>
+            isSupportedFeed(x) && (
+              <div key={idx}>
+                <FeedItem identity={identity} feed={x} />
+                <div className="feed-timestamp">
+                  {formatTimestamp(x.timestamp)}
+                </div>
+              </div>
+            )
           );
         })}
       </div>
