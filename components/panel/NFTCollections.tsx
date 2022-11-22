@@ -7,6 +7,7 @@ import { Loading } from "../shared/Loading";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
+import { isValidJson } from "../../utils/utils";
 
 function useCollections(address: string) {
   const { data, error } = useSWR<any>(
@@ -49,7 +50,7 @@ const RenderNFTCollections = (props) => {
   if (!data || !data.data) return <Empty />;
 
   const resolveMediaURL = (asset) => {
-    if (asset && asset.metadata_json) {
+    if (asset && asset.metadata_json && isValidJson(asset.metadata_json)) {
       const json = JSON.parse(asset.metadata_json);
       const origin = json.image || json.content_uri;
       if (origin) {

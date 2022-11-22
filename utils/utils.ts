@@ -95,3 +95,13 @@ export function resolveSocialMediaLink(name, type) {
       return `https://twitter.com/${name}`;
   }
 }
+
+
+export function isValidJson(str){
+  try{
+    JSON.parse(str)
+  }catch(e){
+    return false
+  }
+  return true
+}
