@@ -13,9 +13,9 @@ import { formatText } from "../../utils/utils";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 
 export enum TabsMap {
-  profile = "Profile",
-  feeds = "Feeds",
-  nfts = "NFTs",
+  profile = "profile",
+  feeds = "feeds",
+  nfts = "nfts",
 }
 
 const IdentityPanelRender = (props) => {

@@ -18,7 +18,7 @@ const isVideo = (type) => {
 };
 
 const RenderNFTAssetPlayer = (props) => {
-  const { type = "image/png", className, src, width, height } = props;
+  const { type = "image/png", className, src, width, height, alt } = props;
   return (
     <div className={className}>
       {IsImage(type) ? (
@@ -26,6 +26,7 @@ const RenderNFTAssetPlayer = (props) => {
           width={width ?? 24}
           height={height ?? 24}
           src={src || DefaultIcon}
+          alt={alt}
         />
       ) : (
         <Video src={src} />

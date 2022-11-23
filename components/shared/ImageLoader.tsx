@@ -13,15 +13,15 @@ export function ImageLoader(props: ImgHTMLAttributes<HTMLImageElement>) {
         {...props}
         onLoad={() => setLoaded(Boolean(props.src))}
         onError={onErrorHandle}
-        // loading="lazy"
-        // decoding="async"
+        loading="lazy"
+        decoding="async"
         width={"100%"}
         height={"100%"}
         style={{
           display: loaded || !props.src ? "block" : "none",
           objectFit: "fill",
         }}
-        alt=""
+        alt={props.alt || 'img'}
       />
       {!loaded && Boolean(props.src) ? <Loading style={{ margin: 0 }} /> : null}
     </picture>
