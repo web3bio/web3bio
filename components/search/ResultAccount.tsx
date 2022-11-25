@@ -10,7 +10,7 @@ const RenderAccount = (props) => {
   const [open, setOpen] = useState(false);
   const [showPanbel, setShowPanel] = useState(false);
   const [identity, setIdentity] = useState(undefined);
-  const [panelTab, setPanelTab] = useState(TabsMap.feeds);
+  const [panelTab, setPanelTab] = useState();
   const router = useRouter();
 
   useEffect(() => {

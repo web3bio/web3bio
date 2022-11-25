@@ -54,6 +54,17 @@ body {
   width: 100vw;
 }
 
+.profile-main {
+  position: absolute;
+  width: 25rem;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 //- Web3.bio Cover
 .web3bio-cover {
   background-image:
