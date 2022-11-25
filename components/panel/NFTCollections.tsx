@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { NFTSCANFetcher, NFTSCAN_BASE_API_ENDPOINT } from "../apis/nftscan";
 import { CollectionSwitcher } from "./CollectionSwitcher";
@@ -27,22 +27,19 @@ const RenderNFTCollections = (props) => {
   const [anchorName, setAnchorName] = useState("");
   const { data, isLoading, isError } = useCollections(identity.identity);
   const [activeCollection, setActiveCollection] = useState(null);
-  // const lazyLoadingObserver = () => {
-  //   const images = document.querySelectorAll("img");
-  //   const observer = new IntersectionObserver((entries = []) => {
-  //     entries.forEach((i) => {
-  //       if (i.isIntersecting) {
-  //         const img = i.target;
-  //         img.setAttribute("src", img.getAttribute("data-src"));
-  //         observer.unobserve(img);
-  //       }
-  //     });
-  //   });
-  //   images.forEach((img) => {
-  //     observer.observe(img);
-  //   });
-  // };
+  const scrollContainer = useRef(null);
+
   useEffect(() => {
+    const container = scrollContainer.current;
+    const images = document.querySelectorAll("img");
+    function lazyLoad() {
+      images.forEach((img) => {
+        const imgTop = img.getBoundingClientRect().top;
+        if (imgTop < window.innerHeight) {
+          img.setAttribute("src", img.getAttribute("data-src"));
+        }
+      });
+    }
     if (data && data.data) {
       setCollections(
         data.data.map((x) => ({
@@ -57,6 +54,11 @@ const RenderNFTCollections = (props) => {
           anchorElement.scrollIntoView({ block: "start", behavior: "smooth" });
         }
       }
+    }
+    if (container) {
+      container.addEventListener("scroll", lazyLoad);
+
+      return () => container.removeEventListener("scroll", lazyLoad);
     }
   }, [data, anchorName]);
   if (isLoading) return <Loading />;
@@ -89,7 +91,7 @@ const RenderNFTCollections = (props) => {
           }}
         />
       )}
-      <div className="nft-collection">
+      <div ref={scrollContainer} className="nft-collection">
         <div className="nft-collection-list">
           {data.data.map((x, idx) => {
             return (

@@ -8,7 +8,7 @@ const IsImage = (type) => {
 };
 
 const isVideo = (type) => {
-  return type === "vedio/mp4";
+  return type === "video/mp4";
 };
 
 const RenderNFTAssetPlayer = (props) => {
@@ -26,7 +26,13 @@ const RenderNFTAssetPlayer = (props) => {
         <Video src={src} />
       ) : (
         <picture>
-          <img src={src} width={width ?? "100%"} height={height} alt={alt} />
+          <img
+            data-src={src || DefaultIcon}
+            src={src || DefaultIcon}
+            width={width ?? "100%"}
+            height={height}
+            alt={alt}
+          />
         </picture>
       )}
     </div>
