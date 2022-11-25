@@ -27,7 +27,21 @@ const RenderNFTCollections = (props) => {
   const [anchorName, setAnchorName] = useState("");
   const { data, isLoading, isError } = useCollections(identity.identity);
   const [activeCollection, setActiveCollection] = useState(null);
-
+  // const lazyLoadingObserver = () => {
+  //   const images = document.querySelectorAll("img");
+  //   const observer = new IntersectionObserver((entries = []) => {
+  //     entries.forEach((i) => {
+  //       if (i.isIntersecting) {
+  //         const img = i.target;
+  //         img.setAttribute("src", img.getAttribute("data-src"));
+  //         observer.unobserve(img);
+  //       }
+  //     });
+  //   });
+  //   images.forEach((img) => {
+  //     observer.observe(img);
+  //   });
+  // };
   useEffect(() => {
     if (data && data.data) {
       setCollections(
@@ -54,12 +68,10 @@ const RenderNFTCollections = (props) => {
       const json = JSON.parse(asset.metadata_json);
       const origin = json.image || json.content_uri;
       if (origin) {
-        return origin.includes("base64")
-          ? origin
-          : resolveIPFS_URL(origin);
+        return origin.includes("base64") ? origin : resolveIPFS_URL(origin);
       }
     }
-    if (asset && ["text/mp4"].includes(asset.content_type)) {
+    if (asset && ["video/mp4"].includes(asset.content_type)) {
       return resolveIPFS_URL(asset.content_uri ?? asset.image_uri);
     }
     return resolveIPFS_URL(asset.image_uri ?? asset.content_uri);
@@ -81,7 +93,11 @@ const RenderNFTCollections = (props) => {
         <div className="nft-collection-list">
           {data.data.map((x, idx) => {
             return (
-              <div className="nft-collection-item" key={idx} id={x.contract_address}>
+              <div
+                className="nft-collection-item"
+                key={idx}
+                id={x.contract_address}
+              >
                 <div className="collection-title">
                   <NFTAssetPlayer
                     type={"image/png"}
@@ -111,10 +127,12 @@ const RenderNFTCollections = (props) => {
                         <div className="nft-item">
                           <NFTAssetPlayer
                             className={"img-container"}
-                            type={"image/png"}
+                            type={y.content_type}
                             src={mediaURL}
                           />
-                          <div className="collection-name">{x.contract_name}</div>
+                          <div className="collection-name">
+                            {x.contract_name}
+                          </div>
                           <div className="nft-name">{y.name}</div>
                         </div>
                       </div>

@@ -13,8 +13,7 @@ export function ImageLoader(props: ImgHTMLAttributes<HTMLImageElement>) {
         {...props}
         onLoad={() => setLoaded(Boolean(props.src))}
         onError={onErrorHandle}
-        loading="lazy"
-        decoding="async"
+    
         width={"100%"}
         height={"100%"}
         style={{

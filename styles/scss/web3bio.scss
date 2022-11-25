@@ -594,7 +594,7 @@ body {
   top: 1rem;
   transform: translateY(-100%);
   z-index: 100;
-  
+
   @keyframes slide-in {
     0% {
       transform: translateY(100%);
@@ -698,18 +698,18 @@ body {
     display: flex;
     overflow-x: auto;
     padding: .5rem 1rem;
-  
+
     .collection-item {
       flex: 0 0;
       height: 2rem;
       margin-right: .5rem;
       width: 2rem;
-  
+
       .collection-img {
         border-radius: .5rem;
         height: 2rem;
         width: 2rem;
-  
+
         img {
           border-radius: .5rem;
         }
@@ -723,7 +723,7 @@ body {
   height: 100%;
   overflow-y: auto;
   padding: 0 1rem;
-  
+
   .nft-collection-list {
     .nft-collection-item {
       margin-top: .5rem;
@@ -764,7 +764,11 @@ body {
 
       .nft-item {
         .img-container {
+          position: relative;
+          height: 7.5rem;
           margin-bottom: .5rem;
+          background: rgba($color: #000000, $alpha: .05);
+          border-radius: .5rem;
 
           img {
             border-radius: .5rem;
