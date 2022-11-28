@@ -411,6 +411,7 @@
     .feeds-container {
         max-width: 100%;
         margin-top: 20px;
+        max-height: 80vh;
         overflow-y: auto;
         overflow-x: hidden;
         display: flex;

@@ -7,10 +7,10 @@ import { Error } from "../shared/Error";
 import { FeedItem, isSupportedFeed } from "./FeedItem";
 import { formatTimestamp } from "../../utils/date";
 
-function useFeeds(address: string) {
+function useFeeds(address: string, page) {
   const { data, error } = useSWR<any>(
     RSS3_END_POINT +
-      `notes/${address}?limit=50&include_poap=false&count_only=false&query_status=false`,
+      `notes/${address}?limit=50&cursor=${page}&include_poap=false&count_only=false&query_status=false`,
     RSS3Fetcher
   );
   return {
@@ -20,12 +20,12 @@ function useFeeds(address: string) {
   };
 }
 const RenderFeedsTab = (props) => {
-  const { address, identity } = props;
-  const { data, isLoading, isError } = useFeeds(identity.identity);
+  const { identity } = props;
+  const { data, isLoading, isError } = useFeeds(identity.identity, 1);
   if (isLoading) return <Loading />;
   if (isError) return <Error text={isError} />;
   if (!data || !data.result) return <Empty />;
-
+  console.log(data,'feeds data')
   return (
     <div className="feeds-container-box">
       <div className="feeds-title">Social Feeds</div>
