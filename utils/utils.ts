@@ -105,3 +105,26 @@ export function isValidJson(str){
   }
   return true
 }
+
+const regexEns = /.*\.eth|.xyz$/,
+regexLens = /.*\.lens$/,
+regexDotbit = /.*\.bit$/,
+regexEth = /^0x[a-fA-F0-9]{40}$/,
+regexTwitter = /(\w{1,15})\b/;
+
+export const handlesearchPlatform = (term) => {
+switch (true) {
+  case regexEns.test(term):
+    return "ENS";
+  case regexLens.test(term):
+    return "lens";
+  case regexDotbit.test(term):
+    return "dotbit";
+  case regexEth.test(term):
+    return "ethereum";
+  case regexTwitter.test(term):
+    return "twitter";
+  default:
+    return "nextid"
+}
+};

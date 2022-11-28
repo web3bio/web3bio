@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import SVG from "react-inlinesvg";
 import { SearchResultDomain } from "../components/search/SearchResultDomain";
 import { SearchResultQuery } from "../components/search/SearchResultQuery";
+import { handlesearchPlatform } from "../utils/utils";
 
 export default function Home() {
   const [searchFocus, setSearchFocus] = useState(false);
@@ -12,26 +13,7 @@ export default function Home() {
   const [searchPlatform, setsearchPlatform] = useState("");
   const router = useRouter();
 
-  const regexEns = /.*\.eth|.xyz$/,
-    regexLens = /.*\.lens$/,
-    regexDotbit = /.*\.bit$/,
-    regexEth = /^0x[a-fA-F0-9]{40}$/,
-    regexTwitter = /(\w{1,15})\b/;
 
-  const handlesearchPlatform = (term) => {
-    switch (true) {
-      case regexEns.test(term):
-        return "ENS";
-      case regexLens.test(term):
-        return "lens";
-      case regexDotbit.test(term):
-        return "dotbit";
-      case regexEth.test(term):
-        return "ethereum";
-      case regexTwitter.test(term):
-        return "twitter";
-    }
-  };
   useEffect(() => {
     if (!router.isReady) return;
     if (router.query.s) {

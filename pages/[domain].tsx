@@ -6,19 +6,26 @@ import { Empty } from "../components/shared/Empty";
 import { Loading } from "../components/shared/Loading";
 import { Error } from "../components/shared/Error";
 import { GET_PROFILES_DOMAIN } from "../utils/queries";
+import { handlesearchPlatform } from "../utils/utils";
 
 const RenderDomainPanel = (props) => {
   const { domain } = props;
   const router = useRouter();
   const [panelTab, setPanelTab] = useState();
+  const [platform, setPlatform] = useState("ENS");
   const { loading, error, data } = useQuery(GET_PROFILES_DOMAIN, {
     variables: {
-      platform: "ENS",
+      platform: platform,
       identity: domain,
     },
   });
- 
-  console.log(data,'ggg')
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    if (!router.query.domain) return;
+    setPlatform(handlesearchPlatform(router.query.domain));
+  }, [router]);
+
   return (
     <div className="web3bio-container">
       <div className="web3bio-cover flare"></div>
