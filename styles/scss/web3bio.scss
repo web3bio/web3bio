@@ -663,6 +663,7 @@ body {
       flex: 1 1 100%;
       margin-top: 0;
       text-align: center;
+      text-transform: capitalize;
 
       a {
         border-bottom: .1rem solid $border-color;

@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import { memo, useEffect, useState } from "react";
-import { IdentityPanel } from "../components/panel/IdentityPanel";
+import { IdentityPanel, TabsMap } from "../components/panel/IdentityPanel";
 import { Empty } from "../components/shared/Empty";
 import { Loading } from "../components/shared/Loading";
 import { Error } from "../components/shared/Error";
@@ -11,12 +11,12 @@ import { handlesearchPlatform } from "../utils/utils";
 const RenderDomainPanel = (props) => {
   const { domain } = props;
   const router = useRouter();
-  const [panelTab, setPanelTab] = useState();
+  const [panelTab, setPanelTab] = useState(TabsMap.feeds);
   const [platform, setPlatform] = useState("ENS");
   const { loading, error, data } = useQuery(GET_PROFILES_DOMAIN, {
     variables: {
       platform: platform,
-      identity: domain,
+      identity: domain && domain[0],
     },
   });
 
@@ -24,7 +24,8 @@ const RenderDomainPanel = (props) => {
     if (!router.isReady) return;
     if (!router.query.domain) return;
     setPlatform(handlesearchPlatform(router.query.domain));
-  }, [router]);
+    if (router.query.domain[1]) setPanelTab(domain[1]);
+  }, [domain, router]);
 
   return (
     <div className="web3bio-container">
@@ -42,9 +43,7 @@ const RenderDomainPanel = (props) => {
               router.replace({
                 pathname: "",
                 query: {
-                  s: router.query.s,
-                  d: router.query.d,
-                  t: v,
+                  domain: [domain[0], v],
                 },
               });
               setPanelTab(v);
