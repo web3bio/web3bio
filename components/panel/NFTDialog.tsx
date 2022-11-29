@@ -28,7 +28,7 @@ const NFTDialogRender = (props) => {
   const resolveOpenseaLink = `https://opensea.io/assets/ethereum/${asset.asset.contract_address}/${asset.asset.token_id}`;
 
   if (isError) return <Error text={isError} />;
-  if (!data) return <Empty />;
+  if (!data) return null;
   const _asset = data.data;
   const metadata = JSON.parse(_asset.metadata_json);
   const mediaurl =

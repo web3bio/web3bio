@@ -81,7 +81,7 @@ const RenderNFTCollections = (props) => {
   console.log(data.data, "collections");
   return (
     <>
-      {collections && collections.length && (
+      {collections && collections.length > 0 && (
         <CollectionSwitcher
           collections={collections}
           currentSelect={activeCollection ?? collections[0]}
