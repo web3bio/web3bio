@@ -4,7 +4,7 @@ import { ImageLoader } from "./ImageLoader";
 import { Video } from "./Video";
 
 const IsImage = (type) => {
-  return ["image/png", "image/jepg", "image/jpg", "image/svg"].includes(type);
+  return ["image/png", "image/jpeg", "image/jpg", "image/svg"].includes(type);
 };
 
 const isVideo = (type) => {
