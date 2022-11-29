@@ -12,15 +12,24 @@ import { Loading } from "../shared/Loading";
 import { formatText } from "../../utils/utils";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 
-export enum TabsMap {
-  profile = "profile",
-  feeds = "feeds",
-  nfts = "nfts",
-}
+export const TabsMap = {
+  profile: {
+    key: "profile",
+    name: "Profile",
+  },
+  feeds: {
+    key: "feeds",
+    name: "Feeds",
+  },
+  nfts: {
+    key: "nfts",
+    name: "NFTs",
+  },
+};
 
 const IdentityPanelRender = (props) => {
   const { onClose, identity, onTabChange, curTab } = props;
-  const [activeTab, setActiveTab] = useState(curTab || TabsMap.profile);
+  const [activeTab, setActiveTab] = useState(curTab || TabsMap.profile.key);
   const [curAsset, setCurAsset] = useState(null);
   const [copied, setCopied] = useState(null);
 
@@ -35,9 +44,9 @@ const IdentityPanelRender = (props) => {
   };
   const renderContent = () => {
     return {
-      [TabsMap.profile]: <ProfileTab identity={identity} />,
-      [TabsMap.feeds]: <FeedsTab identity={identity} />,
-      [TabsMap.nfts]: (
+      [TabsMap.profile.key]: <ProfileTab identity={identity} />,
+      [TabsMap.feeds.key]: <FeedsTab identity={identity} />,
+      [TabsMap.nfts.key]: (
         <NFTsTab
           defaultOpen={!!curAsset}
           onShowDetail={resolveOnShowDetail}
@@ -56,7 +65,11 @@ const IdentityPanelRender = (props) => {
         <div className="panel-header">
           <div className="social">
             <div className="identity-avatar">
-              {avatarLoading ? <Loading /> : <NFTAssetPlayer src={resolveIPFS_URL(avatar) ?? ""} />}
+              {avatarLoading ? (
+                <Loading />
+              ) : (
+                <NFTAssetPlayer src={resolveIPFS_URL(avatar) ?? ""} />
+              )}
             </div>
             <div className="identity-content content">
               <div className="content-title text-bold">
@@ -82,7 +95,7 @@ const IdentityPanelRender = (props) => {
             </div>
           </div>
           <div className="btn btn-link btn-close" onClick={onClose}>
-            <SVG src={'/icons/icon-close.svg'} width="20" height="20" />
+            <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
           </div>
           <ul className="panel-tab">
             {getEnumAsArray(TabsMap).map((x, idx) => {
@@ -90,17 +103,19 @@ const IdentityPanelRender = (props) => {
                 <li
                   key={idx}
                   className={
-                    activeTab === x.value ? "tab-item active" : "tab-item"
+                    activeTab === x.value.key ? "tab-item active" : "tab-item"
                   }
                 >
-                  <a 
+                  <a
                     href="#"
                     onClick={(e) => {
                       e.preventDefault();
-                      setActiveTab(x.value);
-                      onTabChange(x.value);
+                      setActiveTab(x.value.key);
+                      onTabChange(x.value.key);
                     }}
-                  >{x.value}</a>
+                  >
+                    {x.value.name}
+                  </a>
                 </li>
               );
             })}

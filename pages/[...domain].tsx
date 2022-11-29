@@ -11,7 +11,7 @@ import { handlesearchPlatform } from "../utils/utils";
 const RenderDomainPanel = (props) => {
   const { domain } = props;
   const router = useRouter();
-  const [panelTab, setPanelTab] = useState(TabsMap.feeds);
+  const [panelTab, setPanelTab] = useState(TabsMap.feeds.key);
   const [platform, setPlatform] = useState("ENS");
   const { loading, error, data } = useQuery(GET_PROFILES_DOMAIN, {
     variables: {
