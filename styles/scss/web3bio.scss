@@ -627,6 +627,7 @@ body {
     z-index: 99;
 
     .identity-avatar {
+      position: relative;
       align-items: center;
       border-radius: .5rem;
       display: flex;

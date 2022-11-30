@@ -10,7 +10,7 @@ const RenderAccount = (props) => {
   const [open, setOpen] = useState(false);
   const [showPanbel, setShowPanel] = useState(false);
   const [identity, setIdentity] = useState(undefined);
-  const [panelTab, setPanelTab] = useState();
+  const [panelTab, setPanelTab] = useState('');
   const router = useRouter();
 
   useEffect(() => {
@@ -19,6 +19,7 @@ const RenderAccount = (props) => {
       const cachedIentity = localStorage.getItem("cur_identity");
       if (!cachedIentity) return;
       setIdentity(JSON.parse(cachedIentity));
+      setPanelTab(router.query.t as string || TabsMap.profile.key);
       setShowPanel(true);
     }
   }, [router.isReady, router.query]);

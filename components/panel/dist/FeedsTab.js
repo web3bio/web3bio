@@ -2,41 +2,95 @@
 exports.__esModule = true;
 exports.FeedsTab = void 0;
 var react_1 = require("react");
-var swr_1 = require("swr");
 var rss3_1 = require("../apis/rss3");
-var Empty_1 = require("../shared/Empty");
+var FeedItem_1 = require("./FeedItem");
+var date_1 = require("../../utils/date");
+var infinite_1 = require("swr/infinite");
+var utils_1 = require("../../utils/utils");
 var Loading_1 = require("../shared/Loading");
-var Error_1 = require("../shared/Error");
-function useFeeds(address) {
-    var _a = swr_1["default"](rss3_1.RSS3_END_POINT +
-        ("notes/" + address + "?limit=50&include_poap=false&count_only=false&query_status=false"), rss3_1.RSS3Fetcher), data = _a.data, error = _a.error;
+var PAGE_SIZE = 30;
+var getFeedsURL = function (address, startHash, previousPageData) {
+    if (previousPageData && !previousPageData.length)
+        return null;
+    return (rss3_1.RSS3_END_POINT +
+        ("notes/" + address + "?limit=" + PAGE_SIZE + (startHash ? "&cursor=" + startHash : "") + "&&include_poap=false&count_only=false&query_status=false"));
+};
+function useFeeds(address, startHash) {
+    var _a = infinite_1["default"](function () { return getFeedsURL(address, startHash); }, rss3_1.RSS3Fetcher), data = _a.data, error = _a.error, size = _a.size, isValidating = _a.isValidating, setSize = _a.setSize;
     return {
-        data: data,
+        data: (data && data[0].result) || [],
         isLoading: !error && !data,
-        isError: error
+        error: error,
+        size: size,
+        setSize: setSize,
+        isValidating: isValidating
     };
 }
 var RenderFeedsTab = function (props) {
-    var address = props.address;
-    var _a = useFeeds(address), data = _a.data, isLoading = _a.isLoading, isError = _a.isError;
-    if (isLoading)
-        return React.createElement(Loading_1.Loading, null);
-    if (isError)
-        return React.createElement(Error_1.Error, { text: isError });
-    if (!data || !data.result)
-        return React.createElement(Empty_1.Empty, null);
-    console.log("Feeds from rss3:", data);
-    return (React.createElement("div", null,
-        React.createElement("div", null, "Feeds See FUll DETAIL in Console"),
-        React.createElement("div", { className: "feeds-container" }, data.result.map(function (x, idx) {
-            return (React.createElement("div", { key: idx, style: { borderBottom: "1px solid black" } },
-                React.createElement("ul", null,
-                    React.createElement("li", null,
-                        "owner: ",
-                        x.owner),
-                    React.createElement("li", null,
-                        "tag: ",
-                        x.tag))));
-        }))));
+    var _a, _b;
+    var identity = props.identity;
+    var _c = react_1.useState(""), startHash = _c[0], setStartHash = _c[1];
+    var _d = react_1.useState([]), issues = _d[0], setIssues = _d[1];
+    var _e = useFeeds(identity.identity, startHash), data = _e.data, error = _e.error, size = _e.size, setSize = _e.setSize, isValidating = _e.isValidating;
+    var isLoadingInitialData = !data && !error;
+    var isLoadingMore = isLoadingInitialData ||
+        (size > 0 && data && typeof data[size - 1] === "undefined");
+    var isEmpty = ((_a = data === null || data === void 0 ? void 0 : data[0]) === null || _a === void 0 ? void 0 : _a.length) === 0;
+    var isReachingEnd = isEmpty || (data && ((_b = data[data.length - 1]) === null || _b === void 0 ? void 0 : _b.length) < PAGE_SIZE);
+    var ref = react_1.useRef(null);
+    react_1.useEffect(function () {
+        var container = ref.current;
+        var lastData = localStorage.getItem("feeds") || [];
+        var scrollLoad = function (e) {
+            var scrollHeight = e.target.scrollHeight;
+            var scrollTop = e.target.scrollTop;
+            var offsetHeight = e.target.offsetHeight;
+            if (offsetHeight + scrollTop >= scrollHeight) {
+                if (issues.length > 0 && !isValidating) {
+                    if (isReachingEnd)
+                        return;
+                    var len = issues.length;
+                    setStartHash(issues[len - 1].hash);
+                    setSize(size + 1);
+                }
+            }
+        };
+        if (lastData && lastData.length > 0) {
+            var old_1 = JSON.parse(lastData);
+            data.map(function (x) {
+                if (!old_1.includes(x)) {
+                    old_1.push(x);
+                }
+            });
+            setIssues(old_1);
+        }
+        else {
+            setIssues(data);
+        }
+        localStorage.setItem("feeds", JSON.stringify(issues));
+        if (container) {
+            container.addEventListener("scroll", utils_1.debounce(scrollLoad, 500));
+        }
+        return function () {
+            container.removeEventListener("scroll", utils_1.debounce(scrollLoad, 500));
+        };
+    }, [data]);
+    return (React.createElement("div", { className: "feeds-container-box" },
+        React.createElement("div", { className: "feeds-title" }, "Social Feeds"),
+        React.createElement("div", { ref: ref, className: "feeds-container" },
+            isEmpty ? React.createElement("p", null, "Yay, no issues found.") : null,
+            issues.map(function (x, idx) {
+                return (FeedItem_1.isSupportedFeed(x) && (React.createElement("div", { key: idx },
+                    React.createElement(FeedItem_1.FeedItem, { identity: identity, feed: x }),
+                    React.createElement("div", { className: "feed-timestamp" }, date_1.formatTimestamp(x.timestamp))))) ||
+                    null;
+            }),
+            React.createElement("div", { style: {
+                    position: "relative",
+                    width: "100%",
+                    height: '10vh',
+                    display: "flex",
+                    justifyContent: "center"
+                } }, isLoadingMore ? React.createElement(Loading_1.Loading, null) : isReachingEnd ? "No More Feeds" : null))));
 };
 exports.FeedsTab = react_1.memo(RenderFeedsTab);
