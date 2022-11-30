@@ -1,11 +1,9 @@
 import { memo, useEffect, useRef, useState } from "react";
 import { RSS3Fetcher, RSS3_END_POINT } from "../apis/rss3";
-import { Empty } from "../shared/Empty";
-import { Loading } from "../shared/Loading";
-import { Error } from "../shared/Error";
 import { FeedItem, isSupportedFeed } from "./FeedItem";
 import { formatTimestamp } from "../../utils/date";
 import useSWRInfinite from "swr/infinite";
+import { throttle } from "../../utils/utils";
 
 const PAGE_SIZE = 30;
 const getFeedsURL = (
@@ -40,7 +38,10 @@ function useFeeds(address: string, startHash?: string) {
 const RenderFeedsTab = (props) => {
   const { identity } = props;
   const [startHash, setStartHash] = useState("");
-  const { data, error, size, setSize } = useFeeds(identity.identity, startHash);
+  const { data, error, size, setSize, isValidating } = useFeeds(
+    identity.identity,
+    startHash
+  );
   const issues = data ? [].concat(...data) : [];
   const isLoadingInitialData = !data && !error;
   const isLoadingMore =
@@ -52,12 +53,13 @@ const RenderFeedsTab = (props) => {
 
   const ref = useRef(null);
   useEffect(() => {
+    const container = ref.current;
     const scrollLoad = (e) => {
       const scrollHeight = e.target.scrollHeight;
       const scrollTop = e.target.scrollTop;
       const offsetHeight = e.target.offsetHeight;
       if (offsetHeight + scrollTop >= scrollHeight) {
-        if (issues.length > 0) {
+        if (issues.length > 0 && !isValidating) {
           if (isReachingEnd) return;
           const len = issues.length;
           console.log(issues, "issues");
@@ -66,10 +68,12 @@ const RenderFeedsTab = (props) => {
         }
       }
     };
-    if (ref.current) {
-      ref.current.addEventListener("scroll", scrollLoad);
+    if (container) {
+      container.addEventListener("scroll", throttle(scrollLoad, 100));
     }
-  }, [data, isReachingEnd, issues, size, setSize,startHash]);
+    return () =>
+      container.removeEventListener("scroll", throttle(scrollLoad, 100));
+  }, [data, isReachingEnd, issues, size, setSize, startHash, isValidating]);
 
   console.log("feeds data");
   return (

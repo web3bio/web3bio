@@ -7,7 +7,7 @@ import { Loading } from "../shared/Loading";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { isValidJson } from "../../utils/utils";
+import { isValidJson, throttle } from "../../utils/utils";
 
 function useCollections(address: string) {
   const { data, error } = useSWR<any>(
@@ -31,15 +31,6 @@ const RenderNFTCollections = (props) => {
 
   useEffect(() => {
     const container = scrollContainer.current;
-    const images = document.querySelectorAll("img");
-    function lazyLoad() {
-      images.forEach((img) => {
-        const imgTop = img.getBoundingClientRect().top;
-        if (imgTop < window.innerHeight) {
-          img.setAttribute("src", img.getAttribute("data-src"));
-        }
-      });
-    }
     if (data && data.data) {
       setCollections(
         data.data.map((x) => ({
@@ -54,14 +45,33 @@ const RenderNFTCollections = (props) => {
           anchorElement.scrollIntoView({ block: "start", behavior: "smooth" });
         }
       }
-    }
-    if (container) {
-      container.addEventListener("scroll", lazyLoad);
-
-      return () => container.removeEventListener("scroll", lazyLoad);
+      const lazyLoad = () => {
+        const lazyloadImages = container.querySelectorAll("img");
+        const imageObserver = new IntersectionObserver(function (
+          entries,
+          overver
+        ) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              const img = entry.target as any;
+              img.src = img.dataset.src;
+              imageObserver.unobserve(img);
+            }
+          });
+        });
+        lazyloadImages.forEach(function (image) {
+          imageObserver.observe(image);
+        });
+      };
+      if (container) {
+        container.addEventListener("scroll", () => throttle(lazyLoad, 100));
+      }
+      lazyLoad();
+      return () =>
+        container.removeEventListener("scroll", () => throttle(lazyLoad, 100));
     }
   }, [data, anchorName]);
-  if (isLoading) return <Loading />;
+  // if (isLoading) return <Loading />;
   if (isError) return <Error text={isError} />;
   if (!data || !data.data) return <Empty />;
 

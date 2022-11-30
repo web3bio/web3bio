@@ -96,35 +96,53 @@ export function resolveSocialMediaLink(name, type) {
   }
 }
 
-
-export function isValidJson(str){
-  try{
-    JSON.parse(str)
-  }catch(e){
-    return false
+export function isValidJson(str) {
+  try {
+    JSON.parse(str);
+  } catch (e) {
+    return false;
   }
-  return true
+  return true;
 }
 
 const regexEns = /.*\.eth|.xyz$/,
-regexLens = /.*\.lens$/,
-regexDotbit = /.*\.bit$/,
-regexEth = /^0x[a-fA-F0-9]{40}$/,
-regexTwitter = /(\w{1,15})\b/;
+  regexLens = /.*\.lens$/,
+  regexDotbit = /.*\.bit$/,
+  regexEth = /^0x[a-fA-F0-9]{40}$/,
+  regexTwitter = /(\w{1,15})\b/;
 
 export const handlesearchPlatform = (term) => {
-switch (true) {
-  case regexEns.test(term):
-    return "ENS";
-  case regexLens.test(term):
-    return "lens";
-  case regexDotbit.test(term):
-    return "dotbit";
-  case regexEth.test(term):
-    return "ethereum";
-  case regexTwitter.test(term):
-    return "twitter";
-  default:
-    return "nextid"
-}
+  switch (true) {
+    case regexEns.test(term):
+      return "ENS";
+    case regexLens.test(term):
+      return "lens";
+    case regexDotbit.test(term):
+      return "dotbit";
+    case regexEth.test(term):
+      return "ethereum";
+    case regexTwitter.test(term):
+      return "twitter";
+    default:
+      return "nextid";
+  }
+};
+
+export const throttle = (fun, delay) => {
+  let last, deferTimer;
+  return function (args) {
+    let that = this;
+    let _args = arguments;
+    let now = +new Date();
+    if (last && now < last + delay) {
+      clearTimeout(deferTimer);
+      deferTimer = setTimeout(function () {
+        last = now;
+        fun.apply(that, _args);
+      }, delay);
+    } else {
+      last = now;
+      fun.apply(that, _args);
+    }
+  };
 };

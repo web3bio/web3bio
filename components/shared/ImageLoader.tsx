@@ -10,12 +10,12 @@ export function ImageLoader(props: ImgHTMLAttributes<HTMLImageElement>) {
   return (
     <picture>
       <img
-        {...props}
+        src={props.src}
         data-src={props.src}
         onLoad={() => setLoaded(Boolean(props.src))}
         onError={onErrorHandle}
-        width={"100%"}
-        height={"100%"}
+        width={props.width}
+        height={props.height}
         style={{
           display: loaded || !props.src ? "block" : "none",
           objectFit: "fill",

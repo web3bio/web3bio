@@ -68,7 +68,10 @@ const IdentityPanelRender = (props) => {
               {avatarLoading ? (
                 <Loading />
               ) : (
-                <NFTAssetPlayer src={resolveIPFS_URL(avatar) ?? ""} />
+                <NFTAssetPlayer
+                
+                  src={resolveIPFS_URL(avatar) ?? ""}
+                />
               )}
             </div>
             <div className="identity-content content">

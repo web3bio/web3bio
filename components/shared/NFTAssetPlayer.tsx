@@ -17,8 +17,8 @@ const RenderNFTAssetPlayer = (props) => {
     <div className={className}>
       {IsImage(type) ? (
         <ImageLoader
-          width={width ?? 24}
-          height={height ?? 24}
+          width={width ?? '100%'}
+          height={height ?? '100%'}
           src={src || DefaultIcon}
           alt={alt}
         />
@@ -27,10 +27,10 @@ const RenderNFTAssetPlayer = (props) => {
       ) : (
         <picture>
           <img
+          src={src|| DefaultIcon}
             data-src={src || DefaultIcon}
-            src={src || DefaultIcon}
             width={width ?? "100%"}
-            height={height}
+            height={height ?? '100%'}
             alt={alt}
           />
         </picture>
