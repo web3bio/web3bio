@@ -40,7 +40,7 @@ const RenderFeedsTab = (props) => {
   const { identity } = props;
   const [startHash, setStartHash] = useState("");
   const [issues, setIssues] = useState([]);
-  const { data, error, size, setSize, isValidating } = useFeeds(
+  const { data, error, size, setSize, isValidating, isLoading } = useFeeds(
     identity.identity,
     startHash
   );
@@ -53,6 +53,7 @@ const RenderFeedsTab = (props) => {
     isEmpty || (data && data[data.length - 1]?.length < PAGE_SIZE);
   const ref = useRef(null);
   useEffect(() => {
+    console.log("effect");
     const container = ref.current;
     const lastData = localStorage.getItem("feeds") || [];
     const scrollLoad = (e) => {
@@ -60,7 +61,7 @@ const RenderFeedsTab = (props) => {
       const scrollTop = e.target.scrollTop;
       const offsetHeight = e.target.offsetHeight;
       if (offsetHeight + scrollTop >= scrollHeight) {
-        if (issues.length > 0 && !isValidating) {
+        if (issues.length > 0 && !isLoading) {
           if (isReachingEnd) return;
           const len = issues.length;
           setStartHash(issues[len - 1].hash);
@@ -70,8 +71,9 @@ const RenderFeedsTab = (props) => {
     };
     if (lastData && lastData.length > 0) {
       const old = JSON.parse(lastData as string);
+      console.log(old);
       data.map((x) => {
-        if (!old.includes(x)) {
+        if (!old.some((y) => y.timestamp === x.timestamp)) {
           old.push(x);
         }
       });
@@ -79,14 +81,16 @@ const RenderFeedsTab = (props) => {
     } else {
       setIssues(data);
     }
+
     localStorage.setItem("feeds", JSON.stringify(issues));
     if (container) {
-      container.addEventListener("scroll", debounce(scrollLoad, 500));
+      container.addEventListener("scroll", scrollLoad);
     }
+
     return () => {
-      container.removeEventListener("scroll", debounce(scrollLoad, 500));
+      container.removeEventListener("scroll", scrollLoad);
     };
-  }, [data]);
+  }, [size, startHash, isValidating, isLoading, isReachingEnd]);
 
   return (
     <div className="feeds-container-box">
@@ -110,12 +114,18 @@ const RenderFeedsTab = (props) => {
           style={{
             position: "relative",
             width: "100%",
-            height: '10vh',
+            height: "10vh",
             display: "flex",
             justifyContent: "center",
           }}
         >
-          {isLoadingMore ? <Loading /> : isReachingEnd ? "No More Feeds" : null}
+          {isLoadingMore ? (
+            <Loading />
+          ) : isReachingEnd ? (
+            "No More Feeds"
+          ) : (
+            <Loading />
+          )}
         </div>
       </div>
     </div>

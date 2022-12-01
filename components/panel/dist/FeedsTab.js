@@ -6,7 +6,6 @@ var rss3_1 = require("../apis/rss3");
 var FeedItem_1 = require("./FeedItem");
 var date_1 = require("../../utils/date");
 var infinite_1 = require("swr/infinite");
-var utils_1 = require("../../utils/utils");
 var Loading_1 = require("../shared/Loading");
 var PAGE_SIZE = 30;
 var getFeedsURL = function (address, startHash, previousPageData) {
@@ -31,7 +30,7 @@ var RenderFeedsTab = function (props) {
     var identity = props.identity;
     var _c = react_1.useState(""), startHash = _c[0], setStartHash = _c[1];
     var _d = react_1.useState([]), issues = _d[0], setIssues = _d[1];
-    var _e = useFeeds(identity.identity, startHash), data = _e.data, error = _e.error, size = _e.size, setSize = _e.setSize, isValidating = _e.isValidating;
+    var _e = useFeeds(identity.identity, startHash), data = _e.data, error = _e.error, size = _e.size, setSize = _e.setSize, isValidating = _e.isValidating, isLoading = _e.isLoading;
     var isLoadingInitialData = !data && !error;
     var isLoadingMore = isLoadingInitialData ||
         (size > 0 && data && typeof data[size - 1] === "undefined");
@@ -39,6 +38,7 @@ var RenderFeedsTab = function (props) {
     var isReachingEnd = isEmpty || (data && ((_b = data[data.length - 1]) === null || _b === void 0 ? void 0 : _b.length) < PAGE_SIZE);
     var ref = react_1.useRef(null);
     react_1.useEffect(function () {
+        console.log("effect");
         var container = ref.current;
         var lastData = localStorage.getItem("feeds") || [];
         var scrollLoad = function (e) {
@@ -46,7 +46,7 @@ var RenderFeedsTab = function (props) {
             var scrollTop = e.target.scrollTop;
             var offsetHeight = e.target.offsetHeight;
             if (offsetHeight + scrollTop >= scrollHeight) {
-                if (issues.length > 0 && !isValidating) {
+                if (issues.length > 0 && !isLoading) {
                     if (isReachingEnd)
                         return;
                     var len = issues.length;
@@ -57,8 +57,9 @@ var RenderFeedsTab = function (props) {
         };
         if (lastData && lastData.length > 0) {
             var old_1 = JSON.parse(lastData);
+            console.log(old_1);
             data.map(function (x) {
-                if (!old_1.includes(x)) {
+                if (!old_1.some(function (y) { return y.timestamp === x.timestamp; })) {
                     old_1.push(x);
                 }
             });
@@ -69,12 +70,12 @@ var RenderFeedsTab = function (props) {
         }
         localStorage.setItem("feeds", JSON.stringify(issues));
         if (container) {
-            container.addEventListener("scroll", utils_1.debounce(scrollLoad, 500));
+            container.addEventListener("scroll", scrollLoad);
         }
         return function () {
-            container.removeEventListener("scroll", utils_1.debounce(scrollLoad, 500));
+            container.removeEventListener("scroll", scrollLoad);
         };
-    }, [data]);
+    }, [size, startHash, isValidating, isLoading, isReachingEnd]);
     return (React.createElement("div", { className: "feeds-container-box" },
         React.createElement("div", { className: "feeds-title" }, "Social Feeds"),
         React.createElement("div", { ref: ref, className: "feeds-container" },
@@ -88,9 +89,9 @@ var RenderFeedsTab = function (props) {
             React.createElement("div", { style: {
                     position: "relative",
                     width: "100%",
-                    height: '10vh',
+                    height: "10vh",
                     display: "flex",
                     justifyContent: "center"
-                } }, isLoadingMore ? React.createElement(Loading_1.Loading, null) : isReachingEnd ? "No More Feeds" : null))));
+                } }, isLoadingMore ? (React.createElement(Loading_1.Loading, null)) : isReachingEnd ? ("No More Feeds") : (React.createElement(Loading_1.Loading, null))))));
 };
 exports.FeedsTab = react_1.memo(RenderFeedsTab);
