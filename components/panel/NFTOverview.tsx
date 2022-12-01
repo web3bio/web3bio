@@ -22,7 +22,6 @@ const RenderNFTOverview = (props) => {
   const { identity } = props;
   const { data, isLoading, isError } = useCollections(identity.identity);
 
-  if (isLoading) return <Loading />;
   if (isError) return <Error text={isError} />;
   if (!data || !data.data) return null;
   console.log(data, "ggg");
@@ -32,15 +31,19 @@ const RenderNFTOverview = (props) => {
       <div className="nft-collection-title">COLLECTIONS</div>
 
       <div className="nft-list">
-        {data.data.map((x, idx) => {
-          return (
-            <NFTAssetPlayer
-              key={idx}
-              className="collection-nft-item"
-              src={resolveIPFS_URL(x.logo_url)}
-            />
-          );
-        })}
+        {isLoading ? (
+          <Loading />
+        ) : (
+          data.data.map((x, idx) => {
+            return (
+              <NFTAssetPlayer
+                key={idx}
+                className="collection-nft-item"
+                src={resolveIPFS_URL(x.logo_url)}
+              />
+            );
+          })
+        )}
       </div>
     </div>
   );

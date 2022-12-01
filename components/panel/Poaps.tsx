@@ -22,22 +22,25 @@ const RenderPoaps = (props) => {
   const { identity } = props;
   const { data, isLoading, isError } = usePoaps(identity.identity);
 
-  if (isLoading) return <Loading />;
   if (isError) return <Error text={isError} />;
   if (!data || !data.length) return null;
   return (
     <div className="nft-collection-container">
       <div className="nft-collection-title">POAPS</div>
       <div className="nft-list">
-        {data.map((x, idx) => {
-          return (
-            <NFTAssetPlayer
-              key={idx}
-              className="collection-nft-item"
-              src={resolveIPFS_URL(x.event.image_url)}
-            />
-          );
-        })}
+        {isLoading ? (
+          <Loading />
+        ) : (
+          data.map((x, idx) => {
+            return (
+              <NFTAssetPlayer
+                key={idx}
+                className="collection-nft-item"
+                src={resolveIPFS_URL(x.event.image_url)}
+              />
+            );
+          })
+        )}
       </div>
     </div>
   );

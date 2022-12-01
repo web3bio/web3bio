@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /*! Spectre.css | MIT License | github.com/picturepan2/spectre */
 /* Manually forked from Normalize.css */
 /* normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */
@@ -691,25 +690,17 @@ dl dd {
   display: flex;
   width: 100%;
 }
-.btn.btn-clear {
-  background: transparent;
-  border: 0;
-  color: currentColor;
-  height: 1rem;
-  line-height: 0.8rem;
-  margin-left: 0.2rem;
-  margin-right: -2px;
-  opacity: 1;
-  padding: 0.1rem;
-  text-decoration: none;
-  width: 1rem;
+.btn.btn-close {
+  padding: 0.2rem;
+  width: 1.8rem;
 }
-.btn.btn-clear:focus, .btn.btn-clear:hover {
-  background: rgba(235, 235, 235, 0.5);
-  opacity: 0.95;
+.btn.btn-close.btn-sm {
+  padding: 0rem;
+  width: 1.4rem;
 }
-.btn.btn-clear::before {
-  content: "✕";
+.btn.btn-close.btn-lg {
+  padding: 0.5rem;
+  width: 2.4rem;
 }
 
 .btn-group {
@@ -2193,59 +2184,6 @@ video.video-responsive::before {
   opacity: 0.5;
 }
 
-.tab {
-  align-items: center;
-  background: #fff;
-  display: flex;
-  flex-wrap: wrap;
-  list-style: none;
-  margin: 0.2rem 0;
-}
-.tab .tab-item {
-  margin-top: 0;
-}
-.tab .tab-item a {
-  border-bottom: 0.1rem solid #ebebeb;
-  color: inherit;
-  display: block;
-  font-weight: 900;
-  margin: 0 0.4rem 0 0;
-  padding: 0.8rem 0.2rem 0.7rem 0.2rem;
-  text-decoration: none;
-}
-.tab .tab-item a:focus, .tab .tab-item a:hover {
-  border-bottom-color: #121212;
-  color: #121212;
-}
-.tab .tab-item.active a,
-.tab .tab-item a.active {
-  border-bottom-color: #121212;
-  color: #121212;
-}
-.tab .tab-item.tab-action {
-  flex: 1 0 auto;
-  text-align: right;
-}
-.tab .tab-item .btn-clear {
-  margin-top: -0.2rem;
-}
-.tab.tab-block .tab-item {
-  flex: 1 0 0;
-  text-align: center;
-}
-.tab.tab-block .tab-item a {
-  margin: 0;
-}
-.tab.tab-block .tab-item .badge[data-badge]::after {
-  position: absolute;
-  right: 0.1rem;
-  top: 0.1rem;
-  transform: translate(0, 0);
-}
-.tab:not(.tab-block) .badge {
-  padding-right: 0;
-}
-
 .toast {
   backdrop-filter: blur(2rem) saturate(120%) brightness(100%);
   background: rgba(18, 18, 18, 0.8);
@@ -3038,19 +2976,30 @@ body {
 
 .web3bio-container {
   min-height: 100vh;
-  padding: 1rem 0.5rem;
+  padding: 0.5rem;
   width: 100vw;
+}
+
+.profile-main {
+  position: absolute;
+  width: 25rem;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .web3bio-cover {
   background-image: radial-gradient(at 40% 33%, #FBF4EC 0px, transparent 50%), radial-gradient(at 82% 10%, #ECD7C8 0px, transparent 50%), radial-gradient(at 17% 11%, #EEA4BC 0px, transparent 50%), radial-gradient(at 48% 2%, #BE88C4 0px, transparent 50%), radial-gradient(at 39% 67%, #9186E7 0px, transparent 50%), radial-gradient(at 86% 58%, #92C9F9 0px, transparent 50%), radial-gradient(at 61% 57%, #C7F8FF 0px, transparent 50%);
   display: block;
   filter: blur(1rem);
-  height: 90vh;
+  height: 100vh;
   left: 0;
   opacity: 0.75;
   position: fixed;
-  top: 5vh;
+  top: 0;
   width: 100vw;
   z-index: -1;
 }
@@ -3239,7 +3188,10 @@ body {
   display: none;
 }
 .web3bio-search .loading-container {
-  margin: 2rem auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .search-result {
@@ -3249,70 +3201,6 @@ body {
   box-shadow: 0 0.05rem 0.2rem rgba(18, 18, 18, 0.1);
   position: relative;
   z-index: 99;
-}
-.search-result .graph-mask {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.search-result .graph-mask .graph-header {
-  align-items: center;
-  display: flex;
-  font-size: 0.7rem;
-  justify-content: space-between;
-  left: 0.5rem;
-  position: absolute;
-  right: 0.5rem;
-  top: 0.5rem;
-  z-index: 999;
-}
-.search-result .graph-mask .graph-header .graph-title {
-  align-items: center;
-  border-radius: 0.4rem;
-  display: flex;
-  line-height: 1rem;
-  padding: 0.4rem;
-  pointer-events: none;
-  user-select: none;
-  word-break: break-all;
-}
-.search-result .graph-mask .graph-header .graph-close {
-  align-items: center;
-  display: flex;
-}
-.search-result .graph-mask .graph-header svg {
-  flex-shrink: 0;
-}
-.search-result .graph-mask .graph-container {
-  background: #fff;
-  border-radius: 0.4rem;
-  box-shadow: 0 0.4rem 2rem rgba(0, 0, 0, 0.5);
-  height: 94%;
-  max-height: 40rem;
-  max-width: 64rem;
-  position: relative;
-  width: 94%;
-}
-.search-result .graph-mask .graph-container .loading-mask {
-  border-radius: 0.4rem;
-  position: absolute;
-  height: 94%;
-  max-height: 40rem;
-  max-width: 64rem;
-  width: 94%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 99;
-  background: #fff;
 }
 .search-result .search-result-header {
   display: flex;
@@ -3399,50 +3287,6 @@ body {
   background: #BDFC5A;
   color: #204F24;
 }
-.search-result .social {
-  align-items: center;
-  border-radius: 0.2rem;
-  display: flex;
-  flex: 1;
-  font-size: 0.6rem;
-  line-height: 1rem;
-  padding: 0.1rem 0.3rem 0.1rem 0.1rem;
-  text-decoration: none;
-  transition: all 0.25s ease-in-out;
-}
-.search-result .social .icon {
-  border-radius: 0.4rem;
-  color: #121212;
-  font-size: 0.7rem;
-  height: 1.6rem;
-  margin-right: 0.2rem;
-  padding: 0.3rem;
-  width: 1.6rem;
-}
-.search-result .social .content {
-  flex: 1;
-}
-.search-result .social .content-title {
-  font-size: 0.9rem;
-  line-height: 1.2rem;
-}
-.search-result .social .content-subtitle {
-  align-items: center;
-  display: flex;
-  font-size: 0.6rem;
-  line-height: 1rem;
-}
-.search-result .social .content-subtitle .action {
-  cursor: pointer;
-  flex: 0 1;
-  height: 1rem;
-  margin-left: 0.2rem;
-  position: relative;
-  width: 1rem;
-}
-.search-result .social .title {
-  font-size: 0.7rem;
-}
 .search-result .label-ens {
   align-items: center;
   border-radius: 0.3rem;
@@ -3483,6 +3327,295 @@ body {
   word-break: break-all;
 }
 
+.social {
+  align-items: center;
+  border-radius: 0.2rem;
+  display: flex;
+  flex: 1;
+  font-size: 0.6rem;
+  line-height: 1rem;
+  padding: 0.1rem 0.3rem 0.1rem 0.1rem;
+  text-decoration: none;
+  transition: all 0.25s ease-in-out;
+}
+.social .icon {
+  border-radius: 0.4rem;
+  color: #121212;
+  font-size: 0.7rem;
+  height: 1.6rem;
+  margin-right: 0.2rem;
+  padding: 0.3rem;
+  width: 1.6rem;
+}
+.social .content {
+  flex: 1;
+}
+.social .content-title {
+  font-size: 0.9rem;
+  line-height: 1.2rem;
+}
+.social .content-subtitle {
+  align-items: center;
+  display: flex;
+  font-size: 0.6rem;
+  line-height: 1rem;
+}
+.social .content-subtitle .action {
+  cursor: pointer;
+  flex: 0 1;
+  height: 1rem;
+  margin-left: 0.2rem;
+  position: relative;
+  width: 1rem;
+}
+.social .title {
+  font-size: 0.7rem;
+}
+
+.identity-graph-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.identity-graph-modal .graph-header {
+  align-items: center;
+  display: flex;
+  font-size: 0.7rem;
+  justify-content: space-between;
+  left: 0.5rem;
+  position: absolute;
+  right: 0.5rem;
+  top: 0.5rem;
+  z-index: 999;
+}
+.identity-graph-modal .graph-header .graph-title {
+  align-items: center;
+  border-radius: 0.4rem;
+  display: flex;
+  line-height: 1rem;
+  padding: 0.4rem;
+  pointer-events: none;
+  user-select: none;
+  word-break: break-all;
+}
+.identity-graph-modal .graph-container {
+  background: #fff;
+  border-radius: 0.4rem;
+  box-shadow: 0 0.4rem 2rem rgba(0, 0, 0, 0.5);
+  height: 94%;
+  max-height: 40rem;
+  max-width: 64rem;
+  position: relative;
+  width: 94%;
+}
+.identity-graph-modal .graph-container .loading-mask {
+  border-radius: 0.4rem;
+  position: absolute;
+  height: 94%;
+  max-height: 40rem;
+  max-width: 64rem;
+  width: 94%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99;
+  background: #fff;
+}
+
+.identity-panel {
+  height: calc(100vh - 1rem);
+  left: -1rem;
+  position: absolute;
+  right: -1rem;
+  top: 1rem;
+}
+
+.panel-container {
+  animation: slide-in 0.35s forwards;
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 1rem);
+  padding: 0;
+  position: sticky;
+  top: 1rem;
+  transform: translateY(-100%);
+  z-index: 100;
+}
+@keyframes slide-in {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+.panel-container.leave {
+  animation: slide-in 0.4s forwards reverse;
+}
+.panel-container .panel-header {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1rem 0 1rem;
+  z-index: 99;
+}
+.panel-container .panel-header .identity-avatar {
+  position: relative;
+  align-items: center;
+  border-radius: 0.5rem;
+  display: flex;
+  height: 2.4rem;
+  flex: 0 0 2.4rem;
+  justify-content: center;
+  margin-right: 0.5rem;
+  width: 2.4rem;
+}
+.panel-container .panel-header .identity-avatar img {
+  border-radius: 0.5rem;
+}
+.panel-container .panel-body {
+  display: flex;
+  flex: 1 1;
+  flex-direction: column;
+  height: auto;
+  overflow: hidden;
+  padding: 0;
+}
+.panel-container .panel-tab {
+  align-items: center;
+  background: transparent;
+  display: flex;
+  list-style: none;
+  margin: 0.5rem 0 0 0;
+  overflow: hidden;
+}
+.panel-container .panel-tab .tab-item {
+  flex: 1 1 100%;
+  margin-top: 0;
+  text-align: center;
+  text-transform: capitalize;
+}
+.panel-container .panel-tab .tab-item a {
+  border-bottom: 0.1rem solid #ebebeb;
+  display: block;
+  padding: 0 0.2rem;
+  text-decoration: none;
+  font-weight: 500;
+  line-height: 1.8rem;
+  color: #121212;
+  opacity: 0.5;
+  text-align: center;
+}
+.panel-container .panel-tab .tab-item a:focus, .panel-container .panel-tab .tab-item a:hover {
+  border-bottom-color: #121212;
+  opacity: 1;
+  transition: all 0.2s ease;
+}
+.panel-container .panel-tab .tab-item.active a,
+.panel-container .panel-tab .tab-item a.active {
+  border-bottom-color: #121212;
+  font-weight: 700;
+  opacity: 1;
+}
+.panel-container .btn-close {
+  position: absolute;
+  right: 0.5rem;
+  top: 0.5rem;
+  z-index: 999;
+}
+
+.collection-switcher {
+  background: #fff;
+  box-shadow: 0 0.1rem 1rem rgba(18, 18, 18, 0.1);
+}
+.collection-switcher .collection-list {
+  display: flex;
+  overflow-x: auto;
+  padding: 0.5rem 1rem;
+}
+.collection-switcher .collection-list .collection-item {
+  position: relative;
+  flex: 0 0;
+  height: 2rem;
+  margin-right: 0.5rem;
+  width: 2rem;
+}
+.collection-switcher .collection-list .collection-item .collection-img {
+  border-radius: 0.5rem;
+  height: 2rem;
+  width: 2rem;
+}
+.collection-switcher .collection-list .collection-item .collection-img img {
+  border-radius: 0.5rem;
+}
+
+.nft-collection {
+  flex: 1 1;
+  height: 100%;
+  overflow-y: auto;
+  padding: 0 1rem;
+}
+.nft-collection .nft-collection-list .nft-collection-item {
+  margin-top: 0.5rem;
+}
+.nft-collection .nft-collection-list .collection-title {
+  align-items: center;
+  display: flex;
+  padding: 0.5rem 0;
+}
+.nft-collection .nft-collection-list .collection-title .collection-logo {
+  height: 1.2rem;
+  margin-right: 0.25rem;
+  width: 1.2rem;
+}
+.nft-collection .nft-collection-list .collection-title .collection-logo img {
+  border-radius: 0.5rem;
+  box-shadow: 0 0.1rem 0.8rem rgba(18, 18, 18, 0.15);
+}
+.nft-collection .nft-collection-list .collection-title .collection-name {
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+.nft-collection .nft-collection-list .nft-list {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -0.5rem;
+}
+.nft-collection .nft-collection-list .nft-list .nft-container {
+  flex: 0 0 33.3333%;
+  padding: 0.5rem;
+  width: 33.3333%;
+}
+.nft-collection .nft-collection-list .nft-list .nft-item .img-container {
+  position: relative;
+  height: 7.5rem;
+  margin-bottom: 0.5rem;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 0.5rem;
+}
+.nft-collection .nft-collection-list .nft-list .nft-item .img-container img {
+  border-radius: 0.5rem;
+  box-shadow: 0 0.1rem 0.5rem rgba(18, 18, 18, 0.25);
+}
+.nft-collection .nft-collection-list .nft-list .nft-item .collection-name {
+  font-size: 0.65rem;
+}
+.nft-collection .nft-collection-list .nft-list .nft-item .nft-name {
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
 .web3bio-toast {
   display: flex;
   justify-content: center;
@@ -3506,10 +3639,10 @@ body {
 }
 
 .web3bio-footer {
-  color: #6b6b6b;
+  color: #ababab;
   font-size: 0.7rem;
   font-weight: 500;
-  padding-top: 0.5rem;
+  padding: 0.5rem;
   position: sticky;
   text-align: center;
   top: 100vh;
