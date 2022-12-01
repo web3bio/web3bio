@@ -48,12 +48,10 @@ const RenderFeedsTab = (props) => {
   const isLoadingMore =
     isLoadingInitialData ||
     (size > 0 && data && typeof data[size - 1] === "undefined");
-  const isEmpty = data?.[0]?.length === 0;
-  const isReachingEnd =
-    isEmpty || (data && data[data.length - 1]?.length < PAGE_SIZE);
+  const isEmpty = data.length === 0;
+  const isReachingEnd = isEmpty || (data && data.length < PAGE_SIZE);
   const ref = useRef(null);
   useEffect(() => {
-    console.log("effect");
     const container = ref.current;
     const lastData = localStorage.getItem("feeds") || [];
     const scrollLoad = (e) => {
@@ -71,7 +69,6 @@ const RenderFeedsTab = (props) => {
     };
     if (lastData && lastData.length > 0) {
       const old = JSON.parse(lastData as string);
-      console.log(old);
       data.map((x) => {
         if (!old.some((y) => y.timestamp === x.timestamp)) {
           old.push(x);

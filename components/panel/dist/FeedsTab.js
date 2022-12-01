@@ -26,19 +26,17 @@ function useFeeds(address, startHash) {
     };
 }
 var RenderFeedsTab = function (props) {
-    var _a, _b;
     var identity = props.identity;
-    var _c = react_1.useState(""), startHash = _c[0], setStartHash = _c[1];
-    var _d = react_1.useState([]), issues = _d[0], setIssues = _d[1];
-    var _e = useFeeds(identity.identity, startHash), data = _e.data, error = _e.error, size = _e.size, setSize = _e.setSize, isValidating = _e.isValidating, isLoading = _e.isLoading;
+    var _a = react_1.useState(""), startHash = _a[0], setStartHash = _a[1];
+    var _b = react_1.useState([]), issues = _b[0], setIssues = _b[1];
+    var _c = useFeeds(identity.identity, startHash), data = _c.data, error = _c.error, size = _c.size, setSize = _c.setSize, isValidating = _c.isValidating, isLoading = _c.isLoading;
     var isLoadingInitialData = !data && !error;
     var isLoadingMore = isLoadingInitialData ||
         (size > 0 && data && typeof data[size - 1] === "undefined");
-    var isEmpty = ((_a = data === null || data === void 0 ? void 0 : data[0]) === null || _a === void 0 ? void 0 : _a.length) === 0;
-    var isReachingEnd = isEmpty || (data && ((_b = data[data.length - 1]) === null || _b === void 0 ? void 0 : _b.length) < PAGE_SIZE);
+    var isEmpty = data.length === 0;
+    var isReachingEnd = isEmpty || (data && data.length < PAGE_SIZE);
     var ref = react_1.useRef(null);
     react_1.useEffect(function () {
-        console.log("effect");
         var container = ref.current;
         var lastData = localStorage.getItem("feeds") || [];
         var scrollLoad = function (e) {
@@ -57,7 +55,6 @@ var RenderFeedsTab = function (props) {
         };
         if (lastData && lastData.length > 0) {
             var old_1 = JSON.parse(lastData);
-            console.log(old_1);
             data.map(function (x) {
                 if (!old_1.some(function (y) { return y.timestamp === x.timestamp; })) {
                     old_1.push(x);

@@ -23,7 +23,6 @@ var RenderNFTOverview = function (props) {
         return React.createElement(Error_1.Error, { text: isError });
     if (!data || !data.data)
         return null;
-    console.log(data, "ggg");
     return (React.createElement("div", { className: "nft-collection-container" },
         React.createElement("div", { className: "nft-collection-title" }, "COLLECTIONS"),
         React.createElement("div", { className: "nft-list" }, isLoading ? (React.createElement(Loading_1.Loading, null)) : (data.data.map(function (x, idx) {

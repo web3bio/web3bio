@@ -24,7 +24,6 @@ const RenderNFTOverview = (props) => {
 
   if (isError) return <Error text={isError} />;
   if (!data || !data.data) return null;
-  console.log(data, "ggg");
 
   return (
     <div className="nft-collection-container">

@@ -88,7 +88,6 @@ const RenderNFTCollections = (props) => {
     }
     return resolveIPFS_URL(asset.image_uri ?? asset.content_uri);
   };
-  console.log(data.data, "collections");
   return (
     <>
       {collections && collections.length > 0 && (
