@@ -3,7 +3,6 @@ import { RSS3Fetcher, RSS3_END_POINT } from "../apis/rss3";
 import { FeedItem, isSupportedFeed } from "./FeedItem";
 import { formatTimestamp } from "../../utils/date";
 import useSWRInfinite from "swr/infinite";
-import { debounce } from "../../utils/utils";
 import { Loading } from "../shared/Loading";
 
 const PAGE_SIZE = 30;
@@ -87,7 +86,7 @@ const RenderFeedsTab = (props) => {
     return () => {
       container.removeEventListener("scroll", scrollLoad);
     };
-  }, [size, startHash, isValidating, isLoading, isReachingEnd]);
+  }, [size, startHash, isValidating, isLoading, isReachingEnd,setSize]);
 
   return (
     <div className="feeds-container-box">

@@ -5,6 +5,7 @@ import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { formatText } from "../../utils/utils";
 import { RenderSourceFooter } from "./SourcesFooter";
+import { PlatformType } from "../../utils/type";
 
 const RenderAccountItem = (props) => {
   const onCopySuccess = () => {
@@ -16,7 +17,7 @@ const RenderAccountItem = (props) => {
   const { identity, sources } = props;
   const [isCopied, setIsCopied] = useState(false);
   switch (identity.platform) {
-    case "ethereum":
+    case PlatformType.ethereum:
       return (
         <div className="social-item social-web3 ethereum">
           <div className="social-main">
@@ -91,7 +92,7 @@ const RenderAccountItem = (props) => {
           <RenderSourceFooter sources={sources} />
         </div>
       );
-    case "lens":
+    case PlatformType.lens:
       return (
         <div className="social-item lens">
           <div className="social-main">
@@ -145,7 +146,7 @@ const RenderAccountItem = (props) => {
           <RenderSourceFooter sources={sources} />
         </div>
       );
-    case "dotbit":
+    case PlatformType.dotbit:
       return (
         <div className="social-item dotbit">
           <div className="social-main">
@@ -179,7 +180,7 @@ const RenderAccountItem = (props) => {
           <RenderSourceFooter sources={sources} />
         </div>
       );
-    case "twitter":
+    case PlatformType.twitter:
       return (
         <div className="social-item twitter">
           <div className="social-main">
@@ -211,7 +212,7 @@ const RenderAccountItem = (props) => {
           <RenderSourceFooter sources={sources} />
         </div>
       );
-    case "github":
+    case PlatformType.github:
       return (
         <div className="social-item github">
           <div className="social-main">
@@ -246,7 +247,7 @@ const RenderAccountItem = (props) => {
           <RenderSourceFooter sources={sources} />
         </div>
       );
-    case "keybase":
+    case PlatformType.keybase:
       return (
         <div className="social-item keybase">
           <div className="social-main">
@@ -281,7 +282,7 @@ const RenderAccountItem = (props) => {
           <RenderSourceFooter sources={sources} />
         </div>
       );
-    case "reddit":
+    case PlatformType.reddit:
       return (
         <div className="social-item reddit">
           <div className="social-main">

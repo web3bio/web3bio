@@ -5,4 +5,7 @@ export enum PlatformType {
   ethereum = "ethereum",
   twitter = "twitter",
   nextid = "nextid",
+  keybase = "keybase",
+  reddit = "reddit",
+  github = "github",
 }
