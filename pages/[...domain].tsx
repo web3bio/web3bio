@@ -6,7 +6,7 @@ import { Empty } from "../components/shared/Empty";
 import { Loading } from "../components/shared/Loading";
 import { Error } from "../components/shared/Error";
 import { GET_PROFILES_DOMAIN } from "../utils/queries";
-import { handlesearchPlatform } from "../utils/utils";
+import { handleSearchPlatform } from "../utils/utils";
 
 const RenderDomainPanel = (props) => {
   const { domain } = props;
@@ -23,7 +23,7 @@ const RenderDomainPanel = (props) => {
   useEffect(() => {
     if (!router.isReady) return;
     if (!router.query.domain) return;
-    setPlatform(handlesearchPlatform(router.query.domain));
+    setPlatform(handleSearchPlatform(router.query.domain[0]));
     if (router.query.domain[1]) setPanelTab(domain[1]);
   }, [domain, router]);
 
