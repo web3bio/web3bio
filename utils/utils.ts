@@ -1,5 +1,6 @@
 import { BigNumber } from "bignumber.js";
 import { pow10 } from "./number";
+import { PlatformType } from "./type";
 export const formatText = (string, length?) => {
   const len = length ?? 12;
   if (string.length <= len) {
@@ -111,21 +112,27 @@ const regexEns = /.*\.eth|.xyz$/,
   regexEth = /^0x[a-fA-F0-9]{40}$/,
   regexTwitter = /(\w{1,15})\b/;
 
-export const handlesearchPlatform = (term) => {
+export const handleSearchPlatform = (term: string) => {
   switch (true) {
     case regexEns.test(term):
-      return "ENS";
+      return PlatformType.ens;
     case regexLens.test(term):
-      return "lens";
+      return PlatformType.lens;
     case regexDotbit.test(term):
-      return "dotbit";
+      return PlatformType.dotbit;
     case regexEth.test(term):
-      return "ethereum";
+      return PlatformType.ethereum;
     case regexTwitter.test(term):
-      return "twitter";
+      return PlatformType.twitter;
     default:
-      return "nextid";
+      return PlatformType.nextid;
   }
+};
+
+export const isDomainSearch = (term) => {
+  return [PlatformType.ens, PlatformType.dotbit, PlatformType.lens].includes(
+    term
+  );
 };
 
 export const throttle = (fun, delay) => {

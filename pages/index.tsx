@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import SVG from "react-inlinesvg";
 import { SearchResultDomain } from "../components/search/SearchResultDomain";
 import { SearchResultQuery } from "../components/search/SearchResultQuery";
-import { handlesearchPlatform } from "../utils/utils";
+import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
 
 export default function Home() {
   const [searchFocus, setSearchFocus] = useState(false);
@@ -22,7 +22,7 @@ export default function Home() {
       const searchkeyword = (router.query.s as string).toLowerCase();
       setSearchTerm(searchkeyword);
       if (!router.query.platform) {
-        let searchPlatform = handlesearchPlatform(searchkeyword);
+        let searchPlatform = handleSearchPlatform(searchkeyword);
         setsearchPlatform(searchPlatform);
       } else {
         setsearchPlatform((router.query.platform as string).toLowerCase());
@@ -116,7 +116,7 @@ export default function Home() {
               </div>
             </form>
             {searchPlatform ? (
-              searchPlatform === "ENS" || searchPlatform === "dotbit" ? (
+              isDomainSearch(searchPlatform) ? (
                 <SearchResultDomain
                   searchTerm={searchTerm}
                   searchPlatform={searchPlatform}
