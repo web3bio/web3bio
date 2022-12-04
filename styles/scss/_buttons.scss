@@ -2,11 +2,11 @@
 .btn {
   align-items: center;
   appearance: none;
-  background: $dark-color;
-  border: $border-width solid $dark-color;
+  background: lighten($bg-color, 5%);
+  border: $border-width solid transparent;
   border-radius: $border-radius;
-  box-shadow: 0 .2rem .4rem rgba(0, 0, 0, .15);
-  color: $light-color;
+  box-shadow: none;
+  color: lighten($dark-color, 10%);
   cursor: pointer;
   display: inline-flex;
   font-size: $font-size;
@@ -20,20 +20,14 @@
   transition: background .2s, border .2s, box-shadow .2s, color .2s;
   user-select: none;
   white-space: nowrap;
-  &:focus {
-    @include control-shadow();
-  }
   &:focus,
   &:hover {
-    background: $primary-color;
-    border-color: $primary-color-dark;
-    box-shadow: 0 .3rem .6rem rgba(0, 0, 0, .25);
-    color: $light-color;
+    background: $bg-color;
     text-decoration: none;
   }
   &:active,
   &.active {
-    background: $primary-color-dark;
+    background: darken($bg-color, 3%);
     text-decoration: none;
     &.loading {
       &::after {
@@ -52,20 +46,20 @@
 
   // Button Primary
   &.btn-primary {
-    background: $primary-color;
-    border-color: $primary-color-dark;
-    box-shadow: 0 .1rem .4rem rgba($primary-color, .25);
+    background: $dark-color;
+    border-color: $dark-color;
+    box-shadow: 0 .1rem .4rem rgba($dark-color, .25);
     color: $light-color;
     &:focus,
     &:hover {
-      background: darken($primary-color-dark, 2%);
-      border-color: darken($primary-color-dark, 5%);
+      background: darken($dark-color, 2%);
+      border-color: darken($dark-color, 5%);
       color: $light-color;
     }
     &:active,
     &.active {
-      background: darken($primary-color-dark, 4%);
-      border-color: darken($primary-color-dark, 7%);
+      background: darken($dark-color, 4%);
+      border-color: darken($dark-color, 7%);
       color: $light-color;
     }
     &.loading {

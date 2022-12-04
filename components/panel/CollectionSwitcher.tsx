@@ -1,15 +1,12 @@
 import { memo, useState } from "react";
-import Image from "next/image";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
 const RenderCollectionSwitcher = (props) => {
   const { collections, currentSelect, onSelect } = props;
 
-  const [displayMenu, setDisplayMenu] = useState(false);
   const [active, setActive] = useState(currentSelect);
 
   const hideDropdownMenu = (v) => {
-    setDisplayMenu(false);
     setActive(v);
     onSelect(v);
   };
@@ -26,7 +23,7 @@ const RenderCollectionSwitcher = (props) => {
             }
             key={item.key}
           >
-            <NFTAssetPlayer className="collection-img" src={item.url} />
+            <NFTAssetPlayer className="collection-img" src={item.url} alt={item.name} />
             <div className="collection-name text-assistive">{item.name}</div>
           </div>
         ))}

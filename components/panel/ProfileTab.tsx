@@ -78,9 +78,9 @@ const RenderProfileTab = (props) => {
           <Loading />
         </div>
       ) : (
-        <div className="profile-basic-info">
+        <div className="profile-basic">
           <div className="profile-description">
-            {ensRecords.base.description || "no description"}
+            {ensRecords.base.description}
           </div>
           <div className="records">
             {Object.keys(socialButtonMapping).map((x, idx) => {

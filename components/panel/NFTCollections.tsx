@@ -140,6 +140,7 @@ const RenderNFTCollections = (props) => {
                             className={"img-container"}
                             type={y.content_type}
                             src={mediaURL}
+                            alt={y.name}
                           />
                           <div className="collection-name">
                             {x.contract_name}

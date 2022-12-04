@@ -102,27 +102,18 @@ const RenderAccountItem = (props) => {
               </figure>
               <div className="content">
                 <div className="content-title text-bold">
-                  {identity.displayName}
+                  {identity.displayName
+                    ? identity.displayName
+                    : identity.identity}
                 </div>
                 <div className="content-subtitle text-gray">
-                  <div className="address hide-xs">
-                    {identity.ownedBy.displayName
-                      ? identity.ownedBy.displayName
-                      : identity.ownedBy.identity}
-                  </div>
-                  <div className="address show-xs">
-                    {identity.ownedBy.displayName
-                      ? identity.ownedBy.displayName
-                      : formatText(identity.ownedBy.identity)}
+                  <div className="address">
+                    {identity.identity}
                   </div>
                   <Clipboard
                     component="div"
                     className="action"
-                    data-clipboard-text={
-                      identity.ownedBy.displayName
-                        ? identity.ownedBy.displayName
-                        : identity.ownedBy.identity
-                    }
+                    data-clipboard-text={identity.identity}
                     onSuccess={onCopySuccess}
                   >
                     <SVG src="icons/icon-copy.svg" width={20} height={20} />

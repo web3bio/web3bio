@@ -89,11 +89,11 @@ const RenderFeedsTab = (props) => {
   }, [size, startHash, isValidating, isLoading, isReachingEnd,setSize]);
 
   return (
-    <div className="feeds-container-box">
-      <div className="feeds-title">Social Feeds</div>
+    <div className="feeds-container">
+      <div className="social-feeds-title">Social Feeds</div>
 
-      <div ref={ref} className="feeds-container">
-        {isEmpty ? <p>Yay, no issues found.</p> : null}
+      <div ref={ref} className="social-feeds-list">
+        {isEmpty ? <p>Yay, no feeds.</p> : null}
         {issues.map(
           (x, idx) =>
             (isSupportedFeed(x) && (
