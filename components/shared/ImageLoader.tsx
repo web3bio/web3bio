@@ -8,21 +8,22 @@ export function ImageLoader(props: ImgHTMLAttributes<HTMLImageElement>) {
     event.currentTarget.src = DefaultIcon;
   };
   return (
-    <picture>
-      <img
+    <>
+      <img 
         src={props.src}
         data-src={props.src}
         onLoad={() => setLoaded(Boolean(props.src))}
         onError={onErrorHandle}
         width={props.width}
         height={props.height}
+        alt={props.alt}
         style={{
-          display: loaded || !props.src ? "block" : "none",
+          display: "block",
           objectFit: "fill",
         }}
-        alt={props.alt || "img"}
+        loading="lazy"
       />
-      {!loaded && Boolean(props.src) ? <Loading style={{ margin: 0 }} /> : null}
-    </picture>
+      {/* {!loaded && Boolean(props.src) ? <Loading style={{ margin: 0 }} /> : null} */}
+    </>
   );
 }

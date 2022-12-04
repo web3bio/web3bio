@@ -933,7 +933,8 @@ body {
 
           img {
             border-radius: .5rem;
-            box-shadow: 0 .2rem 1rem rgba($dark-color, .25), 0 .05rem .2rem rgba($dark-color, .05);
+            box-shadow: 0 .2rem 1rem rgba($dark-color, .15), 0 .05rem .2rem rgba($dark-color, .05);
+            object-fit: cover;
           }
         }
 
@@ -953,7 +954,7 @@ body {
 
 // NFT Panel
 .nft-panel {
-  height: calc(100vh - 1rem);
+  height: calc(100vh - 2rem);
   left: -1rem;
   position: absolute;
   right: -1rem;

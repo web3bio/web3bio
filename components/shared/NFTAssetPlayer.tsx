@@ -1,39 +1,53 @@
 import { memo } from "react";
-import { DefaultIcon } from "./Default";
 import { ImageLoader } from "./ImageLoader";
 import { Video } from "./Video";
+import { resolveIPFS_URL } from "../../utils/ipfs";
 
 const IsImage = (type) => {
-  return ["image/png", "image/jpeg", "image/jpg", "image/svg"].includes(type);
+  return ["image/png", "image/jpeg", "image/jpg", "image/svg", "image/gif", "image/webp", "text/html"].includes(type);
 };
 
 const isVideo = (type) => {
-  return type === "video/mp4";
+  return ["video/mp4", "audio/mpeg", "audio/wav"].includes(type);
+};
+
+const isAudio = (type) => {
+  return ["video/mp4", "audio/mpeg", "audio/wav"].includes(type);
+};
+
+const resolveMediaURL_New = (asset) => {
+  if (asset) {
+    return asset.startsWith('data:', 'https:') ? asset : resolveIPFS_URL(asset);
+  }
+  return '';
 };
 
 const RenderNFTAssetPlayer = (props) => {
-  const { type = "image/png", className, src, width, height, alt } = props;
+  const { type = "image/png", className, src, contentUrl, width, height, alt } = props;
   return (
     <div className={className}>
       {IsImage(type) ? (
         <ImageLoader
           width={width ?? '100%'}
           height={height ?? '100%'}
-          src={src || DefaultIcon}
+          src={src}
           alt={alt}
+          loading="lazy"
         />
       ) : isVideo(type) ? (
-        <Video src={src} />
+        <video
+          style={{ borderRadius: 8 }}
+          width={"100%"}
+          height={"100%"}
+          muted
+          autoPlay
+          loop
+          poster={src as string}   
+        >
+          <source src={contentUrl as string} type={type}></source>
+        </video>
       ) : (
-        <picture>
-          <img
-          src={src|| DefaultIcon}
-            data-src={src || DefaultIcon}
-            width={width ?? "100%"}
-            height={height ?? '100%'}
-            alt={alt}
-          />
-        </picture>
+        <></>
       )}
     </div>
   );

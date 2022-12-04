@@ -75,19 +75,27 @@ const RenderNFTCollections = (props) => {
   if (isError) return <Error text={isError} />;
   if (!data || !data.data) return <Empty />;
 
+  // const resolveMediaURL = (asset) => {
+  //   if (asset && asset.metadata_json && isValidJson(asset.metadata_json)) {
+  //     const json = JSON.parse(asset.metadata_json);
+  //     const origin = json.image || json.content_uri;
+  //     if (origin) {
+  //       return origin.includes("base64") ? origin : resolveIPFS_URL(origin);
+  //     }
+  //   }
+  //   if (asset && ["video/mp4"].includes(asset.content_type)) {
+  //     return resolveIPFS_URL(asset.content_uri ?? asset.image_uri);
+  //   }
+  //   return resolveIPFS_URL(asset.image_uri ?? asset.content_uri);
+  // };
+
   const resolveMediaURL = (asset) => {
-    if (asset && asset.metadata_json && isValidJson(asset.metadata_json)) {
-      const json = JSON.parse(asset.metadata_json);
-      const origin = json.image || json.content_uri;
-      if (origin) {
-        return origin.includes("base64") ? origin : resolveIPFS_URL(origin);
-      }
+    if (asset) {
+      return asset.startsWith('data:', 'https:') ? asset : resolveIPFS_URL(asset);
     }
-    if (asset && ["video/mp4"].includes(asset.content_type)) {
-      return resolveIPFS_URL(asset.content_uri ?? asset.image_uri);
-    }
-    return resolveIPFS_URL(asset.image_uri ?? asset.content_uri);
+    return '';
   };
+
   return (
     <>
       {collections && collections.length > 0 && (
@@ -114,12 +122,15 @@ const RenderNFTCollections = (props) => {
                     type={"image/png"}
                     className="collection-logo"
                     src={x.logo_url}
+                    alt={x.contract_name}
                   />
                   <div className="collection-name"> {x.contract_name}</div>
                 </div>
                 <div className="nft-list">
                   {x.assets.map((y, ydx) => {
-                    const mediaURL = resolveMediaURL(y);
+                    const mediaURL = resolveMediaURL(y.image_uri);
+                    const contentURL = resolveMediaURL(y.content_uri);
+                    
                     return (
                       <div
                         key={ydx}
@@ -132,6 +143,7 @@ const RenderNFTCollections = (props) => {
                             },
                             asset: y,
                             mediaURL: mediaURL,
+                            contentURL: contentURL
                           })
                         }
                       >
@@ -140,6 +152,7 @@ const RenderNFTCollections = (props) => {
                             className={"img-container"}
                             type={y.content_type}
                             src={mediaURL}
+                            contentUrl={contentURL}
                             alt={y.name}
                           />
                           <div className="collection-name">
