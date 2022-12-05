@@ -7,7 +7,7 @@ import { Empty } from "../shared/Empty";
 import { Loading } from "../shared/Loading";
 import { Error } from "../shared/Error";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { formatText } from "../../utils/utils";
+import { formatText, isValidJson } from "../../utils/utils";
 function useAsset(address: string, tokenId: string | number) {
   const { data, error } = useSWR<any>(
     NFTSCAN_BASE_API_ENDPOINT + `assets/${address}/${tokenId}`,
@@ -30,12 +30,14 @@ const NFTDialogRender = (props) => {
   if (isError) return <Error text={isError} />;
   if (!data) return null;
   const _asset = data.data;
-  const metadata = JSON.parse(_asset.metadata_json);
+  const metadata = isValidJson(_asset.metadata_json)
+    ? JSON.parse(_asset.metadata_json)
+    : null;
   const mediaurl =
     resolveIPFS_URL(asset.mediaURL) || metadata
       ? resolveIPFS_URL(metadata.image)
       : null;
-  console.log('current asset', asset)
+  console.log("current asset", asset);
   return (
     <div className="panel-container" style={{ overflow: "hidden auto" }}>
       <div className="close-icon-box" onClick={onClose}>

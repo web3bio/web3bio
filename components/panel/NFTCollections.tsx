@@ -3,11 +3,10 @@ import useSWR from "swr";
 import { NFTSCANFetcher, NFTSCAN_BASE_API_ENDPOINT } from "../apis/nftscan";
 import { CollectionSwitcher } from "./CollectionSwitcher";
 import { resolveIPFS_URL } from "../../utils/ipfs";
-import { Loading } from "../shared/Loading";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { isValidJson, throttle } from "../../utils/utils";
+import { throttle } from "../../utils/utils";
 
 function useCollections(address: string) {
   const { data, error } = useSWR<any>(
@@ -71,15 +70,16 @@ const RenderNFTCollections = (props) => {
         container.removeEventListener("scroll", () => throttle(lazyLoad, 100));
     }
   }, [data, anchorName]);
-  // if (isLoading) return <Loading />;
   if (isError) return <Error text={isError} />;
   if (!data || !data.data) return <Empty />;
 
   const resolveMediaURL = (asset) => {
     if (asset) {
-      return asset.startsWith('data:', 'https:') ? asset : resolveIPFS_URL(asset);
+      return asset.startsWith("data:", "https:")
+        ? asset
+        : resolveIPFS_URL(asset);
     }
-    return '';
+    return "";
   };
 
   return (
@@ -110,13 +110,15 @@ const RenderNFTCollections = (props) => {
                     src={x.logo_url}
                     alt={x.contract_name}
                   />
-                  <div className="collection-name text-ellipsis"> {x.contract_name}</div>
+                  <div className="collection-name text-ellipsis">
+                    {x.contract_name}
+                  </div>
                 </div>
                 <div className="nft-list">
                   {x.assets.map((y, ydx) => {
                     const mediaURL = resolveMediaURL(y.image_uri);
                     const contentURL = resolveMediaURL(y.content_uri);
-                    
+
                     return (
                       <div
                         key={ydx}
@@ -129,7 +131,7 @@ const RenderNFTCollections = (props) => {
                             },
                             asset: y,
                             mediaURL: mediaURL,
-                            contentURL: contentURL
+                            contentURL: contentURL,
                           })
                         }
                       >

@@ -73,11 +73,11 @@ const RenderProfileTab = (props) => {
 
   return (
     <div className="profile-container">
-      {ensLoading || !ensRecords ? (
+      {ensLoading ? (
         <div className="profile-basic-info-loading">
           <Loading />
         </div>
-      ) : (
+      ) : ensRecords ? (
         <div className="profile-basic">
           <div className="profile-description">
             {ensRecords.base.description}
@@ -109,7 +109,7 @@ const RenderProfileTab = (props) => {
             })}
           </div>
         </div>
-      )}
+      ) : null}
 
       <NFTOverview identity={identity} />
       <Poaps identity={identity} />

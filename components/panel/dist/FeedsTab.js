@@ -44,7 +44,8 @@ var RenderFeedsTab = function (props) {
             var scrollTop = e.target.scrollTop;
             var offsetHeight = e.target.offsetHeight;
             if (offsetHeight + scrollTop >= scrollHeight) {
-                if (issues.length > 0 && !isLoading) {
+                console.log("chudi");
+                if (issues.length > 0) {
                     if (isReachingEnd)
                         return;
                     var len = issues.length;
@@ -67,16 +68,13 @@ var RenderFeedsTab = function (props) {
         }
         localStorage.setItem("feeds", JSON.stringify(issues));
         if (container) {
-            container.addEventListener("scroll", scrollLoad);
+            container.addEventListener("scroll", scrollLoad, false);
         }
-        return function () {
-            container.removeEventListener("scroll", scrollLoad);
-        };
-    }, [size, startHash, isValidating, isLoading, isReachingEnd, setSize]);
-    return (React.createElement("div", { className: "feeds-container-box" },
-        React.createElement("div", { className: "feeds-title" }, "Social Feeds"),
-        React.createElement("div", { ref: ref, className: "feeds-container" },
-            isEmpty ? React.createElement("p", null, "Yay, no issues found.") : null,
+    }, [size, startHash, isReachingEnd, isValidating]);
+    return (React.createElement("div", { className: "feeds-container" },
+        React.createElement("div", { className: "social-feeds-title" }, "Social Feeds"),
+        React.createElement("div", { ref: ref, className: "social-feeds-list" },
+            isEmpty ? React.createElement("p", null, "Yay, no feeds.") : null,
             issues.map(function (x, idx) {
                 return (FeedItem_1.isSupportedFeed(x) && (React.createElement("div", { key: idx },
                     React.createElement(FeedItem_1.FeedItem, { identity: identity, feed: x }),

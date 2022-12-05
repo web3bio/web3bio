@@ -58,7 +58,9 @@ const RenderFeedsTab = (props) => {
       const scrollTop = e.target.scrollTop;
       const offsetHeight = e.target.offsetHeight;
       if (offsetHeight + scrollTop >= scrollHeight) {
-        if (issues.length > 0 && !isLoading) {
+        console.log("chudi");
+
+        if (issues.length > 0) {
           if (isReachingEnd) return;
           const len = issues.length;
           setStartHash(issues[len - 1].hash);
@@ -77,16 +79,11 @@ const RenderFeedsTab = (props) => {
     } else {
       setIssues(data);
     }
-
     localStorage.setItem("feeds", JSON.stringify(issues));
     if (container) {
-      container.addEventListener("scroll", scrollLoad);
+      container.addEventListener("scroll", scrollLoad, false);
     }
-
-    return () => {
-      container.removeEventListener("scroll", scrollLoad);
-    };
-  }, [size, startHash, isValidating, isLoading, isReachingEnd,setSize]);
+  }, [size, startHash, isReachingEnd, isValidating]);
 
   return (
     <div className="feeds-container">
