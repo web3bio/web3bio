@@ -4,6 +4,8 @@ import { FeedItem, isSupportedFeed } from "./FeedItem";
 import { formatTimestamp } from "../../utils/date";
 import useSWRInfinite from "swr/infinite";
 import { Loading } from "../shared/Loading";
+import { debounce, throttle } from "../../utils/utils";
+import { render } from "sass";
 
 const PAGE_SIZE = 30;
 const getFeedsURL = (
@@ -39,6 +41,7 @@ const RenderFeedsTab = (props) => {
   const { identity } = props;
   const [startHash, setStartHash] = useState("");
   const [issues, setIssues] = useState([]);
+
   const { data, error, size, setSize, isValidating, isLoading } = useFeeds(
     identity.identity,
     startHash
@@ -50,24 +53,11 @@ const RenderFeedsTab = (props) => {
   const isEmpty = data.length === 0;
   const isReachingEnd = isEmpty || (data && data.length < PAGE_SIZE);
   const ref = useRef(null);
-  useEffect(() => {
-    const container = ref.current;
-    const lastData = localStorage.getItem("feeds") || [];
-    const scrollLoad = (e) => {
-      const scrollHeight = e.target.scrollHeight;
-      const scrollTop = e.target.scrollTop;
-      const offsetHeight = e.target.offsetHeight;
-      if (offsetHeight + scrollTop >= scrollHeight) {
-        console.log("chudi");
+  const lastData = localStorage.getItem("feeds") || [];
 
-        if (issues.length > 0) {
-          if (isReachingEnd) return;
-          const len = issues.length;
-          setStartHash(issues[len - 1].hash);
-          setSize(size + 1);
-        }
-      }
-    };
+  useEffect(() => {
+    let rendering = false;
+    const container = ref.current;
     if (lastData && lastData.length > 0) {
       const old = JSON.parse(lastData as string);
       data.map((x) => {
@@ -79,17 +69,53 @@ const RenderFeedsTab = (props) => {
     } else {
       setIssues(data);
     }
+
+    const scrollLoad = (e) => {
+      const scrollHeight = e.target.scrollHeight;
+      const scrollTop = e.target.scrollTop;
+      const offsetHeight = e.target.offsetHeight;
+      if (offsetHeight + scrollTop >= scrollHeight) {
+        console.log(
+          isValidating,
+          "gggg",
+          isReachingEnd,
+          size,
+          startHash,
+          issues
+        );
+        if (data.length > 0 && !isValidating && !isLoading && !rendering) {
+          if (isReachingEnd) return;
+          const copy = issues.length > 0 ? issues : data;
+          const len = copy.length;
+          setStartHash(copy[len - 1].hash);
+          setSize(size + 1);
+          rendering = true;
+        }
+      }
+    };
+
     localStorage.setItem("feeds", JSON.stringify(issues));
     if (container) {
-      container.addEventListener("scroll", scrollLoad, false);
+      container.addEventListener("scroll", debounce(scrollLoad, 500));
     }
-  }, [size, startHash, isReachingEnd, isValidating]);
+    return () => {
+      container.removeEventListener("scroll", debounce(scrollLoad, 500));
+    };
+  }, [
+    startHash,
+    isValidating,
+    setStartHash,
+    setSize,
+    isLoading,
+    size,
+    isReachingEnd,
+  ]);
 
   return (
-    <div className="feeds-container">
+    <div ref={ref} className="feeds-container">
       <div className="social-feeds-title">Social Feeds</div>
 
-      <div ref={ref} className="social-feeds-list">
+      <div className="social-feeds-list">
         {isEmpty ? <p>Yay, no feeds.</p> : null}
         {issues.map(
           (x, idx) =>
@@ -107,8 +133,8 @@ const RenderFeedsTab = (props) => {
           style={{
             position: "relative",
             width: "100%",
-            height: "10vh",
             display: "flex",
+            margin: "1.5rem 0",
             justifyContent: "center",
           }}
         >

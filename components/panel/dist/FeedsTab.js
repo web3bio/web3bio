@@ -7,6 +7,7 @@ var FeedItem_1 = require("./FeedItem");
 var date_1 = require("../../utils/date");
 var infinite_1 = require("swr/infinite");
 var Loading_1 = require("../shared/Loading");
+var utils_1 = require("../../utils/utils");
 var PAGE_SIZE = 30;
 var getFeedsURL = function (address, startHash, previousPageData) {
     if (previousPageData && !previousPageData.length)
@@ -36,24 +37,10 @@ var RenderFeedsTab = function (props) {
     var isEmpty = data.length === 0;
     var isReachingEnd = isEmpty || (data && data.length < PAGE_SIZE);
     var ref = react_1.useRef(null);
+    var lastData = localStorage.getItem("feeds") || [];
     react_1.useEffect(function () {
+        var rendering = false;
         var container = ref.current;
-        var lastData = localStorage.getItem("feeds") || [];
-        var scrollLoad = function (e) {
-            var scrollHeight = e.target.scrollHeight;
-            var scrollTop = e.target.scrollTop;
-            var offsetHeight = e.target.offsetHeight;
-            if (offsetHeight + scrollTop >= scrollHeight) {
-                console.log("chudi");
-                if (issues.length > 0) {
-                    if (isReachingEnd)
-                        return;
-                    var len = issues.length;
-                    setStartHash(issues[len - 1].hash);
-                    setSize(size + 1);
-                }
-            }
-        };
         if (lastData && lastData.length > 0) {
             var old_1 = JSON.parse(lastData);
             data.map(function (x) {
@@ -66,14 +53,42 @@ var RenderFeedsTab = function (props) {
         else {
             setIssues(data);
         }
+        var scrollLoad = function (e) {
+            var scrollHeight = e.target.scrollHeight;
+            var scrollTop = e.target.scrollTop;
+            var offsetHeight = e.target.offsetHeight;
+            if (offsetHeight + scrollTop >= scrollHeight) {
+                console.log(isValidating, "gggg", isReachingEnd, size, startHash, issues);
+                if (data.length > 0 && !isValidating && !isLoading && !rendering) {
+                    if (isReachingEnd)
+                        return;
+                    var copy = issues.length > 0 ? issues : data;
+                    var len = copy.length;
+                    setStartHash(copy[len - 1].hash);
+                    setSize(size + 1);
+                    rendering = true;
+                }
+            }
+        };
         localStorage.setItem("feeds", JSON.stringify(issues));
         if (container) {
-            container.addEventListener("scroll", scrollLoad, false);
+            container.addEventListener("scroll", utils_1.debounce(scrollLoad, 500));
         }
-    }, [size, startHash, isReachingEnd, isValidating]);
-    return (React.createElement("div", { className: "feeds-container" },
+        return function () {
+            container.removeEventListener("scroll", utils_1.debounce(scrollLoad, 500));
+        };
+    }, [
+        startHash,
+        isValidating,
+        setStartHash,
+        setSize,
+        isLoading,
+        size,
+        isReachingEnd,
+    ]);
+    return (React.createElement("div", { ref: ref, className: "feeds-container" },
         React.createElement("div", { className: "social-feeds-title" }, "Social Feeds"),
-        React.createElement("div", { ref: ref, className: "social-feeds-list" },
+        React.createElement("div", { className: "social-feeds-list" },
             isEmpty ? React.createElement("p", null, "Yay, no feeds.") : null,
             issues.map(function (x, idx) {
                 return (FeedItem_1.isSupportedFeed(x) && (React.createElement("div", { key: idx },
@@ -84,8 +99,8 @@ var RenderFeedsTab = function (props) {
             React.createElement("div", { style: {
                     position: "relative",
                     width: "100%",
-                    height: "10vh",
                     display: "flex",
+                    margin: "1.5rem 0",
                     justifyContent: "center"
                 } }, isLoadingMore ? (React.createElement(Loading_1.Loading, null)) : isReachingEnd ? ("No More Feeds") : (React.createElement(Loading_1.Loading, null))))));
 };

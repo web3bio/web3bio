@@ -154,22 +154,12 @@ export const throttle = (fun, delay) => {
   };
 };
 
-export const debounce = (
-  func: Function,
-  delay: number,
-  immediate: boolean = false
-): Function => {
+export function debounce(func, timeout = 300) {
   let timer;
-  return function (this: unknown, ...args: any[]) {
-    let that = this;
-    if (immediate) {
-      func.apply(that, args);
-      immediate = false;
-      return;
-    }
+  return (...args) => {
     clearTimeout(timer);
     timer = setTimeout(() => {
-      func.apply(that, args);
-    }, delay);
+      func.apply(this, args);
+    }, timeout);
   };
-};
+}
