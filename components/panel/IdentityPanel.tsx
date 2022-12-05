@@ -42,6 +42,14 @@ const IdentityPanelRender = (props) => {
       setCopied(false);
     }, 1500);
   };
+
+  const resolveMediaURL = (asset) => {
+    if (asset) {
+      return asset.startsWith('data:', 'https:') ? asset : resolveIPFS_URL(asset);
+    }
+    return '';
+  };
+
   const renderContent = () => {
     return {
       [TabsMap.profile.key]: <ProfileTab identity={identity} />,
@@ -69,8 +77,10 @@ const IdentityPanelRender = (props) => {
                 <Loading />
               ) : (
                 <NFTAssetPlayer
-                
-                  src={resolveIPFS_URL(avatar) ?? ""}
+                  src={resolveMediaURL(avatar)}
+                  alt={identity.displayName
+                    ? identity.displayName
+                    : formatText(identity.identity)}
                 />
               )}
             </div>

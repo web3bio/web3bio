@@ -17,10 +17,7 @@ export function ImageLoader(props: ImgHTMLAttributes<HTMLImageElement>) {
         width={props.width}
         height={props.height}
         alt={props.alt}
-        style={{
-          display: "block",
-          objectFit: "fill",
-        }}
+        className="img-responsive"
         loading="lazy"
       />
       {/* {!loaded && Boolean(props.src) ? <Loading style={{ margin: 0 }} /> : null} */}

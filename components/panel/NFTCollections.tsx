@@ -75,20 +75,6 @@ const RenderNFTCollections = (props) => {
   if (isError) return <Error text={isError} />;
   if (!data || !data.data) return <Empty />;
 
-  // const resolveMediaURL = (asset) => {
-  //   if (asset && asset.metadata_json && isValidJson(asset.metadata_json)) {
-  //     const json = JSON.parse(asset.metadata_json);
-  //     const origin = json.image || json.content_uri;
-  //     if (origin) {
-  //       return origin.includes("base64") ? origin : resolveIPFS_URL(origin);
-  //     }
-  //   }
-  //   if (asset && ["video/mp4"].includes(asset.content_type)) {
-  //     return resolveIPFS_URL(asset.content_uri ?? asset.image_uri);
-  //   }
-  //   return resolveIPFS_URL(asset.image_uri ?? asset.content_uri);
-  // };
-
   const resolveMediaURL = (asset) => {
     if (asset) {
       return asset.startsWith('data:', 'https:') ? asset : resolveIPFS_URL(asset);
@@ -124,7 +110,7 @@ const RenderNFTCollections = (props) => {
                     src={x.logo_url}
                     alt={x.contract_name}
                   />
-                  <div className="collection-name"> {x.contract_name}</div>
+                  <div className="collection-name text-ellipsis"> {x.contract_name}</div>
                 </div>
                 <div className="nft-list">
                   {x.assets.map((y, ydx) => {
