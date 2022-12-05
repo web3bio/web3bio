@@ -141,7 +141,7 @@ const RenderNFTCollections = (props) => {
                             type={y.content_type}
                             src={mediaURL}
                             contentUrl={contentURL}
-                            alt={y.name}
+                            alt={x.contract_name + " - " + y.name}
                           />
                           <div className="collection-name">
                             {x.contract_name}

@@ -22,6 +22,7 @@ if (isBrowser) {
     width: fit-content;
     transition: opacity .2s;
     text-align: left;
+    user-select: none;
     padding: 4px 8px;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .15);
     border: 0;
