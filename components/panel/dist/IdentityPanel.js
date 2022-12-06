@@ -29,7 +29,7 @@ exports.TabsMap = {
 };
 var IdentityPanelRender = function (props) {
     var onClose = props.onClose, identity = props.identity, onTabChange = props.onTabChange, curTab = props.curTab;
-    var _a = react_1.useState(curTab || exports.TabsMap.feeds.key), activeTab = _a[0], setActiveTab = _a[1];
+    var _a = react_1.useState(curTab || exports.TabsMap.profile.key), activeTab = _a[0], setActiveTab = _a[1];
     var _b = react_1.useState(null), curAsset = _b[0], setCurAsset = _b[1];
     var _c = react_1.useState(null), copied = _c[0], setCopied = _c[1];
     var router = router_1.useRouter();

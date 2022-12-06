@@ -28,7 +28,7 @@ export const TabsMap = {
 
 const IdentityPanelRender = (props) => {
   const { onClose, identity, onTabChange, curTab } = props;
-  const [activeTab, setActiveTab] = useState(curTab || TabsMap.feeds.key);
+  const [activeTab, setActiveTab] = useState(curTab || TabsMap.profile.key);
   const [curAsset, setCurAsset] = useState(null);
   const [copied, setCopied] = useState(null);
   const router = useRouter();

@@ -19,7 +19,7 @@ const RenderAccount = (props) => {
       const cachedIentity = localStorage.getItem("cur_identity");
       if (!cachedIentity) return;
       setIdentity(JSON.parse(cachedIentity));
-      setPanelTab(router.query.t as string || TabsMap.feeds.key);
+      setPanelTab(router.query.t as string || TabsMap.profile.key);
       setShowPanel(true);
     }
   }, [router.isReady, router.query]);

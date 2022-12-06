@@ -22,7 +22,7 @@ var RenderAccount = function (props) {
             if (!cachedIentity)
                 return;
             setIdentity(JSON.parse(cachedIentity));
-            setPanelTab(router.query.t || IdentityPanel_1.TabsMap.feeds.key);
+            setPanelTab(router.query.t || IdentityPanel_1.TabsMap.profile.key);
             setShowPanel(true);
         }
     }, [router.isReady, router.query]);
