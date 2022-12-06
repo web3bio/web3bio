@@ -126,7 +126,10 @@ var IdentityPanelRender = function (props) {
                             React.createElement(react_clipboard_js_1["default"], { component: "div", className: "action", "data-clipboard-text": identity.identity, onSuccess: onCopySuccess },
                                 React.createElement(react_inlinesvg_1["default"], { src: "icons/icon-copy.svg", width: 20, height: 20 }),
                                 copied && React.createElement("div", { className: "tooltip-copy" }, "COPIED"))))),
-                React.createElement("div", { className: "btn btn-link btn-close", onClick: onClose },
+                React.createElement("div", { className: "btn btn-link btn-close", onClick: function () {
+                        localStorage.removeItem('feeds');
+                        onClose();
+                    } },
                     React.createElement(react_inlinesvg_1["default"], { src: "/icons/icon-close.svg", width: "20", height: "20" })),
                 React.createElement("ul", { className: "panel-tab" }, utils_1.getEnumAsArray(exports.TabsMap).map(function (x, idx) {
                     return (React.createElement("li", { key: idx, className: activeTab === x.value.key ? "tab-item active" : "tab-item" },
@@ -134,6 +137,7 @@ var IdentityPanelRender = function (props) {
                                 e.preventDefault();
                                 setActiveTab(x.value.key);
                                 onTabChange(x.value.key);
+                                localStorage.removeItem('feeds');
                             } }, x.value.name)));
                 }))),
             React.createElement("div", { className: "panel-body" }, renderContent()))));

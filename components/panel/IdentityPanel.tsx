@@ -120,7 +120,10 @@ const IdentityPanelRender = (props) => {
               </div>
             </div>
           </div>
-          <div className="btn btn-link btn-close" onClick={onClose}>
+          <div className="btn btn-link btn-close" onClick={()=>{
+            localStorage.removeItem('feeds')
+            onClose()
+          }}>
             <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
           </div>
           <ul className="panel-tab">
@@ -138,6 +141,7 @@ const IdentityPanelRender = (props) => {
                       e.preventDefault();
                       setActiveTab(x.value.key);
                       onTabChange(x.value.key);
+                      localStorage.removeItem('feeds')
                     }}
                   >
                     {x.value.name}
