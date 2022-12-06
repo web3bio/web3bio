@@ -10,12 +10,12 @@ const isVideo = (type) => {
 };
 
 const RenderNFTAssetPlayer = (props) => {
-  const { type = "image/png", className, src, contentUrl, width, height, alt } = props;
+  const { type = "image/png", className, src, contentUrl, width, height, alt, onClick} = props;
   return (
     <>
       {
         src ? 
-          <div className={className}>
+          <div onClick={onClick} className={className}>
             {
               IsImage(type) ? (
                 <ImageLoader
@@ -42,7 +42,7 @@ const RenderNFTAssetPlayer = (props) => {
             }
           </div>
           : 
-          <div className={className}>
+          <div onClick={onClick} className={className}>
             <div className="img-placeholder img-responsive bg-pride" data-initial={alt?.substring(0,2)}></div>
           </div>
       }

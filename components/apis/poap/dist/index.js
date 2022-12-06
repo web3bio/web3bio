@@ -37,7 +37,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 exports.POAPFetcher = exports.POAP_END_POINT = void 0;
-var AUTHENTICATION = process.env.POAP_API_KEY;
+var AUTHENTICATION = process.env.POAP_API_KEY ||
+    "vrqPYmHPuIhgdO45vvS8uqlcfgWE7aFoMw1Vkw3b88fxMkGOFEvEoKAZTdbhRLqNri2Crw0XhMsuhow04n9T7dTAABkfNy3OHtWzBAGVZIJTl9AxrNXJ9QAd1AeZQs2i";
 exports.POAP_END_POINT = "https://api.poap.tech/actions/scan/";
 exports.POAPFetcher = function (url) { return __awaiter(void 0, void 0, void 0, function () {
     var res;

@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import SVG from "react-inlinesvg";
 import Clipboard from "react-clipboard.js";
 import { getEnumAsArray } from "../../utils/utils";
@@ -11,12 +11,13 @@ import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { Loading } from "../shared/Loading";
 import { formatText } from "../../utils/utils";
 import { resolveIPFS_URL } from "../../utils/ipfs";
+import { useRouter } from "next/router";
 
 export const TabsMap = {
-  // profile: {
-  //   key: "profile",
-  //   name: "Profile",
-  // },
+  profile: {
+    key: "profile",
+    name: "Profile",
+  },
   feeds: {
     key: "feeds",
     name: "Feeds",
@@ -32,6 +33,7 @@ const IdentityPanelRender = (props) => {
   const [activeTab, setActiveTab] = useState(curTab || TabsMap.feeds.key);
   const [curAsset, setCurAsset] = useState(null);
   const [copied, setCopied] = useState(null);
+  const router = useRouter();
 
   const { value: avatar, loading: avatarLoading } = useAsync(async () => {
     return await ens.name(identity.displayName).getText("avatar");
@@ -45,24 +47,33 @@ const IdentityPanelRender = (props) => {
 
   const resolveMediaURL = (asset) => {
     if (asset) {
-      return asset.startsWith('data:', 'https:') ? asset : resolveIPFS_URL(asset);
+      return asset.startsWith("data:", "https:")
+        ? asset
+        : resolveIPFS_URL(asset);
     }
-    return '';
+    return "";
   };
 
   const renderContent = () => {
-    return {
-      // [TabsMap.profile.key]: <ProfileTab identity={identity} />,
-      [TabsMap.feeds.key]: <FeedsTab identity={identity} />,
-      [TabsMap.nfts.key]: (
-        <NFTsTab
-          defaultOpen={!!curAsset}
-          onShowDetail={resolveOnShowDetail}
-          identity={identity}
-        />
-      ),
-    }[activeTab] || <FeedsTab identity={identity} />;
+    return (
+      {
+        [TabsMap.profile.key]: <ProfileTab identity={identity} />,
+        [TabsMap.feeds.key]: <FeedsTab identity={identity} />,
+        [TabsMap.nfts.key]: (
+          <NFTsTab
+            defaultOpen={!!curAsset}
+            onShowDetail={resolveOnShowDetail}
+            identity={identity}
+          />
+        ),
+      }[activeTab] || <FeedsTab identity={identity} />
+    );
   };
+
+  useEffect(() => {
+    if (!router.isReady || !router.query.t) return;
+    setActiveTab(router.query.t);
+  }, [router]);
 
   const resolveOnShowDetail = (asset) => {
     // todo: to resolve url && nft dialog
@@ -78,9 +89,11 @@ const IdentityPanelRender = (props) => {
               ) : (
                 <NFTAssetPlayer
                   src={resolveMediaURL(avatar)}
-                  alt={identity.displayName
-                    ? identity.displayName
-                    : formatText(identity.identity)}
+                  alt={
+                    identity.displayName
+                      ? identity.displayName
+                      : formatText(identity.identity)
+                  }
                 />
               )}
             </div>

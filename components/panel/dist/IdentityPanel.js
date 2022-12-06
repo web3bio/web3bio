@@ -43,17 +43,19 @@ var react_clipboard_js_1 = require("react-clipboard.js");
 var utils_1 = require("../../utils/utils");
 var FeedsTab_1 = require("./FeedsTab");
 var NFTsTab_1 = require("./NFTsTab");
+var ProfileTab_1 = require("./ProfileTab");
 var react_use_1 = require("react-use");
 var ens_1 = require("../../utils/ens");
 var NFTAssetPlayer_1 = require("../shared/NFTAssetPlayer");
 var Loading_1 = require("../shared/Loading");
 var utils_2 = require("../../utils/utils");
 var ipfs_1 = require("../../utils/ipfs");
+var router_1 = require("next/router");
 exports.TabsMap = {
-    // profile: {
-    //   key: "profile",
-    //   name: "Profile",
-    // },
+    profile: {
+        key: "profile",
+        name: "Profile"
+    },
     feeds: {
         key: "feeds",
         name: "Feeds"
@@ -68,6 +70,7 @@ var IdentityPanelRender = function (props) {
     var _a = react_1.useState(curTab || exports.TabsMap.feeds.key), activeTab = _a[0], setActiveTab = _a[1];
     var _b = react_1.useState(null), curAsset = _b[0], setCurAsset = _b[1];
     var _c = react_1.useState(null), copied = _c[0], setCopied = _c[1];
+    var router = router_1.useRouter();
     var _d = react_use_1.useAsync(function () { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -84,18 +87,25 @@ var IdentityPanelRender = function (props) {
     };
     var resolveMediaURL = function (asset) {
         if (asset) {
-            return asset.startsWith('data:', 'https:') ? asset : ipfs_1.resolveIPFS_URL(asset);
+            return asset.startsWith("data:", "https:")
+                ? asset
+                : ipfs_1.resolveIPFS_URL(asset);
         }
-        return '';
+        return "";
     };
     var renderContent = function () {
         var _a;
-        return (_a = {},
-            // [TabsMap.profile.key]: <ProfileTab identity={identity} />,
+        return ((_a = {},
+            _a[exports.TabsMap.profile.key] = React.createElement(ProfileTab_1.ProfileTab, { identity: identity }),
             _a[exports.TabsMap.feeds.key] = React.createElement(FeedsTab_1.FeedsTab, { identity: identity }),
             _a[exports.TabsMap.nfts.key] = (React.createElement(NFTsTab_1.NFTsTab, { defaultOpen: !!curAsset, onShowDetail: resolveOnShowDetail, identity: identity })),
-            _a)[activeTab] || React.createElement(FeedsTab_1.FeedsTab, { identity: identity });
+            _a)[activeTab] || React.createElement(FeedsTab_1.FeedsTab, { identity: identity }));
     };
+    react_1.useEffect(function () {
+        if (!router.isReady || !router.query.t)
+            return;
+        setActiveTab(router.query.t);
+    }, [router]);
     var resolveOnShowDetail = function (asset) {
         // todo: to resolve url && nft dialog
     };

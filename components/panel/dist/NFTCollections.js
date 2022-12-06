@@ -11,6 +11,7 @@ var Error_1 = require("../shared/Error");
 var NFTAssetPlayer_1 = require("../shared/NFTAssetPlayer");
 var utils_1 = require("../../utils/utils");
 var Loading_1 = require("../shared/Loading");
+var router_1 = require("next/router");
 function useCollections(address) {
     var _a = swr_1["default"](nftscan_1.NFTSCAN_BASE_API_ENDPOINT + ("account/own/all/" + address + "?erc_type=erc721"), nftscan_1.NFTSCANFetcher), data = _a.data, error = _a.error;
     return {
@@ -26,6 +27,7 @@ var RenderNFTCollections = function (props) {
     var _c = useCollections(identity.identity), data = _c.data, isLoading = _c.isLoading, isError = _c.isError;
     var _d = react_1.useState(null), activeCollection = _d[0], setActiveCollection = _d[1];
     var scrollContainer = react_1.useRef(null);
+    var router = router_1.useRouter();
     react_1.useEffect(function () {
         var container = scrollContainer.current;
         if (data && data.data) {
@@ -34,10 +36,22 @@ var RenderNFTCollections = function (props) {
                 name: x.contract_name,
                 url: x.logo_url
             }); }));
+            if (router.isReady && router.query.a)
+                setAnchorName(router.query.a);
             if (anchorName) {
                 var anchorElement = document.getElementById(anchorName);
                 if (anchorElement) {
                     anchorElement.scrollIntoView({ block: "start", behavior: "smooth" });
+                    if (router.query.a) {
+                        router.replace({
+                            pathname: "",
+                            query: {
+                                s: router.query.s,
+                                d: router.query.d,
+                                t: router.query.t
+                            }
+                        });
+                    }
                 }
             }
             var lazyLoad_1 = function () {
@@ -63,7 +77,7 @@ var RenderNFTCollections = function (props) {
                 return container.removeEventListener("scroll", function () { return utils_1.throttle(lazyLoad_1, 100); });
             };
         }
-    }, [data, anchorName]);
+    }, [data, anchorName, router]);
     if (isLoading)
         return React.createElement(Loading_1.Loading, null);
     if (isError)

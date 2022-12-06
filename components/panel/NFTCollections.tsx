@@ -8,6 +8,7 @@ import { Error } from "../shared/Error";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { throttle } from "../../utils/utils";
 import { Loading } from "../shared/Loading";
+import { useRouter } from "next/router";
 
 function useCollections(address: string) {
   const { data, error } = useSWR<any>(
@@ -28,6 +29,7 @@ const RenderNFTCollections = (props) => {
   const { data, isLoading, isError } = useCollections(identity.identity);
   const [activeCollection, setActiveCollection] = useState(null);
   const scrollContainer = useRef(null);
+  const router = useRouter();
 
   useEffect(() => {
     const container = scrollContainer.current;
@@ -39,10 +41,22 @@ const RenderNFTCollections = (props) => {
           url: x.logo_url,
         }))
       );
+      if (router.isReady && router.query.a)
+        setAnchorName(router.query.a as string);
       if (anchorName) {
         const anchorElement = document.getElementById(anchorName);
         if (anchorElement) {
           anchorElement.scrollIntoView({ block: "start", behavior: "smooth" });
+          if (router.query.a) {
+            router.replace({
+              pathname: "",
+              query: {
+                s: router.query.s,
+                d: router.query.d,
+                t: router.query.t,
+              },
+            });
+          }
         }
       }
       const lazyLoad = () => {
@@ -70,7 +84,7 @@ const RenderNFTCollections = (props) => {
       return () =>
         container.removeEventListener("scroll", () => throttle(lazyLoad, 100));
     }
-  }, [data, anchorName]);
+  }, [data, anchorName, router]);
   if (isLoading) return <Loading />;
   if (isError) return <Error text={isError} />;
   if (!data || !data.data) return <Empty />;
