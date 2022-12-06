@@ -41,7 +41,7 @@ var RenderNFTOverview = function (props) {
                             a: x.contract_address
                         }
                     });
-                }, key: idx, className: "collection-nft-item", src: ipfs_1.resolveIPFS_URL(x.logo_url) }));
+                }, key: idx, className: "collection-nft-item", src: ipfs_1.resolveIPFS_URL(x.logo_url), alt: x.contract_name }));
         })))));
 };
 exports.NFTOverview = react_1.memo(RenderNFTOverview);

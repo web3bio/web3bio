@@ -20,7 +20,7 @@ function useAsset(address: string, tokenId: string | number) {
 }
 const NFTDialogRender = (props) => {
   const { onClose, asset} = props;
-  const { data, isLoading, isError } = useAsset(
+  const { data, isError } = useAsset(
     asset.asset.contract_address,
     asset.asset.token_id
   );

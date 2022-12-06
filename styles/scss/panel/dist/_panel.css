@@ -26,96 +26,6 @@
   height: 20px;
 }
 
-.nft-dialog-basic {
-  display: flex;
-  gap: 30px;
-  padding: 0;
-}
-.nft-dialog-basic .nft-dialog-asset-player {
-  width: 200px;
-  height: 200px;
-  max-width: 200px;
-  max-height: 200px;
-  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.15);
-  border-radius: 12px;
-}
-.nft-dialog-basic .nft-dialog-asset-player img {
-  border-radius: 12px;
-}
-.nft-dialog-basic .nft-dialog-info {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
-}
-.nft-dialog-basic .nft-dialog-info .nft-dialog-collection {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-.nft-dialog-basic .nft-dialog-info .nft-dialog-collection .title {
-  font-weight: 400;
-  font-size: 10px;
-  line-height: 20px;
-  text-transform: uppercase;
-}
-.nft-dialog-basic .nft-dialog-info .nft-name {
-  font-weight: 900;
-  font-size: 20px;
-  line-height: 1.2;
-  text-transform: uppercase;
-  color: #000000;
-  margin-bottom: 10px;
-  max-width: 200px;
-}
-
-.nft-dialog-scroll-box {
-  overflow-y: auto;
-  padding: 0;
-}
-.nft-dialog-scroll-box .nft-dialog-des-box {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin: 20px 0px;
-  color: #000000;
-}
-.nft-dialog-scroll-box .nft-dialog-des-box .common-title {
-  font-weight: 900;
-  font-size: 14px;
-  line-height: 1.43;
-  text-transform: uppercase;
-}
-.nft-dialog-scroll-box .nft-dialog-des-box .description-content {
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 1.67;
-}
-.nft-dialog-scroll-box .nft-dialog-des-box .traits-box {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.nft-dialog-scroll-box .nft-dialog-des-box .traits-box .traits-card {
-  background: #FFFFFF;
-  border: 1px solid rgba(18, 18, 18, 0.08);
-  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.05);
-  border-radius: 10px;
-  color: #000000;
-  text-transform: uppercase;
-  padding: 4px 10px;
-}
-.nft-dialog-scroll-box .nft-dialog-des-box .traits-box .traits-card .trait-type {
-  font-weight: 400;
-  font-size: 10px;
-  line-height: 2;
-}
-.nft-dialog-scroll-box .nft-dialog-des-box .traits-box .traits-card .trait-value {
-  font-weight: 700;
-  font-size: 13px;
-  line-height: 1.54;
-}
-
 .nft-collection-container {
   display: flex;
   flex-direction: column;
@@ -229,6 +139,9 @@
   overflow: hidden;
   border-radius: 12px;
 }
+.nft-collection-container .nft-list .collection-nft-item .img-responsive {
+  height: 100%;
+}
 .nft-collection-container .nft-list .collection-nft-item:hover img {
   transform: scale(1.2);
   box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.5);
@@ -242,16 +155,6 @@
   transition: transform 0.4s ease 0s;
 }
 
-.profile-container {
-  padding: 0;
-  box-sizing: border-box;
-}
-.profile-container .profile-basic-info-loading {
-  position: relative;
-  min-height: 30vh;
-  margin-bottom: 40px;
-}
-
 .feeds-container-box {
   padding: 0;
 }
@@ -261,7 +164,7 @@
   line-height: 1.43;
   text-transform: uppercase;
 }
-.feeds-container-box .feeds-container {
+.feeds-container-box .social-feeds-list {
   max-width: 100%;
   margin-top: 20px;
   max-height: 80vh;
@@ -271,96 +174,9 @@
   flex-direction: column;
   gap: 20px;
 }
-.feeds-container-box .feeds-container .feed-timestamp {
+.feeds-container-box .social-feeds-list .feed-timestamp {
   width: fit-content;
   margin-left: 34px;
   opacity: 0.5;
   margin-top: 10px;
-}
-.feeds-container-box .feeds-container .feed-item-box {
-  display: flex;
-  width: 100%;
-  align-items: flex-start;
-  gap: 10px;
-}
-.feeds-container-box .feeds-container .feed-item-box .feed-type-badge {
-  width: 24px;
-  height: 24px;
-  background: rgba(18, 18, 18, 0.08);
-  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.05);
-  border-radius: 8px;
-}
-.feeds-container-box .feeds-container .feed-item-box .feed-item {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  max-width: 90%;
-}
-.feeds-container-box .feeds-container .feed-item-box .feed-item .feed-item-header {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.feeds-container-box .feeds-container .feed-item-box .feed-item .feed-item-header .feed-type-intro {
-  display: flex;
-  align-items: center;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 22px;
-}
-.feeds-container-box .feeds-container .feed-item-box .feed-item .feed-item-header .feed-type-intro .strong {
-  font-weight: 900;
-  margin: 0 4px;
-}
-.feeds-container-box .feeds-container .feed-item-box .feed-item .feed-item-main {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.feeds-container-box .feeds-container .feed-item-box .feed-item .feed-item-main .feed-nft-img {
-  position: relative;
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
-  min-height: 40px;
-  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.15);
-  border-radius: 12px;
-}
-.feeds-container-box .feeds-container .feed-item-box .feed-item .feed-item-main .feed-nft-img img {
-  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.15);
-  border-radius: 12px;
-}
-.feeds-container-box .feeds-container .feed-item-box .feed-item .feed-item-main .feed-swap-img {
-  width: 24px;
-  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.15);
-  border-radius: 12px;
-  background: transparent;
-}
-.feeds-container-box .feeds-container .feed-item-box .feed-item .feed-item-main .feed-nft-info {
-  display: flex;
-  flex-direction: column;
-}
-.feeds-container-box .feeds-container .feed-item-box .feed-item .feed-item-main .feed-nft-info .nft-title {
-  font-weight: 700;
-  font-size: 14px;
-  line-height: 22px;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  overflow: hidden;
-}
-.feeds-container-box .feeds-container .feed-item-box .feed-item .feed-item-main .feed-nft-info .nft-subtitle {
-  font-weight: 400;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-}
-.feeds-container-box .feeds-container .feed-item-box .feed-item .feed-item-main .feed-nft-info .nft-collection-title {
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 20px;
-  color: #121212;
-  opacity: 0.5;
 }

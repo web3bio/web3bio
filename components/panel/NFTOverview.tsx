@@ -52,6 +52,7 @@ const RenderNFTOverview = (props) => {
                 key={idx}
                 className="collection-nft-item"
                 src={resolveIPFS_URL(x.logo_url)}
+                alt={x.contract_name}
               />
             );
           })
