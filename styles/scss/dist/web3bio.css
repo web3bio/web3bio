@@ -3709,6 +3709,7 @@ body {
   font-weight: 700;
 }
 .nft-collection .nft-collection-list .nft-list {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   margin: 0 -0.5rem 1rem -0.5rem;

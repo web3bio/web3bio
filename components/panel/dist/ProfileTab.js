@@ -82,8 +82,9 @@ exports.useProfile = useProfile;
 var RenderProfileTab = function (props) {
     var _a;
     var identity = props.identity;
-    var _b = useProfile(identity.displayName), profileData = _b.data, isError = _b.isError, profileLoading = _b.isLoading;
-    var _c = react_use_1.useAsync(function () { return __awaiter(void 0, void 0, void 0, function () {
+    console.log(identity, "hhh");
+    var profileData = useProfile(identity.displayName || identity.identity).data;
+    var _b = react_use_1.useAsync(function () { return __awaiter(void 0, void 0, void 0, function () {
         var ensInstance, obj, i, value, _a, _b;
         return __generator(this, function (_c) {
             switch (_c.label) {
@@ -107,7 +108,7 @@ var RenderProfileTab = function (props) {
                 case 4: return [2 /*return*/, obj];
             }
         });
-    }); }), ensRecords = _c.value, ensLoading = _c.loading;
+    }); }), ensRecords = _b.value, recordsLoading = _b.loading;
     var openSocialMediaLink = function (url, type) {
         var resolvedURL = "";
         if (url.startsWith("https")) {
@@ -122,13 +123,22 @@ var RenderProfileTab = function (props) {
     return (React.createElement("div", { className: "profile-container" },
         (profileData || ensRecords) && (React.createElement("div", { className: "profile-basic" },
             React.createElement("div", { className: "profile-description" }, (_a = profileData.description) !== null && _a !== void 0 ? _a : "no description"),
-            React.createElement("div", { className: "records" }, ensLoading ? (React.createElement(Loading_1.Loading, null)) : ensRecords ? (Object.keys(socialButtonMapping).map(function (x, idx) {
+            React.createElement("div", { className: "records" }, recordsLoading ? (React.createElement("div", { className: "records-loading-placeholder" },
+                React.createElement("div", { style: {
+                        position: "relative",
+                        width: "1rem",
+                        height: "1rem"
+                    } },
+                    React.createElement(Loading_1.Loading, null)),
+                React.createElement("div", null, "Loading Records..."))) : ensRecords ? (Object.keys(socialButtonMapping).map(function (x, idx) {
                 return (ensRecords[x] && (React.createElement("button", { key: idx, className: "form-button btn", style: { position: "relative" }, onClick: function () {
                         openSocialMediaLink(ensRecords[x], socialButtonMapping[x].type);
                     } },
                     React.createElement(react_inlinesvg_1["default"], { src: socialButtonMapping[x].icon, width: 24, height: 24, className: "icon" }))));
             })) : null))),
+        React.createElement("div", { className: "profile-subTitle" }, "COLLECTIONS"),
         React.createElement(NFTOverview_1.NFTOverview, { identity: identity }),
+        React.createElement("div", { className: "profile-subTitle" }, "POAPS"),
         React.createElement(Poaps_1.Poaps, { identity: identity })));
 };
 exports.ProfileTab = react_1.memo(RenderProfileTab);

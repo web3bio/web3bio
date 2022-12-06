@@ -27,7 +27,6 @@ var RenderPoaps = function (props) {
     if (!data || !data.length)
         return React.createElement(Empty_1.Empty, { text: "there is no poap" });
     return (React.createElement("div", { className: "nft-collection-container" },
-        React.createElement("div", { className: "nft-collection-title" }, "POAPS"),
         React.createElement("div", { className: "nft-list" }, isLoading ? (React.createElement(Loading_1.Loading, null)) : (data.map(function (x, idx) {
             return (React.createElement(NFTAssetPlayer_1.NFTAssetPlayer, { key: idx, className: "collection-nft-item", src: ipfs_1.resolveIPFS_URL(x.event.image_url) }));
         })))));

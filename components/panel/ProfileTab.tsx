@@ -50,13 +50,11 @@ export function useProfile(domain: string) {
 
 const RenderProfileTab = (props) => {
   const { identity } = props;
-
-  const {
-    data: profileData,
-    isError,
-    isLoading: profileLoading,
-  } = useProfile(identity.displayName);
-  const { value: ensRecords, loading: ensLoading } = useAsync(async () => {
+  console.log(identity, "hhh");
+  const { data: profileData } = useProfile(
+    identity.displayName || identity.identity
+  );
+  const { value: ensRecords, loading: recordsLoading } = useAsync(async () => {
     const ensInstance = ens.name(identity.displayName);
     const obj: ENSRecords = {};
     for (let i = 0; i < globalRecordKeys.length; i++) {
@@ -86,8 +84,20 @@ const RenderProfileTab = (props) => {
           </div>
 
           <div className="records">
-            {ensLoading ? (
-              <Loading />
+            {recordsLoading ? (
+              <div className="records-loading-placeholder">
+                <div
+                  style={{
+                    position: "relative",
+                    width: "1rem",
+                    height: "1rem",
+                  }}
+                >
+                  <Loading />
+                </div>
+
+                <div>Loading Records...</div>
+              </div>
             ) : ensRecords ? (
               Object.keys(socialButtonMapping).map((x, idx) => {
                 return (
@@ -117,8 +127,9 @@ const RenderProfileTab = (props) => {
           </div>
         </div>
       )}
-
+      <div className="profile-subTitle">COLLECTIONS</div>
       <NFTOverview identity={identity} />
+      <div className="profile-subTitle">POAPS</div>
       <Poaps identity={identity} />
     </div>
   );

@@ -29,7 +29,6 @@ var RenderNFTOverview = function (props) {
     if (!data || !data.data)
         return null;
     return (React.createElement("div", { className: "nft-collection-container" },
-        React.createElement("div", { className: "nft-collection-title" }, "COLLECTIONS"),
         React.createElement("div", { className: "nft-list" }, isLoading ? (React.createElement(Loading_1.Loading, null)) : (data.data.map(function (x, idx) {
             return (React.createElement(NFTAssetPlayer_1.NFTAssetPlayer, { onClick: function () {
                     router.replace({

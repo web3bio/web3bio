@@ -30,7 +30,6 @@ const RenderNFTOverview = (props) => {
 
   return (
     <div className="nft-collection-container">
-      <div className="nft-collection-title">COLLECTIONS</div>
       <div className="nft-list">
         {isLoading ? (
           <Loading />

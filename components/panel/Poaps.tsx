@@ -27,7 +27,6 @@ const RenderPoaps = (props) => {
   if (!data || !data.length) return <Empty text="there is no poap" />;
   return (
     <div className="nft-collection-container">
-      <div className="nft-collection-title">POAPS</div>
       <div className="nft-list">
         {isLoading ? (
           <Loading />

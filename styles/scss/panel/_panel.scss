@@ -2,10 +2,16 @@
 
 // Record Social Media Item
 .records {
+    position: relative;
     margin: 1rem 0;
     display: flex;
     gap: 1rem;
-    align-items: center;
+    .records-loading-placeholder{
+        place-self: flex-start;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
 
     .record-item {
         position: relative;
@@ -31,8 +37,15 @@
         }
     }
 }
-
+.profile-subTitle {
+    font-weight: 900;
+    font-size: 14px;
+    line-height: 1rem;
+    text-transform: uppercase;
+    color: #000000;
+}
 .nft-collection-container {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -40,13 +53,7 @@
     width: 100%;
     overflow: hidden;
     margin: 1rem 0;
-    .nft-collection-title {
-        font-weight: 900;
-        font-size: 14px;
-        line-height: 1rem;
-        text-transform: uppercase;
-        color: #000000;
-    }
+   
 
     .collection-switcher {
         background: #ECECEC;
