@@ -37,12 +37,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _a;
 exports.__esModule = true;
-exports.ProfileTab = void 0;
+exports.ProfileTab = exports.useProfile = void 0;
 var react_1 = require("react");
 var react_inlinesvg_1 = require("react-inlinesvg");
 var react_use_1 = require("react-use");
+var swr_1 = require("swr");
 var ens_1 = require("../../utils/ens");
 var utils_1 = require("../../utils/utils");
+var ens_2 = require("../apis/ens");
 var Loading_1 = require("../shared/Loading");
 var NFTOverview_1 = require("./NFTOverview");
 var Poaps_1 = require("./Poaps");
@@ -68,52 +70,44 @@ var socialButtonMapping = (_a = {},
         type: "telegram"
     },
     _a);
+function useProfile(domain) {
+    var _a = swr_1["default"](ens_2.ENS_METADATA_END_POINT + ("/" + domain + "/meta"), ens_2.ENSFetcher), data = _a.data, error = _a.error;
+    return {
+        data: data,
+        isLoading: !error && !data,
+        isError: error
+    };
+}
+exports.useProfile = useProfile;
 var RenderProfileTab = function (props) {
+    var _a;
     var identity = props.identity;
-    var _a = react_use_1.useAsync(function () { return __awaiter(void 0, void 0, void 0, function () {
-        var ensInstance, obj, i, value, _a, _b, i, value, _c, _d;
-        return __generator(this, function (_e) {
-            switch (_e.label) {
+    var _b = useProfile(identity.displayName), profileData = _b.data, isError = _b.isError, profileLoading = _b.isLoading;
+    var _c = react_use_1.useAsync(function () { return __awaiter(void 0, void 0, void 0, function () {
+        var ensInstance, obj, i, value, _a, _b;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
                 case 0:
                     ensInstance = ens_1.ens.name(identity.displayName);
-                    obj = {
-                        base: {},
-                        socialMedia: {}
-                    };
+                    obj = {};
                     i = 0;
-                    _e.label = 1;
+                    _c.label = 1;
                 case 1:
-                    if (!(i < ens_1.globalRecordKeys.base.length)) return [3 /*break*/, 4];
-                    value = ens_1.globalRecordKeys.base[i];
-                    _a = obj.base;
-                    _b = ens_1.globalRecordKeys.base[i];
+                    if (!(i < ens_1.globalRecordKeys.length)) return [3 /*break*/, 4];
+                    value = ens_1.globalRecordKeys[i];
+                    _a = obj;
+                    _b = ens_1.globalRecordKeys[i];
                     return [4 /*yield*/, ensInstance.getText(value)];
                 case 2:
-                    _a[_b] = _e.sent();
-                    _e.label = 3;
+                    _a[_b] = _c.sent();
+                    _c.label = 3;
                 case 3:
                     i++;
                     return [3 /*break*/, 1];
-                case 4:
-                    i = 0;
-                    _e.label = 5;
-                case 5:
-                    if (!(i < ens_1.globalRecordKeys.socialMedia.length)) return [3 /*break*/, 8];
-                    value = ens_1.globalRecordKeys.socialMedia[i];
-                    _c = obj.socialMedia;
-                    _d = ens_1.globalRecordKeys.socialMedia[i];
-                    return [4 /*yield*/, ensInstance.getText(value)];
-                case 6:
-                    _c[_d] =
-                        _e.sent();
-                    _e.label = 7;
-                case 7:
-                    i++;
-                    return [3 /*break*/, 5];
-                case 8: return [2 /*return*/, obj];
+                case 4: return [2 /*return*/, obj];
             }
         });
-    }); }), ensRecords = _a.value, ensLoading = _a.loading;
+    }); }), ensRecords = _c.value, ensLoading = _c.loading;
     var openSocialMediaLink = function (url, type) {
         var resolvedURL = "";
         if (url.startsWith("https")) {
@@ -124,16 +118,16 @@ var RenderProfileTab = function (props) {
         }
         window.open(resolvedURL, "_blank");
     };
+    console.log(profileData, "hhh", ensRecords);
     return (React.createElement("div", { className: "profile-container" },
-        ensLoading ? (React.createElement("div", { className: "profile-basic-info-loading" },
-            React.createElement(Loading_1.Loading, null))) : ensRecords ? (React.createElement("div", { className: "profile-basic" },
-            React.createElement("div", { className: "profile-description" }, ensRecords.base.description),
-            React.createElement("div", { className: "records" }, Object.keys(socialButtonMapping).map(function (x, idx) {
-                return (ensRecords.socialMedia[x] && (React.createElement("button", { key: idx, className: "form-button btn", style: { position: "relative" }, onClick: function () {
-                        openSocialMediaLink(ensRecords.socialMedia[x], socialButtonMapping[x].type);
+        (profileData || ensRecords) && (React.createElement("div", { className: "profile-basic" },
+            React.createElement("div", { className: "profile-description" }, (_a = profileData.description) !== null && _a !== void 0 ? _a : "no description"),
+            React.createElement("div", { className: "records" }, ensLoading ? (React.createElement(Loading_1.Loading, null)) : ensRecords ? (Object.keys(socialButtonMapping).map(function (x, idx) {
+                return (ensRecords[x] && (React.createElement("button", { key: idx, className: "form-button btn", style: { position: "relative" }, onClick: function () {
+                        openSocialMediaLink(ensRecords[x], socialButtonMapping[x].type);
                     } },
                     React.createElement(react_inlinesvg_1["default"], { src: socialButtonMapping[x].icon, width: 24, height: 24, className: "icon" }))));
-            })))) : null,
+            })) : null))),
         React.createElement(NFTOverview_1.NFTOverview, { identity: identity }),
         React.createElement(Poaps_1.Poaps, { identity: identity })));
 };

@@ -1,19 +1,16 @@
 import { memo } from "react";
 import SVG from "react-inlinesvg";
 import { useAsync } from "react-use";
+import useSWR from "swr";
 import { ens, globalRecordKeys } from "../../utils/ens";
 import { resolveSocialMediaLink } from "../../utils/utils";
+import { ENSFetcher, ENS_METADATA_END_POINT } from "../apis/ens";
 import { Loading } from "../shared/Loading";
 import { NFTOverview } from "./NFTOverview";
 import { Poaps } from "./Poaps";
 
 interface ENSRecords {
-  base: {
-    [index: string]: string;
-  };
-  socialMedia: {
-    [index: string]: string;
-  };
+  [index: string]: string;
 }
 
 const socialButtonMapping = {
@@ -39,23 +36,32 @@ const socialButtonMapping = {
   },
 };
 
+export function useProfile(domain: string) {
+  const { data, error } = useSWR<any>(
+    ENS_METADATA_END_POINT + `/${domain}/meta`,
+    ENSFetcher
+  );
+  return {
+    data: data,
+    isLoading: !error && !data,
+    isError: error,
+  };
+}
+
 const RenderProfileTab = (props) => {
   const { identity } = props;
 
+  const {
+    data: profileData,
+    isError,
+    isLoading: profileLoading,
+  } = useProfile(identity.displayName);
   const { value: ensRecords, loading: ensLoading } = useAsync(async () => {
     const ensInstance = ens.name(identity.displayName);
-    const obj: ENSRecords = {
-      base: {},
-      socialMedia: {},
-    };
-    for (let i = 0; i < globalRecordKeys.base.length; i++) {
-      const value = globalRecordKeys.base[i];
-      obj.base[globalRecordKeys.base[i]] = await ensInstance.getText(value);
-    }
-    for (let i = 0; i < globalRecordKeys.socialMedia.length; i++) {
-      const value = globalRecordKeys.socialMedia[i];
-      obj.socialMedia[globalRecordKeys.socialMedia[i]] =
-        await ensInstance.getText(value);
+    const obj: ENSRecords = {};
+    for (let i = 0; i < globalRecordKeys.length; i++) {
+      const value = globalRecordKeys[i];
+      obj[globalRecordKeys[i]] = await ensInstance.getText(value);
     }
     return obj;
   });
@@ -70,46 +76,47 @@ const RenderProfileTab = (props) => {
 
     window.open(resolvedURL, "_blank");
   };
-
+  console.log(profileData, "hhh", ensRecords);
   return (
     <div className="profile-container">
-      {ensLoading ? (
-        <div className="profile-basic-info-loading">
-          <Loading />
-        </div>
-      ) : ensRecords ? (
+      {(profileData || ensRecords) && (
         <div className="profile-basic">
           <div className="profile-description">
-            {ensRecords.base.description}
+            {profileData.description ?? "no description"}
           </div>
+
           <div className="records">
-            {Object.keys(socialButtonMapping).map((x, idx) => {
-              return (
-                ensRecords.socialMedia[x] && (
-                  <button
-                    key={idx}
-                    className="form-button btn"
-                    style={{ position: "relative" }}
-                    onClick={() => {
-                      openSocialMediaLink(
-                        ensRecords.socialMedia[x],
-                        socialButtonMapping[x].type
-                      );
-                    }}
-                  >
-                    <SVG
-                      src={socialButtonMapping[x].icon}
-                      width={24}
-                      height={24}
-                      className="icon"
-                    />
-                  </button>
-                )
-              );
-            })}
+            {ensLoading ? (
+              <Loading />
+            ) : ensRecords ? (
+              Object.keys(socialButtonMapping).map((x, idx) => {
+                return (
+                  ensRecords[x] && (
+                    <button
+                      key={idx}
+                      className="form-button btn"
+                      style={{ position: "relative" }}
+                      onClick={() => {
+                        openSocialMediaLink(
+                          ensRecords[x],
+                          socialButtonMapping[x].type
+                        );
+                      }}
+                    >
+                      <SVG
+                        src={socialButtonMapping[x].icon}
+                        width={24}
+                        height={24}
+                        className="icon"
+                      />
+                    </button>
+                  )
+                );
+              })
+            ) : null}
           </div>
         </div>
-      ) : null}
+      )}
 
       <NFTOverview identity={identity} />
       <Poaps identity={identity} />

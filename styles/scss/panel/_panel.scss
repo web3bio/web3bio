@@ -2,9 +2,9 @@
 
 // Record Social Media Item
 .records {
-    margin: 20px 0;
+    margin: 1rem 0;
     display: flex;
-    gap: 20px;
+    gap: 1rem;
     align-items: center;
 
     .record-item {
@@ -26,8 +26,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 20px;
-            height: 20px;
+            width: 1rem;
+            height: 1rem;
         }
     }
 }
@@ -39,11 +39,11 @@
     gap: 10px;
     width: 100%;
     overflow: hidden;
-    margin: 20px 0;
+    margin: 1rem 0;
     .nft-collection-title {
         font-weight: 900;
         font-size: 14px;
-        line-height: 20px;
+        line-height: 1rem;
         text-transform: uppercase;
         color: #000000;
     }
@@ -65,15 +65,15 @@
         transition: all .2s ease-in-out 0s;
 
         .collection-img {
-            width: 20px;
-            height: 20px;
+            width: 1rem;
+            height: 1rem;
             border-radius: 8px;
         }
 
         .collection-name {
             font-weight: 400;
             font-size: 12px;
-            line-height: 20px;
+            line-height: 1rem;
             text-transform: uppercase;
             color: #000000;
         }
@@ -194,13 +194,13 @@
 
     .social-feeds-list {
         max-width: 100%;
-        margin-top: 20px;
+        margin-top: 1rem;
         max-height: 80vh;
         overflow-y: auto;
         overflow-x: hidden;
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 1rem;
 
         .feed-timestamp {
             width: fit-content;

@@ -1,7 +1,7 @@
 .records {
-  margin: 20px 0;
+  margin: 1rem 0;
   display: flex;
-  gap: 20px;
+  gap: 1rem;
   align-items: center;
 }
 .records .record-item {
@@ -22,8 +22,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 20px;
-  height: 20px;
+  width: 1rem;
+  height: 1rem;
 }
 
 .nft-collection-container {
@@ -33,12 +33,12 @@
   gap: 10px;
   width: 100%;
   overflow: hidden;
-  margin: 20px 0;
+  margin: 1rem 0;
 }
 .nft-collection-container .nft-collection-title {
   font-weight: 900;
   font-size: 14px;
-  line-height: 20px;
+  line-height: 1rem;
   text-transform: uppercase;
   color: #000000;
 }
@@ -57,14 +57,14 @@
   box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.05);
 }
 .nft-collection-container .collection-switcher .collection-img {
-  width: 20px;
-  height: 20px;
+  width: 1rem;
+  height: 1rem;
   border-radius: 8px;
 }
 .nft-collection-container .collection-switcher .collection-name {
   font-weight: 400;
   font-size: 12px;
-  line-height: 20px;
+  line-height: 1rem;
   text-transform: uppercase;
   color: #000000;
 }
@@ -166,13 +166,13 @@
 }
 .feeds-container-box .social-feeds-list {
   max-width: 100%;
-  margin-top: 20px;
+  margin-top: 1rem;
   max-height: 80vh;
   overflow-y: auto;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 1rem;
 }
 .feeds-container-box .social-feeds-list .feed-timestamp {
   width: fit-content;

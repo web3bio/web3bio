@@ -4,9 +4,7 @@ import Clipboard from "react-clipboard.js";
 import { getEnumAsArray } from "../../utils/utils";
 import { FeedsTab } from "./FeedsTab";
 import { NFTsTab } from "./NFTsTab";
-import { ProfileTab } from "./ProfileTab";
-import { useAsync } from "react-use";
-import { ens } from "../../utils/ens";
+import { ProfileTab, useProfile } from "./ProfileTab";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { Loading } from "../shared/Loading";
 import { formatText } from "../../utils/utils";
@@ -35,9 +33,9 @@ const IdentityPanelRender = (props) => {
   const [copied, setCopied] = useState(null);
   const router = useRouter();
 
-  const { value: avatar, loading: avatarLoading } = useAsync(async () => {
-    return await ens.name(identity.displayName).getText("avatar");
-  });
+  const { data: profileData, isLoading: avatarLoading } = useProfile(
+    identity.displayName
+  );
   const onCopySuccess = () => {
     setCopied(true);
     setTimeout(() => {
@@ -88,7 +86,7 @@ const IdentityPanelRender = (props) => {
                 <Loading />
               ) : (
                 <NFTAssetPlayer
-                  src={resolveMediaURL(avatar)}
+                  src={resolveMediaURL(profileData.image)}
                   alt={
                     identity.displayName
                       ? identity.displayName
@@ -120,10 +118,13 @@ const IdentityPanelRender = (props) => {
               </div>
             </div>
           </div>
-          <div className="btn btn-link btn-close" onClick={()=>{
-            localStorage.removeItem('feeds')
-            onClose()
-          }}>
+          <div
+            className="btn btn-link btn-close"
+            onClick={() => {
+              localStorage.removeItem("feeds");
+              onClose();
+            }}
+          >
             <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
           </div>
           <ul className="panel-tab">
@@ -141,7 +142,7 @@ const IdentityPanelRender = (props) => {
                       e.preventDefault();
                       setActiveTab(x.value.key);
                       onTabChange(x.value.key);
-                      localStorage.removeItem('feeds')
+                      localStorage.removeItem("feeds");
                     }}
                   >
                     {x.value.name}

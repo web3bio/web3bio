@@ -7,17 +7,12 @@ const provider = new ethers.providers.JsonRpcProvider(EthereumRPC, 1);
 
 const ens = new ENS({ provider, ensAddress: getEnsAddress("1") });
 
-const globalRecordKeys = {
-  base: ["avatar", "description"],
-  socialMedia: [
-    "com.github",
-    "com.discord",
-    "com.reddit",
-    "con.twitter",
-    "org.telegram",
-  ],
-};
-
-
+const globalRecordKeys = [
+  "com.github",
+  "com.discord",
+  "com.reddit",
+  "con.twitter",
+  "org.telegram",
+];
 
 export { ens, globalRecordKeys };
