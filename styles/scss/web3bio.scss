@@ -222,7 +222,7 @@ body {
   }
 
   .web3bio-logo {
-    margin-bottom: 1rem;
+    margin-bottom: .2rem;
   }
 
   .form-label {
@@ -254,15 +254,15 @@ body {
         box-shadow: 0 .8rem 4rem rgba($dark-color, .25), 0 .05rem .2rem rgba($dark-color, .1);
       }
     }
-  }
 
-  .form-button {
-    height: 2rem;
-    padding: 0;
-    position: absolute;
-    right: .2rem;
-    top: .2rem;
-    width: 2rem;
+    .form-button {
+      height: 2rem;
+      padding: 0;
+      position: absolute;
+      right: .2rem;
+      top: .2rem;
+      width: 2rem;
+    }
   }
 
   &.focused {
@@ -611,15 +611,15 @@ body {
       align-items: center;
       border-radius: .5rem;
       display: flex;
-      height: 2.4rem;
       flex: 0 0 2.4rem;
       justify-content: center;
       margin-right: .5rem;
-      width: 2.4rem;
 
       .img-responsive {
         border-radius: .5rem;
         font-size: 2rem;
+        height: 2.4rem;
+        width: 2.4rem;
       }
     }
   }
@@ -688,8 +688,8 @@ body {
   flex: 1 1;
   flex-direction: column;
   height: 100%;
-  overflow-y: auto;
-  padding: 0 1rem;
+  overflow: hidden auto;
+  padding: 0 1.5rem;
 
   .profile-basic {
     padding: 1rem 0;
@@ -714,7 +714,7 @@ body {
   flex: 1 1;
   height: 100%;
   overflow-y: auto;
-  padding: 0 1rem;
+  padding: 0 1.5rem;
 
   .social-feeds-title {
     font-size: .7rem;
@@ -724,7 +724,6 @@ body {
 }
 
 .social-feeds-list {
-  
   .social-feeds-item {
 
   }
@@ -863,7 +862,11 @@ body {
       }
 
       &.active {
-        background: $border-color;
+        background: $bg-color;
+        
+        .img-responsive {
+          box-shadow: 0 .1rem .4rem rgba($dark-color, .25);
+        }
       }
   
       .collection-img {
@@ -873,7 +876,7 @@ body {
   
         .img-responsive {
           border-radius: .5rem;
-          box-shadow: 0 .1rem .8rem rgba($dark-color, .15);
+          box-shadow: 0 .1rem .4rem rgba($dark-color, .1);
           font-size: 1.6rem;
           height: 2.4rem;
           object-fit: cover;
@@ -887,7 +890,7 @@ body {
 .nft-collection {
   flex: 1 1;
   height: 100%;
-  overflow-y: auto;
+  overflow: hidden auto;
   padding: 0 1.5rem;
   
   .nft-collection-list {
@@ -902,14 +905,14 @@ body {
 
       .collection-logo {
         flex: 0 0 1.2rem;
-        height: 1.2rem;
         margin-right: .25rem;
-        width: 1.2rem;
 
         .img-responsive {
           border-radius: .4rem;
           box-shadow: 0 .2rem .8rem rgba($dark-color, .2);
           font-size: 1rem;
+          height: 1.2rem;
+          width: 1.2rem;
         }
       }
 
@@ -945,6 +948,8 @@ body {
           .img-responsive {
             border-radius: .5rem;
             box-shadow: 0 .2rem 1rem rgba($dark-color, .15), 0 .05rem .2rem rgba($dark-color, .05);
+            font-size: 2rem;
+            min-height: 7rem;
             object-fit: cover;
           }
         }
@@ -972,7 +977,102 @@ body {
   top: 1rem;
 
   .panel-container {
-    
+    height: calc(100vh - 3rem);
+  }
+
+  .panel-header {
+    overflow: hidden auto;
+    padding: 1rem;
+
+    .panel-header-img {
+      flex: 1 1 50%;
+      margin-right: 1rem;
+      width: 50%;
+    }
+
+    .img-responsive {
+      border-radius: .5rem;
+    }
+
+    .collection-title {
+      align-items: center;
+      display: flex;
+      padding: 1rem 0 .5rem 0;
+
+      .collection-logo {
+        flex: 0 0 1.2rem;
+        margin-right: .25rem;
+
+        .img-responsive {
+          border-radius: .4rem;
+          box-shadow: 0 .2rem .8rem rgba($dark-color, .2);
+          font-size: 1rem;
+          height: 1.2rem;
+          width: 1.2rem;
+        }
+      }
+
+      .collection-name {
+        font-size: .65rem;
+        font-weight: 700;
+      }
+    }
+
+    .nft-header-name {
+      font-size: 1.2rem;
+      font-weight: 900;
+    }
+
+    .nft-header-actions {
+      margin-top: .5rem;
+    }
+  }
+
+  .panel-body {
+    padding: 0 1rem 1rem 1rem;
+  }
+
+  .panel-widget {
+    margin: 1rem 0;
+
+    .panel-widget-title {
+      font-size: .7rem;
+      font-weight: 900;
+      margin-bottom: .5rem;
+      text-transform: uppercase;
+    }
+
+    .panel-widget-content {
+      font-size: .6rem;
+      line-height: 1rem;
+    }
+
+    .traits-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+
+      .traits-card {
+        background: $light-color;
+        border: .05rem solid rgba(18, 18, 18, 0.08);
+        box-shadow: 0 .2rem .8rem rgba(0, 0, 0, 0.05);
+        border-radius: .4rem;
+        color: $dark-color;
+        text-transform: uppercase;
+        padding: .2rem .4rem;
+  
+        .trait-type {
+          font-size: .5rem;
+          line-height: 2;
+        }
+  
+        .trait-value {
+          font-weight: 700;
+          font-size: .6rem;
+          line-height: 1.5;
+        }
+      } 
+    }
   }
 }
 
@@ -1047,12 +1147,10 @@ body {
   align-items: center;
   display: flex;
   flex: 0 0;
-  height: 100%;
   justify-content: center;
   opacity: .75;
   padding: .25rem;
   position: relative;
-  width: 100%;
 
   &[data-initial]::before {
     color: $light-color;
