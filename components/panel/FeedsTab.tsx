@@ -5,7 +5,8 @@ import { formatTimestamp } from "../../utils/date";
 import useSWRInfinite from "swr/infinite";
 import { Loading } from "../shared/Loading";
 import { debounce, throttle } from "../../utils/utils";
-import { render } from "sass";
+import { Empty } from "../shared/Empty";
+import { Error } from "../shared/Error";
 
 const PAGE_SIZE = 30;
 const getFeedsURL = (
@@ -75,14 +76,6 @@ const RenderFeedsTab = (props) => {
       const scrollTop = e.target.scrollTop;
       const offsetHeight = e.target.offsetHeight;
       if (offsetHeight + scrollTop >= scrollHeight) {
-        console.log(
-          isValidating,
-          "gggg",
-          isReachingEnd,
-          size,
-          startHash,
-          issues
-        );
         if (data.length > 0 && !isValidating && !isLoading && !rendering) {
           if (isReachingEnd) return;
           const copy = issues.length > 0 ? issues : data;
@@ -99,7 +92,9 @@ const RenderFeedsTab = (props) => {
       container.addEventListener("scroll", debounce(scrollLoad, 500));
     }
     return () => {
-      container.removeEventListener("scroll", debounce(scrollLoad, 500));
+      if (container) {
+        container.removeEventListener("scroll", debounce(scrollLoad, 500));
+      }
     };
   }, [
     startHash,
@@ -110,13 +105,14 @@ const RenderFeedsTab = (props) => {
     size,
     isReachingEnd,
   ]);
-
+  if (isLoading && !lastData) return <Loading />;
+  if (error) return <Error text={error} />;
+  if (!data) return <Empty text="No Feeds" />;
   return (
     <div ref={ref} className="feeds-container">
       <div className="social-feeds-title">Social Feeds</div>
 
       <div className="social-feeds-list">
-        {isEmpty ? <p>Yay, no feeds.</p> : null}
         {issues.map(
           (x, idx) =>
             (isSupportedFeed(x) && (

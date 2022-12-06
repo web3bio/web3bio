@@ -22,7 +22,7 @@ function usePoaps(address: string) {
 const RenderPoaps = (props) => {
   const { identity } = props;
   const { data, isLoading, isError } = usePoaps(identity.identity);
-
+  if (isLoading) return <Loading />;
   if (isError) return <Error text={isError} />;
   if (!data || !data.length) return <Empty text="there is no poap" />;
   return (

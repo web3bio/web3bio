@@ -20,6 +20,8 @@ function usePoaps(address) {
 var RenderPoaps = function (props) {
     var identity = props.identity;
     var _a = usePoaps(identity.identity), data = _a.data, isLoading = _a.isLoading, isError = _a.isError;
+    if (isLoading)
+        return React.createElement(Loading_1.Loading, null);
     if (isError)
         return React.createElement(Error_1.Error, { text: isError });
     if (!data || !data.length)

@@ -8,6 +8,8 @@ var date_1 = require("../../utils/date");
 var infinite_1 = require("swr/infinite");
 var Loading_1 = require("../shared/Loading");
 var utils_1 = require("../../utils/utils");
+var Empty_1 = require("../shared/Empty");
+var Error_1 = require("../shared/Error");
 var PAGE_SIZE = 30;
 var getFeedsURL = function (address, startHash, previousPageData) {
     if (previousPageData && !previousPageData.length)
@@ -58,7 +60,6 @@ var RenderFeedsTab = function (props) {
             var scrollTop = e.target.scrollTop;
             var offsetHeight = e.target.offsetHeight;
             if (offsetHeight + scrollTop >= scrollHeight) {
-                console.log(isValidating, "gggg", isReachingEnd, size, startHash, issues);
                 if (data.length > 0 && !isValidating && !isLoading && !rendering) {
                     if (isReachingEnd)
                         return;
@@ -75,7 +76,9 @@ var RenderFeedsTab = function (props) {
             container.addEventListener("scroll", utils_1.debounce(scrollLoad, 500));
         }
         return function () {
-            container.removeEventListener("scroll", utils_1.debounce(scrollLoad, 500));
+            if (container) {
+                container.removeEventListener("scroll", utils_1.debounce(scrollLoad, 500));
+            }
         };
     }, [
         startHash,
@@ -86,10 +89,15 @@ var RenderFeedsTab = function (props) {
         size,
         isReachingEnd,
     ]);
+    if (isLoading && !lastData)
+        return React.createElement(Loading_1.Loading, null);
+    if (error)
+        return React.createElement(Error_1.Error, { text: error });
+    if (!data)
+        return React.createElement(Empty_1.Empty, { text: "No Feeds" });
     return (React.createElement("div", { ref: ref, className: "feeds-container" },
         React.createElement("div", { className: "social-feeds-title" }, "Social Feeds"),
         React.createElement("div", { className: "social-feeds-list" },
-            isEmpty ? React.createElement("p", null, "Yay, no feeds.") : null,
             issues.map(function (x, idx) {
                 return (FeedItem_1.isSupportedFeed(x) && (React.createElement("div", { key: idx },
                     React.createElement(FeedItem_1.FeedItem, { identity: identity, feed: x }),

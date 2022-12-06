@@ -22,6 +22,7 @@ const RenderNFTOverview = (props) => {
   const { identity } = props;
   const { data, isLoading, isError } = useCollections(identity.identity);
 
+  if (isLoading) return <Loading />;
   if (isError) return <Error text={isError} />;
   if (!data || !data.data) return null;
 

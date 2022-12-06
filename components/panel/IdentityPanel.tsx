@@ -13,10 +13,10 @@ import { formatText } from "../../utils/utils";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 
 export const TabsMap = {
-  profile: {
-    key: "profile",
-    name: "Profile",
-  },
+  // profile: {
+  //   key: "profile",
+  //   name: "Profile",
+  // },
   feeds: {
     key: "feeds",
     name: "Feeds",
@@ -29,7 +29,7 @@ export const TabsMap = {
 
 const IdentityPanelRender = (props) => {
   const { onClose, identity, onTabChange, curTab } = props;
-  const [activeTab, setActiveTab] = useState(curTab || TabsMap.profile.key);
+  const [activeTab, setActiveTab] = useState(curTab || TabsMap.feeds.key);
   const [curAsset, setCurAsset] = useState(null);
   const [copied, setCopied] = useState(null);
 
@@ -52,7 +52,7 @@ const IdentityPanelRender = (props) => {
 
   const renderContent = () => {
     return {
-      [TabsMap.profile.key]: <ProfileTab identity={identity} />,
+      // [TabsMap.profile.key]: <ProfileTab identity={identity} />,
       [TabsMap.feeds.key]: <FeedsTab identity={identity} />,
       [TabsMap.nfts.key]: (
         <NFTsTab
@@ -61,7 +61,7 @@ const IdentityPanelRender = (props) => {
           identity={identity}
         />
       ),
-    }[activeTab];
+    }[activeTab] || <FeedsTab identity={identity} />;
   };
 
   const resolveOnShowDetail = (asset) => {
