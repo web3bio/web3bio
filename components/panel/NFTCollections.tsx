@@ -7,6 +7,7 @@ import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { throttle } from "../../utils/utils";
+import { Loading } from "../shared/Loading";
 
 function useCollections(address: string) {
   const { data, error } = useSWR<any>(
@@ -70,6 +71,7 @@ const RenderNFTCollections = (props) => {
         container.removeEventListener("scroll", () => throttle(lazyLoad, 100));
     }
   }, [data, anchorName]);
+  if (isLoading) return <Loading />;
   if (isError) return <Error text={isError} />;
   if (!data || !data.data) return <Empty />;
 

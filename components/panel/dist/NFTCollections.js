@@ -10,6 +10,7 @@ var Empty_1 = require("../shared/Empty");
 var Error_1 = require("../shared/Error");
 var NFTAssetPlayer_1 = require("../shared/NFTAssetPlayer");
 var utils_1 = require("../../utils/utils");
+var Loading_1 = require("../shared/Loading");
 function useCollections(address) {
     var _a = swr_1["default"](nftscan_1.NFTSCAN_BASE_API_ENDPOINT + ("account/own/all/" + address + "?erc_type=erc721"), nftscan_1.NFTSCANFetcher), data = _a.data, error = _a.error;
     return {
@@ -63,6 +64,8 @@ var RenderNFTCollections = function (props) {
             };
         }
     }, [data, anchorName]);
+    if (isLoading)
+        return React.createElement(Loading_1.Loading, null);
     if (isError)
         return React.createElement(Error_1.Error, { text: isError });
     if (!data || !data.data)
@@ -101,7 +104,7 @@ var RenderNFTCollections = function (props) {
                                 });
                             } },
                             React.createElement("div", { className: "nft-item" },
-                                React.createElement(NFTAssetPlayer_1.NFTAssetPlayer, { className: "img-container", type: y.content_type, src: mediaURL, contentUrl: contentURL, alt: y.name }),
+                                React.createElement(NFTAssetPlayer_1.NFTAssetPlayer, { className: "img-container", type: y.content_type, src: mediaURL, contentUrl: contentURL, alt: x.contract_name + " - " + y.name }),
                                 React.createElement("div", { className: "collection-name" }, x.contract_name),
                                 React.createElement("div", { className: "nft-name" }, y.name))));
                     }))));
