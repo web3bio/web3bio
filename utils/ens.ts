@@ -11,8 +11,11 @@ const globalRecordKeys = [
   "com.github",
   "com.discord",
   "com.reddit",
-  "con.twitter",
+  "com.twitter",
   "org.telegram",
+  "vnd.twitter",
+  "vnd.github",
+  "url",
 ];
 
 export { ens, globalRecordKeys };

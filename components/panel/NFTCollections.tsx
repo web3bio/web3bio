@@ -41,8 +41,11 @@ const RenderNFTCollections = (props) => {
           url: x.logo_url,
         }))
       );
-      if (router.isReady && router.query.a)
+      if (router.isReady && router.query.a) {
         setAnchorName(router.query.a as string);
+        setActiveCollection(router.query.a as string);
+      }
+
       if (anchorName) {
         const anchorElement = document.getElementById(anchorName);
         if (anchorElement) {
@@ -106,7 +109,7 @@ const RenderNFTCollections = (props) => {
           currentSelect={activeCollection ?? collections[0]}
           onSelect={(v) => {
             setActiveCollection(v);
-            setAnchorName(v.key);
+            setAnchorName(v);
           }}
         />
       )}

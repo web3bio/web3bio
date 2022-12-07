@@ -22,6 +22,14 @@ const socialButtonMapping = {
     icon: "icons/icon-twitter.svg",
     type: "twitter",
   },
+  ["vnd.github"]: {
+    icon: "icons/icon-github.svg",
+    type: "github",
+  },
+  ["vnd.twitter"]: {
+    icon: "icons/icon-twitter.svg",
+    type: "twitter",
+  },
   ["com.discord"]: {
     icon: "icons/social-discord.svg",
     type: "discord",
@@ -30,9 +38,13 @@ const socialButtonMapping = {
     icon: "icons/social-reddit.svg",
     type: "reddit",
   },
-  ["com.telegram"]: {
-    icon: "icons/social-telegram",
+  ["org.telegram"]: {
+    icon: "icons/social-telegram.svg",
     type: "telegram",
+  },
+  ["url"]: {
+    icon: "icons/social-website.svg",
+    type: "url",
   },
 };
 
@@ -58,6 +70,8 @@ const RenderProfileTab = (props) => {
     const obj: ENSRecords = {};
     for (let i = 0; i < globalRecordKeys.length; i++) {
       const value = globalRecordKeys[i];
+      if (value === "vnd.twitter" && obj["com.twitter"]) return;
+      if (value === "vnd.github" && obj["com.github"]) return;
       obj[globalRecordKeys[i]] = await ensInstance.getText(value);
     }
     return obj;
@@ -73,7 +87,7 @@ const RenderProfileTab = (props) => {
 
     window.open(resolvedURL, "_blank");
   };
-  console.log(profileData, "hhh", ensRecords);
+  console.log(profileData, "records", ensRecords);
   return (
     <div className="profile-container">
       {(profileData || ensRecords) && (

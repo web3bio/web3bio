@@ -57,6 +57,14 @@ var socialButtonMapping = (_a = {},
         icon: "icons/icon-twitter.svg",
         type: "twitter"
     },
+    _a["vnd.github"] = {
+        icon: "icons/icon-github.svg",
+        type: "github"
+    },
+    _a["vnd.twitter"] = {
+        icon: "icons/icon-twitter.svg",
+        type: "twitter"
+    },
     _a["com.discord"] = {
         icon: "icons/social-discord.svg",
         type: "discord"
@@ -65,9 +73,13 @@ var socialButtonMapping = (_a = {},
         icon: "icons/social-reddit.svg",
         type: "reddit"
     },
-    _a["com.telegram"] = {
-        icon: "icons/social-telegram",
+    _a["org.telegram"] = {
+        icon: "icons/social-telegram.svg",
         type: "telegram"
+    },
+    _a["url"] = {
+        icon: "icons/social-website.svg",
+        type: "url"
     },
     _a);
 function useProfile(domain) {
@@ -95,6 +107,10 @@ var RenderProfileTab = function (props) {
                 case 1:
                     if (!(i < ens_1.globalRecordKeys.length)) return [3 /*break*/, 4];
                     value = ens_1.globalRecordKeys[i];
+                    if (value === "vnd.twitter" && obj["com.twitter"])
+                        return [2 /*return*/];
+                    if (value === "vnd.github" && obj["com.github"])
+                        return [2 /*return*/];
                     _a = obj;
                     _b = ens_1.globalRecordKeys[i];
                     return [4 /*yield*/, ensInstance.getText(value)];
@@ -118,7 +134,7 @@ var RenderProfileTab = function (props) {
         }
         window.open(resolvedURL, "_blank");
     };
-    console.log(profileData, "hhh", ensRecords);
+    console.log(profileData, "records", ensRecords);
     return (React.createElement("div", { className: "profile-container" },
         (profileData || ensRecords) && (React.createElement("div", { className: "profile-basic" },
             React.createElement("div", { className: "profile-description" }, (_a = profileData.description) !== null && _a !== void 0 ? _a : "no description"),

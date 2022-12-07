@@ -7,8 +7,8 @@ const RenderCollectionSwitcher = (props) => {
   const [active, setActive] = useState(currentSelect);
 
   const hideDropdownMenu = (v) => {
-    setActive(v);
-    onSelect(v);
+    setActive(v.key);
+    onSelect(v.key);
   };
   return (
     <div className="collection-switcher">
@@ -17,7 +17,7 @@ const RenderCollectionSwitcher = (props) => {
           <div
             onClick={() => hideDropdownMenu(item)}
             className={
-              item.key === active.key
+              item.key === active
                 ? "collection-item active"
                 : "collection-item"
             }

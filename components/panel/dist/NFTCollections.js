@@ -36,8 +36,10 @@ var RenderNFTCollections = function (props) {
                 name: x.contract_name,
                 url: x.logo_url
             }); }));
-            if (router.isReady && router.query.a)
+            if (router.isReady && router.query.a) {
                 setAnchorName(router.query.a);
+                setActiveCollection(router.query.a);
+            }
             if (anchorName) {
                 var anchorElement = document.getElementById(anchorName);
                 if (anchorElement) {
@@ -95,7 +97,7 @@ var RenderNFTCollections = function (props) {
     return (React.createElement(React.Fragment, null,
         collections && collections.length > 0 && (React.createElement(CollectionSwitcher_1.CollectionSwitcher, { collections: collections, currentSelect: activeCollection !== null && activeCollection !== void 0 ? activeCollection : collections[0], onSelect: function (v) {
                 setActiveCollection(v);
-                setAnchorName(v.key);
+                setAnchorName(v);
             } })),
         React.createElement("div", { ref: scrollContainer, className: "nft-collection" },
             React.createElement("div", { className: "nft-collection-list" }, data.data.map(function (x, idx) {

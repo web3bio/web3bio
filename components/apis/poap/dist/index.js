@@ -43,14 +43,12 @@ exports.POAPFetcher = function (url) { return __awaiter(void 0, void 0, void 0, 
     var res;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0:
-                console.log(url, AUTHENTICATION, 'poap');
-                return [4 /*yield*/, fetch(url, {
-                        headers: {
-                            "x-api-key": AUTHENTICATION,
-                            accept: "application/json"
-                        }
-                    })];
+            case 0: return [4 /*yield*/, fetch(url, {
+                    headers: {
+                        "x-api-key": AUTHENTICATION,
+                        accept: "application/json"
+                    }
+                })];
             case 1:
                 res = _a.sent();
                 return [2 /*return*/, res.json()];
