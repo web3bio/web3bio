@@ -91,7 +91,6 @@ const RenderProfileTab = (props) => {
 
     window.open(resolvedURL, "_blank");
   };
-  console.log(ensRecords, "records123", recordsLoading);
   return (
     <div className="profile-container">
       {recordsLoading ? (
