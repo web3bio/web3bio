@@ -50,7 +50,6 @@ export function useProfile(domain: string) {
 
 const RenderProfileTab = (props) => {
   const { identity } = props;
-  console.log(identity, "hhh");
   const { data: profileData } = useProfile(
     identity.displayName || identity.identity
   );

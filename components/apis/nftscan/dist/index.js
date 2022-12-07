@@ -36,21 +36,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.POAPFetcher = exports.POAP_END_POINT = void 0;
-var AUTHENTICATION = process.env.POAP_API_KEY;
-exports.POAP_END_POINT = "https://api.poap.tech/actions/scan/";
-exports.POAPFetcher = function (url) { return __awaiter(void 0, void 0, void 0, function () {
+exports.NFTSCANFetcher = exports.NFTSCAN_BASE_API_ENDPOINT = void 0;
+exports.NFTSCAN_BASE_API_ENDPOINT = "https://restapi.nftscan.com/api/v2/";
+var AUTHENTICATION = process.env.NFTSCAN_API_KEY;
+exports.NFTSCANFetcher = function (url) { return __awaiter(void 0, void 0, void 0, function () {
     var res;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0:
-                console.log(url, AUTHENTICATION, 'poap');
-                return [4 /*yield*/, fetch(url, {
-                        headers: {
-                            "x-api-key": AUTHENTICATION,
-                            accept: "application/json"
-                        }
-                    })];
+            case 0: return [4 /*yield*/, fetch(url, {
+                    headers: {
+                        "x-api-key": AUTHENTICATION
+                    }
+                })];
             case 1:
                 res = _a.sent();
                 return [2 /*return*/, res.json()];
