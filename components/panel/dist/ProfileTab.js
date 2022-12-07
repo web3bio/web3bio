@@ -82,7 +82,6 @@ exports.useProfile = useProfile;
 var RenderProfileTab = function (props) {
     var _a;
     var identity = props.identity;
-    console.log(identity, "hhh");
     var profileData = useProfile(identity.displayName || identity.identity).data;
     var _b = react_use_1.useAsync(function () { return __awaiter(void 0, void 0, void 0, function () {
         var ensInstance, obj, i, value, _a, _b;
