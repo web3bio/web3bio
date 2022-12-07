@@ -3518,7 +3518,16 @@ body {
   padding: 0 1.5rem;
 }
 .profile-container .profile-basic {
+  position: relative;
   padding: 1rem 0;
+}
+.profile-container .profile-basic-loading-placeholder {
+  min-height: 2rem;
+  margin: 1rem 0;
+  place-self: flex-start;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 }
 
 .profile-main {

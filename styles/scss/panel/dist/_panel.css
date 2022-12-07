@@ -4,12 +4,6 @@
   display: flex;
   gap: 1rem;
 }
-.records .records-loading-placeholder {
-  place-self: flex-start;
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-}
 .records .record-item {
   position: relative;
   width: 36px;

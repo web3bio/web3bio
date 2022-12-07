@@ -1,21 +1,22 @@
 import { ethers } from "ethers";
-import ENS, { getEnsAddress } from "@ensdomains/ensjs";
+import { ENS } from "@ensdomains/ensjs";
 
 const EthereumRPC = "https://rpc.ankr.com/eth";
 
-const provider = new ethers.providers.JsonRpcProvider(EthereumRPC, 1);
+export const provider = new ethers.providers.JsonRpcProvider(EthereumRPC, 1);
 
-const ens = new ENS({ provider, ensAddress: getEnsAddress("1") });
+const ens = new ENS();
 
 const globalRecordKeys = [
+  "description",
+  "url",
   "com.github",
-  "com.discord",
-  "com.reddit",
   "com.twitter",
   "org.telegram",
+  "com.discord",
+  "com.reddit",
   "vnd.twitter",
   "vnd.github",
-  "url",
 ];
 
 export { ens, globalRecordKeys };

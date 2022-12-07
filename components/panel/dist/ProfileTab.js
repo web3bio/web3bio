@@ -92,38 +92,37 @@ function useProfile(domain) {
 }
 exports.useProfile = useProfile;
 var RenderProfileTab = function (props) {
-    var _a;
     var identity = props.identity;
-    var profileData = useProfile(identity.displayName || identity.identity).data;
-    var _b = react_use_1.useAsync(function () { return __awaiter(void 0, void 0, void 0, function () {
-        var ensInstance, obj, i, value, _a, _b;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
-                case 0:
-                    ensInstance = ens_1.ens.name(identity.displayName);
-                    obj = {};
-                    i = 0;
-                    _c.label = 1;
+    var domain = identity.displayName || identity.identity;
+    var _a = react_use_1.useAsync(function () { return __awaiter(void 0, void 0, void 0, function () {
+        var batched, _a, _b, _c, _d;
+        return __generator(this, function (_e) {
+            switch (_e.label) {
+                case 0: return [4 /*yield*/, ens_1.ens.setProvider(ens_1.provider)];
                 case 1:
-                    if (!(i < ens_1.globalRecordKeys.length)) return [3 /*break*/, 4];
-                    value = ens_1.globalRecordKeys[i];
-                    if (value === "vnd.twitter" && obj["com.twitter"])
-                        return [2 /*return*/];
-                    if (value === "vnd.github" && obj["com.github"])
-                        return [2 /*return*/];
-                    _a = obj;
-                    _b = ens_1.globalRecordKeys[i];
-                    return [4 /*yield*/, ensInstance.getText(value)];
+                    _e.sent();
+                    return [4 /*yield*/, ens_1.ens.batch(ens_1.ens.getText.batch(domain, "description"), ens_1.ens.getText.batch(domain, "url"), ens_1.ens.getText.batch(domain, "com.github"), ens_1.ens.getText.batch(domain, "com.twitter"), ens_1.ens.getText.batch(domain, "org.telegram"), ens_1.ens.getText.batch(domain, "com.discord"), ens_1.ens.getText.batch(domain, "com.reddit"))];
                 case 2:
-                    _a[_b] = _c.sent();
-                    _c.label = 3;
+                    batched = _e.sent();
+                    if (!!batched[2]) return [3 /*break*/, 4];
+                    _a = batched;
+                    _b = 2;
+                    return [4 /*yield*/, ens_1.ens.getText(domain, "vnd.github")];
                 case 3:
-                    i++;
-                    return [3 /*break*/, 1];
-                case 4: return [2 /*return*/, obj];
+                    _a[_b] = _e.sent();
+                    _e.label = 4;
+                case 4:
+                    if (!!batched[3]) return [3 /*break*/, 6];
+                    _c = batched;
+                    _d = 3;
+                    return [4 /*yield*/, ens_1.ens.getText(domain, "vnd.twitter")];
+                case 5:
+                    _c[_d] = _e.sent();
+                    _e.label = 6;
+                case 6: return [2 /*return*/, batched];
             }
         });
-    }); }), ensRecords = _b.value, recordsLoading = _b.loading;
+    }); }), ensRecords = _a.value, recordsLoading = _a.loading;
     var openSocialMediaLink = function (url, type) {
         var resolvedURL = "";
         if (url.startsWith("https")) {
@@ -134,23 +133,25 @@ var RenderProfileTab = function (props) {
         }
         window.open(resolvedURL, "_blank");
     };
-    console.log(profileData, "records", ensRecords);
+    console.log(ensRecords, "records123", recordsLoading);
     return (React.createElement("div", { className: "profile-container" },
-        (profileData || ensRecords) && (React.createElement("div", { className: "profile-basic" },
-            React.createElement("div", { className: "profile-description" }, (_a = profileData.description) !== null && _a !== void 0 ? _a : "no description"),
-            React.createElement("div", { className: "records" }, recordsLoading ? (React.createElement("div", { className: "records-loading-placeholder" },
-                React.createElement("div", { style: {
-                        position: "relative",
-                        width: "1rem",
-                        height: "1rem"
-                    } },
-                    React.createElement(Loading_1.Loading, null)),
-                React.createElement("div", null, "Loading Records..."))) : ensRecords ? (Object.keys(socialButtonMapping).map(function (x, idx) {
-                return (ensRecords[x] && (React.createElement("button", { key: idx, className: "form-button btn", style: { position: "relative" }, onClick: function () {
-                        openSocialMediaLink(ensRecords[x], socialButtonMapping[x].type);
+        recordsLoading ? (React.createElement("div", { className: "profile-basic-loading-placeholder" },
+            React.createElement("div", { style: {
+                    position: "relative",
+                    width: "1rem",
+                    height: "1rem"
+                } },
+                React.createElement(Loading_1.Loading, null)),
+            React.createElement("div", null, "Loading Profile..."))) : (React.createElement("div", { className: "profile-basic" },
+            React.createElement("div", { className: "profile-description" }, (ensRecords && ensRecords[0]) || "no description"),
+            React.createElement("div", { className: "records" }, ens_1.globalRecordKeys.map(function (x, idx) {
+                if (idx === 0)
+                    return null;
+                return (ensRecords[idx] && (React.createElement("button", { key: idx, className: "form-button btn", style: { position: "relative" }, onClick: function () {
+                        openSocialMediaLink(ensRecords[idx], socialButtonMapping[x].type);
                     } },
                     React.createElement(react_inlinesvg_1["default"], { src: socialButtonMapping[x].icon, width: 24, height: 24, className: "icon" }))));
-            })) : null))),
+            })))),
         React.createElement("div", { className: "profile-subTitle" }, "COLLECTIONS"),
         React.createElement(NFTOverview_1.NFTOverview, { identity: identity }),
         React.createElement("div", { className: "profile-subTitle" }, "POAPS"),
