@@ -37,7 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 exports.POAPFetcher = exports.POAP_END_POINT = void 0;
-var AUTHENTICATION = process.env.POAP_API_KEY;
+var AUTHENTICATION = process.env.NEXT_PUBLIC_POAP_API_KEY;
 exports.POAP_END_POINT = "https://api.poap.tech/actions/scan/";
 exports.POAPFetcher = function (url) { return __awaiter(void 0, void 0, void 0, function () {
     var res;

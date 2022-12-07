@@ -38,7 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 exports.NFTSCANFetcher = exports.NFTSCAN_BASE_API_ENDPOINT = void 0;
 exports.NFTSCAN_BASE_API_ENDPOINT = "https://restapi.nftscan.com/api/v2/";
-var AUTHENTICATION = process.env.NFTSCAN_API_KEY;
+var AUTHENTICATION = process.env.NEXT_PUBLIC_NFTSCAN_API_KEY;
 exports.NFTSCANFetcher = function (url) { return __awaiter(void 0, void 0, void 0, function () {
     var res;
     return __generator(this, function (_a) {
