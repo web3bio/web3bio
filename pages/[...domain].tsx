@@ -11,7 +11,7 @@ import { handleSearchPlatform } from "../utils/utils";
 const RenderDomainPanel = (props) => {
   const { domain } = props;
   const router = useRouter();
-  const [panelTab, setPanelTab] = useState(TabsMap.feeds.key);
+  const [panelTab, setPanelTab] = useState(TabsMap.profile.key);
   const [platform, setPlatform] = useState("ENS");
   const { loading, error, data } = useQuery(GET_PROFILES_DOMAIN, {
     variables: {
@@ -24,8 +24,8 @@ const RenderDomainPanel = (props) => {
     if (!router.isReady) return;
     if (!router.query.domain) return;
     setPlatform(handleSearchPlatform(router.query.domain[0]));
-    if (router.query.domain[1]) setPanelTab(domain[1]);
-  }, [domain, router]);
+    console.log("gggg");
+  }, [domain, router.query, router.isReady]);
 
   return (
     <div className="web3bio-container">
@@ -39,16 +39,20 @@ const RenderDomainPanel = (props) => {
           <Empty />
         ) : (
           <IdentityPanel
+            curTab={panelTab}
             onTabChange={(v) => {
               router.replace({
                 pathname: "",
-                query: {
-                  domain: [domain[0], v],
-                },
+                query: router.query.s
+                  ? {
+                      domain: [domain[0], v === TabsMap.profile.key ? null : v],
+                      s: router.query.s,
+                    }
+                  : {
+                      domain: [domain[0], v === TabsMap.profile.key ? null : v],
+                    },
               });
-              setPanelTab(v);
             }}
-            curTab={panelTab}
             identity={data.domain.owner}
           />
         )}

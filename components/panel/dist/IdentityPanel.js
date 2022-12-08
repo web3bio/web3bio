@@ -13,6 +13,7 @@ var Loading_1 = require("../shared/Loading");
 var utils_2 = require("../../utils/utils");
 var ipfs_1 = require("../../utils/ipfs");
 var router_1 = require("next/router");
+var link_1 = require("next/link");
 exports.TabsMap = {
     profile: {
         key: "profile",
@@ -28,8 +29,8 @@ exports.TabsMap = {
     }
 };
 var IdentityPanelRender = function (props) {
-    var onClose = props.onClose, identity = props.identity, onTabChange = props.onTabChange, curTab = props.curTab;
-    var _a = react_1.useState(curTab || exports.TabsMap.profile.key), activeTab = _a[0], setActiveTab = _a[1];
+    var identity = props.identity, onTabChange = props.onTabChange, curTab = props.curTab;
+    var _a = react_1.useState(curTab), activeTab = _a[0], setActiveTab = _a[1];
     var _b = react_1.useState(null), curAsset = _b[0], setCurAsset = _b[1];
     var _c = react_1.useState(null), copied = _c[0], setCopied = _c[1];
     var router = router_1.useRouter();
@@ -57,10 +58,10 @@ var IdentityPanelRender = function (props) {
             _a)[activeTab] || React.createElement(FeedsTab_1.FeedsTab, { identity: identity }));
     };
     react_1.useEffect(function () {
-        if (!router.isReady || !router.query.t)
-            return;
-        setActiveTab(router.query.t);
-    }, [router]);
+        if (router.query.a) {
+            setActiveTab(exports.TabsMap.nfts.key);
+        }
+    }, [router.query.a]);
     var resolveOnShowDetail = function (asset) {
         // todo: to resolve url && nft dialog
     };
@@ -81,11 +82,10 @@ var IdentityPanelRender = function (props) {
                             React.createElement(react_clipboard_js_1["default"], { component: "div", className: "action", "data-clipboard-text": identity.identity, onSuccess: onCopySuccess },
                                 React.createElement(react_inlinesvg_1["default"], { src: "icons/icon-copy.svg", width: 20, height: 20 }),
                                 copied && React.createElement("div", { className: "tooltip-copy" }, "COPIED"))))),
-                React.createElement("div", { className: "btn btn-link btn-close", onClick: function () {
+                router.query.s && (React.createElement(link_1["default"], { className: "btn btn-link btn-close", onClick: function () {
                         localStorage.removeItem("feeds");
-                        onClose();
-                    } },
-                    React.createElement(react_inlinesvg_1["default"], { src: "/icons/icon-close.svg", width: "20", height: "20" })),
+                    }, href: "/?s=" + router.query.s },
+                    React.createElement(react_inlinesvg_1["default"], { src: "/icons/icon-close.svg", width: "20", height: "20" }))),
                 React.createElement("ul", { className: "panel-tab" }, utils_1.getEnumAsArray(exports.TabsMap).map(function (x, idx) {
                     return (React.createElement("li", { key: idx, className: activeTab === x.value.key ? "tab-item active" : "tab-item" },
                         React.createElement("a", { href: "#", onClick: function (e) {

@@ -6,6 +6,7 @@ import SVG from "react-inlinesvg";
 import { formatText } from "../../utils/utils";
 import { RenderSourceFooter } from "./SourcesFooter";
 import { PlatformType } from "../../utils/type";
+import { useRouter } from "next/router";
 
 const RenderAccountItem = (props) => {
   const onCopySuccess = () => {
@@ -16,6 +17,7 @@ const RenderAccountItem = (props) => {
   };
   const { identity, sources } = props;
   const [isCopied, setIsCopied] = useState(false);
+  const router = useRouter()
   switch (identity.platform) {
     case PlatformType.ethereum:
       return (
@@ -47,20 +49,15 @@ const RenderAccountItem = (props) => {
                   </Clipboard>
                 </div>
               </div>
-              <div className="actions">
+              <Link href={`/${identity.displayName}?s=${router.query.s}`} className="actions">
                 <button
                   className="btn btn-sm btn-link action"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    props.showPanel(identity);
-                  }}
-                  title="Open Identity Panel"
+                  title="Link Identity Panel"
                 >
                   <SVG src="icons/icon-open.svg" width={20} height={20} />
                   Open
                 </button>
-              </div>
+              </Link>
             </div>
             {identity.nft?.length > 0 && (
               <div className="nfts">

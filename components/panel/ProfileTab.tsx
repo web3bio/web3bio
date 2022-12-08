@@ -1,4 +1,4 @@
-import { url } from "inspector";
+import { useRouter } from "next/router";
 import { memo } from "react";
 import SVG from "react-inlinesvg";
 import { useAsync } from "react-use";
@@ -7,12 +7,9 @@ import { ens, globalRecordKeys, provider } from "../../utils/ens";
 import { resolveSocialMediaLink } from "../../utils/utils";
 import { ENSFetcher, ENS_METADATA_END_POINT } from "../apis/ens";
 import { Loading } from "../shared/Loading";
+import { TabsMap } from "./IdentityPanel";
 import { NFTOverview } from "./NFTOverview";
 import { Poaps } from "./Poaps";
-
-interface ENSRecords {
-  [index: string]: string;
-}
 
 const socialButtonMapping = {
   ["com.github"]: {
@@ -64,7 +61,7 @@ export function useProfile(domain: string) {
 const RenderProfileTab = (props) => {
   const { identity } = props;
   const domain = identity.displayName || identity.identity;
-
+  const router = useRouter();
   const { value: ensRecords, loading: recordsLoading } = useAsync(async () => {
     await ens.setProvider(provider);
     const batched = await ens.batch(

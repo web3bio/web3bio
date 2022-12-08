@@ -10,6 +10,7 @@ import { Loading } from "../shared/Loading";
 import { formatText } from "../../utils/utils";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export const TabsMap = {
   profile: {
@@ -27,8 +28,8 @@ export const TabsMap = {
 };
 
 const IdentityPanelRender = (props) => {
-  const { onClose, identity, onTabChange, curTab } = props;
-  const [activeTab, setActiveTab] = useState(curTab || TabsMap.profile.key);
+  const { identity, onTabChange, curTab } = props;
+  const [activeTab, setActiveTab] = useState(curTab);
   const [curAsset, setCurAsset] = useState(null);
   const [copied, setCopied] = useState(null);
   const router = useRouter();
@@ -67,12 +68,11 @@ const IdentityPanelRender = (props) => {
       }[activeTab] || <FeedsTab identity={identity} />
     );
   };
-
-  useEffect(() => {
-    if (!router.isReady || !router.query.t) return;
-    setActiveTab(router.query.t);
-  }, [router]);
-
+  // useEffect(() => {
+  //   if (router.query.a) {
+  //     setActiveTab(TabsMap.nfts.key);
+  //   }
+  // }, [router.query.a]);
   const resolveOnShowDetail = (asset) => {
     // todo: to resolve url && nft dialog
   };
@@ -118,15 +118,17 @@ const IdentityPanelRender = (props) => {
               </div>
             </div>
           </div>
-          <div
-            className="btn btn-link btn-close"
-            onClick={() => {
-              localStorage.removeItem("feeds");
-              onClose();
-            }}
-          >
-            <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
-          </div>
+          {router.query.s && (
+            <Link
+              className="btn btn-link btn-close"
+              onClick={() => {
+                localStorage.removeItem("feeds");
+              }}
+              href={`/?s=${router.query.s}`}
+            >
+              <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
+            </Link>
+          )}
           <ul className="panel-tab">
             {getEnumAsArray(TabsMap).map((x, idx) => {
               return (

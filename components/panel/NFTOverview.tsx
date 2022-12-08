@@ -7,6 +7,7 @@ import { resolveIPFS_URL } from "../../utils/ipfs";
 import { NFTSCANFetcher, NFTSCAN_BASE_API_ENDPOINT } from "../apis/nftscan";
 import { useRouter } from "next/router";
 import { TabsMap } from "./IdentityPanel";
+import Link from "next/link";
 
 function useCollections(address: string) {
   const { data, error } = useSWR<any>(
@@ -37,20 +38,24 @@ const RenderNFTOverview = (props) => {
           data.data.map((x, idx) => {
             return (
               <NFTAssetPlayer
-                onClick={() => {
-                  router.replace({
-                    pathname: "",
-                    query: {
-                      s: router.query.s,
-                      d: router.query.d,
-                      t: TabsMap.nfts.key,
-                      a: x.contract_address,
-                    },
-                  });
-                }}
                 key={idx}
                 className="collection-nft-item"
                 src={resolveIPFS_URL(x.logo_url)}
+                onClick={() => {
+                  router.replace({
+                    pathname: "",
+                    query: router.query.s
+                      ? {
+                          domain: [router.query.domain[0], TabsMap.nfts.key],
+                          s: router.query.s,
+                          a: x.contract_address,
+                        }
+                      : {
+                          domain: [router.query.domain[0], TabsMap.nfts.key],
+                          a: x.contract_address,
+                        },
+                  });
+                }}
                 alt={x.contract_name}
               />
             );

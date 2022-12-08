@@ -30,17 +30,21 @@ var RenderNFTOverview = function (props) {
         return null;
     return (React.createElement("div", { className: "nft-collection-container" },
         React.createElement("div", { className: "nft-list" }, isLoading ? (React.createElement(Loading_1.Loading, null)) : (data.data.map(function (x, idx) {
-            return (React.createElement(NFTAssetPlayer_1.NFTAssetPlayer, { onClick: function () {
+            return (React.createElement(NFTAssetPlayer_1.NFTAssetPlayer, { key: idx, className: "collection-nft-item", src: ipfs_1.resolveIPFS_URL(x.logo_url), onClick: function () {
                     router.replace({
                         pathname: "",
-                        query: {
-                            s: router.query.s,
-                            d: router.query.d,
-                            t: IdentityPanel_1.TabsMap.nfts.key,
-                            a: x.contract_address
-                        }
+                        query: router.query.s
+                            ? {
+                                domain: [router.query.domain[0], IdentityPanel_1.TabsMap.nfts.key],
+                                s: router.query.s,
+                                a: x.contract_address
+                            }
+                            : {
+                                domain: [router.query.domain[0], IdentityPanel_1.TabsMap.nfts.key],
+                                a: x.contract_address
+                            }
                     });
-                }, key: idx, className: "collection-nft-item", src: ipfs_1.resolveIPFS_URL(x.logo_url), alt: x.contract_name }));
+                }, alt: x.contract_name }));
         })))));
 };
 exports.NFTOverview = react_1.memo(RenderNFTOverview);
