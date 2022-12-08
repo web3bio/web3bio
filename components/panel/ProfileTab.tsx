@@ -1,3 +1,4 @@
+import { url } from "inspector";
 import { memo } from "react";
 import SVG from "react-inlinesvg";
 import { useAsync } from "react-use";
@@ -89,7 +90,7 @@ const RenderProfileTab = (props) => {
       resolvedURL = resolveSocialMediaLink(url, type);
     }
 
-    window.open(resolvedURL, "_blank");
+    return resolvedURL;
   };
   return (
     <div className="profile-container">
@@ -118,16 +119,16 @@ const RenderProfileTab = (props) => {
               if (idx === 0) return null;
               return (
                 ensRecords[idx] && (
-                  <button
+                  <a
                     key={idx}
                     className="form-button btn"
                     style={{ position: "relative" }}
-                    onClick={() => {
-                      openSocialMediaLink(
-                        ensRecords[idx],
-                        socialButtonMapping[x].type
-                      );
-                    }}
+                    target="_blank"
+                    rel="noreferrer"
+                    href={openSocialMediaLink(
+                      ensRecords[idx],
+                      socialButtonMapping[x].type
+                    )}
                   >
                     <SVG
                       src={socialButtonMapping[x].icon}
@@ -135,7 +136,7 @@ const RenderProfileTab = (props) => {
                       height={24}
                       className="icon"
                     />
-                  </button>
+                  </a>
                 )
               );
             })}
@@ -144,9 +145,13 @@ const RenderProfileTab = (props) => {
       )}
 
       <div className="profile-subTitle">COLLECTIONS</div>
-      <NFTOverview identity={identity} />
+      <div className="profile-sub-container">
+        <NFTOverview identity={identity} />
+      </div>
       <div className="profile-subTitle">POAPS</div>
-      <Poaps identity={identity} />
+      <div className="profile-sub-container">
+        <Poaps identity={identity} />
+      </div>
     </div>
   );
 };

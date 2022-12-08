@@ -131,9 +131,8 @@ var RenderProfileTab = function (props) {
         else {
             resolvedURL = utils_1.resolveSocialMediaLink(url, type);
         }
-        window.open(resolvedURL, "_blank");
+        return resolvedURL;
     };
-    console.log(ensRecords, "records123", recordsLoading);
     return (React.createElement("div", { className: "profile-container" },
         recordsLoading ? (React.createElement("div", { className: "profile-basic-loading-placeholder" },
             React.createElement("div", { style: {
@@ -147,14 +146,14 @@ var RenderProfileTab = function (props) {
             React.createElement("div", { className: "records" }, ens_1.globalRecordKeys.map(function (x, idx) {
                 if (idx === 0)
                     return null;
-                return (ensRecords[idx] && (React.createElement("button", { key: idx, className: "form-button btn", style: { position: "relative" }, onClick: function () {
-                        openSocialMediaLink(ensRecords[idx], socialButtonMapping[x].type);
-                    } },
+                return (ensRecords[idx] && (React.createElement("a", { key: idx, className: "form-button btn", style: { position: "relative" }, target: "_blank", rel: "noreferrer", href: openSocialMediaLink(ensRecords[idx], socialButtonMapping[x].type) },
                     React.createElement(react_inlinesvg_1["default"], { src: socialButtonMapping[x].icon, width: 24, height: 24, className: "icon" }))));
             })))),
         React.createElement("div", { className: "profile-subTitle" }, "COLLECTIONS"),
-        React.createElement(NFTOverview_1.NFTOverview, { identity: identity }),
+        React.createElement("div", { className: "profile-sub-container" },
+            React.createElement(NFTOverview_1.NFTOverview, { identity: identity })),
         React.createElement("div", { className: "profile-subTitle" }, "POAPS"),
-        React.createElement(Poaps_1.Poaps, { identity: identity })));
+        React.createElement("div", { className: "profile-sub-container" },
+            React.createElement(Poaps_1.Poaps, { identity: identity }))));
 };
 exports.ProfileTab = react_1.memo(RenderProfileTab);

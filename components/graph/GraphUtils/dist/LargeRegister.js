@@ -26,7 +26,8 @@ var resolvePlatformIcon = function (platform) {
         _a[type_1.PlatformType.keybase] = "/icons/icon-keybase-w.svg",
         _a[type_1.PlatformType.ethereum] = "/icons/icon-ethereum-w.svg",
         _a[type_1.PlatformType.reddit] = "/icons/icon-reddit-w.svg",
-        _a[type_1.PlatformType.ens] = "/icons/icon-ens-w.svg",
+        // PlatformType.ens is uppercase
+        _a["ens"] = "/icons/icon-ens-w.svg",
         _a[type_1.PlatformType.lens] = "/icons/icon-lens-w.svg",
         _a[type_1.PlatformType.github] = "/icons/icon-github-w.svg",
         _a[type_1.PlatformType.dotbit] = "/icons/icon-dotbit-w.svg",

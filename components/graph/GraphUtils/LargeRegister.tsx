@@ -14,7 +14,8 @@ const resolvePlatformIcon = (platform) => {
       [PlatformType.keybase]: "/icons/icon-keybase-w.svg",
       [PlatformType.ethereum]: "/icons/icon-ethereum-w.svg",
       [PlatformType.reddit]: "/icons/icon-reddit-w.svg",
-      [PlatformType.ens]: "/icons/icon-ens-w.svg",
+      // PlatformType.ens is uppercase
+      ["ens"]: "/icons/icon-ens-w.svg",
       [PlatformType.lens]: "/icons/icon-lens-w.svg",
       [PlatformType.github]: "/icons/icon-github-w.svg",
       [PlatformType.dotbit]: "/icons/icon-dotbit-w.svg",
