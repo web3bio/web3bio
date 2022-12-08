@@ -57,11 +57,11 @@ var IdentityPanelRender = function (props) {
             _a[exports.TabsMap.nfts.key] = (React.createElement(NFTsTab_1.NFTsTab, { defaultOpen: !!curAsset, onShowDetail: resolveOnShowDetail, identity: identity })),
             _a)[activeTab] || React.createElement(FeedsTab_1.FeedsTab, { identity: identity }));
     };
-    react_1.useEffect(function () {
-        if (router.query.a) {
-            setActiveTab(exports.TabsMap.nfts.key);
-        }
-    }, [router.query.a]);
+    // useEffect(() => {
+    //   if (router.query.a) {
+    //     setActiveTab(TabsMap.nfts.key);
+    //   }
+    // }, [router.query.a]);
     var resolveOnShowDetail = function (asset) {
         // todo: to resolve url && nft dialog
     };
