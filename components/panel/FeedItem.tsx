@@ -28,7 +28,7 @@ export const isSupportedFeed = (feed) => {
 const RenderFeedItem = (props) => {
   const { feed, identity } = props;
   if (isTokenOperationFeed(feed))
-    return <TokenOperationCard feed={feed} identity />;
+    return <TokenOperationCard feed={feed} identity={identity} />;
   if (isTokenSwapFeed(feed))
     return <TokenSwapCard feed={feed} identity={identity} />;
 

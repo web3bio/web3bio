@@ -24,7 +24,6 @@ const RenderDomainPanel = (props) => {
     if (!router.isReady) return;
     if (!router.query.domain) return;
     setPlatform(handleSearchPlatform(router.query.domain[0]));
-    console.log("gggg");
   }, [domain, router.query, router.isReady]);
 
   return (

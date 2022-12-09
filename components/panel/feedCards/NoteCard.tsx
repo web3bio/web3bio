@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { formatText } from "../../../utils/utils";
+import { formatText, isSameAddress } from "../../../utils/utils";
 import { Tag, Type } from "../../apis/rss3/types";
 
 export function isNoteFeed(feed) {
@@ -12,15 +12,19 @@ const RenderNoteCard = (props) => {
   const { feed, identity } = props;
   const action = feed.actions[0];
   const metadata = action.metadata;
+  const isOwner = isSameAddress(feed.address_from, identity.identity);
 
-  const user = identity.identity;
   return (
     <div className="feed-item-box">
       <div className="feed-type-badge"></div>
       <div className="feed-item">
         <div className="feed-item-header">
           <div className="feed-type-intro">
-            <div className="strong">{formatText(user ?? "")}</div>
+            <div className="strong">
+              {isOwner
+                ? identity.displayName
+                : formatText(feed.address_from ?? "")}
+            </div>
             posted a note on
             <div className="strong">{action.platform || "unknown"}</div>
           </div>

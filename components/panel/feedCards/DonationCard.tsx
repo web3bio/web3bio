@@ -1,5 +1,5 @@
 import { memo, useState } from "react";
-import { formatText, formatValue } from "../../../utils/utils";
+import { formatText, formatValue, isSameAddress } from "../../../utils/utils";
 import { Tag } from "../../apis/rss3/types";
 import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
 
@@ -14,13 +14,17 @@ const RenderDonationCard = (props) => {
   const action = feed.actions[activeActionIndex];
   const metadata = action.metadata;
   const user = feed.owner;
+  const isOwner = isSameAddress(user, identity.identity);
+  
   return (
     <div className="feed-item-box">
       <div className="feed-type-badge"></div>
       <div className="feed-item">
         <div className="feed-item-header">
           <div className="feed-type-intro">
-            <div className="strong">{formatText(user ?? "")}</div>
+            <div className="strong">
+              {isOwner ? identity.displayName : formatText(user ?? "")}
+            </div>
             donated
             <div className="strong">
               {formatValue(metadata?.token)} {metadata?.token?.symbol ?? ""}

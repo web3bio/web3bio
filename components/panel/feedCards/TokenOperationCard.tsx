@@ -16,17 +16,25 @@ const RenderTokenOperationCard = (props) => {
   const action = feed.actions[0];
   const metadata = action.metadata;
   const isFromOwner = isSameAddress(identity.identity, action.address_from);
+  const _to = isSameAddress(identity.identity, action.address_to)
+    ? identity.displayName
+    : formatText(feed.address_to ?? "");
   const context =
     feed.type === Type.Burn ? "burn" : isFromOwner ? "send to" : "claim from";
+
   return (
     <div className="feed-item-box">
       <div className="feed-type-badge"></div>
       <div className="feed-item">
         <div className="feed-item-header">
           <div className="feed-type-intro">
-            <div className="strong">{formatText(feed.address_from ?? "")}</div>
+            <div className="strong">
+              {isFromOwner
+                ? identity.displayName
+                : formatText(action.address_from ?? "")}
+            </div>
             {context}
-            <div className="strong">{formatText(feed.address_to ?? "")}</div>
+            <div className="strong">{_to}</div>
           </div>
         </div>
 

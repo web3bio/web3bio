@@ -12,10 +12,15 @@ export function getLastAction(feed) {
 
 const RenderCollectibleCard = (props) => {
   const { feed, identity } = props;
-  const user = identity.identity;
+  const user = feed.address_from;
+  const isOwner = isSameAddress(user, feed.address_from);
   const { metadata, cardType, summary } = useMemo(() => {
     let action;
     let metadata;
+    const _from = isOwner ? identity.displayName : formatText(user ?? "");
+    const _to = isSameAddress(identity.identity, feed.address_to)
+      ? identity.displayName
+      : formatText(feed.address_to ?? "");
     switch (feed.type) {
       case Type.Mint:
         // If only one action, it should be free minting
@@ -25,7 +30,7 @@ const RenderCollectibleCard = (props) => {
           metadata,
           summary: (
             <div className="feed-type-intro">
-              <div className="strong">{formatText(user ?? "")}</div>
+              <div className="strong">{_from}</div>
               minted an NFT
               <div className="strong">
                 {metadata.cost &&
@@ -42,22 +47,15 @@ const RenderCollectibleCard = (props) => {
           metadata,
           summary: (
             <div className="feed-type-intro">
-              <div className="strong">{formatText(user ?? "")}</div>
+              <div className="strong">{_from}</div>
               sold an NFT to
-              <div className="strong">
-                {formatText(action.address_to ?? "")}
-              </div>
+              <div className="strong">{_to}</div>
             </div>
           ),
         };
       case Type.Transfer:
         action = getLastAction(feed);
         metadata = action.metadata;
-        const standard = feed.actions[0].metadata?.standard;
-        const costMetadata =
-          standard && ["Native", "ERC-20"].includes(standard)
-            ? feed.actions[0].metadata
-            : undefined;
         const isSending = isSameAddress(feed.owner, action.address_from);
         return {
           cardType: isSending
@@ -66,13 +64,9 @@ const RenderCollectibleCard = (props) => {
           metadata,
           summary: (
             <div className="feed-type-intro">
-              <div className="strong">
-                {formatText(action.address_from ?? "")}
-              </div>
+              <div className="strong">{_from}</div>
               sent an NFT to
-              <div className="strong">
-                {formatText(action.address_to ?? "")}
-              </div>
+              <div className="strong">{_to}</div>
             </div>
           ),
         };
@@ -83,7 +77,7 @@ const RenderCollectibleCard = (props) => {
           metadata,
           summary: (
             <div className="feed-type-intro">
-              <div className="strong">{formatText(user ?? "")}</div>
+              <div className="strong">{_from}</div>
               burned an NFT
             </div>
           ),
@@ -91,7 +85,7 @@ const RenderCollectibleCard = (props) => {
     }
 
     return { summary: "", cardType: CardType.CollectibleIn };
-  }, [feed, user]);
+  }, [feed, user, isOwner]);
 
   const imageSize = 64;
   const attributes =
@@ -109,7 +103,7 @@ const RenderCollectibleCard = (props) => {
             <NFTAssetPlayer
               className="feed-nft-img"
               src={metadata.image}
-              type='image/png'
+              type="image/png"
             />
 
             <div className="feed-nft-info">

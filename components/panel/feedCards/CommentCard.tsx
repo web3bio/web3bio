@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { formatText } from "../../../utils/utils";
+import { formatText, isSameAddress } from "../../../utils/utils";
 import { Tag, Type } from "../../apis/rss3/types";
 import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
 
@@ -9,19 +9,21 @@ export function isCommentFeed(feed) {
 
 const RenderCommentFeed = (props) => {
   const { feed, identity } = props;
-
   const action = feed.actions[0];
   const metadata = action.metadata;
-
   const user = identity.identity;
   const commentTarget = metadata?.targetuseAddressLabel;
+
+  const isOwner = isSameAddress(user, feed.owner);
   return (
     <div className="feed-item-box">
       <div className="feed-type-badge"></div>
       <div className="feed-item">
         <div className="feed-item-header">
           <div className="feed-type-intro">
-            <div className="strong">{formatText(user ?? "")}</div>
+            <div className="strong">
+              {isOwner ? identity.displayName : formatText(user ?? "")}
+            </div>
             made a comment on
             <div className="strong">{action.platform || "unknown"}</div>
           </div>
