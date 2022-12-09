@@ -21,7 +21,6 @@ const RenderTokenOperationCard = (props) => {
     : formatText(feed.address_to ?? "");
   const context =
     feed.type === Type.Burn ? "burn" : isFromOwner ? "send to" : "claim from";
-  console.log(feed)
   return (
     <div className="feed-item-box">
       <div className="feed-type-badge"></div>

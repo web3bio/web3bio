@@ -55,7 +55,6 @@ const RenderNFTCollections = (props) => {
               pathname: "",
               query: {
                 domain: router.query.domain,
-                a: router.query.a,
               },
             });
           }

@@ -36,8 +36,6 @@ const RenderDomainPanel = (props) => {
           <Loading />
         ) : error ? (
           <Error text={error} />
-        ) : !data ? (
-          <Empty />
         ) : (
           <IdentityPanel
             curTab={panelTab}

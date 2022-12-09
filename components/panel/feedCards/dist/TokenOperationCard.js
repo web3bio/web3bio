@@ -19,7 +19,6 @@ var RenderTokenOperationCard = function (props) {
         ? identity.displayName
         : utils_1.formatText((_a = feed.address_to) !== null && _a !== void 0 ? _a : "");
     var context = feed.type === types_1.Type.Burn ? "burn" : isFromOwner ? "send to" : "claim from";
-    console.log(feed);
     return (React.createElement("div", { className: "feed-item-box" },
         React.createElement("div", { className: "feed-type-badge" }),
         React.createElement("div", { className: "feed-item" },

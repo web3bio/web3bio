@@ -48,8 +48,7 @@ var RenderNFTCollections = function (props) {
                         router.replace({
                             pathname: "",
                             query: {
-                                domain: router.query.domain,
-                                a: router.query.a
+                                domain: router.query.domain
                             }
                         });
                     }
