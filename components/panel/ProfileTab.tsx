@@ -59,9 +59,8 @@ export function useProfile(domain: string) {
 }
 
 const RenderProfileTab = (props) => {
-  const { identity } = props;
+  const { identity,toNFT } = props;
   const domain = identity.displayName || identity.identity;
-  const router = useRouter();
   const { value: ensRecords, loading: recordsLoading } = useAsync(async () => {
     await ens.setProvider(provider);
     const batched = await ens.batch(
@@ -143,7 +142,10 @@ const RenderProfileTab = (props) => {
 
       <div className="profile-subTitle">COLLECTIONS</div>
       <div className="profile-sub-container">
-        <NFTOverview identity={identity} />
+        <NFTOverview
+          identity={identity}
+          toNFT={toNFT}
+        />
       </div>
       <div className="profile-subTitle">POAPS</div>
       <div className="profile-sub-container">

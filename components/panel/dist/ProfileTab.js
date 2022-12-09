@@ -38,7 +38,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var _a;
 exports.__esModule = true;
 exports.ProfileTab = exports.useProfile = void 0;
-var router_1 = require("next/router");
 var react_1 = require("react");
 var react_inlinesvg_1 = require("react-inlinesvg");
 var react_use_1 = require("react-use");
@@ -93,9 +92,8 @@ function useProfile(domain) {
 }
 exports.useProfile = useProfile;
 var RenderProfileTab = function (props) {
-    var identity = props.identity;
+    var identity = props.identity, toNFT = props.toNFT;
     var domain = identity.displayName || identity.identity;
-    var router = router_1.useRouter();
     var _a = react_use_1.useAsync(function () { return __awaiter(void 0, void 0, void 0, function () {
         var batched, _a, _b, _c, _d;
         return __generator(this, function (_e) {
@@ -153,7 +151,7 @@ var RenderProfileTab = function (props) {
             })))),
         React.createElement("div", { className: "profile-subTitle" }, "COLLECTIONS"),
         React.createElement("div", { className: "profile-sub-container" },
-            React.createElement(NFTOverview_1.NFTOverview, { identity: identity })),
+            React.createElement(NFTOverview_1.NFTOverview, { identity: identity, toNFT: toNFT })),
         React.createElement("div", { className: "profile-subTitle" }, "POAPS"),
         React.createElement("div", { className: "profile-sub-container" },
             React.createElement(Poaps_1.Poaps, { identity: identity }))));

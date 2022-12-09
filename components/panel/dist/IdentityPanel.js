@@ -52,7 +52,7 @@ var IdentityPanelRender = function (props) {
     var renderContent = function () {
         var _a;
         return ((_a = {},
-            _a[exports.TabsMap.profile.key] = React.createElement(ProfileTab_1.ProfileTab, { identity: identity }),
+            _a[exports.TabsMap.profile.key] = (React.createElement(ProfileTab_1.ProfileTab, { toNFT: function () { return setActiveTab(exports.TabsMap.nfts.key); }, identity: identity })),
             _a[exports.TabsMap.feeds.key] = React.createElement(FeedsTab_1.FeedsTab, { identity: identity }),
             _a[exports.TabsMap.nfts.key] = (React.createElement(NFTsTab_1.NFTsTab, { defaultOpen: !!curAsset, onShowDetail: resolveOnShowDetail, identity: identity })),
             _a)[activeTab] || React.createElement(FeedsTab_1.FeedsTab, { identity: identity }));

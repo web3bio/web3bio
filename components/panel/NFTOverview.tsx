@@ -22,7 +22,7 @@ function useCollections(address: string) {
 }
 
 const RenderNFTOverview = (props) => {
-  const { identity } = props;
+  const { identity,toNFT } = props;
   const { data, isLoading, isError } = useCollections(identity.identity);
   const router = useRouter();
   if (isLoading) return <Loading />;
@@ -42,6 +42,7 @@ const RenderNFTOverview = (props) => {
                 className="collection-nft-item"
                 src={resolveIPFS_URL(x.logo_url)}
                 onClick={() => {
+                  toNFT()
                   router.replace({
                     pathname: "",
                     query: router.query.s

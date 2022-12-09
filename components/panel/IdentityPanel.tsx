@@ -56,7 +56,12 @@ const IdentityPanelRender = (props) => {
   const renderContent = () => {
     return (
       {
-        [TabsMap.profile.key]: <ProfileTab identity={identity} />,
+        [TabsMap.profile.key]: (
+          <ProfileTab
+            toNFT={() => setActiveTab(TabsMap.nfts.key)}
+            identity={identity}
+          />
+        ),
         [TabsMap.feeds.key]: <FeedsTab identity={identity} />,
         [TabsMap.nfts.key]: (
           <NFTsTab

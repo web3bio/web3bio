@@ -19,7 +19,7 @@ function useCollections(address) {
     };
 }
 var RenderNFTOverview = function (props) {
-    var identity = props.identity;
+    var identity = props.identity, toNFT = props.toNFT;
     var _a = useCollections(identity.identity), data = _a.data, isLoading = _a.isLoading, isError = _a.isError;
     var router = router_1.useRouter();
     if (isLoading)
@@ -31,6 +31,7 @@ var RenderNFTOverview = function (props) {
     return (React.createElement("div", { className: "nft-collection-container" },
         React.createElement("div", { className: "nft-list" }, isLoading ? (React.createElement(Loading_1.Loading, null)) : (data.data.map(function (x, idx) {
             return (React.createElement(NFTAssetPlayer_1.NFTAssetPlayer, { key: idx, className: "collection-nft-item", src: ipfs_1.resolveIPFS_URL(x.logo_url), onClick: function () {
+                    toNFT();
                     router.replace({
                         pathname: "",
                         query: router.query.s
