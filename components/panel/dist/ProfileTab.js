@@ -94,20 +94,40 @@ exports.useProfile = useProfile;
 var RenderProfileTab = function (props) {
     var identity = props.identity, toNFT = props.toNFT;
     var domain = identity.displayName || identity.identity;
+    var _domain = react_use_1.useAsync(function () { return __awaiter(void 0, void 0, void 0, function () {
+        var _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    if (!domain.startsWith("0x")) return [3 /*break*/, 2];
+                    return [4 /*yield*/, ens_1.ens.getName(domain)];
+                case 1:
+                    _a = _b.sent();
+                    return [3 /*break*/, 3];
+                case 2:
+                    _a = domain;
+                    _b.label = 3;
+                case 3: return [2 /*return*/, _a];
+            }
+        });
+    }); }).value;
     var _a = react_use_1.useAsync(function () { return __awaiter(void 0, void 0, void 0, function () {
         var batched, _a, _b, _c, _d;
         return __generator(this, function (_e) {
             switch (_e.label) {
-                case 0: return [4 /*yield*/, ens_1.ens.setProvider(ens_1.provider)];
+                case 0:
+                    if (!_domain)
+                        return [2 /*return*/];
+                    return [4 /*yield*/, ens_1.ens.setProvider(ens_1.provider)];
                 case 1:
                     _e.sent();
-                    return [4 /*yield*/, ens_1.ens.batch(ens_1.ens.getText.batch(domain, "description"), ens_1.ens.getText.batch(domain, "url"), ens_1.ens.getText.batch(domain, "com.github"), ens_1.ens.getText.batch(domain, "com.twitter"), ens_1.ens.getText.batch(domain, "org.telegram"), ens_1.ens.getText.batch(domain, "com.discord"), ens_1.ens.getText.batch(domain, "com.reddit"))];
+                    return [4 /*yield*/, ens_1.ens.batch(ens_1.ens.getText.batch(_domain, "description"), ens_1.ens.getText.batch(_domain, "url"), ens_1.ens.getText.batch(_domain, "com.github"), ens_1.ens.getText.batch(_domain, "com.twitter"), ens_1.ens.getText.batch(_domain, "org.telegram"), ens_1.ens.getText.batch(_domain, "com.discord"), ens_1.ens.getText.batch(_domain, "com.reddit"))];
                 case 2:
                     batched = _e.sent();
                     if (!!batched[2]) return [3 /*break*/, 4];
                     _a = batched;
                     _b = 2;
-                    return [4 /*yield*/, ens_1.ens.getText(domain, "vnd.github")];
+                    return [4 /*yield*/, ens_1.ens.getText(_domain, "vnd.github")];
                 case 3:
                     _a[_b] = _e.sent();
                     _e.label = 4;
@@ -115,7 +135,7 @@ var RenderProfileTab = function (props) {
                     if (!!batched[3]) return [3 /*break*/, 6];
                     _c = batched;
                     _d = 3;
-                    return [4 /*yield*/, ens_1.ens.getText(domain, "vnd.twitter")];
+                    return [4 /*yield*/, ens_1.ens.getText(_domain, "vnd.twitter")];
                 case 5:
                     _c[_d] = _e.sent();
                     _e.label = 6;
@@ -143,12 +163,14 @@ var RenderProfileTab = function (props) {
                 React.createElement(Loading_1.Loading, null)),
             React.createElement("div", null, "Loading Profile..."))) : (React.createElement("div", { className: "profile-basic" },
             React.createElement("div", { className: "profile-description" }, (ensRecords && ensRecords[0]) || "no description"),
-            React.createElement("div", { className: "records" }, ens_1.globalRecordKeys.map(function (x, idx) {
-                if (idx === 0)
-                    return null;
-                return (ensRecords[idx] && (React.createElement("a", { key: idx, className: "form-button btn", style: { position: "relative" }, target: "_blank", rel: "noreferrer", href: openSocialMediaLink(ensRecords[idx], socialButtonMapping[x].type) },
-                    React.createElement(react_inlinesvg_1["default"], { src: socialButtonMapping[x].icon, width: 24, height: 24, className: "icon" }))));
-            })))),
+            React.createElement("div", { className: "records" }, (ensRecords &&
+                ens_1.globalRecordKeys.map(function (x, idx) {
+                    if (idx === 0)
+                        return null;
+                    return (ensRecords[idx] && (React.createElement("a", { key: idx, className: "form-button btn", style: { position: "relative" }, target: "_blank", rel: "noreferrer", href: openSocialMediaLink(ensRecords[idx], socialButtonMapping[x].type) },
+                        React.createElement(react_inlinesvg_1["default"], { src: socialButtonMapping[x].icon, width: 24, height: 24, className: "icon" }))));
+                })) ||
+                null))),
         React.createElement("div", { className: "profile-subTitle" }, "COLLECTIONS"),
         React.createElement("div", { className: "profile-sub-container" },
             React.createElement(NFTOverview_1.NFTOverview, { identity: identity, toNFT: toNFT })),

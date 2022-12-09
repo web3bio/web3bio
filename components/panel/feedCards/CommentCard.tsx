@@ -22,7 +22,9 @@ const RenderCommentFeed = (props) => {
         <div className="feed-item-header">
           <div className="feed-type-intro">
             <div className="strong">
-              {isOwner ? identity.displayName : formatText(user ?? "")}
+              {isOwner
+                ? identity.displayName ?? formatText(identity.identity)
+                : formatText(user ?? "")}
             </div>
             made a comment on
             <div className="strong">{action.platform || "unknown"}</div>

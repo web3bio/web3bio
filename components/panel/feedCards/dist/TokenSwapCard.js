@@ -10,6 +10,7 @@ function isTokenSwapFeed(feed) {
 }
 exports.isTokenSwapFeed = isTokenSwapFeed;
 var RenderTokenSwapCard = function (props) {
+    var _a;
     var feed = props.feed, identity = props.identity;
     var action = feed.actions[0];
     var metadata = action.metadata;
@@ -20,7 +21,8 @@ var RenderTokenSwapCard = function (props) {
         React.createElement("div", { className: "feed-item" },
             React.createElement("div", { className: "feed-item-header" },
                 React.createElement("div", { className: "feed-type-intro" },
-                    React.createElement("div", { className: "strong" }, isFromOwner ? identity.displayName : utils_1.formatText(action.address_from)),
+                    React.createElement("div", { className: "strong" }, isFromOwner
+                        ? (_a = identity.displayName) !== null && _a !== void 0 ? _a : utils_1.formatText(identity.identity) : utils_1.formatText(action.address_from)),
                     "swaped on",
                     React.createElement("div", { className: "strong" }, feed.platform))),
             metadata ? (React.createElement("div", { className: "feed-item-main" },

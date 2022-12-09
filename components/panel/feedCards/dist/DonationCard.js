@@ -10,9 +10,9 @@ function isDonationFeed(feed) {
 }
 exports.isDonationFeed = isDonationFeed;
 var RenderDonationCard = function (props) {
-    var _a, _b;
+    var _a, _b, _c;
     var feed = props.feed, identity = props.identity, actionIndex = props.actionIndex;
-    var _c = react_1.useState(0), index = _c[0], setIndex = _c[1];
+    var _d = react_1.useState(0), index = _d[0], setIndex = _d[1];
     var activeActionIndex = actionIndex !== null && actionIndex !== void 0 ? actionIndex : index;
     var action = feed.actions[activeActionIndex];
     var metadata = action.metadata;
@@ -23,11 +23,12 @@ var RenderDonationCard = function (props) {
         React.createElement("div", { className: "feed-item" },
             React.createElement("div", { className: "feed-item-header" },
                 React.createElement("div", { className: "feed-type-intro" },
-                    React.createElement("div", { className: "strong" }, isOwner ? identity.displayName : utils_1.formatText(user !== null && user !== void 0 ? user : "")),
+                    React.createElement("div", { className: "strong" }, isOwner
+                        ? (_a = identity.displayName) !== null && _a !== void 0 ? _a : utils_1.formatText(identity.identity) : utils_1.formatText(user !== null && user !== void 0 ? user : "")),
                     "donated",
                     React.createElement("div", { className: "strong" },
                         utils_1.formatValue(metadata === null || metadata === void 0 ? void 0 : metadata.token),
-                        " ", (_b = (_a = metadata === null || metadata === void 0 ? void 0 : metadata.token) === null || _a === void 0 ? void 0 : _a.symbol) !== null && _b !== void 0 ? _b : ""))),
+                        " ", (_c = (_b = metadata === null || metadata === void 0 ? void 0 : metadata.token) === null || _b === void 0 ? void 0 : _b.symbol) !== null && _c !== void 0 ? _c : ""))),
             metadata && (React.createElement("div", { className: "feed-item-main" },
                 React.createElement(NFTAssetPlayer_1.NFTAssetPlayer, { className: "feed-nft-img", style: { width: 64, height: 64 }, src: metadata.logo }),
                 React.createElement("picture", null),

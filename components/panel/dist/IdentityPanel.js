@@ -14,6 +14,7 @@ var utils_2 = require("../../utils/utils");
 var ipfs_1 = require("../../utils/ipfs");
 var router_1 = require("next/router");
 var link_1 = require("next/link");
+var Empty_1 = require("../shared/Empty");
 exports.TabsMap = {
     profile: {
         key: "profile",
@@ -34,7 +35,7 @@ var IdentityPanelRender = function (props) {
     var _b = react_1.useState(null), curAsset = _b[0], setCurAsset = _b[1];
     var _c = react_1.useState(null), copied = _c[0], setCopied = _c[1];
     var router = router_1.useRouter();
-    var _d = ProfileTab_1.useProfile(identity.displayName), profileData = _d.data, avatarLoading = _d.isLoading;
+    var _d = ProfileTab_1.useProfile(identity.displayName || identity.identity), profileData = _d.data, avatarLoading = _d.isLoading;
     var onCopySuccess = function () {
         setCopied(true);
         setTimeout(function () {
@@ -57,14 +58,11 @@ var IdentityPanelRender = function (props) {
             _a[exports.TabsMap.nfts.key] = (React.createElement(NFTsTab_1.NFTsTab, { defaultOpen: !!curAsset, onShowDetail: resolveOnShowDetail, identity: identity })),
             _a)[activeTab] || React.createElement(FeedsTab_1.FeedsTab, { identity: identity }));
     };
-    // useEffect(() => {
-    //   if (router.query.a) {
-    //     setActiveTab(TabsMap.nfts.key);
-    //   }
-    // }, [router.query.a]);
     var resolveOnShowDetail = function (asset) {
         // todo: to resolve url && nft dialog
     };
+    if (!profileData)
+        return React.createElement(Empty_1.Empty, { text: 'Profile not found' });
     return (React.createElement("div", { className: "identity-panel" },
         React.createElement("div", { className: "panel-container" },
             React.createElement("div", { className: "panel-header" },

@@ -14,12 +14,14 @@ const RenderCollectibleCard = (props) => {
   const { feed, identity } = props;
   const user = feed.address_from;
   const isOwner = isSameAddress(user, feed.address_from);
-  const { metadata, cardType, summary } = useMemo(() => {
+  const { metadata, summary } = useMemo(() => {
     let action;
     let metadata;
-    const _from = isOwner ? identity.displayName : formatText(user ?? "");
+    const _from = isOwner
+      ? identity.displayName ?? formatText(identity.identity)
+      : formatText(user ?? "");
     const _to = isSameAddress(identity.identity, feed.address_to)
-      ? identity.displayName
+      ? identity.displayName ?? formatText(identity.identity)
       : formatText(feed.address_to ?? "");
     switch (feed.type) {
       case Type.Mint:

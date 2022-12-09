@@ -10,7 +10,7 @@ function isProfileFeed(feed) {
 }
 exports.isProfileFeed = isProfileFeed;
 var RenderProfileFeed = function (props) {
-    var _a;
+    var _a, _b;
     var feed = props.feed, identity = props.identity;
     var action = feed.actions[0];
     var metadata = action.metadata;
@@ -21,7 +21,8 @@ var RenderProfileFeed = function (props) {
         React.createElement("div", { className: "feed-item" },
             React.createElement("div", { className: "feed-item-header" },
                 React.createElement("div", { className: "feed-type-intro" },
-                    React.createElement("div", { className: "strong" }, isOwner ? identity.displayName : utils_1.formatText((_a = feed.owner) !== null && _a !== void 0 ? _a : "")),
+                    React.createElement("div", { className: "strong" }, isOwner
+                        ? (_a = identity.displayName) !== null && _a !== void 0 ? _a : utils_1.formatText(identity.identity) : utils_1.formatText((_b = feed.owner) !== null && _b !== void 0 ? _b : "")),
                     "created an profile on",
                     React.createElement("div", { className: "strong" }, metadata === null || metadata === void 0 ? void 0 : metadata.platform))),
             metadata && (React.createElement("div", { className: "feed-item-main" },

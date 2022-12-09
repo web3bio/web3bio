@@ -19,13 +19,13 @@ var RenderCollectibleCard = function (props) {
     var user = feed.address_from;
     var isOwner = utils_1.isSameAddress(user, feed.address_from);
     var _b = react_1.useMemo(function () {
-        var _a;
+        var _a, _b, _c;
         var action;
         var metadata;
-        var _from = isOwner ? identity.displayName : utils_1.formatText(user !== null && user !== void 0 ? user : "");
+        var _from = isOwner
+            ? (_a = identity.displayName) !== null && _a !== void 0 ? _a : utils_1.formatText(identity.identity) : utils_1.formatText(user !== null && user !== void 0 ? user : "");
         var _to = utils_1.isSameAddress(identity.identity, feed.address_to)
-            ? identity.displayName
-            : utils_1.formatText((_a = feed.address_to) !== null && _a !== void 0 ? _a : "");
+            ? (_b = identity.displayName) !== null && _b !== void 0 ? _b : utils_1.formatText(identity.identity) : utils_1.formatText((_c = feed.address_to) !== null && _c !== void 0 ? _c : "");
         switch (feed.type) {
             case types_1.Type.Mint:
                 // If only one action, it should be free minting
@@ -75,7 +75,7 @@ var RenderCollectibleCard = function (props) {
                 };
         }
         return { summary: "", cardType: types_1.CardType.CollectibleIn };
-    }, [feed, user, isOwner]), metadata = _b.metadata, cardType = _b.cardType, summary = _b.summary;
+    }, [feed, user, isOwner]), metadata = _b.metadata, summary = _b.summary;
     var imageSize = 64;
     var attributes = metadata && "attributes" in metadata
         ? (_a = metadata.attributes) === null || _a === void 0 ? void 0 : _a.filter(function (x) { return x.trait_type; }) : [];

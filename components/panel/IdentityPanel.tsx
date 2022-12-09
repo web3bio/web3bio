@@ -11,6 +11,7 @@ import { formatText } from "../../utils/utils";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { Empty } from "../shared/Empty";
 
 export const TabsMap = {
   profile: {
@@ -35,7 +36,7 @@ const IdentityPanelRender = (props) => {
   const router = useRouter();
 
   const { data: profileData, isLoading: avatarLoading } = useProfile(
-    identity.displayName
+    identity.displayName || identity.identity
   );
   const onCopySuccess = () => {
     setCopied(true);
@@ -73,14 +74,11 @@ const IdentityPanelRender = (props) => {
       }[activeTab] || <FeedsTab identity={identity} />
     );
   };
-  // useEffect(() => {
-  //   if (router.query.a) {
-  //     setActiveTab(TabsMap.nfts.key);
-  //   }
-  // }, [router.query.a]);
+
   const resolveOnShowDetail = (asset) => {
     // todo: to resolve url && nft dialog
   };
+  if(!profileData) return <Empty text={'Profile not found'} />
   return (
     <div className="identity-panel">
       <div className="panel-container">

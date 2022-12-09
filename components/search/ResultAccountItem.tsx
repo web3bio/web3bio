@@ -17,7 +17,8 @@ const RenderAccountItem = (props) => {
   };
   const { identity, sources } = props;
   const [isCopied, setIsCopied] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
+  
   switch (identity.platform) {
     case PlatformType.ethereum:
       return (
@@ -49,7 +50,12 @@ const RenderAccountItem = (props) => {
                   </Clipboard>
                 </div>
               </div>
-              <Link href={`/${identity.displayName}?s=${router.query.s}`} className="actions">
+              <Link
+                href={`/${identity.displayName || identity.identity}?s=${
+                  router.query.s
+                }`}
+                className="actions"
+              >
                 <button
                   className="btn btn-sm btn-link action"
                   title="Link Identity Panel"
@@ -104,9 +110,7 @@ const RenderAccountItem = (props) => {
                     : identity.identity}
                 </div>
                 <div className="content-subtitle text-gray">
-                  <div className="address">
-                    {identity.identity}
-                  </div>
+                  <div className="address">{identity.identity}</div>
                   <Clipboard
                     component="div"
                     className="action"

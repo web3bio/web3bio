@@ -20,7 +20,9 @@ const RenderProfileFeed = (props) => {
         <div className="feed-item-header">
           <div className="feed-type-intro">
             <div className="strong">
-              {isOwner ? identity.displayName : formatText(feed.owner ?? "")}
+              {isOwner
+                ? identity.displayName ?? formatText(identity.identity)
+                : formatText(feed.owner ?? "")}
             </div>
             created an profile on
             <div className="strong">{metadata?.platform}</div>

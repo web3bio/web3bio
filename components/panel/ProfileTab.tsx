@@ -6,6 +6,7 @@ import useSWR from "swr";
 import { ens, globalRecordKeys, provider } from "../../utils/ens";
 import { resolveSocialMediaLink } from "../../utils/utils";
 import { ENSFetcher, ENS_METADATA_END_POINT } from "../apis/ens";
+import { Empty } from "../shared/Empty";
 import { Loading } from "../shared/Loading";
 import { TabsMap } from "./IdentityPanel";
 import { NFTOverview } from "./NFTOverview";
@@ -59,21 +60,25 @@ export function useProfile(domain: string) {
 }
 
 const RenderProfileTab = (props) => {
-  const { identity,toNFT } = props;
+  const { identity, toNFT } = props;
   const domain = identity.displayName || identity.identity;
+  const { value: _domain } = useAsync(async () => {
+    return domain.startsWith("0x") ? await ens.getName(domain) : domain;
+  });
   const { value: ensRecords, loading: recordsLoading } = useAsync(async () => {
+    if (!_domain) return;
     await ens.setProvider(provider);
     const batched = await ens.batch(
-      ens.getText.batch(domain, "description"),
-      ens.getText.batch(domain, "url"),
-      ens.getText.batch(domain, "com.github"),
-      ens.getText.batch(domain, "com.twitter"),
-      ens.getText.batch(domain, "org.telegram"),
-      ens.getText.batch(domain, "com.discord"),
-      ens.getText.batch(domain, "com.reddit")
+      ens.getText.batch(_domain, "description"),
+      ens.getText.batch(_domain, "url"),
+      ens.getText.batch(_domain, "com.github"),
+      ens.getText.batch(_domain, "com.twitter"),
+      ens.getText.batch(_domain, "org.telegram"),
+      ens.getText.batch(_domain, "com.discord"),
+      ens.getText.batch(_domain, "com.reddit")
     );
-    if (!batched[2]) batched[2] = await ens.getText(domain, "vnd.github");
-    if (!batched[3]) batched[3] = await ens.getText(domain, "vnd.twitter");
+    if (!batched[2]) batched[2] = await ens.getText(_domain, "vnd.github");
+    if (!batched[3]) batched[3] = await ens.getText(_domain, "vnd.twitter");
 
     return batched;
   });
@@ -111,41 +116,40 @@ const RenderProfileTab = (props) => {
           </div>
 
           <div className="records">
-            {globalRecordKeys.map((x, idx) => {
-              if (idx === 0) return null;
-              return (
-                ensRecords[idx] && (
-                  <a
-                    key={idx}
-                    className="form-button btn"
-                    style={{ position: "relative" }}
-                    target="_blank"
-                    rel="noreferrer"
-                    href={openSocialMediaLink(
-                      ensRecords[idx],
-                      socialButtonMapping[x].type
-                    )}
-                  >
-                    <SVG
-                      src={socialButtonMapping[x].icon}
-                      width={24}
-                      height={24}
-                      className="icon"
-                    />
-                  </a>
-                )
-              );
-            })}
+            {(ensRecords &&
+              globalRecordKeys.map((x, idx) => {
+                if (idx === 0) return null;
+                return (
+                  ensRecords[idx] && (
+                    <a
+                      key={idx}
+                      className="form-button btn"
+                      style={{ position: "relative" }}
+                      target="_blank"
+                      rel="noreferrer"
+                      href={openSocialMediaLink(
+                        ensRecords[idx],
+                        socialButtonMapping[x].type
+                      )}
+                    >
+                      <SVG
+                        src={socialButtonMapping[x].icon}
+                        width={24}
+                        height={24}
+                        className="icon"
+                      />
+                    </a>
+                  )
+                );
+              })) ||
+              null}
           </div>
         </div>
       )}
 
       <div className="profile-subTitle">COLLECTIONS</div>
       <div className="profile-sub-container">
-        <NFTOverview
-          identity={identity}
-          toNFT={toNFT}
-        />
+        <NFTOverview identity={identity} toNFT={toNFT} />
       </div>
       <div className="profile-subTitle">POAPS</div>
       <div className="profile-sub-container">

@@ -10,6 +10,7 @@ function isCommentFeed(feed) {
 }
 exports.isCommentFeed = isCommentFeed;
 var RenderCommentFeed = function (props) {
+    var _a;
     var feed = props.feed, identity = props.identity;
     var action = feed.actions[0];
     var metadata = action.metadata;
@@ -21,7 +22,8 @@ var RenderCommentFeed = function (props) {
         React.createElement("div", { className: "feed-item" },
             React.createElement("div", { className: "feed-item-header" },
                 React.createElement("div", { className: "feed-type-intro" },
-                    React.createElement("div", { className: "strong" }, isOwner ? identity.displayName : utils_1.formatText(user !== null && user !== void 0 ? user : "")),
+                    React.createElement("div", { className: "strong" }, isOwner
+                        ? (_a = identity.displayName) !== null && _a !== void 0 ? _a : utils_1.formatText(identity.identity) : utils_1.formatText(user !== null && user !== void 0 ? user : "")),
                     "made a comment on",
                     React.createElement("div", { className: "strong" }, action.platform || "unknown"))),
             React.createElement("div", null, metadata === null || metadata === void 0 ? void 0 : metadata.body),

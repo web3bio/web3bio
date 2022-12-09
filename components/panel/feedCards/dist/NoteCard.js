@@ -9,7 +9,7 @@ function isNoteFeed(feed) {
 }
 exports.isNoteFeed = isNoteFeed;
 var RenderNoteCard = function (props) {
-    var _a;
+    var _a, _b;
     var feed = props.feed, identity = props.identity;
     var action = feed.actions[0];
     var metadata = action.metadata;
@@ -20,8 +20,7 @@ var RenderNoteCard = function (props) {
             React.createElement("div", { className: "feed-item-header" },
                 React.createElement("div", { className: "feed-type-intro" },
                     React.createElement("div", { className: "strong" }, isOwner
-                        ? identity.displayName
-                        : utils_1.formatText((_a = feed.address_from) !== null && _a !== void 0 ? _a : "")),
+                        ? (_a = identity.displayName) !== null && _a !== void 0 ? _a : utils_1.formatText(identity.identity) : utils_1.formatText((_b = feed.address_from) !== null && _b !== void 0 ? _b : "")),
                     "posted a note on",
                     React.createElement("div", { className: "strong" }, action.platform || "unknown"))),
             React.createElement("div", { className: "feed-item-main" },

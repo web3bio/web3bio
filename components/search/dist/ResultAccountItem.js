@@ -38,7 +38,7 @@ var RenderAccountItem = function (props) {
                                 react_1["default"].createElement(react_clipboard_js_1["default"], { component: "div", className: "action", "data-clipboard-text": identity.identity, onSuccess: onCopySuccess },
                                     react_1["default"].createElement(react_inlinesvg_1["default"], { src: "icons/icon-copy.svg", width: 20, height: 20 }),
                                     isCopied && react_1["default"].createElement("div", { className: "tooltip-copy" }, "COPIED")))),
-                        react_1["default"].createElement(link_1["default"], { href: "/" + identity.displayName + "?s=" + router.query.s, className: "actions" },
+                        react_1["default"].createElement(link_1["default"], { href: "/" + (identity.displayName || identity.identity) + "?s=" + router.query.s, className: "actions" },
                             react_1["default"].createElement("button", { className: "btn btn-sm btn-link action", title: "Link Identity Panel" },
                                 react_1["default"].createElement(react_inlinesvg_1["default"], { src: "icons/icon-open.svg", width: 20, height: 20 }),
                                 "Open"))),

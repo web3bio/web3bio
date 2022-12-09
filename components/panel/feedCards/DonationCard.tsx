@@ -15,7 +15,7 @@ const RenderDonationCard = (props) => {
   const metadata = action.metadata;
   const user = feed.owner;
   const isOwner = isSameAddress(user, identity.identity);
-  
+
   return (
     <div className="feed-item-box">
       <div className="feed-type-badge"></div>
@@ -23,7 +23,9 @@ const RenderDonationCard = (props) => {
         <div className="feed-item-header">
           <div className="feed-type-intro">
             <div className="strong">
-              {isOwner ? identity.displayName : formatText(user ?? "")}
+              {isOwner
+                ? identity.displayName ?? formatText(identity.identity)
+                : formatText(user ?? "")}
             </div>
             donated
             <div className="strong">
