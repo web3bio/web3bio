@@ -12,7 +12,6 @@ var NFTAssetPlayer_1 = require("../shared/NFTAssetPlayer");
 var Loading_1 = require("../shared/Loading");
 var utils_2 = require("../../utils/utils");
 var ipfs_1 = require("../../utils/ipfs");
-var router_1 = require("next/router");
 exports.TabsMap = {
     profile: {
         key: "profile",
@@ -28,11 +27,10 @@ exports.TabsMap = {
     }
 };
 var IdentityPanelRender = function (props) {
-    var identity = props.identity, onTabChange = props.onTabChange, curTab = props.curTab, onClose = props.onClose, asComponent = props.asComponent;
+    var identity = props.identity, onTabChange = props.onTabChange, curTab = props.curTab, onClose = props.onClose, asComponent = props.asComponent, toNFT = props.toNFT;
     var _a = react_1.useState(curTab), activeTab = _a[0], setActiveTab = _a[1];
     var _b = react_1.useState(null), curAsset = _b[0], setCurAsset = _b[1];
     var _c = react_1.useState(null), copied = _c[0], setCopied = _c[1];
-    var router = router_1.useRouter();
     var _d = ProfileTab_1.useProfile(identity.displayName || identity.identity), profileData = _d.data, avatarLoading = _d.isLoading;
     var onCopySuccess = function () {
         setCopied(true);
@@ -48,17 +46,13 @@ var IdentityPanelRender = function (props) {
         }
         return "";
     };
+    console.log(activeTab, "active");
     var renderContent = function () {
         var _a;
         return ((_a = {},
             _a[exports.TabsMap.profile.key] = (React.createElement(ProfileTab_1.ProfileTab, { toNFT: function (v) {
+                    toNFT(v);
                     localStorage.setItem("nft_anchor", v);
-                    router.push({
-                        pathname: "",
-                        query: {
-                            domain: [router.query.domain[0], exports.TabsMap.nfts.key]
-                        }
-                    });
                     setActiveTab(exports.TabsMap.nfts.key);
                 }, identity: identity })),
             _a[exports.TabsMap.feeds.key] = React.createElement(FeedsTab_1.FeedsTab, { identity: identity }),

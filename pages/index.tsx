@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, useEffect, useRef } from "react";
 import SVG from "react-inlinesvg";
+import { TabsMap } from "../components/panel/IdentityPanel";
 import { SearchResultDomain } from "../components/search/SearchResultDomain";
 import { SearchResultQuery } from "../components/search/SearchResultQuery";
 import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
@@ -15,27 +16,8 @@ export default function Home() {
   const [profileIdentity, setProfileIdentity] = useState(null);
   const [profilePlatform, setProfilePlatform] = useState(null);
   const [searchPlatform, setsearchPlatform] = useState("");
+  const [panelTab, setPanelTab] = useState(TabsMap.profile.key);
   const inputRef = useRef(null);
-
-  // useEffect(() => {
-  //   if (!router.isReady) return;
-  //   if (router.query.s) {
-  //     setSearchFocus(true);
-  //     // todo: check the type of router querys
-  //     const searchkeyword = (router.query.s as string).toLowerCase();
-  //     setSearchTerm(searchkeyword);
-  //     if (!router.query.platform) {
-  //       let searchPlatform = handleSearchPlatform(searchkeyword);
-  //       setsearchPlatform(searchPlatform);
-  //     } else {
-  //       setsearchPlatform((router.query.platform as string).toLowerCase());
-  //     }
-  //   } else {
-  //     setSearchFocus(false);
-  //     setSearchTerm("");
-  //     setsearchPlatform("");
-  //   }
-  // }, [router.isReady, router.query.s, router.query.platform]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -50,8 +32,22 @@ export default function Home() {
     setProfileIdentity(identity);
     setProfilePlatform(platform);
     setModalOpen(true);
-    console.log("platform:", platform, "profile:", identity);
   };
+
+  useEffect(() => {
+    if (modalOpen) {
+      window.history.replaceState(
+        {},
+        "",
+        `/${profileIdentity.displayName || profileIdentity.identity}${
+          panelTab === TabsMap.profile.key ? "" : `/${panelTab}`
+        }`
+      );
+    } else {
+      window.history.replaceState({}, "", "/");
+    }
+  }, [modalOpen, profileIdentity, panelTab]);
+
   return (
     <div>
       <Head>
@@ -194,8 +190,17 @@ export default function Home() {
       </main>
       {modalOpen && (
         <ProfilePage
+          toNFT={() => {
+            setPanelTab(TabsMap.nfts.key);
+          }}
           asComponent
-          onClose={() => setModalOpen(false)}
+          onClose={() => {
+            setModalOpen(false);
+          }}
+          overridePanelTab={panelTab}
+          onTabChange={(v) => {
+            setPanelTab(v);
+          }}
           domain={[profileIdentity.displayName || profileIdentity.identity]}
           overridePlatform={profilePlatform}
         />

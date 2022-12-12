@@ -8,9 +8,19 @@ import { GET_PROFILES_DOMAIN, GET_PROFILES_QUERY } from "../utils/queries";
 import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
 
 const RenderDomainPanel = (props) => {
-  const { domain, asComponent, onClose, overridePlatform } = props;
+  const {
+    domain,
+    asComponent,
+    onClose,
+    overridePlatform,
+    onTabChange,
+    overridePanelTab,
+    toNFT,
+  } = props;
   const router = useRouter();
-  const [panelTab, setPanelTab] = useState(TabsMap.profile.key);
+  const [panelTab, setPanelTab] = useState(
+    overridePanelTab || TabsMap.profile.key
+  );
   const [platform, setPlatform] = useState(overridePlatform || "ENS");
   const { loading, error, data } = useQuery(
     isDomainSearch(platform) ? GET_PROFILES_DOMAIN : GET_PROFILES_QUERY,
@@ -21,12 +31,12 @@ const RenderDomainPanel = (props) => {
       },
     }
   );
-
   useEffect(() => {
     if (!router.isReady) return;
     if (!router.query.domain) return;
     setPlatform(handleSearchPlatform(router.query.domain[0]));
   }, [domain, router.query, router.isReady]);
+
   return asComponent ? (
     <div className="web3bio-mask-cover" onClick={onClose}>
       <div
@@ -42,9 +52,11 @@ const RenderDomainPanel = (props) => {
           <Error text={error} />
         ) : (
           <IdentityPanel
+            toNFT={toNFT}
             asComponent
             onClose={onClose}
             curTab={panelTab}
+            onTabChange={onTabChange}
             identity={
               isDomainSearch(platform) ? data.domain.owner : data.identity
             }
@@ -63,6 +75,9 @@ const RenderDomainPanel = (props) => {
         ) : (
           <IdentityPanel
             curTab={panelTab}
+            toNFT={(v) => {
+              console.log(v, "value");
+            }}
             onTabChange={(v) => {
               router.replace({
                 pathname: "",

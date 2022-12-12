@@ -10,8 +10,6 @@ import { Loading } from "../shared/Loading";
 import { formatText } from "../../utils/utils";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 import { useRouter } from "next/router";
-import Link from "next/link";
-import { Empty } from "../shared/Empty";
 
 export const TabsMap = {
   profile: {
@@ -29,12 +27,10 @@ export const TabsMap = {
 };
 
 const IdentityPanelRender = (props) => {
-  const { identity, onTabChange, curTab, onClose, asComponent } = props;
+  const { identity, onTabChange, curTab, onClose, asComponent, toNFT } = props;
   const [activeTab, setActiveTab] = useState(curTab);
   const [curAsset, setCurAsset] = useState(null);
   const [copied, setCopied] = useState(null);
-  const router = useRouter();
-
   const { data: profileData, isLoading: avatarLoading } = useProfile(
     identity.displayName || identity.identity
   );
@@ -53,20 +49,15 @@ const IdentityPanelRender = (props) => {
     }
     return "";
   };
-
+  console.log(activeTab, "active");
   const renderContent = () => {
     return (
       {
         [TabsMap.profile.key]: (
           <ProfileTab
             toNFT={(v) => {
+              toNFT(v)
               localStorage.setItem("nft_anchor", v);
-              router.push({
-                pathname: "",
-                query: {
-                  domain: [router.query.domain[0], TabsMap.nfts.key],
-                },
-              });
               setActiveTab(TabsMap.nfts.key);
             }}
             identity={identity}
