@@ -45,19 +45,6 @@ const RenderDomainPanel = (props) => {
             asComponent
             onClose={onClose}
             curTab={panelTab}
-            onTabChange={(v) => {
-              router.replace({
-                pathname: "",
-                query: router.query.s
-                  ? {
-                      domain: [domain[0], v === TabsMap.profile.key ? null : v],
-                      s: router.query.s,
-                    }
-                  : {
-                      domain: [domain[0], v === TabsMap.profile.key ? null : v],
-                    },
-              });
-            }}
             identity={
               isDomainSearch(platform) ? data.domain.owner : data.identity
             }

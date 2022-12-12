@@ -22,9 +22,8 @@ function useCollections(address: string) {
 }
 
 const RenderNFTOverview = (props) => {
-  const { identity,toNFT } = props;
+  const { identity, toNFT } = props;
   const { data, isLoading, isError } = useCollections(identity.identity);
-  const router = useRouter();
   if (isLoading) return <Loading />;
   if (isError) return <Error text={isError} />;
   if (!data || !data.data) return null;
@@ -41,22 +40,7 @@ const RenderNFTOverview = (props) => {
                 key={idx}
                 className="collection-nft-item"
                 src={resolveIPFS_URL(x.logo_url)}
-                onClick={() => {
-                  toNFT()
-                  router.replace({
-                    pathname: "",
-                    query: router.query.s
-                      ? {
-                          domain: [router.query.domain[0], TabsMap.nfts.key],
-                          s: router.query.s,
-                          a: x.contract_address,
-                        }
-                      : {
-                          domain: [router.query.domain[0], TabsMap.nfts.key],
-                          a: x.contract_address,
-                        },
-                  });
-                }}
+                onClick={()=>toNFT(x.contract_address)}
                 alt={x.contract_name}
               />
             );

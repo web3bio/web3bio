@@ -51,7 +51,16 @@ var IdentityPanelRender = function (props) {
     var renderContent = function () {
         var _a;
         return ((_a = {},
-            _a[exports.TabsMap.profile.key] = (React.createElement(ProfileTab_1.ProfileTab, { toNFT: function () { return setActiveTab(exports.TabsMap.nfts.key); }, identity: identity })),
+            _a[exports.TabsMap.profile.key] = (React.createElement(ProfileTab_1.ProfileTab, { toNFT: function (v) {
+                    localStorage.setItem("nft_anchor", v);
+                    router.push({
+                        pathname: "",
+                        query: {
+                            domain: [router.query.domain[0], exports.TabsMap.nfts.key]
+                        }
+                    });
+                    setActiveTab(exports.TabsMap.nfts.key);
+                }, identity: identity })),
             _a[exports.TabsMap.feeds.key] = React.createElement(FeedsTab_1.FeedsTab, { identity: identity }),
             _a[exports.TabsMap.nfts.key] = (React.createElement(NFTsTab_1.NFTsTab, { defaultOpen: !!curAsset, onShowDetail: resolveOnShowDetail, identity: identity })),
             _a)[activeTab] || React.createElement(FeedsTab_1.FeedsTab, { identity: identity }));
@@ -86,8 +95,10 @@ var IdentityPanelRender = function (props) {
                         React.createElement("a", { href: "#", onClick: function (e) {
                                 e.preventDefault();
                                 setActiveTab(x.value.key);
-                                onTabChange(x.value.key);
                                 localStorage.removeItem("feeds");
+                                if (!onTabChange)
+                                    return;
+                                onTabChange(x.value.key);
                             } }, x.value.name)));
                 }))),
             React.createElement("div", { className: "panel-body" }, renderContent()))));

@@ -59,7 +59,16 @@ const IdentityPanelRender = (props) => {
       {
         [TabsMap.profile.key]: (
           <ProfileTab
-            toNFT={() => setActiveTab(TabsMap.nfts.key)}
+            toNFT={(v) => {
+              localStorage.setItem("nft_anchor", v);
+              router.push({
+                pathname: "",
+                query: {
+                  domain: [router.query.domain[0], TabsMap.nfts.key],
+                },
+              });
+              setActiveTab(TabsMap.nfts.key);
+            }}
             identity={identity}
           />
         ),
@@ -145,8 +154,9 @@ const IdentityPanelRender = (props) => {
                     onClick={(e) => {
                       e.preventDefault();
                       setActiveTab(x.value.key);
-                      onTabChange(x.value.key);
                       localStorage.removeItem("feeds");
+                      if (!onTabChange) return;
+                      onTabChange(x.value.key);
                     }}
                   >
                     {x.value.name}
