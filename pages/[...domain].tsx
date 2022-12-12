@@ -35,7 +35,13 @@ const RenderDomainPanel = (props) => {
     if (!router.isReady) return;
     if (!router.query.domain) return;
     setPlatform(handleSearchPlatform(router.query.domain[0]));
-  }, [domain, router.query, router.isReady]);
+    if (asComponent) return;
+    window.history.replaceState(
+      {},
+      "",
+      `/${domain[0]}${panelTab === TabsMap.profile.key ? "" : `/${panelTab}`}`
+    );
+  }, [domain, router.query, router.isReady, asComponent, panelTab]);
 
   return asComponent ? (
     <div className="web3bio-mask-cover" onClick={onClose}>
@@ -75,21 +81,11 @@ const RenderDomainPanel = (props) => {
         ) : (
           <IdentityPanel
             curTab={panelTab}
-            toNFT={(v) => {
-              console.log(v, "value");
+            toNFT={() => {
+              setPanelTab(TabsMap.nfts.key);
             }}
             onTabChange={(v) => {
-              router.replace({
-                pathname: "",
-                query: router.query.s
-                  ? {
-                      domain: [domain[0], v === TabsMap.profile.key ? null : v],
-                      s: router.query.s,
-                    }
-                  : {
-                      domain: [domain[0], v === TabsMap.profile.key ? null : v],
-                    },
-              });
+              setPanelTab(v);
             }}
             identity={
               isDomainSearch(platform) ? data.domain.owner : data.identity

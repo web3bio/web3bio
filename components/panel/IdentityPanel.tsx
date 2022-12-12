@@ -49,7 +49,6 @@ const IdentityPanelRender = (props) => {
     }
     return "";
   };
-  console.log(activeTab, "active");
   const renderContent = () => {
     return (
       {

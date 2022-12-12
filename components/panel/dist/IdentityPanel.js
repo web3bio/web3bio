@@ -46,7 +46,6 @@ var IdentityPanelRender = function (props) {
         }
         return "";
     };
-    console.log(activeTab, "active");
     var renderContent = function () {
         var _a;
         return ((_a = {},
