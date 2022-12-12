@@ -29,7 +29,7 @@ export const TabsMap = {
 };
 
 const IdentityPanelRender = (props) => {
-  const { identity, onTabChange, curTab } = props;
+  const { identity, onTabChange, curTab, onClose, asComponent } = props;
   const [activeTab, setActiveTab] = useState(curTab);
   const [curAsset, setCurAsset] = useState(null);
   const [copied, setCopied] = useState(null);
@@ -78,7 +78,6 @@ const IdentityPanelRender = (props) => {
   const resolveOnShowDetail = (asset) => {
     // todo: to resolve url && nft dialog
   };
-  if(!profileData) return <Empty text={'Profile not found'} />
   return (
     <div className="identity-panel">
       <div className="panel-container">
@@ -121,16 +120,16 @@ const IdentityPanelRender = (props) => {
               </div>
             </div>
           </div>
-          {router.query.s && (
-            <Link
+          {asComponent && (
+            <div
               className="btn btn-link btn-close"
               onClick={() => {
                 localStorage.removeItem("feeds");
+                onClose();
               }}
-              href={`/?s=${router.query.s}`}
             >
               <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
-            </Link>
+            </div>
           )}
           <ul className="panel-tab">
             {getEnumAsArray(TabsMap).map((x, idx) => {

@@ -2974,6 +2974,16 @@ body {
   width: 100vw;
 }
 
+.web3bio-mask-cover {
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.3);
+  width: 100%;
+  height: 100vh;
+  z-index: 100;
+}
+
 .web3bio-cover {
   background-image: radial-gradient(at 40% 33%, #FBF4EC 0px, transparent 50%), radial-gradient(at 82% 10%, #ECD7C8 0px, transparent 50%), radial-gradient(at 17% 11%, #EEA4BC 0px, transparent 50%), radial-gradient(at 48% 2%, #BE88C4 0px, transparent 50%), radial-gradient(at 39% 67%, #9186E7 0px, transparent 50%), radial-gradient(at 86% 58%, #92C9F9 0px, transparent 50%), radial-gradient(at 61% 57%, #C7F8FF 0px, transparent 50%);
   display: block;

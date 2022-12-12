@@ -9,6 +9,7 @@ import { PlatformType } from "../../utils/type";
 import { useRouter } from "next/router";
 
 const RenderAccountItem = (props) => {
+  const { onItemClick } = props;
   const onCopySuccess = () => {
     setIsCopied(true);
     setTimeout(() => {
@@ -17,8 +18,7 @@ const RenderAccountItem = (props) => {
   };
   const { identity, sources } = props;
   const [isCopied, setIsCopied] = useState(false);
-  const router = useRouter();
-  
+
   switch (identity.platform) {
     case PlatformType.ethereum:
       return (
@@ -50,11 +50,15 @@ const RenderAccountItem = (props) => {
                   </Clipboard>
                 </div>
               </div>
-              <Link
+              {/* <Link
                 href={`/${identity.displayName || identity.identity}?s=${
                   router.query.s
                 }`}
                 className="actions"
+              > */}
+              <div
+                className="actions"
+                onClickCapture={() => onItemClick(identity, PlatformType.ens)}
               >
                 <button
                   className="btn btn-sm btn-link action"
@@ -63,7 +67,9 @@ const RenderAccountItem = (props) => {
                   <SVG src="icons/icon-open.svg" width={20} height={20} />
                   Open
                 </button>
-              </Link>
+              </div>
+
+              {/* </Link> */}
             </div>
             {identity.nft?.length > 0 && (
               <div className="nfts">

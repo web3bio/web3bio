@@ -54,6 +54,16 @@ body {
   width: 100vw;
 }
 
+.web3bio-mask-cover {
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: rgba($color: #000000, $alpha: .3);
+  width: 100%;
+  height: 100vh;
+  z-index: 100;
+}
+
 //- Web3.bio Cover
 .web3bio-cover {
   background-image:

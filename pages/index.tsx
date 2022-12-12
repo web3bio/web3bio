@@ -1,48 +1,56 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import SVG from "react-inlinesvg";
 import { SearchResultDomain } from "../components/search/SearchResultDomain";
 import { SearchResultQuery } from "../components/search/SearchResultQuery";
 import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
+import ProfilePage from "./[...domain]";
 
 export default function Home() {
   const [searchFocus, setSearchFocus] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [profileIdentity, setProfileIdentity] = useState(null);
+  const [profilePlatform, setProfilePlatform] = useState(null);
   const [searchPlatform, setsearchPlatform] = useState("");
-  const router = useRouter();
+  const inputRef = useRef(null);
 
-
-  useEffect(() => {
-    if (!router.isReady) return;
-    if (router.query.s) {
-      setSearchFocus(true);
-      // todo: check the type of router querys
-      const searchkeyword = (router.query.s as string).toLowerCase();
-      setSearchTerm(searchkeyword);
-      if (!router.query.platform) {
-        let searchPlatform = handleSearchPlatform(searchkeyword);
-        setsearchPlatform(searchPlatform);
-      } else {
-        setsearchPlatform((router.query.platform as string).toLowerCase());
-      }
-    } else {
-      setSearchFocus(false);
-      setSearchTerm("");
-      setsearchPlatform("");
-    }
-  }, [router.isReady, router.query.s, router.query.platform]);
+  // useEffect(() => {
+  //   if (!router.isReady) return;
+  //   if (router.query.s) {
+  //     setSearchFocus(true);
+  //     // todo: check the type of router querys
+  //     const searchkeyword = (router.query.s as string).toLowerCase();
+  //     setSearchTerm(searchkeyword);
+  //     if (!router.query.platform) {
+  //       let searchPlatform = handleSearchPlatform(searchkeyword);
+  //       setsearchPlatform(searchPlatform);
+  //     } else {
+  //       setsearchPlatform((router.query.platform as string).toLowerCase());
+  //     }
+  //   } else {
+  //     setSearchFocus(false);
+  //     setSearchTerm("");
+  //     setsearchPlatform("");
+  //   }
+  // }, [router.isReady, router.query.s, router.query.platform]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (e.target.searchbox.value) {
-      router.push({
-        query: {
-          s: e.target.searchbox.value,
-        },
-      });
-    }
+    const ipt = inputRef.current;
+    if (!ipt) return;
+    setSearchTerm(ipt.value);
+    setsearchPlatform(handleSearchPlatform(ipt.value));
+    setSearchFocus(true);
+  };
+
+  const openProfile = (identity, platform) => {
+    setProfileIdentity(identity);
+    setProfilePlatform(platform);
+    setModalOpen(true);
+    console.log("platform:", platform, "profile:", identity);
   };
   return (
     <div>
@@ -65,12 +73,7 @@ export default function Home() {
           className={searchFocus ? "web3bio-search focused" : "web3bio-search"}
         >
           <div className="container grid-xs">
-            <form
-              className="search-form"
-              onSubmit={handleSubmit}
-              autoComplete="off"
-              role="search"
-            >
+            <form autoComplete="off" role="search" className="search-form">
               <Link
                 href={{
                   pathname: "/",
@@ -90,9 +93,9 @@ export default function Home() {
               </div>
               <div className="form-input-group">
                 <input
+                  ref={inputRef}
                   key={searchTerm}
                   type="text"
-                  name="s"
                   placeholder="Search Twitter, Lens, ENS or Ethereum"
                   defaultValue={searchTerm}
                   className="form-input input-lg"
@@ -105,6 +108,7 @@ export default function Home() {
                   type="submit"
                   title="Submit"
                   className="form-button btn"
+                  onClickCapture={handleSubmit}
                 >
                   <SVG
                     src="icons/icon-search.svg"
@@ -118,11 +122,13 @@ export default function Home() {
             {searchPlatform ? (
               isDomainSearch(searchPlatform) ? (
                 <SearchResultDomain
+                  openProfile={openProfile}
                   searchTerm={searchTerm}
                   searchPlatform={searchPlatform}
                 />
               ) : (
                 <SearchResultQuery
+                  openProfile={openProfile}
                   searchTerm={searchTerm}
                   searchPlatform={searchPlatform}
                 />
@@ -186,6 +192,14 @@ export default function Home() {
           </div>
         </div>
       </main>
+      {modalOpen && (
+        <ProfilePage
+          asComponent
+          onClose={() => setModalOpen(false)}
+          domain={[profileIdentity.displayName || profileIdentity.identity]}
+          overridePlatform={profilePlatform}
+        />
+      )}
     </div>
   );
 }

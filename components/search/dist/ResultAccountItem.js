@@ -9,9 +9,9 @@ var react_inlinesvg_1 = require("react-inlinesvg");
 var utils_1 = require("../../utils/utils");
 var SourcesFooter_1 = require("./SourcesFooter");
 var type_1 = require("../../utils/type");
-var router_1 = require("next/router");
 var RenderAccountItem = function (props) {
     var _a;
+    var onItemClick = props.onItemClick;
     var onCopySuccess = function () {
         setIsCopied(true);
         setTimeout(function () {
@@ -20,7 +20,6 @@ var RenderAccountItem = function (props) {
     };
     var identity = props.identity, sources = props.sources;
     var _b = react_1.useState(false), isCopied = _b[0], setIsCopied = _b[1];
-    var router = router_1.useRouter();
     switch (identity.platform) {
         case type_1.PlatformType.ethereum:
             return (react_1["default"].createElement("div", { className: "social-item social-web3 ethereum" },
@@ -38,7 +37,7 @@ var RenderAccountItem = function (props) {
                                 react_1["default"].createElement(react_clipboard_js_1["default"], { component: "div", className: "action", "data-clipboard-text": identity.identity, onSuccess: onCopySuccess },
                                     react_1["default"].createElement(react_inlinesvg_1["default"], { src: "icons/icon-copy.svg", width: 20, height: 20 }),
                                     isCopied && react_1["default"].createElement("div", { className: "tooltip-copy" }, "COPIED")))),
-                        react_1["default"].createElement(link_1["default"], { href: "/" + (identity.displayName || identity.identity) + "?s=" + router.query.s, className: "actions" },
+                        react_1["default"].createElement("div", { className: "actions", onClickCapture: function () { return onItemClick(identity, type_1.PlatformType.ens); } },
                             react_1["default"].createElement("button", { className: "btn btn-sm btn-link action", title: "Link Identity Panel" },
                                 react_1["default"].createElement(react_inlinesvg_1["default"], { src: "icons/icon-open.svg", width: 20, height: 20 }),
                                 "Open"))),

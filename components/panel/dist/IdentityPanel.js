@@ -13,8 +13,6 @@ var Loading_1 = require("../shared/Loading");
 var utils_2 = require("../../utils/utils");
 var ipfs_1 = require("../../utils/ipfs");
 var router_1 = require("next/router");
-var link_1 = require("next/link");
-var Empty_1 = require("../shared/Empty");
 exports.TabsMap = {
     profile: {
         key: "profile",
@@ -30,7 +28,7 @@ exports.TabsMap = {
     }
 };
 var IdentityPanelRender = function (props) {
-    var identity = props.identity, onTabChange = props.onTabChange, curTab = props.curTab;
+    var identity = props.identity, onTabChange = props.onTabChange, curTab = props.curTab, onClose = props.onClose, asComponent = props.asComponent;
     var _a = react_1.useState(curTab), activeTab = _a[0], setActiveTab = _a[1];
     var _b = react_1.useState(null), curAsset = _b[0], setCurAsset = _b[1];
     var _c = react_1.useState(null), copied = _c[0], setCopied = _c[1];
@@ -61,8 +59,6 @@ var IdentityPanelRender = function (props) {
     var resolveOnShowDetail = function (asset) {
         // todo: to resolve url && nft dialog
     };
-    if (!profileData)
-        return React.createElement(Empty_1.Empty, { text: 'Profile not found' });
     return (React.createElement("div", { className: "identity-panel" },
         React.createElement("div", { className: "panel-container" },
             React.createElement("div", { className: "panel-header" },
@@ -80,9 +76,10 @@ var IdentityPanelRender = function (props) {
                             React.createElement(react_clipboard_js_1["default"], { component: "div", className: "action", "data-clipboard-text": identity.identity, onSuccess: onCopySuccess },
                                 React.createElement(react_inlinesvg_1["default"], { src: "icons/icon-copy.svg", width: 20, height: 20 }),
                                 copied && React.createElement("div", { className: "tooltip-copy" }, "COPIED"))))),
-                router.query.s && (React.createElement(link_1["default"], { className: "btn btn-link btn-close", onClick: function () {
+                asComponent && (React.createElement("div", { className: "btn btn-link btn-close", onClick: function () {
                         localStorage.removeItem("feeds");
-                    }, href: "/?s=" + router.query.s },
+                        onClose();
+                    } },
                     React.createElement(react_inlinesvg_1["default"], { src: "/icons/icon-close.svg", width: "20", height: "20" }))),
                 React.createElement("ul", { className: "panel-tab" }, utils_1.getEnumAsArray(exports.TabsMap).map(function (x, idx) {
                     return (React.createElement("li", { key: idx, className: activeTab === x.value.key ? "tab-item active" : "tab-item" },

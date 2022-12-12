@@ -4,7 +4,7 @@ import { ResultGraph } from "../graph/ResultGraph";
 import SVG from "react-inlinesvg";
 
 const RenderAccount = (props) => {
-  const { searchTerm, resultNeighbor, graphData } = props;
+  const { searchTerm, resultNeighbor, graphData, openProfile } = props;
   const [open, setOpen] = useState(false);
 
   return (
@@ -25,6 +25,7 @@ const RenderAccount = (props) => {
           <>
             {resultNeighbor.map((avatar) => (
               <ResultAccountItem
+                onItemClick={openProfile}
                 identity={avatar.identity}
                 sources={avatar.sources}
                 key={avatar.identity.uuid}
