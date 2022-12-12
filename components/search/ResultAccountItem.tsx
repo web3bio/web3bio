@@ -50,12 +50,7 @@ const RenderAccountItem = (props) => {
                   </Clipboard>
                 </div>
               </div>
-              {/* <Link
-                href={`/${identity.displayName || identity.identity}?s=${
-                  router.query.s
-                }`}
-                className="actions"
-              > */}
+
               <div
                 className="actions"
                 onClickCapture={() => onItemClick(identity, PlatformType.ens)}
