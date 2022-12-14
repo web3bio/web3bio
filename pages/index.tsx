@@ -18,12 +18,17 @@ export default function Home() {
   const [searchPlatform, setsearchPlatform] = useState("");
   const [panelTab, setPanelTab] = useState(TabsMap.profile.key);
   const inputRef = useRef(null);
-
+  const router = useRouter();
   const handleSubmit = (e) => {
     e.preventDefault();
     const ipt = inputRef.current;
     if (!ipt) return;
     setSearchTerm(ipt.value);
+    router.push({
+      query: {
+        s: ipt.value,
+      },
+    });
     setsearchPlatform(handleSearchPlatform(ipt.value));
     setSearchFocus(true);
   };
@@ -33,6 +38,25 @@ export default function Home() {
     setProfilePlatform(platform);
     setModalOpen(true);
   };
+  useEffect(() => {
+    if (!router.isReady) return;
+    if (router.query.s) {
+      setSearchFocus(true);
+      // todo: check the type of router querys
+      const searchkeyword = (router.query.s as string).toLowerCase();
+      setSearchTerm(searchkeyword);
+      if (!router.query.platform) {
+        let searchPlatform = handleSearchPlatform(searchkeyword);
+        setsearchPlatform(searchPlatform);
+      } else {
+        setsearchPlatform((router.query.platform as string).toLowerCase());
+      }
+    } else {
+      setSearchFocus(false);
+      setSearchTerm("");
+      setsearchPlatform("");
+    }
+  }, [router.isReady, router.query.s, router.query.platform]);
 
   useEffect(() => {
     if (modalOpen) {
@@ -44,9 +68,16 @@ export default function Home() {
         }`
       );
     } else {
-      window.history.replaceState({}, "", "/");
+      router.replace({
+        pathname: "",
+        query: router.query.s
+          ? {
+              s: router.query.s,
+            }
+          : {},
+      });
     }
-  }, [modalOpen, profileIdentity, panelTab]);
+  }, [modalOpen,panelTab]);
 
   return (
     <div>
