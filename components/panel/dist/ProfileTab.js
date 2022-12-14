@@ -38,7 +38,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var _a;
 exports.__esModule = true;
 exports.ProfileTab = exports.useProfile = void 0;
-var react_1 = require("react");
 var react_inlinesvg_1 = require("react-inlinesvg");
 var react_use_1 = require("react-use");
 var swr_1 = require("swr");
@@ -91,58 +90,63 @@ function useProfile(domain) {
     };
 }
 exports.useProfile = useProfile;
-var RenderProfileTab = function (props) {
+exports.ProfileTab = function (props) {
     var identity = props.identity, toNFT = props.toNFT;
     var domain = identity.displayName || identity.identity;
-    var _domain = react_use_1.useAsync(function () { return __awaiter(void 0, void 0, void 0, function () {
-        var _a;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+    var _a = react_use_1.useAsync(function () { return __awaiter(void 0, void 0, void 0, function () {
+        var _domain, _a, cached, batched, _b, _c, _d, _e;
+        return __generator(this, function (_f) {
+            switch (_f.label) {
                 case 0:
                     if (!domain.startsWith("0x")) return [3 /*break*/, 2];
                     return [4 /*yield*/, ens_1.ens.getName(domain)];
                 case 1:
-                    _a = _b.sent();
+                    _a = _f.sent();
                     return [3 /*break*/, 3];
                 case 2:
                     _a = domain;
-                    _b.label = 3;
-                case 3: return [2 /*return*/, _a];
-            }
-        });
-    }); }).value;
-    var _a = react_use_1.useAsync(function () { return __awaiter(void 0, void 0, void 0, function () {
-        var batched, _a, _b, _c, _d;
-        return __generator(this, function (_e) {
-            switch (_e.label) {
-                case 0:
+                    _f.label = 3;
+                case 3:
+                    _domain = _a;
                     if (!_domain)
                         return [2 /*return*/];
+                    if (localStorage.getItem("ensrecords")) {
+                        cached = JSON.parse(localStorage.getItem("ensrecords"));
+                        if (new Date().getTime() - cached.date <= 1) {
+                            return [2 /*return*/, cached.value];
+                        }
+                    }
                     return [4 /*yield*/, ens_1.ens.setProvider(ens_1.provider)];
-                case 1:
-                    _e.sent();
-                    return [4 /*yield*/, ens_1.ens.batch(ens_1.ens.getText.batch(_domain, "description"), ens_1.ens.getText.batch(_domain, "url"), ens_1.ens.getText.batch(_domain, "com.github"), ens_1.ens.getText.batch(_domain, "com.twitter"), ens_1.ens.getText.batch(_domain, "org.telegram"), ens_1.ens.getText.batch(_domain, "com.discord"), ens_1.ens.getText.batch(_domain, "com.reddit"))];
-                case 2:
-                    batched = _e.sent();
-                    if (!!batched[2]) return [3 /*break*/, 4];
-                    _a = batched;
-                    _b = 2;
-                    return [4 /*yield*/, ens_1.ens.getText(_domain, "vnd.github")];
-                case 3:
-                    _a[_b] = _e.sent();
-                    _e.label = 4;
                 case 4:
-                    if (!!batched[3]) return [3 /*break*/, 6];
-                    _c = batched;
-                    _d = 3;
-                    return [4 /*yield*/, ens_1.ens.getText(_domain, "vnd.twitter")];
+                    _f.sent();
+                    return [4 /*yield*/, ens_1.ens.batch(ens_1.ens.getText.batch(_domain, "description"), ens_1.ens.getText.batch(_domain, "url"), ens_1.ens.getText.batch(_domain, "com.github"), ens_1.ens.getText.batch(_domain, "com.twitter"), ens_1.ens.getText.batch(_domain, "org.telegram"), ens_1.ens.getText.batch(_domain, "com.discord"), ens_1.ens.getText.batch(_domain, "com.reddit"))];
                 case 5:
-                    _c[_d] = _e.sent();
-                    _e.label = 6;
-                case 6: return [2 /*return*/, batched];
+                    batched = _f.sent();
+                    if (!!batched[2]) return [3 /*break*/, 7];
+                    _b = batched;
+                    _c = 2;
+                    return [4 /*yield*/, ens_1.ens.getText(_domain, "vnd.github")];
+                case 6:
+                    _b[_c] = _f.sent();
+                    _f.label = 7;
+                case 7:
+                    if (!!batched[3]) return [3 /*break*/, 9];
+                    _d = batched;
+                    _e = 3;
+                    return [4 /*yield*/, ens_1.ens.getText(_domain, "vnd.twitter")];
+                case 8:
+                    _d[_e] = _f.sent();
+                    _f.label = 9;
+                case 9:
+                    localStorage.setItem("ensrecords", JSON.stringify({
+                        value: batched,
+                        date: new Date().getTime()
+                    }));
+                    return [2 /*return*/, batched];
             }
         });
     }); }), ensRecords = _a.value, recordsLoading = _a.loading;
+    console.log(ensRecords, "records");
     var openSocialMediaLink = function (url, type) {
         var resolvedURL = "";
         if (url.startsWith("https")) {
@@ -178,4 +182,3 @@ var RenderProfileTab = function (props) {
         React.createElement("div", { className: "profile-sub-container" },
             React.createElement(Poaps_1.Poaps, { identity: identity }))));
 };
-exports.ProfileTab = react_1.memo(RenderProfileTab);

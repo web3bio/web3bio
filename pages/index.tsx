@@ -77,7 +77,7 @@ export default function Home() {
           : {},
       });
     }
-  }, [modalOpen,panelTab]);
+  }, [modalOpen, panelTab]);
 
   return (
     <div>

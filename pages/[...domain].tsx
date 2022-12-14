@@ -41,7 +41,7 @@ const RenderDomainPanel = (props) => {
       "",
       `/${domain[0]}${panelTab === TabsMap.profile.key ? "" : `/${panelTab}`}`
     );
-  }, [domain, router.query, router.isReady, asComponent, panelTab]);
+  }, [router.asPath, panelTab, asComponent, domain, router.query.domain]);
 
   return asComponent ? (
     <div className="web3bio-mask-cover" onClick={onClose}>

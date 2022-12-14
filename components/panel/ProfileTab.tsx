@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
-import { memo } from "react";
+import { cache, memo } from "react";
 import SVG from "react-inlinesvg";
-import { useAsync } from "react-use";
+import { useAsync, useAsyncRetry } from "react-use";
 import useSWR from "swr";
 import { ens, globalRecordKeys, provider } from "../../utils/ens";
 import { resolveSocialMediaLink } from "../../utils/utils";
@@ -59,14 +59,21 @@ export function useProfile(domain: string) {
   };
 }
 
-const RenderProfileTab = (props) => {
+export const ProfileTab = (props) => {
   const { identity, toNFT } = props;
   const domain = identity.displayName || identity.identity;
-  const { value: _domain } = useAsync(async () => {
-    return domain.startsWith("0x") ? await ens.getName(domain) : domain;
-  });
   const { value: ensRecords, loading: recordsLoading } = useAsync(async () => {
+    const _domain = domain.startsWith("0x")
+      ? await ens.getName(domain)
+      : domain;
     if (!_domain) return;
+    if (localStorage.getItem("ensrecords")) {
+      const cached = JSON.parse(localStorage.getItem("ensrecords"));
+      if (new Date().getTime() - cached.date <= 600000) {
+        return cached.value;
+      }
+    }
+
     await ens.setProvider(provider);
     const batched = await ens.batch(
       ens.getText.batch(_domain, "description"),
@@ -79,10 +86,17 @@ const RenderProfileTab = (props) => {
     );
     if (!batched[2]) batched[2] = await ens.getText(_domain, "vnd.github");
     if (!batched[3]) batched[3] = await ens.getText(_domain, "vnd.twitter");
-
+    localStorage.setItem(
+      "ensrecords",
+      JSON.stringify({
+        value: batched,
+        date: new Date().getTime(),
+      })
+    );
     return batched;
   });
 
+  console.log(ensRecords, "records");
   const openSocialMediaLink = (url: string, type: string) => {
     let resolvedURL = "";
     if (url.startsWith("https")) {
@@ -158,5 +172,3 @@ const RenderProfileTab = (props) => {
     </div>
   );
 };
-
-export const ProfileTab = memo(RenderProfileTab);
