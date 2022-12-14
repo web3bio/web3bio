@@ -112,7 +112,7 @@ exports.ProfileTab = function (props) {
                         return [2 /*return*/];
                     if (localStorage.getItem("ensrecords")) {
                         cached = JSON.parse(localStorage.getItem("ensrecords"));
-                        if (new Date().getTime() - cached.date <= 1) {
+                        if (new Date().getTime() - cached.date <= 600000) {
                             return [2 /*return*/, cached.value];
                         }
                     }

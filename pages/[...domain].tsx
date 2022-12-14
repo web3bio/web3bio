@@ -6,7 +6,6 @@ import { Loading } from "../components/shared/Loading";
 import { Error } from "../components/shared/Error";
 import { GET_PROFILES_DOMAIN, GET_PROFILES_QUERY } from "../utils/queries";
 import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
-
 const RenderDomainPanel = (props) => {
   const {
     domain,
@@ -18,6 +17,7 @@ const RenderDomainPanel = (props) => {
     toNFT,
   } = props;
   const router = useRouter();
+
   const [panelTab, setPanelTab] = useState(
     overridePanelTab || TabsMap.profile.key
   );
@@ -36,12 +36,10 @@ const RenderDomainPanel = (props) => {
     if (!router.query.domain) return;
     setPlatform(handleSearchPlatform(router.query.domain[0]));
     if (asComponent) return;
-    window.history.replaceState(
-      {},
-      "",
-      `/${domain[0]}${panelTab === TabsMap.profile.key ? "" : `/${panelTab}`}`
-    );
-  }, [router.asPath, panelTab, asComponent, domain, router.query.domain]);
+    if (domain[1]) setPanelTab(domain[1]);
+  }, [panelTab, domain, router, asComponent]);
+
+  useEffect(() => {});
 
   return asComponent ? (
     <div className="web3bio-mask-cover" onClick={onClose}>
@@ -86,6 +84,12 @@ const RenderDomainPanel = (props) => {
             }}
             onTabChange={(v) => {
               setPanelTab(v);
+              router.replace({
+                pathname: "",
+                query: {
+                  domain: [domain[0], v === TabsMap.profile.key ? "" : v],
+                },
+              });
             }}
             identity={
               isDomainSearch(platform) ? data.domain.owner : data.identity

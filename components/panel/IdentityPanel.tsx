@@ -40,7 +40,6 @@ const IdentityPanelRender = (props) => {
       setCopied(false);
     }, 1500);
   };
-
   const resolveMediaURL = (asset) => {
     if (asset) {
       return asset.startsWith("data:", "https:")
