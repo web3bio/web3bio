@@ -6,7 +6,6 @@ import { resolveIPFS_URL } from "../../utils/ipfs";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { throttle } from "../../utils/utils";
 import { Loading } from "../shared/Loading";
 
 function useCollections(address: string) {
@@ -61,23 +60,23 @@ const RenderNFTCollections = (props) => {
           if (nav_contentRect) {
             groupList.map((item: any) => {
               const itemReact = item.getBoundingClientRect();
-              // todo: item rect top check
-              if (itemReact.y <= 10 && (itemReact.y + itemReact.height > 10)) {
-                console.log(item.id,'active')
-                // setActiveCollection(item.id);
+              if (itemReact.y <= 250 && itemReact.y + itemReact.height > 250) {
+                if (activeCollection !== item.id) {
+                  setActiveCollection(item.id);
+                }
               }
             });
           }
         }
       };
-      
+
       if (container) {
-        container.addEventListener("scroll", judgeActiveCollection);
+        container.addEventListener("wheel", judgeActiveCollection);
       }
       return () =>
-        container.removeEventListener("scroll", judgeActiveCollection);
+        container.removeEventListener("wheel", judgeActiveCollection);
     }
-  }, [data, anchorName,activeCollection]);
+  }, [data, anchorName, activeCollection]);
   if (isLoading) return <Loading />;
   if (isError) return <Error text={isError} />;
   if (!data || !data.data) return <Empty />;
@@ -96,7 +95,7 @@ const RenderNFTCollections = (props) => {
       {collections && collections.length > 0 && (
         <CollectionSwitcher
           collections={collections}
-          currentSelect={activeCollection ?? collections[0]}
+          currentSelect={activeCollection ?? collections[0].key}
           onSelect={(v) => {
             setActiveCollection(v);
             setAnchorName(v);

@@ -4,10 +4,8 @@ import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 const RenderCollectionSwitcher = (props) => {
   const { collections, currentSelect, onSelect } = props;
 
-  const [active, setActive] = useState(currentSelect);
 
   const hideDropdownMenu = (v) => {
-    setActive(v.key);
     onSelect(v.key);
   };
   return (
@@ -17,7 +15,7 @@ const RenderCollectionSwitcher = (props) => {
           <div
             onClick={() => hideDropdownMenu(item)}
             className={
-              item.key === active
+              item.key === currentSelect
                 ? "collection-item active"
                 : "collection-item"
             }

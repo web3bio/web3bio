@@ -52,20 +52,20 @@ var RenderNFTCollections = function (props) {
                     if (nav_contentRect) {
                         groupList.map(function (item) {
                             var itemReact = item.getBoundingClientRect();
-                            // todo: item rect top check
-                            if (itemReact.y <= 10 && (itemReact.y + itemReact.height > 10)) {
-                                console.log(item.id, 'active');
-                                // setActiveCollection(item.id);
+                            if (itemReact.y <= 250 && itemReact.y + itemReact.height > 250) {
+                                if (activeCollection !== item.id) {
+                                    setActiveCollection(item.id);
+                                }
                             }
                         });
                     }
                 }
             };
             if (container) {
-                container.addEventListener("scroll", judgeActiveCollection_1);
+                container.addEventListener("wheel", judgeActiveCollection_1);
             }
             return function () {
-                return container.removeEventListener("scroll", judgeActiveCollection_1);
+                return container.removeEventListener("wheel", judgeActiveCollection_1);
             };
         }
     }, [data, anchorName, activeCollection]);
@@ -84,7 +84,7 @@ var RenderNFTCollections = function (props) {
         return "";
     };
     return (React.createElement(React.Fragment, null,
-        collections && collections.length > 0 && (React.createElement(CollectionSwitcher_1.CollectionSwitcher, { collections: collections, currentSelect: activeCollection !== null && activeCollection !== void 0 ? activeCollection : collections[0], onSelect: function (v) {
+        collections && collections.length > 0 && (React.createElement(CollectionSwitcher_1.CollectionSwitcher, { collections: collections, currentSelect: activeCollection !== null && activeCollection !== void 0 ? activeCollection : collections[0].key, onSelect: function (v) {
                 setActiveCollection(v);
                 setAnchorName(v);
             } })),

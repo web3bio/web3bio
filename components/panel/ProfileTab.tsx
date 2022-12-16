@@ -96,7 +96,6 @@ export const ProfileTab = (props) => {
     return batched;
   });
 
-  console.log(ensRecords, "records");
   const openSocialMediaLink = (url: string, type: string) => {
     let resolvedURL = "";
     if (url.startsWith("https")) {

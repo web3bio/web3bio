@@ -33,7 +33,6 @@ const NFTDialogRender = (props) => {
     ? JSON.parse(_asset.metadata_json)
     : null;
   
-  console.log("current asset", asset);
   return (
     <>
       <div className="nft-panel">
