@@ -8,7 +8,6 @@ import { Error } from "../shared/Error";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { throttle } from "../../utils/utils";
 import { Loading } from "../shared/Loading";
-import { useRouter } from "next/router";
 
 function useCollections(address: string) {
   const { data, error } = useSWR<any>(
@@ -53,32 +52,32 @@ const RenderNFTCollections = (props) => {
           anchorElement.scrollIntoView({ block: "start", behavior: "smooth" });
         }
       }
-      const lazyLoad = () => {
-        const lazyloadImages = container.querySelectorAll("img");
-        const imageObserver = new IntersectionObserver(function (
-          entries,
-          overver
-        ) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-              const img = entry.target as any;
-              img.src = img.dataset.src;
-              imageObserver.unobserve(img);
-            }
-          });
-        });
-        lazyloadImages.forEach(function (image) {
-          imageObserver.observe(image);
-        });
+      const judgeActiveCollection = () => {
+        if (data && data.data) {
+          const nav_contentRect = container.getBoundingClientRect();
+          const groupList = Array.from(
+            data.data.map((x) => document.getElementById(x.contract_address))
+          );
+          if (nav_contentRect) {
+            groupList.map((item: any) => {
+              const itemReact = item.getBoundingClientRect();
+              // todo: item rect top check
+              if (itemReact.y <= 10 && (itemReact.y + itemReact.height > 10)) {
+                console.log(item.id,'active')
+                // setActiveCollection(item.id);
+              }
+            });
+          }
+        }
       };
+      
       if (container) {
-        container.addEventListener("scroll", () => throttle(lazyLoad, 100));
+        container.addEventListener("scroll", judgeActiveCollection);
       }
-      lazyLoad();
       return () =>
-        container.removeEventListener("scroll", () => throttle(lazyLoad, 100));
+        container.removeEventListener("scroll", judgeActiveCollection);
     }
-  }, [data, anchorName]);
+  }, [data, anchorName,activeCollection]);
   if (isLoading) return <Loading />;
   if (isError) return <Error text={isError} />;
   if (!data || !data.data) return <Empty />;
