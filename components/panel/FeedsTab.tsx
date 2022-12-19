@@ -110,8 +110,6 @@ const RenderFeedsTab = (props) => {
   if (!data) return <Empty text="No Feeds" />;
   return (
     <div ref={ref} className="feeds-container">
-      <div className="social-feeds-title">Social Feeds</div>
-
       <div className="social-feeds-list">
         {issues.map(
           (x, idx) =>

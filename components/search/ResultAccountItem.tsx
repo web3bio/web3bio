@@ -62,7 +62,7 @@ const RenderAccountItem = (props) => {
                       }}
                     >
                       <div className="label-ens" title={nft.id}>
-                        <Image
+                        <img
                           src="/icons/icon-ens.svg"
                           width={16}
                           height={16}
@@ -79,7 +79,7 @@ const RenderAccountItem = (props) => {
           <div className="social-actions">
             <button
               className="btn btn-sm btn-link action"
-              title="Link Identity Panel"
+              title="Open Identity Panel"
               onClickCapture={() => onItemClick(identity, PlatformType.ens)}
             >
               <SVG src="icons/icon-open.svg" width={20} height={20} />

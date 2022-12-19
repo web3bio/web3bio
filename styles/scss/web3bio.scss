@@ -364,6 +364,7 @@ body {
     .social-main {
       align-items: center;
       display: flex;
+      flex: 1 1 1rem;
       padding: .4rem;
       width: 100%;
 
@@ -416,15 +417,20 @@ body {
     }
   }
 
+  .nfts {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
   .label-ens {
     align-items: center;
     border-radius: .3rem;
     color: lighten($dark-color, 20%);
     display: inline-flex;
-    font-size: 90%;
+    font-size: .6rem;
     line-height: .8rem;
     margin: .2rem .2rem 0 0;
-    max-width: 100%;
+    max-width: 12rem;
     padding: .1rem .3rem .1rem .15rem;
     text-decoration: none;
 
@@ -435,13 +441,9 @@ body {
     }
 
     img {
-      flex: 0 0 .7rem;
+      flex: 0 0 .5rem;
       margin-right: .2rem;
     }
-  }
-
-  .nfts {
-    width: 100%;
   }
 
   .actions {
@@ -489,14 +491,14 @@ body {
   }
 
   .content-title {
-    font-size: .9rem;
+    font-size: .85rem;
     line-height: 1.2rem;
   }
 
   .content-subtitle {
     align-items: center;
     display: flex;
-    font-size: .6rem;
+    font-size: .55rem;
     line-height: 1rem;
 
     .action {
