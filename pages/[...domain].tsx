@@ -48,6 +48,16 @@ const RenderDomainPanel = (props) => {
     return data.identity;
   })();
 
+  const EmptyRender = () => {
+    return (
+      <div className="identity-panel">
+        <div className="panel-container">
+          <Empty />
+        </div>
+      </div>
+    );
+  };
+
   return asComponent ? (
     <div className="web3bio-mask-cover" onClick={onClose}>
       <div
@@ -61,6 +71,8 @@ const RenderDomainPanel = (props) => {
           <Loading />
         ) : error ? (
           <Error text={error} />
+        ) : !_identity ? (
+          <EmptyRender />
         ) : (
           <IdentityPanel
             toNFT={toNFT}
@@ -82,7 +94,7 @@ const RenderDomainPanel = (props) => {
         ) : error ? (
           <Error text={error} />
         ) : !_identity ? (
-          <Empty />
+          <EmptyRender />
         ) : (
           <IdentityPanel
             curTab={panelTab}
