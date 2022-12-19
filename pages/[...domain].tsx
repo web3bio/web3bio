@@ -39,8 +39,13 @@ const RenderDomainPanel = (props) => {
     if (domain[1]) setPanelTab(domain[1]);
   }, [panelTab, domain, router, asComponent]);
 
-  useEffect(() => {});
-
+  const _identity = (() => {
+    if(!data) return null
+    if (isDomainSearch(platform)) {
+      if (data.domain) return data.domain.owner;
+    }
+    return data.identity;
+  })();
   return asComponent ? (
     <div className="web3bio-mask-cover" onClick={onClose}>
       <div
@@ -61,9 +66,7 @@ const RenderDomainPanel = (props) => {
             onClose={onClose}
             curTab={panelTab}
             onTabChange={onTabChange}
-            identity={
-              isDomainSearch(platform) ? data.domain.owner : data.identity
-            }
+            identity={_identity}
           />
         )}
       </div>
@@ -91,9 +94,7 @@ const RenderDomainPanel = (props) => {
                 },
               });
             }}
-            identity={
-              isDomainSearch(platform) ? data.domain.owner : data.identity
-            }
+            identity={_identity}
           />
         )}
       </div>

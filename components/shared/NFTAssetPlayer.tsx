@@ -12,6 +12,7 @@ const IsImage = (type) => {
     "text/html",
     "model/gltf-binary",
     "model/gltf+json",
+    "unknown",
   ].includes(type);
 };
 
@@ -39,9 +40,8 @@ const RenderNFTAssetPlayer = (props) => {
             <ImageLoader
               width={width}
               height={height}
-              src={src}
+              src={type === "unknown" ? contentUrl : src}
               alt={alt}
-              loading="lazy"
             />
           ) : (
             isVideo(type) && (

@@ -4,7 +4,7 @@ import { FeedItem, isSupportedFeed } from "./FeedItem";
 import { formatTimestamp } from "../../utils/date";
 import useSWRInfinite from "swr/infinite";
 import { Loading } from "../shared/Loading";
-import { debounce, throttle } from "../../utils/utils";
+import { debounce } from "../../utils/utils";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
 
