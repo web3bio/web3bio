@@ -39,6 +39,7 @@ export default function Home() {
     setModalOpen(true);
   };
   useEffect(() => {
+    
     if (!router.isReady) return;
     if (router.query.s) {
       setSearchFocus(true);
@@ -59,6 +60,7 @@ export default function Home() {
   }, [router.isReady, router.query.s, router.query.platform]);
 
   useEffect(() => {
+    if(!router.isReady) return
     if (modalOpen) {
       window.history.replaceState(
         {},
@@ -70,14 +72,15 @@ export default function Home() {
     } else {
       router.replace({
         pathname: "",
-        query: router.query.s
-          ? {
-              s: router.query.s,
-            }
-          : {},
+        query: router.query
       });
     }
-  }, [modalOpen, panelTab]);
+  }, [
+    modalOpen,
+    panelTab,
+    router.query.s,
+    router.isReady
+  ]);
 
   return (
     <div>
