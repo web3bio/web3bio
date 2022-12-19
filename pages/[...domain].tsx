@@ -47,7 +47,7 @@ const RenderDomainPanel = (props) => {
       setPlatform(handleSearchPlatform(_domain[0]));
       if (_domain[1]) setPanelTab(_domain[1]);
     }
-  }, [panelTab, domain, router, asComponent, router.query.domain,name]);
+  }, [panelTab, domain, router, asComponent, router.query.domain, name]);
 
   const _identity = (() => {
     if (!data) return null;
@@ -126,5 +126,21 @@ const RenderDomainPanel = (props) => {
     </div>
   );
 };
+
+export async function getStaticPaths() {
+  return {
+    fallback: 'blocking',
+    paths: [],
+  };
+}
+
+export async function getStaticProps({ params }) {
+  const { domain } = params;
+  return {
+    props: {
+      domain,
+    },
+  };
+}
 
 export default memo(RenderDomainPanel);
