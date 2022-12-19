@@ -6,6 +6,7 @@ import { Loading } from "../components/shared/Loading";
 import { Error } from "../components/shared/Error";
 import { GET_PROFILES_DOMAIN, GET_PROFILES_QUERY } from "../utils/queries";
 import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
+import { Empty } from "../components/shared/Empty";
 const RenderDomainPanel = (props) => {
   const {
     domain,
@@ -40,12 +41,13 @@ const RenderDomainPanel = (props) => {
   }, [panelTab, domain, router, asComponent]);
 
   const _identity = (() => {
-    if(!data) return null
+    if (!data) return null;
     if (isDomainSearch(platform)) {
       if (data.domain) return data.domain.owner;
     }
     return data.identity;
   })();
+
   return asComponent ? (
     <div className="web3bio-mask-cover" onClick={onClose}>
       <div
@@ -79,6 +81,8 @@ const RenderDomainPanel = (props) => {
           <Loading />
         ) : error ? (
           <Error text={error} />
+        ) : !_identity ? (
+          <Empty />
         ) : (
           <IdentityPanel
             curTab={panelTab}
