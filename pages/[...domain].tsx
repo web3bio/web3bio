@@ -23,22 +23,31 @@ const RenderDomainPanel = (props) => {
     overridePanelTab || TabsMap.profile.key
   );
   const [platform, setPlatform] = useState(overridePlatform || "ENS");
+  const [name, setName] = useState(null);
+
   const { loading, error, data } = useQuery(
     isDomainSearch(platform) ? GET_PROFILES_DOMAIN : GET_PROFILES_QUERY,
     {
       variables: {
         platform: platform,
-        identity: domain && domain[0],
+        identity: name,
       },
     }
   );
+
   useEffect(() => {
-    if (!router.isReady) return;
-    if (!router.query.domain) return;
-    setPlatform(handleSearchPlatform(router.query.domain[0]));
-    if (asComponent) return;
-    if (domain[1]) setPanelTab(domain[1]);
-  }, [panelTab, domain, router, asComponent]);
+    if (asComponent) {
+      setName(domain[0]);
+      setPlatform(handleSearchPlatform(name));
+    } else {
+      if (!router.isReady) return;
+      if (!router.query.domain) return;
+      const _domain = domain ?? router.query.domain;
+      setName(_domain[0]);
+      setPlatform(handleSearchPlatform(_domain[0]));
+      if (_domain[1]) setPanelTab(_domain[1]);
+    }
+  }, [panelTab, domain, router, asComponent, router.query.domain,name]);
 
   const _identity = (() => {
     if (!data) return null;
@@ -106,7 +115,7 @@ const RenderDomainPanel = (props) => {
               router.replace({
                 pathname: "",
                 query: {
-                  domain: [domain[0], v === TabsMap.profile.key ? "" : v],
+                  domain: [name, v === TabsMap.profile.key ? "" : v],
                 },
               });
             }}
@@ -117,14 +126,5 @@ const RenderDomainPanel = (props) => {
     </div>
   );
 };
-
-export async function getServerSideProps({ params }) {
-  const { domain } = params;
-  return {
-    props: {
-      domain,
-    },
-  };
-}
 
 export default memo(RenderDomainPanel);
