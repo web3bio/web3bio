@@ -11,12 +11,13 @@
 # next.js
 /.next/
 /out/
-/.vscode/
+.vscode
 pages/dist
 components/graph/dist
 components/panel/dist
 components/search/dist
 components/shared/dist
+**/dist/
 
 
 # production
