@@ -11,6 +11,14 @@
 # next.js
 /.next/
 /out/
+.vscode
+pages/dist
+components/graph/dist
+components/panel/dist
+components/search/dist
+components/shared/dist
+**/dist/
+
 
 # production
 /build
@@ -28,6 +36,11 @@ yarn-error.log*
 # local env files
 .env
 .env*.local
+.env.development
+.env.test.local
+.env.production
 
 # vercel
 .vercel
+
+

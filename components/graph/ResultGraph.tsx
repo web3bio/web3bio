@@ -22,6 +22,7 @@ if (isBrowser) {
     width: fit-content;
     transition: opacity .2s;
     text-align: left;
+    user-select: none;
     padding: 4px 8px;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .15);
     border: 0;
@@ -369,7 +370,7 @@ const RenderResultGraph = (props) => {
             container.current.offsetWidth,
             container.current.offsetHeight
           );
-          graph.layout()
+          graph.layout();
         };
     };
     const clearFocusItemState = (graph) => {
@@ -397,7 +398,7 @@ const RenderResultGraph = (props) => {
   }, [data]);
 
   return (
-    <div className="graph-mask" ref={tooltipContainer} onClick={onClose}>
+    <div className="identity-graph-modal" ref={tooltipContainer} onClick={onClose}>
       {data && (
         <div
           className="graph-container"
@@ -409,11 +410,13 @@ const RenderResultGraph = (props) => {
         >
           <div className="graph-header">
             <div className="graph-title">
-              <SVG src="icons/icon-view.svg" width="20" height="20" />
-              <span className="ml-2">Identity Graph for<strong className="ml-1">{title}</strong></span>
+              <SVG src={'/icons/icon-view.svg'} width="20" height="20" />
+              <span className="ml-2">
+                Identity Graph for<strong className="ml-1">{title}</strong>
+              </span>
             </div>
-            <div className="btn btn-link graph-close" onClick={onClose}>
-              <SVG src="icons/icon-close.svg" width="20" height="20" />
+            <div className="btn btn-link btn-close" onClick={onClose}>
+              <SVG src={'/icons/icon-close.svg'} width="20" height="20" />
             </div>
           </div>
           {loading && (

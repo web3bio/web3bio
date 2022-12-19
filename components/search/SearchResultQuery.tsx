@@ -6,7 +6,11 @@ import { Error } from "../shared/Error";
 import { GET_PROFILES_QUERY } from "../../utils/queries";
 import { useEffect, useState } from "react";
 
-export const SearchResultQuery = ({ searchTerm, searchPlatform }) => {
+export const SearchResultQuery = ({
+  searchTerm,
+  searchPlatform,
+  openProfile,
+}) => {
   const { loading, error, data } = useQuery(GET_PROFILES_QUERY, {
     variables: {
       platform: searchPlatform,
@@ -59,6 +63,7 @@ export const SearchResultQuery = ({ searchTerm, searchPlatform }) => {
 
   return (
     <ResultAccount
+      openProfile={openProfile}
       searchTerm={searchTerm}
       resultNeighbor={resultNeighbor}
       graphData={data.identity.neighborWithTraversal || []}

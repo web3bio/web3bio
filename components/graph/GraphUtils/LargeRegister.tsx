@@ -1,6 +1,7 @@
 import isArray from "@antv/util/lib/is-array";
 import isNumber from "@antv/util/lib/is-number";
 import { colorsMap } from "../../../utils/maps";
+import { PlatformType } from "../../../utils/type";
 
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
@@ -8,15 +9,16 @@ const G6 = isBrowser ? require("@antv/g6") : null;
 const resolvePlatformIcon = (platform) => {
   return (
     {
-      twitter: "/icons/icon-twitter-w.svg",
-      nextid: "/icons/icon-nextid-w.svg",
-      keybase: "/icons/icon-keybase-w.svg",
-      ethereum: "/icons/icon-ethereum-w.svg",
-      reddit: "/icons/icon-reddit-w.svg",
-      ens: "/icons/icon-ens-w.svg",
-      lens: "/icons/icon-lens-w.svg",
-      github: "/icons/icon-github-w.svg",
-      dotbit: "/icons/icon-dotbit-w.svg",
+      [PlatformType.twitter]: "/icons/icon-twitter-w.svg",
+      [PlatformType.nextid]: "/icons/icon-nextid-w.svg",
+      [PlatformType.keybase]: "/icons/icon-keybase-w.svg",
+      [PlatformType.ethereum]: "/icons/icon-ethereum-w.svg",
+      [PlatformType.reddit]: "/icons/icon-reddit-w.svg",
+      // PlatformType.ens is uppercase
+      ["ens"]: "/icons/icon-ens-w.svg",
+      [PlatformType.lens]: "/icons/icon-lens-w.svg",
+      [PlatformType.github]: "/icons/icon-github-w.svg",
+      [PlatformType.dotbit]: "/icons/icon-dotbit-w.svg",
     }[platform] || ""
   );
 };

@@ -1,11 +1,14 @@
 import React, { memo, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { formatText } from "../../utils/utils";
 import { RenderSourceFooter } from "./SourcesFooter";
+import { PlatformType } from "../../utils/type";
 
 const RenderAccountItem = (props) => {
+  const { onItemClick } = props;
   const onCopySuccess = () => {
     setIsCopied(true);
     setTimeout(() => {
@@ -14,8 +17,9 @@ const RenderAccountItem = (props) => {
   };
   const { identity, sources } = props;
   const [isCopied, setIsCopied] = useState(false);
+
   switch (identity.platform) {
-    case "ethereum":
+    case PlatformType.ethereum:
       return (
         <div className="social-item social-web3 ethereum">
           <div className="social-main">
@@ -43,15 +47,6 @@ const RenderAccountItem = (props) => {
                     <SVG src="icons/icon-copy.svg" width={20} height={20} />
                     {isCopied && <div className="tooltip-copy">COPIED</div>}
                   </Clipboard>
-                  <a
-                    className="action text-gray"
-                    href={`https://etherscan.io/address/${identity.identity}`}
-                    title="Open in Etherscan Explorer"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <SVG src="icons/icon-open.svg" width={20} height={20} />
-                  </a>
                 </div>
               </div>
             </div>
@@ -66,20 +61,34 @@ const RenderAccountItem = (props) => {
                         query: { s: nft.id },
                       }}
                     >
-                      <a className="label-ens" title={nft.id}>
-                        <img src="icons/icon-ens.svg" width={16} height={16} />
+                      <div className="label-ens" title={nft.id}>
+                        <Image
+                          src="/icons/icon-ens.svg"
+                          width={16}
+                          height={16}
+                          alt="ens"
+                        />
                         <span>{nft.id}</span>
-                      </a>
+                      </div>
                     </Link>
                   ) : null;
                 })}
               </div>
             )}
           </div>
+          <div className="social-actions">
+            <button
+              className="btn btn-sm btn-link action"
+              title="Link Identity Panel"
+              onClickCapture={() => onItemClick(identity, PlatformType.ens)}
+            >
+              <SVG src="icons/icon-open.svg" width={20} height={20} />
+            </button>
+          </div>
           <RenderSourceFooter sources={sources} />
         </div>
       );
-    case "lens":
+    case PlatformType.lens:
       return (
         <div className="social-item lens">
           <div className="social-main">
@@ -89,27 +98,16 @@ const RenderAccountItem = (props) => {
               </figure>
               <div className="content">
                 <div className="content-title text-bold">
-                  {identity.displayName}
+                  {identity.displayName
+                    ? identity.displayName
+                    : identity.identity}
                 </div>
                 <div className="content-subtitle text-gray">
-                  <div className="address hide-xs">
-                    {identity.ownedBy.displayName
-                      ? identity.ownedBy.displayName
-                      : identity.ownedBy.identity}
-                  </div>
-                  <div className="address show-xs">
-                    {identity.ownedBy.displayName
-                      ? identity.ownedBy.displayName
-                      : formatText(identity.ownedBy.identity)}
-                  </div>
+                  <div className="address">{identity.identity}</div>
                   <Clipboard
                     component="div"
                     className="action"
-                    data-clipboard-text={
-                      identity.ownedBy.displayName
-                        ? identity.ownedBy.displayName
-                        : identity.ownedBy.identity
-                    }
+                    data-clipboard-text={identity.identity}
                     onSuccess={onCopySuccess}
                   >
                     <SVG src="icons/icon-copy.svg" width={20} height={20} />
@@ -133,7 +131,7 @@ const RenderAccountItem = (props) => {
           <RenderSourceFooter sources={sources} />
         </div>
       );
-    case "dotbit":
+    case PlatformType.dotbit:
       return (
         <div className="social-item dotbit">
           <div className="social-main">
@@ -145,12 +143,12 @@ const RenderAccountItem = (props) => {
                 },
               }}
             >
-              <a className="social">
+              <div className="social">
                 <div className="icon">
                   <SVG src="icons/icon-dotbit.svg" width={20} height={20} />
                 </div>
                 <div className="title">{identity.displayName}</div>
-              </a>
+              </div>
             </Link>
             <div className="actions">
               <a
@@ -167,7 +165,7 @@ const RenderAccountItem = (props) => {
           <RenderSourceFooter sources={sources} />
         </div>
       );
-    case "twitter":
+    case PlatformType.twitter:
       return (
         <div className="social-item twitter">
           <div className="social-main">
@@ -177,12 +175,12 @@ const RenderAccountItem = (props) => {
                 query: { s: identity.identity },
               }}
             >
-              <a className="social">
+              <div className="social">
                 <div className="icon">
                   <SVG src="icons/icon-twitter.svg" width={20} height={20} />
                 </div>
                 <div className="title">{identity.displayName}</div>
-              </a>
+              </div>
             </Link>
             <div className="actions">
               <a
@@ -199,7 +197,7 @@ const RenderAccountItem = (props) => {
           <RenderSourceFooter sources={sources} />
         </div>
       );
-    case "github":
+    case PlatformType.github:
       return (
         <div className="social-item github">
           <div className="social-main">
@@ -212,12 +210,12 @@ const RenderAccountItem = (props) => {
                 },
               }}
             >
-              <a className="social">
+              <div className="social">
                 <div className="icon">
                   <SVG src="icons/icon-github.svg" width={20} height={20} />
                 </div>
                 <div className="title">{identity.displayName}</div>
-              </a>
+              </div>
             </Link>
             <div className="actions">
               <a
@@ -234,7 +232,7 @@ const RenderAccountItem = (props) => {
           <RenderSourceFooter sources={sources} />
         </div>
       );
-    case "keybase":
+    case PlatformType.keybase:
       return (
         <div className="social-item keybase">
           <div className="social-main">
@@ -247,12 +245,12 @@ const RenderAccountItem = (props) => {
                 },
               }}
             >
-              <a className="social">
+              <div className="social">
                 <div className="icon">
                   <SVG src="icons/icon-keybase.svg" width={20} height={20} />
                 </div>
                 <div className="title">{identity.displayName}</div>
-              </a>
+              </div>
             </Link>
             <div className="actions">
               <a
@@ -269,7 +267,7 @@ const RenderAccountItem = (props) => {
           <RenderSourceFooter sources={sources} />
         </div>
       );
-    case "reddit":
+    case PlatformType.reddit:
       return (
         <div className="social-item reddit">
           <div className="social-main">
@@ -282,12 +280,12 @@ const RenderAccountItem = (props) => {
                 },
               }}
             >
-              <a className="social">
+              <div className="social">
                 <div className="icon">
                   <SVG src="icons/icon-reddit.svg" width={20} height={20} />
                 </div>
                 <div className="title">{identity.displayName}</div>
-              </a>
+              </div>
             </Link>
             <div className="actions">
               <a

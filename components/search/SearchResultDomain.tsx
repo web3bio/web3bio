@@ -6,7 +6,7 @@ import { Error } from "../shared/Error";
 import { GET_PROFILES_DOMAIN } from "../../utils/queries";
 import _ from "lodash";
 import { memo, useEffect, useState } from "react";
-const RenderResultDomain = ({ searchTerm, searchPlatform }) => {
+const RenderResultDomain = ({ searchTerm, searchPlatform, openProfile }) => {
   const { loading, error, data } = useQuery(GET_PROFILES_DOMAIN, {
     variables: {
       platform: searchPlatform,
@@ -57,6 +57,7 @@ const RenderResultDomain = ({ searchTerm, searchPlatform }) => {
     <ResultAccount
       searchTerm={searchTerm}
       resultNeighbor={resultNeighbor}
+      openProfile={openProfile}
       graphData={
         data.domain.owner.neighborWithTraversal.length
           ? data.domain.owner.neighborWithTraversal

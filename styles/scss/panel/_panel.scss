@@ -1,0 +1,87 @@
+// Record Social Media Item
+.nft-collection-container {
+
+    // dropdown
+    .dropdown-box {
+        border-radius: 4px;
+        border: 1px solid #eee;
+        color: #1a1a1a;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        font-size: 14px;
+        width: 100%;
+        cursor: pointer;
+
+        .dropdown-menu {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            background: #fff;
+            border-radius: 4px;
+            top: 35px;
+            border: 1px solid #ddd;
+        }
+
+        .dropdown-button {
+            width: 100%;
+            max-width: 200px;
+            text-align: center;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            padding: 0 6px;
+        }
+
+        .dropdown-button,
+        .menu>div {
+            height: 30px;
+            line-height: 30px;
+        }
+
+        .dropdown-menu>div.active {
+            background: #e7f8eb;
+        }
+
+        .dropdown-menu>div:hover {
+            background: #e7f8eb;
+        }
+
+
+    }
+}
+
+
+.feeds-container-box {
+    padding: 0;
+
+    .feeds-title {
+        font-weight: 900;
+        font-size: 14px;
+        line-height: 1.43;
+        text-transform: uppercase;
+    }
+
+    .social-feeds-list {
+        max-width: 100%;
+        margin-top: 1rem;
+        max-height: 80vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        .feed-timestamp {
+            width: fit-content;
+            margin-left: 34px;
+            opacity: .5;
+            margin-top: 10px;
+        }
+
+        
+    }
+}
