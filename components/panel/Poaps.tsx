@@ -26,21 +26,33 @@ const RenderPoaps = (props) => {
   if (isError) return <Error text={isError} />;
   if (!data || !data.length) return <Empty text="there is no poap" />;
   return (
-    <div className="nft-collection-container">
-      <div className="nft-list">
-        {isLoading ? (
-          <Loading />
-        ) : (
-          data.map((x, idx) => {
-            return (
-              <NFTAssetPlayer
-                key={idx}
-                className="collection-nft-item"
-                src={resolveIPFS_URL(x.event.image_url)}
-              />
-            );
-          })
-        )}
+    <div className="profile-widget widget-poap">
+      <div className="profile-widget-title">POAPS</div>
+      <div className="profile-widget-container">
+        <div className="nft-collection-list">
+          <div className="nft-list">
+            {data.map((x, idx) => {
+              return (
+                <div
+                  key={idx}
+                  className="nft-container c-hand"
+                >
+                  <div className="nft-item">
+                  <NFTAssetPlayer 
+                    className="img-container" 
+                    src={resolveIPFS_URL(x.event.image_url)} 
+                    alt={x.event.name} 
+                  />
+                    <div className="collection-name">
+                      {x.event.start_date}
+                    </div>
+                    <div className="nft-name">{x.event.name}</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </div>
   );

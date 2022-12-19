@@ -171,12 +171,8 @@ export const ProfileTab = (props) => {
           <NFTOverview identity={identity} toNFT={toNFT} />
         </div>
       </div>
-      <div className="profile-widget widget-poap">
-        <div className="profile-widget-title">POAPS</div>
-        <div className="profile-widget-container">
-          <Poaps identity={identity} />
-        </div>
-      </div>
+      
+      <Poaps identity={identity} />
     </div>
   );
 };
