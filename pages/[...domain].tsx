@@ -118,14 +118,7 @@ const RenderDomainPanel = (props) => {
   );
 };
 
-export async function getStaticPaths() {
-  return {
-    fallback: true,
-    paths: [],
-  };
-}
-
-export async function getStaticProps({ params }) {
+export async function getServerSideProps({ params }) {
   const { domain } = params;
   return {
     props: {
@@ -133,4 +126,5 @@ export async function getStaticProps({ params }) {
     },
   };
 }
+
 export default memo(RenderDomainPanel);
