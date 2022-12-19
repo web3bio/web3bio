@@ -130,7 +130,7 @@ const RenderDomainPanel = (props) => {
 export async function getStaticPaths() {
   return {
     fallback: true,
-    paths: [{ params: { domain: [] } }],
+    paths: [],
   };
 }
 
