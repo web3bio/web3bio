@@ -35,7 +35,7 @@ const RenderFeedItem = (props) => {
   if (isCollectibleFeed(feed))
     return <CollectibleCard feed={feed} identity={identity} />;
 
-  if (isDonationFeed(feed)) return <DonationCard feed={feed} />;
+  if (isDonationFeed(feed)) return <DonationCard feed={feed} identity={identity} />;
 
   if (isNoteFeed(feed)) return <NoteCard feed={feed} identity={identity} />;
 
