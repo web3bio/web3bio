@@ -82,6 +82,8 @@ export function isSameAddress(
 
 export function resolveSocialMediaLink(name, type) {
   switch (type) {
+    case "url":
+      return `${name}`;
     case "github":
       return `https://github.com/${name}`;
     case "twitter":
@@ -92,8 +94,10 @@ export function resolveSocialMediaLink(name, type) {
       return `https://www.reddit.com/user/${name}`;
     case "discord":
       return `https://discord.gg/${name}`;
+    case "instagram":
+      return `https://instagram.com/${name}`;
     default:
-      return `https://twitter.com/${name}`;
+      return `https://web5.bio/?s=${name}`;
   }
 }
 

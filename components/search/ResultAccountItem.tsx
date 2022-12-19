@@ -6,7 +6,6 @@ import SVG from "react-inlinesvg";
 import { formatText } from "../../utils/utils";
 import { RenderSourceFooter } from "./SourcesFooter";
 import { PlatformType } from "../../utils/type";
-import { useRouter } from "next/router";
 
 const RenderAccountItem = (props) => {
   const { onItemClick } = props;
@@ -50,21 +49,6 @@ const RenderAccountItem = (props) => {
                   </Clipboard>
                 </div>
               </div>
-
-              <div
-                className="actions"
-                onClickCapture={() => onItemClick(identity, PlatformType.ens)}
-              >
-                <button
-                  className="btn btn-sm btn-link action"
-                  title="Link Identity Panel"
-                >
-                  <SVG src="icons/icon-open.svg" width={20} height={20} />
-                  Open
-                </button>
-              </div>
-
-              {/* </Link> */}
             </div>
             {identity.nft?.length > 0 && (
               <div className="nfts">
@@ -92,7 +76,15 @@ const RenderAccountItem = (props) => {
               </div>
             )}
           </div>
-
+          <div className="social-actions">
+            <button
+              className="btn btn-sm btn-link action"
+              title="Link Identity Panel"
+              onClickCapture={() => onItemClick(identity, PlatformType.ens)}
+            >
+              <SVG src="icons/icon-open.svg" width={20} height={20} />
+            </button>
+          </div>
           <RenderSourceFooter sources={sources} />
         </div>
       );

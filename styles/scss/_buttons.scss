@@ -2,7 +2,7 @@
 .btn {
   align-items: center;
   appearance: none;
-  background: lighten($bg-color, 5%);
+  background: lighten($bg-color, 2%);
   border: $border-width solid transparent;
   border-radius: $border-radius;
   box-shadow: none;
@@ -114,6 +114,7 @@
   // Button Block
   &.btn-block {
     display: flex;
+    justify-items: center;
     width: 100%;
   }
 
@@ -129,6 +130,20 @@
   
     &.btn-lg {
       padding: $control-padding-y-lg;
+      width: $control-size-lg;
+    }
+  }
+
+  // Button Action
+  &.action-btn {
+    padding: .2rem;
+    width: $control-size;
+
+    &.btn-sm {
+      width: $control-size-sm;
+    }
+  
+    &.btn-lg {
       width: $control-size-lg;
     }
   }

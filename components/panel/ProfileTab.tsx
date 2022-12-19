@@ -29,20 +29,24 @@ const socialButtonMapping = {
     icon: "icons/icon-twitter.svg",
     type: "twitter",
   },
+  ["com.instagram"]: {
+    icon: "icons/icon-instagram.svg",
+    type: "instagram",
+  },
   ["com.discord"]: {
-    icon: "icons/social-discord.svg",
+    icon: "icons/icon-discord.svg",
     type: "discord",
   },
   ["com.reddit"]: {
-    icon: "icons/social-reddit.svg",
+    icon: "icons/icon-reddit.svg",
     type: "reddit",
   },
   ["org.telegram"]: {
-    icon: "icons/social-telegram.svg",
+    icon: "icons/icon-telegram.svg",
     type: "telegram",
   },
   ["url"]: {
-    icon: "icons/social-website.svg",
+    icon: "icons/icon-web.svg",
     type: "url",
   },
 };
@@ -82,7 +86,7 @@ export const ProfileTab = (props) => {
       ens.getText.batch(_domain, "com.twitter"),
       ens.getText.batch(_domain, "org.telegram"),
       ens.getText.batch(_domain, "com.discord"),
-      ens.getText.batch(_domain, "com.reddit")
+      ens.getText.batch(_domain, "com.reddit"),
     );
     if (!batched[2]) batched[2] = await ens.getText(_domain, "vnd.github");
     if (!batched[3]) batched[3] = await ens.getText(_domain, "vnd.twitter");
@@ -125,7 +129,7 @@ export const ProfileTab = (props) => {
       ) : (
         <div className="profile-basic">
           <div className="profile-description">
-            {(ensRecords && ensRecords[0]) || "no description"}
+            {(ensRecords[0])}
           </div>
 
           <div className="records">
@@ -136,7 +140,7 @@ export const ProfileTab = (props) => {
                   ensRecords[idx] && (
                     <a
                       key={idx}
-                      className="form-button btn"
+                      className="action-btn btn"
                       style={{ position: "relative" }}
                       target="_blank"
                       rel="noreferrer"
@@ -144,11 +148,12 @@ export const ProfileTab = (props) => {
                         ensRecords[idx],
                         socialButtonMapping[x].type
                       )}
+                      title={x}
                     >
                       <SVG
                         src={socialButtonMapping[x].icon}
-                        width={24}
-                        height={24}
+                        width={20}
+                        height={20}
                         className="icon"
                       />
                     </a>
@@ -160,13 +165,17 @@ export const ProfileTab = (props) => {
         </div>
       )}
 
-      <div className="profile-subTitle">COLLECTIONS</div>
-      <div className="profile-sub-container">
-        <NFTOverview identity={identity} toNFT={toNFT} />
+      <div className="profile-widget widget-nft">
+        <div className="profile-widget-title">NFT COLLECTIONS</div>
+        <div className="profile-widget-container">
+          <NFTOverview identity={identity} toNFT={toNFT} />
+        </div>
       </div>
-      <div className="profile-subTitle">POAPS</div>
-      <div className="profile-sub-container">
-        <Poaps identity={identity} />
+      <div className="profile-widget widget-poap">
+        <div className="profile-widget-title">POAPS</div>
+        <div className="profile-widget-container">
+          <Poaps identity={identity} />
+        </div>
       </div>
     </div>
   );

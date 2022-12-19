@@ -293,6 +293,7 @@ body {
   }
 }
 
+// Search results
 .search-result {
   animation: slide-down .2s ease 1;
   background: rgba($light-color, .85);
@@ -334,7 +335,6 @@ body {
     background: rgba($gray-color, .05);
     border-radius: $border-radius;
     display: flex;
-    flex-direction: column;
     position: relative;
     transition: all .2s ease-in;
     width: 100%;
@@ -374,6 +374,15 @@ body {
         flex: 0 0 1.6rem;
         justify-content: center;
         margin-right: .4rem;
+      }
+    }
+
+    .social-actions {
+      padding: .25rem;
+
+      .action {
+        background: rgba($dark-color, .025);
+        height: 100%;
       }
     }
 
@@ -622,8 +631,10 @@ body {
       border-radius: .5rem;
       display: flex;
       flex: 0 0 2.4rem;
+      height: 2.4rem;
       justify-content: center;
       margin-right: .5rem;
+      width: 2.4rem;
 
       .img-responsive {
         border-radius: .5rem;
@@ -714,6 +725,48 @@ body {
     gap: 1rem;
     align-items: center;
   }
+
+  .records {
+    position: relative;
+    margin: 1rem 0;
+    display: flex;
+    gap: .5rem;
+    
+    .action-btn {
+      position: relative;
+      width: 1.8rem;
+      height: 1.8rem;
+      box-shadow: 0px .2rem 1rem rgba(0, 0, 0, 0.05);
+      border-radius: .4rem;
+      cursor: pointer;
+      transition: box-shadow .2s ease-in-out;
+    }
+  }
+
+  .profile-widget {
+    margin-bottom: 1rem;
+
+    .profile-widget-title {
+      color: $dark-color;
+      font-size: .7rem;
+      font-weight: 900;
+      line-height: 1rem;
+      text-transform: uppercase;
+    }
+  }
+
+  // Custom Widget
+  .widget-nft {
+    .collection-switcher {
+      box-shadow: none;
+      margin-left: -1.5rem;
+      margin-right: -1.5rem;
+
+      .collection-list {
+        padding: .25rem 1.5rem;
+      }
+    }
+  }
 }
 
 .profile-main {
@@ -744,11 +797,14 @@ body {
 }
 
 .social-feeds-list {
-  .social-feeds-item {}
+  .social-feeds-item {
+
+  }
 
   .feed-item-box {
     display: flex;
     width: 100%;
+    margin-top: 1rem;
     align-items: flex-start;
     gap: 10px;
 
@@ -845,8 +901,6 @@ body {
         }
       }
     }
-
-
   }
 }
 
@@ -858,6 +912,7 @@ body {
 
   .collection-list {
     display: flex;
+    gap: .1rem;
     overflow: auto hidden;
     padding: .25rem 1rem;
 
@@ -866,17 +921,27 @@ body {
     }
 
     .collection-item {
+      background: #fff;
       border-radius: .6rem;
       flex: 0 0;
-      height: 2.8rem;
-      padding: .2rem;
-      margin: .05rem;
+      height: 3.1rem;
+      padding: .25rem;
       transition: all .25s ease-in-out;
-      width: 2.8rem;
+      width: 3.1rem;
+
+      &::after {
+        bottom: auto;
+        top: 100%;
+        transform: translate(-50%, -$unit-2);
+      }
 
       &:focus,
       &:hover {
         background: lighten($bg-color, 2%);
+
+        &::after {
+          transform: translate(-50%, $unit-1);
+        }
       }
 
       &.active {
@@ -889,16 +954,16 @@ body {
 
       .collection-img {
         border-radius: .5rem;
-        height: 2.4rem;
-        width: 2.4rem;
+        height: 2.6rem;
+        width: 2.6rem;
 
         .img-responsive {
           border-radius: .5rem;
           box-shadow: 0 .1rem .4rem rgba($dark-color, .1);
           font-size: 1.6rem;
-          height: 2.4rem;
+          height: 2.6rem;
           object-fit: cover;
-          width: 2.4rem;
+          width: 2.6rem;
         }
       }
     }
@@ -989,14 +1054,14 @@ body {
 
 // NFT Panel
 .nft-panel {
-  height: calc(100vh - 2rem);
+  height: calc(100vh - 1rem);
   left: -1rem;
   position: absolute;
   right: -1rem;
   top: 1rem;
 
   .panel-container {
-    height: calc(100vh - 3rem);
+    height: calc(100vh - 2rem);
   }
 
   .panel-header {
