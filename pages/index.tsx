@@ -230,6 +230,7 @@ export default function Home() {
           asComponent
           onClose={() => {
             setModalOpen(false);
+            setPanelTab(TabsMap.profile.key)
           }}
           overridePanelTab={panelTab}
           onTabChange={(v) => {
