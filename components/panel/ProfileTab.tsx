@@ -71,8 +71,8 @@ export const ProfileTab = (props) => {
       ? await ens.getName(domain)
       : domain;
     if (!_domain) return;
-    if (localStorage.getItem("ensrecords")) {
-      const cached = JSON.parse(localStorage.getItem("ensrecords"));
+    if (localStorage.getItem(`ens_${domain}`)) {
+      const cached = JSON.parse(localStorage.getItem(`ens_${domain}`));
       if (new Date().getTime() - cached.date <= 600000) {
         return cached.value;
       }
@@ -86,12 +86,12 @@ export const ProfileTab = (props) => {
       ens.getText.batch(_domain, "com.twitter"),
       ens.getText.batch(_domain, "org.telegram"),
       ens.getText.batch(_domain, "com.discord"),
-      ens.getText.batch(_domain, "com.reddit"),
+      ens.getText.batch(_domain, "com.reddit")
     );
     if (!batched[2]) batched[2] = await ens.getText(_domain, "vnd.github");
     if (!batched[3]) batched[3] = await ens.getText(_domain, "vnd.twitter");
     localStorage.setItem(
-      "ensrecords",
+      `ens_${domain}`,
       JSON.stringify({
         value: batched,
         date: new Date().getTime(),
@@ -128,9 +128,7 @@ export const ProfileTab = (props) => {
         </div>
       ) : (
         <div className="profile-basic">
-          <div className="profile-description">
-            {(ensRecords[0])}
-          </div>
+          <div className="profile-description">{ensRecords[0]}</div>
 
           <div className="records">
             {(ensRecords &&
