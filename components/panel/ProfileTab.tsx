@@ -129,7 +129,7 @@ export const ProfileTab = (props) => {
       ) : (
         <div className="profile-basic">
           <div className="profile-description">
-            {(ensRecords[0])}
+            {(ensRecords && ensRecords[0])}
           </div>
 
           <div className="records">
