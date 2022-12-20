@@ -24,7 +24,7 @@ const RenderPoaps = (props) => {
   const { data, isLoading, isError } = usePoaps(identity.identity);
   if (isLoading) return <Loading />;
   if (isError) return <Error text={isError} />;
-  if (!data || !data.length) return <Empty text="there is no poap" />;
+  if (!data || !data.length) return null;
   return (
     <div className="profile-widget widget-poap">
       <div className="profile-widget-title">POAPS</div>
