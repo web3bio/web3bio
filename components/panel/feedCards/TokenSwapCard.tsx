@@ -21,7 +21,7 @@ const RenderTokenSwapCard = (props) => {
           <div className="feed-type-intro">
             <div className="strong">
               {isFromOwner
-                ? identity.displayName ?? formatText(identity.identity)
+                ? identity.displayName || formatText(identity.identity)
                 : formatText(action.address_from)}
             </div>
             swaped on
