@@ -1,6 +1,7 @@
 import { BigNumber } from "bignumber.js";
 import { pow10 } from "./number";
 import { PlatformType } from "./type";
+import { EthereumAddress } from 'wallet.ts'
 export const formatText = (string, length?) => {
   const len = length ?? 12;
   if (string.length <= len) {
@@ -166,4 +167,9 @@ export function debounce(func, timeout = 300) {
       func.apply(this, args);
     }, timeout);
   };
+}
+
+export function isValidAddress(address?: string) {
+  if (!address) return false
+  return EthereumAddress.isValid(address)
 }
