@@ -67,6 +67,21 @@ const RenderNFTCollections = (props) => {
               }
             });
           }
+          // todo: to improve
+          const swticherContainer = document.getElementById(
+            "collection-switcher-box"
+          );
+          const activeElement = document.getElementById(
+            `collection_${activeCollection}`
+          );
+          if (!swticherContainer || !activeElement) return;
+          const activeIndex = collections.findIndex(
+            (x) => x.key === activeCollection
+          );
+          swticherContainer.scrollTo({
+            left: activeIndex * activeElement.getBoundingClientRect().width,
+            behavior: "smooth",
+          });
         }
       };
 

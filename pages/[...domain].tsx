@@ -68,7 +68,7 @@ const RenderDomainPanel = (props) => {
   };
 
   return asComponent ? (
-    <div className="web3bio-mask-cover" onClick={onClose}>
+    <div className="web3bio-mask-cover">
       <div
         className="profile-main"
         onClick={(e) => {
@@ -126,6 +126,5 @@ const RenderDomainPanel = (props) => {
     </div>
   );
 };
-
 
 export default memo(RenderDomainPanel);
