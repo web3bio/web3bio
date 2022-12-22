@@ -1,11 +1,24 @@
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { NFTCollections } from "./NFTCollections";
 import { NFTDialog } from "./NFTDialog";
 
 const RenderNFTsTab = (props) => {
-  const { identity, onShowDetail, defaultOpen } = props;
-  const [dialogOpen, setDialogOpen] = useState(defaultOpen);
+  const { identity, onShowDetail } = props;
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [asset, setAsset] = useState("");
+  useEffect(() => {
+    const clickEvent = (event) => {
+      console.log(event,'kkkkk')
+      event.preventDefault();
+      event.stopPropagation();
+      const dialog = document.getElementById("nft-dialog");
+      if (dialogOpen && dialog && !dialog.contains(event.target)) {
+        setDialogOpen(false);
+      }
+    };
+    window.document.addEventListener("mousedown", clickEvent);
+    return () => window.document.removeEventListener("mousedown", clickEvent);
+  });
   return (
     <>
       <NFTCollections

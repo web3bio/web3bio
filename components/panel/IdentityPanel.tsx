@@ -53,7 +53,7 @@ const IdentityPanelRender = (props) => {
         [TabsMap.profile.key]: (
           <ProfileTab
             toNFT={(v) => {
-              toNFT(v)
+              toNFT(v);
               localStorage.setItem("nft_anchor", v);
               setActiveTab(TabsMap.nfts.key);
             }}
@@ -62,10 +62,7 @@ const IdentityPanelRender = (props) => {
         ),
         [TabsMap.feeds.key]: <FeedsTab identity={identity} />,
         [TabsMap.nfts.key]: (
-          <NFTsTab
-            onShowDetail={resolveOnShowDetail}
-            identity={identity}
-          />
+          <NFTsTab onShowDetail={resolveOnShowDetail} identity={identity} />
         ),
       }[activeTab] || <FeedsTab identity={identity} />
     );

@@ -30,10 +30,10 @@ const NFTDialogRender = (props) => {
   const metadata = isValidJson(_asset.metadata_json)
     ? JSON.parse(_asset.metadata_json)
     : null;
-
+ 
   return (
     <>
-      <div className="nft-panel">
+      <div id='nft-dialog' className="nft-panel">
         <div className="panel-container">
           <div className="btn btn-close" onClick={onClose}>
             <SVG src={"/icons/icon-close.svg"} width="20" height="20" />

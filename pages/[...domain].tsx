@@ -68,7 +68,15 @@ const RenderDomainPanel = (props) => {
   };
 
   return asComponent ? (
-    <div className="web3bio-mask-cover">
+    <div
+      className="web3bio-mask-cover"
+      onClick={(event) => {
+        const dialog = document.getElementById("nft-dialog");
+        console.log(dialog,'dialog')
+        if (dialog) return;
+        onClose();
+      }}
+    >
       <div
         className="profile-main"
         onClick={(e) => {
