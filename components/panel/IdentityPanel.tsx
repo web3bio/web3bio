@@ -27,7 +27,17 @@ export const TabsMap = {
 };
 
 const IdentityPanelRender = (props) => {
-  const { identity, onTabChange, curTab, onClose, asComponent, toNFT } = props;
+  const {
+    identity,
+    onTabChange,
+    curTab,
+    onClose,
+    asComponent,
+    toNFT,
+    nftDialogOpen,
+    onCloseNFTDialog,
+    onShowNFTDialog,
+  } = props;
   const [activeTab, setActiveTab] = useState(curTab);
   const [copied, setCopied] = useState(null);
   const { data: profileData, isLoading: avatarLoading } = useProfile(
@@ -62,7 +72,13 @@ const IdentityPanelRender = (props) => {
         ),
         [TabsMap.feeds.key]: <FeedsTab identity={identity} />,
         [TabsMap.nfts.key]: (
-          <NFTsTab onShowDetail={resolveOnShowDetail} identity={identity} />
+          <NFTsTab
+            showDialog={onShowNFTDialog}
+            closeDialog={onCloseNFTDialog}
+            dialogOpen={nftDialogOpen}
+            onShowDetail={resolveOnShowDetail}
+            identity={identity}
+          />
         ),
       }[activeTab] || <FeedsTab identity={identity} />
     );
