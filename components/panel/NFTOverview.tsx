@@ -29,18 +29,23 @@ const RenderNFTOverview = (props) => {
   if (!data || !data.data) return null;
 
   return (
-    <div className="collection-switcher">
-      <div className="collection-list">
-        {data.data.map((x, idx) => (
-          <div
-            onClick={()=>toNFT(x.contract_address)}
-            className="collection-item"
-            key={idx}
-          >
-            <NFTAssetPlayer className="collection-img" src={resolveIPFS_URL(x.logo_url)} alt={x.contract_name} />
-            <div className="collection-name text-assistive">{x.contract_name}</div>
+    <div className="profile-widget widget-nft">
+      <div className="profile-widget-title">NFT COLLECTIONS</div>
+      <div className="profile-widget-container">
+        <div className="collection-switcher">
+          <div className="collection-list">
+            {data.data.map((x, idx) => (
+              <div
+                onClick={()=>toNFT(x.contract_address)}
+                className="collection-item"
+                key={idx}
+              >
+                <NFTAssetPlayer className="collection-img" src={resolveIPFS_URL(x.logo_url)} alt={x.contract_name} />
+                <div className="collection-name text-assistive">{x.contract_name}</div>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
     </div>
   );
