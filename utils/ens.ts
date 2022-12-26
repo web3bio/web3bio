@@ -19,4 +19,7 @@ const globalRecordKeys = [
   "vnd.github",
 ];
 
+// todo: to checkout
+export const preFetchENSList = ["vitalik.eth", "sujiyan.eth", "yisiliu.eth"];
+
 export { ens, globalRecordKeys };

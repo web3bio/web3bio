@@ -7,6 +7,7 @@ import { Error } from "../components/shared/Error";
 import { GET_PROFILES_DOMAIN, GET_PROFILES_QUERY } from "../utils/queries";
 import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
 import { Empty } from "../components/shared/Empty";
+import { preFetchENSList } from "../utils/ens";
 const RenderDomainPanel = (props) => {
   const {
     domain,
@@ -155,14 +156,21 @@ const RenderDomainPanel = (props) => {
 export async function getStaticPaths() {
   // todo: get top100 ens 
   // const enslist = await getTop1000Products()
-  const enslist = ['sujiyan.eth','vitalik.eth']
-  const paths = enslist.map((ens) => ({
-    params: { domain: ens }
+  const paths = preFetchENSList.map((ens) => ({
+    params: { domain: [ens] }
   }))
 
-  return { paths, fallback: '‘blocking’' }
+  return { paths, fallback: true }
 }
 
+export async function getStaticProps({ params }) {
+  const { domain } = params;
+  return {
+    props: {
+      domain,
+    },
+  };
+}
 
 
 export default memo(RenderDomainPanel);
