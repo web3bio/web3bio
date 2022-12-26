@@ -2,8 +2,6 @@ import { memo } from "react";
 import SVG from "react-inlinesvg";
 import useSWR from "swr";
 import { NFTSCANFetcher, NFTSCAN_BASE_API_ENDPOINT } from "../apis/nftscan";
-import { Empty } from "../shared/Empty";
-import { Loading } from "../shared/Loading";
 import { Error } from "../shared/Error";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { isValidJson } from "../../utils/utils";
@@ -19,7 +17,7 @@ function useAsset(address: string, tokenId: string | number) {
   };
 }
 const NFTDialogRender = (props) => {
-  const { onClose, asset} = props;
+  const { onClose, asset } = props;
   const { data, isError } = useAsset(
     asset.asset.contract_address,
     asset.asset.token_id
@@ -32,10 +30,10 @@ const NFTDialogRender = (props) => {
   const metadata = isValidJson(_asset.metadata_json)
     ? JSON.parse(_asset.metadata_json)
     : null;
-  
+ 
   return (
     <>
-      <div className="nft-panel">
+      <div id='nft-dialog' className="nft-panel">
         <div className="panel-container">
           <div className="btn btn-close" onClick={onClose}>
             <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
@@ -56,7 +54,9 @@ const NFTDialogRender = (props) => {
                   src={asset.collection.url}
                   alt={asset.collection.name}
                 />
-                <div className="collection-name text-ellipsis"> {asset.collection.name}</div>
+                <div className="collection-name text-ellipsis">
+                  {asset.collection.name}
+                </div>
               </div>
               <div className="nft-header-name">
                 {asset.asset.name || `#${asset.asset.token_id}`}
@@ -94,7 +94,7 @@ const NFTDialogRender = (props) => {
                 </a>
               </div>
             </div>
-            { metadata?.description && (
+            {metadata?.description && (
               <div className="panel-widget">
                 <div className="panel-widget-title">Description</div>
                 <div className="panel-widget-content">
@@ -122,7 +122,6 @@ const NFTDialogRender = (props) => {
           </div>
         </div>
       </div>
-      
     </>
   );
 };

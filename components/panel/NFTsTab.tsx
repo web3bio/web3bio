@@ -1,11 +1,11 @@
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { NFTCollections } from "./NFTCollections";
 import { NFTDialog } from "./NFTDialog";
 
 const RenderNFTsTab = (props) => {
-  const { identity, onShowDetail, defaultOpen } = props;
-  const [dialogOpen, setDialogOpen] = useState(defaultOpen);
+  const { identity, onShowDetail, dialogOpen, showDialog, closeDialog } = props;
   const [asset, setAsset] = useState("");
+
   return (
     <>
       <NFTCollections
@@ -13,7 +13,7 @@ const RenderNFTsTab = (props) => {
         onShowDetail={(a) => {
           setAsset(a);
           onShowDetail(a);
-          setDialogOpen(true);
+          showDialog();
         }}
         isDetail
       />
@@ -21,7 +21,7 @@ const RenderNFTsTab = (props) => {
         <NFTDialog
           asset={asset}
           open={dialogOpen}
-          onClose={() => setDialogOpen(false)}
+          onClose={closeDialog}
         />
       )}
     </>

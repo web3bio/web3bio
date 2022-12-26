@@ -1,12 +1,13 @@
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { IdentityPanel, TabsMap } from "../components/panel/IdentityPanel";
 import { Loading } from "../components/shared/Loading";
 import { Error } from "../components/shared/Error";
 import { GET_PROFILES_DOMAIN, GET_PROFILES_QUERY } from "../utils/queries";
 import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
 import { Empty } from "../components/shared/Empty";
+import { preFetchENSList } from "../utils/ens";
 const RenderDomainPanel = (props) => {
   const {
     domain,
@@ -23,7 +24,9 @@ const RenderDomainPanel = (props) => {
     overridePanelTab || TabsMap.profile.key
   );
   const [platform, setPlatform] = useState(overridePlatform || "ENS");
+  const [nftDialogOpen, setNftDialogOpen] = useState(false);
   const [name, setName] = useState(null);
+  const profileContainer = useRef(null);
 
   const { loading, error, data } = useQuery(
     isDomainSearch(platform) ? GET_PROFILES_DOMAIN : GET_PROFILES_QUERY,
@@ -47,7 +50,30 @@ const RenderDomainPanel = (props) => {
       setPlatform(handleSearchPlatform(_domain[0]));
       if (_domain[1]) setPanelTab(_domain[1]);
     }
-  }, [panelTab, domain, router, asComponent, router.query.domain, name]);
+
+    const clickEvent = (e) => {
+      if (nftDialogOpen) {
+        const dialog = document.getElementById("nft-dialog");
+        if (dialog) setNftDialogOpen(false);
+      } else {
+        if (profileContainer && !profileContainer.current.contains(e.target)) {
+          if (!asComponent) return;
+          onClose();
+        }
+      }
+    };
+    window.document.addEventListener("mousedown", clickEvent);
+    return () => window.document.removeEventListener("mousedown", clickEvent);
+  }, [
+    panelTab,
+    domain,
+    router,
+    asComponent,
+    router.query.domain,
+    name,
+    nftDialogOpen,
+    onClose
+  ]);
 
   const _identity = (() => {
     if (!data) return null;
@@ -68,14 +94,8 @@ const RenderDomainPanel = (props) => {
   };
 
   return asComponent ? (
-    <div className="web3bio-mask-cover" onClick={onClose}>
-      <div
-        className="profile-main"
-        onClick={(e) => {
-          e.stopPropagation();
-          e.preventDefault();
-        }}
-      >
+    <div className="web3bio-mask-cover">
+      <div ref={profileContainer} className="profile-main">
         {loading ? (
           <Loading />
         ) : error ? (
@@ -84,6 +104,9 @@ const RenderDomainPanel = (props) => {
           <EmptyRender />
         ) : (
           <IdentityPanel
+            onShowNFTDialog={() => setNftDialogOpen(true)}
+            onCloseNFTDialog={() => setNftDialogOpen(false)}
+            nftDialogOpen={nftDialogOpen}
             toNFT={toNFT}
             asComponent
             onClose={onClose}
@@ -97,7 +120,7 @@ const RenderDomainPanel = (props) => {
   ) : (
     <div className="web3bio-container">
       <div className="web3bio-cover flare"></div>
-      <div className="profile-main">
+      <div ref={profileContainer} className="profile-main">
         {loading ? (
           <Loading />
         ) : error ? (
@@ -119,6 +142,9 @@ const RenderDomainPanel = (props) => {
                 },
               });
             }}
+            nftDialogOpen={nftDialogOpen}
+            onShowNFTDialog={() => setNftDialogOpen(true)}
+            onCloseNFTDialog={() => setNftDialogOpen(false)}
             identity={_identity}
           />
         )}
@@ -126,6 +152,25 @@ const RenderDomainPanel = (props) => {
     </div>
   );
 };
+
+export async function getStaticPaths() {
+  // todo: get top100 ens 
+  // const enslist = await getTop1000Products()
+  const paths = preFetchENSList.map((ens) => ({
+    params: { domain: [ens] }
+  }))
+
+  return { paths, fallback: true }
+}
+
+export async function getStaticProps({ params }) {
+  const { domain } = params;
+  return {
+    props: {
+      domain,
+    },
+  };
+}
 
 
 export default memo(RenderDomainPanel);

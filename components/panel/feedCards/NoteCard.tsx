@@ -22,7 +22,7 @@ const RenderNoteCard = (props) => {
           <div className="feed-type-intro">
             <div className="strong">
               {isOwner
-                ? identity.displayName ?? formatText(identity.identity)
+                ? identity.displayName || formatText(identity.identity)
                 : formatText(feed.address_from ?? "")}
             </div>
             posted a note on

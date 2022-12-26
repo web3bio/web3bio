@@ -18,10 +18,10 @@ const RenderCollectibleCard = (props) => {
     let action;
     let metadata;
     const _from = isOwner
-      ? identity.displayName ?? formatText(identity.identity)
+      ? identity.displayName || formatText(identity.identity)
       : formatText(user ?? "");
     const _to = isSameAddress(identity.identity, feed.address_to)
-      ? identity.displayName ?? formatText(identity.identity)
+      ? identity.displayName || formatText(identity.identity)
       : formatText(feed.address_to ?? "");
     switch (feed.type) {
       case Type.Mint:

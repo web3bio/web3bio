@@ -27,9 +27,18 @@ export const TabsMap = {
 };
 
 const IdentityPanelRender = (props) => {
-  const { identity, onTabChange, curTab, onClose, asComponent, toNFT } = props;
+  const {
+    identity,
+    onTabChange,
+    curTab,
+    onClose,
+    asComponent,
+    toNFT,
+    nftDialogOpen,
+    onCloseNFTDialog,
+    onShowNFTDialog,
+  } = props;
   const [activeTab, setActiveTab] = useState(curTab);
-  const [curAsset, setCurAsset] = useState(null);
   const [copied, setCopied] = useState(null);
   const { data: profileData, isLoading: avatarLoading } = useProfile(
     identity.displayName || identity.identity
@@ -54,7 +63,7 @@ const IdentityPanelRender = (props) => {
         [TabsMap.profile.key]: (
           <ProfileTab
             toNFT={(v) => {
-              toNFT(v)
+              toNFT(v);
               localStorage.setItem("nft_anchor", v);
               setActiveTab(TabsMap.nfts.key);
             }}
@@ -64,7 +73,9 @@ const IdentityPanelRender = (props) => {
         [TabsMap.feeds.key]: <FeedsTab identity={identity} />,
         [TabsMap.nfts.key]: (
           <NFTsTab
-            defaultOpen={!!curAsset}
+            showDialog={onShowNFTDialog}
+            closeDialog={onCloseNFTDialog}
+            dialogOpen={nftDialogOpen}
             onShowDetail={resolveOnShowDetail}
             identity={identity}
           />

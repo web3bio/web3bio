@@ -4,7 +4,7 @@ import SVG from "react-inlinesvg";
 import { useAsync, useAsyncRetry } from "react-use";
 import useSWR from "swr";
 import { ens, globalRecordKeys, provider } from "../../utils/ens";
-import { resolveSocialMediaLink } from "../../utils/utils";
+import { isValidAddress, resolveSocialMediaLink } from "../../utils/utils";
 import { ENSFetcher, ENS_METADATA_END_POINT } from "../apis/ens";
 import { Empty } from "../shared/Empty";
 import { Loading } from "../shared/Loading";
@@ -67,12 +67,11 @@ export const ProfileTab = (props) => {
   const { identity, toNFT } = props;
   const domain = identity.displayName || identity.identity;
   const { value: ensRecords, loading: recordsLoading } = useAsync(async () => {
-    const _domain = domain.startsWith("0x")
-      ? await ens.getName(domain)
-      : domain;
+    const _domain = isValidAddress(domain) ? await ens.getName(domain) : domain;
+
     if (!_domain) return;
-    if (localStorage.getItem("ensrecords")) {
-      const cached = JSON.parse(localStorage.getItem("ensrecords"));
+    if (localStorage.getItem(`ens_${domain}`)) {
+      const cached = JSON.parse(localStorage.getItem(`ens_${domain}`));
       if (new Date().getTime() - cached.date <= 600000) {
         return cached.value;
       }
@@ -86,12 +85,12 @@ export const ProfileTab = (props) => {
       ens.getText.batch(_domain, "com.twitter"),
       ens.getText.batch(_domain, "org.telegram"),
       ens.getText.batch(_domain, "com.discord"),
-      ens.getText.batch(_domain, "com.reddit"),
+      ens.getText.batch(_domain, "com.reddit")
     );
     if (!batched[2]) batched[2] = await ens.getText(_domain, "vnd.github");
     if (!batched[3]) batched[3] = await ens.getText(_domain, "vnd.twitter");
     localStorage.setItem(
-      "ensrecords",
+      `ens_${domain}`,
       JSON.stringify({
         value: batched,
         date: new Date().getTime(),
@@ -129,7 +128,7 @@ export const ProfileTab = (props) => {
       ) : (
         <div className="profile-basic">
           <div className="profile-description">
-            {(ensRecords && ensRecords[0])}
+            {(ensRecords && ensRecords[0]) || "no description"}
           </div>
 
           <div className="records">
@@ -165,13 +164,9 @@ export const ProfileTab = (props) => {
         </div>
       )}
 
-      <div className="profile-widget widget-nft">
-        <div className="profile-widget-title">NFT COLLECTIONS</div>
-        <div className="profile-widget-container">
-          <NFTOverview identity={identity} toNFT={toNFT} />
-        </div>
-      </div>
       
+      <NFTOverview identity={identity} toNFT={toNFT} />
+
       <Poaps identity={identity} />
     </div>
   );
