@@ -152,4 +152,17 @@ const RenderDomainPanel = (props) => {
   );
 };
 
+export async function getStaticPaths() {
+  // todo: get top100 ens 
+  // const enslist = await getTop1000Products()
+  const enslist = ['sujiyan.eth','vitalik.eth']
+  const paths = enslist.map((ens) => ({
+    params: { domain: ens }
+  }))
+
+  return { paths, fallback: '‘blocking’' }
+}
+
+
+
 export default memo(RenderDomainPanel);
