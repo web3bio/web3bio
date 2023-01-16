@@ -771,13 +771,15 @@ body {
   }
 
   .widget-poap {
-    .collection-switcher {
-      box-shadow: none;
-      margin-left: -1.5rem;
-      margin-right: -1.5rem;
+    .nft-collection-list {
+      padding-top: 1rem;
 
-      .collection-list {
-        padding: .25rem 1.5rem;
+      .nft-list {
+        .nft-item {
+          .img-responsive {
+            box-shadow: none;
+          }
+        }
       }
     }
   }
@@ -1010,6 +1012,7 @@ body {
         box-shadow: 0 .2rem .8rem rgba($dark-color, .2);
         font-size: 1rem;
         height: 1.2rem;
+        object-fit: cover;
         width: 1.2rem;
       }
     }
