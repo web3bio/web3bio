@@ -20,6 +20,11 @@ const globalRecordKeys = [
 ];
 
 // todo: to checkout
-export const preFetchENSList = ["vitalik.eth", "sujiyan.eth", "yisiliu.eth"];
+export const preFetchENSList = [
+  "vitalik.eth",
+  "sujiyan.eth",
+  "yisiliu.eth",
+  "123.eth",
+];
 
 export { ens, globalRecordKeys };
