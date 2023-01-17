@@ -223,10 +223,12 @@ const RenderResultGraph = (props) => {
             <li>DisplayName: ${e.item.getModel().displayName || "-"}</li>
             <li>Identity: ${e.item.getModel().identity || "-"}</li>
             <li>Platform: ${
-              platformsMap[e.item.getModel().platform || "unknown"]
+              platformsMap[e.item.getModel().platform] || "Unknown"
             }</li>
             <li>Source: ${
-              platformsMap[e.item.getModel().source || "unknown"]
+              platformsMap[e.item.getModel().source] ||
+              e.item.getModel().source ||
+              "Unknown"
             }</li>
           </ul>`;
         } else {
@@ -398,7 +400,11 @@ const RenderResultGraph = (props) => {
   }, [data]);
 
   return (
-    <div className="identity-graph-modal" ref={tooltipContainer} onClick={onClose}>
+    <div
+      className="identity-graph-modal"
+      ref={tooltipContainer}
+      onClick={onClose}
+    >
       {data && (
         <div
           className="graph-container"
@@ -410,13 +416,13 @@ const RenderResultGraph = (props) => {
         >
           <div className="graph-header">
             <div className="graph-title">
-              <SVG src={'/icons/icon-view.svg'} width="20" height="20" />
+              <SVG src={"/icons/icon-view.svg"} width="20" height="20" />
               <span className="ml-2">
                 Identity Graph for<strong className="ml-1">{title}</strong>
               </span>
             </div>
             <div className="btn btn-link btn-close" onClick={onClose}>
-              <SVG src={'/icons/icon-close.svg'} width="20" height="20" />
+              <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
             </div>
           </div>
           {loading && (
