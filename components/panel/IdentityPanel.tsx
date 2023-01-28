@@ -9,7 +9,6 @@ import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { Loading } from "../shared/Loading";
 import { formatText } from "../../utils/utils";
 import { resolveIPFS_URL } from "../../utils/ipfs";
-import { useRouter } from "next/router";
 
 export const TabsMap = {
   profile: {

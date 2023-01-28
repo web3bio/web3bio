@@ -52,8 +52,8 @@ const RenderDomainPanel = (props) => {
     }
 
     const clickEvent = (e) => {
-      if (nftDialogOpen) {
-        const dialog = document.getElementById("nft-dialog");
+      const dialog = document.getElementById("nft-dialog");
+      if (nftDialogOpen && !dialog.contains(e.target)) {
         if (dialog) setNftDialogOpen(false);
       } else {
         if (profileContainer && !profileContainer.current.contains(e.target)) {
@@ -72,7 +72,7 @@ const RenderDomainPanel = (props) => {
     router.query.domain,
     name,
     nftDialogOpen,
-    onClose
+    onClose,
   ]);
 
   const _identity = (() => {
@@ -154,13 +154,13 @@ const RenderDomainPanel = (props) => {
 };
 
 export async function getStaticPaths() {
-  // todo: get top100 ens 
-  // const enslist = await getTop1000Products()
+  // todo: get top100 ens
+  // const ensList = await getTop1000ENS()
   const paths = preFetchENSList.map((ens) => ({
-    params: { domain: [ens] }
-  }))
+    params: { domain: [ens] },
+  }));
 
-  return { paths, fallback: true }
+  return { paths, fallback: true };
 }
 
 export async function getStaticProps({ params }) {
@@ -169,8 +169,8 @@ export async function getStaticProps({ params }) {
     props: {
       domain,
     },
+    revalidate: 10,
   };
 }
-
 
 export default memo(RenderDomainPanel);
