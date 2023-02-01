@@ -1,3 +1,4 @@
+import { profile } from "console";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -71,9 +72,11 @@ export default function Home() {
       window.history.replaceState(
         {},
         "",
-        `/${profileIdentity.displayName || profileIdentity.identity}${
-          panelTab === TabsMap.profile.key ? "" : `/${panelTab}`
-        }`
+        `/${
+          profileIdentity.platform === PlatformType.lens
+            ? profileIdentity.identity
+            : profileIdentity.displayName || profileIdentity.identity$
+        }${panelTab === TabsMap.profile.key ? "" : `/${panelTab}`}`
       );
     } else {
       router.replace({

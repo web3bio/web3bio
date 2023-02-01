@@ -58,15 +58,17 @@ const LensProfilePanelRender = (props) => {
               <NFTAssetPlayer
                 src={resolveMediaURL(profile.coverPicture.original.url || "")}
                 alt={
-                  profile.name
-                    ? profile.name || profile.handle
+                  profile.handle
+                    ? profile.handle || profile.name
                     : formatText(profile.ownedBy)
                 }
               />
             </div>
             <div className="identity-content content">
               <div className="content-title text-bold">
-                {profile.name ? profile.name : formatText(profile.ownedBy)}
+                {profile.handle
+                  ? profile.handle || profile.name
+                  : formatText(profile.ownedBy)}
               </div>
               <div className="content-subtitle text-gray">
                 <div className="address hide-xs">{profile.ownedBy}</div>
