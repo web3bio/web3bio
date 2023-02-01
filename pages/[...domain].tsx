@@ -8,6 +8,10 @@ import { GET_PROFILES_DOMAIN, GET_PROFILES_QUERY } from "../utils/queries";
 import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
 import { Empty } from "../components/shared/Empty";
 import { preFetchENSList } from "../utils/ens";
+import { PlatformType } from "../utils/type";
+import { GET_PROFILE_LENS } from "../utils/lens";
+import { LensProfilePanel } from "../components/panel/LensProfilePanel";
+
 const RenderDomainPanel = (props) => {
   const {
     domain,
@@ -19,7 +23,6 @@ const RenderDomainPanel = (props) => {
     toNFT,
   } = props;
   const router = useRouter();
-
   const [panelTab, setPanelTab] = useState(
     overridePanelTab || TabsMap.profile.key
   );
@@ -27,16 +30,6 @@ const RenderDomainPanel = (props) => {
   const [nftDialogOpen, setNftDialogOpen] = useState(false);
   const [name, setName] = useState(null);
   const profileContainer = useRef(null);
-
-  const { loading, error, data } = useQuery(
-    isDomainSearch(platform) ? GET_PROFILES_DOMAIN : GET_PROFILES_QUERY,
-    {
-      variables: {
-        platform: platform,
-        identity: name,
-      },
-    }
-  );
 
   useEffect(() => {
     if (asComponent) {
@@ -75,8 +68,35 @@ const RenderDomainPanel = (props) => {
     onClose,
   ]);
 
+  const { loading, error, data } = useQuery(
+    platform === PlatformType.lens
+      ? GET_PROFILE_LENS
+      : isDomainSearch(platform)
+      ? GET_PROFILES_DOMAIN
+      : GET_PROFILES_QUERY,
+    platform === PlatformType.lens
+      ? {
+          variables: {
+            handle: domain[0],
+          },
+          context: {
+            uri: process.env.NEXT_PUBLIC_LENS_GRAPHQL_SERVER,
+          },
+        }
+      : {
+          variables: {
+            platform: platform,
+            identity: name,
+          },
+        }
+  );
+
+  console.log(loading, error, data, "lens", name, platform, domain);
+
   const _identity = (() => {
     if (!data) return null;
+    console.log(data, "data");
+    if (platform === PlatformType.lens) return data.profile;
     if (isDomainSearch(platform)) {
       if (data.domain) return data.domain.owner;
     }
@@ -102,6 +122,12 @@ const RenderDomainPanel = (props) => {
           <Error text={error} />
         ) : !_identity ? (
           <EmptyRender />
+        ) : platform === PlatformType.lens ? (
+          <LensProfilePanel
+            onClose={onClose}
+            asComponent
+            profile={_identity}
+          ></LensProfilePanel>
         ) : (
           <IdentityPanel
             onShowNFTDialog={() => setNftDialogOpen(true)}
@@ -127,6 +153,8 @@ const RenderDomainPanel = (props) => {
           <Error text={error} />
         ) : !_identity ? (
           <EmptyRender />
+        ) : platform === PlatformType.lens ? (
+          <LensProfilePanel profile={_identity}></LensProfilePanel>
         ) : (
           <IdentityPanel
             curTab={panelTab}

@@ -116,16 +116,16 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
             </div>
-            <div className="actions">
-              <a
+            <div className="social-actions">
+              <button
                 className="btn btn-sm btn-link action"
-                href={`https://www.lensfrens.xyz/${identity.identity}`}
-                title="Open LensFrens"
-                target="_blank"
-                rel="noopener noreferrer"
+                title="Open Identity Panel"
+                onClickCapture={() => {
+                  onItemClick(identity, PlatformType.lens)
+                }}
               >
-                <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
-              </a>
+                <SVG src="icons/icon-open.svg" width={20} height={20} />
+              </button>
             </div>
           </div>
           <RenderSourceFooter sources={sources} />

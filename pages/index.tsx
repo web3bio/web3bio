@@ -6,6 +6,7 @@ import SVG from "react-inlinesvg";
 import { TabsMap } from "../components/panel/IdentityPanel";
 import { SearchResultDomain } from "../components/search/SearchResultDomain";
 import { SearchResultQuery } from "../components/search/SearchResultQuery";
+import { PlatformType } from "../utils/type";
 import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
 import ProfilePage from "./[...domain]";
 
@@ -17,6 +18,7 @@ export default function Home() {
   const [profilePlatform, setProfilePlatform] = useState(null);
   const [searchPlatform, setsearchPlatform] = useState("");
   const [panelTab, setPanelTab] = useState(TabsMap.profile.key);
+  const [domain, setDomain] = useState([]);
   const inputRef = useRef(null);
   const router = useRouter();
   const handleSubmit = (e) => {
@@ -36,10 +38,14 @@ export default function Home() {
   const openProfile = (identity, platform) => {
     setProfileIdentity(identity);
     setProfilePlatform(platform);
+    if (platform === PlatformType.lens) {
+      setDomain([identity.identity]);
+    } else {
+      setDomain([identity.displayName || identity.identity]);
+    }
     setModalOpen(true);
   };
   useEffect(() => {
-    
     if (!router.isReady) return;
     if (router.query.s) {
       setSearchFocus(true);
@@ -60,7 +66,7 @@ export default function Home() {
   }, [router.isReady, router.query.s, router.query.platform]);
 
   useEffect(() => {
-    if(!router.isReady) return
+    if (!router.isReady) return;
     if (modalOpen) {
       window.history.replaceState(
         {},
@@ -72,15 +78,10 @@ export default function Home() {
     } else {
       router.replace({
         pathname: "",
-        query: router.query
+        query: router.query,
       });
     }
-  }, [
-    modalOpen,
-    panelTab,
-    router.query.s,
-    router.isReady
-  ]);
+  }, [modalOpen, panelTab, router.query.s, router.isReady]);
 
   return (
     <div>
@@ -230,13 +231,13 @@ export default function Home() {
           asComponent
           onClose={() => {
             setModalOpen(false);
-            setPanelTab(TabsMap.profile.key)
+            setPanelTab(TabsMap.profile.key);
           }}
           overridePanelTab={panelTab}
           onTabChange={(v) => {
             setPanelTab(v);
           }}
-          domain={[profileIdentity.displayName || profileIdentity.identity]}
+          domain={domain}
           overridePlatform={profilePlatform}
         />
       )}
