@@ -9,6 +9,7 @@ import { LensProfileTab } from "./lensTabs/LensProfileTab";
 import { LensNFTTab } from "./lensTabs/LensNFTTab";
 import { FeedsTab } from "./FeedsTab";
 import { PlatformType } from "../../utils/type";
+import { NFTsTab } from "./NFTsTab";
 
 export const TabsMap = {
   profile: {
@@ -32,7 +33,15 @@ const resolveMediaURL = (asset) => {
 };
 
 const LensProfilePanelRender = (props) => {
-  const { profile, asComponent, onClose, onTabChange } = props;
+  const {
+    profile,
+    asComponent,
+    onClose,
+    onTabChange,
+    nftDialogOpen,
+    onCloseNFTDialog,
+    onShowNFTDialog,
+  } = props;
   const [activeTab, setActiveTab] = useState(TabsMap.profile.key);
   const [copied, setCopied] = useState(null);
   const onCopySuccess = () => {
@@ -45,10 +54,24 @@ const LensProfilePanelRender = (props) => {
     return (
       {
         [TabsMap.profile.key]: <LensProfileTab profile={profile} />,
-        [TabsMap.feeds.key]: <FeedsTab network={PlatformType.lens} identity={profile} />,
-        [TabsMap.nfts.key]: <LensNFTTab />,
+        [TabsMap.feeds.key]: (
+          <FeedsTab network={PlatformType.lens} identity={profile} />
+        ),
+        [TabsMap.nfts.key]: (
+          <NFTsTab
+            showDialog={onShowNFTDialog}
+            closeDialog={onCloseNFTDialog}
+            dialogOpen={nftDialogOpen}
+            onShowDetail={resolveOnShowDetail}
+            identity={profile}
+            network={PlatformType.lens}
+          />
+        ),
       }[activeTab] || <LensProfileTab profile={profile} />
     );
+  };
+  const resolveOnShowDetail = (asset) => {
+    // todo: to resolve url && nft dialog
   };
   return (
     <div className="identity-panel">

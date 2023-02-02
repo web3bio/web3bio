@@ -3,7 +3,7 @@ import { NFTCollections } from "./NFTCollections";
 import { NFTDialog } from "./NFTDialog";
 
 const RenderNFTsTab = (props) => {
-  const { identity, onShowDetail, dialogOpen, showDialog, closeDialog } = props;
+  const { identity, onShowDetail, dialogOpen, showDialog, closeDialog,network } = props;
   const [asset, setAsset] = useState("");
 
   return (
@@ -16,6 +16,7 @@ const RenderNFTsTab = (props) => {
           showDialog();
         }}
         isDetail
+        network={network}
       />
       {dialogOpen && asset && (
         <NFTDialog
