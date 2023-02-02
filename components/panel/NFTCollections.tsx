@@ -1,18 +1,25 @@
 import { memo, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
-import { NFTSCANFetcher, NFTSCAN_BASE_API_ENDPOINT } from "../apis/nftscan";
+import {
+  NFTSCANFetcher,
+  NFTSCAN_BASE_API_ENDPOINT,
+  NFTSCAN_POLYGON_BASE_API,
+} from "../apis/nftscan";
 import { CollectionSwitcher } from "./CollectionSwitcher";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { Loading } from "../shared/Loading";
+import { PlatformType } from "../../utils/type";
 
-function useCollections(address: string) {
-  const { data, error } = useSWR<any>(
-    NFTSCAN_BASE_API_ENDPOINT + `account/own/all/${address}?erc_type=erc721`,
-    NFTSCANFetcher
-  );
+function useCollections(address: string, network: string) {
+  const baseURL =
+    network === PlatformType.lens
+      ? NFTSCAN_POLYGON_BASE_API
+      : NFTSCAN_BASE_API_ENDPOINT;
+  const url = baseURL + `account/own/all/${address}?erc_type=erc721`;
+  const { data, error } = useSWR<any>(url, NFTSCANFetcher);
   return {
     data: data,
     isLoading: !error && !data,
@@ -21,10 +28,13 @@ function useCollections(address: string) {
 }
 
 const RenderNFTCollections = (props) => {
-  const { onShowDetail, identity } = props;
+  const { onShowDetail, identity, network } = props;
   const [collections, setCollections] = useState([]);
   const [anchorName, setAnchorName] = useState("");
-  const { data, isLoading, isError } = useCollections(identity.identity);
+  const { data, isLoading, isError } = useCollections(
+    identity.ownedBy,
+    network
+  );
   const [activeCollection, setActiveCollection] = useState(null);
   const scrollContainer = useRef(null);
 

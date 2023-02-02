@@ -6,7 +6,6 @@ import { getEnumAsArray } from "../../utils/utils";
 import { formatText } from "../../utils/utils";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { LensProfileTab } from "./lensTabs/LensProfileTab";
-import { LensNFTTab } from "./lensTabs/LensNFTTab";
 import { FeedsTab } from "./FeedsTab";
 import { PlatformType } from "../../utils/type";
 import { NFTsTab } from "./NFTsTab";
