@@ -12,12 +12,12 @@ export const isTokenTransferFeed = (feed) => {
 };
 
 const RenderTokenOperationCard = (props) => {
-  const { feed, identity } = props;
+  const { feed, owner, name } = props;
   const action = feed.actions[0];
   const metadata = action.metadata;
-  const isFromOwner = isSameAddress(identity.identity, action.address_from);
-  const _to = isSameAddress(identity.identity, action.address_to)
-    ? identity.displayName
+  const isFromOwner = isSameAddress(owner, action.address_from);
+  const _to = isSameAddress(owner, action.address_to)
+    ? name
     : formatText(feed.address_to ?? "");
   const context =
     feed.type === Type.Burn ? "burn" : isFromOwner ? "send to" : "claim from";
@@ -29,7 +29,7 @@ const RenderTokenOperationCard = (props) => {
           <div className="feed-type-intro">
             <div className="strong">
               {isFromOwner
-                ? identity.displayName || formatText(identity.identity)
+                ? name || formatText(owner)
                 : formatText(action.address_from ?? "")}
             </div>
             {context}

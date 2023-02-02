@@ -8,13 +8,13 @@ export function isDonationFeed(feed) {
 }
 
 const RenderDonationCard = (props) => {
-  const { feed, identity, actionIndex } = props;
+  const { feed, actionIndex,owner,name } = props;
   const [index, setIndex] = useState(0);
   const activeActionIndex = actionIndex ?? index;
   const action = feed.actions[activeActionIndex];
   const metadata = action.metadata;
   const user = feed.owner;
-  const isOwner = isSameAddress(user, identity.identity);
+  const isOwner = isSameAddress(user, owner);
 
   return (
     <div className="feed-item-box">
@@ -24,7 +24,7 @@ const RenderDonationCard = (props) => {
           <div className="feed-type-intro">
             <div className="strong">
               {isOwner
-                ? identity.displayName || formatText(identity.identity)
+                ? name || formatText(owner)
                 : formatText(user ?? "")}
             </div>
             donated

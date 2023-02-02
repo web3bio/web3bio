@@ -127,6 +127,8 @@ const RenderDomainPanel = (props) => {
             onClose={onClose}
             asComponent
             profile={_identity}
+            curTab={panelTab}
+            onTabChange={onTabChange}
           ></LensProfilePanel>
         ) : (
           <IdentityPanel
@@ -154,7 +156,15 @@ const RenderDomainPanel = (props) => {
         ) : !_identity ? (
           <EmptyRender />
         ) : platform === PlatformType.lens ? (
-          <LensProfilePanel profile={_identity}></LensProfilePanel>
+          <LensProfilePanel  onTabChange={(v) => {
+            setPanelTab(v);
+            router.replace({
+              pathname: "",
+              query: {
+                domain: [name, v === TabsMap.profile.key ? "" : v],
+              },
+            });
+          }} profile={_identity}></LensProfilePanel>
         ) : (
           <IdentityPanel
             curTab={panelTab}

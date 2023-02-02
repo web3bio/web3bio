@@ -9,6 +9,7 @@ import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { Loading } from "../shared/Loading";
 import { formatText } from "../../utils/utils";
 import { resolveIPFS_URL } from "../../utils/ipfs";
+import { PlatformType } from "../../utils/type";
 
 export const TabsMap = {
   profile: {
@@ -69,7 +70,7 @@ const IdentityPanelRender = (props) => {
             identity={identity}
           />
         ),
-        [TabsMap.feeds.key]: <FeedsTab identity={identity} />,
+        [TabsMap.feeds.key]: <FeedsTab network={PlatformType.ens} identity={identity} />,
         [TabsMap.nfts.key]: (
           <NFTsTab
             showDialog={onShowNFTDialog}

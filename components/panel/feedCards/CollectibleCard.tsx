@@ -11,17 +11,17 @@ export function getLastAction(feed) {
 }
 
 const RenderCollectibleCard = (props) => {
-  const { feed, identity } = props;
+  const { feed,owner,name } = props;
   const user = feed.address_from;
   const isOwner = isSameAddress(user, feed.address_from);
   const { metadata, summary } = useMemo(() => {
     let action;
     let metadata;
     const _from = isOwner
-      ? identity.displayName || formatText(identity.identity)
+      ? name || formatText(owner)
       : formatText(user ?? "");
-    const _to = isSameAddress(identity.identity, feed.address_to)
-      ? identity.displayName || formatText(identity.identity)
+    const _to = isSameAddress(owner, feed.address_to)
+      ? name || formatText(owner)
       : formatText(feed.address_to ?? "");
     switch (feed.type) {
       case Type.Mint:

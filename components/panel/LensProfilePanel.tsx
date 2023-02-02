@@ -6,8 +6,9 @@ import { getEnumAsArray } from "../../utils/utils";
 import { formatText } from "../../utils/utils";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { LensProfileTab } from "./lensTabs/LensProfileTab";
-import { LensContentTab } from "./lensTabs/LensContentTab";
 import { LensNFTTab } from "./lensTabs/LensNFTTab";
+import { FeedsTab } from "./FeedsTab";
+import { PlatformType } from "../../utils/type";
 
 export const TabsMap = {
   profile: {
@@ -15,8 +16,8 @@ export const TabsMap = {
     name: "Profile",
   },
   feeds: {
-    key: "content",
-    name: "Content",
+    key: "feeds",
+    name: "Feeds",
   },
   nfts: {
     key: "nfts",
@@ -31,7 +32,7 @@ const resolveMediaURL = (asset) => {
 };
 
 const LensProfilePanelRender = (props) => {
-  const { profile, asComponent, onClose } = props;
+  const { profile, asComponent, onClose, onTabChange } = props;
   const [activeTab, setActiveTab] = useState(TabsMap.profile.key);
   const [copied, setCopied] = useState(null);
   const onCopySuccess = () => {
@@ -44,7 +45,7 @@ const LensProfilePanelRender = (props) => {
     return (
       {
         [TabsMap.profile.key]: <LensProfileTab profile={profile} />,
-        [TabsMap.feeds.key]: <LensContentTab />,
+        [TabsMap.feeds.key]: <FeedsTab network={PlatformType.lens} identity={profile} />,
         [TabsMap.nfts.key]: <LensNFTTab />,
       }[activeTab] || <LensProfileTab profile={profile} />
     );
@@ -108,14 +109,14 @@ const LensProfilePanelRender = (props) => {
                   }
                 >
                   <a
-                  //   href="#"
-                  //   onClick={(e) => {
-                  //     e.preventDefault();
-                  //     setActiveTab(x.value.key);
-                  //     localStorage.removeItem("feeds");
-                  //     if (!onTabChange) return;
-                  //     onTabChange(x.value.key);
-                  //   }}
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setActiveTab(x.value.key);
+                      localStorage.removeItem("feeds");
+                      if (!onTabChange) return;
+                      onTabChange(x.value.key);
+                    }}
                   >
                     {x.value.name}
                   </a>
