@@ -14,7 +14,7 @@ export const GET_PROFILES_DOMAIN = gql`
           chain
           id
         }
-        neighborWithTraversal(depth: 7) {
+        neighborWithTraversal(depth: 5) {
           source
           from {
             platform
@@ -77,7 +77,7 @@ export const GET_PROFILES_QUERY = gql`
         chain
         id
       }
-      neighborWithTraversal(depth: 7) {
+      neighborWithTraversal(depth: 5) {
         source
         from {
           uuid
