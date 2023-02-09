@@ -8,11 +8,11 @@ export function isProfileFeed(feed) {
 }
 
 const RenderProfileFeed = (props) => {
-  const { feed, identity } = props;
+  const { feed, owner,name } = props;
   const action = feed.actions[0];
   const metadata = action.metadata;
   const imageSize = 40;
-  const isOwner = isSameAddress(feed.owner, identity.identity);
+  const isOwner = isSameAddress(feed.owner, owner);
   return (
     <div className="feed-item-box">
       <div className="feed-type-badge"></div>
@@ -21,7 +21,7 @@ const RenderProfileFeed = (props) => {
           <div className="feed-type-intro">
             <div className="strong">
               {isOwner
-                ? identity.displayName || formatText(identity.identity)
+                ? name || formatText(owner)
                 : formatText(feed.owner ?? "")}
             </div>
             created an profile on

@@ -7,11 +7,13 @@ import { Loading } from "../shared/Loading";
 import { debounce } from "../../utils/utils";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
+import { PlatformType } from "../../utils/type";
 
 const PAGE_SIZE = 30;
 const getFeedsURL = (
   address: string,
   startHash?: string,
+  network?: string,
   previousPageData?
 ) => {
   if (previousPageData && !previousPageData.length) return null;
@@ -19,13 +21,15 @@ const getFeedsURL = (
     RSS3_END_POINT +
     `notes/${address}?limit=${PAGE_SIZE}${
       startHash ? `&cursor=${startHash}` : ""
-    }&&include_poap=false&count_only=false&query_status=false`
+    }&&include_poap=false&count_only=false&network=${
+      network === PlatformType.lens ? "polygon" : "ethereum"
+    }&query_status=false`
   );
 };
 
-function useFeeds(address: string, startHash?: string) {
+function useFeeds(address: string, startHash?: string, network?: string) {
   const { data, error, size, isValidating, setSize } = useSWRInfinite(
-    () => getFeedsURL(address, startHash),
+    () => getFeedsURL(address, startHash, network),
     RSS3Fetcher
   );
   return {
@@ -39,13 +43,13 @@ function useFeeds(address: string, startHash?: string) {
 }
 
 const RenderFeedsTab = (props) => {
-  const { identity } = props;
+  const { identity, network } = props;
   const [startHash, setStartHash] = useState("");
   const [issues, setIssues] = useState([]);
-
   const { data, error, size, setSize, isValidating, isLoading } = useFeeds(
-    identity.identity,
-    startHash
+    network === PlatformType.lens ? identity.ownedBy : identity.identity,
+    startHash,
+    network
   );
   const isLoadingInitialData = !data && !error;
   const isLoadingMore =
@@ -115,7 +119,7 @@ const RenderFeedsTab = (props) => {
           (x, idx) =>
             (isSupportedFeed(x) && (
               <div key={idx}>
-                <FeedItem identity={identity} feed={x} />
+                <FeedItem network={network} identity={identity} feed={x} />
                 <div className="feed-timestamp">
                   {formatTimestamp(x.timestamp)}
                 </div>

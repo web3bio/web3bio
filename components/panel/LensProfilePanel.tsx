@@ -1,15 +1,14 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useState } from "react";
 import SVG from "react-inlinesvg";
 import Clipboard from "react-clipboard.js";
-import { getEnumAsArray } from "../../utils/utils";
-import { FeedsTab } from "./FeedsTab";
-import { NFTsTab } from "./NFTsTab";
-import { ProfileTab, useProfile } from "./ProfileTab";
-import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { Loading } from "../shared/Loading";
-import { formatText } from "../../utils/utils";
 import { resolveIPFS_URL } from "../../utils/ipfs";
+import { getEnumAsArray } from "../../utils/utils";
+import { formatText } from "../../utils/utils";
+import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
+import { LensProfileTab } from "./lensTabs/LensProfileTab";
+import { FeedsTab } from "./FeedsTab";
 import { PlatformType } from "../../utils/type";
+import { NFTsTab } from "./NFTsTab";
 
 export const TabsMap = {
   profile: {
@@ -25,65 +24,51 @@ export const TabsMap = {
     name: "NFTs",
   },
 };
+const resolveMediaURL = (asset) => {
+  if (asset) {
+    return asset.startsWith("data:", "https:") ? asset : resolveIPFS_URL(asset);
+  }
+  return "";
+};
 
-const IdentityPanelRender = (props) => {
+const LensProfilePanelRender = (props) => {
   const {
-    identity,
-    onTabChange,
-    curTab,
-    onClose,
+    profile,
     asComponent,
-    toNFT,
+    onClose,
+    onTabChange,
     nftDialogOpen,
     onCloseNFTDialog,
     onShowNFTDialog,
   } = props;
-  const [activeTab, setActiveTab] = useState(curTab);
+  const [activeTab, setActiveTab] = useState(TabsMap.profile.key);
   const [copied, setCopied] = useState(null);
-  const { data: profileData, isLoading: avatarLoading } = useProfile(
-    identity.displayName || identity.identity
-  );
   const onCopySuccess = () => {
     setCopied(true);
     setTimeout(() => {
       setCopied(false);
     }, 1500);
   };
-  const resolveMediaURL = (asset) => {
-    if (asset) {
-      return asset.startsWith("data:", "https:")
-        ? asset
-        : resolveIPFS_URL(asset);
-    }
-    return "";
-  };
   const renderContent = () => {
     return (
       {
-        [TabsMap.profile.key]: (
-          <ProfileTab
-            toNFT={(v) => {
-              toNFT(v);
-              localStorage.setItem("nft_anchor", v);
-              setActiveTab(TabsMap.nfts.key);
-            }}
-            identity={identity}
-          />
+        [TabsMap.profile.key]: <LensProfileTab profile={profile} />,
+        [TabsMap.feeds.key]: (
+          <FeedsTab network={PlatformType.lens} identity={profile} />
         ),
-        [TabsMap.feeds.key]: <FeedsTab network={PlatformType.ens} identity={identity} />,
         [TabsMap.nfts.key]: (
           <NFTsTab
             showDialog={onShowNFTDialog}
             closeDialog={onCloseNFTDialog}
             dialogOpen={nftDialogOpen}
             onShowDetail={resolveOnShowDetail}
-            identity={identity}
+            identity={profile}
+            network={PlatformType.lens}
           />
         ),
-      }[activeTab] || <FeedsTab identity={identity} />
+      }[activeTab] || <LensProfileTab profile={profile} />
     );
   };
-
   const resolveOnShowDetail = (asset) => {
     // todo: to resolve url && nft dialog
   };
@@ -93,34 +78,30 @@ const IdentityPanelRender = (props) => {
         <div className="panel-header">
           <div className="social">
             <div className="identity-avatar">
-              {avatarLoading ? (
-                <Loading />
-              ) : (
-                <NFTAssetPlayer
-                  src={resolveMediaURL(profileData.image)}
-                  alt={
-                    identity.displayName
-                      ? identity.displayName
-                      : formatText(identity.identity)
-                  }
-                />
-              )}
+              <NFTAssetPlayer
+                src={resolveMediaURL(profile.coverPicture.original.url || "")}
+                alt={
+                  profile.handle
+                    ? profile.handle || profile.name
+                    : formatText(profile.ownedBy)
+                }
+              />
             </div>
             <div className="identity-content content">
               <div className="content-title text-bold">
-                {identity.displayName
-                  ? identity.displayName
-                  : formatText(identity.identity)}
+                {profile.handle
+                  ? profile.handle || profile.name
+                  : formatText(profile.ownedBy)}
               </div>
               <div className="content-subtitle text-gray">
-                <div className="address hide-xs">{identity.identity}</div>
+                <div className="address hide-xs">{profile.ownedBy}</div>
                 <div className="address show-xs">
-                  {formatText(identity.identity)}
+                  {formatText(profile.ownedBy)}
                 </div>
                 <Clipboard
                   component="div"
                   className="action"
-                  data-clipboard-text={identity.identity}
+                  data-clipboard-text={profile.ownedBy}
                   onSuccess={onCopySuccess}
                 >
                   <SVG src="icons/icon-copy.svg" width={20} height={20} />
@@ -173,4 +154,4 @@ const IdentityPanelRender = (props) => {
   );
 };
 
-export const IdentityPanel = memo(IdentityPanelRender);
+export const LensProfilePanel = memo(LensProfilePanelRender);

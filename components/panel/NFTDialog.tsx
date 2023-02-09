@@ -1,13 +1,22 @@
 import { memo } from "react";
 import SVG from "react-inlinesvg";
 import useSWR from "swr";
-import { NFTSCANFetcher, NFTSCAN_BASE_API_ENDPOINT } from "../apis/nftscan";
+import { NFTSCANFetcher, NFTSCAN_BASE_API_ENDPOINT, NFTSCAN_POLYGON_BASE_API } from "../apis/nftscan";
 import { Error } from "../shared/Error";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { isValidJson } from "../../utils/utils";
-function useAsset(address: string, tokenId: string | number) {
+import { PlatformType } from "../../utils/type";
+function useAsset(
+  address: string,
+  tokenId: string | number,
+  network: PlatformType
+) {
+  const baseURL =
+    network === PlatformType.lens
+      ? NFTSCAN_POLYGON_BASE_API
+      : NFTSCAN_BASE_API_ENDPOINT;
   const { data, error } = useSWR<any>(
-    NFTSCAN_BASE_API_ENDPOINT + `assets/${address}/${tokenId}`,
+    baseURL + `assets/${address}/${tokenId}`,
     NFTSCANFetcher
   );
   return {
@@ -17,10 +26,11 @@ function useAsset(address: string, tokenId: string | number) {
   };
 }
 const NFTDialogRender = (props) => {
-  const { onClose, asset } = props;
+  const { onClose, asset, network } = props;
   const { data, isError } = useAsset(
     asset.asset.contract_address,
-    asset.asset.token_id
+    asset.asset.token_id,
+    network,
   );
   const resolveOpenseaLink = `https://opensea.io/assets/ethereum/${asset.asset.contract_address}/${asset.asset.token_id}`;
 
@@ -30,10 +40,10 @@ const NFTDialogRender = (props) => {
   const metadata = isValidJson(_asset.metadata_json)
     ? JSON.parse(_asset.metadata_json)
     : null;
- 
+
   return (
     <>
-      <div id='nft-dialog' className="nft-panel">
+      <div id="nft-dialog" className="nft-panel">
         <div className="panel-container">
           <div className="btn btn-close" onClick={onClose}>
             <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
@@ -102,7 +112,7 @@ const NFTDialogRender = (props) => {
                 </div>
               </div>
             )}
-            {metadata.attributes && metadata.attributes.length > 0 && (
+            {metadata?.attributes && metadata?.attributes.length > 0 && (
               <div className="panel-widget">
                 <div className="panel-widget-title">Attributes</div>
                 <div className="panel-widget-content">

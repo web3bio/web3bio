@@ -8,10 +8,10 @@ export function isCommentFeed(feed) {
 }
 
 const RenderCommentFeed = (props) => {
-  const { feed, identity } = props;
+  const { feed, owner,name } = props;
   const action = feed.actions[0];
   const metadata = action.metadata;
-  const user = identity.identity;
+  const user = owner;
   const commentTarget = metadata?.targetuseAddressLabel;
 
   const isOwner = isSameAddress(user, feed.owner);
@@ -23,7 +23,7 @@ const RenderCommentFeed = (props) => {
           <div className="feed-type-intro">
             <div className="strong">
               {isOwner
-                ? identity.displayName || formatText(identity.identity)
+                ? name || formatText(owner)
                 : formatText(user ?? "")}
             </div>
             made a comment on

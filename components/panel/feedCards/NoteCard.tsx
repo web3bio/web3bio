@@ -9,10 +9,10 @@ export function isNoteFeed(feed) {
 }
 
 const RenderNoteCard = (props) => {
-  const { feed, identity } = props;
+  const { feed,name,owner } = props;
   const action = feed.actions[0];
   const metadata = action.metadata;
-  const isOwner = isSameAddress(feed.address_from, identity.identity);
+  const isOwner = isSameAddress(feed.address_from, owner);
 
   return (
     <div className="feed-item-box">
@@ -22,7 +22,7 @@ const RenderNoteCard = (props) => {
           <div className="feed-type-intro">
             <div className="strong">
               {isOwner
-                ? identity.displayName || formatText(identity.identity)
+                ? name || formatText(owner)
                 : formatText(feed.address_from ?? "")}
             </div>
             posted a note on

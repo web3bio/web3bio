@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { PlatformType } from "../../utils/type";
 import {
   CollectibleCard,
   isCollectibleFeed,
@@ -26,27 +27,112 @@ export const isSupportedFeed = (feed) => {
 };
 
 const RenderFeedItem = (props) => {
-  const { feed, identity } = props;
+  const { feed, identity, network } = props;
   if (isTokenOperationFeed(feed))
-    return <TokenOperationCard feed={feed} identity={identity} />;
+    return (
+      <TokenOperationCard
+        feed={feed}
+        owner={
+          network === PlatformType.lens ? identity.ownedBy : identity.identity
+        }
+        name={
+          network === PlatformType.lens
+            ? identity.displayName
+            : identity.name || identity.handle
+        }
+      />
+    );
   if (isTokenSwapFeed(feed))
-    return <TokenSwapCard feed={feed} identity={identity} />;
+    return (
+      <TokenSwapCard
+        feed={feed}
+        owner={
+          network === PlatformType.lens ? identity.ownedBy : identity.identity
+        }
+        name={
+          network === PlatformType.lens
+            ? identity.displayName
+            : identity.name || identity.handle
+        }
+      />
+    );
 
   if (isCollectibleFeed(feed))
-    return <CollectibleCard feed={feed} identity={identity} />;
+    return (
+      <CollectibleCard
+        feed={feed}
+        owner={
+          network === PlatformType.lens ? identity.ownedBy : identity.identity
+        }
+        name={
+          network === PlatformType.lens
+            ? identity.displayName
+            : identity.name || identity.handle
+        }
+      />
+    );
 
-  if (isDonationFeed(feed)) return <DonationCard feed={feed} identity={identity} />;
+  if (isDonationFeed(feed))
+    return (
+      <DonationCard
+        feed={feed}
+        owner={
+          network === PlatformType.lens ? identity.ownedBy : identity.identity
+        }
+        name={
+          network === PlatformType.lens
+            ? identity.displayName
+            : identity.name || identity.handle
+        }
+      />
+    );
 
-  if (isNoteFeed(feed)) return <NoteCard feed={feed} identity={identity} />;
+  if (isNoteFeed(feed))
+    return (
+      <NoteCard
+        feed={feed}
+        owner={
+          network === PlatformType.lens ? identity.ownedBy : identity.identity
+        }
+        name={
+          network === PlatformType.lens
+            ? identity.displayName
+            : identity.name || identity.handle
+        }
+      />
+    );
 
   if (isCommentFeed(feed))
-    return <CommentCard feed={feed} identity={identity} />;
+    return (
+      <CommentCard
+        feed={feed}
+        owner={
+          network === PlatformType.lens ? identity.ownedBy : identity.identity
+        }
+        name={
+          network === PlatformType.lens
+            ? identity.displayName
+            : identity.name || identity.handle
+        }
+      />
+    );
 
   if (isProfileFeed(feed))
-    return <ProfileCard feed={feed} identity={identity} />;
+    return (
+      <ProfileCard
+        feed={feed}
+        owner={
+          network === PlatformType.lens ? identity.ownedBy : identity.identity
+        }
+        name={
+          network === PlatformType.lens
+            ? identity.displayName
+            : identity.name || identity.handle
+        }
+      />
+    );
 
   return null;
 };
-
 
 export const FeedItem = memo(RenderFeedItem);

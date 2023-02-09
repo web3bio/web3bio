@@ -135,7 +135,7 @@ export const handleSearchPlatform = (term: string) => {
 };
 
 export const isDomainSearch = (term) => {
-  return [PlatformType.ens, PlatformType.dotbit, PlatformType.lens].includes(
+  return [PlatformType.ens, PlatformType.dotbit].includes(
     term
   );
 };

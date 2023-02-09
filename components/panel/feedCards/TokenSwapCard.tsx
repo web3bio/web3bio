@@ -7,10 +7,10 @@ export function isTokenSwapFeed(feed) {
 }
 
 const RenderTokenSwapCard = (props) => {
-  const { feed, identity } = props;
+  const { feed, owner,name } = props;
   const action = feed.actions[0];
   const metadata = action.metadata;
-  const user = identity.identity;
+  const user = owner;
   const isFromOwner = isSameAddress(user, action.address_from);
 
   return (
@@ -21,7 +21,7 @@ const RenderTokenSwapCard = (props) => {
           <div className="feed-type-intro">
             <div className="strong">
               {isFromOwner
-                ? identity.displayName || formatText(identity.identity)
+                ? name || formatText(owner)
                 : formatText(action.address_from)}
             </div>
             swaped on
