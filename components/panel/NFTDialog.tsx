@@ -112,7 +112,7 @@ const NFTDialogRender = (props) => {
                 </div>
               </div>
             )}
-            {metadata.attributes && metadata.attributes.length > 0 && (
+            {metadata?.attributes && metadata?.attributes.length > 0 && (
               <div className="panel-widget">
                 <div className="panel-widget-title">Attributes</div>
                 <div className="panel-widget-content">

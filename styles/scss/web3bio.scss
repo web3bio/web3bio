@@ -382,7 +382,7 @@ body {
       padding: .25rem;
 
       .action {
-        background: rgba($dark-color, .025);
+        background: rgba($dark-color, .035);
         height: 100%;
       }
     }
@@ -448,6 +448,7 @@ body {
 
   .actions {
     display: none;
+    margin-left: auto;
     padding: .2rem;
 
     .action {

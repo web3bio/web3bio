@@ -1,6 +1,6 @@
 import { ImgHTMLAttributes, useState, SyntheticEvent } from "react";
 import { DefaultIcon } from "./Default";
-import { Loading } from "./Loading";
+// import { Loading } from "./Loading";
 
 export function ImageLoader(props: ImgHTMLAttributes<HTMLImageElement>) {
   const [loaded, setLoaded] = useState(false);
