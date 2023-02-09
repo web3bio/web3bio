@@ -129,6 +129,8 @@ const RenderDomainPanel = (props) => {
             profile={_identity}
             curTab={panelTab}
             onTabChange={onTabChange}
+            onShowNFTDialog={() => setNftDialogOpen(true)}
+            onCloseNFTDialog={() => setNftDialogOpen(false)}
           ></LensProfilePanel>
         ) : (
           <IdentityPanel
@@ -156,15 +158,21 @@ const RenderDomainPanel = (props) => {
         ) : !_identity ? (
           <EmptyRender />
         ) : platform === PlatformType.lens ? (
-          <LensProfilePanel  onTabChange={(v) => {
-            setPanelTab(v);
-            router.replace({
-              pathname: "",
-              query: {
-                domain: [name, v === TabsMap.profile.key ? "" : v],
-              },
-            });
-          }} profile={_identity}></LensProfilePanel>
+          <LensProfilePanel
+            onTabChange={(v) => {
+              setPanelTab(v);
+              router.replace({
+                pathname: "",
+                query: {
+                  domain: [name, v === TabsMap.profile.key ? "" : v],
+                },
+              });
+            }}
+            profile={_identity}
+            nftDialogOpen={nftDialogOpen}
+            onShowNFTDialog={() => setNftDialogOpen(true)}
+            onCloseNFTDialog={() => setNftDialogOpen(false)}
+          ></LensProfilePanel>
         ) : (
           <IdentityPanel
             curTab={panelTab}
