@@ -151,7 +151,6 @@ const RenderNFTCollections = (props) => {
                   {x.assets.map((y, ydx) => {
                     const mediaURL = resolveMediaURL(y.image_uri);
                     const contentURL = resolveMediaURL(y.content_uri);
-
                     return (
                       <div
                         key={ydx}
