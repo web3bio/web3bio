@@ -32,7 +32,7 @@ const RenderNFTCollections = (props) => {
   const [collections, setCollections] = useState([]);
   const [anchorName, setAnchorName] = useState("");
   const { data, isLoading, isError } = useCollections(
-    identity.ownedBy,
+    network === PlatformType.lens? identity.ownedBy : identity.identity,
     network
   );
   const [activeCollection, setActiveCollection] = useState(null);
