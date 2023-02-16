@@ -97,7 +97,7 @@ const IdentityPanelRender = (props) => {
                 <Loading />
               ) : (
                 <NFTAssetPlayer
-                  src={resolveMediaURL(profileData.image)}
+                  src={resolveMediaURL(profileData.image ?? '')}
                   alt={
                     identity.displayName
                       ? identity.displayName

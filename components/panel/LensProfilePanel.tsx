@@ -79,7 +79,11 @@ const LensProfilePanelRender = (props) => {
           <div className="social">
             <div className="identity-avatar">
               <NFTAssetPlayer
-                src={resolveMediaURL(profile.coverPicture.original.url || "")}
+                src={resolveMediaURL(
+                  profile.picture.original.url ??
+                    profile.coverPicture.original.url ??
+                    ""
+                )}
                 alt={
                   profile.handle
                     ? profile.handle || profile.name
