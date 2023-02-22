@@ -8,4 +8,6 @@ export enum PlatformType {
   keybase = "keybase",
   reddit = "reddit",
   github = "github",
+  unstoppableDomains = "UnstoppableDomains",
+  identityUnstoppableDomainsTEMP = "unstoppable_domains",
 }

@@ -183,7 +183,7 @@ export default function Home() {
                   searchTerm={searchTerm}
                   searchPlatform={searchPlatform}
                 />
-              )
+               )
             ) : null}
           </div>
         </div>
