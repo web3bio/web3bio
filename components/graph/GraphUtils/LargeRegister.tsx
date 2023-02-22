@@ -46,7 +46,7 @@ export const register = () => {
               y: 0,
               r,
               fill: "#fff",
-              stroke: colorsMap[cfg.platform],
+              stroke: colorsMap[cfg.platform] || "rgba(0, 0, 0, .15)",
               opacity: 1,
               lineWidth: 2,
               cursor: "pointer",
