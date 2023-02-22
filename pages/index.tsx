@@ -69,21 +69,38 @@ export default function Home() {
   useEffect(() => {
     if (!router.isReady) return;
     if (modalOpen) {
-      window.history.replaceState(
+      if(!profileIdentity || !window.location.search) return
+      window.history.pushState(
         {},
         "",
         `/${
           profileIdentity.platform === PlatformType.lens
             ? profileIdentity.identity
-            : profileIdentity.displayName || profileIdentity.identity$
+            : profileIdentity.displayName || profileIdentity.identity
         }${panelTab === TabsMap.profile.key ? "" : `/${panelTab}`}`
       );
     } else {
-      router.replace({
+      router.push({
         pathname: "",
         query: router.query,
       });
     }
+    window.addEventListener(
+      "popstate",
+      function (e) {
+        const url = window.location.href;
+        if (url.includes("?s=")) {
+          setModalOpen(false);
+        } else if (
+          !window.location.search &&
+          window.location.pathname.length > 1
+        ) {
+          setModalOpen(true);
+        }
+        console.log(window.location, router.query, "history");
+      },
+      false
+    );
   }, [modalOpen, panelTab, router.query.s, router.isReady]);
 
   return (
