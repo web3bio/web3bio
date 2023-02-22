@@ -129,7 +129,9 @@ export const handleSearchPlatform = (term: string) => {
     case regexEth.test(term):
       return PlatformType.ethereum;
     case regUnstoppableDomains.test(term):
-      return PlatformType.unstoppableDomains;
+      return process.env.NODE_ENV === "production"
+        ? PlatformType.unstoppableDomains
+        : PlatformType.unstoppableDomainsTEST;
     case regexTwitter.test(term):
       return PlatformType.twitter;
     default:
