@@ -148,6 +148,7 @@ const RenderNFTCollections = (props) => {
                   </div>
                 </div>
                 <div className="nft-list">
+                  {/* image url to support eip1155 local */}
                   {x.assets.map((y, ydx) => {
                     const mediaURL = resolveMediaURL(y.image_uri);
                     const contentURL = resolveMediaURL(y.content_uri);

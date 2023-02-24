@@ -142,25 +142,24 @@ const RenderAccountItem = (props) => {
                   s: identity.identity,
                 },
               }}
+              className="social"
             >
-              <div className="social">
-                <div className="icon">
-                  <SVG src="icons/icon-dotbit.svg" width={20} height={20} />
-                </div>
-                <div className="title">{identity.displayName}</div>
+              <div className="icon">
+                <SVG src="icons/icon-dotbit.svg" width={20} height={20} />
               </div>
+              <div className="title">{identity.displayName}</div>
             </Link>
-            <div className="actions">
-              <a
-                className="btn btn-sm btn-link action"
-                href={`https://data.did.id/${identity.displayName}`}
-                title="Open Keybase"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
-              </a>
-            </div>
+          </div>
+          <div className="social-actions actions">
+            <a
+              className="btn btn-sm btn-link action"
+              href={`https://data.did.id/${identity.displayName}`}
+              title="Open .bit"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
+            </a>
           </div>
           <RenderSourceFooter sources={sources} />
         </div>
@@ -176,25 +175,24 @@ const RenderAccountItem = (props) => {
                     s: identity.identity,
                   },
                 }}
+                className="social"
               >
-                <div className="social">
-                  <div className="icon">
-                    <SVG src="icons/icon-unstoppabledomains.svg" width={20} height={20} />
-                  </div>
-                  <div className="title">{identity.displayName}</div>
+                <div className="icon">
+                  <SVG src="icons/icon-unstoppabledomains.svg" width={20} height={20} />
                 </div>
+                <div className="title">{identity.displayName}</div>
               </Link>
-              <div className="actions">
-                <a
-                  className="btn btn-sm btn-link action"
-                  href={`https://ud.me/${identity.displayName}`}
-                  title="Open Unstoppable Domains"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
-                </a>
-              </div>
+            </div>
+            <div className="social-actions actions">
+              <a
+                className="btn btn-sm btn-link action"
+                href={`https://ud.me/${identity.displayName}`}
+                title="Open Unstoppable Domains"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
+              </a>
             </div>
             <RenderSourceFooter sources={sources} />
           </div>
@@ -208,25 +206,24 @@ const RenderAccountItem = (props) => {
                 pathname: "/",
                 query: { s: identity.identity },
               }}
+              className="social"
             >
-              <div className="social">
-                <div className="icon">
-                  <SVG src="icons/icon-twitter.svg" width={20} height={20} />
-                </div>
-                <div className="title">{identity.displayName}</div>
+              <div className="icon">
+                <SVG src="icons/icon-twitter.svg" width={20} height={20} />
               </div>
+              <div className="title">{identity.displayName}</div>
             </Link>
-            <div className="actions">
-              <a
-                className="btn btn-sm btn-link action"
-                href={`https://twitter.com/${identity.identity}`}
-                title="Open Twitter"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
-              </a>
-            </div>
+          </div>
+          <div className="social-actions actions">
+            <a
+              className="btn btn-sm btn-link action"
+              href={`https://twitter.com/${identity.identity}`}
+              title="Open Twitter"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
+            </a>
           </div>
           <RenderSourceFooter sources={sources} />
         </div>
@@ -243,25 +240,24 @@ const RenderAccountItem = (props) => {
                   platform: identity.platform,
                 },
               }}
+              className="social"
             >
-              <div className="social">
-                <div className="icon">
-                  <SVG src="icons/icon-github.svg" width={20} height={20} />
-                </div>
-                <div className="title">{identity.displayName}</div>
+              <div className="icon">
+                <SVG src="icons/icon-github.svg" width={20} height={20} />
               </div>
+              <div className="title">{identity.displayName}</div>
             </Link>
-            <div className="actions">
-              <a
-                className="btn btn-sm btn-link action"
-                href={`https://github.com/${identity.identity}`}
-                title="Open GitHub"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
-              </a>
-            </div>
+          </div>
+          <div className="social-actions actions">
+            <a
+              className="btn btn-sm btn-link action"
+              href={`https://github.com/${identity.identity}`}
+              title="Open GitHub"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
+            </a>
           </div>
           <RenderSourceFooter sources={sources} />
         </div>
@@ -278,25 +274,24 @@ const RenderAccountItem = (props) => {
                   platform: identity.platform,
                 },
               }}
+              className="social"
             >
-              <div className="social">
-                <div className="icon">
-                  <SVG src="icons/icon-keybase.svg" width={20} height={20} />
-                </div>
-                <div className="title">{identity.displayName}</div>
+              <div className="icon">
+                <SVG src="icons/icon-keybase.svg" width={20} height={20} />
               </div>
+              <div className="title">{identity.displayName}</div>
             </Link>
-            <div className="actions">
-              <a
-                className="btn btn-sm btn-link action"
-                href={`https://keybase.io/${identity.displayName}`}
-                title="Open Keybase"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
-              </a>
-            </div>
+          </div>
+          <div className="social-actions actions">
+            <a
+              className="btn btn-sm btn-link action"
+              href={`https://keybase.io/${identity.displayName}`}
+              title="Open Keybase"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
+            </a>
           </div>
           <RenderSourceFooter sources={sources} />
         </div>
@@ -313,25 +308,24 @@ const RenderAccountItem = (props) => {
                   platform: identity.platform,
                 },
               }}
+              className="social"
             >
-              <div className="social">
-                <div className="icon">
-                  <SVG src="icons/icon-reddit.svg" width={20} height={20} />
-                </div>
-                <div className="title">{identity.displayName}</div>
+              <div className="icon">
+                <SVG src="icons/icon-reddit.svg" width={20} height={20} />
               </div>
+              <div className="title">{identity.displayName}</div>
             </Link>
-            <div className="actions">
-              <a
-                className="btn btn-sm btn-link action"
-                href={`https://www.reddit.com/user/${identity.displayName}`}
-                title="Open Reddit"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
-              </a>
-            </div>
+          </div>
+          <div className="social-actions actions">
+            <a
+              className="btn btn-sm btn-link action"
+              href={`https://www.reddit.com/user/${identity.displayName}`}
+              title="Open Reddit"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
+            </a>
           </div>
           <RenderSourceFooter sources={sources} />
         </div>

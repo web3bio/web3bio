@@ -2,6 +2,14 @@ import { BigNumber } from "bignumber.js";
 import { pow10 } from "./number";
 import { PlatformType } from "./type";
 import { EthereumAddress } from "wallet.ts";
+import {
+  regexDotbit,
+  regexEns,
+  regexEth,
+  regexLens,
+  regexTwitter,
+  regUnstoppableDomains,
+} from "./regexp";
 export const formatText = (string, length?) => {
   const len = length ?? 12;
   if (string.length <= len) {
@@ -85,6 +93,8 @@ export function resolveSocialMediaLink(name, type) {
   switch (type) {
     case "url":
       return `${name}`;
+    case "website":
+      return `https://${name}`;
     case "github":
       return `https://github.com/${name}`;
     case "twitter":
@@ -110,13 +120,6 @@ export function isValidJson(str) {
   }
   return true;
 }
-
-const regexEns = /.*\.eth|.xyz$/,
-  regexLens = /.*\.lens$/,
-  regexDotbit = /.*\.bit$/,
-  regexEth = /^0x[a-fA-F0-9]{40}$/,
-  regexTwitter = /(\w{1,15})\b/,
-  regUnstoppableDomains = /.*\.crypto|.888$/;
 
 export const handleSearchPlatform = (term: string) => {
   switch (true) {
