@@ -365,8 +365,9 @@ body {
       align-items: center;
       display: flex;
       flex: 1 1 1rem;
+      overflow: hidden;
       padding: .4rem;
-      width: 100%;
+      width: 80%;
 
       .avatar {
         align-items: center;
@@ -375,6 +376,16 @@ body {
         flex: 0 0 1.6rem;
         justify-content: center;
         margin-right: .4rem;
+      }
+
+      .social {
+        width: 100%;
+      }
+
+      .title {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
 
@@ -491,7 +502,7 @@ body {
   }
 
   .content-title {
-    font-size: .85rem;
+    font-size: .8rem;
     line-height: 1.2rem;
   }
 
