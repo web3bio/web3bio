@@ -165,6 +165,40 @@ const RenderAccountItem = (props) => {
           <RenderSourceFooter sources={sources} />
         </div>
       );
+      case PlatformType.unstoppableDomains:
+        return (
+          <div className="social-item unstoppabledomains">
+            <div className="social-main">
+              <Link
+                href={{
+                  pathname: "/",
+                  query: {
+                    s: identity.identity,
+                  },
+                }}
+              >
+                <div className="social">
+                  <div className="icon">
+                    <SVG src="icons/icon-unstoppabledomains.svg" width={20} height={20} />
+                  </div>
+                  <div className="title">{identity.displayName}</div>
+                </div>
+              </Link>
+              <div className="actions">
+                <a
+                  className="btn btn-sm btn-link action"
+                  href={`https://ud.me/${identity.displayName}`}
+                  title="Open Unstoppable Domains"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
+                </a>
+              </div>
+            </div>
+            <RenderSourceFooter sources={sources} />
+          </div>
+        );
     case PlatformType.twitter:
       return (
         <div className="social-item twitter">
