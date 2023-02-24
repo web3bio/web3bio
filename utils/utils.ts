@@ -93,6 +93,8 @@ export function resolveSocialMediaLink(name, type) {
   switch (type) {
     case "url":
       return `${name}`;
+    case "website":
+      return `https://${name}`;
     case "github":
       return `https://github.com/${name}`;
     case "twitter":

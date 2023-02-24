@@ -32,7 +32,7 @@ const RenderNFTCollections = (props) => {
   const [collections, setCollections] = useState([]);
   const [anchorName, setAnchorName] = useState("");
   const { data, isLoading, isError } = useCollections(
-    network === PlatformType.lens? identity.ownedBy : identity.identity,
+    network === PlatformType.lens ? identity.ownedBy : identity.identity,
     network
   );
   const [activeCollection, setActiveCollection] = useState(null);
@@ -150,7 +150,9 @@ const RenderNFTCollections = (props) => {
                 <div className="nft-list">
                   {/* image url to support eip1155 local */}
                   {x.assets.map((y, ydx) => {
-                    const mediaURL = resolveMediaURL(y.image_uri);
+                    const mediaURL = resolveMediaURL(
+                      "eip155:1/erc721:0x8a90cab2b38dba80c64b7734e58ee1db38b8992e/146"
+                    );
                     const contentURL = resolveMediaURL(y.content_uri);
                     return (
                       <div
