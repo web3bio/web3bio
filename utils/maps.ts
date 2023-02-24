@@ -24,5 +24,6 @@ export const platformsMap = {
   rss3: "RSS3",
   cyberconnect: "CyberConnect",
   sybil: "Sybil",
+  unstoppabledomains: "Unstoppable Domains",
   unknown: "Unknown",
 };

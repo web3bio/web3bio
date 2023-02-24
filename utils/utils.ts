@@ -1,7 +1,7 @@
 import { BigNumber } from "bignumber.js";
 import { pow10 } from "./number";
 import { PlatformType } from "./type";
-import { EthereumAddress } from 'wallet.ts'
+import { EthereumAddress } from "wallet.ts";
 export const formatText = (string, length?) => {
   const len = length ?? 12;
   if (string.length <= len) {
@@ -115,7 +115,8 @@ const regexEns = /.*\.eth|.xyz$/,
   regexLens = /.*\.lens$/,
   regexDotbit = /.*\.bit$/,
   regexEth = /^0x[a-fA-F0-9]{40}$/,
-  regexTwitter = /(\w{1,15})\b/;
+  regexTwitter = /(\w{1,15})\b/,
+  regUnstoppableDomains = /.*\.crypto|.888$/;
 
 export const handleSearchPlatform = (term: string) => {
   switch (true) {
@@ -127,6 +128,8 @@ export const handleSearchPlatform = (term: string) => {
       return PlatformType.dotbit;
     case regexEth.test(term):
       return PlatformType.ethereum;
+    case regUnstoppableDomains.test(term):
+      return PlatformType.unstoppableDomains;
     case regexTwitter.test(term):
       return PlatformType.twitter;
     default:
@@ -135,9 +138,11 @@ export const handleSearchPlatform = (term: string) => {
 };
 
 export const isDomainSearch = (term) => {
-  return [PlatformType.ens, PlatformType.dotbit].includes(
-    term
-  );
+  return [
+    PlatformType.ens,
+    PlatformType.dotbit,
+    PlatformType.unstoppableDomains,
+  ].includes(term);
 };
 
 export const throttle = (fun, delay) => {
@@ -170,6 +175,6 @@ export function debounce(func, timeout = 300) {
 }
 
 export function isValidAddress(address?: string) {
-  if (!address) return false
-  return EthereumAddress.isValid(address)
+  if (!address) return false;
+  return EthereumAddress.isValid(address);
 }
