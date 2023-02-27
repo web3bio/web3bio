@@ -44,7 +44,9 @@ const RenderNFTAssetPlayer = (props) => {
         );
         setResolvedSrc(res);
       };
-      fetchSrc();
+      fetchSrc().catch((e) => {
+        setResolvedSrc("");
+      });
     }
   }, [src]);
   return (
