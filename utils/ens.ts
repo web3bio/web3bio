@@ -1,5 +1,10 @@
-import { ethers } from "ethers";
 import { ENS } from "@ensdomains/ensjs";
+import { ethers } from "ethers";
+import {
+  NFTSCANFetcher,
+  NFTSCAN_BASE_API_ENDPOINT
+} from "../components/apis/nftscan";
+import { resolveIPFS_URL } from "./ipfs";
 
 const EthereumRPC = "https://rpc.ankr.com/eth";
 
@@ -72,5 +77,19 @@ export const preftchTwitterList = [
 ];
 
 export const preftchBitList = ["mitchatmask.bit", "test0920.bit"];
+
+export const getContractSpecImage = async (params) => {
+  if (!params || params.length < 2) return "";
+  const addr = params[0];
+  const tokenId = params[1];
+  return NFTSCANFetcher(NFTSCAN_BASE_API_ENDPOINT + `assets/${addr}/${tokenId}`)
+    .then((res) => {
+      return resolveIPFS_URL(res.data.image_uri || res.data.content_uri);
+    })
+    .catch((e) => {
+      console.error(e);
+      return "";
+    });
+};
 
 export { ens, globalRecordKeys };

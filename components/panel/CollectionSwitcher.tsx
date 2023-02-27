@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, useState } from "react";
+import { memo } from "react";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
 const RenderCollectionSwitcher = (props) => {

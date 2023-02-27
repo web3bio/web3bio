@@ -1,5 +1,5 @@
 import SVG from "react-inlinesvg";
-import { useAsync,  } from "react-use";
+import { useAsync } from "react-use";
 import useSWR from "swr";
 import { ens, globalRecordKeys, provider } from "../../utils/ens";
 import { isValidAddress, resolveSocialMediaLink } from "../../utils/utils";

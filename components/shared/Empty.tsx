@@ -1,4 +1,3 @@
-import React from "react";
 
 export const Empty = (props) => {
   const { text = "Please try different identity keyword." } = props;

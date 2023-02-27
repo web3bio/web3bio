@@ -1,11 +1,10 @@
 import { memo } from "react";
 import useSWR from "swr";
-import { Loading } from "../shared/Loading";
-import { Error } from "../shared/Error";
-import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { POAPFetcher, POAP_END_POINT } from "../apis/poap";
 import { resolveIPFS_URL } from "../../utils/ipfs";
-import { Empty } from "../shared/Empty";
+import { POAPFetcher, POAP_END_POINT } from "../apis/poap";
+import { Error } from "../shared/Error";
+import { Loading } from "../shared/Loading";
+import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
 function usePoaps(address: string) {
   const { data, error } = useSWR<any>(

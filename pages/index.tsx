@@ -1,8 +1,7 @@
-import { profile } from "console";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import SVG from "react-inlinesvg";
 import { TabsMap } from "../components/panel/IdentityPanel";
 import { SearchResultDomain } from "../components/search/SearchResultDomain";

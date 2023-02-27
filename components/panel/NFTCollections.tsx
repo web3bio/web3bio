@@ -1,17 +1,17 @@
 import { memo, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
+import { PlatformType } from "../../utils/type";
+import { resolveMediaURL } from "../../utils/utils";
 import {
   NFTSCANFetcher,
   NFTSCAN_BASE_API_ENDPOINT,
-  NFTSCAN_POLYGON_BASE_API,
+  NFTSCAN_POLYGON_BASE_API
 } from "../apis/nftscan";
-import { CollectionSwitcher } from "./CollectionSwitcher";
-import { resolveIPFS_URL } from "../../utils/ipfs";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
-import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { Loading } from "../shared/Loading";
-import { PlatformType } from "../../utils/type";
+import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
+import { CollectionSwitcher } from "./CollectionSwitcher";
 
 function useCollections(address: string, network: string) {
   const baseURL =
@@ -32,7 +32,7 @@ const RenderNFTCollections = (props) => {
   const [collections, setCollections] = useState([]);
   const [anchorName, setAnchorName] = useState("");
   const { data, isLoading, isError } = useCollections(
-    network === PlatformType.lens? identity.ownedBy : identity.identity,
+    network === PlatformType.lens ? identity.ownedBy : identity.identity,
     network
   );
   const [activeCollection, setActiveCollection] = useState(null);
@@ -106,15 +106,6 @@ const RenderNFTCollections = (props) => {
   if (isError) return <Error text={isError} />;
   if (!data || !data.data) return <Empty />;
 
-  const resolveMediaURL = (asset) => {
-    if (asset) {
-      return asset.startsWith("data:", "https:")
-        ? asset
-        : resolveIPFS_URL(asset);
-    }
-    return "";
-  };
-
   return (
     <>
       {collections && collections.length > 0 && (
@@ -148,7 +139,6 @@ const RenderNFTCollections = (props) => {
                   </div>
                 </div>
                 <div className="nft-list">
-                  {/* image url to support eip1155 local */}
                   {x.assets.map((y, ydx) => {
                     const mediaURL = resolveMediaURL(y.image_uri);
                     const contentURL = resolveMediaURL(y.content_uri);

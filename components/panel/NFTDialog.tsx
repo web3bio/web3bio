@@ -1,11 +1,11 @@
 import { memo } from "react";
 import SVG from "react-inlinesvg";
 import useSWR from "swr";
+import { PlatformType } from "../../utils/type";
+import { isValidJson } from "../../utils/utils";
 import { NFTSCANFetcher, NFTSCAN_BASE_API_ENDPOINT, NFTSCAN_POLYGON_BASE_API } from "../apis/nftscan";
 import { Error } from "../shared/Error";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { isValidJson } from "../../utils/utils";
-import { PlatformType } from "../../utils/type";
 function useAsset(
   address: string,
   tokenId: string | number,
