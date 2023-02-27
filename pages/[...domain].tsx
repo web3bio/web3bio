@@ -6,7 +6,7 @@ import { LensProfilePanel } from "../components/panel/LensProfilePanel";
 import { Empty } from "../components/shared/Empty";
 import { Error } from "../components/shared/Error";
 import { Loading } from "../components/shared/Loading";
-import { preFetchENSList } from "../utils/ens";
+import { preFetchENSList } from "../utils/domains";
 import { GET_PROFILE_LENS } from "../utils/lens";
 import { GET_PROFILES_DOMAIN, GET_PROFILES_QUERY } from "../utils/queries";
 import { PlatformType } from "../utils/type";

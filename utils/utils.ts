@@ -1,17 +1,16 @@
 import { BigNumber } from "bignumber.js";
-import { pow10 } from "./number";
-import { PlatformType } from "./type";
 import { EthereumAddress } from "wallet.ts";
+import { resolveIPFS_URL } from "./ipfs";
+import { pow10 } from "./number";
 import {
   regexDotbit,
   regexEns,
   regexEth,
   regexLens,
   regexTwitter,
-  regUnstoppableDomains,
+  regUnstoppableDomains
 } from "./regexp";
-import { getContractSpecImage } from "./ens";
-import { resolveIPFS_URL } from "./ipfs";
+import { PlatformType } from "./type";
 export const formatText = (string, length?) => {
   const len = length ?? 12;
   if (string.length <= len) {
@@ -187,10 +186,9 @@ export function isValidAddress(address?: string) {
 export const resolveMediaURL = (asset) => {
   const eipPrefix = "eip155:1/erc721:";
   if (asset) {
-    if (asset.startsWith(eipPrefix)) {
-      return getContractSpecImage(asset.split(eipPrefix)[1].split("/"));
-    }
-    return asset.startsWith("data:", "https:") ? asset : resolveIPFS_URL(asset);
+    return asset.startsWith("data:", "https:", eipPrefix)
+      ? asset
+      : resolveIPFS_URL(asset);
   }
   return "";
 };

@@ -38,6 +38,7 @@ const IdentityPanelRender = (props) => {
   } = props;
   const [activeTab, setActiveTab] = useState(curTab);
   const [copied, setCopied] = useState(null);
+  
   const { data: profileData, isLoading: avatarLoading } = useProfile(
     identity.displayName || identity.identity
   );
@@ -74,7 +75,6 @@ const IdentityPanelRender = (props) => {
       }[activeTab] || <FeedsTab identity={identity} />
     );
   };
-
   const resolveOnShowDetail = (asset) => {
     // todo: to resolve url && nft dialog
   };
@@ -88,7 +88,7 @@ const IdentityPanelRender = (props) => {
                 <Loading />
               ) : (
                 <NFTAssetPlayer
-                  src={resolveMediaURL(profileData.image ?? '')}
+                  src={resolveMediaURL('eip155:1/erc721:0x8a90cab2b38dba80c64b7734e58ee1db38b8992e/146')}
                   alt={
                     identity.displayName
                       ? identity.displayName
