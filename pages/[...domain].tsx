@@ -46,7 +46,7 @@ const RenderDomainPanel = (props) => {
 
     const clickEvent = (e) => {
       const dialog = document.getElementById("nft-dialog");
-      if (nftDialogOpen && !dialog.contains(e.target)) {
+      if (dialog && nftDialogOpen && !dialog.contains(e.target)) {
         if (dialog) setNftDialogOpen(false);
       } else {
         if (profileContainer && !profileContainer.current.contains(e.target)) {
