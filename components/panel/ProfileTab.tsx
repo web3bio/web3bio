@@ -1,3 +1,4 @@
+import { useState } from "react";
 import SVG from "react-inlinesvg";
 import { useAsync } from "react-use";
 import useSWR from "swr";
@@ -5,8 +6,9 @@ import { ens, globalRecordKeys, provider } from "../../utils/domains";
 import { isValidAddress, resolveSocialMediaLink } from "../../utils/utils";
 import { ENSFetcher, ENS_METADATA_END_POINT } from "../apis/ens";
 import { Loading } from "../shared/Loading";
-import { NFTOverview } from "./NFTOverview";
-import { Poaps } from "./Poaps";
+import { NFTDialog } from "./components/NFTDialog";
+import { NFTOverview } from "./components/NFTOverview";
+import { Poaps } from "./components/Poaps";
 
 const socialButtonMapping = {
   ["com.github"]: {
@@ -60,8 +62,10 @@ export function useProfile(domain: string) {
 }
 
 export const ProfileTab = (props) => {
-  const { identity, toNFT } = props;
+  const { identity, toNFT, network } = props;
   const domain = identity.displayName || identity.identity;
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [currentPoap, setCurrentPoap] = useState("");
   const { value: ensRecords, loading: recordsLoading } = useAsync(async () => {
     const _domain = isValidAddress(domain) ? await ens.getName(domain) : domain;
 
@@ -160,10 +164,21 @@ export const ProfileTab = (props) => {
         </div>
       )}
 
-      
       <NFTOverview identity={identity} toNFT={toNFT} />
 
-      <Poaps identity={identity} />
+      <Poaps
+        onShowDetail={(poap) => setCurrentPoap(poap)}
+        identity={identity}
+      />
+
+      {dialogOpen && currentPoap && (
+        <NFTDialog
+          network={network}
+          asset={currentPoap}
+          open={dialogOpen}
+          onClose={() => setDialogOpen(false)}
+        />
+      )}
     </div>
   );
 };

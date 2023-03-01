@@ -1,7 +1,7 @@
 import { memo, useMemo } from "react";
-import { formatText, formatValue, isSameAddress } from "../../../utils/utils";
-import { CardType, Tag, Type } from "../../apis/rss3/types";
-import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
+import { formatText, formatValue, isSameAddress } from "../../../../utils/utils";
+import { CardType, Tag, Type } from "../../../apis/rss3/types";
+import { NFTAssetPlayer } from "../../../shared/NFTAssetPlayer";
 export function isCollectibleFeed(feed) {
   return feed.tag === Tag.Collectible;
 }

@@ -60,6 +60,7 @@ const IdentityPanelRender = (props) => {
               setActiveTab(TabsMap.nfts.key);
             }}
             identity={identity}
+            network={PlatformType.ens}
           />
         ),
         [TabsMap.feeds.key]: (

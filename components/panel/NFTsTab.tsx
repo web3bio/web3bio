@@ -1,6 +1,6 @@
 import { memo, useState } from "react";
-import { NFTCollections } from "./NFTCollections";
-import { NFTDialog } from "./NFTDialog";
+import { NFTCollections } from "./components/NFTCollections";
+import { NFTDialog } from "./components/NFTDialog";
 
 const RenderNFTsTab = (props) => {
   const {

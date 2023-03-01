@@ -1,7 +1,7 @@
 import { memo } from "react";
 import SVG from "react-inlinesvg";
-import { globalLensAttributesKeys } from "../../../utils/lens";
-import { resolveSocialMediaLink } from "../../../utils/utils";
+import { globalLensAttributesKeys } from "../../../../utils/lens";
+import { resolveSocialMediaLink } from "../../../../utils/utils";
 const traitsButtonMapping = {
   ["website"]: {
     icon: "icons/icon-web.svg",

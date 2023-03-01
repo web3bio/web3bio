@@ -1,7 +1,7 @@
 import { memo } from "react";
-import { formatText, formatValue, isSameAddress } from "../../../utils/utils";
-import { Tag, Type } from "../../apis/rss3/types";
-import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
+import { formatText, formatValue, isSameAddress } from "../../../../utils/utils";
+import { Tag, Type } from "../../../apis/rss3/types";
+import { NFTAssetPlayer } from "../../../shared/NFTAssetPlayer";
 
 export const isTokenTransferFeed = (feed) => {
   return (

@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { PlatformType } from "../../utils/type";
+import { PlatformType } from "../../../utils/type";
 import {
   CollectibleCard,
   isCollectibleFeed

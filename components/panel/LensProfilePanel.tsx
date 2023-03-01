@@ -4,8 +4,8 @@ import SVG from "react-inlinesvg";
 import { PlatformType } from "../../utils/type";
 import { formatText, getEnumAsArray, resolveMediaURL } from "../../utils/utils";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
+import { LensProfileTab } from "./components/lensTabs/LensProfileTab";
 import { FeedsTab } from "./FeedsTab";
-import { LensProfileTab } from "./lensTabs/LensProfileTab";
 import { NFTsTab } from "./NFTsTab";
 
 export const TabsMap = {
