@@ -29,7 +29,7 @@ const RenderNFTsTab = (props) => {
         <NFTDialog
           network={network}
           address={asset.asset.contract_address}
-          tokenId={asset.asset.tokenId}
+          tokenId={asset.asset.token_id}
           asset={asset}
           open={dialogOpen}
           onClose={closeDialog}
