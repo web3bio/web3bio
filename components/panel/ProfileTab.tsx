@@ -6,7 +6,7 @@ import { ens, globalRecordKeys, provider } from "../../utils/domains";
 import { isValidAddress, resolveSocialMediaLink } from "../../utils/utils";
 import { ENSFetcher, ENS_METADATA_END_POINT } from "../apis/ens";
 import { Loading } from "../shared/Loading";
-import { NFTDialog } from "./components/NFTDialog";
+import { NFTDialog, NFTDialogType } from "./components/NFTDialog";
 import { NFTOverview } from "./components/NFTOverview";
 import { Poaps } from "./components/Poaps";
 
@@ -65,7 +65,7 @@ export const ProfileTab = (props) => {
   const { identity, toNFT, network } = props;
   const domain = identity.displayName || identity.identity;
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [currentPoap, setCurrentPoap] = useState("");
+  const [currentPoap, setCurrentPoap] = useState(null);
   const { value: ensRecords, loading: recordsLoading } = useAsync(async () => {
     const _domain = isValidAddress(domain) ? await ens.getName(domain) : domain;
 
@@ -167,15 +167,21 @@ export const ProfileTab = (props) => {
       <NFTOverview identity={identity} toNFT={toNFT} />
 
       <Poaps
-        onShowDetail={(poap) => setCurrentPoap(poap)}
+        onShowDetail={(poap) => {
+          setCurrentPoap(poap);
+          setDialogOpen(true);
+        }}
         identity={identity}
       />
 
       {dialogOpen && currentPoap && (
         <NFTDialog
+          address={currentPoap.address}
+          tokenId={currentPoap.tokenId}
           network={network}
-          asset={currentPoap}
+          poap={currentPoap}
           open={dialogOpen}
+          type={NFTDialogType.POAP}
           onClose={() => setDialogOpen(false)}
         />
       )}
