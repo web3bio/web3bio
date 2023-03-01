@@ -53,7 +53,11 @@ const NFTDialogRender = (props) => {
   if (type === "poap")
     return (
       <>
-        <div id="nft-dialog" className="nft-panel" style={{margin:'0 -1.5rem'}}>
+        <div
+          id="nft-dialog"
+          className="nft-panel"
+          style={{ margin: "0 -1.5rem" }}
+        >
           <div className="panel-container">
             <div className="btn btn-close" onClick={onClose}>
               <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
@@ -67,17 +71,6 @@ const NFTDialogRender = (props) => {
                 alt={poap.asset.event.name}
               />
               <div className="panel-header-content">
-                {/* <div className="nft-header-collection collection-title">
-                  <NFTAssetPlayer
-                    type={"image/png"}
-                    className="collection-logo"
-                    src={asset.collection.url}
-                    alt={asset.collection.name}
-                  />
-                  <div className="collection-name text-ellipsis">
-                    {asset.collection.name}
-                  </div>
-                </div> */}
                 <div className="nft-header-name">
                   {poap.asset.event.name || `#${asset.tokenId}`}
                 </div>
@@ -122,23 +115,6 @@ const NFTDialogRender = (props) => {
                   </div>
                 </div>
               )}
-              {/* {metadata?.attributes && metadata?.attributes.length > 0 && (
-              <div className="panel-widget">
-                <div className="panel-widget-title">Attributes</div>
-                <div className="panel-widget-content">
-                  <div className="traits-cards">
-                    {metadata.attributes.map((x, idx) => {
-                      return (
-                        <div key={idx} className="traits-card">
-                          <div className="trait-type">{x.trait_type}</div>
-                          <div className="trait-value">{x.value}</div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            )} */}
             </div>
           </div>
         </div>
@@ -152,7 +128,7 @@ const NFTDialogRender = (props) => {
 
   return (
     <>
-      <div id="nft-dialog" className="nft-panel" >
+      <div id="nft-dialog" className="nft-panel">
         <div className="panel-container">
           <div className="btn btn-close" onClick={onClose}>
             <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
