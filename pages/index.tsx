@@ -1,41 +1,50 @@
+import { profile } from "console";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import SVG from "react-inlinesvg";
+import { TabsMap } from "../components/panel/IdentityPanel";
 import { SearchResultDomain } from "../components/search/SearchResultDomain";
 import { SearchResultQuery } from "../components/search/SearchResultQuery";
+import { PlatformType } from "../utils/type";
+import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
+import ProfilePage from "./[...domain]";
 
 export default function Home() {
   const [searchFocus, setSearchFocus] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [profileIdentity, setProfileIdentity] = useState(null);
+  const [profilePlatform, setProfilePlatform] = useState(null);
   const [searchPlatform, setsearchPlatform] = useState("");
+  const [panelTab, setPanelTab] = useState(TabsMap.profile.key);
+  const [domain, setDomain] = useState([]);
+  const inputRef = useRef(null);
   const router = useRouter();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const ipt = inputRef.current;
+    if (!ipt) return;
+    setSearchTerm(ipt.value);
+    router.push({
+      query: {
+        s: ipt.value,
+      },
+    });
+    setsearchPlatform(handleSearchPlatform(ipt.value));
+    setSearchFocus(true);
+  };
 
-  const regexEns = /.*\.eth|.xyz$/,
-    regexLens = /.*\.lens$/,
-    regexDotbit = /.*\.bit$/,
-    regexEth = /^0x[a-fA-F0-9]{40}$/,
-    regexTwitter = /(\w{1,15})\b/;
-
-  const handlesearchPlatform = (term) => {
-    switch (true) {
-      case regexEns.test(term):
-        console.log("ENS");
-        return "ENS";
-      case regexLens.test(term):
-        console.log("lens");
-        return "lens";
-      case regexDotbit.test(term):
-        console.log("dotbit");
-        return "dotbit";
-      case regexEth.test(term):
-        console.log("ethereum");
-        return "ethereum";
-      case regexTwitter.test(term):
-        console.log("twitter");
-        return "twitter";
+  const openProfile = (identity, platform) => {
+    setProfileIdentity(identity);
+    setProfilePlatform(platform);
+    if (platform === PlatformType.lens) {
+      setDomain([identity.identity]);
+    } else {
+      setDomain([identity.displayName || identity.identity]);
     }
+    setModalOpen(true);
   };
   useEffect(() => {
     if (!router.isReady) return;
@@ -45,7 +54,7 @@ export default function Home() {
       const searchkeyword = (router.query.s as string).toLowerCase();
       setSearchTerm(searchkeyword);
       if (!router.query.platform) {
-        let searchPlatform = handlesearchPlatform(searchkeyword);
+        let searchPlatform = handleSearchPlatform(searchkeyword);
         setsearchPlatform(searchPlatform);
       } else {
         setsearchPlatform((router.query.platform as string).toLowerCase());
@@ -57,16 +66,43 @@ export default function Home() {
     }
   }, [router.isReady, router.query.s, router.query.platform]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (e.target.searchbox.value) {
+  useEffect(() => {
+    if (!router.isReady) return;
+    if (modalOpen) {
+      if(!profileIdentity || !window.location.search) return
+      window.history.pushState(
+        {},
+        "",
+        `/${
+          profileIdentity.platform === PlatformType.lens
+            ? profileIdentity.identity
+            : profileIdentity.displayName || profileIdentity.identity
+        }${panelTab === TabsMap.profile.key ? "" : `/${panelTab}`}`
+      );
+    } else {
       router.push({
-        query: {
-          s: e.target.searchbox.value,
-        },
+        pathname: "",
+        query: router.query,
       });
     }
-  };
+    window.addEventListener(
+      "popstate",
+      function (e) {
+        const url = window.location.href;
+        if (url.includes("?s=")) {
+          setModalOpen(false);
+        } else if (
+          !window.location.search &&
+          window.location.pathname.length > 1
+        ) {
+          setModalOpen(true);
+        }
+        console.log(window.location, router.query, "history");
+      },
+      false
+    );
+  }, [modalOpen, panelTab, router.query.s, router.isReady]);
+
   return (
     <div>
       <Head>
@@ -81,7 +117,6 @@ export default function Home() {
         />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       </Head>
-
       <main className="web3bio-container">
         <div className="web3bio-cover flare"></div>
 
@@ -89,34 +124,29 @@ export default function Home() {
           className={searchFocus ? "web3bio-search focused" : "web3bio-search"}
         >
           <div className="container grid-xs">
-            <form
-              className="search-form"
-              onSubmit={handleSubmit}
-              autoComplete="off"
-              role="search"
-            >
+            <form autoComplete="off" role="search" className="search-form">
               <Link
                 href={{
                   pathname: "/",
                   query: {},
                 }}
               >
-                <a className="web3bio-logo" title="Web5.bio">
+                <div className="web3bio-logo" title="Web5.bio">
                   <h1 className="text-pride">
                     WEB5
                     <br />
                     BIO
                   </h1>
-                </a>
+                </div>
               </Link>
               <div className="form-label">
                 Web3 <span>Identity Search</span>
               </div>
               <div className="form-input-group">
                 <input
+                  ref={inputRef}
                   key={searchTerm}
                   type="text"
-                  name="s"
                   placeholder="Search Twitter, Lens, ENS or Ethereum"
                   defaultValue={searchTerm}
                   className="form-input input-lg"
@@ -129,6 +159,7 @@ export default function Home() {
                   type="submit"
                   title="Submit"
                   className="form-button btn"
+                  onClickCapture={handleSubmit}
                 >
                   <SVG
                     src="icons/icon-search.svg"
@@ -140,17 +171,19 @@ export default function Home() {
               </div>
             </form>
             {searchPlatform ? (
-              searchPlatform === "ENS" || searchPlatform === "dotbit" ? (
-                <SearchResultDomain 
+              isDomainSearch(searchPlatform) ? (
+                <SearchResultDomain
+                  openProfile={openProfile}
                   searchTerm={searchTerm}
                   searchPlatform={searchPlatform}
                 />
               ) : (
                 <SearchResultQuery
+                  openProfile={openProfile}
                   searchTerm={searchTerm}
                   searchPlatform={searchPlatform}
                 />
-              )
+               )
             ) : null}
           </div>
         </div>
@@ -196,8 +229,7 @@ export default function Home() {
                     Web3.bio
                   </a>{" "}
                   project crafted with{" "}
-                  <span className="text-pride">&hearts;</span>{" "}·{" "}Built
-                  with{" "}
+                  <span className="text-pride">&hearts;</span> · Built with{" "}
                   <a
                     href="https://next.id"
                     target="_blank"
@@ -211,6 +243,24 @@ export default function Home() {
           </div>
         </div>
       </main>
+      {modalOpen && (
+        <ProfilePage
+          toNFT={() => {
+            setPanelTab(TabsMap.nfts.key);
+          }}
+          asComponent
+          onClose={() => {
+            setModalOpen(false);
+            setPanelTab(TabsMap.profile.key);
+          }}
+          overridePanelTab={panelTab}
+          onTabChange={(v) => {
+            setPanelTab(v);
+          }}
+          domain={domain}
+          overridePlatform={profilePlatform}
+        />
+      )}
     </div>
   );
 }

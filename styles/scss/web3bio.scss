@@ -26,7 +26,6 @@
 @import "modals";
 @import "navs";
 @import "pagination";
-@import "tabs";
 @import "toasts";
 @import "tooltips";
 
@@ -51,8 +50,18 @@ body {
 
 .web3bio-container {
   min-height: 100vh;
-  padding: 1rem .5rem;
+  padding: .5rem;
   width: 100vw;
+}
+
+.web3bio-mask-cover {
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: rgba($color: #000000, $alpha: .3);
+  width: 100%;
+  height: 100vh;
+  z-index: 100;
 }
 
 //- Web3.bio Cover
@@ -67,11 +76,11 @@ body {
     radial-gradient(at 61% 57%, $pride-color-7 0px, transparent 50%);
   display: block;
   filter: blur(1rem);
-  height: 90vh;
+  height: 100vh;
   left: 0;
   opacity: .75;
   position: fixed;
-  top: 5vh;
+  top: 0;
   width: 100vw;
   z-index: -1;
 
@@ -109,10 +118,12 @@ body {
     opacity: 1;
     transform: skewX(30deg) translateX(-40vh);
   }
+
   50% {
     opacity: .75;
     transform: skewX(-30deg) translateX(40vh);
   }
+
   100% {
     opacity: 1;
     transform: skewX(30deg) translateX(-40vh);
@@ -221,7 +232,7 @@ body {
   }
 
   .web3bio-logo {
-    margin-bottom: 1rem;
+    margin-bottom: .2rem;
   }
 
   .form-label {
@@ -246,35 +257,21 @@ body {
 
     .form-input {
       border: transparent;
+      box-shadow: 0 .05rem .2rem rgba($dark-color, .1);
       padding-right: 2.4rem;
 
       &:focus {
         box-shadow: 0 .8rem 4rem rgba($dark-color, .25), 0 .05rem .2rem rgba($dark-color, .1);
       }
     }
-  }
 
-  .form-button {
-    align-items: center;
-    background: lighten($bg-color, 3%);
-    border-color: transparent;
-    box-shadow: none;
-    color: lighten($dark-color, 10%);
-    display: inline-flex;
-    height: 2rem;
-    padding: 0;
-    position: absolute;
-    right: .2rem;
-    top: .2rem;
-    width: 2rem;
-
-    &:focus,
-    &:hover {
-      background: $bg-color;
-    }
-
-    &:active {
-      background: darken($bg-color, 3%);
+    .form-button {
+      height: 2rem;
+      padding: 0;
+      position: absolute;
+      right: .2rem;
+      top: .2rem;
+      width: 2rem;
     }
   }
 
@@ -289,10 +286,14 @@ body {
   }
 
   .loading-container {
-    margin: 2rem auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 }
 
+// Search results
 .search-result {
   animation: slide-down .2s ease 1;
   background: rgba($light-color, .85);
@@ -300,77 +301,6 @@ body {
   box-shadow: 0 .05rem .2rem rgba($dark-color, .1);
   position: relative;
   z-index: 99;
-
-  .graph-mask {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, .5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .graph-header {
-      align-items: center;
-      display: flex;
-      font-size: .7rem;
-      justify-content: space-between;
-      left: .5rem;
-      position: absolute;
-      right: .5rem;
-      top: .5rem;
-      z-index: 999;
-
-      .graph-title {
-        align-items: center;
-        border-radius: .4rem;
-        display: flex;
-        line-height: 1rem;
-        padding: .4rem;
-        pointer-events: none;
-        user-select: none;
-        word-break: break-all;
-      }
-
-      .graph-close {
-        align-items: center;
-        display: flex;
-      }
-
-      svg {
-        flex-shrink: 0;
-      }
-    }
-
-    .graph-container {
-      background: #fff;
-      border-radius: .4rem;
-      box-shadow: 0 .4rem 2rem rgba(0, 0, 0, .5);
-      height: 94%;
-      max-height: 40rem;
-      max-width: 64rem;
-      position: relative;
-      width: 94%;
-      
-      .loading-mask {
-        border-radius: .4rem;
-        position: absolute;
-        height: 94%;
-        max-height: 40rem;
-        max-width: 64rem;
-        width: 94%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 99;
-        background: #fff;
-      }
-    }
-  }
 
   .search-result-header {
     display: flex;
@@ -405,7 +335,6 @@ body {
     background: rgba($gray-color, .05);
     border-radius: $border-radius;
     display: flex;
-    flex-direction: column;
     position: relative;
     transition: all .2s ease-in;
     width: 100%;
@@ -435,8 +364,10 @@ body {
     .social-main {
       align-items: center;
       display: flex;
+      flex: 1 1 1rem;
+      overflow: hidden;
       padding: .4rem;
-      width: 100%;
+      width: 80%;
 
       .avatar {
         align-items: center;
@@ -445,6 +376,25 @@ body {
         flex: 0 0 1.6rem;
         justify-content: center;
         margin-right: .4rem;
+      }
+
+      .social {
+        width: 100%;
+      }
+
+      .title {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
+    .social-actions {
+      padding: .25rem;
+
+      .action {
+        background: rgba($dark-color, .035);
+        height: 100%;
       }
     }
 
@@ -478,55 +428,9 @@ body {
     }
   }
 
-  .social {
-    align-items: center;
-    border-radius: .2rem;
+  .nfts {
     display: flex;
-    flex: 1;
-    font-size: .6rem;
-    line-height: 1rem;
-    padding: .1rem .3rem .1rem .1rem;
-    text-decoration: none;
-    transition: all .25s ease-in-out;
-
-    .icon {
-      border-radius: $border-radius;
-      color: $dark-color;
-      font-size: .7rem;
-      height: 1.6rem;
-      margin-right: .2rem;
-      padding: .3rem;
-      width: 1.6rem;
-    }
-
-    .content {
-      flex: 1;
-    }
-
-    .content-title {
-      font-size: .9rem;
-      line-height: 1.2rem;
-    }
-
-    .content-subtitle {
-      align-items: center;
-      display: flex;
-      font-size: .6rem;
-      line-height: 1rem;
-
-      .action {
-        cursor: pointer;
-        flex: 0 1;
-        height: 1rem;
-        margin-left: .2rem;
-        position: relative;
-        width: 1rem;
-      }
-    }
-
-    .title {
-      font-size: .7rem;
-    }
+    flex-wrap: wrap;
   }
 
   .label-ens {
@@ -534,10 +438,10 @@ body {
     border-radius: .3rem;
     color: lighten($dark-color, 20%);
     display: inline-flex;
-    font-size: 90%;
+    font-size: .6rem;
     line-height: .8rem;
     margin: .2rem .2rem 0 0;
-    max-width: 100%;
+    max-width: 12rem;
     padding: .1rem .3rem .1rem .15rem;
     text-decoration: none;
 
@@ -548,17 +452,14 @@ body {
     }
 
     img {
-      flex: 0 0 .7rem;
+      flex: 0 0 .5rem;
       margin-right: .2rem;
     }
   }
 
-  .nfts {
-    width: 100%;
-  }
-
   .actions {
     display: none;
+    margin-left: auto;
     padding: .2rem;
 
     .action {
@@ -576,6 +477,716 @@ body {
   }
 }
 
+.social {
+  align-items: center;
+  border-radius: .2rem;
+  display: flex;
+  flex: 1;
+  font-size: .6rem;
+  line-height: 1rem;
+  padding: .1rem .3rem .1rem .1rem;
+  text-decoration: none;
+  transition: all .25s ease-in-out;
+
+  .icon {
+    border-radius: $border-radius;
+    color: $dark-color;
+    font-size: .7rem;
+    height: 1.6rem;
+    margin-right: .2rem;
+    padding: .3rem;
+    width: 1.6rem;
+  }
+
+  .content {
+    flex: 1;
+  }
+
+  .content-title {
+    font-size: .8rem;
+    line-height: 1.2rem;
+  }
+
+  .content-subtitle {
+    align-items: center;
+    display: flex;
+    font-size: .55rem;
+    line-height: 1rem;
+
+    .action {
+      cursor: pointer;
+      flex: 0 1;
+      height: 1rem;
+      margin-left: .2rem;
+      position: relative;
+      transition: all .2s ease-in-out;
+      width: 1rem;
+
+      &:focus,
+      &:hover {
+        color: $dark-color;
+      }
+    }
+  }
+
+  .title {
+    font-size: .7rem;
+  }
+}
+
+// Identity Graph
+.identity-graph-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, .5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .graph-header {
+    align-items: center;
+    display: flex;
+    font-size: .7rem;
+    justify-content: space-between;
+    left: .5rem;
+    position: absolute;
+    right: .5rem;
+    top: .5rem;
+    z-index: 999;
+
+    .graph-title {
+      align-items: center;
+      border-radius: .4rem;
+      display: flex;
+      line-height: 1rem;
+      padding: .4rem;
+      pointer-events: none;
+      user-select: none;
+      word-break: break-all;
+    }
+  }
+
+  .graph-container {
+    background: #fff;
+    border-radius: .4rem;
+    box-shadow: 0 .4rem 2rem rgba(0, 0, 0, .5);
+    height: 94%;
+    max-height: 40rem;
+    max-width: 64rem;
+    position: relative;
+    width: 94%;
+
+    .loading-mask {
+      border-radius: .4rem;
+      position: absolute;
+      height: 94%;
+      max-height: 40rem;
+      max-width: 64rem;
+      width: 94%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99;
+      background: #fff;
+    }
+  }
+}
+
+// Identity Panel
+.identity-panel {
+  bottom: 1rem;
+  left: -1rem;
+  position: absolute;
+  right: -1rem;
+  top: 1rem;
+}
+
+.panel-container {
+  animation: slide-in .35s forwards;
+  background: #fff;
+  border-radius: .5rem;
+  box-shadow: 0 .2rem 1rem rgba(0, 0, 0, .15);
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 1rem);
+  padding: 0;
+  position: sticky;
+  top: 1rem;
+  transform: translateY(-100%);
+  z-index: 100;
+
+  @keyframes slide-in {
+    0% {
+      transform: translateY(100%);
+    }
+
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  &.leave {
+    animation: slide-in .4s forwards reverse;
+  }
+
+  .panel-header {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1rem 0 1rem;
+    z-index: 99;
+
+    .identity-avatar {
+      align-items: center;
+      border-radius: .5rem;
+      display: flex;
+      flex: 0 0 2.4rem;
+      height: 2.4rem;
+      justify-content: center;
+      margin-right: .5rem;
+      width: 2.4rem;
+
+      .img-responsive {
+        border-radius: .5rem;
+        font-size: 2rem;
+        height: 2.4rem;
+        width: 2.4rem;
+      }
+    }
+  }
+
+  .panel-body {
+    display: flex;
+    flex: 1 1;
+    flex-direction: column;
+    height: auto;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  .panel-tab {
+    align-items: center;
+    background: transparent;
+    display: flex;
+    list-style: none;
+    margin: .5rem 0 0 0;
+    overflow: hidden;
+
+    .tab-item {
+      flex: 1 1 100%;
+      margin-top: 0;
+      text-align: center;
+
+      a {
+        border-bottom: .1rem solid $border-color;
+        display: block;
+        padding: 0 .2rem;
+        text-decoration: none;
+        font-weight: 500;
+        line-height: 1.8rem;
+        color: $dark-color;
+        opacity: .5;
+        text-align: center;
+
+        &:focus,
+        &:hover {
+          border-bottom-color: $dark-color;
+          opacity: 1;
+          transition: all .2s ease;
+        }
+      }
+
+      &.active a,
+      a.active {
+        border-bottom-color: $dark-color;
+        font-weight: 700;
+        opacity: 1;
+      }
+    }
+  }
+
+  .btn-close {
+    position: absolute;
+    right: .5rem;
+    top: .5rem;
+    z-index: 999;
+  }
+}
+
+// Profile
+.profile-container {
+  display: flex;
+  flex: 1 1;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden auto;
+  padding: 0 1.5rem;
+
+  .profile-basic {
+    position: relative;
+    padding: 1rem 0;
+  }
+
+  .profile-basic-loading-placeholder {
+    min-height: 2rem;
+    margin: 1rem 0;
+    place-self: flex-start;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .records {
+    position: relative;
+    margin: 1rem 0;
+    display: flex;
+    gap: .5rem;
+    
+    .action-btn {
+      position: relative;
+      width: 1.8rem;
+      height: 1.8rem;
+      box-shadow: 0px .2rem 1rem rgba(0, 0, 0, 0.05);
+      border-radius: .4rem;
+      cursor: pointer;
+      transition: box-shadow .2s ease-in-out;
+    }
+  }
+
+  .profile-widget {
+    margin-bottom: 1rem;
+
+    .profile-widget-title {
+      color: $dark-color;
+      font-size: .7rem;
+      font-weight: 900;
+      line-height: 1rem;
+      text-transform: uppercase;
+    }
+  }
+
+  // Custom Widget
+  .widget-nft {
+    .collection-switcher {
+      box-shadow: none;
+      margin-left: -1.5rem;
+      margin-right: -1.5rem;
+
+      .collection-list {
+        padding: .25rem 1.5rem;
+      }
+    }
+  }
+
+  .widget-poap {
+    .nft-collection-list {
+      padding-top: 1rem;
+
+      .nft-list {
+        .nft-item {
+          .img-responsive {
+            box-shadow: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+.profile-main {
+  align-items: center;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  left: 50%;
+  max-width: 25rem;
+  position: fixed;
+  top: 0;
+  transform: translateX(-50%);
+  width: 100%;
+}
+
+// Social Feeds
+.feeds-container {
+  flex: 1 1;
+  height: 100%;
+  overflow-y: auto;
+  padding: 0 1.5rem;
+
+  .social-feeds-title {
+    font-size: .7rem;
+    font-weight: 700;
+    padding: 1rem 0;
+  }
+}
+
+.social-feeds-list {
+  .social-feeds-item {
+
+  }
+
+  .feed-item-box {
+    display: flex;
+    width: 100%;
+    margin-top: 1rem;
+    align-items: flex-start;
+    gap: 10px;
+
+    .feed-type-badge {
+      width: 24px;
+      height: 24px;
+      background: rgba(18, 18, 18, 0.08);
+      box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.05);
+      border-radius: 8px;
+    }
+
+    .feed-item {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 90%;
+
+      .feed-item-header {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .feed-type-intro {
+          display: flex;
+          align-items: center;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 22px;
+
+          .strong {
+            font-weight: 900;
+            margin: 0 4px;
+          }
+        }
+      }
+
+      .feed-item-main {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .feed-nft-img {
+          position: relative;
+          width: 40px;
+          height: 40px;
+          min-width: 40px;
+          min-height: 40px;
+          box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.15);
+          border-radius: 12px;
+
+          img {
+            box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+          }
+        }
+
+        .feed-swap-img {
+          width: 24px;
+          box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.15);
+          border-radius: 12px;
+          background: transparent;
+        }
+
+        .feed-nft-info {
+          display: flex;
+          flex-direction: column;
+
+          .nft-title {
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 22px;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+            overflow: hidden;
+          }
+
+          .nft-subtitle {
+            font-weight: 400;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+          }
+
+          .nft-collection-title {
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 1rem;
+            color: #121212;
+            opacity: 0.5;
+          }
+        }
+      }
+    }
+  }
+}
+
+// NFT Collections
+.collection-switcher {
+  background: #fff;
+  box-shadow: 0 .1rem 1rem rgba($dark-color, .1);
+  user-select: none;
+
+  .collection-list {
+    display: flex;
+    gap: .1rem;
+    overflow: auto hidden;
+    padding: .25rem 1rem;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    .collection-item {
+      background: #fff;
+      border-radius: .6rem;
+      flex: 0 0;
+      height: 3.1rem;
+      padding: .25rem;
+      transition: all .25s ease-in-out;
+      width: 3.1rem;
+
+      &::after {
+        bottom: auto;
+        top: 100%;
+        transform: translate(-50%, -$unit-2);
+      }
+
+      &:focus,
+      &:hover {
+        background: lighten($bg-color, 2%);
+
+        &::after {
+          transform: translate(-50%, $unit-1);
+        }
+      }
+
+      &.active {
+        background: $bg-color;
+
+        .img-responsive {
+          box-shadow: 0 .1rem .4rem rgba($dark-color, .25);
+        }
+      }
+
+      .collection-img {
+        border-radius: .5rem;
+        height: 2.6rem;
+        width: 2.6rem;
+
+        .img-responsive {
+          border-radius: .5rem;
+          box-shadow: 0 .1rem .4rem rgba($dark-color, .1);
+          font-size: 1.6rem;
+          height: 2.6rem;
+          object-fit: cover;
+          width: 2.6rem;
+        }
+      }
+    }
+  }
+}
+
+.nft-collection {
+  flex: 1 1;
+  height: 100%;
+  overflow: hidden auto;
+  padding: 0 1.5rem;
+}
+
+.nft-collection-list {
+  .nft-collection-item {
+    margin-top: .5rem;
+  }
+
+  .collection-title {
+    align-items: center;
+    display: flex;
+    padding: 1rem 0 .5rem 0;
+
+    .collection-logo {
+      flex: 0 0 1.2rem;
+      margin-right: .25rem;
+
+      .img-responsive {
+        border-radius: .4rem;
+        box-shadow: 0 .2rem .8rem rgba($dark-color, .2);
+        font-size: 1rem;
+        height: 1.2rem;
+        object-fit: cover;
+        width: 1.2rem;
+      }
+    }
+
+    .collection-name {
+      font-size: .8rem;
+      font-weight: 700;
+    }
+  }
+
+  .nft-list {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -.5rem 1rem -.5rem;
+
+    .nft-container {
+      flex: 0 0 33.3333%;
+      width: 33.3333%;
+    }
+
+    .nft-item {
+      border-radius: .75rem;
+      padding: .5rem;
+      transition: all .25s ease-in-out;
+
+      &:focus,
+      &:hover {
+        background: lighten($bg-color, 2%);
+      }
+
+      .img-container {
+        margin-bottom: .5rem;
+
+        .img-responsive {
+          border-radius: .5rem;
+          box-shadow: 0 .2rem 1rem rgba($dark-color, .15), 0 .05rem .2rem rgba($dark-color, .05);
+          font-size: 2rem;
+          min-height: 7rem;
+          object-fit: cover;
+        }
+      }
+
+      .collection-name {
+        color: $gray-color-dark;
+        font-size: .5rem;
+      }
+
+      .nft-name {
+        font-size: .65rem;
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+.nft-panel {
+  height: calc(100vh - 1rem);
+  left: -1rem;
+  position: absolute;
+  right: -1rem;
+  top: 1rem;
+
+  .panel-container {
+    height: calc(100vh - 2rem);
+  }
+
+  .panel-header {
+    overflow: hidden auto;
+    padding: 1rem;
+
+    .panel-header-img {
+      flex: 1 1 50%;
+      margin-right: 1rem;
+      width: 50%;
+    }
+
+    .img-responsive {
+      border-radius: .5rem;
+    }
+
+    .collection-title {
+      align-items: center;
+      display: flex;
+      padding: 1rem 0 .5rem 0;
+
+      .collection-logo {
+        flex: 0 0 1.2rem;
+        margin-right: .25rem;
+
+        .img-responsive {
+          border-radius: .4rem;
+          box-shadow: 0 .2rem .8rem rgba($dark-color, .2);
+          font-size: 1rem;
+          height: 1.2rem;
+          width: 1.2rem;
+        }
+      }
+
+      .collection-name {
+        font-size: .65rem;
+        font-weight: 700;
+      }
+    }
+
+    .nft-header-name {
+      font-size: 1.2rem;
+      font-weight: 900;
+    }
+
+    .nft-header-actions {
+      margin-top: .5rem;
+    }
+  }
+
+  .panel-body {
+    padding: 0 1rem 1rem 1rem;
+  }
+
+  .panel-widget {
+    margin: 1rem 0;
+
+    .panel-widget-title {
+      font-size: .7rem;
+      font-weight: 900;
+      margin-bottom: .5rem;
+      text-transform: uppercase;
+    }
+
+    .panel-widget-content {
+      font-size: .6rem;
+      line-height: 1rem;
+    }
+
+    .traits-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+
+      .traits-card {
+        background: $light-color;
+        border: .05rem solid rgba(18, 18, 18, 0.08);
+        box-shadow: 0 .2rem .8rem rgba(0, 0, 0, 0.05);
+        border-radius: .4rem;
+        color: $dark-color;
+        text-transform: uppercase;
+        padding: .2rem .4rem;
+
+        .trait-type {
+          font-size: .5rem;
+          line-height: 2;
+        }
+
+        .trait-value {
+          font-weight: 700;
+          font-size: .6rem;
+          line-height: 1.5;
+        }
+      }
+    }
+  }
+}
 
 //- Web3.bio Toast
 .web3bio-toast {
@@ -606,7 +1217,7 @@ body {
   color: $gray-color;
   font-size: .7rem;
   font-weight: 500;
-  padding-top: .5rem;
+  padding: .5rem;
   position: sticky;
   text-align: center;
   top: 100vh;
@@ -642,6 +1253,27 @@ body {
 
 .bg-pride {
   background: linear-gradient(70deg, $pride-color-1 -10%, $pride-color-2 5%, $pride-color-3 36%, $pride-color-4 50%, $pride-color-5 63%, $pride-color-6 95%, $pride-color-7 110%);
+}
+
+.img-placeholder {
+  align-items: center;
+  display: flex;
+  flex: 0 0;
+  justify-content: center;
+  opacity: .75;
+  padding: .25rem;
+  position: relative;
+
+  &[data-initial]::before {
+    color: $light-color;
+    content: attr(data-initial);
+    font-size: .5em;
+    font-weight: 700;
+    line-height: .5em;
+    text-shadow: 0 .1rem .4rem rgba($dark-color, .2);
+    text-transform: uppercase;
+    z-index: $zindex-0;
+  }
 }
 
 .tooltip-copy {
