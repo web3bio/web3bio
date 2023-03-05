@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useState } from "react";
 import { NFTCollections } from "./NFTCollections";
 import { NFTDialog } from "./NFTDialog";
 

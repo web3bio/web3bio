@@ -1,10 +1,10 @@
-import React, { memo, useEffect, useState } from "react";
 import _ from "lodash";
-import { formatText } from "../../utils/utils";
-import { colorsMap, platformsMap } from "../../utils/maps";
-import { register } from "./GraphUtils/LargeRegister";
-import { Loading } from "../shared/Loading";
+import React, { memo, useEffect, useState } from "react";
 import SVG from "react-inlinesvg";
+import { colorsMap, platformsMap } from "../../utils/maps";
+import { formatText } from "../../utils/utils";
+import { Loading } from "../shared/Loading";
+import { register } from "./GraphUtils/LargeRegister";
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
 let graph = null;

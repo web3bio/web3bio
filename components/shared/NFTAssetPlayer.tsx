@@ -1,4 +1,5 @@
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
+import { getContractSpecImage } from "../../utils/domains";
 import { ImageLoader } from "./ImageLoader";
 
 const IsImage = (type) => {
@@ -32,6 +33,22 @@ const RenderNFTAssetPlayer = (props) => {
     onClick,
     style,
   } = props;
+  const [resolvedSrc, setResolvedSrc] = useState(src);
+
+  useEffect(() => {
+    const eipPrefix = "eip155:1/erc721:";
+    if (src && src.startsWith(eipPrefix)) {
+      const fetchSrc = async () => {
+        const res = await getContractSpecImage(
+          src.split(eipPrefix)[1].split("/")
+        );
+        setResolvedSrc(res);
+      };
+      fetchSrc().catch((e) => {
+        setResolvedSrc("");
+      });
+    }
+  }, [src]);
   return (
     <>
       {src ? (
@@ -40,7 +57,7 @@ const RenderNFTAssetPlayer = (props) => {
             <ImageLoader
               width={width}
               height={height}
-              src={type === "unknown" ? contentUrl : src}
+              src={type === "unknown" ? contentUrl : resolvedSrc}
               alt={alt}
             />
           ) : (

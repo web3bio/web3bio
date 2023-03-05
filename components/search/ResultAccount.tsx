@@ -1,7 +1,7 @@
-import React, { memo, useState } from "react";
-import { ResultAccountItem } from "./ResultAccountItem";
-import { ResultGraph } from "../graph/ResultGraph";
+import { memo, useState } from "react";
 import SVG from "react-inlinesvg";
+import { ResultGraph } from "../graph/ResultGraph";
+import { ResultAccountItem } from "./ResultAccountItem";
 
 const RenderAccount = (props) => {
   const { searchTerm, resultNeighbor, graphData, openProfile } = props;

@@ -1,5 +1,4 @@
 import { memo } from "react";
-import { formatTimestamp } from "../../../utils/date";
 import { formatText, formatValue, isSameAddress } from "../../../utils/utils";
 import { Tag, Type } from "../../apis/rss3/types";
 import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";

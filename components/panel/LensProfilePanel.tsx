@@ -1,13 +1,11 @@
 import { memo, useState } from "react";
-import SVG from "react-inlinesvg";
 import Clipboard from "react-clipboard.js";
-import { resolveIPFS_URL } from "../../utils/ipfs";
-import { getEnumAsArray } from "../../utils/utils";
-import { formatText } from "../../utils/utils";
-import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { LensProfileTab } from "./lensTabs/LensProfileTab";
-import { FeedsTab } from "./FeedsTab";
+import SVG from "react-inlinesvg";
 import { PlatformType } from "../../utils/type";
+import { formatText, getEnumAsArray, resolveMediaURL } from "../../utils/utils";
+import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
+import { FeedsTab } from "./FeedsTab";
+import { LensProfileTab } from "./lensTabs/LensProfileTab";
 import { NFTsTab } from "./NFTsTab";
 
 export const TabsMap = {
@@ -23,12 +21,6 @@ export const TabsMap = {
     key: "nfts",
     name: "NFTs",
   },
-};
-const resolveMediaURL = (asset) => {
-  if (asset) {
-    return asset.startsWith("data:", "https:") ? asset : resolveIPFS_URL(asset);
-  }
-  return "";
 };
 
 const LensProfilePanelRender = (props) => {
