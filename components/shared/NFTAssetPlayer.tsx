@@ -32,43 +32,44 @@ const RenderNFTAssetPlayer = (props) => {
     onClick,
     style,
   } = props;
+
+  const renderContent = () => {
+    if (!src)
+      return (
+        <div
+          className="img-placeholder img-responsive bg-pride"
+          data-initial={alt?.substring(0, 2)}
+        ></div>
+      );
+    return IsImage(type) ? (
+      <ImageLoader
+        width={width}
+        height={height}
+        src={type === "unknown" ? contentUrl : src}
+        alt={alt}
+      />
+    ) : (
+      isVideo(type) && (
+        <video
+          style={{ borderRadius: 8 }}
+          className="video-responsive"
+          width={"100%"}
+          height={"100%"}
+          muted
+          autoPlay
+          loop
+          poster={src as string}
+        >
+          <source src={contentUrl as string} type={type}></source>
+        </video>
+      )
+    );
+  };
+
   return (
-    <>
-      {src ? (
-        <div onClick={onClick} className={className} style={style}>
-          {IsImage(type) ? (
-            <ImageLoader
-              width={width}
-              height={height}
-              src={type === "unknown" ? contentUrl : src}
-              alt={alt}
-            />
-          ) : (
-            isVideo(type) && (
-              <video
-                style={{ borderRadius: 8 }}
-                className="video-responsive"
-                width={"100%"}
-                height={"100%"}
-                muted
-                autoPlay
-                loop
-                poster={src as string}
-              >
-                <source src={contentUrl as string} type={type}></source>
-              </video>
-            )
-          )}
-        </div>
-      ) : (
-        <div onClick={onClick} className={className} style={style}>
-          <div
-            className="img-placeholder img-responsive bg-pride"
-            data-initial={alt?.substring(0, 2)}
-          ></div>
-        </div>
-      )}
-    </>
+    <div onClick={onClick} className={className} style={style}>
+      {renderContent()}
+    </div>
   );
 };
 

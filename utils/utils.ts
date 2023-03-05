@@ -1,15 +1,15 @@
 import { BigNumber } from "bignumber.js";
-import { pow10 } from "./number";
-import { PlatformType } from "./type";
 import { EthereumAddress } from "wallet.ts";
+import { pow10 } from "./number";
 import {
   regexDotbit,
   regexEns,
   regexEth,
   regexLens,
   regexTwitter,
-  regUnstoppableDomains,
+  regUnstoppableDomains
 } from "./regexp";
+import { PlatformType } from "./type";
 export const formatText = (string, length?) => {
   const len = length ?? 12;
   if (string.length <= len) {
