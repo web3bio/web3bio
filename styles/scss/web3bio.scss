@@ -600,9 +600,9 @@ body {
 // Identity Panel
 .identity-panel {
   bottom: 1rem;
-  left: 0;
+  left: -1rem;
   position: absolute;
-  right: 0;
+  right: -1rem;
   top: 1rem;
 }
 
@@ -808,6 +808,10 @@ body {
   top: 0;
   transform: translateX(-50%);
   width: 100%;
+
+  @media screen and (max-width: $size-xl) {
+    width: calc(100% - 4rem);
+  }
 }
 
 // Social Feeds
@@ -1047,6 +1051,10 @@ body {
       flex: 0 0 33.3333%;
       width: 33.3333%;
       min-width: 8rem;
+
+      @media screen and (max-width: $size-md) {
+        flex: 0 0 50%;
+      }
     }
 
     .nft-item {
