@@ -1,5 +1,6 @@
 import { BigNumber } from "bignumber.js";
 import { EthereumAddress } from "wallet.ts";
+import { resolveIPFS_URL } from "./ipfs";
 import { pow10 } from "./number";
 import {
   regexDotbit,
