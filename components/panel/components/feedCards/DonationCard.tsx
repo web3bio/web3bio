@@ -1,7 +1,7 @@
 import { memo, useState } from "react";
-import { formatText, formatValue, isSameAddress } from "../../../utils/utils";
-import { Tag } from "../../apis/rss3/types";
-import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
+import { formatText, formatValue, isSameAddress } from "../../../../utils/utils";
+import { Tag } from "../../../apis/rss3/types";
+import { NFTAssetPlayer } from "../../../shared/NFTAssetPlayer";
 
 export function isDonationFeed(feed) {
   return feed.tag === Tag.Donation;

@@ -1,13 +1,10 @@
 import { memo } from "react";
 import useSWR from "swr";
-import { Loading } from "../shared/Loading";
-import { Error } from "../shared/Error";
-import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { resolveIPFS_URL } from "../../utils/ipfs";
-import { NFTSCANFetcher, NFTSCAN_BASE_API_ENDPOINT } from "../apis/nftscan";
-import { useRouter } from "next/router";
-import { TabsMap } from "./IdentityPanel";
-import Link from "next/link";
+import { resolveIPFS_URL } from "../../../utils/ipfs";
+import { NFTSCANFetcher, NFTSCAN_BASE_API_ENDPOINT } from "../../apis/nftscan";
+import { Error } from "../../shared/Error";
+import { Loading } from "../../shared/Loading";
+import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
 
 function useCollections(address: string) {
   const { data, error } = useSWR<any>(

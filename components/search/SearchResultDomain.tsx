@@ -1,11 +1,10 @@
 import { useQuery } from "@apollo/client";
-import { ResultAccount } from "./ResultAccount";
-import { Loading } from "../shared/Loading";
+import { memo, useEffect, useState } from "react";
+import { GET_PROFILES_DOMAIN } from "../../utils/queries";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
-import { GET_PROFILES_DOMAIN } from "../../utils/queries";
-import _ from "lodash";
-import { memo, useEffect, useState } from "react";
+import { Loading } from "../shared/Loading";
+import { ResultAccount } from "./ResultAccount";
 const RenderResultDomain = ({ searchTerm, searchPlatform, openProfile }) => {
   const { loading, error, data } = useQuery(GET_PROFILES_DOMAIN, {
     variables: {

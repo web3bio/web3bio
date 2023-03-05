@@ -1,5 +1,4 @@
-import { forwardRef, useMemo, useRef } from "react";
-import { useAsync, useAsyncRetry } from "react-use";
+import { forwardRef, useRef } from "react";
 import { Loading } from "./Loading";
 
 export interface VideoRef {

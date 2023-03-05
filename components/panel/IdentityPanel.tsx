@@ -1,15 +1,13 @@
-import { memo, useEffect, useState } from "react";
-import SVG from "react-inlinesvg";
+import { memo, useState } from "react";
 import Clipboard from "react-clipboard.js";
-import { getEnumAsArray } from "../../utils/utils";
+import SVG from "react-inlinesvg";
+import { PlatformType } from "../../utils/type";
+import { formatText, getEnumAsArray, resolveMediaURL } from "../../utils/utils";
+import { Loading } from "../shared/Loading";
+import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { FeedsTab } from "./FeedsTab";
 import { NFTsTab } from "./NFTsTab";
 import { ProfileTab, useProfile } from "./ProfileTab";
-import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { Loading } from "../shared/Loading";
-import { formatText } from "../../utils/utils";
-import { resolveIPFS_URL } from "../../utils/ipfs";
-import { PlatformType } from "../../utils/type";
 
 export const TabsMap = {
   profile: {
@@ -40,6 +38,7 @@ const IdentityPanelRender = (props) => {
   } = props;
   const [activeTab, setActiveTab] = useState(curTab);
   const [copied, setCopied] = useState(null);
+
   const { data: profileData, isLoading: avatarLoading } = useProfile(
     identity.displayName || identity.identity
   );
@@ -49,14 +48,7 @@ const IdentityPanelRender = (props) => {
       setCopied(false);
     }, 1500);
   };
-  const resolveMediaURL = (asset) => {
-    if (asset) {
-      return asset.startsWith("data:", "https:")
-        ? asset
-        : resolveIPFS_URL(asset);
-    }
-    return "";
-  };
+
   const renderContent = () => {
     return (
       {
@@ -68,9 +60,12 @@ const IdentityPanelRender = (props) => {
               setActiveTab(TabsMap.nfts.key);
             }}
             identity={identity}
+            network={PlatformType.ens}
           />
         ),
-        [TabsMap.feeds.key]: <FeedsTab network={PlatformType.ens} identity={identity} />,
+        [TabsMap.feeds.key]: (
+          <FeedsTab network={PlatformType.ens} identity={identity} />
+        ),
         [TabsMap.nfts.key]: (
           <NFTsTab
             showDialog={onShowNFTDialog}
@@ -83,7 +78,6 @@ const IdentityPanelRender = (props) => {
       }[activeTab] || <FeedsTab identity={identity} />
     );
   };
-
   const resolveOnShowDetail = (asset) => {
     // todo: to resolve url && nft dialog
   };
@@ -97,7 +91,7 @@ const IdentityPanelRender = (props) => {
                 <Loading />
               ) : (
                 <NFTAssetPlayer
-                  src={resolveMediaURL(profileData.image ?? '')}
+                  src={resolveMediaURL(profileData.image ?? "")}
                   alt={
                     identity.displayName
                       ? identity.displayName

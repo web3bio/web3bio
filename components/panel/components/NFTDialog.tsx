@@ -1,11 +1,21 @@
 import { memo } from "react";
 import SVG from "react-inlinesvg";
 import useSWR from "swr";
-import { NFTSCANFetcher, NFTSCAN_BASE_API_ENDPOINT, NFTSCAN_POLYGON_BASE_API } from "../apis/nftscan";
-import { Error } from "../shared/Error";
-import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { isValidJson } from "../../utils/utils";
-import { PlatformType } from "../../utils/type";
+import { PlatformType } from "../../../utils/type";
+import { isValidJson } from "../../../utils/utils";
+import {
+  NFTSCANFetcher,
+  NFTSCAN_BASE_API_ENDPOINT,
+  NFTSCAN_POLYGON_BASE_API
+} from "../../apis/nftscan";
+import { Error } from "../../shared/Error";
+import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
+
+export const enum NFTDialogType {
+  NFT = "nft",
+  POAP = "poap",
+}
+
 function useAsset(
   address: string,
   tokenId: string | number,
@@ -26,16 +36,91 @@ function useAsset(
   };
 }
 const NFTDialogRender = (props) => {
-  const { onClose, asset, network } = props;
-  const { data, isError } = useAsset(
-    asset.asset.contract_address,
-    asset.asset.token_id,
+  const {
+    onClose,
+    asset,
     network,
-  );
-  const resolveOpenseaLink = `https://opensea.io/assets/ethereum/${asset.asset.contract_address}/${asset.asset.token_id}`;
+    address,
+    tokenId,
+    type = NFTDialogType.NFT,
+    poap,
+  } = props;
+  console.log(address, tokenId, "current", poap);
+  const { data, isError } = useAsset(address, tokenId, network);
+  const resolveOpenseaLink = `https://opensea.io/assets/ethereum/${address}/${tokenId}`;
 
   if (isError) return <Error text={isError} />;
-  if (!data) return null;
+  if (type === "poap")
+    return (
+      <>
+        <div
+          id="nft-dialog"
+          className="nft-panel"
+          style={{ margin: "0 -1.5rem" }}
+        >
+          <div className="panel-container">
+            <div className="btn btn-close" onClick={onClose}>
+              <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
+            </div>
+            <div className="panel-header">
+              <NFTAssetPlayer
+                className={"img-container"}
+                type={"image/png"}
+                src={poap.mediaURL}
+                contentUrl={poap.contentURL}
+                alt={poap.asset.event.name}
+              />
+              <div className="panel-header-content">
+                <div className="nft-header-name">
+                  {poap.asset.event.name || `#${asset.tokenId}`}
+                </div>
+                <div className="nft-header-actions">
+                  <a
+                    href={resolveOpenseaLink}
+                    className="btn mr-2"
+                    title="Open OpenSea"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <SVG
+                      src={"/icons/social-opensea.svg"}
+                      width={20}
+                      height={20}
+                      className="icon"
+                    />
+                    <span className="ml-1">OpenSea</span>
+                  </a>
+                  <a
+                    href={`https://etherscan.io/token/${poap.address}?a=${poap.tokenId}`}
+                    className="btn"
+                    title="Open Etherscan"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <SVG
+                      src={"/icons/icon-ethereum.svg"}
+                      width={20}
+                      height={20}
+                      className="icon"
+                    />
+                    <span className="ml-1">Etherscan</span>
+                  </a>
+                </div>
+              </div>
+              {poap.asset.event.description && (
+                <div className="panel-widget">
+                  <div className="panel-widget-title">Description</div>
+                  <div className="panel-widget-content">
+                    {poap.asset.event.description}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  if (!data || !data.data) return null;
   const _asset = data.data;
   const metadata = isValidJson(_asset.metadata_json)
     ? JSON.parse(_asset.metadata_json)

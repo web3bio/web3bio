@@ -1,4 +1,4 @@
-import { ImgHTMLAttributes, useState, SyntheticEvent } from "react";
+import { ImgHTMLAttributes, SyntheticEvent, useState } from "react";
 import { DefaultIcon } from "./Default";
 // import { Loading } from "./Loading";
 

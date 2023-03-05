@@ -1,6 +1,6 @@
 import { memo } from "react";
-import { formatText, isSameAddress } from "../../../utils/utils";
-import { Tag, Type } from "../../apis/rss3/types";
+import { formatText, isSameAddress } from "../../../../utils/utils";
+import { Tag, Type } from "../../../apis/rss3/types";
 
 export function isNoteFeed(feed) {
   return (

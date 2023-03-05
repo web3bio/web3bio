@@ -181,3 +181,13 @@ export function isValidAddress(address?: string) {
   if (!address) return false;
   return EthereumAddress.isValid(address);
 }
+
+export const resolveMediaURL = (asset) => {
+  const eipPrefix = "eip155:1/erc721:";
+  if (asset) {
+    return asset.startsWith("data:", "https:", eipPrefix)
+      ? asset
+      : resolveIPFS_URL(asset);
+  }
+  return "";
+};
