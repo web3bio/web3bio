@@ -1,10 +1,10 @@
 import { memo } from "react";
 import useSWR from "swr";
-import { resolveIPFS_URL } from "../../utils/ipfs";
-import { POAPFetcher, POAP_END_POINT } from "../apis/poap";
-import { Error } from "../shared/Error";
-import { Loading } from "../shared/Loading";
-import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
+import { resolveIPFS_URL } from "../../../utils/ipfs";
+import { POAPFetcher, POAP_END_POINT } from "../../apis/poap";
+import { Error } from "../../shared/Error";
+import { Loading } from "../../shared/Loading";
+import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
 
 function usePoaps(address: string) {
   const { data, error } = useSWR<any>(
@@ -19,7 +19,7 @@ function usePoaps(address: string) {
 }
 
 const RenderPoaps = (props) => {
-  const { identity } = props;
+  const { identity, onShowDetail } = props;
   const { data, isLoading, isError } = usePoaps(identity.identity);
   if (isLoading) return <Loading />;
   if (isError) return <Error text={isError} />;
@@ -35,16 +35,28 @@ const RenderPoaps = (props) => {
                 <div
                   key={idx}
                   className="nft-container c-hand"
+                  onClick={() => {
+                    console.log(x, "kkk");
+                    onShowDetail({
+                      collection: {
+                        url: '',
+                        name: '',
+                      },
+                      address: x.owner,
+                      tokenId: x.tokenId,
+                      asset: x,
+                      mediaURL: resolveIPFS_URL(x.event.image_url),
+                      contentURL: resolveIPFS_URL(x.event.image_url),
+                    })
+                  }}
                 >
                   <div className="nft-item">
-                  <NFTAssetPlayer 
-                    className="img-container" 
-                    src={resolveIPFS_URL(x.event.image_url)} 
-                    alt={x.event.name} 
-                  />
-                    <div className="collection-name">
-                      {x.event.start_date}
-                    </div>
+                    <NFTAssetPlayer
+                      className="img-container"
+                      src={resolveIPFS_URL(x.event.image_url)}
+                      alt={x.event.name}
+                    />
+                    <div className="collection-name">{x.event.start_date}</div>
                     <div className="nft-name">{x.event.name}</div>
                   </div>
                 </div>

@@ -7,7 +7,7 @@ import { RSS3Fetcher, RSS3_END_POINT } from "../apis/rss3";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
 import { Loading } from "../shared/Loading";
-import { FeedItem, isSupportedFeed } from "./FeedItem";
+import { FeedItem, isSupportedFeed } from "./components/FeedItem";
 
 const PAGE_SIZE = 30;
 const getFeedsURL = (

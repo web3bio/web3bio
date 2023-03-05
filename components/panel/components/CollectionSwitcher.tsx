@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
+import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
 
 const RenderCollectionSwitcher = (props) => {
   const { collections, currentSelect, onSelect } = props;
