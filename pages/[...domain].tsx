@@ -6,9 +6,9 @@ import { LensProfilePanel } from "../components/panel/LensProfilePanel";
 import { Empty } from "../components/shared/Empty";
 import { Error } from "../components/shared/Error";
 import { Loading } from "../components/shared/Loading";
-import { preFetchENSList } from "../utils/domains";
 import { GET_PROFILE_LENS } from "../utils/lens";
 import { GET_PROFILES_DOMAIN, GET_PROFILES_QUERY } from "../utils/queries";
+import supabase from "../utils/supabase";
 import { PlatformType } from "../utils/type";
 import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
 
@@ -201,9 +201,12 @@ const RenderDomainPanel = (props) => {
 
 export async function getStaticPaths() {
   // todo: get top100 ens
-  // const ensList = await getTop1000ENS()
-  const paths = preFetchENSList.map((ens) => ({
-    params: { domain: [ens] },
+  const { data: preFetchDomainList } = await supabase
+    .from("prefetching_domains")
+    .select();
+  console.log(preFetchDomainList,'sxq api')
+  const paths = preFetchDomainList.map((domain) => ({
+    params: { domain: [domain] },
   }));
 
   return { paths, fallback: true };
@@ -215,7 +218,7 @@ export async function getStaticProps({ params }) {
     props: {
       domain,
     },
-    revalidate: 10,
+    revalidate: 60,
   };
 }
 
