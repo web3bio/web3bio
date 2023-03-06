@@ -8,7 +8,7 @@ import { Error } from "../components/shared/Error";
 import { Loading } from "../components/shared/Loading";
 import { GET_PROFILE_LENS } from "../utils/lens";
 import { GET_PROFILES_DOMAIN, GET_PROFILES_QUERY } from "../utils/queries";
-import supabase from "../utils/supabase";
+import { DOMAINS_TABLE_NAME, supabase } from "../utils/supabase";
 import { PlatformType } from "../utils/type";
 import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
 
@@ -30,7 +30,6 @@ const RenderDomainPanel = (props) => {
   const [nftDialogOpen, setNftDialogOpen] = useState(false);
   const [name, setName] = useState(null);
   const profileContainer = useRef(null);
-
   useEffect(() => {
     if (asComponent) {
       setName(domain[0]);
@@ -200,13 +199,11 @@ const RenderDomainPanel = (props) => {
 };
 
 export async function getStaticPaths() {
-  // todo: get top100 ens
-  const { data: preFetchDomainList } = await supabase
-    .from("prefetching_domains")
-    .select();
-  console.log(preFetchDomainList,'sxq api')
-  const paths = preFetchDomainList.map((domain) => ({
-    params: { domain: [domain] },
+  const { data: prefetching_domains, error } = await supabase
+    .from(DOMAINS_TABLE_NAME)
+    .select("name");
+  const paths = (prefetching_domains || []).map((domain) => ({
+    params: { domain: [domain.name] },
   }));
 
   return { paths, fallback: true };
