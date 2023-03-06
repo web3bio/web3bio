@@ -199,23 +199,50 @@ const RenderDomainPanel = (props) => {
 };
 
 export async function getStaticPaths() {
-  const { data: prefetching_domains, error } = await supabase
+  const { data: prefetching_domains } = await supabase
     .from(DOMAINS_TABLE_NAME)
     .select("name");
-  const paths = (prefetching_domains || []).map((domain) => ({
-    params: { domain: [domain.name] },
-  }));
-
-  return { paths, fallback: true };
+  const paths = (prefetching_domains || []).map((domain) => {
+    console.log("Generate Static Page:", domain.name);
+    return {
+      params: { domain: [domain.name] },
+    };
+  });
+  return { paths, fallback: "blocking" };
 }
 
 export async function getStaticProps({ params }) {
   const { domain } = params;
+
+  const { data: prefetching_domains } = await supabase
+    .from(DOMAINS_TABLE_NAME)
+    .select("name");
+  if (
+    !prefetching_domains.map((x) => x.name).includes(domain) &&
+    isDomainSearch(domain)
+  ) {
+    const { data, error } = await supabase.from(DOMAINS_TABLE_NAME).insert([
+      {
+        id: prefetching_domains.length,
+        name: domain,
+        created_at: Date.now().toLocaleString(),
+      },
+    ]);
+
+    if (error) {
+      console.log("insert unknown identifier failed");
+    } else {
+      console.log(
+        `insert unknown identifier: ${domain} success! see supabase for more information`
+      );
+    }
+  }
+
   return {
     props: {
       domain,
     },
-    revalidate: 60,
+    revalidate: 600,
   };
 }
 
