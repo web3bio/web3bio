@@ -6,10 +6,13 @@ import { Error } from "../../shared/Error";
 import { Loading } from "../../shared/Loading";
 import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
 
-function useCollections(address: string) {
+function useCollections(address: string, initialData) {
   const { data, error } = useSWR<any>(
     NFTSCAN_BASE_API_ENDPOINT + `account/own/all/${address}?erc_type=erc721`,
-    NFTSCANFetcher
+    NFTSCANFetcher,
+    {
+      fallbackData: initialData,
+    }
   );
   return {
     data: data,
@@ -19,8 +22,11 @@ function useCollections(address: string) {
 }
 
 const RenderNFTOverview = (props) => {
-  const { identity, toNFT } = props;
-  const { data, isLoading, isError } = useCollections(identity.identity);
+  const { identity, toNFT, initialData } = props;
+  const { data, isLoading, isError } = useCollections(
+    identity.identity,
+    initialData
+  );
   if (isLoading) return <Loading />;
   if (isError) return <Error text={isError} />;
   if (!data || !data.data) return null;
@@ -33,12 +39,18 @@ const RenderNFTOverview = (props) => {
           <div className="collection-list">
             {data.data.map((x, idx) => (
               <div
-                onClick={()=>toNFT(x.contract_address)}
+                onClick={() => toNFT(x.contract_address)}
                 className="collection-item"
                 key={idx}
               >
-                <NFTAssetPlayer className="collection-img" src={resolveIPFS_URL(x.logo_url)} alt={x.contract_name} />
-                <div className="collection-name text-assistive">{x.contract_name}</div>
+                <NFTAssetPlayer
+                  className="collection-img"
+                  src={resolveIPFS_URL(x.logo_url)}
+                  alt={x.contract_name}
+                />
+                <div className="collection-name text-assistive">
+                  {x.contract_name}
+                </div>
               </div>
             ))}
           </div>

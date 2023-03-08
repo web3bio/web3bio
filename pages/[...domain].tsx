@@ -3,8 +3,8 @@ import { memo, useEffect, useRef, useState } from "react";
 import { IdentityPanel, TabsMap } from "../components/panel/IdentityPanel";
 import { LensProfilePanel } from "../components/panel/LensProfilePanel";
 import { Empty } from "../components/shared/Empty";
-import { identityProvider, poapsProvider } from "../utils/dataProvider";
-import { _identity } from "../utils/queries";
+import { identityProvider, nftCollectionProvider } from "../utils/dataProvider";
+import { resolveIdentity } from "../utils/queries";
 import { DOMAINS_TABLE_NAME, supabase } from "../utils/supabase";
 import { PlatformType } from "../utils/type";
 import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
@@ -20,6 +20,7 @@ const RenderDomainPanel = (props) => {
     toNFT,
     identity,
     prefetchingPoaps,
+    prefetchingNFTs,
   } = props;
   const router = useRouter();
   const [panelTab, setPanelTab] = useState(
@@ -27,10 +28,20 @@ const RenderDomainPanel = (props) => {
   );
   const [platform, setPlatform] = useState(overridePlatform || "ENS");
   const [nftDialogOpen, setNftDialogOpen] = useState(false);
+  const [collections, setCollections] = useState(prefetchingNFTs || []);
   const [poaps, setPoaps] = useState(prefetchingPoaps || []);
   const [name, setName] = useState(null);
   const profileContainer = useRef(null);
-  
+
+  const _identity = (() => {
+    if (!identity) return null;
+    if (platform === PlatformType.lens) return identity.profile;
+    if (isDomainSearch(platform)) {
+      if (identity.domain) return identity.domain.owner;
+    }
+    return identity.identity;
+  })();
+
   useEffect(() => {
     if (asComponent) {
       setName(domain[0]);
@@ -81,14 +92,15 @@ const RenderDomainPanel = (props) => {
   return asComponent ? (
     <div className="web3bio-mask-cover">
       <div ref={profileContainer} className="profile-main">
-        {!_identity(identity, platform) ? (
+        {!_identity ? (
           <EmptyRender />
         ) : platform === PlatformType.lens ? (
           <LensProfilePanel
+            collections={collections}
             poaps={poaps}
             onClose={onClose}
             asComponent
-            profile={_identity(identity, platform)}
+            profile={_identity}
             curTab={panelTab}
             onTabChange={onTabChange}
             onShowNFTDialog={() => setNftDialogOpen(true)}
@@ -96,6 +108,7 @@ const RenderDomainPanel = (props) => {
           ></LensProfilePanel>
         ) : (
           <IdentityPanel
+            collections={collections}
             poaps={poaps}
             onShowNFTDialog={() => setNftDialogOpen(true)}
             onCloseNFTDialog={() => setNftDialogOpen(false)}
@@ -105,7 +118,7 @@ const RenderDomainPanel = (props) => {
             onClose={onClose}
             curTab={panelTab}
             onTabChange={onTabChange}
-            identity={_identity(identity, platform)}
+            identity={_identity}
           />
         )}
       </div>
@@ -114,10 +127,11 @@ const RenderDomainPanel = (props) => {
     <div className="web3bio-container">
       <div className="web3bio-cover flare"></div>
       <div ref={profileContainer} className="profile-main">
-        {_identity(identity, platform) ? (
+        {!_identity ? (
           <EmptyRender />
         ) : platform === PlatformType.lens ? (
           <LensProfilePanel
+            collections={collections}
             poaps={poaps}
             onTabChange={(v) => {
               setPanelTab(v);
@@ -128,13 +142,14 @@ const RenderDomainPanel = (props) => {
                 },
               });
             }}
-            profile={_identity(identity, platform)}
+            profile={_identity}
             nftDialogOpen={nftDialogOpen}
             onShowNFTDialog={() => setNftDialogOpen(true)}
             onCloseNFTDialog={() => setNftDialogOpen(false)}
           ></LensProfilePanel>
         ) : (
           <IdentityPanel
+            collections={collections}
             poaps={poaps}
             curTab={panelTab}
             toNFT={() => {
@@ -152,7 +167,7 @@ const RenderDomainPanel = (props) => {
             nftDialogOpen={nftDialogOpen}
             onShowNFTDialog={() => setNftDialogOpen(true)}
             onCloseNFTDialog={() => setNftDialogOpen(false)}
-            identity={_identity(identity, platform)}
+            identity={_identity}
           />
         )}
       </div>
@@ -176,44 +191,54 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   const { domain } = params;
   let prefetchingPoaps = [];
-  const platform = handleSearchPlatform(domain[0]) || "ENS";
-  const identity = await identityProvider(platform, domain[0]);
-  if (identity) {
-    const _resolved = _identity(identity,platform)
-    prefetchingPoaps = await poapsProvider(_resolved.identity)
-  }
-  const { data: prefetching_domains } = await supabase
-    .from(DOMAINS_TABLE_NAME)
-    .select("name");
-  if (
-    !prefetching_domains.map((x) => x.name).includes(domain) &&
-    isDomainSearch(domain)
-  ) {
-    const { error } = await supabase.from(DOMAINS_TABLE_NAME).insert([
-      {
-        id: prefetching_domains.length,
-        name: domain,
-        created_at: Date.now().toLocaleString(),
-      },
-    ]);
-
-    if (error) {
-      console.log("insert unknown identifier failed");
-    } else {
-      console.log(
-        `insert unknown identifier: ${domain} success! see supabase for more information`
-      );
+  let prefetchingNFTs = [];
+  try {
+    const platform = handleSearchPlatform(domain[0]) || "ENS";
+    const identity = await identityProvider(platform, domain[0]);
+    if (identity) {
+      const _resolved = resolveIdentity(identity, platform);
+      prefetchingNFTs = await nftCollectionProvider(_resolved.identity);
+      // todo: to handle the prefetchingPoaps 403 forbidden
+      // prefetchingPoaps = await poapsProvider(_resolved.identity)
     }
-  }
+    const { data: prefetching_domains } = await supabase
+      .from(DOMAINS_TABLE_NAME)
+      .select("name");
+    if (
+      !prefetching_domains.map((x) => x.name).includes(domain) &&
+      isDomainSearch(domain)
+    ) {
+      const { error } = await supabase.from(DOMAINS_TABLE_NAME).insert([
+        {
+          id: prefetching_domains.length,
+          name: domain,
+          created_at: Date.now().toLocaleString(),
+        },
+      ]);
 
-  return {
-    props: {
-      identity,
-      domain,
-      prefetchingPoaps,
-    },
-    revalidate: 600,
-  };
+      if (error) {
+        console.log("insert unknown identifier failed");
+      } else {
+        console.log(
+          `insert unknown identifier: ${domain} success! see supabase for more information`
+        );
+      }
+    }
+
+    return {
+      props: {
+        identity,
+        domain,
+        prefetchingPoaps,
+        prefetchingNFTs,
+      },
+      revalidate: 600,
+    };
+  } catch (e) {
+    return {
+      notFound: true,
+    };
+  }
 }
 
 export default memo(RenderDomainPanel);

@@ -122,8 +122,7 @@ export const GET_PROFILES_QUERY = gql`
   }
 `;
 
-
-export const _identity = (ini, iniP) => {
+export const resolveIdentity = (ini, iniP) => {
   if (!ini) return null;
   if (iniP === PlatformType.lens) return ini.profile;
   if (isDomainSearch(iniP)) {
