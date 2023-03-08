@@ -34,11 +34,12 @@ export const identityProvider = async (platform: string, name: string) => {
 };
 
 export const poapsProvider = async (address: string) => {
-  return await POAPFetcher(`${POAP_END_POINT}${address ?? ""}`);
+  return await POAPFetcher(POAP_END_POINT + address || "");
 };
 
 export const nftCollectionProvider = async (address: string) => {
   return await NFTSCANFetcher(
-    NFTSCAN_BASE_API_ENDPOINT + `account/own/all/${address}?erc_type=erc721`
+    NFTSCAN_BASE_API_ENDPOINT +
+      `account/own/all/${address || ""}}?erc_type=erc721`
   );
 };

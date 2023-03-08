@@ -28,8 +28,7 @@ const RenderDomainPanel = (props) => {
   );
   const [platform, setPlatform] = useState(overridePlatform || "ENS");
   const [nftDialogOpen, setNftDialogOpen] = useState(false);
-  const [collections, setCollections] = useState(prefetchingNFTs || []);
-  const [poaps, setPoaps] = useState(prefetchingPoaps || []);
+
   const [name, setName] = useState(null);
   const profileContainer = useRef(null);
 
@@ -96,8 +95,8 @@ const RenderDomainPanel = (props) => {
           <EmptyRender />
         ) : platform === PlatformType.lens ? (
           <LensProfilePanel
-            collections={collections}
-            poaps={poaps}
+            collections={prefetchingNFTs}
+            poaps={prefetchingPoaps}
             onClose={onClose}
             asComponent
             profile={_identity}
@@ -108,8 +107,8 @@ const RenderDomainPanel = (props) => {
           ></LensProfilePanel>
         ) : (
           <IdentityPanel
-            collections={collections}
-            poaps={poaps}
+            collections={prefetchingNFTs}
+            poaps={prefetchingPoaps}
             onShowNFTDialog={() => setNftDialogOpen(true)}
             onCloseNFTDialog={() => setNftDialogOpen(false)}
             nftDialogOpen={nftDialogOpen}
@@ -131,8 +130,8 @@ const RenderDomainPanel = (props) => {
           <EmptyRender />
         ) : platform === PlatformType.lens ? (
           <LensProfilePanel
-            collections={collections}
-            poaps={poaps}
+            collections={prefetchingNFTs}
+            poaps={prefetchingPoaps}
             onTabChange={(v) => {
               setPanelTab(v);
               router.replace({
@@ -149,8 +148,8 @@ const RenderDomainPanel = (props) => {
           ></LensProfilePanel>
         ) : (
           <IdentityPanel
-            collections={collections}
-            poaps={poaps}
+            collections={prefetchingNFTs}
+            poaps={prefetchingPoaps}
             curTab={panelTab}
             toNFT={() => {
               setPanelTab(TabsMap.nfts.key);
@@ -201,6 +200,8 @@ export async function getStaticProps({ params }) {
       // todo: to handle the prefetchingPoaps 403 forbidden
       // prefetchingPoaps = await poapsProvider(_resolved.identity)
     }
+
+    // check the domain whether has a record in supabase, or insert in it
     const { data: prefetching_domains } = await supabase
       .from(DOMAINS_TABLE_NAME)
       .select("name");
