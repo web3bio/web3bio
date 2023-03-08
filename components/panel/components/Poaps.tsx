@@ -6,10 +6,13 @@ import { Error } from "../../shared/Error";
 import { Loading } from "../../shared/Loading";
 import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
 
-function usePoaps(address: string) {
+function usePoaps(address: string, initialData) {
   const { data, error } = useSWR<any>(
     `${POAP_END_POINT}${address}`,
-    POAPFetcher
+    POAPFetcher,
+    {
+      fallbackData: initialData,
+    }
   );
   return {
     data: data,
@@ -19,8 +22,8 @@ function usePoaps(address: string) {
 }
 
 const RenderPoaps = (props) => {
-  const { identity, onShowDetail } = props;
-  const { data, isLoading, isError } = usePoaps(identity.identity);
+  const { identity, onShowDetail, initialData } = props;
+  const { data, isLoading, isError } = usePoaps(identity.identity, initialData);
   if (isLoading) return <Loading />;
   if (isError) return <Error text={isError} />;
   if (!data || !data.length) return null;
@@ -39,15 +42,15 @@ const RenderPoaps = (props) => {
                     console.log(x, "kkk");
                     onShowDetail({
                       collection: {
-                        url: '',
-                        name: '',
+                        url: "",
+                        name: "",
                       },
                       address: x.owner,
                       tokenId: x.tokenId,
                       asset: x,
                       mediaURL: resolveIPFS_URL(x.event.image_url),
                       contentURL: resolveIPFS_URL(x.event.image_url),
-                    })
+                    });
                   }}
                 >
                   <div className="nft-item">

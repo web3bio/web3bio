@@ -35,6 +35,7 @@ const IdentityPanelRender = (props) => {
     nftDialogOpen,
     onCloseNFTDialog,
     onShowNFTDialog,
+    prefetchingPoaps
   } = props;
   const [activeTab, setActiveTab] = useState(curTab);
   const [copied, setCopied] = useState(null);
@@ -60,6 +61,7 @@ const IdentityPanelRender = (props) => {
               setActiveTab(TabsMap.nfts.key);
             }}
             identity={identity}
+            prefetchingPoaps={prefetchingPoaps}
             network={PlatformType.ens}
           />
         ),

@@ -62,7 +62,7 @@ export function useProfile(domain: string) {
 }
 
 export const ProfileTab = (props) => {
-  const { identity, toNFT, network } = props;
+  const { identity, toNFT, network,prefetchingPoaps } = props;
   const domain = identity.displayName || identity.identity;
   const [dialogOpen, setDialogOpen] = useState(false);
   const [currentPoap, setCurrentPoap] = useState(null);
@@ -171,6 +171,7 @@ export const ProfileTab = (props) => {
           setCurrentPoap(poap);
           setDialogOpen(true);
         }}
+        initialData={prefetchingPoaps}
         identity={identity}
       />
 

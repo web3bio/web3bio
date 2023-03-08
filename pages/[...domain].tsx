@@ -3,7 +3,8 @@ import { memo, useEffect, useRef, useState } from "react";
 import { IdentityPanel, TabsMap } from "../components/panel/IdentityPanel";
 import { LensProfilePanel } from "../components/panel/LensProfilePanel";
 import { Empty } from "../components/shared/Empty";
-import { identityProvider } from "../utils/dataProvider";
+import { identityProvider, poapsProvider } from "../utils/dataProvider";
+import { _identity } from "../utils/queries";
 import { DOMAINS_TABLE_NAME, supabase } from "../utils/supabase";
 import { PlatformType } from "../utils/type";
 import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
@@ -18,6 +19,7 @@ const RenderDomainPanel = (props) => {
     overridePanelTab,
     toNFT,
     identity,
+    prefetchingPoaps,
   } = props;
   const router = useRouter();
   const [panelTab, setPanelTab] = useState(
@@ -25,9 +27,10 @@ const RenderDomainPanel = (props) => {
   );
   const [platform, setPlatform] = useState(overridePlatform || "ENS");
   const [nftDialogOpen, setNftDialogOpen] = useState(false);
+  const [poaps, setPoaps] = useState(prefetchingPoaps || []);
   const [name, setName] = useState(null);
   const profileContainer = useRef(null);
-  console.log(identity,'identity')
+  
   useEffect(() => {
     if (asComponent) {
       setName(domain[0]);
@@ -65,15 +68,6 @@ const RenderDomainPanel = (props) => {
     onClose,
   ]);
 
-  const _identity = (() => {
-    if (!identity) return null;
-    if (platform === PlatformType.lens) return identity.profile;
-    if (isDomainSearch(platform)) {
-      if (identity.domain) return identity.domain.owner;
-    }
-    return identity.identity;
-  })();
-
   const EmptyRender = () => {
     return (
       <div className="identity-panel">
@@ -87,13 +81,14 @@ const RenderDomainPanel = (props) => {
   return asComponent ? (
     <div className="web3bio-mask-cover">
       <div ref={profileContainer} className="profile-main">
-        {!_identity ? (
+        {!_identity(identity, platform) ? (
           <EmptyRender />
         ) : platform === PlatformType.lens ? (
           <LensProfilePanel
+            poaps={poaps}
             onClose={onClose}
             asComponent
-            profile={_identity}
+            profile={_identity(identity, platform)}
             curTab={panelTab}
             onTabChange={onTabChange}
             onShowNFTDialog={() => setNftDialogOpen(true)}
@@ -101,6 +96,7 @@ const RenderDomainPanel = (props) => {
           ></LensProfilePanel>
         ) : (
           <IdentityPanel
+            poaps={poaps}
             onShowNFTDialog={() => setNftDialogOpen(true)}
             onCloseNFTDialog={() => setNftDialogOpen(false)}
             nftDialogOpen={nftDialogOpen}
@@ -109,7 +105,7 @@ const RenderDomainPanel = (props) => {
             onClose={onClose}
             curTab={panelTab}
             onTabChange={onTabChange}
-            identity={_identity}
+            identity={_identity(identity, platform)}
           />
         )}
       </div>
@@ -118,10 +114,11 @@ const RenderDomainPanel = (props) => {
     <div className="web3bio-container">
       <div className="web3bio-cover flare"></div>
       <div ref={profileContainer} className="profile-main">
-        {!_identity ? (
+        {_identity(identity, platform) ? (
           <EmptyRender />
         ) : platform === PlatformType.lens ? (
           <LensProfilePanel
+            poaps={poaps}
             onTabChange={(v) => {
               setPanelTab(v);
               router.replace({
@@ -131,13 +128,14 @@ const RenderDomainPanel = (props) => {
                 },
               });
             }}
-            profile={_identity}
+            profile={_identity(identity, platform)}
             nftDialogOpen={nftDialogOpen}
             onShowNFTDialog={() => setNftDialogOpen(true)}
             onCloseNFTDialog={() => setNftDialogOpen(false)}
           ></LensProfilePanel>
         ) : (
           <IdentityPanel
+            poaps={poaps}
             curTab={panelTab}
             toNFT={() => {
               setPanelTab(TabsMap.nfts.key);
@@ -154,7 +152,7 @@ const RenderDomainPanel = (props) => {
             nftDialogOpen={nftDialogOpen}
             onShowNFTDialog={() => setNftDialogOpen(true)}
             onCloseNFTDialog={() => setNftDialogOpen(false)}
-            identity={_identity}
+            identity={_identity(identity, platform)}
           />
         )}
       </div>
@@ -177,8 +175,13 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   const { domain } = params;
+  let prefetchingPoaps = [];
   const platform = handleSearchPlatform(domain[0]) || "ENS";
   const identity = await identityProvider(platform, domain[0]);
+  if (identity) {
+    const _resolved = _identity(identity,platform)
+    prefetchingPoaps = await poapsProvider(_resolved.identity)
+  }
   const { data: prefetching_domains } = await supabase
     .from(DOMAINS_TABLE_NAME)
     .select("name");
@@ -207,6 +210,7 @@ export async function getStaticProps({ params }) {
     props: {
       identity,
       domain,
+      prefetchingPoaps,
     },
     revalidate: 600,
   };

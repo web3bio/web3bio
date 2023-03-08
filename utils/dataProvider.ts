@@ -1,3 +1,4 @@
+import { POAPFetcher, POAP_END_POINT } from "../components/apis/poap";
 import client from "./apollo";
 import { GET_PROFILE_LENS } from "./lens";
 import { GET_PROFILES_DOMAIN, GET_PROFILES_QUERY } from "./queries";
@@ -26,4 +27,8 @@ export const identityProvider = async (platform: string, name: string) => {
     platform === PlatformType.lens ? lensSearchParams : domainSearchParams
   );
   return res.data;
+};
+
+export const poapsProvider = async (address: string) => {
+  return await POAPFetcher(`${POAP_END_POINT}${address ?? ""}`);
 };
