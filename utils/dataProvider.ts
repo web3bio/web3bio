@@ -22,8 +22,8 @@ export const identityProvider = async (platform: string, name: string) => {
     },
   };
 
-  const data = await client.query(
+  const res = await client.query(
     platform === PlatformType.lens ? lensSearchParams : domainSearchParams
   );
-  return data;
+  return res.data;
 };

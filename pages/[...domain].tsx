@@ -1,14 +1,9 @@
-import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import { memo, useEffect, useRef, useState } from "react";
 import { IdentityPanel, TabsMap } from "../components/panel/IdentityPanel";
 import { LensProfilePanel } from "../components/panel/LensProfilePanel";
 import { Empty } from "../components/shared/Empty";
-import { Error } from "../components/shared/Error";
-import { Loading } from "../components/shared/Loading";
 import { identityProvider } from "../utils/dataProvider";
-import { GET_PROFILE_LENS } from "../utils/lens";
-import { GET_PROFILES_DOMAIN, GET_PROFILES_QUERY } from "../utils/queries";
 import { DOMAINS_TABLE_NAME, supabase } from "../utils/supabase";
 import { PlatformType } from "../utils/type";
 import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
@@ -32,6 +27,7 @@ const RenderDomainPanel = (props) => {
   const [nftDialogOpen, setNftDialogOpen] = useState(false);
   const [name, setName] = useState(null);
   const profileContainer = useRef(null);
+  console.log(identity,'identity')
   useEffect(() => {
     if (asComponent) {
       setName(domain[0]);
@@ -69,39 +65,13 @@ const RenderDomainPanel = (props) => {
     onClose,
   ]);
 
-  const { loading, error, data } = useQuery(
-    platform === PlatformType.lens
-      ? GET_PROFILE_LENS
-      : isDomainSearch(platform)
-      ? GET_PROFILES_DOMAIN
-      : GET_PROFILES_QUERY,
-    platform === PlatformType.lens
-      ? {
-          variables: {
-            handle: domain[0],
-          },
-          context: {
-            uri: process.env.NEXT_PUBLIC_LENS_GRAPHQL_SERVER,
-          },
-        }
-      : {
-          variables: {
-            platform: platform,
-            identity: name,
-          },
-        }
-  );
-
-  console.log(loading, error, data, "lens", name, platform, domain);
-
   const _identity = (() => {
-    if (!data) return null;
-    console.log(data, "data");
-    if (platform === PlatformType.lens) return data.profile;
+    if (!identity) return null;
+    if (platform === PlatformType.lens) return identity.profile;
     if (isDomainSearch(platform)) {
-      if (data.domain) return data.domain.owner;
+      if (identity.domain) return identity.domain.owner;
     }
-    return data.identity;
+    return identity.identity;
   })();
 
   const EmptyRender = () => {
@@ -117,11 +87,7 @@ const RenderDomainPanel = (props) => {
   return asComponent ? (
     <div className="web3bio-mask-cover">
       <div ref={profileContainer} className="profile-main">
-        {loading ? (
-          <Loading />
-        ) : error ? (
-          <Error text={error} />
-        ) : !_identity ? (
+        {!_identity ? (
           <EmptyRender />
         ) : platform === PlatformType.lens ? (
           <LensProfilePanel
@@ -152,11 +118,7 @@ const RenderDomainPanel = (props) => {
     <div className="web3bio-container">
       <div className="web3bio-cover flare"></div>
       <div ref={profileContainer} className="profile-main">
-        {loading ? (
-          <Loading />
-        ) : error ? (
-          <Error text={error} />
-        ) : !_identity ? (
+        {!_identity ? (
           <EmptyRender />
         ) : platform === PlatformType.lens ? (
           <LensProfilePanel
