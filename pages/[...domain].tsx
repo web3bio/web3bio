@@ -6,6 +6,7 @@ import { LensProfilePanel } from "../components/panel/LensProfilePanel";
 import { Empty } from "../components/shared/Empty";
 import { Error } from "../components/shared/Error";
 import { Loading } from "../components/shared/Loading";
+import { identityProvider } from "../utils/dataProvider";
 import { GET_PROFILE_LENS } from "../utils/lens";
 import { GET_PROFILES_DOMAIN, GET_PROFILES_QUERY } from "../utils/queries";
 import { DOMAINS_TABLE_NAME, supabase } from "../utils/supabase";
@@ -21,6 +22,7 @@ const RenderDomainPanel = (props) => {
     onTabChange,
     overridePanelTab,
     toNFT,
+    identity,
   } = props;
   const router = useRouter();
   const [panelTab, setPanelTab] = useState(
@@ -213,7 +215,8 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   const { domain } = params;
-
+  const platform = handleSearchPlatform(domain[0]) || "ENS";
+  const identity = await identityProvider(platform, domain[0]);
   const { data: prefetching_domains } = await supabase
     .from(DOMAINS_TABLE_NAME)
     .select("name");
@@ -221,7 +224,7 @@ export async function getStaticProps({ params }) {
     !prefetching_domains.map((x) => x.name).includes(domain) &&
     isDomainSearch(domain)
   ) {
-    const { data, error } = await supabase.from(DOMAINS_TABLE_NAME).insert([
+    const { error } = await supabase.from(DOMAINS_TABLE_NAME).insert([
       {
         id: prefetching_domains.length,
         name: domain,
@@ -240,6 +243,7 @@ export async function getStaticProps({ params }) {
 
   return {
     props: {
+      identity,
       domain,
     },
     revalidate: 600,
