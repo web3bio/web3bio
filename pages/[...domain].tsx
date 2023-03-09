@@ -3,7 +3,11 @@ import { memo, useEffect, useRef, useState } from "react";
 import { IdentityPanel, TabsMap } from "../components/panel/IdentityPanel";
 import { LensProfilePanel } from "../components/panel/LensProfilePanel";
 import { Empty } from "../components/shared/Empty";
-import { identityProvider, nftCollectionProvider } from "../utils/dataProvider";
+import {
+  identityProvider,
+  nftCollectionProvider,
+  profileProvider
+} from "../utils/dataProvider";
 import { resolveIdentity } from "../utils/queries";
 import { DOMAINS_TABLE_NAME, supabase } from "../utils/supabase";
 import { PlatformType } from "../utils/type";
@@ -21,6 +25,7 @@ const RenderDomainPanel = (props) => {
     identity,
     prefetchingPoaps,
     prefetchingNFTs,
+    prefetchingProfile,
   } = props;
   const router = useRouter();
   const [panelTab, setPanelTab] = useState(
@@ -107,6 +112,7 @@ const RenderDomainPanel = (props) => {
           ></LensProfilePanel>
         ) : (
           <IdentityPanel
+            profile={prefetchingProfile}
             collections={prefetchingNFTs}
             poaps={prefetchingPoaps}
             onShowNFTDialog={() => setNftDialogOpen(true)}
@@ -148,6 +154,7 @@ const RenderDomainPanel = (props) => {
           ></LensProfilePanel>
         ) : (
           <IdentityPanel
+            profile={prefetchingProfile}
             collections={prefetchingNFTs}
             poaps={prefetchingPoaps}
             curTab={panelTab}
@@ -191,12 +198,19 @@ export async function getStaticProps({ params }) {
   const { domain } = params;
   let prefetchingPoaps = [];
   let prefetchingNFTs = [];
+  let prefetchingProfile = "";
   try {
     const platform = handleSearchPlatform(domain[0]) || "ENS";
     const identity = await identityProvider(platform, domain[0]);
     if (identity) {
       const _resolved = resolveIdentity(identity, platform);
-      prefetchingNFTs = await nftCollectionProvider(_resolved.identity);
+      prefetchingNFTs = await nftCollectionProvider(
+        _resolved.identity,
+        platform
+      );
+      prefetchingProfile = await profileProvider(
+        _resolved.displayName || _resolved.identity
+      );
       // todo: to handle the prefetchingPoaps 403 forbidden
       // prefetchingPoaps = await poapsProvider(_resolved.identity)
     }
@@ -232,6 +246,7 @@ export async function getStaticProps({ params }) {
         domain,
         prefetchingPoaps,
         prefetchingNFTs,
+        prefetchingProfile,
       },
       revalidate: 600,
     };

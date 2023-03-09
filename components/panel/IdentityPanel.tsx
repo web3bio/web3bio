@@ -36,13 +36,15 @@ const IdentityPanelRender = (props) => {
     onCloseNFTDialog,
     onShowNFTDialog,
     poaps,
-    collections
+    collections,
+    profile,
   } = props;
   const [activeTab, setActiveTab] = useState(curTab);
   const [copied, setCopied] = useState(null);
 
   const { data: profileData, isLoading: avatarLoading } = useProfile(
-    identity.displayName || identity.identity
+    identity.displayName || identity.identity,
+    profile
   );
   const onCopySuccess = () => {
     setCopied(true);
@@ -72,6 +74,7 @@ const IdentityPanelRender = (props) => {
         ),
         [TabsMap.nfts.key]: (
           <NFTsTab
+          collections={collections}
             showDialog={onShowNFTDialog}
             closeDialog={onCloseNFTDialog}
             dialogOpen={nftDialogOpen}

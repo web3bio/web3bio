@@ -10,12 +10,14 @@ const RenderNFTsTab = (props) => {
     showDialog,
     closeDialog,
     network,
+    collections
   } = props;
   const [asset, setAsset] = useState(null);
 
   return (
     <>
       <NFTCollections
+      collections={collections}
         identity={identity}
         onShowDetail={(a) => {
           setAsset(a);

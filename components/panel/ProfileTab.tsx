@@ -49,10 +49,13 @@ const socialButtonMapping = {
   },
 };
 
-export function useProfile(domain: string) {
+export function useProfile(domain: string, initialData) {
   const { data, error } = useSWR<any>(
     ENS_METADATA_END_POINT + `/${domain}/meta`,
-    ENSFetcher
+    ENSFetcher,
+    {
+      fallbackData: initialData,
+    }
   );
   return {
     data: data,

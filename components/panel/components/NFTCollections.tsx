@@ -13,13 +13,15 @@ import { Loading } from "../../shared/Loading";
 import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
 import { CollectionSwitcher } from "./CollectionSwitcher";
 
-function useCollections(address: string, network: string) {
+function useCollections(address: string, network: string, initialData) {
   const baseURL =
     network === PlatformType.lens
       ? NFTSCAN_POLYGON_BASE_API
       : NFTSCAN_BASE_API_ENDPOINT;
   const url = baseURL + `account/own/all/${address}?erc_type=erc721`;
-  const { data, error } = useSWR<any>(url, NFTSCANFetcher);
+  const { data, error } = useSWR<any>(url, NFTSCANFetcher, {
+    fallbackData: initialData,
+  });
   return {
     data: data,
     isLoading: !error && !data,
@@ -33,7 +35,8 @@ const RenderNFTCollections = (props) => {
   const [anchorName, setAnchorName] = useState("");
   const { data, isLoading, isError } = useCollections(
     network === PlatformType.lens ? identity.ownedBy : identity.identity,
-    network
+    network,
+    collections
   );
   const [activeCollection, setActiveCollection] = useState(null);
   const scrollContainer = useRef(null);
