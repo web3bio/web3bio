@@ -29,7 +29,8 @@ const RenderNFTOverview = (props) => {
   );
   if (isLoading) return <Loading />;
   if (isError) return <Error text={isError} />;
-  if (!data || !data.data) return null;
+  if (!initialData && (!data || !data.data)) return null;
+  const _data = initialData || data.data;
 
   return (
     <div className="profile-widget widget-nft">
@@ -37,7 +38,7 @@ const RenderNFTOverview = (props) => {
       <div className="profile-widget-container">
         <div className="collection-switcher">
           <div className="collection-list">
-            {data.data.map((x, idx) => (
+            {_data.map((x, idx) => (
               <div
                 onClick={() => toNFT(x.contract_address)}
                 className="collection-item"

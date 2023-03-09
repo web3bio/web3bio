@@ -99,7 +99,14 @@ export default function Home() {
       },
       false
     );
-  }, [modalOpen, panelTab, router.query.s, router.isReady]);
+  }, [
+    modalOpen,
+    panelTab,
+    router.query.s,
+    router.isReady,
+    router,
+    profileIdentity,
+  ]);
 
   return (
     <div>

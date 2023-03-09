@@ -21,7 +21,7 @@ const getFeedsURL = (
     RSS3_END_POINT +
     `notes/${address}?limit=${PAGE_SIZE}${
       startHash ? `&cursor=${startHash}` : ""
-    }&&include_poap=false&count_only=false&network=${
+    }&&include_poap=true&count_only=false&network=${
       network === PlatformType.lens ? "polygon" : "ethereum"
     }&query_status=false`
   );

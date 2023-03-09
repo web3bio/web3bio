@@ -127,7 +127,7 @@ export const ProfileTab = (props) => {
             <Loading />
           </div>
 
-          <div>Loading Profile...</div>
+          <div>Loading Records...</div>
         </div>
       ) : (
         <div className="profile-basic">

@@ -47,11 +47,19 @@ export const nftCollectionProvider = async (
     network === PlatformType.lens
       ? NFTSCAN_POLYGON_BASE_API
       : NFTSCAN_BASE_API_ENDPOINT;
-  return await NFTSCANFetcher(
-    baseURL + `account/own/all/${address || ""}}?erc_type=erc721`
+  const res = await NFTSCANFetcher(
+    baseURL + `account/own/all/${address}?erc_type=erc721`
   );
+  return res ? res.data : [];
 };
 
 export const profileProvider = async (name: string) => {
-  return await ENSFetcher(ENS_METADATA_END_POINT + `/${name}/meta`);
+  try {
+    const res = await ENSFetcher(ENS_METADATA_END_POINT + `/${name}/meta`);
+    console.log(res, "response");
+    return res;
+  } catch (e) {
+    console.error(e);
+    return {};
+  }
 };

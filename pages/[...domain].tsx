@@ -3,10 +3,7 @@ import { memo, useEffect, useRef, useState } from "react";
 import { IdentityPanel, TabsMap } from "../components/panel/IdentityPanel";
 import { LensProfilePanel } from "../components/panel/LensProfilePanel";
 import { Empty } from "../components/shared/Empty";
-import {
-  identityProvider,
-  nftCollectionProvider, profileProvider
-} from "../utils/dataProvider";
+import { identityProvider, nftCollectionProvider, profileProvider } from "../utils/dataProvider";
 import { resolveIdentity } from "../utils/queries";
 import { DOMAINS_TABLE_NAME, supabase } from "../utils/supabase";
 import { PlatformType } from "../utils/type";
@@ -209,6 +206,7 @@ export async function getStaticProps({ params }) {
       prefetchingProfile = await profileProvider(
         _resolved.displayName || _resolved.identity
       );
+      
       // todo: to handle the prefetchingPoaps 403 forbidden
       // prefetchingPoaps = await poapsProvider(_resolved.identity);
     }
