@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.10.0",
-    "api": "^5.0.7",
     "wallet.ts": "^1.0.1"
   },
   "devDependencies": {
@@ -22,7 +21,6 @@
     "@ensdomains/ensjs": "^3.0.0-alpha.50",
     "@types/node": "^18.7.14",
     "@types/react": "^18.0.18",
-    "alchemy-sdk": "^2.2.1",
     "bignumber.js": "^9.1.0",
     "bn.js": "^5.2.1",
     "date-fns": "^2.29.3",
