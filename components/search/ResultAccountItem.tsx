@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { memo, useState } from "react";
 import Clipboard from "react-clipboard.js";
@@ -61,7 +62,7 @@ const RenderAccountItem = (props) => {
                       }}
                     >
                       <div className="label-ens" title={nft.id}>
-                        <img
+                        <Image
                           src="/icons/icon-ens.svg"
                           width={16}
                           height={16}

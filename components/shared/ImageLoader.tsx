@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ImgHTMLAttributes, SyntheticEvent, useState } from "react";
 import { DefaultIcon } from "./Default";
 // import { Loading } from "./Loading";
@@ -9,13 +10,13 @@ export function ImageLoader(props: ImgHTMLAttributes<HTMLImageElement>) {
   };
   return (
     <>
-      <img 
+      <Image
         src={props.src}
         data-src={props.src}
         onLoad={() => setLoaded(Boolean(props.src))}
         onError={onErrorHandle}
-        width={props.width}
-        height={props.height}
+        width={props.width as number}
+        height={props.height as number}
         alt={props.alt}
         className="img-responsive"
         loading="lazy"

@@ -5,8 +5,7 @@ import { LensProfilePanel } from "../components/panel/LensProfilePanel";
 import { Empty } from "../components/shared/Empty";
 import {
   identityProvider,
-  nftCollectionProvider,
-  profileProvider
+  nftCollectionProvider, profileProvider
 } from "../utils/dataProvider";
 import { resolveIdentity } from "../utils/queries";
 import { DOMAINS_TABLE_NAME, supabase } from "../utils/supabase";
@@ -186,7 +185,6 @@ export async function getStaticPaths() {
     .from(DOMAINS_TABLE_NAME)
     .select("name");
   const paths = (prefetching_domains || []).map((domain) => {
-    console.log("Generate Static Page:", domain.name);
     return {
       params: { domain: [domain.name] },
     };
@@ -212,7 +210,7 @@ export async function getStaticProps({ params }) {
         _resolved.displayName || _resolved.identity
       );
       // todo: to handle the prefetchingPoaps 403 forbidden
-      // prefetchingPoaps = await poapsProvider(_resolved.identity)
+      // prefetchingPoaps = await poapsProvider(_resolved.identity);
     }
 
     // check the domain whether has a record in supabase, or insert in it
