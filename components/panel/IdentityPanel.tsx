@@ -64,7 +64,7 @@ const IdentityPanelRender = (props) => {
               setActiveTab(TabsMap.nfts.key);
             }}
             identity={identity}
-            prefetchingPoaps={poaps}
+            poaps={poaps}
             prefetchingCollections={collections}
             network={PlatformType.ens}
           />

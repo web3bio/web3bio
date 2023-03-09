@@ -36,7 +36,8 @@ export const identityProvider = async (platform: string, name: string) => {
 };
 
 export const poapsProvider = async (address: string) => {
-  return await POAPFetcher(`${POAP_END_POINT}${address}`);
+  const res = await POAPFetcher(`${POAP_END_POINT}${address}`);
+  return res
 };
 
 export const nftCollectionProvider = async (
@@ -56,7 +57,6 @@ export const nftCollectionProvider = async (
 export const profileProvider = async (name: string) => {
   try {
     const res = await ENSFetcher(ENS_METADATA_END_POINT + `/${name}/meta`);
-    console.log(res, "response");
     return res;
   } catch (e) {
     console.error(e);

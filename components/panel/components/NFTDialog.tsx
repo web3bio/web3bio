@@ -45,7 +45,6 @@ const NFTDialogRender = (props) => {
     type = NFTDialogType.NFT,
     poap,
   } = props;
-  console.log(address, tokenId, "current", poap);
   const { data, isError } = useAsset(address, tokenId, network);
   const resolveOpenseaLink = `https://opensea.io/assets/ethereum/${address}/${tokenId}`;
 

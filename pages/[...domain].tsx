@@ -1,10 +1,23 @@
+import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import { memo, useEffect, useRef, useState } from "react";
 import { IdentityPanel, TabsMap } from "../components/panel/IdentityPanel";
 import { LensProfilePanel } from "../components/panel/LensProfilePanel";
 import { Empty } from "../components/shared/Empty";
-import { identityProvider, nftCollectionProvider, profileProvider } from "../utils/dataProvider";
-import { resolveIdentity } from "../utils/queries";
+import { Error } from "../components/shared/Error";
+import { Loading } from "../components/shared/Loading";
+import {
+  identityProvider,
+  nftCollectionProvider,
+  poapsProvider,
+  profileProvider
+} from "../utils/dataProvider";
+import { GET_PROFILE_LENS } from "../utils/lens";
+import {
+  GET_PROFILES_DOMAIN,
+  GET_PROFILES_QUERY,
+  resolveIdentity
+} from "../utils/queries";
 import { DOMAINS_TABLE_NAME, supabase } from "../utils/supabase";
 import { PlatformType } from "../utils/type";
 import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
@@ -33,13 +46,39 @@ const RenderDomainPanel = (props) => {
   const [name, setName] = useState(null);
   const profileContainer = useRef(null);
 
+  const { loading, error, data } = useQuery(
+    platform === PlatformType.lens
+      ? GET_PROFILE_LENS
+      : isDomainSearch(platform)
+      ? GET_PROFILES_DOMAIN
+      : GET_PROFILES_QUERY,
+    platform === PlatformType.lens
+      ? {
+          variables: {
+            handle: domain[0],
+          },
+          context: {
+            uri: process.env.NEXT_PUBLIC_LENS_GRAPHQL_SERVER,
+          },
+          skip: identity ? true : false,
+        }
+      : {
+          variables: {
+            platform: platform,
+            identity: name,
+          },
+          skip: identity ? true : false,
+        }
+  );
+
   const _identity = (() => {
-    if (!identity) return null;
-    if (platform === PlatformType.lens) return identity.profile;
+    if (!identity && !data) return null;
+    const source = identity || data;
+    if (platform === PlatformType.lens) return source.profile;
     if (isDomainSearch(platform)) {
-      if (identity.domain) return identity.domain.owner;
+      if (source.domain) return source.domain.owner;
     }
-    return identity.identity;
+    return source.identity;
   })();
 
   useEffect(() => {
@@ -92,7 +131,11 @@ const RenderDomainPanel = (props) => {
   return asComponent ? (
     <div className="web3bio-mask-cover">
       <div ref={profileContainer} className="profile-main">
-        {!_identity ? (
+        {loading ? (
+          <Loading />
+        ) : error ? (
+          <Error text={error} />
+        ) : !_identity ? (
           <EmptyRender />
         ) : platform === PlatformType.lens ? (
           <LensProfilePanel
@@ -194,21 +237,24 @@ export async function getStaticProps({ params }) {
   let prefetchingPoaps = [];
   let prefetchingNFTs = [];
   let prefetchingProfile = "";
+  let identity = null;
+  const platform = handleSearchPlatform(domain[0]) || "ENS";
+  identity = await identityProvider(platform, domain[0]);
   try {
-    const platform = handleSearchPlatform(domain[0]) || "ENS";
-    const identity = await identityProvider(platform, domain[0]);
     if (identity) {
       const _resolved = resolveIdentity(identity, platform);
-      prefetchingNFTs = await nftCollectionProvider(
-        _resolved.identity,
-        platform
-      );
-      prefetchingProfile = await profileProvider(
-        _resolved.displayName || _resolved.identity
-      );
-      
-      // todo: to handle the prefetchingPoaps 403 forbidden
-      // prefetchingPoaps = await poapsProvider(_resolved.identity);
+      if (_resolved && _resolved.identity) {
+        prefetchingNFTs = await nftCollectionProvider(
+          _resolved.identity,
+          platform
+        );
+        prefetchingProfile = await profileProvider(
+          _resolved.displayName || _resolved.identity
+        );
+
+        // todo: to handle the prefetchingPoaps 403 forbidden
+        prefetchingPoaps = await poapsProvider(_resolved.identity);
+      }
     }
 
     // check the domain whether has a record in supabase, or insert in it
@@ -247,8 +293,13 @@ export async function getStaticProps({ params }) {
       revalidate: 600,
     };
   } catch (e) {
+    console.error(e, "getStaticProps Error");
     return {
-      notFound: true,
+      props: {
+        identity,
+        domain,
+        overridePlatform: platform,
+      },
     };
   }
 }
