@@ -39,7 +39,6 @@ const RenderPoaps = (props) => {
                   key={idx}
                   className="nft-container c-hand"
                   onClick={() => {
-                    console.log(x, "kkk");
                     onShowDetail({
                       collection: {
                         url: "",

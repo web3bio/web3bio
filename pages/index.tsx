@@ -68,7 +68,7 @@ export default function Home() {
   useEffect(() => {
     if (!router.isReady) return;
     if (modalOpen) {
-      if(!profileIdentity || !window.location.search) return
+      if (!profileIdentity || !window.location.search) return;
       window.history.pushState(
         {},
         "",
@@ -96,7 +96,6 @@ export default function Home() {
         ) {
           setModalOpen(true);
         }
-        console.log(window.location, router.query, "history");
       },
       false
     );
@@ -182,7 +181,7 @@ export default function Home() {
                   searchTerm={searchTerm}
                   searchPlatform={searchPlatform}
                 />
-               )
+              )
             ) : null}
           </div>
         </div>
