@@ -74,19 +74,15 @@ const IdentityPanelRender = (props) => {
         ),
         [TabsMap.nfts.key]: (
           <NFTsTab
-          collections={collections}
+            collections={collections}
             showDialog={onShowNFTDialog}
             closeDialog={onCloseNFTDialog}
             dialogOpen={nftDialogOpen}
-            onShowDetail={resolveOnShowDetail}
             identity={identity}
           />
         ),
       }[activeTab] || <FeedsTab identity={identity} />
     );
-  };
-  const resolveOnShowDetail = (asset) => {
-    // todo: to resolve url && nft dialog
   };
   return (
     <div className="identity-panel">

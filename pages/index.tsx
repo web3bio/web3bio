@@ -64,7 +64,6 @@ export default function Home() {
       setsearchPlatform("");
     }
   }, [router.isReady, router.query.s, router.query.platform]);
-
   useEffect(() => {
     if (!router.isReady) return;
     if (modalOpen) {
@@ -99,14 +98,7 @@ export default function Home() {
       },
       false
     );
-  }, [
-    modalOpen,
-    panelTab,
-    router.query.s,
-    router.isReady,
-    router,
-    profileIdentity,
-  ]);
+  }, [modalOpen, router, router.query.s, router.isReady, panelTab]);
 
   return (
     <div>
