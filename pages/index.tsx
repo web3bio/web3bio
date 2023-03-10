@@ -98,7 +98,7 @@ export default function Home() {
       },
       false
     );
-  }, [modalOpen, router, router.query.s, router.isReady, panelTab]);
+  }, [modalOpen, router.query.s, router.isReady, panelTab]);
 
   return (
     <div>
