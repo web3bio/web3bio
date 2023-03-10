@@ -108,7 +108,7 @@ const RenderNFTCollections = (props) => {
   if (isLoading) return <Loading />;
   if (isError) return <Error text={isError} />;
   if (!collections && (!data || !data.data)) return <Empty />;
-
+  const _data = collections || data.data
   return (
     <>
       {collections && collections.length > 0 && (
@@ -123,7 +123,7 @@ const RenderNFTCollections = (props) => {
       )}
       <div ref={scrollContainer} className="nft-collection">
         <div className="nft-collection-list">
-          {data.data.map((x, idx) => {
+          {_data.map((x, idx) => {
             return (
               <div
                 className="nft-collection-item"

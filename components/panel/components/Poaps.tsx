@@ -24,9 +24,10 @@ function usePoaps(address: string, initialData) {
 const RenderPoaps = (props) => {
   const { identity, onShowDetail, initialData } = props;
   const { data, isLoading, isError } = usePoaps(identity.identity, initialData);
-  if (isLoading) return <Loading />;
+
+  if (isLoading || (initialData && (!data || !data.length))) return <Loading />;
   if (isError) return <Error text={isError} />;
-  if (!data || !data.length) return null;
+  if (!initialData && (!data || !data.length)) return null;
   return (
     <div className="profile-widget widget-poap">
       <div className="profile-widget-title">POAPS</div>
