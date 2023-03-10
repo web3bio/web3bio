@@ -67,7 +67,7 @@ export default function Home() {
   useEffect(() => {
     if (!router.isReady) return;
     if (modalOpen) {
-      if (!profileIdentity || !window.location.search) return;
+      if (!profileIdentity) return;
       window.history.pushState(
         {},
         "",
