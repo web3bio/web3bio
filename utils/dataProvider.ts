@@ -15,7 +15,7 @@ export const identityProvider = async (platform: string, name: string) => {
   const lensSearchParams = {
     query: GET_PROFILE_LENS,
     variables: {
-      identity: name,
+      handle: name,
     },
     context: {
       uri: process.env.NEXT_PUBLIC_LENS_GRAPHQL_SERVER,
@@ -30,7 +30,7 @@ export const identityProvider = async (platform: string, name: string) => {
   };
 
   const res = await client.query(
-    platform === PlatformType.lens ? lensSearchParams : domainSearchParams
+    platform === PlatformType.lens ? lensSearchParams as any : domainSearchParams
   );
   return res.data;
 };

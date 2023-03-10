@@ -43,9 +43,8 @@ const RenderDomainPanel = (props) => {
   const [platform, setPlatform] = useState(overridePlatform || "ENS");
   const [nftDialogOpen, setNftDialogOpen] = useState(false);
 
-  const [name, setName] = useState(null);
   const profileContainer = useRef(null);
-
+  
   const { loading, error, data } = useQuery(
     platform === PlatformType.lens
       ? GET_PROFILE_LENS
@@ -65,7 +64,7 @@ const RenderDomainPanel = (props) => {
       : {
           variables: {
             platform: platform,
-            identity: name,
+            identity: domain[0],
           },
           skip: identity ? true : false,
         }
@@ -83,13 +82,11 @@ const RenderDomainPanel = (props) => {
 
   useEffect(() => {
     if (asComponent) {
-      setName(domain[0]);
-      setPlatform(handleSearchPlatform(name));
+      setPlatform(handleSearchPlatform(domain[0]));
     } else {
       if (!router.isReady) return;
       if (!router.query.domain) return;
       const _domain = domain ?? router.query.domain;
-      setName(_domain[0]);
       setPlatform(handleSearchPlatform(_domain[0]));
       if (_domain[1]) setPanelTab(_domain[1]);
     }
@@ -113,7 +110,6 @@ const RenderDomainPanel = (props) => {
     router,
     asComponent,
     router.query.domain,
-    name,
     nftDialogOpen,
     onClose,
   ]);
@@ -182,7 +178,7 @@ const RenderDomainPanel = (props) => {
               router.replace({
                 pathname: "",
                 query: {
-                  domain: [name, v === TabsMap.profile.key ? "" : v],
+                  domain: [domain[0], v === TabsMap.profile.key ? "" : v],
                 },
               });
             }}
@@ -205,7 +201,7 @@ const RenderDomainPanel = (props) => {
               router.replace({
                 pathname: "",
                 query: {
-                  domain: [name, v === TabsMap.profile.key ? "" : v],
+                  domain: [domain[0], v === TabsMap.profile.key ? "" : v],
                 },
               });
             }}
@@ -240,6 +236,7 @@ export async function getStaticProps({ params }) {
   let identity = null;
   const platform = handleSearchPlatform(domain[0]) || "ENS";
   identity = await identityProvider(platform, domain[0]);
+  
   try {
     if (identity) {
       const _resolved = resolveIdentity(identity, platform);
