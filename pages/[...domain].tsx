@@ -9,7 +9,6 @@ import { Loading } from "../components/shared/Loading";
 import {
   identityProvider,
   nftCollectionProvider,
-  poapsProvider,
   profileProvider
 } from "../utils/dataProvider";
 import { GET_PROFILE_LENS } from "../utils/lens";
@@ -37,14 +36,11 @@ const RenderDomainPanel = (props) => {
     prefetchingProfile,
   } = props;
   const router = useRouter();
-  const [panelTab, setPanelTab] = useState(
-    overridePanelTab || TabsMap.profile.key
-  );
+  const [panelTab, setPanelTab] = useState(overridePanelTab);
   const [platform, setPlatform] = useState(overridePlatform || "ENS");
   const [nftDialogOpen, setNftDialogOpen] = useState(false);
-
   const profileContainer = useRef(null);
-  
+
   const { loading, error, data } = useQuery(
     platform === PlatformType.lens
       ? GET_PROFILE_LENS
@@ -54,7 +50,7 @@ const RenderDomainPanel = (props) => {
     platform === PlatformType.lens
       ? {
           variables: {
-            handle: domain[0],
+            handle: domain ? domain[0] : router.query.domain[0],
           },
           context: {
             uri: process.env.NEXT_PUBLIC_LENS_GRAPHQL_SERVER,
@@ -64,7 +60,7 @@ const RenderDomainPanel = (props) => {
       : {
           variables: {
             platform: platform,
-            identity: domain[0],
+            identity: domain ? domain[0] : router.query.domain[0],
           },
           skip: identity ? true : false,
         }
@@ -86,9 +82,8 @@ const RenderDomainPanel = (props) => {
     } else {
       if (!router.isReady) return;
       if (!router.query.domain) return;
-      const _domain = domain ?? router.query.domain;
+      const _domain = router.query.domain ?? domain;
       setPlatform(handleSearchPlatform(_domain[0]));
-      if (_domain[1]) setPanelTab(_domain[1]);
     }
 
     const clickEvent = (e) => {
@@ -113,6 +108,32 @@ const RenderDomainPanel = (props) => {
     nftDialogOpen,
     onClose,
   ]);
+  const setPanelTabFromURL = () => {
+    if (!window) return;
+    const url = window.location.href;
+    const paramsArr = url.split("/");
+    const paramsTab = paramsArr[paramsArr.length - 1];
+    if (Object.keys(TabsMap).includes(paramsTab)) {
+      setPanelTab(paramsTab);
+    } else {
+      setPanelTab(TabsMap.profile.key);
+    }
+  };
+  useEffect(() => {
+    if (asComponent) return;
+    window.history.pushState(
+      {},
+      "",
+      `/${
+        _identity.platform === PlatformType.lens
+          ? _identity.identity
+          : _identity.displayName || _identity.identity
+      }${panelTab === TabsMap.profile.key ? "" : `/${panelTab}`}`
+    );
+    window.addEventListener("popstate", setPanelTabFromURL, false);
+    return () =>
+      window.removeEventListener("popstate", setPanelTabFromURL, false);
+  }, [panelTab, _identity]);
 
   const EmptyRender = () => {
     return (
@@ -175,12 +196,6 @@ const RenderDomainPanel = (props) => {
             poaps={prefetchingPoaps}
             onTabChange={(v) => {
               setPanelTab(v);
-              router.replace({
-                pathname: "",
-                query: {
-                  domain: [domain[0], v === TabsMap.profile.key ? "" : v],
-                },
-              });
             }}
             profile={_identity}
             nftDialogOpen={nftDialogOpen}
@@ -198,12 +213,6 @@ const RenderDomainPanel = (props) => {
             }}
             onTabChange={(v) => {
               setPanelTab(v);
-              router.replace({
-                pathname: "",
-                query: {
-                  domain: [domain[0], v === TabsMap.profile.key ? "" : v],
-                },
-              });
             }}
             nftDialogOpen={nftDialogOpen}
             onShowNFTDialog={() => setNftDialogOpen(true)}
@@ -230,30 +239,22 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   const { domain } = params;
-  let prefetchingPoaps = [];
-  let prefetchingNFTs = [];
-  let prefetchingProfile = "";
-  let identity = null;
   const platform = handleSearchPlatform(domain[0]) || "ENS";
+  let identity = null;
+  let prefetchingNFTs = null;
+  let prefetchingProfile = null;
+
   identity = await identityProvider(platform, domain[0]);
-  
+  const _resolved = resolveIdentity(identity, platform);
+
+  if (identity && _resolved && _resolved.identity) {
+    prefetchingNFTs = await nftCollectionProvider(_resolved.identity, platform);
+    prefetchingProfile = await profileProvider(
+      _resolved.displayName || _resolved.identity
+    );
+  }
+
   try {
-    if (identity) {
-      const _resolved = resolveIdentity(identity, platform);
-      if (_resolved && _resolved.identity) {
-        prefetchingNFTs = await nftCollectionProvider(
-          _resolved.identity,
-          platform
-        );
-        prefetchingProfile = await profileProvider(
-          _resolved.displayName || _resolved.identity
-        );
-
-        // todo: to handle the prefetchingPoaps 403 forbidden
-        prefetchingPoaps = await poapsProvider(_resolved.identity);
-      }
-    }
-
     // check the domain whether has a record in supabase, or insert in it
     const { data: prefetching_domains } = await supabase
       .from(DOMAINS_TABLE_NAME)
@@ -283,11 +284,12 @@ export async function getStaticProps({ params }) {
       props: {
         identity,
         domain,
-        prefetchingPoaps,
+        prefetchingPoaps: [],
         prefetchingNFTs,
         prefetchingProfile,
+        overridePanelTab: domain.length > 1 ? domain[1] : TabsMap.profile.key,
+        revalidate: 600,
       },
-      revalidate: 600,
     };
   } catch (e) {
     console.error(e, "getStaticProps Error");
@@ -296,6 +298,7 @@ export async function getStaticProps({ params }) {
         identity,
         domain,
         overridePlatform: platform,
+        overridePanelTab: domain.length > 1 ? domain[1] : TabsMap.profile.key,
       },
     };
   }

@@ -109,7 +109,7 @@ const RenderNFTCollections = (props) => {
       return () =>
         container.removeEventListener("wheel", judgeActiveCollection);
     }
-  }, [initialData, anchorName, activeCollection, data]);
+  }, [initialData, anchorName, activeCollection, data, renderData]);
 
   if (isLoading) return <Loading />;
   if (isError) return <Error text={isError} />;

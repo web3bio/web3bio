@@ -30,33 +30,40 @@ export const identityProvider = async (platform: string, name: string) => {
   };
 
   const res = await client.query(
-    platform === PlatformType.lens ? lensSearchParams as any : domainSearchParams
+    platform === PlatformType.lens
+      ? (lensSearchParams as any)
+      : domainSearchParams
   );
   return res.data;
 };
 
 export const poapsProvider = async (address: string) => {
   const res = await POAPFetcher(`${POAP_END_POINT}${address}`);
-  return res
+  return res;
 };
 
 export const nftCollectionProvider = async (
   address: string,
   network: string = "ENS"
 ) => {
-  const baseURL =
-    network === PlatformType.lens
-      ? NFTSCAN_POLYGON_BASE_API
-      : NFTSCAN_BASE_API_ENDPOINT;
-  const res = await NFTSCANFetcher(
-    baseURL + `account/own/all/${address}?erc_type=erc721`
-  );
-  return res ? res.data : [];
+  try {
+    const baseURL =
+      network === PlatformType.lens
+        ? NFTSCAN_POLYGON_BASE_API
+        : NFTSCAN_BASE_API_ENDPOINT;
+    const res = await NFTSCANFetcher(
+      baseURL + `account/own/all/${address}?erc_type=erc721`
+    );
+    return res ? res.data : [];
+  } catch (e) {
+    return [];
+  }
 };
 
 export const profileProvider = async (name: string) => {
   try {
     const res = await ENSFetcher(ENS_METADATA_END_POINT + `/${name}/meta`);
+    console.log(res,'response')
     return res;
   } catch (e) {
     console.error(e);
