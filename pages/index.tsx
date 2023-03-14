@@ -144,7 +144,7 @@ export default function Home() {
                   ref={inputRef}
                   key={searchTerm}
                   type="text"
-                  placeholder="Search Twitter, Lens, ENS or Ethereum"
+                  placeholder="Search Twitter, Lens, ENS, UD or Ethereum"
                   defaultValue={searchTerm}
                   className="form-input input-lg"
                   autoCorrect="off"

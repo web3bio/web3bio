@@ -9,4 +9,5 @@ export enum PlatformType {
   reddit = "reddit",
   github = "github",
   unstoppableDomains = "unstoppabledomains",
+  farcaster = "farcaster",
 }
