@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import SVG from "react-inlinesvg";
+import { SearchInput } from "../components/panel/components/SearchInput";
 import { TabsMap } from "../components/panel/IdentityPanel";
 import { SearchResultDomain } from "../components/search/SearchResultDomain";
 import { SearchResultQuery } from "../components/search/SearchResultQuery";
@@ -21,17 +22,14 @@ export default function Home() {
   const [domain, setDomain] = useState([]);
   const inputRef = useRef(null);
   const router = useRouter();
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const ipt = inputRef.current;
-    if (!ipt) return;
-    setSearchTerm(ipt.value);
+  const handleSubmit = (value) => {
+    setSearchTerm(value);
     router.push({
       query: {
-        s: ipt.value,
+        s: value,
       },
     });
-    setsearchPlatform(handleSearchPlatform(ipt.value));
+    setsearchPlatform(handleSearchPlatform(value));
     setSearchFocus(true);
   };
 
@@ -68,7 +66,7 @@ export default function Home() {
   useEffect(() => {
     if (!router.isReady) return;
     if (modalOpen) {
-      if(!profileIdentity || !window.location.search) return
+      if (!profileIdentity || !window.location.search) return;
       window.history.pushState(
         {},
         "",
@@ -142,31 +140,12 @@ export default function Home() {
                 Web3 <span>Identity Search</span>
               </div>
               <div className="form-input-group">
-                <input
+                <SearchInput
                   ref={inputRef}
                   key={searchTerm}
-                  type="text"
-                  placeholder="Search Twitter, Lens, ENS or Ethereum"
                   defaultValue={searchTerm}
-                  className="form-input input-lg"
-                  autoCorrect="off"
-                  autoFocus
-                  spellCheck="false"
-                  id="searchbox"
+                  handleSubmit={(value) => handleSubmit(value)}
                 />
-                <button
-                  type="submit"
-                  title="Submit"
-                  className="form-button btn"
-                  onClickCapture={handleSubmit}
-                >
-                  <SVG
-                    src="icons/icon-search.svg"
-                    width={24}
-                    height={24}
-                    className="icon"
-                  />
-                </button>
               </div>
             </form>
             {searchPlatform ? (
@@ -182,7 +161,7 @@ export default function Home() {
                   searchTerm={searchTerm}
                   searchPlatform={searchPlatform}
                 />
-               )
+              )
             ) : null}
           </div>
         </div>
