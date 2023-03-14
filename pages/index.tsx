@@ -64,11 +64,10 @@ export default function Home() {
       setsearchPlatform("");
     }
   }, [router.isReady, router.query.s, router.query.platform]);
-
   useEffect(() => {
     if (!router.isReady) return;
     if (modalOpen) {
-      if(!profileIdentity || !window.location.search) return
+      if (!profileIdentity) return;
       window.history.pushState(
         {},
         "",
@@ -96,11 +95,10 @@ export default function Home() {
         ) {
           setModalOpen(true);
         }
-        console.log(window.location, router.query, "history");
       },
       false
     );
-  }, [modalOpen, panelTab, router.query.s, router.isReady]);
+  }, [modalOpen, router.query.s, router.isReady, panelTab]);
 
   return (
     <div>
@@ -146,7 +144,7 @@ export default function Home() {
                   ref={inputRef}
                   key={searchTerm}
                   type="text"
-                  placeholder="Search Twitter, Lens, ENS or Ethereum"
+                  placeholder="Search Twitter, Lens, ENS, UD or Ethereum"
                   defaultValue={searchTerm}
                   className="form-input input-lg"
                   autoCorrect="off"
@@ -182,7 +180,7 @@ export default function Home() {
                   searchTerm={searchTerm}
                   searchPlatform={searchPlatform}
                 />
-               )
+              )
             ) : null}
           </div>
         </div>

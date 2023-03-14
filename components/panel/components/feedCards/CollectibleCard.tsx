@@ -1,5 +1,9 @@
 import { memo, useMemo } from "react";
-import { formatText, formatValue, isSameAddress } from "../../../../utils/utils";
+import {
+  formatText,
+  formatValue,
+  isSameAddress
+} from "../../../../utils/utils";
 import { CardType, Tag, Type } from "../../../apis/rss3/types";
 import { NFTAssetPlayer } from "../../../shared/NFTAssetPlayer";
 export function isCollectibleFeed(feed) {
@@ -11,15 +15,13 @@ export function getLastAction(feed) {
 }
 
 const RenderCollectibleCard = (props) => {
-  const { feed,owner,name } = props;
+  const { feed, owner, name } = props;
   const user = feed.address_from;
   const isOwner = isSameAddress(user, feed.address_from);
   const { metadata, summary } = useMemo(() => {
     let action;
     let metadata;
-    const _from = isOwner
-      ? name || formatText(owner)
-      : formatText(user ?? "");
+    const _from = isOwner ? name || formatText(owner) : formatText(user ?? "");
     const _to = isSameAddress(owner, feed.address_to)
       ? name || formatText(owner)
       : formatText(feed.address_to ?? "");
@@ -87,7 +89,7 @@ const RenderCollectibleCard = (props) => {
     }
 
     return { summary: "", cardType: CardType.CollectibleIn };
-  }, [feed, user, isOwner]);
+  }, [feed, user, isOwner, name, owner]);
 
   const imageSize = 64;
   const attributes =

@@ -13,13 +13,15 @@ import { Loading } from "../../shared/Loading";
 import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
 import { CollectionSwitcher } from "./CollectionSwitcher";
 
-function useCollections(address: string, network: string) {
+function useCollections(address: string, network: string, initialData) {
   const baseURL =
     network === PlatformType.lens
       ? NFTSCAN_POLYGON_BASE_API
       : NFTSCAN_BASE_API_ENDPOINT;
   const url = baseURL + `account/own/all/${address}?erc_type=erc721`;
-  const { data, error } = useSWR<any>(url, NFTSCANFetcher);
+  const { data, error } = useSWR<any>(url, NFTSCANFetcher, {
+    fallbackData: initialData,
+  });
   return {
     data: data,
     isLoading: !error && !data,
@@ -28,21 +30,27 @@ function useCollections(address: string, network: string) {
 }
 
 const RenderNFTCollections = (props) => {
-  const { onShowDetail, identity, network } = props;
+  const { onShowDetail, identity, network, initialData } = props;
   const [collections, setCollections] = useState([]);
   const [anchorName, setAnchorName] = useState("");
   const { data, isLoading, isError } = useCollections(
     network === PlatformType.lens ? identity.ownedBy : identity.identity,
-    network
+    network,
+    initialData
   );
+  const [renderData, setRenderData] = useState([]);
+
   const [activeCollection, setActiveCollection] = useState(null);
   const scrollContainer = useRef(null);
-
   useEffect(() => {
+    setRenderData(
+      initialData && initialData.length > 0 ? initialData : data.data
+    );
+
     const container = scrollContainer.current;
-    if (data && data.data) {
+    if (renderData) {
       setCollections(
-        data.data.map((x) => ({
+        renderData.map((x) => ({
           key: x.contract_address,
           name: x.contract_name,
           url: x.logo_url,
@@ -62,10 +70,10 @@ const RenderNFTCollections = (props) => {
         }
       }
       const judgeActiveCollection = () => {
-        if (data && data.data) {
+        if (renderData) {
           const nav_contentRect = container.getBoundingClientRect();
           const groupList = Array.from(
-            data.data.map((x) => document.getElementById(x.contract_address))
+            renderData.map((x) => document.getElementById(x.contract_address))
           );
           if (nav_contentRect) {
             groupList.map((item: any) => {
@@ -101,11 +109,11 @@ const RenderNFTCollections = (props) => {
       return () =>
         container.removeEventListener("wheel", judgeActiveCollection);
     }
-  }, [data, anchorName, activeCollection]);
+  }, [initialData, anchorName, activeCollection, data, renderData]);
+
   if (isLoading) return <Loading />;
   if (isError) return <Error text={isError} />;
-  if (!data || !data.data) return <Empty />;
-
+  if (!renderData) return <Empty />;
   return (
     <>
       {collections && collections.length > 0 && (
@@ -120,7 +128,7 @@ const RenderNFTCollections = (props) => {
       )}
       <div ref={scrollContainer} className="nft-collection">
         <div className="nft-collection-list">
-          {data.data.map((x, idx) => {
+          {renderData.map((x, idx) => {
             return (
               <div
                 className="nft-collection-item"

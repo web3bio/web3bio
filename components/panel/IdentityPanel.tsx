@@ -35,12 +35,16 @@ const IdentityPanelRender = (props) => {
     nftDialogOpen,
     onCloseNFTDialog,
     onShowNFTDialog,
+    poaps,
+    collections,
+    profile,
   } = props;
   const [activeTab, setActiveTab] = useState(curTab);
   const [copied, setCopied] = useState(null);
 
   const { data: profileData, isLoading: avatarLoading } = useProfile(
-    identity.displayName || identity.identity
+    identity.displayName || identity.identity,
+    profile
   );
   const onCopySuccess = () => {
     setCopied(true);
@@ -60,6 +64,8 @@ const IdentityPanelRender = (props) => {
               setActiveTab(TabsMap.nfts.key);
             }}
             identity={identity}
+            poaps={poaps}
+            prefetchingCollections={collections}
             network={PlatformType.ens}
           />
         ),
@@ -68,18 +74,15 @@ const IdentityPanelRender = (props) => {
         ),
         [TabsMap.nfts.key]: (
           <NFTsTab
+            collections={collections}
             showDialog={onShowNFTDialog}
             closeDialog={onCloseNFTDialog}
             dialogOpen={nftDialogOpen}
-            onShowDetail={resolveOnShowDetail}
             identity={identity}
           />
         ),
       }[activeTab] || <FeedsTab identity={identity} />
     );
-  };
-  const resolveOnShowDetail = (asset) => {
-    // todo: to resolve url && nft dialog
   };
   return (
     <div className="identity-panel">
