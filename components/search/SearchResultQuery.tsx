@@ -1,10 +1,10 @@
 import { useQuery } from "@apollo/client";
-import { ResultAccount } from "./ResultAccount";
-import { Loading } from "../shared/Loading";
+import { useEffect, useState } from "react";
+import { GET_PROFILES_QUERY } from "../../utils/queries";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
-import { GET_PROFILES_QUERY } from "../../utils/queries";
-import { useEffect, useState } from "react";
+import { Loading } from "../shared/Loading";
+import { ResultAccount } from "./ResultAccount";
 
 export const SearchResultQuery = ({
   searchTerm,

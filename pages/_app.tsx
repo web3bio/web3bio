@@ -1,9 +1,8 @@
-import React from "react";
 import { ApolloProvider } from "@apollo/client";
-import client from "../utils/apollo";
 import { GoogleAnalytics } from "nextjs-google-analytics";
+import "../styles/scss/panel/_panel.scss";
 import "../styles/scss/web3bio.scss";
-import "../styles/scss/panel/_panel.scss"
+import client from "../utils/apollo";
 
 export default function App({ Component, pageProps }) {
   return (

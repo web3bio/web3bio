@@ -1,4 +1,6 @@
 import { gql } from "@apollo/client";
+import { PlatformType } from "./type";
+import { isDomainSearch } from "./utils";
 
 export const GET_PROFILES_DOMAIN = gql`
   query GET_PROFILES_DOMAIN($platform: String, $identity: String) {
@@ -119,3 +121,12 @@ export const GET_PROFILES_QUERY = gql`
     }
   }
 `;
+
+export const resolveIdentity = (ini, iniP) => {
+  if (!ini) return null;
+  if (iniP === PlatformType.lens) return ini.profile;
+  if (isDomainSearch(iniP)) {
+    if (ini.domain) return ini.domain.owner;
+  }
+  return ini.identity;
+};

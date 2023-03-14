@@ -1,7 +1,7 @@
 import { memo } from "react";
-import { formatText, isSameAddress } from "../../../utils/utils";
-import { Tag, Type } from "../../apis/rss3/types";
-import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
+import { formatText, isSameAddress } from "../../../../utils/utils";
+import { Tag, Type } from "../../../apis/rss3/types";
+import { NFTAssetPlayer } from "../../../shared/NFTAssetPlayer";
 
 export function isCommentFeed(feed) {
   return feed.tag === Tag.Social && feed.type === Type.Comment;

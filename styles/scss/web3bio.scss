@@ -808,6 +808,10 @@ body {
   top: 0;
   transform: translateX(-50%);
   width: 100%;
+
+  @media screen and (max-width: $size-xl) {
+    width: calc(100% - 4rem);
+  }
 }
 
 // Social Feeds
@@ -937,6 +941,8 @@ body {
   background: #fff;
   box-shadow: 0 .1rem 1rem rgba($dark-color, .1);
   user-select: none;
+  padding: 0 0.5rem;
+  box-sizing: border-box;
 
   .collection-list {
     display: flex;
@@ -1044,6 +1050,11 @@ body {
     .nft-container {
       flex: 0 0 33.3333%;
       width: 33.3333%;
+      min-width: 8rem;
+
+      @media screen and (max-width: $size-md) {
+        flex: 0 0 50%;
+      }
     }
 
     .nft-item {
@@ -1058,7 +1069,7 @@ body {
 
       .img-container {
         margin-bottom: .5rem;
-
+      
         .img-responsive {
           border-radius: .5rem;
           box-shadow: 0 .2rem 1rem rgba($dark-color, .15), 0 .05rem .2rem rgba($dark-color, .05);
@@ -1083,10 +1094,9 @@ body {
 
 .nft-panel {
   height: calc(100vh - 1rem);
-  left: -1rem;
   position: absolute;
-  right: -1rem;
   top: 1rem;
+  width: 100%;
 
   .panel-container {
     height: calc(100vh - 2rem);
@@ -1095,7 +1105,11 @@ body {
   .panel-header {
     overflow: hidden auto;
     padding: 1rem;
-
+    .img-container{
+      display: flex;
+      min-width: 100%;
+     
+    }
     .panel-header-img {
       flex: 1 1 50%;
       margin-right: 1rem;
@@ -1103,6 +1117,7 @@ body {
     }
 
     .img-responsive {
+      width: 100%;
       border-radius: .5rem;
     }
 

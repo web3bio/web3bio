@@ -1,13 +1,13 @@
 import { memo, useEffect, useRef, useState } from "react";
-import { RSS3Fetcher, RSS3_END_POINT } from "../apis/rss3";
-import { FeedItem, isSupportedFeed } from "./FeedItem";
-import { formatTimestamp } from "../../utils/date";
 import useSWRInfinite from "swr/infinite";
-import { Loading } from "../shared/Loading";
+import { formatTimestamp } from "../../utils/date";
+import { PlatformType } from "../../utils/type";
 import { debounce } from "../../utils/utils";
+import { RSS3Fetcher, RSS3_END_POINT } from "../apis/rss3";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
-import { PlatformType } from "../../utils/type";
+import { Loading } from "../shared/Loading";
+import { FeedItem, isSupportedFeed } from "./components/FeedItem";
 
 const PAGE_SIZE = 30;
 const getFeedsURL = (
@@ -21,7 +21,7 @@ const getFeedsURL = (
     RSS3_END_POINT +
     `notes/${address}?limit=${PAGE_SIZE}${
       startHash ? `&cursor=${startHash}` : ""
-    }&&include_poap=false&count_only=false&network=${
+    }&&include_poap=true&count_only=false&network=${
       network === PlatformType.lens ? "polygon" : "ethereum"
     }&query_status=false`
   );
@@ -46,6 +46,7 @@ const RenderFeedsTab = (props) => {
   const { identity, network } = props;
   const [startHash, setStartHash] = useState("");
   const [issues, setIssues] = useState([]);
+  const [lastData, setLastData] = useState([]);
   const { data, error, size, setSize, isValidating, isLoading } = useFeeds(
     network === PlatformType.lens ? identity.ownedBy : identity.identity,
     startHash,
@@ -58,13 +59,17 @@ const RenderFeedsTab = (props) => {
   const isEmpty = data.length === 0;
   const isReachingEnd = isEmpty || (data && data.length < PAGE_SIZE);
   const ref = useRef(null);
-  const lastData = localStorage.getItem("feeds") || [];
 
   useEffect(() => {
+    setLastData(
+      localStorage.getItem("feeds")
+        ? JSON.parse(localStorage.getItem("feeds"))
+        : []
+    );
     let rendering = false;
     const container = ref.current;
     if (lastData && lastData.length > 0) {
-      const old = JSON.parse(lastData as string);
+      const old = JSON.parse(JSON.stringify(lastData));
       data.map((x) => {
         if (!old.some((y) => y.timestamp === x.timestamp)) {
           old.push(x);

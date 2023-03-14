@@ -1,12 +1,14 @@
+import { useState } from "react";
 import SVG from "react-inlinesvg";
-import { useAsync,  } from "react-use";
+import { useAsync } from "react-use";
 import useSWR from "swr";
-import { ens, globalRecordKeys, provider } from "../../utils/ens";
+import { ens, globalRecordKeys, provider } from "../../utils/domains";
 import { isValidAddress, resolveSocialMediaLink } from "../../utils/utils";
 import { ENSFetcher, ENS_METADATA_END_POINT } from "../apis/ens";
 import { Loading } from "../shared/Loading";
-import { NFTOverview } from "./NFTOverview";
-import { Poaps } from "./Poaps";
+import { NFTDialog, NFTDialogType } from "./components/NFTDialog";
+import { NFTOverview } from "./components/NFTOverview";
+import { Poaps } from "./components/Poaps";
 
 const socialButtonMapping = {
   ["com.github"]: {
@@ -47,10 +49,13 @@ const socialButtonMapping = {
   },
 };
 
-export function useProfile(domain: string) {
+export function useProfile(domain: string, initialData) {
   const { data, error } = useSWR<any>(
     ENS_METADATA_END_POINT + `/${domain}/meta`,
-    ENSFetcher
+    ENSFetcher,
+    {
+      fallbackData: initialData,
+    }
   );
   return {
     data: data,
@@ -60,8 +65,11 @@ export function useProfile(domain: string) {
 }
 
 export const ProfileTab = (props) => {
-  const { identity, toNFT } = props;
+  const { identity, toNFT, network, poaps, prefetchingCollections } =
+    props;
   const domain = identity.displayName || identity.identity;
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [currentPoap, setCurrentPoap] = useState(null);
   const { value: ensRecords, loading: recordsLoading } = useAsync(async () => {
     const _domain = isValidAddress(domain) ? await ens.getName(domain) : domain;
 
@@ -119,7 +127,7 @@ export const ProfileTab = (props) => {
             <Loading />
           </div>
 
-          <div>Loading Profile...</div>
+          <div>Loading Records...</div>
         </div>
       ) : (
         <div className="profile-basic">
@@ -160,10 +168,32 @@ export const ProfileTab = (props) => {
         </div>
       )}
 
-      
-      <NFTOverview identity={identity} toNFT={toNFT} />
+      <NFTOverview
+        initialData={prefetchingCollections}
+        identity={identity}
+        toNFT={toNFT}
+      />
 
-      <Poaps identity={identity} />
+      <Poaps
+        onShowDetail={(poap) => {
+          setCurrentPoap(poap);
+          setDialogOpen(true);
+        }}
+        initialData={poaps}
+        identity={identity}
+      />
+
+      {dialogOpen && currentPoap && (
+        <NFTDialog
+          address={currentPoap.address}
+          tokenId={currentPoap.tokenId}
+          network={network}
+          poap={currentPoap}
+          open={dialogOpen}
+          type={NFTDialogType.POAP}
+          onClose={() => setDialogOpen(false)}
+        />
+      )}
     </div>
   );
 };

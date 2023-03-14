@@ -1,5 +1,4 @@
 import { ApolloError } from "@apollo/client";
-import React from "react";
 
 interface ErrorProps {
   text: ApolloError;

@@ -1,25 +1,27 @@
 import { memo, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
+import { PlatformType } from "../../../utils/type";
+import { resolveMediaURL } from "../../../utils/utils";
 import {
   NFTSCANFetcher,
   NFTSCAN_BASE_API_ENDPOINT,
-  NFTSCAN_POLYGON_BASE_API,
-} from "../apis/nftscan";
+  NFTSCAN_POLYGON_BASE_API
+} from "../../apis/nftscan";
+import { Empty } from "../../shared/Empty";
+import { Error } from "../../shared/Error";
+import { Loading } from "../../shared/Loading";
+import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
 import { CollectionSwitcher } from "./CollectionSwitcher";
-import { resolveIPFS_URL } from "../../utils/ipfs";
-import { Empty } from "../shared/Empty";
-import { Error } from "../shared/Error";
-import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { Loading } from "../shared/Loading";
-import { PlatformType } from "../../utils/type";
 
-function useCollections(address: string, network: string) {
+function useCollections(address: string, network: string, initialData) {
   const baseURL =
     network === PlatformType.lens
       ? NFTSCAN_POLYGON_BASE_API
       : NFTSCAN_BASE_API_ENDPOINT;
   const url = baseURL + `account/own/all/${address}?erc_type=erc721`;
-  const { data, error } = useSWR<any>(url, NFTSCANFetcher);
+  const { data, error } = useSWR<any>(url, NFTSCANFetcher, {
+    fallbackData: initialData,
+  });
   return {
     data: data,
     isLoading: !error && !data,
@@ -28,21 +30,27 @@ function useCollections(address: string, network: string) {
 }
 
 const RenderNFTCollections = (props) => {
-  const { onShowDetail, identity, network } = props;
+  const { onShowDetail, identity, network, initialData } = props;
   const [collections, setCollections] = useState([]);
   const [anchorName, setAnchorName] = useState("");
   const { data, isLoading, isError } = useCollections(
-    network === PlatformType.lens? identity.ownedBy : identity.identity,
-    network
+    network === PlatformType.lens ? identity.ownedBy : identity.identity,
+    network,
+    initialData
   );
+  const [renderData, setRenderData] = useState([]);
+
   const [activeCollection, setActiveCollection] = useState(null);
   const scrollContainer = useRef(null);
-
   useEffect(() => {
+    setRenderData(
+      initialData && initialData.length > 0 ? initialData : data.data
+    );
+
     const container = scrollContainer.current;
-    if (data && data.data) {
+    if (renderData) {
       setCollections(
-        data.data.map((x) => ({
+        renderData.map((x) => ({
           key: x.contract_address,
           name: x.contract_name,
           url: x.logo_url,
@@ -62,10 +70,10 @@ const RenderNFTCollections = (props) => {
         }
       }
       const judgeActiveCollection = () => {
-        if (data && data.data) {
+        if (renderData) {
           const nav_contentRect = container.getBoundingClientRect();
           const groupList = Array.from(
-            data.data.map((x) => document.getElementById(x.contract_address))
+            renderData.map((x) => document.getElementById(x.contract_address))
           );
           if (nav_contentRect) {
             groupList.map((item: any) => {
@@ -101,20 +109,11 @@ const RenderNFTCollections = (props) => {
       return () =>
         container.removeEventListener("wheel", judgeActiveCollection);
     }
-  }, [data, anchorName, activeCollection]);
+  }, [initialData, anchorName, activeCollection, data, renderData]);
+
   if (isLoading) return <Loading />;
   if (isError) return <Error text={isError} />;
-  if (!data || !data.data) return <Empty />;
-
-  const resolveMediaURL = (asset) => {
-    if (asset) {
-      return asset.startsWith("data:", "https:")
-        ? asset
-        : resolveIPFS_URL(asset);
-    }
-    return "";
-  };
-
+  if (!renderData) return <Empty />;
   return (
     <>
       {collections && collections.length > 0 && (
@@ -129,7 +128,7 @@ const RenderNFTCollections = (props) => {
       )}
       <div ref={scrollContainer} className="nft-collection">
         <div className="nft-collection-list">
-          {data.data.map((x, idx) => {
+          {renderData.map((x, idx) => {
             return (
               <div
                 className="nft-collection-item"
@@ -148,7 +147,6 @@ const RenderNFTCollections = (props) => {
                   </div>
                 </div>
                 <div className="nft-list">
-                  {/* image url to support eip1155 local */}
                   {x.assets.map((y, ydx) => {
                     const mediaURL = resolveMediaURL(y.image_uri);
                     const contentURL = resolveMediaURL(y.content_uri);

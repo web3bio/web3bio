@@ -1,11 +1,11 @@
-import React, { memo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { memo, useState } from "react";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
+import { PlatformType } from "../../utils/type";
 import { formatText } from "../../utils/utils";
 import { RenderSourceFooter } from "./SourcesFooter";
-import { PlatformType } from "../../utils/type";
 
 const RenderAccountItem = (props) => {
   const { onItemClick } = props;
@@ -62,7 +62,7 @@ const RenderAccountItem = (props) => {
                       }}
                     >
                       <div className="label-ens" title={nft.id}>
-                        <img
+                        <Image
                           src="/icons/icon-ens.svg"
                           width={16}
                           height={16}
@@ -164,39 +164,73 @@ const RenderAccountItem = (props) => {
           <RenderSourceFooter sources={sources} />
         </div>
       );
-      case PlatformType.unstoppableDomains:
-        return (
-          <div className="social-item unstoppabledomains">
-            <div className="social-main">
-              <Link
-                href={{
-                  pathname: "/",
-                  query: {
-                    s: identity.identity,
-                  },
-                }}
-                className="social"
-              >
-                <div className="icon">
-                  <SVG src="icons/icon-unstoppabledomains.svg" width={20} height={20} />
-                </div>
-                <div className="title">{identity.displayName}</div>
-              </Link>
-            </div>
-            <div className="social-actions actions">
-              <a
-                className="btn btn-sm btn-link action"
-                href={`https://ud.me/${identity.displayName}`}
-                title="Open Unstoppable Domains"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
-              </a>
-            </div>
-            <RenderSourceFooter sources={sources} />
+    case PlatformType.unstoppableDomains:
+      return (
+        <div className="social-item unstoppabledomains">
+          <div className="social-main">
+            <Link
+              href={{
+                pathname: "/",
+                query: {
+                  s: identity.identity,
+                },
+              }}
+              className="social"
+            >
+              <div className="icon">
+                <SVG src="icons/icon-unstoppabledomains.svg" width={20} height={20} />
+              </div>
+              <div className="title">{identity.displayName}</div>
+            </Link>
           </div>
-        );
+          <div className="social-actions actions">
+            <a
+              className="btn btn-sm btn-link action"
+              href={`https://ud.me/${identity.displayName}`}
+              title="Open Unstoppable Domains"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
+            </a>
+          </div>
+          <RenderSourceFooter sources={sources} />
+        </div>
+      );
+    case PlatformType.farcaster:
+      return (
+        <div className="social-item farcaster">
+          <div className="social-main">
+            <Link
+              href={{
+                pathname: "/",
+                query: {
+                  s: identity.identity,
+                  platform: identity.platform,
+                },
+              }}
+              className="social"
+            >
+              <div className="icon">
+                <SVG src="icons/icon-farcaster.svg" width={20} height={20} />
+              </div>
+              <div className="title">{identity.displayName}</div>
+            </Link>
+          </div>
+          <div className="social-actions actions">
+            <a
+              className="btn btn-sm btn-link action"
+              href={`https://warpcast.com//${identity.identity}`}
+              title="Open Warpcast"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
+            </a>
+          </div>
+          <RenderSourceFooter sources={sources} />
+        </div>
+      );
     case PlatformType.twitter:
       return (
         <div className="social-item twitter">

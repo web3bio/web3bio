@@ -1,8 +1,8 @@
 import { memo } from "react";
-import { PlatformType } from "../../utils/type";
+import { PlatformType } from "../../../utils/type";
 import {
   CollectibleCard,
-  isCollectibleFeed,
+  isCollectibleFeed
 } from "./feedCards/CollectibleCard";
 import { CommentCard, isCommentFeed } from "./feedCards/CommentCard";
 import { DonationCard, isDonationFeed } from "./feedCards/DonationCard";
@@ -10,7 +10,7 @@ import { isNoteFeed, NoteCard } from "./feedCards/NoteCard";
 import { isProfileFeed, ProfileCard } from "./feedCards/ProfileCard";
 import {
   isTokenTransferFeed as isTokenOperationFeed,
-  TokenOperationCard,
+  TokenOperationCard
 } from "./feedCards/TokenOperationCard";
 import { isTokenSwapFeed, TokenSwapCard } from "./feedCards/TokenSwapCard";
 
