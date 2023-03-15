@@ -49,10 +49,13 @@ const socialButtonMapping = {
   },
 };
 
-export function useProfile(domain: string) {
+export function useProfile(domain: string, initialData) {
   const { data, error } = useSWR<any>(
     ENS_METADATA_END_POINT + `/${domain}/meta`,
-    ENSFetcher
+    ENSFetcher,
+    {
+      fallbackData: initialData,
+    }
   );
   return {
     data: data,
@@ -62,7 +65,8 @@ export function useProfile(domain: string) {
 }
 
 export const ProfileTab = (props) => {
-  const { identity, toNFT, network } = props;
+  const { identity, toNFT, network, poaps, prefetchingCollections } =
+    props;
   const domain = identity.displayName || identity.identity;
   const [dialogOpen, setDialogOpen] = useState(false);
   const [currentPoap, setCurrentPoap] = useState(null);
@@ -123,7 +127,7 @@ export const ProfileTab = (props) => {
             <Loading />
           </div>
 
-          <div>Loading Profile...</div>
+          <div>Loading Records...</div>
         </div>
       ) : (
         <div className="profile-basic">
@@ -164,13 +168,18 @@ export const ProfileTab = (props) => {
         </div>
       )}
 
-      <NFTOverview identity={identity} toNFT={toNFT} />
+      <NFTOverview
+        initialData={prefetchingCollections}
+        identity={identity}
+        toNFT={toNFT}
+      />
 
       <Poaps
         onShowDetail={(poap) => {
           setCurrentPoap(poap);
           setDialogOpen(true);
         }}
+        initialData={poaps}
         identity={identity}
       />
 
