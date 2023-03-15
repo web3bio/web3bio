@@ -123,7 +123,8 @@ export default function Home() {
               autoComplete="off"
               role="search"
               className="search-form"
-              onSubmit={() => {
+              onSubmit={(e) => {
+                e.preventDefault();
                 return false;
               }}
             >

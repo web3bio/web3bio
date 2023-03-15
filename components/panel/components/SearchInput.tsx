@@ -61,7 +61,6 @@ export const SearchInput = (props) => {
     if (query.includes(".")) {
       query[query.length - 1];
       if (query[query.length - 1] == ".") return;
-      // todo: here
       const backupDomains = fuzzyDomainSuffix.map(
         (x) => query.split(".")[0] + `.${x}`
       );
