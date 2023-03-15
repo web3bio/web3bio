@@ -248,7 +248,8 @@ export async function getStaticProps({ params }) {
   const _resolved = resolveIdentity(identity, platform);
 
   if (identity && _resolved && _resolved.identity) {
-    prefetchingNFTs = await nftCollectionProvider(_resolved.identity, platform);
+    prefetchingNFTs =
+      (await nftCollectionProvider(_resolved.identity, platform)) || [];
     prefetchingProfile = await profileProvider(
       _resolved.displayName || _resolved.identity
     );
@@ -299,6 +300,7 @@ export async function getStaticProps({ params }) {
         overridePlatform: platform,
         overridePanelTab: domain.length > 1 ? domain[1] : TabsMap.profile.key,
       },
+      notFound: true,
     };
   }
 }
