@@ -63,7 +63,6 @@ export const nftCollectionProvider = async (
 export const profileProvider = async (name: string) => {
   try {
     const res = await ENSFetcher(ENS_METADATA_END_POINT + `/${name}/meta`);
-    console.log(res,'response')
     return res;
   } catch (e) {
     console.error(e);
