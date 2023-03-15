@@ -18,6 +18,23 @@ const resolveSearchPlatformIcon = (platform) => {
 };
 
 const DomainSearchSuffix = ["eth", "lens", "", "crypto", "dao"];
+const fuzzyDomainSuffix = [
+  "eth",
+  "lens",
+  "crypto",
+  "dao",
+  "bitcoin",
+  "blockchain",
+  "bit",
+  "nft",
+  "888",
+  "wallet",
+  "x",
+  "klever",
+  "zil",
+  "hi",
+  "kresus",
+];
 
 export const SearchInput = (props) => {
   const { key, defaultValue, handleSubmit } = props;
@@ -26,7 +43,7 @@ export const SearchInput = (props) => {
   const [activeIndex, setActiveIndex] = useState(null);
   const inputRef = useRef(null);
   const emitSubmit = (e, value?) => {
-    e.preventDefault();
+    setActiveIndex(null);
     if (value) {
       handleSubmit(value);
       return;
@@ -41,20 +58,42 @@ export const SearchInput = (props) => {
       setSearchList([]);
       return;
     }
-
-    setSearchList(
-      DomainSearchSuffix.map((x) => {
-        const label = query + `${x.length > 0 ? "." : ""}${x}`;
-        return {
-          icon: resolveSearchPlatformIcon(handleSearchPlatform(label)),
-          label: label,
-        };
-      })
-    );
+    if (query.includes(".")) {
+      query[query.length - 1];
+      if (query[query.length - 1] == ".") return;
+      // todo: here
+      const backupDomains = fuzzyDomainSuffix.map(
+        (x) => query.split(".")[0] + `.${x}`
+      );
+      setSearchList(
+        backupDomains.reduce((pre, cur) => {
+          if (cur.includes(query)) {
+            pre.push({
+              icon: resolveSearchPlatformIcon(handleSearchPlatform(cur)) || "",
+              label: cur,
+            });
+          }
+          return pre;
+        }, [])
+      );
+    } else {
+      setSearchList(
+        DomainSearchSuffix.map((x) => {
+          const label = query + `${x.length > 0 ? "." : ""}${x}`;
+          return {
+            icon: resolveSearchPlatformIcon(handleSearchPlatform(label)),
+            label: label,
+          };
+        })
+      );
+    }
 
     const onKeyDown = (e) => {
       if (e.key === "Enter") {
-        emitSubmit(e, activeIndex ? searchList[activeIndex] : "");
+        emitSubmit(
+          e,
+          activeIndex !== null ? searchList[activeIndex].label : ""
+        );
       }
       if (e.key === "ArrowUp") {
         if (!activeIndex) {

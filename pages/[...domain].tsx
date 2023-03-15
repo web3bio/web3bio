@@ -292,7 +292,6 @@ export async function getStaticProps({ params }) {
       },
     };
   } catch (e) {
-    console.error(e, "getStaticProps Error");
     return {
       props: {
         identity,
