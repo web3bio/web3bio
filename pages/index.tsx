@@ -121,7 +121,14 @@ export default function Home() {
           className={searchFocus ? "web3bio-search focused" : "web3bio-search"}
         >
           <div className="container grid-xs">
-            <form autoComplete="off" role="search" className="search-form">
+            <form
+              autoComplete="off"
+              role="search"
+              className="search-form"
+              onSubmit={() => {
+                return false;
+              }}
+            >
               <Link
                 href={{
                   pathname: "/",
