@@ -92,6 +92,13 @@ export const SearchInput = (props) => {
               label: label,
             });
           }
+            // farcaster equals twitter
+            if (handleSearchPlatform(label) === PlatformType.twitter) {
+              pre.push({
+                icon: "/icons/icon-farcaster.svg",
+                label: label,
+              });
+            }
           return pre;
         }, [])
       );
