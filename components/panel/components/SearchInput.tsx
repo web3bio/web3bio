@@ -120,7 +120,7 @@ export const SearchInput = (props) => {
         ref={inputRef}
         key={key}
         type="text"
-        placeholder="Search Twitter, Lens, ENS or Ethereum"
+        placeholder="Search ENS, Lens, Twitter, UD or Ethereum"
         defaultValue={defaultValue}
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={(e) => {

@@ -149,8 +149,6 @@ export default function Home() {
                 <SearchInput
                   ref={inputRef}
                   key={searchTerm}
-                  type="text"
-                  placeholder="Search Twitter, Lens, ENS, UD or Ethereum"
                   defaultValue={searchTerm}
                   handleSubmit={(value) => handleSubmit(value)}
                 />
