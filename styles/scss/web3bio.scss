@@ -288,7 +288,7 @@ body {
       position: absolute;
       top: 2.5rem;
       width: 100%;
-      z-index: 9999;
+      z-index: 100;
 
       .search-list-item {
         align-items: center;
@@ -464,6 +464,13 @@ body {
       .bg-lens {
         background: #BDFC5A;
         color: #204F24;
+      }
+    }
+
+    &.farcaster {
+      .bg-farcaster {
+        background: #8a63d2;
+        color: #fff;
       }
     }
   }
