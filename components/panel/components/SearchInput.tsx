@@ -1,5 +1,7 @@
+import router from "next/router";
 import { useEffect, useRef, useState } from "react";
 import SVG from "react-inlinesvg";
+import { matchQuery } from "../../../utils/queries";
 import { PlatformType } from "../../../utils/type";
 import { handleSearchPlatform } from "../../../utils/utils";
 
@@ -17,6 +19,7 @@ const resolveSearchPlatformIcon = (platform) => {
   );
 };
 
+// empty for twitter and farcaster
 const DomainSearchSuffix = ["eth", "lens", "", "crypto", "dao"];
 const fuzzyDomainSuffix = [
   "eth",
@@ -36,21 +39,25 @@ const fuzzyDomainSuffix = [
   "kresus",
 ];
 
+const isQuerySplit = (query: string) => {
+  return query.includes(".") || query.includes("。");
+};
+
 export const SearchInput = (props) => {
   const { key, defaultValue, handleSubmit } = props;
   const [query, setQuery] = useState("");
   const [searchList, setSearchList] = useState([]);
   const [activeIndex, setActiveIndex] = useState(null);
   const inputRef = useRef(null);
+
   const emitSubmit = (e, value?) => {
-    setActiveIndex(null);
-    if (value) {
-      handleSubmit(value);
-      return;
-    }
     const ipt = inputRef.current;
     if (!ipt) return;
-    handleSubmit(ipt.value);
+    const _value = value || ipt.value;
+    handleSubmit(_value);
+    if (value === router.query.s) {
+      setSearchList([]);
+    }
   };
 
   useEffect(() => {
@@ -58,15 +65,15 @@ export const SearchInput = (props) => {
       setSearchList([]);
       return;
     }
-    if (query.includes(".")) {
-      query[query.length - 1];
-      if (query[query.length - 1] == ".") return;
+    const isLastDot = [".", "。"].includes(query[query.length - 1]);
+    if (isQuerySplit(query) && !isLastDot) {
+      if (isLastDot) return;
       const backupDomains = fuzzyDomainSuffix.map(
-        (x) => query.split(".")[0] + `.${x}`
+        (x) => matchQuery(query) + `.${x}`
       );
       setSearchList(
         backupDomains.reduce((pre, cur) => {
-          if (cur.includes(query)) {
+          if (cur.includes(query.replace("。", "."))) {
             pre.push({
               icon: resolveSearchPlatformIcon(handleSearchPlatform(cur)) || "",
               label: cur,
@@ -77,13 +84,16 @@ export const SearchInput = (props) => {
       );
     } else {
       setSearchList(
-        DomainSearchSuffix.map((x) => {
-          const label = query + `${x.length > 0 ? "." : ""}${x}`;
-          return {
-            icon: resolveSearchPlatformIcon(handleSearchPlatform(label)),
-            label: label,
-          };
-        })
+        DomainSearchSuffix.reduce((pre, cur) => {
+          const label = matchQuery(query) + (cur.length > 0 ? `.${cur}` : cur);
+          if (!isLastDot || cur.length > 0) {
+            pre.push({
+              icon: resolveSearchPlatformIcon(handleSearchPlatform(label)),
+              label: label,
+            });
+          }
+          return pre;
+        }, [])
       );
     }
 
