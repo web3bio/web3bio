@@ -8,6 +8,7 @@ export const colorsMap = {
   lens: "#BDFC5A",
   github: "#000000",
   dotbit: "#0e7dff",
+  farcaster: "#8a63d2",
   unknown: "#121212",
 };
 
@@ -25,5 +26,6 @@ export const platformsMap = {
   cyberconnect: "CyberConnect",
   sybil: "Sybil",
   unstoppabledomains: "Unstoppable Domains",
+  farcaster: "Farcaster",
   unknown: "Unknown",
 };

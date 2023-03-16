@@ -201,26 +201,35 @@ const RenderAccountItem = (props) => {
       return (
         <div className="social-item farcaster">
           <div className="social-main">
-            <Link
-              href={{
-                pathname: "/",
-                query: {
-                  s: identity.identity,
-                  platform: identity.platform,
-                },
-              }}
-              className="social"
-            >
-              <div className="icon">
+            <div className="social">
+              <figure className="avatar bg-farcaster">
                 <SVG src="icons/icon-farcaster.svg" width={20} height={20} />
+              </figure>
+              <div className="content">
+                <div className="content-title text-bold">
+                  {identity.displayName
+                    ? identity.displayName
+                    : identity.identity}
+                </div>
+                <div className="content-subtitle text-gray">
+                  <div className="address">{identity.identity}</div>
+                  <Clipboard
+                    component="div"
+                    className="action"
+                    data-clipboard-text={identity.identity}
+                    onSuccess={onCopySuccess}
+                  >
+                    <SVG src="icons/icon-copy.svg" width={20} height={20} />
+                    {isCopied && <div className="tooltip-copy">COPIED</div>}
+                  </Clipboard>
+                </div>
               </div>
-              <div className="title">{identity.displayName}</div>
-            </Link>
+            </div>
           </div>
           <div className="social-actions actions">
             <a
               className="btn btn-sm btn-link action"
-              href={`https://warpcast.com//${identity.identity}`}
+              href={`https://warpcast.com/${identity.identity}`}
               title="Open Warpcast"
               target="_blank"
               rel="noopener noreferrer"

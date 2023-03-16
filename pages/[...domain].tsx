@@ -7,9 +7,7 @@ import { Empty } from "../components/shared/Empty";
 import { Error } from "../components/shared/Error";
 import { Loading } from "../components/shared/Loading";
 import {
-  identityProvider,
-  nftCollectionProvider,
-  profileProvider
+  identityProvider, profileProvider
 } from "../utils/dataProvider";
 import { GET_PROFILE_LENS } from "../utils/lens";
 import {
@@ -248,7 +246,8 @@ export async function getStaticProps({ params }) {
   const _resolved = resolveIdentity(identity, platform);
 
   if (identity && _resolved && _resolved.identity) {
-    prefetchingNFTs = await nftCollectionProvider(_resolved.identity, platform);
+    // prefetchingNFTs =
+    //   (await nftCollectionProvider(_resolved.identity, platform)) || [];
     prefetchingProfile = await profileProvider(
       _resolved.displayName || _resolved.identity
     );
@@ -292,7 +291,6 @@ export async function getStaticProps({ params }) {
       },
     };
   } catch (e) {
-    console.error(e, "getStaticProps Error");
     return {
       props: {
         identity,
@@ -300,6 +298,7 @@ export async function getStaticProps({ params }) {
         overridePlatform: platform,
         overridePanelTab: domain.length > 1 ? domain[1] : TabsMap.profile.key,
       },
+      notFound: true,
     };
   }
 }

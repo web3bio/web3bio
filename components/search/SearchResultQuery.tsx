@@ -1,6 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { GET_PROFILES_QUERY } from "../../utils/queries";
+import { ResultGraph } from "../graph/ResultGraph";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
 import { Loading } from "../shared/Loading";
@@ -18,6 +19,8 @@ export const SearchResultQuery = ({
     },
   });
   const [resultNeighbor, setResultNeighbor] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [graphData, setGraphData] = useState([]);
 
   useEffect(() => {
     if (!data || !data.identity) return;
@@ -54,6 +57,8 @@ export const SearchResultQuery = ({
             temp.findIndex((elem) => elem.identity.uuid == ele.identity.uuid)
         )
       );
+
+      setGraphData(data.identity.neighborWithTraversal || []);
     }
   }, [data]);
 
@@ -62,11 +67,21 @@ export const SearchResultQuery = ({
   if (!data?.identity) return <Empty />;
 
   return (
-    <ResultAccount
-      openProfile={openProfile}
-      searchTerm={searchTerm}
-      resultNeighbor={resultNeighbor}
-      graphData={data.identity.neighborWithTraversal || []}
-    />
+    <>
+      <ResultAccount
+        openProfile={openProfile}
+        searchTerm={searchTerm}
+        resultNeighbor={resultNeighbor}
+        graphData={graphData}
+        openGraph={() => setOpen(true)}
+      />
+      {open && (
+        <ResultGraph
+          onClose={() => setOpen(false)}
+          data={graphData}
+          title={searchTerm}
+        />
+      )}
+    </>
   );
 };

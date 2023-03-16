@@ -1,11 +1,9 @@
-import { memo, useState } from "react";
+import { memo } from "react";
 import SVG from "react-inlinesvg";
-import { ResultGraph } from "../graph/ResultGraph";
 import { ResultAccountItem } from "./ResultAccountItem";
 
 const RenderAccount = (props) => {
-  const { searchTerm, resultNeighbor, graphData, openProfile } = props;
-  const [open, setOpen] = useState(false);
+  const { openGraph, resultNeighbor, graphData, openProfile } = props;
 
   return (
     <div className="search-result">
@@ -14,7 +12,7 @@ const RenderAccount = (props) => {
           Identity Graph results:
         </div>
         {graphData.length > 0 && (
-          <div className="btn btn-link btn-sm" onClick={() => setOpen(true)}>
+          <div className="btn btn-link btn-sm" onClick={openGraph}>
             <SVG src={"/icons/icon-view.svg"} width={20} height={20} />{" "}
             Visualize
           </div>
@@ -34,13 +32,6 @@ const RenderAccount = (props) => {
           </>
         ) : null}
       </div>
-      {open && (
-        <ResultGraph
-          onClose={() => setOpen(false)}
-          data={graphData}
-          title={searchTerm}
-        />
-      )}
     </div>
   );
 };
