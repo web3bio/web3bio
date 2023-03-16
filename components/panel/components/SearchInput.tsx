@@ -67,14 +67,13 @@ export const SearchInput = (props) => {
     }
     const isLastDot = [".", "。"].includes(query[query.length - 1]);
     if (isQuerySplit(query) && !isLastDot) {
-      console.log("sxq1");
       if (isLastDot) return;
       const backupDomains = fuzzyDomainSuffix.map(
-        (x) => query.slice(0, query.length - 2) + `.${x}`
+        (x) => matchQuery(query) + `.${x}`
       );
       setSearchList(
         backupDomains.reduce((pre, cur) => {
-          if (cur.includes(query)) {
+          if (cur.includes(query.replace("。", "."))) {
             pre.push({
               icon: resolveSearchPlatformIcon(handleSearchPlatform(cur)) || "",
               label: cur,
@@ -84,7 +83,6 @@ export const SearchInput = (props) => {
         }, [])
       );
     } else {
-      console.log(matchQuery(query), "sxq2");
       setSearchList(
         DomainSearchSuffix.reduce((pre, cur) => {
           const label = matchQuery(query) + (cur.length > 0 ? `.${cur}` : cur);
