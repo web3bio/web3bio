@@ -130,3 +130,12 @@ export const resolveIdentity = (ini, iniP) => {
   }
   return ini.identity;
 };
+
+export function matchQuery(query) {
+  let res = "";
+  for (let i = 0; i < query.length; i++) {
+    if (![".", "。"].includes(query[i])) res += query[i];
+    else res +=''
+  }
+  return res;
+}
