@@ -75,9 +75,7 @@ export function resolveIPFS_URL(
           }
         }
       } catch (error) {
-        console.error({
-          error,
-        });
+       
         // do nothing
       }
     }
