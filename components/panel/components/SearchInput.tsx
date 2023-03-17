@@ -1,6 +1,10 @@
 import router from "next/router";
 import { useEffect, useRef, useState } from "react";
 import SVG from "react-inlinesvg";
+import {
+  DomainSearchSuffix,
+  fuzzyDomainSuffix,
+} from "../../../utils/constants";
 import { matchQuery } from "../../../utils/queries";
 import { PlatformType } from "../../../utils/type";
 import { handleSearchPlatform } from "../../../utils/utils";
@@ -19,26 +23,6 @@ const resolveSearchPlatformIcon = (platform) => {
   );
 };
 
-// empty for twitter and farcaster
-const DomainSearchSuffix = ["eth", "lens", "", "crypto", "dao"];
-const fuzzyDomainSuffix = [
-  "eth",
-  "lens",
-  "crypto",
-  "dao",
-  "bitcoin",
-  "blockchain",
-  "bit",
-  "nft",
-  "888",
-  "wallet",
-  "x",
-  "klever",
-  "zil",
-  "hi",
-  "kresus",
-];
-
 const isQuerySplit = (query: string) => {
   return query.includes(".") || query.includes("。");
 };
@@ -53,8 +37,12 @@ export const SearchInput = (props) => {
   const emitSubmit = (e, value?) => {
     const ipt = inputRef.current;
     if (!ipt) return;
-    const _value = value || ipt.value;
-    handleSubmit(_value);
+    const platfrom =
+      value && value.key && value.key === PlatformType.farcaster
+        ? PlatformType.farcaster
+        : "";
+    const _value = value.label || ipt.value;
+    handleSubmit(_value, platfrom);
     if (value === router.query.s) {
       setSearchList([]);
     }
@@ -69,7 +57,7 @@ export const SearchInput = (props) => {
     if (isQuerySplit(query) && !isLastDot) {
       if (isLastDot) return;
       const backupDomains = fuzzyDomainSuffix.map(
-        (x) => matchQuery(query) + `.${x}`
+        (x) => matchQuery(query) + `.${x.label}`
       );
       setSearchList(
         backupDomains.reduce((pre, cur) => {
@@ -85,20 +73,24 @@ export const SearchInput = (props) => {
     } else {
       setSearchList(
         DomainSearchSuffix.reduce((pre, cur) => {
-          const label = matchQuery(query) + (cur.length > 0 ? `.${cur}` : cur);
-          if (!isLastDot || cur.length > 0) {
+          const label =
+            matchQuery(query) +
+            (cur.label.length > 0 ? `.${cur.label}` : cur.label);
+          if (!isLastDot || cur.label.length > 0) {
             pre.push({
+              key: cur.key,
               icon: resolveSearchPlatformIcon(handleSearchPlatform(label)),
               label: label,
             });
           }
-            // farcaster equals twitter
-            if (handleSearchPlatform(label) === PlatformType.twitter) {
-              pre.push({
-                icon: "/icons/icon-farcaster.svg",
-                label: label,
-              });
-            }
+          // farcaster equals twitter
+          if (handleSearchPlatform(label) === PlatformType.twitter) {
+            pre.push({
+              key: "farcaster",
+              icon: "/icons/icon-farcaster.svg",
+              label: label,
+            });
+          }
           return pre;
         }, [])
       );
@@ -106,10 +98,7 @@ export const SearchInput = (props) => {
 
     const onKeyDown = (e) => {
       if (e.key === "Enter") {
-        emitSubmit(
-          e,
-          activeIndex !== null ? searchList[activeIndex].label : ""
-        );
+        emitSubmit(e, activeIndex !== null ? searchList[activeIndex] : "");
       }
       if (e.key === "ArrowUp") {
         if (!activeIndex) {
@@ -175,7 +164,7 @@ export const SearchInput = (props) => {
                     : "search-list-item"
                 }
                 key={idx}
-                onClick={(e) => emitSubmit(e, x.label)}
+                onClick={(e) => emitSubmit(e, x)}
               >
                 <SVG src={x.icon} width={20} height={20} />
                 {x.label}
