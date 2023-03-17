@@ -6,14 +6,12 @@ import { LensProfilePanel } from "../components/panel/LensProfilePanel";
 import { Empty } from "../components/shared/Empty";
 import { Error } from "../components/shared/Error";
 import { Loading } from "../components/shared/Loading";
-import {
-  identityProvider, profileProvider
-} from "../utils/dataProvider";
+import { identityProvider, profileProvider } from "../utils/dataProvider";
 import { GET_PROFILE_LENS } from "../utils/lens";
 import {
   GET_PROFILES_DOMAIN,
   GET_PROFILES_QUERY,
-  resolveIdentity
+  resolveIdentity,
 } from "../utils/queries";
 import { DOMAINS_TABLE_NAME, supabase } from "../utils/supabase";
 import { PlatformType } from "../utils/type";
@@ -241,16 +239,24 @@ export async function getStaticProps({ params }) {
   let identity = null;
   let prefetchingNFTs = null;
   let prefetchingProfile = null;
-
-  identity = await identityProvider(platform, domain[0]);
-  const _resolved = resolveIdentity(identity, platform);
-
-  if (identity && _resolved && _resolved.identity) {
-    // prefetchingNFTs =
-    //   (await nftCollectionProvider(_resolved.identity, platform)) || [];
-    prefetchingProfile = await profileProvider(
-      _resolved.displayName || _resolved.identity
-    );
+  let _resolved = null;
+  try {
+    identity = await identityProvider(platform, domain[0]);
+    _resolved = resolveIdentity(identity, platform);
+    if (identity && _resolved && _resolved.identity) {
+      // prefetchingNFTs =
+      //   (await nftCollectionProvider(_resolved.identity, platform)) || [];
+      prefetchingProfile = await profileProvider(
+        _resolved.displayName || _resolved.identity
+      );
+    }
+  } catch (e) {
+    return {
+      props: {
+        domain,
+      },
+      notFound: true,
+    };
   }
 
   try {
