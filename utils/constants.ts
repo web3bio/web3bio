@@ -16,10 +16,6 @@ export const DomainSearchSuffix = [
     key: "crypto",
     label: "crypto",
   },
-  {
-    key: "dao",
-    label: "dao",
-  },
 ];
 export const fuzzyDomainSuffix = [
   {
