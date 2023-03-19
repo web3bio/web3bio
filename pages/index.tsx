@@ -22,14 +22,20 @@ export default function Home() {
   const [domain, setDomain] = useState([]);
   const inputRef = useRef(null);
   const router = useRouter();
-  const handleSubmit = (value) => {
+  const handleSubmit = (value, platform?) => {
     setSearchTerm(value);
+
     router.push({
-      query: {
-        s: value,
-      },
+      query: platform
+        ? {
+            s: value,
+            platform: platform,
+          }
+        : {
+            s: value,
+          },
     });
-    setsearchPlatform(handleSearchPlatform(value));
+    setsearchPlatform(platform ?? handleSearchPlatform(value));
     setSearchFocus(true);
   };
 
@@ -150,7 +156,9 @@ export default function Home() {
                   ref={inputRef}
                   key={searchTerm}
                   defaultValue={searchTerm}
-                  handleSubmit={(value) => handleSubmit(value)}
+                  handleSubmit={(value, platform) =>
+                    handleSubmit(value, platform)
+                  }
                 />
               </div>
             </form>

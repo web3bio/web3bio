@@ -51,7 +51,7 @@ const RenderResultDomain = ({ searchTerm, searchPlatform, openProfile }) => {
       )
     );
     setGraphData(
-      data.domain.owner.neighborWithTraversal.length
+      data.domain.owner.neighborWithTraversal.length > 0
         ? data.domain.owner.neighborWithTraversal
         : [
             resultNeighbor.length > 0
@@ -60,14 +60,14 @@ const RenderResultDomain = ({ searchTerm, searchPlatform, openProfile }) => {
                   to: resultNeighbor[0].identity,
                   source: "nextid",
                 }
-              : {},
+              : null,
           ]
     );
   }, [data, searchTerm]);
   if (loading) return <Loading />;
   if (error) return <Error text={error} />;
   if (!data?.domain) return <Empty />;
-
+  
   return (
     <>
       <ResultAccount
@@ -75,7 +75,7 @@ const RenderResultDomain = ({ searchTerm, searchPlatform, openProfile }) => {
         resultNeighbor={resultNeighbor}
         openProfile={openProfile}
         graphData={graphData}
-        openGraph={(()=>setOpen(true))}
+        openGraph={() => setOpen(true)}
       />
       {open && (
         <ResultGraph
