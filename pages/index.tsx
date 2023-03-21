@@ -182,6 +182,26 @@ export default function Home() {
         <div className="web3bio-footer">
           <div className="container grid-lg">
             <div className="columns">
+              <div className="column col-3">
+                <div className="card-feature">
+
+                </div>
+              </div>
+              <div className="column col-3">
+                
+              </div>
+              <div className="column col-3">
+                
+              </div>
+              <div className="column col-3">
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="web3bio-footer">
+          <div className="container grid-lg">
+            <div className="columns">
               <div className="column col-12">
                 <div className="mt-4 mb-4">
                   <a
@@ -189,6 +209,7 @@ export default function Home() {
                     className="btn-link text-dark ml-2 mr-2"
                     target="_blank"
                     rel="noopener noreferrer"
+                    title="Web3.bio Twitter"
                   >
                     <SVG
                       src="icons/icon-twitter.svg"
@@ -202,9 +223,24 @@ export default function Home() {
                     className="btn-link ml-2 mr-2"
                     target="_blank"
                     rel="noopener noreferrer"
+                    title="Web5.bio GitHub"
                   >
                     <SVG
                       src="icons/icon-github.svg"
+                      width={20}
+                      height={20}
+                      className="icon"
+                    />
+                  </a>
+                  <a
+                    href="https://t.me/web5bio"
+                    className="btn-link ml-2 mr-2"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="Web5.bio Telegram Group"
+                  >
+                    <SVG
+                      src="icons/icon-telegram.svg"
                       width={20}
                       height={20}
                       className="icon"
@@ -235,6 +271,7 @@ export default function Home() {
           </div>
         </div>
       </main>
+
       {modalOpen && (
         <ProfilePage
           toNFT={() => {
