@@ -35,6 +35,9 @@
 
 // Components
 @import "panel";
+@import "graph";
+@import "profile";
+@import "search";
 
 // Variables
 $pride-color-1: #FBF4EC !default;
@@ -52,7 +55,7 @@ body {
 }
 
 .web3bio-container {
-  min-height: 100vh;
+  min-height: 75vh;
   padding: .5rem;
   width: 100vw;
 }
@@ -224,676 +227,6 @@ body {
   }
 }
 
-// Identity Graph
-.identity-graph-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, .5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-
-  .graph-header {
-    align-items: center;
-    display: flex;
-    font-size: .7rem;
-    justify-content: space-between;
-    left: .5rem;
-    position: absolute;
-    right: .5rem;
-    top: .5rem;
-    z-index: 999;
-
-    .graph-title {
-      align-items: center;
-      border-radius: .4rem;
-      display: flex;
-      line-height: 1rem;
-      padding: .4rem;
-      pointer-events: none;
-      user-select: none;
-      word-break: break-all;
-    }
-  }
-
-  .graph-container {
-    background: #fff;
-    border-radius: .4rem;
-    box-shadow: 0 .4rem 2rem rgba(0, 0, 0, .5);
-    height: 94%;
-    max-height: 40rem;
-    max-width: 64rem;
-    position: relative;
-    width: 94%;
-
-    .loading-mask {
-      border-radius: .4rem;
-      position: absolute;
-      height: 94%;
-      max-height: 40rem;
-      max-width: 64rem;
-      width: 94%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 99;
-      background: #fff;
-    }
-  }
-}
-
-// Identity Panel
-.identity-panel {
-  bottom: 1rem;
-  left: -1rem;
-  position: absolute;
-  right: -1rem;
-  top: 1rem;
-}
-
-.panel-container {
-  animation: slide-in .35s forwards;
-  background: #fff;
-  border-radius: .5rem;
-  box-shadow: 0 .2rem 1rem rgba(0, 0, 0, .15);
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 1rem);
-  padding: 0;
-  position: sticky;
-  top: 1rem;
-  transform: translateY(-100%);
-  z-index: 100;
-
-  @keyframes slide-in {
-    0% {
-      transform: translateY(100%);
-    }
-
-    100% {
-      transform: translateY(0);
-    }
-  }
-
-  &.leave {
-    animation: slide-in .4s forwards reverse;
-  }
-
-  .panel-header {
-    display: flex;
-    flex-direction: column;
-    padding: 1rem 1rem 0 1rem;
-    z-index: 99;
-
-    .identity-avatar {
-      align-items: center;
-      border-radius: .5rem;
-      display: flex;
-      flex: 0 0 2.4rem;
-      height: 2.4rem;
-      justify-content: center;
-      margin-right: .5rem;
-      width: 2.4rem;
-
-      .img-responsive {
-        border-radius: .5rem;
-        font-size: 2rem;
-        height: 2.4rem;
-        width: 2.4rem;
-      }
-    }
-  }
-
-  .panel-body {
-    display: flex;
-    flex: 1 1;
-    flex-direction: column;
-    height: auto;
-    overflow: hidden;
-    padding: 0;
-  }
-
-  .panel-tab {
-    align-items: center;
-    background: transparent;
-    display: flex;
-    list-style: none;
-    margin: .5rem 0 0 0;
-    overflow: hidden;
-
-    .tab-item {
-      flex: 1 1 100%;
-      margin-top: 0;
-      text-align: center;
-
-      a {
-        border-bottom: .1rem solid $border-color;
-        display: block;
-        padding: 0 .2rem;
-        text-decoration: none;
-        font-weight: 500;
-        line-height: 1.8rem;
-        color: $dark-color;
-        opacity: .5;
-        text-align: center;
-
-        &:focus,
-        &:hover {
-          border-bottom-color: $dark-color;
-          opacity: 1;
-          transition: all .2s ease;
-        }
-      }
-
-      &.active a,
-      a.active {
-        border-bottom-color: $dark-color;
-        font-weight: 700;
-        opacity: 1;
-      }
-    }
-  }
-
-  .btn-close {
-    position: absolute;
-    right: .5rem;
-    top: .5rem;
-    z-index: 999;
-  }
-}
-
-// Profile
-.profile-container {
-  display: flex;
-  flex: 1 1;
-  flex-direction: column;
-  height: 100%;
-  overflow: hidden auto;
-  padding: 0 1.5rem;
-
-  .profile-basic {
-    position: relative;
-    padding: 1rem 0;
-  }
-
-  .profile-basic-loading-placeholder {
-    min-height: 2rem;
-    margin: 1rem 0;
-    place-self: flex-start;
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-  }
-
-  .records {
-    position: relative;
-    margin: 1rem 0;
-    display: flex;
-    gap: .5rem;
-
-    .action-btn {
-      position: relative;
-      width: 1.8rem;
-      height: 1.8rem;
-      box-shadow: 0px .2rem 1rem rgba(0, 0, 0, 0.05);
-      border-radius: .4rem;
-      cursor: pointer;
-      transition: box-shadow .2s ease-in-out;
-    }
-  }
-
-  .profile-widget {
-    margin-bottom: 1rem;
-
-    .profile-widget-title {
-      color: $dark-color;
-      font-size: .7rem;
-      font-weight: 900;
-      line-height: 1rem;
-      text-transform: uppercase;
-    }
-  }
-
-  // Custom Widget
-  .widget-nft {
-    .collection-switcher {
-      box-shadow: none;
-      margin-left: -1.5rem;
-      margin-right: -1.5rem;
-
-      .collection-list {
-        padding: .25rem 1.5rem;
-      }
-    }
-  }
-
-  .widget-poap {
-    .nft-collection-list {
-      padding-top: 1rem;
-
-      .nft-list {
-        .nft-item {
-          .img-responsive {
-            box-shadow: none;
-          }
-        }
-      }
-    }
-  }
-}
-
-.profile-main {
-  align-items: center;
-  display: flex;
-  height: 100vh;
-  justify-content: center;
-  left: 50%;
-  max-width: 25rem;
-  position: fixed;
-  top: 0;
-  transform: translateX(-50%);
-  width: 100%;
-
-  @media screen and (max-width: $size-xl) {
-    width: calc(100% - 4rem);
-  }
-}
-
-// Social Feeds
-.feeds-container {
-  flex: 1 1;
-  height: 100%;
-  overflow-y: auto;
-  padding: 0 1.5rem;
-
-  .social-feeds-title {
-    font-size: .7rem;
-    font-weight: 700;
-    padding: 1rem 0;
-  }
-}
-
-.social-feeds-list {
-  .social-feeds-item {}
-
-  .feed-item-box {
-    display: flex;
-    width: 100%;
-    margin-top: 1rem;
-    align-items: flex-start;
-    gap: 10px;
-
-    .feed-type-badge {
-      width: 24px;
-      height: 24px;
-      background: rgba(18, 18, 18, 0.08);
-      box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.05);
-      border-radius: 8px;
-    }
-
-    .feed-item {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      max-width: 90%;
-
-      .feed-item-header {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-
-        .feed-type-intro {
-          display: flex;
-          align-items: center;
-          font-weight: 400;
-          font-size: 14px;
-          line-height: 22px;
-
-          .strong {
-            font-weight: 900;
-            margin: 0 4px;
-          }
-        }
-      }
-
-      .feed-item-main {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-
-        .feed-nft-img {
-          position: relative;
-          width: 40px;
-          height: 40px;
-          min-width: 40px;
-          min-height: 40px;
-          box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.15);
-          border-radius: 12px;
-
-          img {
-            box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.15);
-            border-radius: 12px;
-          }
-        }
-
-        .feed-swap-img {
-          width: 24px;
-          box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.15);
-          border-radius: 12px;
-          background: transparent;
-        }
-
-        .feed-nft-info {
-          display: flex;
-          flex-direction: column;
-
-          .nft-title {
-            font-weight: 700;
-            font-size: 14px;
-            line-height: 22px;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 1;
-            overflow: hidden;
-          }
-
-          .nft-subtitle {
-            font-weight: 400;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
-            overflow: hidden;
-          }
-
-          .nft-collection-title {
-            font-weight: 400;
-            font-size: 12px;
-            line-height: 1rem;
-            color: #121212;
-            opacity: 0.5;
-          }
-        }
-      }
-    }
-  }
-}
-
-// NFT Collections
-.collection-switcher {
-  background: #fff;
-  box-shadow: 0 .1rem 1rem rgba($dark-color, .1);
-  user-select: none;
-  padding: 0 0.5rem;
-  box-sizing: border-box;
-
-  .collection-list {
-    display: flex;
-    gap: .1rem;
-    overflow: auto hidden;
-    padding: .25rem 1rem;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-
-    .collection-item {
-      background: #fff;
-      border-radius: .6rem;
-      flex: 0 0;
-      height: 3.1rem;
-      padding: .25rem;
-      transition: all .25s ease-in-out;
-      width: 3.1rem;
-
-      &::after {
-        bottom: auto;
-        top: 100%;
-        transform: translate(-50%, -$unit-2);
-      }
-
-      &:focus,
-      &:hover {
-        background: lighten($bg-color, 2%);
-
-        &::after {
-          transform: translate(-50%, $unit-1);
-        }
-      }
-
-      &.active {
-        background: $bg-color;
-
-        .img-responsive {
-          box-shadow: 0 .1rem .4rem rgba($dark-color, .25);
-        }
-      }
-
-      .collection-img {
-        border-radius: .5rem;
-        height: 2.6rem;
-        width: 2.6rem;
-
-        .img-responsive {
-          border-radius: .5rem;
-          box-shadow: 0 .1rem .4rem rgba($dark-color, .1);
-          font-size: 1.6rem;
-          height: 2.6rem;
-          object-fit: cover;
-          width: 2.6rem;
-        }
-      }
-    }
-  }
-}
-
-.nft-collection {
-  flex: 1 1;
-  height: 100%;
-  overflow: hidden auto;
-  padding: 0 1.5rem;
-}
-
-.nft-collection-list {
-  .nft-collection-item {
-    margin-top: .5rem;
-  }
-
-  .collection-title {
-    align-items: center;
-    display: flex;
-    padding: 1rem 0 .5rem 0;
-
-    .collection-logo {
-      flex: 0 0 1.2rem;
-      margin-right: .25rem;
-
-      .img-responsive {
-        border-radius: .4rem;
-        box-shadow: 0 .2rem .8rem rgba($dark-color, .2);
-        font-size: 1rem;
-        height: 1.2rem;
-        object-fit: cover;
-        width: 1.2rem;
-      }
-    }
-
-    .collection-name {
-      font-size: .8rem;
-      font-weight: 700;
-    }
-  }
-
-  .nft-list {
-    position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0 -.5rem 1rem -.5rem;
-
-    .nft-container {
-      flex: 0 0 33.3333%;
-      width: 33.3333%;
-      min-width: 8rem;
-
-      @media screen and (max-width: $size-md) {
-        flex: 0 0 50%;
-      }
-    }
-
-    .nft-item {
-      border-radius: .75rem;
-      padding: .5rem;
-      transition: all .25s ease-in-out;
-
-      &:focus,
-      &:hover {
-        background: lighten($bg-color, 2%);
-      }
-
-      .img-container {
-        margin-bottom: .5rem;
-
-        .img-responsive {
-          border-radius: .5rem;
-          box-shadow: 0 .2rem 1rem rgba($dark-color, .15), 0 .05rem .2rem rgba($dark-color, .05);
-          font-size: 2rem;
-          min-height: 7rem;
-          object-fit: cover;
-        }
-      }
-
-      .collection-name {
-        color: $gray-color-dark;
-        font-size: .5rem;
-      }
-
-      .nft-name {
-        font-size: .65rem;
-        font-weight: 700;
-      }
-    }
-  }
-}
-
-.nft-panel {
-  height: calc(100vh - 1rem);
-  position: absolute;
-  top: 1rem;
-  width: 100%;
-
-  .panel-container {
-    height: calc(100vh - 2rem);
-  }
-
-  .panel-header {
-    overflow: hidden auto;
-    padding: 1rem;
-
-    .img-container {
-      display: flex;
-      min-width: 100%;
-
-    }
-
-    .panel-header-img {
-      flex: 1 1 50%;
-      margin-right: 1rem;
-      width: 50%;
-    }
-
-    .img-responsive {
-      width: 100%;
-      border-radius: .5rem;
-    }
-
-    .collection-title {
-      align-items: center;
-      display: flex;
-      padding: 1rem 0 .5rem 0;
-
-      .collection-logo {
-        flex: 0 0 1.2rem;
-        margin-right: .25rem;
-
-        .img-responsive {
-          border-radius: .4rem;
-          box-shadow: 0 .2rem .8rem rgba($dark-color, .2);
-          font-size: 1rem;
-          height: 1.2rem;
-          width: 1.2rem;
-        }
-      }
-
-      .collection-name {
-        font-size: .65rem;
-        font-weight: 700;
-      }
-    }
-
-    .nft-header-name {
-      font-size: 1.2rem;
-      font-weight: 900;
-    }
-
-    .nft-header-actions {
-      margin-top: .5rem;
-    }
-  }
-
-  .panel-body {
-    padding: 0 1rem 1rem 1rem;
-  }
-
-  .panel-widget {
-    margin: 1rem 0;
-
-    .panel-widget-title {
-      font-size: .7rem;
-      font-weight: 900;
-      margin-bottom: .5rem;
-      text-transform: uppercase;
-    }
-
-    .panel-widget-content {
-      font-size: .6rem;
-      line-height: 1rem;
-    }
-
-    .traits-cards {
-      display: flex;
-      flex-wrap: wrap;
-      gap: .5rem;
-
-      .traits-card {
-        background: $light-color;
-        border: .05rem solid rgba(18, 18, 18, 0.08);
-        box-shadow: 0 .2rem .8rem rgba(0, 0, 0, 0.05);
-        border-radius: .4rem;
-        color: $dark-color;
-        text-transform: uppercase;
-        padding: .2rem .4rem;
-
-        .trait-type {
-          font-size: .5rem;
-          line-height: 2;
-        }
-
-        .trait-value {
-          font-weight: 700;
-          font-size: .6rem;
-          line-height: 1.5;
-        }
-      }
-    }
-  }
-}
-
 //- Web3.bio Toast
 .web3bio-toast {
   display: flex;
@@ -920,13 +253,12 @@ body {
 
 //- Web3.bio Footer
 .web3bio-footer {
-  color: $gray-color;
+  color: rgba($dark-color, .5);
   font-size: .7rem;
   font-weight: 500;
   padding: .5rem;
   position: sticky;
-  text-align: center;
-  top: 100vh;
+  top: 90vh;
 
   .footer-feedback {
     @media screen and (min-width: $size-md) {
@@ -948,6 +280,128 @@ body {
   }
 }
 
+.card-feature {
+  background: linear-gradient(70deg, lighten($gray-color, 30%), $light-color);
+  border: .05rem solid lighten($border-color, 25%);
+  border-radius: 1rem;
+  box-shadow: 0 .05rem .2rem rgba($dark-color, .1);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  padding: 2rem 1rem;
+  width: 100%;
+
+  .feature-header {
+    position: relative;
+    z-index: 1;
+
+    h3 {
+      color: lighten($dark-color, 15%);
+      font-size: .85rem;
+      font-weight: 800;
+    }
+
+    h4 {
+      color: lighten($dark-color, 25%);
+      font-size: .65rem;
+      font-weight: 400;
+      margin: 1rem 0;
+    }
+  }
+
+  .feature-body {
+    &.feature-body-profile {
+    }
+
+    &.feature-body-graph {
+      align-items: center;
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+
+      .btn {
+        position: relative;
+        z-index: 99;
+      }
+
+      .circle {
+        background: rgba($dark-color, .04);
+        border-radius: 50%;
+        content: "";
+        display: block;
+        position: absolute;
+
+        &:first-child {
+          height: 4rem;
+          width: 4rem;
+        }
+
+        &:nth-child(2) {
+          height: 8rem;
+          width: 8rem;
+        }
+
+        &:nth-child(3) {
+          height: 13rem;
+          width: 13rem;
+        }
+
+        &:nth-child(4) {
+          height: 19rem;
+          width: 19rem;
+        }
+      }
+    }
+  }
+
+  .feature-emoji {
+    font-size: 2.8rem;
+    line-height: 2.4rem;
+    position: absolute;
+    width: 18rem;
+  }
+
+  .identity {
+    background: #9186E7;
+    border: .05rem solid;
+    border-radius: .6rem;
+    color: rgba($dark-color, .75);
+    display: inline-flex;
+    margin: .1rem;
+    padding: .4rem;
+
+    &.identity-farcaster {
+      background: rgba(#8465CB, .1);
+      border-color: rgba(#8465CB, .15);
+
+      .icon {
+        color: #8465CB;
+      }
+    }
+
+    &.identity-unstoppabledomains {
+      background: rgba(#2E65F5, .05);
+      border-color: rgba(#2E65F5, .15);
+
+      .icon {
+        color: #2E65F5;
+      }
+    }
+
+    &.identity-lens {
+      background: rgba(#BDFC5A, .25);
+      border-color: rgba(#BDFC5A, .75);
+      
+      .icon {
+        color: #204F24;
+      }
+    }
+  }
+}
+
 //- Pride
 .text-pride {
   background-image: linear-gradient(70deg, $pride-color-1 10%, $pride-color-2 25%, $pride-color-3 36%, $pride-color-4 50%, $pride-color-5 63%, $pride-color-6 75%, $pride-color-7 90%);
@@ -959,6 +413,12 @@ body {
 
 .bg-pride {
   background: linear-gradient(70deg, $pride-color-1 -10%, $pride-color-2 5%, $pride-color-3 36%, $pride-color-4 50%, $pride-color-5 63%, $pride-color-6 95%, $pride-color-7 110%);
+}
+
+.border-pride {
+  border: .05rem solid transparent;
+  background: linear-gradient(white, white) padding-box,
+  linear-gradient(70deg, $pride-color-1 -10%, $pride-color-2 5%, $pride-color-3 36%, $pride-color-4 50%, $pride-color-5 63%, $pride-color-6 95%, $pride-color-7 110%) border-box;
 }
 
 .img-placeholder {

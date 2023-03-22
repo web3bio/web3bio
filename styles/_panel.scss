@@ -1,87 +1,262 @@
-// Record Social Media Item
-.nft-collection-container {
+// Identity Panel
+.identity-panel {
+  bottom: 1rem;
+  left: -1rem;
+  position: absolute;
+  right: -1rem;
+  top: 1rem;
+}
 
-    // dropdown
-    .dropdown-box {
-        border-radius: 4px;
-        border: 1px solid #eee;
-        color: #1a1a1a;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        font-size: 14px;
-        width: 100%;
-        cursor: pointer;
+.panel-container {
+  animation: slide-in .35s forwards;
+  background: #fff;
+  border-radius: .5rem;
+  box-shadow: 0 .2rem 1rem rgba(0, 0, 0, .15);
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 1rem);
+  padding: 0;
+  position: sticky;
+  top: 1rem;
+  transform: translateY(-100%);
+  z-index: 100;
 
-        .dropdown-menu {
-            position: absolute;
-            width: 100%;
-            text-align: center;
-            background: #fff;
-            border-radius: 4px;
-            top: 35px;
-            border: 1px solid #ddd;
+  @keyframes slide-in {
+    0% {
+      transform: translateY(100%);
+    }
+
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  &.leave {
+    animation: slide-in .4s forwards reverse;
+  }
+
+  .panel-header {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1rem 0 1rem;
+    z-index: 99;
+
+    .identity-avatar {
+      align-items: center;
+      border-radius: .5rem;
+      display: flex;
+      flex: 0 0 2.4rem;
+      height: 2.4rem;
+      justify-content: center;
+      margin-right: .5rem;
+      width: 2.4rem;
+
+      .img-responsive {
+        border-radius: .5rem;
+        font-size: 2rem;
+        height: 2.4rem;
+        width: 2.4rem;
+      }
+    }
+  }
+
+  .panel-body {
+    display: flex;
+    flex: 1 1;
+    flex-direction: column;
+    height: auto;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  .panel-tab {
+    align-items: center;
+    background: transparent;
+    display: flex;
+    list-style: none;
+    margin: .5rem 0 0 0;
+    overflow: hidden;
+
+    .tab-item {
+      flex: 1 1 100%;
+      margin-top: 0;
+      text-align: center;
+
+      a {
+        border-bottom: .1rem solid $border-color;
+        display: block;
+        padding: 0 .2rem;
+        text-decoration: none;
+        font-weight: 500;
+        line-height: 1.8rem;
+        color: $dark-color;
+        opacity: .5;
+        text-align: center;
+
+        &:focus,
+        &:hover {
+          border-bottom-color: $dark-color;
+          opacity: 1;
+          transition: all .2s ease;
         }
+      }
 
-        .dropdown-button {
-            width: 100%;
-            max-width: 200px;
-            text-align: center;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 6px;
-            padding: 0 6px;
-        }
+      &.active a,
+      a.active {
+        border-bottom-color: $dark-color;
+        font-weight: 700;
+        opacity: 1;
+      }
+    }
+  }
 
-        .dropdown-button,
-        .menu>div {
-            height: 30px;
-            line-height: 30px;
-        }
+  .btn-close {
+    position: absolute;
+    right: .5rem;
+    top: .5rem;
+    z-index: 999;
+  }
+}
 
-        .dropdown-menu>div.active {
-            background: #e7f8eb;
-        }
+.nft-panel {
+  height: calc(100vh - 1rem);
+  position: absolute;
+  top: 1rem;
+  width: 100%;
 
-        .dropdown-menu>div:hover {
-            background: #e7f8eb;
-        }
+  .panel-container {
+    height: calc(100vh - 2rem);
+  }
 
+  .panel-header {
+    overflow: hidden auto;
+    padding: 1rem;
+
+    .img-container {
+      display: flex;
+      min-width: 100%;
 
     }
+
+    .panel-header-img {
+      flex: 1 1 50%;
+      margin-right: 1rem;
+      width: 50%;
+    }
+
+    .img-responsive {
+      width: 100%;
+      border-radius: .5rem;
+    }
+
+    .collection-title {
+      align-items: center;
+      display: flex;
+      padding: 1rem 0 .5rem 0;
+
+      .collection-logo {
+        flex: 0 0 1.2rem;
+        margin-right: .25rem;
+
+        .img-responsive {
+          border-radius: .4rem;
+          box-shadow: 0 .2rem .8rem rgba($dark-color, .2);
+          font-size: 1rem;
+          height: 1.2rem;
+          width: 1.2rem;
+        }
+      }
+
+      .collection-name {
+        font-size: .65rem;
+        font-weight: 700;
+      }
+    }
+
+    .nft-header-name {
+      font-size: 1.2rem;
+      font-weight: 900;
+    }
+
+    .nft-header-actions {
+      margin-top: .5rem;
+    }
+  }
+
+  .panel-body {
+    padding: 0 1rem 1rem 1rem;
+  }
+
+  .panel-widget {
+    margin: 1rem 0;
+
+    .panel-widget-title {
+      font-size: .7rem;
+      font-weight: 900;
+      margin-bottom: .5rem;
+      text-transform: uppercase;
+    }
+
+    .panel-widget-content {
+      font-size: .6rem;
+      line-height: 1rem;
+    }
+
+    .traits-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+
+      .traits-card {
+        background: $light-color;
+        border: .05rem solid rgba(18, 18, 18, 0.08);
+        box-shadow: 0 .2rem .8rem rgba(0, 0, 0, 0.05);
+        border-radius: .4rem;
+        color: $dark-color;
+        text-transform: uppercase;
+        padding: .2rem .4rem;
+
+        .trait-type {
+          font-size: .5rem;
+          line-height: 2;
+        }
+
+        .trait-value {
+          font-weight: 700;
+          font-size: .6rem;
+          line-height: 1.5;
+        }
+      }
+    }
+  }
 }
 
 
 .feeds-container-box {
-    padding: 0;
+  padding: 0;
 
-    .feeds-title {
-        font-weight: 900;
-        font-size: 14px;
-        line-height: 1.43;
-        text-transform: uppercase;
+  .feeds-title {
+    font-weight: 900;
+    font-size: 14px;
+    line-height: 1.43;
+    text-transform: uppercase;
+  }
+
+  .social-feeds-list {
+    max-width: 100%;
+    margin-top: 1rem;
+    max-height: 80vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .feed-timestamp {
+      width: fit-content;
+      margin-left: 34px;
+      opacity: .5;
+      margin-top: 10px;
     }
-
-    .social-feeds-list {
-        max-width: 100%;
-        margin-top: 1rem;
-        max-height: 80vh;
-        overflow-y: auto;
-        overflow-x: hidden;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-
-        .feed-timestamp {
-            width: fit-content;
-            margin-left: 34px;
-            opacity: .5;
-            margin-top: 10px;
-        }
-
-        
-    }
+  }
 }

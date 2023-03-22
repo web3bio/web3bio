@@ -179,98 +179,129 @@ export default function Home() {
             ) : null}
           </div>
         </div>
-        <div className="web3bio-footer">
-          <div className="container grid-lg">
-            <div className="columns">
-              <div className="column col-3">
-                <div className="card-feature">
-
-                </div>
-              </div>
-              <div className="column col-3">
-                
-              </div>
-              <div className="column col-3">
-                
-              </div>
-              <div className="column col-3">
-                
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="web3bio-footer">
-          <div className="container grid-lg">
-            <div className="columns">
-              <div className="column col-12">
-                <div className="mt-4 mb-4">
-                  <a
-                    href="https://twitter.com/web3bio"
-                    className="btn-link text-dark ml-2 mr-2"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title="Web3.bio Twitter"
-                  >
-                    <SVG
-                      src="icons/icon-twitter.svg"
-                      width={20}
-                      height={20}
-                      className="icon"
-                    />
-                  </a>
-                  <a
-                    href="https://github.com/web3bio/web5bio"
-                    className="btn-link ml-2 mr-2"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title="Web5.bio GitHub"
-                  >
-                    <SVG
-                      src="icons/icon-github.svg"
-                      width={20}
-                      height={20}
-                      className="icon"
-                    />
-                  </a>
-                  <a
-                    href="https://t.me/web5bio"
-                    className="btn-link ml-2 mr-2"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title="Web5.bio Telegram Group"
-                  >
-                    <SVG
-                      src="icons/icon-telegram.svg"
-                      width={20}
-                      height={20}
-                      className="icon"
-                    />
-                  </a>
-                </div>
-                <div className="mt-2">
-                  A{" "}
-                  <a
-                    href="https://web3.bio"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Web3.bio
-                  </a>{" "}
-                  project crafted with{" "}
-                  <span className="text-pride">&hearts;</span> · Built with{" "}
-                  <a
-                    href="https://next.id"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Next.ID
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </main>
+      <div className="web3bio-footer">
+        <div className="container grid-lg">
+          <div className="columns mt-2 mb-2">
+            <div className="column col-4 col-sm-12 mt-2 mb-2">
+              <div className="card-feature">
+                <div className="feature-header text-center">
+                  <h3>New Search Support</h3>
+                  <h4>Search for Web3 identities with these new <strong>domains and accounts</strong>.</h4>
+                </div>
+
+                <div className="feature-body feature-body-first text-center">
+                  <div className="identity identity-farcaster">
+                    <SVG src="icons/icon-farcaster.svg" width={20} height={20} className="icon mr-1" /> Farcaster
+                  </div>
+                  <div className="identity identity-unstoppabledomains">
+                    <SVG src="icons/icon-unstoppabledomains.svg" width={20} height={20} className="icon mr-1" />Unstoppable Domains
+                  </div>
+                  <div className="identity identity-lens">
+                    <SVG src="icons/icon-lens.svg" width={20} height={20} className="icon mr-1" />Lens
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="column col-4 col-sm-12 mt-2 mb-2">
+              <div className="card-feature">
+                <div className="feature-header text-center">
+                  <h3>Visualize Identity Graph</h3>
+                  <h4>Deep dive into Web3 identities and connections across digital space.</h4>
+                </div>
+                <div className="feature-body feature-body-graph text-center">
+                  <div className="circle"></div>
+                  <div className="circle"></div>
+                  <div className="circle"></div>
+                  <div className="circle"></div>
+                  <div className="btn">
+                    <SVG src={"/icons/icon-view.svg"} width={24} height={24} className="icon mr-1" /> Visualize
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="column col-4 col-sm-12 mt-2 mb-2">
+              <div className="card-feature">
+                <div className="feature-header text-center">
+                  <h3>Your Web3 Profile <small className="text-small label label-primary">Beta</small></h3>
+                </div>
+                <div className="feature-body feature-body-profile text-center">
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="text-center container grid-lg">
+          <div className="columns">
+            <div className="column col-12">
+              <div className="mt-4 mb-4">
+                <a
+                  href="https://twitter.com/web3bio"
+                  className="btn-link text-dark ml-2 mr-2"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Web3.bio Twitter"
+                >
+                  <SVG
+                    src="icons/icon-twitter.svg"
+                    width={20}
+                    height={20}
+                    className="icon"
+                  />
+                </a>
+                <a
+                  href="https://github.com/web3bio/web5bio"
+                  className="btn-link ml-2 mr-2"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Web5.bio GitHub"
+                >
+                  <SVG
+                    src="icons/icon-github.svg"
+                    width={20}
+                    height={20}
+                    className="icon"
+                  />
+                </a>
+                <a
+                  href="https://t.me/web5bio"
+                  className="btn-link ml-2 mr-2"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Web5.bio Telegram Group"
+                >
+                  <SVG
+                    src="icons/icon-telegram.svg"
+                    width={20}
+                    height={20}
+                    className="icon"
+                  />
+                </a>
+              </div>
+              <div className="mt-2">
+                A{" "}
+                <a
+                  href="https://web3.bio"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Web3.bio
+                </a>{" "}
+                project crafted with{" "}
+                <span className="text-pride">&hearts;</span> · Built with{" "}
+                <a
+                  href="https://next.id"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Next.ID
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {modalOpen && (
         <ProfilePage
