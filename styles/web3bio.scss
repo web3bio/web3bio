@@ -285,6 +285,7 @@ body {
   border: .05rem solid lighten($border-color, 25%);
   border-radius: 1rem;
   box-shadow: 0 .05rem .2rem rgba($dark-color, .1);
+  color: lighten($dark-color, 15%);
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -297,7 +298,6 @@ body {
     z-index: 1;
 
     h3 {
-      color: lighten($dark-color, 15%);
       font-size: .85rem;
       font-weight: 800;
     }
@@ -312,6 +312,52 @@ body {
 
   .feature-body {
     &.feature-body-profile {
+      .demo-profile {
+        align-items: center;
+        background: linear-gradient(70deg, lighten($gray-color, 30%), $light-color);
+        border: .05rem solid lighten($border-color, 25%);
+        border-radius: 1rem;
+        box-shadow: 0 .05rem .2rem rgba($dark-color, .1);
+        display: inline-flex;
+        margin: .1rem;
+        padding: .25rem;
+
+        .avatar {
+          align-items: center;
+          background: rgba($dark-color, .05);
+          display: flex;
+          font-size: 2rem;
+          justify-content: center;
+
+          &.avatar-1 {
+            background: rgba(#EC79F6, .25);
+          }
+          &.avatar-2 {
+            background: rgba(#F78E4E, .25);
+          }
+          &.avatar-3 {
+            background: rgba(#836F6F, .25);
+          }
+          &.avatar-4 {
+            background: rgba(#D2CFD1, .25);
+          }
+          &.avatar-5 {
+            background: rgba(#4AADCB, .25);
+          }
+          &.avatar-6 {
+            background: rgba(#F0415E, .25);
+          }
+          &.avatar-7 {
+            background: rgba(#93989B, .25);
+          }
+        }
+
+        .name {
+          font-size: .8rem;
+          font-weight: 800;
+          margin-left: .4rem;
+        }
+      }
     }
 
     &.feature-body-graph {
@@ -355,48 +401,49 @@ body {
         }
       }
     }
-  }
 
-  .feature-emoji {
-    font-size: 2.8rem;
-    line-height: 2.4rem;
-    position: absolute;
-    width: 18rem;
-  }
-
-  .identity {
-    background: #9186E7;
-    border: .05rem solid;
-    border-radius: .6rem;
-    color: rgba($dark-color, .75);
-    display: inline-flex;
-    margin: .1rem;
-    padding: .4rem;
-
-    &.identity-farcaster {
-      background: rgba(#8465CB, .1);
-      border-color: rgba(#8465CB, .15);
-
-      .icon {
-        color: #8465CB;
+    .identity {
+      border: .05rem solid;
+      border-radius: .6rem;
+      color: rgba($dark-color, .75);
+      display: inline-flex;
+      margin: .1rem;
+      padding: .4rem;
+  
+      &.identity-spaceid {
+        background: rgba(#71EBAA, .2);
+        border-color: rgba(#71EBAA, .5);
+  
+        .icon {
+          color: #71EBAA;
+        }
       }
-    }
-
-    &.identity-unstoppabledomains {
-      background: rgba(#2E65F5, .05);
-      border-color: rgba(#2E65F5, .15);
-
-      .icon {
-        color: #2E65F5;
+  
+      &.identity-farcaster {
+        background: rgba(#8465CB, .1);
+        border-color: rgba(#8465CB, .15);
+  
+        .icon {
+          color: #8465CB;
+        }
       }
-    }
-
-    &.identity-lens {
-      background: rgba(#BDFC5A, .25);
-      border-color: rgba(#BDFC5A, .75);
-      
-      .icon {
-        color: #204F24;
+  
+      &.identity-unstoppabledomains {
+        background: rgba(#2E65F5, .05);
+        border-color: rgba(#2E65F5, .15);
+  
+        .icon {
+          color: #2E65F5;
+        }
+      }
+  
+      &.identity-lens {
+        background: rgba(#BDFC5A, .25);
+        border-color: rgba(#BDFC5A, .75);
+        
+        .icon {
+          color: #204F24;
+        }
       }
     }
   }
