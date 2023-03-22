@@ -1,4 +1,43 @@
 // Profile
+//- New Profile
+.web3-profile {
+  .profile-header {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .profile-avatar {
+    border: .1rem solid $light-color;
+    box-shadow: 0 .1rem 1rem rgba(0, 0, 0, .1);
+  }
+
+  .profile-name {
+    color: $dark-color;
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin-top: .5rem;
+    max-width: 600px;
+  }
+
+  .profile-address {
+    align-items: center;
+    color: rgba($dark-color, .5);
+    display: flex;
+
+    .action {
+      cursor: pointer;
+      flex: 0 0;
+      height: 1rem;
+      margin-left: 0.2rem;
+      position: relative;
+      transition: all 0.2s ease-in-out;
+      width: 1rem;
+    }
+  }
+}
+
+// Old Profile
 .profile-container {
   display: flex;
   flex: 1 1;

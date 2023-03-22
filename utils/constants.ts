@@ -1,7 +1,7 @@
 // empty for twitter and farcaster
 export const DomainSearchSuffix = [
   {
-    key: "eth",
+    key: "ethereum",
     label: "eth",
   },
   {
@@ -13,13 +13,17 @@ export const DomainSearchSuffix = [
     label: "",
   },
   {
-    key: "crypto",
+    key: "farcaster",
+    label: "",
+  },
+  {
+    key: "unstoppabledomains",
     label: "crypto",
   },
 ];
 export const fuzzyDomainSuffix = [
   {
-    key: "eth",
+    key: "ethereum",
     label: "eth",
   },
   {
@@ -27,55 +31,63 @@ export const fuzzyDomainSuffix = [
     label: "lens",
   },
   {
-    key: "crypto",
+    key: "unstoppabledomains",
     label: "crypto",
   },
   {
-    key: "dao",
+    key: "unstoppabledomains",
     label: "dao",
   },
   {
-    key: "bitcoin",
+    key: "unstoppabledomains",
     label: "bitcoin",
   },
   {
-    key: "blockchain",
+    key: "unstoppabledomains",
     label: "blockchain",
   },
   {
-    key: "bit",
+    key: "dotbit",
     label: "bit",
   },
   {
-    key: "nft",
+    key: "unstoppabledomains",
     label: "nft",
   },
   {
-    key: "888",
+    key: "unstoppabledomains",
     label: "888",
   },
   {
-    key: "wallet",
+    key: "unstoppabledomains",
     label: "wallet",
   },
   {
-    key: "x",
+    key: "unstoppabledomains",
     label: "x",
   },
   {
-    key: "klever",
+    key: "unstoppabledomains",
     label: "klever",
   },
   {
-    key: "zil",
+    key: "unstoppabledomains",
     label: "zil",
   },
   {
-    key: "hi",
+    key: "unstoppabledomains",
     label: "hi",
   },
   {
-    key: "kresus",
+    key: "unstoppabledomains",
     label: "kresus",
   },
+  // {
+  //   key: "spaceid",
+  //   label: "bnb",
+  // },
+  // {
+  //   key: "spaceid",
+  //   label: "arb",
+  // },
 ];

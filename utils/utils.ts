@@ -8,7 +8,8 @@ import {
   regexEth,
   regexLens,
   regexTwitter,
-  regUnstoppableDomains
+  regexUnstoppableDomains,
+  regexSpaceid
 } from "./regexp";
 import { PlatformType } from "./type";
 export const formatText = (string, length?) => {
@@ -132,8 +133,10 @@ export const handleSearchPlatform = (term: string) => {
       return PlatformType.dotbit;
     case regexEth.test(term):
       return PlatformType.ethereum;
-    case regUnstoppableDomains.test(term):
+    case regexUnstoppableDomains.test(term):
       return PlatformType.unstoppableDomains;
+    case regexSpaceid.test(term):
+      return PlatformType.spaceid;
     case regexTwitter.test(term):
       return PlatformType.twitter;
     default:
