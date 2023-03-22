@@ -1,0 +1,506 @@
+// Variables and mixins
+@import "variables";
+@import "spectre/mixins";
+
+/*! Spectre.css | MIT License | github.com/picturepan2/spectre */
+// Reset and dependencies
+@import "spectre/normalize";
+@import "spectre/base";
+
+// Elements
+@import "spectre/typography";
+@import "spectre/buttons";
+@import "spectre/forms";
+@import "spectre/labels";
+@import "spectre/media";
+
+// Layout
+@import "spectre/layout";
+
+// Components
+@import "spectre/avatars";
+@import "spectre/cards";
+@import "spectre/dropdowns";
+@import "spectre/empty";
+@import "spectre/menus";
+@import "spectre/modals";
+@import "spectre/navs";
+@import "spectre/pagination";
+@import "spectre/toasts";
+@import "spectre/tooltips";
+
+// Utility classes
+@import "spectre/animations";
+@import "spectre/utilities";
+
+// Components
+@import "panel";
+@import "graph";
+@import "profile";
+@import "search";
+
+// Variables
+$pride-color-1: #FBF4EC !default;
+$pride-color-2: #ECD7C8 !default;
+$pride-color-3: #EEA4BC !default;
+$pride-color-4: #BE88C4 !default;
+$pride-color-5: #9186E7 !default;
+$pride-color-6: #92C9F9 !default;
+$pride-color-7: #C7F8FF !default;
+
+/*! Web3bio.css | MIT License */
+body {
+  background: $light-color;
+  overflow-x: hidden;
+}
+
+.web3bio-container {
+  min-height: 75vh;
+  padding: .5rem;
+  width: 100vw;
+}
+
+.web3bio-mask-cover {
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: rgba($color: #000000, $alpha: .3);
+  width: 100%;
+  height: 100vh;
+  z-index: 100;
+}
+
+//- Web3.bio Cover
+.web3bio-cover {
+  background-image:
+    radial-gradient(at 40% 33%, $pride-color-1 0px, transparent 50%),
+    radial-gradient(at 82% 10%, $pride-color-2 0px, transparent 50%),
+    radial-gradient(at 17% 11%, $pride-color-3 0px, transparent 50%),
+    radial-gradient(at 48% 2%, $pride-color-4 0px, transparent 50%),
+    radial-gradient(at 39% 67%, $pride-color-5 0px, transparent 50%),
+    radial-gradient(at 86% 58%, $pride-color-6 0px, transparent 50%),
+    radial-gradient(at 61% 57%, $pride-color-7 0px, transparent 50%);
+  display: block;
+  filter: blur(1rem);
+  height: 100vh;
+  left: 0;
+  opacity: .75;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  z-index: -1;
+
+  &::after,
+  &::before {
+    border-radius: 50%;
+    content: "";
+    display: block;
+    filter: blur(3rem);
+    height: 50vh;
+    position: fixed;
+    width: 50vh;
+    z-index: 1;
+  }
+
+  &::before {
+    animation: bg-animation 24s ease infinite;
+    animation-delay: -8s;
+    background: linear-gradient(45deg, $pride-color-1 5%, $pride-color-2 50%, $pride-color-4 95%);
+    left: 10vh;
+    bottom: 0;
+  }
+
+  &::after {
+    animation: bg-animation 24s ease infinite;
+    animation-delay: 0;
+    background: linear-gradient(-45deg, $pride-color-5 5%, $pride-color-6 50%, $pride-color-7 95%);
+    top: 0;
+    right: 10vh;
+  }
+}
+
+@keyframes bg-animation {
+  0% {
+    opacity: 1;
+    transform: skewX(30deg) translateX(-40vh);
+  }
+
+  50% {
+    opacity: .75;
+    transform: skewX(-30deg) translateX(40vh);
+  }
+
+  100% {
+    opacity: 1;
+    transform: skewX(30deg) translateX(-40vh);
+  }
+}
+
+//- Web3.bio Header
+.web3bio-header {
+  left: 0;
+  position: fixed;
+  top: 1rem;
+  width: 100%;
+
+  .column {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.web3bio-logo {
+  align-items: center;
+  background: $dark-color;
+  border-radius: .8rem;
+  box-shadow: 0 .2rem .4rem rgba(0, 0, 0, .1);
+  color: $dark-color;
+  cursor: pointer;
+  display: flex;
+  height: 3rem;
+  padding: .4rem;
+  position: relative;
+  text-align: left;
+  transition: all .3s ease;
+  user-select: none;
+  width: 3rem;
+  z-index: 1;
+
+  &:focus,
+  &:hover {
+    box-shadow: 0 .3rem .6rem rgba(0, 0, 0, .2);
+    color: $dark-color;
+    text-decoration: none;
+  }
+
+  h1 {
+    font-size: .8rem;
+    font-weight: 900;
+    letter-spacing: -.05rem;
+    line-height: .8rem;
+    margin: 0;
+  }
+}
+
+.web3bio-action {
+  align-items: center;
+  background: $light-color;
+  border-radius: .8rem;
+  box-shadow: 0 .2rem .4rem rgba(0, 0, 0, .1);
+  color: $dark-color;
+  cursor: pointer;
+  display: flex;
+  font-size: 1.8rem;
+  height: 3rem;
+  justify-content: center;
+  padding: .5rem;
+  position: relative;
+  text-decoration: none;
+  text-align: center;
+  transition: all .3s ease;
+  width: 3rem;
+
+  .action-icon {
+    transform: rotate(180deg) translateY(.2rem);
+  }
+
+  &:focus,
+  &:hover {
+    box-shadow: 0 .3rem .6rem rgba(0, 0, 0, .2);
+    color: $dark-color;
+    text-decoration: none;
+  }
+}
+
+.web3bio-content {
+  min-height: 50vh;
+
+  .web3bio-content-title {
+    font-size: 1.6rem;
+    font-weight: 900;
+    line-height: 2rem;
+
+    @media screen and (max-width: $size-md) {
+      font-size: 1.2rem;
+    }
+  }
+}
+
+//- Web3.bio Toast
+.web3bio-toast {
+  display: flex;
+  justify-content: center;
+  left: 50%;
+  position: fixed;
+  transform: translateX(-50%);
+  text-align: center;
+  top: 1rem;
+  width: $size-xs;
+  z-index: 9999;
+
+  .toast {
+    animation: slide-down .25s ease 1;
+    max-width: $size-xs;
+  }
+}
+
+.web3bio-placeholder {
+  background: rgba(darken($primary-color, 10%), .01);
+  box-shadow: inset 0 0 4rem rgba($dark-color, .2);
+  backdrop-filter: blur(2rem) saturate(120%) brightness(100%);
+}
+
+//- Web3.bio Footer
+.web3bio-footer {
+  color: rgba($dark-color, .5);
+  font-size: .7rem;
+  font-weight: 500;
+  padding: .5rem;
+  position: sticky;
+  top: 90vh;
+
+  .footer-feedback {
+    @media screen and (min-width: $size-md) {
+      bottom: 1rem;
+      position: fixed;
+      right: 1rem;
+    }
+
+    span {
+      transition: transform .15s ease-in-out;
+    }
+
+    &:focus,
+    &:hover {
+      span {
+        transform: scale(1.5) rotate(-10deg);
+      }
+    }
+  }
+}
+
+.card-feature {
+  background: linear-gradient(70deg, lighten($gray-color, 30%), $light-color);
+  border: .05rem solid lighten($border-color, 25%);
+  border-radius: 1rem;
+  box-shadow: 0 .05rem .2rem rgba($dark-color, .1);
+  color: lighten($dark-color, 15%);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  padding: 2rem 1rem;
+  width: 100%;
+
+  .feature-header {
+    position: relative;
+    z-index: 1;
+
+    h3 {
+      font-size: .85rem;
+      font-weight: 800;
+    }
+
+    h4 {
+      color: lighten($dark-color, 25%);
+      font-size: .65rem;
+      font-weight: 400;
+      margin: 1rem 0;
+    }
+  }
+
+  .feature-body {
+    &.feature-body-profile {
+      .demo-profile {
+        align-items: center;
+        background: linear-gradient(70deg, lighten($gray-color, 30%), $light-color);
+        border: .05rem solid lighten($border-color, 25%);
+        border-radius: 1rem;
+        box-shadow: 0 .05rem .2rem rgba($dark-color, .1);
+        display: inline-flex;
+        margin: .1rem;
+        padding: .25rem;
+
+        .avatar {
+          align-items: center;
+          background: rgba($dark-color, .05);
+          display: flex;
+          font-size: 2rem;
+          justify-content: center;
+
+          &.avatar-1 {
+            background: rgba(#EC79F6, .25);
+          }
+          &.avatar-2 {
+            background: rgba(#F78E4E, .25);
+          }
+          &.avatar-3 {
+            background: rgba(#836F6F, .25);
+          }
+          &.avatar-4 {
+            background: rgba(#D2CFD1, .25);
+          }
+          &.avatar-5 {
+            background: rgba(#4AADCB, .25);
+          }
+          &.avatar-6 {
+            background: rgba(#F0415E, .25);
+          }
+          &.avatar-7 {
+            background: rgba(#93989B, .25);
+          }
+        }
+
+        .name {
+          font-size: .8rem;
+          font-weight: 800;
+          margin-left: .4rem;
+        }
+      }
+    }
+
+    &.feature-body-graph {
+      align-items: center;
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+
+      .btn {
+        position: relative;
+        z-index: 99;
+      }
+
+      .circle {
+        background: rgba($dark-color, .04);
+        border-radius: 50%;
+        content: "";
+        display: block;
+        position: absolute;
+
+        &:first-child {
+          height: 4rem;
+          width: 4rem;
+        }
+
+        &:nth-child(2) {
+          height: 8rem;
+          width: 8rem;
+        }
+
+        &:nth-child(3) {
+          height: 13rem;
+          width: 13rem;
+        }
+
+        &:nth-child(4) {
+          height: 19rem;
+          width: 19rem;
+        }
+      }
+    }
+
+    .identity {
+      border: .05rem solid;
+      border-radius: .6rem;
+      color: rgba($dark-color, .75);
+      display: inline-flex;
+      margin: .1rem;
+      padding: .4rem;
+  
+      &.identity-spaceid {
+        background: rgba(#71EBAA, .2);
+        border-color: rgba(#71EBAA, .5);
+  
+        .icon {
+          color: #71EBAA;
+        }
+      }
+  
+      &.identity-farcaster {
+        background: rgba(#8465CB, .1);
+        border-color: rgba(#8465CB, .15);
+  
+        .icon {
+          color: #8465CB;
+        }
+      }
+  
+      &.identity-unstoppabledomains {
+        background: rgba(#2E65F5, .05);
+        border-color: rgba(#2E65F5, .15);
+  
+        .icon {
+          color: #2E65F5;
+        }
+      }
+  
+      &.identity-lens {
+        background: rgba(#BDFC5A, .25);
+        border-color: rgba(#BDFC5A, .75);
+        
+        .icon {
+          color: #204F24;
+        }
+      }
+    }
+  }
+}
+
+//- Pride
+.text-pride {
+  background-image: linear-gradient(70deg, $pride-color-1 10%, $pride-color-2 25%, $pride-color-3 36%, $pride-color-4 50%, $pride-color-5 63%, $pride-color-6 75%, $pride-color-7 90%);
+  background-clip: text;
+  text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bg-pride {
+  background: linear-gradient(70deg, $pride-color-1 -10%, $pride-color-2 5%, $pride-color-3 36%, $pride-color-4 50%, $pride-color-5 63%, $pride-color-6 95%, $pride-color-7 110%);
+}
+
+.border-pride {
+  border: .05rem solid transparent;
+  background: linear-gradient(white, white) padding-box,
+  linear-gradient(70deg, $pride-color-1 -10%, $pride-color-2 5%, $pride-color-3 36%, $pride-color-4 50%, $pride-color-5 63%, $pride-color-6 95%, $pride-color-7 110%) border-box;
+}
+
+.img-placeholder {
+  align-items: center;
+  display: flex;
+  flex: 0 0;
+  justify-content: center;
+  opacity: .75;
+  padding: .25rem;
+  position: relative;
+
+  &[data-initial]::before {
+    color: $light-color;
+    content: attr(data-initial);
+    font-size: .5em;
+    font-weight: 700;
+    line-height: .5em;
+    text-shadow: 0 .1rem .4rem rgba($dark-color, .2);
+    text-transform: uppercase;
+    z-index: $zindex-0;
+  }
+}
+
+.tooltip-copy {
+  background: rgba($dark-color, .85);
+  border-radius: .3rem;
+  bottom: 100%;
+  color: $light-color;
+  display: block;
+  font-size: .6rem;
+  line-height: .6rem;
+  left: 50%;
+  padding: .25rem .3rem;
+  pointer-events: none;
+  position: absolute;
+  transform: translate(-50%, 0);
+  z-index: $zindex-3;
+}

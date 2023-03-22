@@ -1,6 +1,8 @@
 // Label base style
 @mixin label-base() {
+  align-items: center;
   border-radius: $border-radius;
+  display: inline-flex;
   font-size: 85%;
   line-height: 1.2;
   padding: .15rem .4rem;
