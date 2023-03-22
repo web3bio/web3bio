@@ -10,4 +10,5 @@ export enum PlatformType {
   github = "github",
   unstoppableDomains = "unstoppabledomains",
   farcaster = "farcaster",
+  spaceid = "spaceid",
 }

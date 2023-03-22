@@ -9,6 +9,7 @@ export const colorsMap = {
   github: "#000000",
   dotbit: "#0e7dff",
   farcaster: "#8a63d2",
+  spaceid: "#71EBAA",
   unknown: "#121212",
 };
 
@@ -27,5 +28,6 @@ export const platformsMap = {
   sybil: "Sybil",
   unstoppabledomains: "Unstoppable Domains",
   farcaster: "Farcaster",
+  spaceid: "SPACE ID",
   unknown: "Unknown",
 };

@@ -16,9 +16,11 @@ const resolveSearchPlatformIcon = (platform) => {
       [PlatformType.nextid]: "/icons/icon-nextid.svg",
       [PlatformType.ethereum]: "/icons/icon-ethereum.svg",
       [PlatformType.ens]: "/icons/icon-ethereum.svg",
+      [PlatformType.farcaster]: "/icons/icon-farcaster.svg",
       [PlatformType.lens]: "/icons/icon-lens.svg",
       [PlatformType.dotbit]: "/icons/icon-dotbit.svg",
       [PlatformType.unstoppableDomains]: "icons/icon-unstoppabledomains.svg",
+      [PlatformType.spaceid]: "/icons/icon-spaceid.svg",
     }[platform] || ""
   );
 };
@@ -28,7 +30,7 @@ const isQuerySplit = (query: string) => {
 };
 
 export const SearchInput = (props) => {
-  const { key, defaultValue, handleSubmit } = props;
+  const {key, defaultValue, handleSubmit} = props;
   const [query, setQuery] = useState("");
   const [searchList, setSearchList] = useState([]);
   const [activeIndex, setActiveIndex] = useState(null);
@@ -38,7 +40,7 @@ export const SearchInput = (props) => {
     const ipt = inputRef.current;
     if (!ipt) return;
     const platfrom =
-      value && value.key && value.key === PlatformType.farcaster
+      value && value.key === PlatformType.farcaster
         ? PlatformType.farcaster
         : "";
     const _value = value.label || ipt.value;
@@ -79,18 +81,11 @@ export const SearchInput = (props) => {
           if (!isLastDot || cur.label.length > 0) {
             pre.push({
               key: cur.key,
-              icon: resolveSearchPlatformIcon(handleSearchPlatform(label)),
+              icon: resolveSearchPlatformIcon(cur.key),
               label: label,
             });
           }
-          // farcaster equals twitter
-          if (handleSearchPlatform(label) === PlatformType.twitter) {
-            pre.push({
-              key: "farcaster",
-              icon: "/icons/icon-farcaster.svg",
-              label: label,
-            });
-          }
+          
           return pre;
         }, [])
       );
