@@ -23,7 +23,6 @@ export default function Home() {
   const router = useRouter();
   const handleSubmit = (value, platform?) => {
     setSearchTerm(value);
-
     router.push({
       query: platform
         ? {
@@ -34,7 +33,7 @@ export default function Home() {
             s: value,
           },
     });
-    setsearchPlatform(platform ?? handleSearchPlatform(value));
+    setsearchPlatform(platform || handleSearchPlatform(value));
     setSearchFocus(true);
   };
 
@@ -152,6 +151,8 @@ export default function Home() {
               </div>
               <div className="form-input-group">
                 <SearchInput
+                  // add key here to make defaultValue reactive
+                  key={searchTerm}
                   defaultValue={searchTerm}
                   handleSubmit={(value, platform) =>
                     handleSubmit(value, platform)

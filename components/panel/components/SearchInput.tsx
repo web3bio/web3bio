@@ -37,23 +37,13 @@ export const SearchInput = (props) => {
   const inputRef = useRef(null);
 
   const emitSubmit = (e, value?) => {
-    if (value === router.query.s) {
-      setSearchList([]);
-      return;
-    }
-    const ipt = inputRef.current;
-    if (!ipt) return;
-    const iptValue = ipt.value;
     const platfrom =
       value && value.key === PlatformType.farcaster
         ? PlatformType.farcaster
         : "";
-    const _value = !value
-      ? iptValue
-      : typeof value === "string"
-      ? value
-      : value.label;
+    const _value = typeof value === "string" ? value : value.label;
     handleSubmit(_value, platfrom);
+    setSearchList([]);
   };
 
   useEffect(() => {
@@ -99,12 +89,13 @@ export const SearchInput = (props) => {
 
     const onKeyDown = (e) => {
       if (e.key === "Enter") {
-        emitSubmit(
-          e,
-          activeIndex !== null
-            ? searchList[activeIndex]
-            : inputRef.current.value
-        );
+        const ipt = inputRef.current;
+        const _value = !ipt
+          ? ""
+          : activeIndex !== null
+          ? searchList[activeIndex]
+          : ipt.value;
+        emitSubmit(e, _value);
       }
       if (e.key === "ArrowUp") {
         if (!activeIndex) {
@@ -134,11 +125,6 @@ export const SearchInput = (props) => {
         placeholder="Search ENS, Lens, Twitter, UD or Ethereum"
         defaultValue={defaultValue}
         onChange={(e) => setQuery(e.target.value)}
-        onKeyDown={(e) => {
-          if (["Enter", "ArrowUp", "ArrowDown"].includes(e.key))
-            e.preventDefault();
-          return false;
-        }}
         className="form-input input-lg"
         autoCorrect="off"
         autoFocus
