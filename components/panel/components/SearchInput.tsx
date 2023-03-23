@@ -90,11 +90,8 @@ export const SearchInput = (props) => {
     const onKeyDown = (e) => {
       if (e.key === "Enter") {
         const ipt = inputRef.current;
-        const _value = !ipt
-          ? ""
-          : activeIndex !== null
-          ? searchList[activeIndex]
-          : ipt.value;
+        const _value =
+          activeIndex !== null ? searchList[activeIndex] : ipt ? ipt.value : "";
         emitSubmit(e, _value);
       }
       if (e.key === "ArrowUp") {
