@@ -57,7 +57,7 @@ export const SearchInput = (props) => {
   };
 
   useEffect(() => {
-    if (!query) {
+    if (!query || query.length > 20) {
       setSearchList([]);
       return;
     }
@@ -99,7 +99,12 @@ export const SearchInput = (props) => {
 
     const onKeyDown = (e) => {
       if (e.key === "Enter") {
-        emitSubmit(e, activeIndex !== null ? searchList[activeIndex] : "");
+        emitSubmit(
+          e,
+          activeIndex !== null
+            ? searchList[activeIndex]
+            : inputRef.current.value
+        );
       }
       if (e.key === "ArrowUp") {
         if (!activeIndex) {
