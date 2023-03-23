@@ -19,13 +19,14 @@ The supported identity platforms:
 - Ethereum
 - Ethereum Name Service (ENS)
 - Lens
+- Farcaster
 - Unstoppable Domains
 - Twitter
 - Keybase
 - Reddit
 - GitHub
 - .bit
-- Farcaster (soon)
+- SPACE ID
 
 The queries can be found here `utils/queries.js`. You can read [the Next.ID docs](https://docs.next.id/?utm_source=web5bio) to learn more.
 

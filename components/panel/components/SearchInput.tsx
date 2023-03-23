@@ -20,7 +20,7 @@ const resolveSearchPlatformIcon = (platform) => {
       [PlatformType.lens]: "/icons/icon-lens.svg",
       [PlatformType.dotbit]: "/icons/icon-dotbit.svg",
       [PlatformType.unstoppableDomains]: "icons/icon-unstoppabledomains.svg",
-      [PlatformType.spaceid]: "/icons/icon-spaceid.svg",
+      [PlatformType.space_id]: "/icons/icon-spaceid.svg",
     }[platform] || ""
   );
 };
@@ -30,28 +30,24 @@ const isQuerySplit = (query: string) => {
 };
 
 export const SearchInput = (props) => {
-  const {key, defaultValue, handleSubmit} = props;
+  const { defaultValue, handleSubmit } = props;
   const [query, setQuery] = useState("");
   const [searchList, setSearchList] = useState([]);
   const [activeIndex, setActiveIndex] = useState(null);
   const inputRef = useRef(null);
 
   const emitSubmit = (e, value?) => {
-    const ipt = inputRef.current;
-    if (!ipt) return;
     const platfrom =
-      value && value.key === PlatformType.farcaster
+      typeof value !== "string" && value.key === PlatformType.farcaster
         ? PlatformType.farcaster
         : "";
-    const _value = value.label || ipt.value;
+    const _value = typeof value === "string" ? value : value.label;
     handleSubmit(_value, platfrom);
-    if (value === router.query.s) {
-      setSearchList([]);
-    }
+    setSearchList([]);
   };
 
   useEffect(() => {
-    if (!query) {
+    if (!query || query.length > 20) {
       setSearchList([]);
       return;
     }
@@ -85,7 +81,7 @@ export const SearchInput = (props) => {
               label: label,
             });
           }
-          
+
           return pre;
         }, [])
       );
@@ -93,7 +89,10 @@ export const SearchInput = (props) => {
 
     const onKeyDown = (e) => {
       if (e.key === "Enter") {
-        emitSubmit(e, activeIndex !== null ? searchList[activeIndex] : "");
+        const ipt = inputRef.current;
+        const _value =
+          activeIndex !== null ? searchList[activeIndex] : ipt ? ipt.value : "";
+        emitSubmit(e, _value);
       }
       if (e.key === "ArrowUp") {
         if (!activeIndex) {
@@ -119,15 +118,17 @@ export const SearchInput = (props) => {
     <>
       <input
         ref={inputRef}
-        key={key}
         type="text"
         placeholder="Search ENS, Lens, Twitter, UD or Ethereum"
         defaultValue={defaultValue}
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={(e) => {
-          if (["Enter", "ArrowUp", "ArrowDown"].includes(e.key))
-            e.preventDefault();
-          return false;
+          if (["Enter", "ArrowUp", "ArrowDown"].includes(e.key)) {
+            if (inputRef.current.value) {
+              e.preventDefault();
+              return false;
+            }
+          }
         }}
         className="form-input input-lg"
         autoCorrect="off"
@@ -136,10 +137,13 @@ export const SearchInput = (props) => {
         id="searchbox"
       />
       <button
-        type="submit"
-        title="Submit"
         className="form-button btn"
-        onClickCapture={emitSubmit}
+        onClick={(e) => {
+          const ipt = inputRef.current;
+          if (!ipt) return;
+          const iptValue = ipt.value;
+          emitSubmit(e, iptValue);
+        }}
       >
         <SVG
           src="icons/icon-search.svg"
@@ -158,7 +162,7 @@ export const SearchInput = (props) => {
                     ? "search-list-item search-list-item-active"
                     : "search-list-item"
                 }
-                key={idx}
+                key={x.label + idx}
                 onClick={(e) => emitSubmit(e, x)}
               >
                 <SVG src={x.icon} width={20} height={20} />

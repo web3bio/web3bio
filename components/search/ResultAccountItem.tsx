@@ -240,6 +240,38 @@ const RenderAccountItem = (props) => {
           <RenderSourceFooter sources={sources} />
         </div>
       );
+    case PlatformType.space_id:
+      return (
+        <div className="social-item spaceid">
+          <div className="social-main">
+            <div className="social">
+              <figure className="avatar bg-spaceid">
+                <SVG src="icons/icon-spaceid.svg" width={20} height={20} />
+              </figure>
+              <div className="content">
+                <div className="content-title text-bold">
+                  {identity.displayName
+                    ? identity.displayName
+                    : identity.identity}
+                </div>
+                <div className="content-subtitle text-gray">
+                  <div className="address">{identity.ownedBy.identity}</div>
+                  <Clipboard
+                    component="div"
+                    className="action"
+                    data-clipboard-text={identity.ownedBy.identity}
+                    onSuccess={onCopySuccess}
+                  >
+                    <SVG src="icons/icon-copy.svg" width={20} height={20} />
+                    {isCopied && <div className="tooltip-copy">COPIED</div>}
+                  </Clipboard>
+                </div>
+              </div>
+            </div>
+          </div>
+          <RenderSourceFooter sources={sources} />
+        </div>
+      );
     case PlatformType.twitter:
       return (
         <div className="social-item twitter">
