@@ -202,7 +202,6 @@ export default function Home() {
                   </div>
                   <div className="identity identity-spaceid" title="SPACE ID domains">
                     <SVG src="icons/icon-spaceid.svg" width={20} height={20} className="icon mr-1" /> SPACE ID
-                    <small className="ml-1">SOON</small>
                   </div>
                 </div>
               </div>

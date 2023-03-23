@@ -82,12 +82,12 @@ export const fuzzyDomainSuffix = [
     key: "unstoppabledomains",
     label: "kresus",
   },
+  {
+    key: "space_id",
+    label: "bnb",
+  },
   // {
-  //   key: "spaceid",
-  //   label: "bnb",
-  // },
-  // {
-  //   key: "spaceid",
+  //   key: "space_id",
   //   label: "arb",
   // },
 ];

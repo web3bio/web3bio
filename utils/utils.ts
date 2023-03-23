@@ -136,7 +136,7 @@ export const handleSearchPlatform = (term: string) => {
     case regexUnstoppableDomains.test(term):
       return PlatformType.unstoppableDomains;
     case regexSpaceid.test(term):
-      return PlatformType.spaceid;
+      return PlatformType.space_id;
     case regexTwitter.test(term):
       return PlatformType.twitter;
     default:
@@ -149,6 +149,7 @@ export const isDomainSearch = (term) => {
     PlatformType.ens,
     PlatformType.dotbit,
     PlatformType.unstoppableDomains,
+    PlatformType.space_id,
   ].includes(term);
 };
 

@@ -19,7 +19,7 @@ const resolvePlatformIcon = (platform) => {
       [PlatformType.github]: "/icons/icon-github-w.svg",
       [PlatformType.dotbit]: "/icons/icon-dotbit-w.svg",
       [PlatformType.farcaster]: "/icons/icon-farcaster-w.svg",
-      [PlatformType.spaceid]: "/icons/icon-spaceid-w.svg",
+      [PlatformType.space_id]: "/icons/icon-spaceid-w.svg",
       [PlatformType.unstoppableDomains]:"icons/icon-unstoppabledomains.svg"
     }[platform] || ""
   );

@@ -20,7 +20,7 @@ const resolveSearchPlatformIcon = (platform) => {
       [PlatformType.lens]: "/icons/icon-lens.svg",
       [PlatformType.dotbit]: "/icons/icon-dotbit.svg",
       [PlatformType.unstoppableDomains]: "icons/icon-unstoppabledomains.svg",
-      [PlatformType.spaceid]: "/icons/icon-spaceid.svg",
+      [PlatformType.space_id]: "/icons/icon-spaceid.svg",
     }[platform] || ""
   );
 };
