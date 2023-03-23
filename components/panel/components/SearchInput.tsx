@@ -30,7 +30,7 @@ const isQuerySplit = (query: string) => {
 };
 
 export const SearchInput = (props) => {
-  const { key, defaultValue, handleSubmit } = props;
+  const { defaultValue, handleSubmit } = props;
   const [query, setQuery] = useState("");
   const [searchList, setSearchList] = useState([]);
   const [activeIndex, setActiveIndex] = useState(null);
@@ -130,7 +130,6 @@ export const SearchInput = (props) => {
     <>
       <input
         ref={inputRef}
-        key={key}
         type="text"
         placeholder="Search ENS, Lens, Twitter, UD or Ethereum"
         defaultValue={defaultValue}
@@ -172,7 +171,7 @@ export const SearchInput = (props) => {
                     ? "search-list-item search-list-item-active"
                     : "search-list-item"
                 }
-                key={idx}
+                key={x.label + idx}
                 onClick={(e) => emitSubmit(e, x)}
               >
                 <SVG src={x.icon} width={20} height={20} />

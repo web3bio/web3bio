@@ -152,7 +152,6 @@ export default function Home() {
               </div>
               <div className="form-input-group">
                 <SearchInput
-                  key={searchTerm}
                   defaultValue={searchTerm}
                   handleSubmit={(value, platform) =>
                     handleSubmit(value, platform)
