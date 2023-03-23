@@ -38,7 +38,7 @@ export const SearchInput = (props) => {
 
   const emitSubmit = (e, value?) => {
     const platfrom =
-      value && value.key === PlatformType.farcaster
+      typeof value !== "string" && value.key === PlatformType.farcaster
         ? PlatformType.farcaster
         : "";
     const _value = typeof value === "string" ? value : value.label;
@@ -122,6 +122,14 @@ export const SearchInput = (props) => {
         placeholder="Search ENS, Lens, Twitter, UD or Ethereum"
         defaultValue={defaultValue}
         onChange={(e) => setQuery(e.target.value)}
+        onKeyDown={(e) => {
+          if (["Enter", "ArrowUp", "ArrowDown"].includes(e.key)) {
+            if (inputRef.current.value) {
+              e.preventDefault();
+              return false;
+            }
+          }
+        }}
         className="form-input input-lg"
         autoCorrect="off"
         autoFocus
