@@ -30,24 +30,30 @@ const isQuerySplit = (query: string) => {
 };
 
 export const SearchInput = (props) => {
-  const {key, defaultValue, handleSubmit} = props;
+  const { key, defaultValue, handleSubmit } = props;
   const [query, setQuery] = useState("");
   const [searchList, setSearchList] = useState([]);
   const [activeIndex, setActiveIndex] = useState(null);
   const inputRef = useRef(null);
 
   const emitSubmit = (e, value?) => {
+    if (value === router.query.s) {
+      setSearchList([]);
+      return;
+    }
     const ipt = inputRef.current;
     if (!ipt) return;
+    const iptValue = ipt.value;
     const platfrom =
       value && value.key === PlatformType.farcaster
         ? PlatformType.farcaster
         : "";
-    const _value = value.label || ipt.value;
+    const _value = !value
+      ? iptValue
+      : typeof value === "string"
+      ? value
+      : value.label;
     handleSubmit(_value, platfrom);
-    if (value === router.query.s) {
-      setSearchList([]);
-    }
   };
 
   useEffect(() => {
@@ -85,7 +91,7 @@ export const SearchInput = (props) => {
               label: label,
             });
           }
-          
+
           return pre;
         }, [])
       );
@@ -136,10 +142,13 @@ export const SearchInput = (props) => {
         id="searchbox"
       />
       <button
-        type="submit"
-        title="Submit"
         className="form-button btn"
-        onClickCapture={emitSubmit}
+        onClick={(e) => {
+          const ipt = inputRef.current;
+          if (!ipt) return;
+          const iptValue = ipt.value;
+          emitSubmit(e, iptValue);
+        }}
       >
         <SVG
           src="icons/icon-search.svg"

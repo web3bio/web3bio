@@ -20,7 +20,6 @@ export default function Home() {
   const [searchPlatform, setsearchPlatform] = useState("");
   const [panelTab, setPanelTab] = useState(TabsMap.profile.key);
   const [domain, setDomain] = useState([]);
-  const inputRef = useRef(null);
   const router = useRouter();
   const handleSubmit = (value, platform?) => {
     setSearchTerm(value);
@@ -153,7 +152,6 @@ export default function Home() {
               </div>
               <div className="form-input-group">
                 <SearchInput
-                  ref={inputRef}
                   key={searchTerm}
                   defaultValue={searchTerm}
                   handleSubmit={(value, platform) =>
@@ -187,21 +185,60 @@ export default function Home() {
               <div className="card-feature">
                 <div className="feature-header text-center">
                   <h3>New Search Support</h3>
-                  <h4>Search for Web3 identities with these new <strong>domains and accounts</strong>.</h4>
+                  <h4>
+                    Search for Web3 identities with these new{" "}
+                    <strong>domains and accounts</strong>.
+                  </h4>
                 </div>
 
                 <div className="feature-body feature-body-first text-center">
-                  <div className="identity identity-farcaster" title="Farcaster identities">
-                    <SVG src="icons/icon-farcaster.svg" width={20} height={20} className="icon mr-1" /> Farcaster
+                  <div
+                    className="identity identity-farcaster"
+                    title="Farcaster identities"
+                  >
+                    <SVG
+                      src="icons/icon-farcaster.svg"
+                      width={20}
+                      height={20}
+                      className="icon mr-1"
+                    />{" "}
+                    Farcaster
                   </div>
-                  <div className="identity identity-lens" title="Lens identities (.lens)">
-                    <SVG src="icons/icon-lens.svg" width={20} height={20} className="icon mr-1" />Lens
+                  <div
+                    className="identity identity-lens"
+                    title="Lens identities (.lens)"
+                  >
+                    <SVG
+                      src="icons/icon-lens.svg"
+                      width={20}
+                      height={20}
+                      className="icon mr-1"
+                    />
+                    Lens
                   </div>
-                  <div className="identity identity-unstoppabledomains" title="Unstoppable Domains">
-                    <SVG src="icons/icon-unstoppabledomains.svg" width={20} height={20} className="icon mr-1" />Unstoppable Domains
+                  <div
+                    className="identity identity-unstoppabledomains"
+                    title="Unstoppable Domains"
+                  >
+                    <SVG
+                      src="icons/icon-unstoppabledomains.svg"
+                      width={20}
+                      height={20}
+                      className="icon mr-1"
+                    />
+                    Unstoppable Domains
                   </div>
-                  <div className="identity identity-spaceid" title="SPACE ID domains">
-                    <SVG src="icons/icon-spaceid.svg" width={20} height={20} className="icon mr-1" /> SPACE ID
+                  <div
+                    className="identity identity-spaceid"
+                    title="SPACE ID domains"
+                  >
+                    <SVG
+                      src="icons/icon-spaceid.svg"
+                      width={20}
+                      height={20}
+                      className="icon mr-1"
+                    />{" "}
+                    SPACE ID
                   </div>
                 </div>
               </div>
@@ -210,7 +247,10 @@ export default function Home() {
               <div className="card-feature">
                 <div className="feature-header text-center">
                   <h3>Visualize Identity Graph</h3>
-                  <h4>Deep dive into Web3 identities and connections across digital space.</h4>
+                  <h4>
+                    Deep dive into Web3 identities and connections across
+                    digital space.
+                  </h4>
                 </div>
                 <div className="feature-body feature-body-graph text-center">
                   <div className="circle"></div>
@@ -218,7 +258,13 @@ export default function Home() {
                   <div className="circle"></div>
                   <div className="circle"></div>
                   <div className="btn">
-                    <SVG src={"/icons/icon-view.svg"} width={24} height={24} className="icon mr-1" /> Visualize
+                    <SVG
+                      src={"/icons/icon-view.svg"}
+                      width={24}
+                      height={24}
+                      className="icon mr-1"
+                    />{" "}
+                    Visualize
                   </div>
                 </div>
               </div>
@@ -226,8 +272,16 @@ export default function Home() {
             <div className="column col-4 col-sm-12 mt-2 mb-2">
               <div className="card-feature">
                 <div className="feature-header text-center">
-                  <h3>Your Web3 Profile <small className="text-small label label-primary">Beta</small></h3>
-                  <h4>One page to show who you are and everything you make and own.</h4>
+                  <h3>
+                    Your Web3 Profile{" "}
+                    <small className="text-small label label-primary">
+                      Beta
+                    </small>
+                  </h3>
+                  <h4>
+                    One page to show who you are and everything you make and
+                    own.
+                  </h4>
                 </div>
                 <div className="feature-body feature-body-profile text-center">
                   <div className="demo-profile">
