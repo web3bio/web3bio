@@ -2,7 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { StaticJsonRpcProvider } from "@ethersproject/providers";
 import { getAddress, isAddress } from "@ethersproject/address";
-import { ENSResponseData } from "./types";
+import { CoinType, ENSResponseData } from "./types";
 import { getSocialMediaLink } from "./utils";
 import { SocialPlatform } from "../../../../utils/utils";
 
@@ -93,9 +93,9 @@ const resolveAddress = async (
         },
         addresses: {
           eth: address,
-          btc: address,
-          ltc: address,
-          doge: address,
+          btc: await resolver.getAddress(CoinType.bitcoin),
+          ltc: await resolver.getAddress(CoinType.litecoin),
+          doge: await resolver.getAddress(CoinType.dogecoin),
         },
       });
   } catch (error: any) {
@@ -179,9 +179,9 @@ const resolveName = async (
         },
         addresses: {
           eth: address,
-          btc: address,
-          ltc: address,
-          doge: address,
+          btc: await resolver.getAddress(CoinType.bitcoin),
+          ltc: await resolver.getAddress(CoinType.litecoin),
+          doge: await resolver.getAddress(CoinType.dogecoin),
         },
       });
   } catch (error: any) {

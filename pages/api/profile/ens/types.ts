@@ -30,3 +30,16 @@ export type ENSResponseData = {
   addresses: AddressesData | null;
   error?: string;
 };
+
+export enum CoinType {
+  bitcoin = 0,
+  litecoin = 2,
+  dogecoin = 3,
+  monacoin = 22,
+  eth = 60,
+  ethClassic = 61,
+  rootstock = 137,
+  ripple = 144,
+  bitconCash = 145,
+  biance = 714,
+}
