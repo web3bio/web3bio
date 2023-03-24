@@ -5,6 +5,7 @@ import { getAddress, isAddress } from "@ethersproject/address";
 import { CoinType, ENSResponseData } from "./types";
 import { getSocialMediaLink } from "./utils";
 import { SocialPlatform } from "../../../../utils/utils";
+import { resolveIPFS_URL } from "../../../../utils/ipfs";
 
 const provider = new StaticJsonRpcProvider(
   process.env.NEXT_PUBLIC_ETHEREUM_RPC_URL
@@ -39,7 +40,9 @@ const resolveAddress = async (
       displayName = name;
     }
 
-    const avatar = name ? await provider.getAvatar(name) : null;
+    const avatar = name
+      ? resolveIPFS_URL((await provider.getAvatar(name)) || null)
+      : null;
     const resolver = await provider.getResolver(name);
     const twitterHandle =
       (await resolver.getText("com.twitter")) ||
@@ -148,7 +151,7 @@ const resolveName = async (
         owner: address,
         identity: name,
         displayName: name,
-        avatar,
+        avatar: resolveIPFS_URL(avatar || null),
         email: (await resolver.getText("email")) || null,
         description: (await resolver.getText("description")) || null,
         location: (await resolver.getText("location")) || null,
