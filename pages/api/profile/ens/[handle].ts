@@ -2,8 +2,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { StaticJsonRpcProvider } from "@ethersproject/providers";
 import { getAddress, isAddress } from "@ethersproject/address";
+import { ENSResponseData } from "./types";
+import { getSocialMediaLink } from "./utils";
+import { SocialPlatform } from "../../../../utils/utils";
 
-const provider = new StaticJsonRpcProvider(process.env.NEXT_PUBLIC_ETHEREUM_RPC_URL);
+const provider = new StaticJsonRpcProvider(
+  process.env.NEXT_PUBLIC_ETHEREUM_RPC_URL
+);
 
 const firstParam = (param: string | string[]) => {
   return Array.isArray(param) ? param[0] : param;
@@ -18,17 +23,9 @@ const resolve = (from: string, to: string) => {
   return resolvedUrl.toString();
 };
 
-type Data = {
-  address: string | null;
-  name: string | null;
-  displayName: string;
-  avatar: string | null;
-  error?: string;
-};
-
 const resolveAddress = async (
   lowercaseAddress: string,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<ENSResponseData>
 ) => {
   const address = getAddress(lowercaseAddress);
   let displayName = address.replace(
@@ -43,45 +40,164 @@ const resolveAddress = async (
     }
 
     const avatar = name ? await provider.getAvatar(name) : null;
-
+    const resolver = await provider.getResolver(name);
+    const twitterHandle =
+      (await resolver.getText("com.twitter")) ||
+      (await resolver.getText("vnd.twitter")) ||
+      null;
+    const githubHandle =
+      (await resolver.getText("com.github")) ||
+      (await resolver.getText("vnd.github")) ||
+      null;
+    const tgHandle = (await resolver.getText("org.telegram")) || null;
+    const discordHandle = (await resolver.getText("com.discord")) || null;
+    const redditHandle = (await resolver.getText("com.reddit")) || null;
     res
       .status(200)
       .setHeader(
         "CDN-Cache-Control",
         `s-maxage=${60 * 60 * 24}, stale-while-revalidate`
       )
-      .json({ address, name, displayName, avatar });
+      .json({
+        owner: address,
+        identity: name,
+        displayName: name,
+        avatar,
+        email: (await resolver.getText("email")) || null,
+        description: (await resolver.getText("description")) || null,
+        location: (await resolver.getText("location")) || null,
+        header: (await resolver.getText("header")) || null,
+        notice: (await resolver.getText("notice")) || null,
+        keywords: (await resolver.getText("keywords")) || null,
+        links: {
+          twitter: {
+            link: getSocialMediaLink(twitterHandle, SocialPlatform.twitter),
+            handle: twitterHandle,
+          },
+          github: {
+            link: getSocialMediaLink(githubHandle, SocialPlatform.github),
+            handle: githubHandle,
+          },
+          telegram: {
+            link: getSocialMediaLink(tgHandle, SocialPlatform.telegram),
+            handle: tgHandle,
+          },
+          discord: {
+            link: getSocialMediaLink(discordHandle, SocialPlatform.discord),
+            handle: discordHandle,
+          },
+          reddit: {
+            link: getSocialMediaLink(redditHandle, SocialPlatform.reddit),
+            handle: redditHandle,
+          },
+        },
+        addresses: {
+          eth: address,
+          btc: address,
+          ltc: address,
+          doge: address,
+        },
+      });
   } catch (error: any) {
     res.status(500).json({
-      address,
-      name: null,
-      displayName,
+      owner: address,
+      identity: null,
+      displayName: null,
       avatar: null,
+      email: null,
+      description: null,
+      location: null,
+      header: null,
+      notice: null,
+      keywords: null,
+      links: {},
+      addresses: {},
       error: error.message,
     });
   }
 };
 
-const resolveName = async (name: string, res: NextApiResponse<Data>) => {
-  const displayName = name;
+const resolveName = async (
+  name: string,
+  res: NextApiResponse<ENSResponseData>
+) => {
   try {
     const [address, avatar] = await Promise.all([
       provider.resolveName(name),
       provider.getAvatar(name),
     ]);
+    const resolver = await provider.getResolver(name);
+    const twitterHandle =
+      (await resolver.getText("com.twitter")) ||
+      (await resolver.getText("vnd.twitter")) ||
+      null;
+    const githubHandle =
+      (await resolver.getText("com.github")) ||
+      (await resolver.getText("vnd.github")) ||
+      null;
+    const tgHandle = (await resolver.getText("org.telegram")) || null;
+    const discordHandle = (await resolver.getText("com.discord")) || null;
+    const redditHandle = (await resolver.getText("com.reddit")) || null;
     res
       .status(200)
       .setHeader(
         "CDN-Cache-Control",
         `s-maxage=${60 * 60 * 24}, stale-while-revalidate`
       )
-      .json({ address, name, displayName, avatar });
+      .json({
+        owner: address,
+        identity: name,
+        displayName: name,
+        avatar,
+        email: (await resolver.getText("email")) || null,
+        description: (await resolver.getText("description")) || null,
+        location: (await resolver.getText("location")) || null,
+        header: (await resolver.getText("header")) || null,
+        notice: (await resolver.getText("notice")) || null,
+        keywords: (await resolver.getText("keywords")) || null,
+        links: {
+          twitter: {
+            link: getSocialMediaLink(twitterHandle, SocialPlatform.twitter),
+            handle: twitterHandle,
+          },
+          github: {
+            link: getSocialMediaLink(githubHandle, SocialPlatform.github),
+            handle: githubHandle,
+          },
+          telegram: {
+            link: getSocialMediaLink(tgHandle, SocialPlatform.telegram),
+            handle: tgHandle,
+          },
+          discord: {
+            link: getSocialMediaLink(discordHandle, SocialPlatform.discord),
+            handle: discordHandle,
+          },
+          reddit: {
+            link: getSocialMediaLink(redditHandle, SocialPlatform.reddit),
+            handle: redditHandle,
+          },
+        },
+        addresses: {
+          eth: address,
+          btc: address,
+          ltc: address,
+          doge: address,
+        },
+      });
   } catch (error: any) {
     res.status(500).json({
-      address: null,
-      name,
-      displayName,
+      owner: null,
+      identity: name,
+      displayName: name,
       avatar: null,
+      email: null,
+      description: null,
+      location: null,
+      header: null,
+      notice: null,
+      keywords: null,
+      links: {},
+      addresses: {},
       error: error.message,
     });
   }
@@ -89,7 +205,7 @@ const resolveName = async (name: string, res: NextApiResponse<Data>) => {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<ENSResponseData>
 ) {
   const inputAddress = firstParam(req.query.handle);
   const lowercaseAddress = inputAddress.toLowerCase();

@@ -9,7 +9,7 @@ import {
   regexLens,
   regexTwitter,
   regexUnstoppableDomains,
-  regexSpaceid
+  regexSpaceid,
 } from "./regexp";
 import { PlatformType } from "./type";
 export const formatText = (string, length?) => {
@@ -91,23 +91,34 @@ export function isSameAddress(
   return address.toLowerCase() === otherAddress.toLowerCase();
 }
 
+export enum SocialPlatform {
+  twitter = "twitter",
+  url = "url",
+  website = "website",
+  github = "github",
+  telegram = "telegram",
+  reddit = "reddit",
+  discord = "discord",
+  instagram = "instagram",
+}
+
 export function resolveSocialMediaLink(name, type) {
   switch (type) {
-    case "url":
+    case SocialPlatform.url:
       return `${name}`;
-    case "website":
+    case SocialPlatform.website:
       return `https://${name}`;
-    case "github":
+    case SocialPlatform.github:
       return `https://github.com/${name}`;
-    case "twitter":
+    case SocialPlatform.twitter:
       return `https://twitter.com/${name}`;
-    case "telegram":
+    case SocialPlatform.telegram:
       return `https://t.me/${name}`;
-    case "reddit":
+    case SocialPlatform.reddit:
       return `https://www.reddit.com/user/${name}`;
-    case "discord":
+    case SocialPlatform.discord:
       return `https://discord.gg/${name}`;
-    case "instagram":
+    case SocialPlatform.instagram:
       return `https://instagram.com/${name}`;
     default:
       return `https://web5.bio/?s=${name}`;
