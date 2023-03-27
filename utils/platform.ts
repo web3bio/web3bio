@@ -24,7 +24,8 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
     [PlatformType.ens]: {
       key: PlatformType.ens,
       color: "#5298FF",
-      icon: "icons/icon-ens.svg",
+      // todo: add ens search icon here
+      icon: "icons/icon-ethereum.svg",
       iconW: "icons/icon-ens-w.svg",
       label: "ENS",
       urlPrefix: "https://app.ens.domains/search/",
