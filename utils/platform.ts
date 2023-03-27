@@ -35,7 +35,7 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
       color: "#3c3c3d",
       icon: "icons/icon-ethereum.svg",
       iconW: "icons/icon-ethereum-w.svg",
-      label: "ENS",
+      label: "Ethereum",
       urlPrefix: "https://etherscan.io/address/",
       ensText: [],
     },
@@ -160,17 +160,6 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
       label: "CyberConnect",
       ensText: [],
       urlPrefix: "https://link3.to/cyberconnect",
-    },
-    [PlatformType.opensea]: {
-      key: PlatformType.cyberconnect,
-      // todo: color to add
-      color: "#121212",
-      // todo: icons to add
-      icon: "icons/icon-opensea.svg",
-      iconW: "icons/icon-opensea-w.svg",
-      label: "Opensea",
-      ensText: [],
-      urlPrefix: "https://opensea.io/",
     },
     [PlatformType.opensea]: {
       key: PlatformType.cyberconnect,
