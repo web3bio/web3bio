@@ -1,7 +1,7 @@
 import _ from "lodash";
 import React, { memo, useEffect, useState } from "react";
 import SVG from "react-inlinesvg";
-import { colorsMap, platformsMap } from "../../utils/maps";
+import { SocialPlatformMapping } from "../../utils/platform";
 import { formatText } from "../../utils/utils";
 import { Loading } from "../shared/Loading";
 import { register } from "./GraphUtils/LargeRegister";
@@ -74,7 +74,7 @@ const resolveGraphData = (source) => {
     edges.push({
       source: from.uuid,
       target: to.uuid,
-      label: platformsMap[x.source],
+      label: SocialPlatformMapping[x.source].label,
       id: `${from.uuid}-${to.uuid}`,
       isIdentity: true,
     });
@@ -132,8 +132,8 @@ const processNodesEdges = (nodes, edges) => {
       };
       node.stateStyles = {
         selected: {
-          stroke: colorsMap[node.platform],
-          fill: colorsMap[node.platform],
+          stroke: SocialPlatformMapping[node.platform].color,
+          fill: SocialPlatformMapping[node.platform].color,
           fillOpacity: 0.1,
           lineWidth: 2,
           shadowColor: "transparent",
@@ -149,7 +149,7 @@ const processNodesEdges = (nodes, edges) => {
       };
       node.style = {
         lineWidth: 2,
-        fill: colorsMap[node.platform],
+        fill: SocialPlatformMapping[node.platform].color,
         stroke: "rgba(0, 0, 0, .05)",
       };
       node.stateStyles = {
@@ -223,10 +223,11 @@ const RenderResultGraph = (props) => {
             <li>DisplayName: ${e.item.getModel().displayName || "-"}</li>
             <li>Identity: ${e.item.getModel().identity || "-"}</li>
             <li>Platform: ${
-              platformsMap[e.item.getModel().platform] || "Unknown"
+              SocialPlatformMapping[e.item.getModel().platform].label ||
+              "Unknown"
             }</li>
             <li>Source: ${
-              platformsMap[e.item.getModel().source] ||
+              SocialPlatformMapping[e.item.getModel().source].label ||
               e.item.getModel().source ||
               "Unknown"
             }</li>
