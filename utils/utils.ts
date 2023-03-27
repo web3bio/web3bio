@@ -138,7 +138,6 @@ export const handleSearchPlatform = (term: string) => {
 export const isDomainSearch = (term) => {
   return [
     PlatformType.ens,
-    PlatformType.ens_graph,
     PlatformType.dotbit,
     PlatformType.unstoppableDomains,
     PlatformType.space_id,
