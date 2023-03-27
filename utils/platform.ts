@@ -30,15 +30,6 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
       urlPrefix: "https://app.ens.domains/search/",
       ensText: [],
     },
-    [PlatformType.ens_graph]: {
-      key: PlatformType.ens_graph,
-      color: "#5298FF",
-      icon: "icons/icon-ens.svg",
-      iconW: "icons/icon-ens-w.svg",
-      label: "ENS",
-      urlPrefix: "https://app.ens.domains/search/",
-      ensText: [],
-    },
     [PlatformType.ethereum]: {
       key: PlatformType.ethereum,
       color: "#3c3c3d",

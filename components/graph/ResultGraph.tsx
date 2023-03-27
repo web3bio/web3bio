@@ -2,6 +2,7 @@ import _ from "lodash";
 import React, { memo, useEffect, useState } from "react";
 import SVG from "react-inlinesvg";
 import { SocialPlatformMapping } from "../../utils/platform";
+import { PlatformType } from "../../utils/type";
 import { formatText } from "../../utils/utils";
 import { Loading } from "../shared/Loading";
 import { register } from "./GraphUtils/LargeRegister";
@@ -79,7 +80,7 @@ const resolveGraphData = (source) => {
       isIdentity: true,
     });
     from.nft.forEach((k) => {
-      if (k.category === "ENS") {
+      if (k.category === PlatformType.ens) {
         nodes.push({
           id: k.uuid,
           label: k.id,
@@ -87,7 +88,7 @@ const resolveGraphData = (source) => {
           chain: k.chain,
           holder: from.identity,
           identity: k.id,
-          platform: "ens",
+          platform: PlatformType.ens,
         });
         edges.push({
           source: from.uuid,
@@ -98,14 +99,14 @@ const resolveGraphData = (source) => {
       }
     });
     to.nft.forEach((k) => {
-      if (k.category === "ENS") {
+      if (k.category === PlatformType.ens) {
         nodes.push({
           id: k.uuid,
           label: k.id,
           category: k.category,
           chain: k.chain,
           holder: to.identity,
-          platform: "ens",
+          platform: PlatformType.ens,
         });
         edges.push({
           source: to.uuid,
