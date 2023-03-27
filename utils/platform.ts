@@ -30,6 +30,15 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
       urlPrefix: "https://app.ens.domains/search/",
       ensText: [],
     },
+    [PlatformType.ens_graph]: {
+      key: PlatformType.ens_graph,
+      color: "#5298FF",
+      icon: "icons/icon-ens.svg",
+      iconW: "icons/icon-ens-w.svg",
+      label: "ENS",
+      urlPrefix: "https://app.ens.domains/search/",
+      ensText: [],
+    },
     [PlatformType.ethereum]: {
       key: PlatformType.ethereum,
       color: "#3c3c3d",
@@ -105,8 +114,8 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
     [PlatformType.unstoppableDomains]: {
       key: PlatformType.unstoppableDomains,
       color: "#71EBAA",
-      icon: "icons/icon-spaceid.svg",
-      iconW: "icons/icon-spaceid-w.svg",
+      icon: "icons/icon-unstoppabledomains.svg",
+      iconW: "icons/icon-unstoppabledomains-w.svg",
       label: "Unstoppable Domains",
       ensText: [],
       urlPrefix: "https://unstoppabledomains.com/search?searchTerm=",
@@ -203,7 +212,7 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
       iconW: "icons/icon-discord-w.svg",
       label: "Discord",
       ensText: ["com.discord"],
-      urlPrefix: "https://discord.com/channels/@me/",
+      urlPrefix: "https://discord.gg/",
     },
     [PlatformType.unknown]: {
       key: PlatformType.unknown,

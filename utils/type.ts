@@ -1,5 +1,6 @@
 export enum PlatformType {
   ens = "ENS",
+  ens_graph = "ens",
   dotbit = "dotbit",
   lens = "lens",
   ethereum = "ethereum",
