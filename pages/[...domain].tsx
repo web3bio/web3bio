@@ -6,27 +6,21 @@ import { LensProfilePanel } from "../components/panel/LensProfilePanel";
 import { Empty } from "../components/shared/Empty";
 import { Error } from "../components/shared/Error";
 import { Loading } from "../components/shared/Loading";
-import { identityProvider, profileProvider } from "../utils/dataProvider";
 import { GET_PROFILE_LENS } from "../utils/lens";
-import {
-  GET_PROFILES_DOMAIN,
-  GET_PROFILES_QUERY,
-  resolveIdentity,
-} from "../utils/queries";
-import { DOMAINS_TABLE_NAME, supabase } from "../utils/supabase";
+import { GET_PROFILES_DOMAIN, GET_PROFILES_QUERY } from "../utils/queries";
 import { PlatformType } from "../utils/type";
 import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
 
 const RenderDomainPanel = (props) => {
   const {
-    domain,
+    // domain,
     asComponent,
     onClose,
     overridePlatform,
     onTabChange,
     overridePanelTab,
     toNFT,
-    identity,
+    // identity,
     prefetchingPoaps,
     prefetchingNFTs,
     prefetchingProfile,
@@ -34,9 +28,10 @@ const RenderDomainPanel = (props) => {
   const router = useRouter();
   const [panelTab, setPanelTab] = useState(overridePanelTab);
   const [platform, setPlatform] = useState(overridePlatform || "ENS");
+  const [domain, setDomain] = useState([]);
+  const [identity, setIdentity] = useState(null);
   const [nftDialogOpen, setNftDialogOpen] = useState(false);
   const profileContainer = useRef(null);
-
   const { loading, error, data } = useQuery(
     platform === PlatformType.lens
       ? GET_PROFILE_LENS
@@ -62,16 +57,6 @@ const RenderDomainPanel = (props) => {
         }
   );
 
-  const _identity = (() => {
-    if (!identity && !data) return null;
-    const source = identity || data;
-    if (platform === PlatformType.lens) return source.profile;
-    if (isDomainSearch(platform)) {
-      if (source.domain) return source.domain.owner;
-    }
-    return source.identity;
-  })();
-
   useEffect(() => {
     if (asComponent) {
       setPlatform(handleSearchPlatform(domain[0]));
@@ -81,6 +66,14 @@ const RenderDomainPanel = (props) => {
       const _domain = router.query.domain ?? domain;
       setPlatform(handleSearchPlatform(_domain[0]));
     }
+    const _identity = (() => {
+      if (platform === PlatformType.lens) return data.profile;
+      if (isDomainSearch(platform)) {
+        if (data.domain) return data.domain.owner;
+      }
+      return data.identity;
+    })();
+    setIdentity(_identity);
 
     const clickEvent = (e) => {
       const dialog = document.getElementById("nft-dialog");
@@ -104,32 +97,33 @@ const RenderDomainPanel = (props) => {
     nftDialogOpen,
     onClose,
   ]);
-  const setPanelTabFromURL = () => {
-    if (!window) return;
-    const url = window.location.href;
-    const paramsArr = url.split("/");
-    const paramsTab = paramsArr[paramsArr.length - 1];
-    if (Object.keys(TabsMap).includes(paramsTab)) {
-      setPanelTab(paramsTab);
-    } else {
-      setPanelTab(TabsMap.profile.key);
-    }
-  };
+
   useEffect(() => {
     if (asComponent) return;
+    const setPanelTabFromURL = () => {
+      if (!window) return;
+      const url = window.location.href;
+      const paramsArr = url.split("/");
+      const paramsTab = paramsArr[paramsArr.length - 1];
+      if (Object.keys(TabsMap).includes(paramsTab)) {
+        setPanelTab(paramsTab);
+      } else {
+        setPanelTab(TabsMap.profile.key);
+      }
+    };
     window.history.pushState(
       {},
       "",
       `/${
-        _identity.platform === PlatformType.lens
-          ? _identity.identity
-          : _identity.displayName || _identity.identity
+        identity.platform === PlatformType.lens
+          ? identity.identity
+          : identity.displayName || identity.identity
       }${panelTab === TabsMap.profile.key ? "" : `/${panelTab}`}`
     );
     window.addEventListener("popstate", setPanelTabFromURL, false);
     return () =>
       window.removeEventListener("popstate", setPanelTabFromURL, false);
-  }, [panelTab, _identity]);
+  }, [panelTab, identity, asComponent]);
 
   const EmptyRender = () => {
     return (
@@ -148,7 +142,7 @@ const RenderDomainPanel = (props) => {
           <Loading />
         ) : error ? (
           <Error text={error} />
-        ) : !_identity ? (
+        ) : !identity ? (
           <EmptyRender />
         ) : platform === PlatformType.lens ? (
           <LensProfilePanel
@@ -156,7 +150,7 @@ const RenderDomainPanel = (props) => {
             poaps={prefetchingPoaps}
             onClose={onClose}
             asComponent
-            profile={_identity}
+            profile={identity}
             curTab={panelTab}
             onTabChange={onTabChange}
             onShowNFTDialog={() => setNftDialogOpen(true)}
@@ -175,7 +169,7 @@ const RenderDomainPanel = (props) => {
             onClose={onClose}
             curTab={panelTab}
             onTabChange={onTabChange}
-            identity={_identity}
+            identity={identity}
           />
         )}
       </div>
@@ -184,7 +178,7 @@ const RenderDomainPanel = (props) => {
     <div className="web3bio-container">
       <div className="web3bio-cover flare"></div>
       <div ref={profileContainer} className="profile-main">
-        {!_identity ? (
+        {!identity ? (
           <EmptyRender />
         ) : platform === PlatformType.lens ? (
           <LensProfilePanel
@@ -193,7 +187,7 @@ const RenderDomainPanel = (props) => {
             onTabChange={(v) => {
               setPanelTab(v);
             }}
-            profile={_identity}
+            profile={identity}
             nftDialogOpen={nftDialogOpen}
             onShowNFTDialog={() => setNftDialogOpen(true)}
             onCloseNFTDialog={() => setNftDialogOpen(false)}
@@ -213,100 +207,12 @@ const RenderDomainPanel = (props) => {
             nftDialogOpen={nftDialogOpen}
             onShowNFTDialog={() => setNftDialogOpen(true)}
             onCloseNFTDialog={() => setNftDialogOpen(false)}
-            identity={_identity}
+            identity={identity}
           />
         )}
       </div>
     </div>
   );
 };
-
-export async function getStaticPaths() {
-  const { data: prefetching_domains } = await supabase
-    .from(DOMAINS_TABLE_NAME)
-    .select("name");
-  const paths = (prefetching_domains || []).map((domain) => {
-    return {
-      params: { domain: [domain.name] },
-    };
-  });
-  return { paths, fallback: "blocking" };
-}
-
-export async function getStaticProps({ params }) {
-  const { domain } = params;
-  const platform = handleSearchPlatform(domain[0]) || "ENS";
-  let identity = null;
-  let prefetchingNFTs = null;
-  let prefetchingProfile = null;
-  let _resolved = null;
-  try {
-    identity = await identityProvider(platform, domain[0]);
-    _resolved = resolveIdentity(identity, platform);
-    if (identity && _resolved && _resolved.identity) {
-      // prefetchingNFTs =
-      //   (await nftCollectionProvider(_resolved.identity, platform)) || [];
-      prefetchingProfile = await profileProvider(
-        _resolved.displayName || _resolved.identity
-      );
-    }
-  } catch (e) {
-    return {
-      props: {
-        domain,
-      },
-      notFound: true,
-    };
-  }
-
-  try {
-    // check the domain whether has a record in supabase, or insert in it
-    const { data: prefetching_domains } = await supabase
-      .from(DOMAINS_TABLE_NAME)
-      .select("name");
-    if (
-      !prefetching_domains.map((x) => x.name).includes(domain) &&
-      isDomainSearch(domain)
-    ) {
-      const { error } = await supabase.from(DOMAINS_TABLE_NAME).insert([
-        {
-          id: prefetching_domains.length,
-          name: domain,
-          created_at: Date.now().toLocaleString(),
-        },
-      ]);
-
-      if (error) {
-        console.log("insert unknown identifier failed");
-      } else {
-        console.log(
-          `insert unknown identifier: ${domain} success! see supabase for more information`
-        );
-      }
-    }
-
-    return {
-      props: {
-        identity,
-        domain,
-        prefetchingPoaps: [],
-        prefetchingNFTs,
-        prefetchingProfile,
-        overridePanelTab: domain.length > 1 ? domain[1] : TabsMap.profile.key,
-        revalidate: 600,
-      },
-    };
-  } catch (e) {
-    return {
-      props: {
-        identity,
-        domain,
-        overridePlatform: platform,
-        overridePanelTab: domain.length > 1 ? domain[1] : TabsMap.profile.key,
-      },
-      notFound: true,
-    };
-  }
-}
 
 export default memo(RenderDomainPanel);
