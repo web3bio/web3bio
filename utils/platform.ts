@@ -82,7 +82,7 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
       icon: "icons/icon-nextid.svg",
       iconW: "icons/icon-nextid-w.svg",
       label: "Next.ID",
-      urlPrefix: "https://web5bio.com",
+      urlPrefix: "https://web5.bio",
       ensText: [],
     },
     [PlatformType.reddit]: {
@@ -202,6 +202,6 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
       iconW: "icons/icon-nextid-w.svg",
       label: "Unknown",
       ensText: [],
-      urlPrefix: "https://web5bio.com",
+      urlPrefix: "https://web5.bio",
     },
   };
