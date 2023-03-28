@@ -21,6 +21,7 @@ const RenderDomainPanel = (props) => {
     overridePanelTab,
     toNFT,
     // identity,
+    // todo: prefetcing Arrays use ssr
     prefetchingPoaps,
     prefetchingNFTs,
     prefetchingProfile,
@@ -28,10 +29,11 @@ const RenderDomainPanel = (props) => {
   const router = useRouter();
   const [panelTab, setPanelTab] = useState(overridePanelTab);
   const [platform, setPlatform] = useState(overridePlatform || "ENS");
-  const [domain, setDomain] = useState([]);
+  const [domain, setDomain] = useState(router.query.domain || []);
   const [identity, setIdentity] = useState(null);
   const [nftDialogOpen, setNftDialogOpen] = useState(false);
   const profileContainer = useRef(null);
+
   const { loading, error, data } = useQuery(
     platform === PlatformType.lens
       ? GET_PROFILE_LENS
@@ -41,32 +43,32 @@ const RenderDomainPanel = (props) => {
     platform === PlatformType.lens
       ? {
           variables: {
-            handle: domain ? domain[0] : router.query.domain[0],
+            handle: domain[0] || null,
           },
           context: {
             uri: process.env.NEXT_PUBLIC_LENS_GRAPHQL_SERVER,
           },
-          skip: identity ? true : false,
+          skip: domain && platform ? false : true,
         }
       : {
           variables: {
             platform: platform,
-            identity: domain ? domain[0] : router.query.domain[0],
+            identity: domain[0] || null,
           },
-          skip: identity ? true : false,
+          skip: domain && platform ? false : true,
         }
   );
-
   useEffect(() => {
     if (asComponent) {
       setPlatform(handleSearchPlatform(domain[0]));
     } else {
       if (!router.isReady) return;
       if (!router.query.domain) return;
-      const _domain = router.query.domain ?? domain;
-      setPlatform(handleSearchPlatform(_domain[0]));
+      setDomain(router.query.domain as string[]);
+      setPlatform(handleSearchPlatform(router.query.domain[0] || domain[0]));
     }
     const _identity = (() => {
+      if (!data) return null;
       if (platform === PlatformType.lens) return data.profile;
       if (isDomainSearch(platform)) {
         if (data.domain) return data.domain.owner;
@@ -88,18 +90,10 @@ const RenderDomainPanel = (props) => {
     };
     window.document.addEventListener("mousedown", clickEvent);
     return () => window.document.removeEventListener("mousedown", clickEvent);
-  }, [
-    panelTab,
-    domain,
-    router,
-    asComponent,
-    router.query.domain,
-    nftDialogOpen,
-    onClose,
-  ]);
+  }, [panelTab, domain, router, asComponent, platform, nftDialogOpen]);
 
   useEffect(() => {
-    if (asComponent) return;
+    if (asComponent || !identity) return;
     const setPanelTabFromURL = () => {
       if (!window) return;
       const url = window.location.href;
@@ -118,7 +112,7 @@ const RenderDomainPanel = (props) => {
         identity.platform === PlatformType.lens
           ? identity.identity
           : identity.displayName || identity.identity
-      }${panelTab === TabsMap.profile.key ? "" : `/${panelTab}`}`
+      }${panelTab && panelTab === TabsMap.profile.key ? "" : `/${panelTab}`}`
     );
     window.addEventListener("popstate", setPanelTabFromURL, false);
     return () =>
@@ -178,7 +172,11 @@ const RenderDomainPanel = (props) => {
     <div className="web3bio-container">
       <div className="web3bio-cover flare"></div>
       <div ref={profileContainer} className="profile-main">
-        {!identity ? (
+        {loading ? (
+          <Loading />
+        ) : error ? (
+          <Error text={error} />
+        ) : !identity ? (
           <EmptyRender />
         ) : platform === PlatformType.lens ? (
           <LensProfilePanel
