@@ -13,7 +13,7 @@ import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
 
 const RenderDomainPanel = (props) => {
   const {
-    // domain,
+    domainProp,
     asComponent,
     onClose,
     overridePlatform,
@@ -29,7 +29,7 @@ const RenderDomainPanel = (props) => {
   const router = useRouter();
   const [panelTab, setPanelTab] = useState(overridePanelTab);
   const [platform, setPlatform] = useState(overridePlatform || "ENS");
-  const [domain, setDomain] = useState(router.query.domain || []);
+  const [domain, setDomain] = useState(domainProp || router.query.domain || []);
   const [identity, setIdentity] = useState(null);
   const [nftDialogOpen, setNftDialogOpen] = useState(false);
   const profileContainer = useRef(null);

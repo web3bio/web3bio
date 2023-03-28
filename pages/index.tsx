@@ -395,7 +395,7 @@ export default function Home() {
           onTabChange={(v) => {
             setPanelTab(v);
           }}
-          domain={domain}
+          domainProp={domain}
           overridePlatform={profilePlatform}
         />
       )}

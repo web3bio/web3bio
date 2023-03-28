@@ -4,8 +4,11 @@ import { StaticJsonRpcProvider } from "@ethersproject/providers";
 import { getAddress, isAddress } from "@ethersproject/address";
 import { CoinType, ENSResponseData } from "./types";
 import { getSocialMediaLink } from "./utils";
-import { SocialPlatform } from "../../../../utils/utils";
-import { resolveIPFS_URL } from "../../../../utils/ipfs";
+import { resolveMediaURL, SocialPlatform } from "../../../../utils/utils";
+import {
+  NFTSCANFetcher,
+  NFTSCAN_BASE_API_ENDPOINT,
+} from "../../../../components/apis/nftscan";
 
 const provider = new StaticJsonRpcProvider(
   process.env.NEXT_PUBLIC_ETHEREUM_RPC_URL
@@ -41,7 +44,7 @@ const resolveAddress = async (
     }
 
     const avatar = name
-      ? resolveIPFS_URL((await provider.getAvatar(name)) || null)
+      ? resolveMediaURL((await provider.getAvatar(name)) || null)
       : null;
     const resolver = await provider.getResolver(name);
     const twitterHandle =
@@ -55,6 +58,8 @@ const resolveAddress = async (
     const tgHandle = (await resolver.getText("org.telegram")) || null;
     const discordHandle = (await resolver.getText("com.discord")) || null;
     const redditHandle = (await resolver.getText("com.reddit")) || null;
+    const headerHandle = (await resolver.getText("header")) || null;
+    const urlHandle = (await resolver.getText("url")) || null;
     res
       .status(200)
       .setHeader(
@@ -69,7 +74,7 @@ const resolveAddress = async (
         email: (await resolver.getText("email")) || null,
         description: (await resolver.getText("description")) || null,
         location: (await resolver.getText("location")) || null,
-        header: (await resolver.getText("header")) || null,
+        header: await resolveEipAssetURL(headerHandle || null),
         notice: (await resolver.getText("notice")) || null,
         keywords: (await resolver.getText("keywords")) || null,
         links: {
@@ -92,6 +97,10 @@ const resolveAddress = async (
           reddit: {
             link: getSocialMediaLink(redditHandle, SocialPlatform.reddit),
             handle: redditHandle,
+          },
+          url: {
+            link: getSocialMediaLink(urlHandle, SocialPlatform.url),
+            handle: urlHandle,
           },
         },
         addresses: {
@@ -120,6 +129,21 @@ const resolveAddress = async (
   }
 };
 
+const resolveEipAssetURL = async (asset) => {
+  if (!asset) return null;
+  const eipPrefix = "eip155:1/erc721:";
+  if (asset.startsWith(eipPrefix)) {
+    const arr = asset.split(eipPrefix)[1].split("/");
+    const url =
+      NFTSCAN_BASE_API_ENDPOINT +
+      `assets/${arr[0]}/${arr[1]}?show_attribute=false`;
+    const res = await NFTSCANFetcher(url);
+    if (res && res.data) {
+      return resolveMediaURL(res.data.image_uri || res.data.content_uri);
+    }
+  }
+  return resolveMediaURL(asset);
+};
 const resolveName = async (
   name: string,
   res: NextApiResponse<ENSResponseData>
@@ -141,6 +165,8 @@ const resolveName = async (
     const tgHandle = (await resolver.getText("org.telegram")) || null;
     const discordHandle = (await resolver.getText("com.discord")) || null;
     const redditHandle = (await resolver.getText("com.reddit")) || null;
+    const headerHandle = (await resolver.getText("header")) || null;
+    const urlHandle = (await resolver.getText("url")) || null;
     res
       .status(200)
       .setHeader(
@@ -151,11 +177,11 @@ const resolveName = async (
         owner: address,
         identity: name,
         displayName: name,
-        avatar: resolveIPFS_URL(avatar || null),
+        avatar: await resolveEipAssetURL(avatar || null),
         email: (await resolver.getText("email")) || null,
         description: (await resolver.getText("description")) || null,
         location: (await resolver.getText("location")) || null,
-        header: (await resolver.getText("header")) || null,
+        header: await resolveEipAssetURL(headerHandle || null),
         notice: (await resolver.getText("notice")) || null,
         keywords: (await resolver.getText("keywords")) || null,
         links: {
@@ -178,6 +204,10 @@ const resolveName = async (
           reddit: {
             link: getSocialMediaLink(redditHandle, SocialPlatform.reddit),
             handle: redditHandle,
+          },
+          url: {
+            link: getSocialMediaLink(urlHandle, SocialPlatform.url),
+            handle: urlHandle,
           },
         },
         addresses: {

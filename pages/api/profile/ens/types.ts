@@ -8,6 +8,7 @@ type LinksData = {
   telegram?: LinksItem;
   discord?: LinksItem;
   reddit?: LinksItem;
+  url?: LinksItem;
 };
 type AddressesData = {
   eth?: string | null;
