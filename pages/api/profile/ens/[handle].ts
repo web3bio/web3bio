@@ -200,7 +200,7 @@ const resolveName = async (
     const gtext = await getENSTexts(name);
     const resolver = await provider.getResolver(name);
     let LINKRES = {};
-    if (gtext) {
+    if (gtext && gtext[0].resolver.texts) {
       const linksRecords = gtext[0].resolver.texts;
       const linksToFetch = linksRecords.reduce((pre, cur) => {
         if (!ensRecordsDefaultOrShouldSkipText.includes(cur)) pre.push(cur);
