@@ -2,6 +2,7 @@ import { BigNumber } from "bignumber.js";
 import { EthereumAddress } from "wallet.ts";
 import { resolveIPFS_URL } from "./ipfs";
 import { pow10 } from "./number";
+import { SocialPlatformMapping } from "./platform";
 import {
   regexDotbit,
   regexEns,
@@ -9,7 +10,7 @@ import {
   regexLens,
   regexTwitter,
   regexUnstoppableDomains,
-  regexSpaceid
+  regexSpaceid,
 } from "./regexp";
 import { PlatformType } from "./type";
 export const formatText = (string, length?) => {
@@ -92,25 +93,15 @@ export function isSameAddress(
 }
 
 export function resolveSocialMediaLink(name, type) {
+  if (!Object.keys(PlatformType).includes(type))
+    return `https://web5.bio/?s=${name}`;
   switch (type) {
     case "url":
       return `${name}`;
     case "website":
       return `https://${name}`;
-    case "github":
-      return `https://github.com/${name}`;
-    case "twitter":
-      return `https://twitter.com/${name}`;
-    case "telegram":
-      return `https://t.me/${name}`;
-    case "reddit":
-      return `https://www.reddit.com/user/${name}`;
-    case "discord":
-      return `https://discord.gg/${name}`;
-    case "instagram":
-      return `https://instagram.com/${name}`;
     default:
-      return `https://web5.bio/?s=${name}`;
+      return SocialPlatformMapping[type].urlPrefix + name;
   }
 }
 
