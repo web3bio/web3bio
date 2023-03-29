@@ -24,7 +24,7 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
     [PlatformType.ens]: {
       key: PlatformType.ens,
       color: "#5298FF",
-      // todo: add ens search icon here
+      // TODO: add ens search icon here
       icon: "icons/icon-ethereum.svg",
       iconW: "icons/icon-ens-w.svg",
       label: "ENS",
@@ -51,7 +51,7 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
     },
     [PlatformType.github]: {
       key: PlatformType.github,
-      color: "#4A99E9",
+      color: "#000000",
       icon: "icons/icon-github.svg",
       iconW: "icons/icon-github-w.svg",
       label: "Github",
@@ -87,7 +87,7 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
     },
     [PlatformType.reddit]: {
       key: PlatformType.reddit,
-      color: "#EB5528",
+      color: "#ff4500",
       icon: "icons/icon-reddit.svg",
       iconW: "icons/icon-reddit-w.svg",
       label: "Reddit",
@@ -105,7 +105,7 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
     },
     [PlatformType.unstoppableDomains]: {
       key: PlatformType.unstoppableDomains,
-      color: "#71EBAA",
+      color: "#2E65F5",
       icon: "icons/icon-unstoppabledomains.svg",
       iconW: "icons/icon-unstoppabledomains-w.svg",
       label: "Unstoppable Domains",
@@ -114,22 +114,20 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
     },
     [PlatformType.telegram]: {
       key: PlatformType.telegram,
-      // todo: color to add
-      color: "#121212",
+      color: "#0088cc",
       icon: "icons/icon-telegram.svg",
       iconW: "icons/icon-telegram-w.svg",
       label: "Telegram",
-      ensText: [],
+      ensText: ["org.telegram"],
       urlPrefix: "https://t.me/",
     },
     [PlatformType.instagram]: {
       key: PlatformType.instagram,
-      // todo: color to add
-      color: "#121212",
+      color: "#EA3377",
       icon: "icons/icon-instagram.svg",
       iconW: "icons/icon-instagram-w.svg",
       label: "Instagram",
-      ensText: [],
+      ensText: ["com.instagram"],
       urlPrefix: "https://www.instagram.com/",
     },
     [PlatformType.dotbit]: {
@@ -143,8 +141,8 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
     },
     [PlatformType.rss3]: {
       key: PlatformType.rss3,
-      // todo: color to add
-      color: "#121212",
+      color: "#3070F6",
+      // TODO: icons to add
       icon: "icons/icon-rss3.svg",
       iconW: "icons/icon-rss3-w.svg",
       label: "RSS3",
@@ -153,9 +151,8 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
     },
     [PlatformType.cyberconnect]: {
       key: PlatformType.cyberconnect,
-      // todo: color to add
-      color: "#121212",
-      // todo: icons to add
+      color: "#000000",
+      // TODO: icons to add
       icon: "icons/icon-cyberconnect.svg",
       iconW: "icons/icon-cyberconnect-w.svg",
       label: "CyberConnect",
@@ -164,31 +161,26 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
     },
     [PlatformType.opensea]: {
       key: PlatformType.cyberconnect,
-      // todo: color to add
-      color: "#121212",
-      // todo: icons to add
+      color: "#407FDB",
       icon: "icons/icon-opensea.svg",
-      iconW: "icons/icon-opensea-w.svg",
+      iconW: "icons/icon-opensea.svg",
       label: "Opensea",
       ensText: [],
       urlPrefix: "https://opensea.io/",
     },
     [PlatformType.sybil]: {
       key: PlatformType.sybil,
-      // todo: color to add
-      color: "#121212",
-      // todo: icons to add
+      color: "#4125E1",
+      // TODO: icons to add
       icon: "icons/icon-sybil.svg",
       iconW: "icons/icon-sybil-w.svg",
       label: "Sybil",
       ensText: [],
-      urlPrefix: "http://sybil.com/",
+      urlPrefix: "https://sybil.org/",
     },
     [PlatformType.discord]: {
       key: PlatformType.discord,
-      // todo: color to add
-      color: "#121212",
-      // todo: icons to add
+      color: "#5865f2",
       icon: "icons/icon-discord.svg",
       iconW: "icons/icon-discord-w.svg",
       label: "Discord",
