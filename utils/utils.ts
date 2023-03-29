@@ -92,24 +92,13 @@ export function isSameAddress(
   return address.toLowerCase() === otherAddress.toLowerCase();
 }
 
-export enum SocialPlatform {
-  twitter = "twitter",
-  url = "url",
-  website = "website",
-  github = "github",
-  telegram = "telegram",
-  reddit = "reddit",
-  discord = "discord",
-  instagram = "instagram",
-}
-
 export function resolveSocialMediaLink(name, type) {
   if (!Object.keys(PlatformType).includes(type))
     return `https://web5.bio/?s=${name}`;
   switch (type) {
-    case SocialPlatform.url:
+    case SocialPlatformMapping.url.key:
       return `${name}`;
-    case SocialPlatform.website:
+    case SocialPlatformMapping.website.key:
       return `https://${name}`;
     default:
       return SocialPlatformMapping[type].urlPrefix + name;
@@ -190,6 +179,6 @@ export function isValidAddress(address?: string) {
 }
 
 export const resolveMediaURL = (asset) => {
-  if(!asset) return null
+  if (!asset) return null;
   return asset.startsWith("data:", "https:") ? asset : resolveIPFS_URL(asset);
 };

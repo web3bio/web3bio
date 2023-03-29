@@ -202,4 +202,10 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
       label: "Unknown",
       ensText: ["url"],
     },
+    [PlatformType.website]: {
+      key: PlatformType.website,
+      color: "#121212",
+      label: "Unknown",
+      ensText: [],
+    },
   };
