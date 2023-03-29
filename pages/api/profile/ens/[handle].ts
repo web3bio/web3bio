@@ -4,7 +4,7 @@ import { StaticJsonRpcProvider } from "@ethersproject/providers";
 import { getAddress, isAddress } from "@ethersproject/address";
 import { CoinType, ENSResponseData } from "./types";
 import { getSocialMediaLink } from "./utils";
-import { resolveMediaURL, SocialPlatform } from "../../../../utils/utils";
+import { resolveMediaURL } from "../../../../utils/utils";
 import {
   NFTSCANFetcher,
   NFTSCAN_BASE_API_ENDPOINT,
@@ -109,19 +109,8 @@ const resolveAddress = async (
       };
       LINKRES = await getLink();
     }
-    const twitterHandle =
-      (await resolver.getText("com.twitter")) ||
-      (await resolver.getText("vnd.twitter")) ||
-      null;
-    const githubHandle =
-      (await resolver.getText("com.github")) ||
-      (await resolver.getText("vnd.github")) ||
-      null;
-    const tgHandle = (await resolver.getText("org.telegram")) || null;
-    const discordHandle = (await resolver.getText("com.discord")) || null;
-    const redditHandle = (await resolver.getText("com.reddit")) || null;
+
     const headerHandle = (await resolver.getText("header")) || null;
-    const urlHandle = (await resolver.getText("url")) || null;
     res
       .status(200)
       .setHeader(
@@ -142,9 +131,9 @@ const resolveAddress = async (
         links: LINKRES,
         addresses: {
           eth: address,
-          btc: await resolver.getAddress(CoinType.bitcoin),
-          ltc: await resolver.getAddress(CoinType.litecoin),
-          doge: await resolver.getAddress(CoinType.dogecoin),
+          btc: await resolver.getAddress(CoinType.btc),
+          ltc: await resolver.getAddress(CoinType.ltc),
+          doge: await resolver.getAddress(CoinType.doge),
         },
       });
   } catch (error: any) {
@@ -184,7 +173,7 @@ const resolveEipAssetURL = async (asset) => {
 
 const resolveHandle = (handle: string) => {
   const prefix = "https://";
-  if (handle.startsWith(prefix)) {
+  if (handle && handle.startsWith(prefix)) {
     return handle.split(prefix)[1];
   }
   return handle;
@@ -202,6 +191,12 @@ const resolveName = async (
     const gtext = await getENSTexts(name);
     const resolver = await provider.getResolver(name);
     let LINKRES = {};
+    let CRYPTORES = {
+      eth: address,
+      btc: null,
+      ltc: null,
+      doge: null,
+    };
     if (gtext && gtext[0].resolver.texts) {
       const linksRecords = gtext[0].resolver.texts;
       const linksToFetch = linksRecords.reduce((pre, cur) => {
@@ -227,6 +222,38 @@ const resolveName = async (
       };
       LINKRES = await getLink();
     }
+    if (gtext && gtext[0].resolver.coinTypes) {
+      const cryptoRecrods = gtext[0].resolver.coinTypes;
+      const cryptoRecordsToFetch = cryptoRecrods.reduce((pre, cur) => {
+        if (
+          ![CoinType.btc, CoinType.eth, CoinType.ltc, CoinType.doge].includes(
+            Number(cur)
+          ) &&
+          _.findKey(CoinType, (o) => o == cur)
+        )
+          pre.push(cur);
+        return pre;
+      }, []);
+      const getCrypto = async () => {
+        const _cryptoRes = {};
+        for (let i = 0; i < cryptoRecordsToFetch.length; i++) {
+          const _coinType = cryptoRecordsToFetch[i];
+          const key = _.findKey(CoinType, (o) => {
+            return o == _coinType;
+          });
+
+          _cryptoRes[key] = (await resolver.getAddress(_coinType)) || null;
+        }
+        return _cryptoRes;
+      };
+      CRYPTORES = {
+        eth: address,
+        btc: await resolver.getAddress(CoinType.btc),
+        ltc: await resolver.getAddress(CoinType.ltc),
+        doge: await resolver.getAddress(CoinType.doge),
+        ...(await getCrypto()),
+      };
+    }
     const headerHandle = (await resolver.getText("header")) || null;
 
     const resJSON = {
@@ -245,12 +272,7 @@ const resolveName = async (
         PlatformType.url
       ),
       links: LINKRES,
-      addresses: {
-        eth: address,
-        btc: await resolver.getAddress(CoinType.bitcoin),
-        ltc: await resolver.getAddress(CoinType.litecoin),
-        doge: await resolver.getAddress(CoinType.dogecoin),
-      },
+      addresses: CRYPTORES,
     };
     res
       .status(200)
