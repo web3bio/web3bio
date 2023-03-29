@@ -11,6 +11,22 @@ import {
 } from "../../../../components/apis/nftscan";
 import { gql } from "@apollo/client";
 import client from "../../../../utils/apollo";
+import _ from "lodash";
+import { SocialPlatformMapping } from "../../../../utils/platform";
+import { PlatformType } from "../../../../utils/type";
+
+const ensRecordsDefaultOrShouldSkipText = [
+  "email",
+  "snapshot",
+  "avatar",
+  "header",
+  "description",
+  "eth.ens.delegate",
+  "notice",
+  "keywords",
+  "location",
+  "url",
+];
 
 const getENSRecordsQuery = gql`
   query Profile($name: String) {
@@ -182,21 +198,34 @@ const resolveName = async (
       provider.getAvatar(name),
     ]);
     const gtext = await getENSTexts(name);
-    console.log(gtext, "ens");
     const resolver = await provider.getResolver(name);
-    const twitterHandle =
-      (await resolver.getText("com.twitter")) ||
-      (await resolver.getText("vnd.twitter")) ||
-      null;
-    const githubHandle =
-      (await resolver.getText("com.github")) ||
-      (await resolver.getText("vnd.github")) ||
-      null;
-    const tgHandle = (await resolver.getText("org.telegram")) || null;
-    const discordHandle = (await resolver.getText("com.discord")) || null;
-    const redditHandle = (await resolver.getText("com.reddit")) || null;
+    let LINKRES = {};
+    if (gtext) {
+      const linksRecords = gtext[0].resolver.texts;
+      const linksToFetch = linksRecords.reduce((pre, cur) => {
+        if (!ensRecordsDefaultOrShouldSkipText.includes(cur)) pre.push(cur);
+        return pre;
+      }, []);
+      const getLink = async () => {
+        const _linkRes = {};
+        for (let i = 0; i < linksToFetch.length; i++) {
+          const recordText = linksToFetch[i];
+          const key = _.findKey(SocialPlatformMapping, (o) => {
+            return o.ensText.includes(recordText);
+          });
+          const handle = resolveHandle(
+            (await resolver.getText(recordText)) || null
+          );
+          _linkRes[key] = {
+            link: getSocialMediaLink(handle, key),
+            handle: handle,
+          };
+        }
+        return _linkRes;
+      };
+      LINKRES = await getLink();
+    }
     const headerHandle = (await resolver.getText("header")) || null;
-    const urlHandle = (await resolver.getText("url")) || null;
 
     const resJSON = {
       owner: address,
@@ -209,32 +238,11 @@ const resolveName = async (
       header: await resolveEipAssetURL(headerHandle || null),
       notice: (await resolver.getText("notice")) || null,
       keywords: (await resolver.getText("keywords")) || null,
-      links: {
-        twitter: {
-          link: getSocialMediaLink(twitterHandle, SocialPlatform.twitter),
-          handle: twitterHandle,
-        },
-        github: {
-          link: getSocialMediaLink(githubHandle, SocialPlatform.github),
-          handle: githubHandle,
-        },
-        telegram: {
-          link: getSocialMediaLink(tgHandle, SocialPlatform.telegram),
-          handle: tgHandle,
-        },
-        discord: {
-          link: getSocialMediaLink(discordHandle, SocialPlatform.discord),
-          handle: discordHandle,
-        },
-        reddit: {
-          link: getSocialMediaLink(redditHandle, SocialPlatform.reddit),
-          handle: redditHandle,
-        },
-        url: {
-          link: getSocialMediaLink(urlHandle, SocialPlatform.url),
-          handle: resolveHandle(urlHandle),
-        },
-      },
+      website: getSocialMediaLink(
+        (await resolver.getText("url")) || null,
+        PlatformType.website
+      ),
+      links: LINKRES,
       addresses: {
         eth: address,
         btc: await resolver.getAddress(CoinType.bitcoin),

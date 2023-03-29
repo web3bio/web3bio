@@ -196,4 +196,10 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
       ensText: [],
       urlPrefix: "https://web5.bio",
     },
+    [PlatformType.website]: {
+      key: PlatformType.website,
+      color: "#121212",
+      label: "Unknown",
+      ensText: ["url"],
+    },
   };
