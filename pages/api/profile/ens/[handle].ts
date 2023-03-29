@@ -80,8 +80,35 @@ const resolveAddress = async (
     const avatar = name
       ? resolveMediaURL((await provider.getAvatar(name)) || null)
       : null;
-    const resolver = await provider.getResolver(name);
 
+    const gtext = await getENSTexts(name);
+    const resolver = await provider.getResolver(name);
+    let LINKRES = {};
+    if (gtext && gtext[0].resolver.texts) {
+      const linksRecords = gtext[0].resolver.texts;
+      const linksToFetch = linksRecords.reduce((pre, cur) => {
+        if (!ensRecordsDefaultOrShouldSkipText.includes(cur)) pre.push(cur);
+        return pre;
+      }, []);
+      const getLink = async () => {
+        const _linkRes = {};
+        for (let i = 0; i < linksToFetch.length; i++) {
+          const recordText = linksToFetch[i];
+          const key = _.findKey(SocialPlatformMapping, (o) => {
+            return o.ensText.includes(recordText);
+          });
+          const handle = resolveHandle(
+            (await resolver.getText(recordText)) || null
+          );
+          _linkRes[key] = {
+            link: getSocialMediaLink(handle, key),
+            handle: handle,
+          };
+        }
+        return _linkRes;
+      };
+      LINKRES = await getLink();
+    }
     const twitterHandle =
       (await resolver.getText("com.twitter")) ||
       (await resolver.getText("vnd.twitter")) ||
@@ -112,32 +139,7 @@ const resolveAddress = async (
         header: await resolveEipAssetURL(headerHandle || null),
         notice: (await resolver.getText("notice")) || null,
         keywords: (await resolver.getText("keywords")) || null,
-        links: {
-          twitter: {
-            link: getSocialMediaLink(twitterHandle, SocialPlatform.twitter),
-            handle: twitterHandle,
-          },
-          github: {
-            link: getSocialMediaLink(githubHandle, SocialPlatform.github),
-            handle: githubHandle,
-          },
-          telegram: {
-            link: getSocialMediaLink(tgHandle, SocialPlatform.telegram),
-            handle: tgHandle,
-          },
-          discord: {
-            link: getSocialMediaLink(discordHandle, SocialPlatform.discord),
-            handle: discordHandle,
-          },
-          reddit: {
-            link: getSocialMediaLink(redditHandle, SocialPlatform.reddit),
-            handle: redditHandle,
-          },
-          url: {
-            link: getSocialMediaLink(urlHandle, SocialPlatform.url),
-            handle: urlHandle,
-          },
-        },
+        links: LINKRES,
         addresses: {
           eth: address,
           btc: await resolver.getAddress(CoinType.bitcoin),
@@ -238,9 +240,9 @@ const resolveName = async (
       header: await resolveEipAssetURL(headerHandle || null),
       notice: (await resolver.getText("notice")) || null,
       keywords: (await resolver.getText("keywords")) || null,
-      website: getSocialMediaLink(
+      url: getSocialMediaLink(
         (await resolver.getText("url")) || null,
-        PlatformType.website
+        PlatformType.url
       ),
       links: LINKRES,
       addresses: {
