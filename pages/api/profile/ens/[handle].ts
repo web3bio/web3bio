@@ -13,7 +13,7 @@ import { gql } from "@apollo/client";
 import client from "../../../../utils/apollo";
 
 const getENSRecordsQuery = gql`
-  query Profile($name: string) {
+  query Profile($name: String) {
     domains(where: { name: $name }) {
       id
       name
@@ -264,11 +264,11 @@ export const getENSTexts = async (name: string) => {
       name,
     },
     context: {
-      url: ensSubGraphBase,
+      uri: ensSubGraphBase,
     },
   });
-
-  return fetchRes;
+  if (fetchRes) return fetchRes.data.domains;
+  return null;
 };
 
 export default async function handler(
