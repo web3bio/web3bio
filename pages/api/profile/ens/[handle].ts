@@ -163,6 +163,15 @@ const resolveEipAssetURL = async (asset) => {
   }
   return resolveMediaURL(asset);
 };
+
+const resolveHandle = (handle: string) => {
+  const prefix = "https://";
+  if (handle.startsWith(prefix)) {
+    return handle.split(prefix)[1];
+  }
+  return handle;
+};
+
 const resolveName = async (
   name: string,
   res: NextApiResponse<ENSResponseData>
@@ -188,56 +197,58 @@ const resolveName = async (
     const redditHandle = (await resolver.getText("com.reddit")) || null;
     const headerHandle = (await resolver.getText("header")) || null;
     const urlHandle = (await resolver.getText("url")) || null;
+
+    const resJSON = {
+      owner: address,
+      identity: name,
+      displayName: name,
+      avatar: await resolveEipAssetURL(avatar || null),
+      email: (await resolver.getText("email")) || null,
+      description: (await resolver.getText("description")) || null,
+      location: (await resolver.getText("location")) || null,
+      header: await resolveEipAssetURL(headerHandle || null),
+      notice: (await resolver.getText("notice")) || null,
+      keywords: (await resolver.getText("keywords")) || null,
+      links: {
+        twitter: {
+          link: getSocialMediaLink(twitterHandle, SocialPlatform.twitter),
+          handle: twitterHandle,
+        },
+        github: {
+          link: getSocialMediaLink(githubHandle, SocialPlatform.github),
+          handle: githubHandle,
+        },
+        telegram: {
+          link: getSocialMediaLink(tgHandle, SocialPlatform.telegram),
+          handle: tgHandle,
+        },
+        discord: {
+          link: getSocialMediaLink(discordHandle, SocialPlatform.discord),
+          handle: discordHandle,
+        },
+        reddit: {
+          link: getSocialMediaLink(redditHandle, SocialPlatform.reddit),
+          handle: redditHandle,
+        },
+        url: {
+          link: getSocialMediaLink(urlHandle, SocialPlatform.url),
+          handle: resolveHandle(urlHandle),
+        },
+      },
+      addresses: {
+        eth: address,
+        btc: await resolver.getAddress(CoinType.bitcoin),
+        ltc: await resolver.getAddress(CoinType.litecoin),
+        doge: await resolver.getAddress(CoinType.dogecoin),
+      },
+    };
     res
       .status(200)
       .setHeader(
         "CDN-Cache-Control",
         `s-maxage=${60 * 60 * 24}, stale-while-revalidate`
       )
-      .json({
-        owner: address,
-        identity: name,
-        displayName: name,
-        avatar: await resolveEipAssetURL(avatar || null),
-        email: (await resolver.getText("email")) || null,
-        description: (await resolver.getText("description")) || null,
-        location: (await resolver.getText("location")) || null,
-        header: await resolveEipAssetURL(headerHandle || null),
-        notice: (await resolver.getText("notice")) || null,
-        keywords: (await resolver.getText("keywords")) || null,
-        links: {
-          twitter: {
-            link: getSocialMediaLink(twitterHandle, SocialPlatform.twitter),
-            handle: twitterHandle,
-          },
-          github: {
-            link: getSocialMediaLink(githubHandle, SocialPlatform.github),
-            handle: githubHandle,
-          },
-          telegram: {
-            link: getSocialMediaLink(tgHandle, SocialPlatform.telegram),
-            handle: tgHandle,
-          },
-          discord: {
-            link: getSocialMediaLink(discordHandle, SocialPlatform.discord),
-            handle: discordHandle,
-          },
-          reddit: {
-            link: getSocialMediaLink(redditHandle, SocialPlatform.reddit),
-            handle: redditHandle,
-          },
-          url: {
-            link: getSocialMediaLink(urlHandle, SocialPlatform.url),
-            handle: urlHandle,
-          },
-        },
-        addresses: {
-          eth: address,
-          btc: await resolver.getAddress(CoinType.bitcoin),
-          ltc: await resolver.getAddress(CoinType.litecoin),
-          doge: await resolver.getAddress(CoinType.dogecoin),
-        },
-      });
+      .json(resJSON);
   } catch (error: any) {
     res.status(500).json({
       owner: null,
