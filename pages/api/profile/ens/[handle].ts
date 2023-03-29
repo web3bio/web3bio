@@ -9,6 +9,24 @@ import {
   NFTSCANFetcher,
   NFTSCAN_BASE_API_ENDPOINT,
 } from "../../../../components/apis/nftscan";
+import { gql } from "@apollo/client";
+import client from "../../../../utils/apollo";
+
+const getENSRecordsQuery = gql`
+  query Profile($name: string) {
+    domains(where: { name: $name }) {
+      id
+      name
+      resolver {
+        texts
+        coinTypes
+      }
+    }
+  }
+`;
+
+const ensSubGraphBase =
+  "https://api.thegraph.com/subgraphs/name/ensdomains/ens";
 
 const provider = new StaticJsonRpcProvider(
   process.env.NEXT_PUBLIC_ETHEREUM_RPC_URL
@@ -47,6 +65,7 @@ const resolveAddress = async (
       ? resolveMediaURL((await provider.getAvatar(name)) || null)
       : null;
     const resolver = await provider.getResolver(name);
+
     const twitterHandle =
       (await resolver.getText("com.twitter")) ||
       (await resolver.getText("vnd.twitter")) ||
@@ -153,6 +172,8 @@ const resolveName = async (
       provider.resolveName(name),
       provider.getAvatar(name),
     ]);
+    const gtext = await getENSTexts(name);
+    console.log(gtext, "ens");
     const resolver = await provider.getResolver(name);
     const twitterHandle =
       (await resolver.getText("com.twitter")) ||
@@ -234,6 +255,20 @@ const resolveName = async (
       error: error.message,
     });
   }
+};
+
+export const getENSTexts = async (name: string) => {
+  const fetchRes = await client.query({
+    query: getENSRecordsQuery,
+    variables: {
+      name,
+    },
+    context: {
+      url: ensSubGraphBase,
+    },
+  });
+
+  return fetchRes;
 };
 
 export default async function handler(
