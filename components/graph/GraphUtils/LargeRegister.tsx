@@ -60,7 +60,7 @@ export const register = () => {
               attrs: {
                 text,
                 x: 0,
-                y: cfg.platform === "ens" ? 28 : 8 * lineNum,
+                y: cfg.platform === "ENS" ? 28 : 8 * lineNum,
                 textAlign: "center",
                 textBaseLine: "middle",
                 cursor: "pointer",
