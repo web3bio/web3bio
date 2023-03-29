@@ -3,11 +3,11 @@ import { PlatformType } from "./type";
 type SocialPlatform = {
   key: string;
   color: string;
-  icon: string;
-  iconW: string;
+  icon?: string;
+  iconW?: string;
   label: string;
-  urlPrefix: string;
-  ensText: string[];
+  urlPrefix?: string;
+  ensText?: string[];
 };
 
 export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
