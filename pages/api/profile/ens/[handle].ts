@@ -78,12 +78,18 @@ const resolveAddress = async (
     }
 
     const avatar = name
-      ? resolveMediaURL((await provider.getAvatar(name)) || null)
+      ? resolveEipAssetURL((await provider.getAvatar(name)) || null)
       : null;
 
     const gtext = await getENSTexts(name);
     const resolver = await provider.getResolver(name);
     let LINKRES = {};
+    let CRYPTORES = {
+      eth: address,
+      btc: null,
+      ltc: null,
+      doge: null,
+    };
     if (gtext && gtext[0].resolver.texts) {
       const linksRecords = gtext[0].resolver.texts;
       const linksToFetch = linksRecords.reduce((pre, cur) => {
@@ -109,33 +115,65 @@ const resolveAddress = async (
       };
       LINKRES = await getLink();
     }
+    if (gtext && gtext[0].resolver.coinTypes) {
+      const cryptoRecrods = gtext[0].resolver.coinTypes;
+      const cryptoRecordsToFetch = cryptoRecrods.reduce((pre, cur) => {
+        if (
+          ![CoinType.btc, CoinType.eth, CoinType.ltc, CoinType.doge].includes(
+            Number(cur)
+          ) &&
+          _.findKey(CoinType, (o) => o == cur)
+        )
+          pre.push(cur);
+        return pre;
+      }, []);
+      const getCrypto = async () => {
+        const _cryptoRes = {};
+        for (let i = 0; i < cryptoRecordsToFetch.length; i++) {
+          const _coinType = cryptoRecordsToFetch[i];
+          const key = _.findKey(CoinType, (o) => {
+            return o == _coinType;
+          });
 
+          _cryptoRes[key] = (await resolver.getAddress(_coinType)) || null;
+        }
+        return _cryptoRes;
+      };
+      CRYPTORES = {
+        eth: address,
+        btc: await resolver.getAddress(CoinType.btc),
+        ltc: await resolver.getAddress(CoinType.ltc),
+        doge: await resolver.getAddress(CoinType.doge),
+        ...(await getCrypto()),
+      };
+    }
     const headerHandle = (await resolver.getText("header")) || null;
+    const resJSON = {
+      owner: address,
+      identity: name,
+      displayName: name,
+      avatar: await resolveEipAssetURL(avatar || null),
+      email: (await resolver.getText("email")) || null,
+      description: (await resolver.getText("description")) || null,
+      location: (await resolver.getText("location")) || null,
+      header: await resolveEipAssetURL(headerHandle || null),
+      notice: (await resolver.getText("notice")) || null,
+      keywords: (await resolver.getText("keywords")) || null,
+      url: getSocialMediaLink(
+        (await resolver.getText("url")) || null,
+        PlatformType.url
+      ),
+      links: LINKRES,
+      addresses: CRYPTORES,
+    };
+
     res
       .status(200)
       .setHeader(
         "CDN-Cache-Control",
         `s-maxage=${60 * 60 * 24}, stale-while-revalidate`
       )
-      .json({
-        owner: address,
-        identity: name,
-        displayName: name,
-        avatar,
-        email: (await resolver.getText("email")) || null,
-        description: (await resolver.getText("description")) || null,
-        location: (await resolver.getText("location")) || null,
-        header: await resolveEipAssetURL(headerHandle || null),
-        notice: (await resolver.getText("notice")) || null,
-        keywords: (await resolver.getText("keywords")) || null,
-        links: LINKRES,
-        addresses: {
-          eth: address,
-          btc: await resolver.getAddress(CoinType.btc),
-          ltc: await resolver.getAddress(CoinType.ltc),
-          doge: await resolver.getAddress(CoinType.doge),
-        },
-      });
+      .json(resJSON);
   } catch (error: any) {
     res.status(500).json({
       owner: address,
