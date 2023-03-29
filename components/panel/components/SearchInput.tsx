@@ -1,29 +1,13 @@
-import router from "next/router";
 import { useEffect, useRef, useState } from "react";
 import SVG from "react-inlinesvg";
 import {
   DomainSearchSuffix,
   fuzzyDomainSuffix,
 } from "../../../utils/constants";
+import { SocialPlatformMapping } from "../../../utils/platform";
 import { matchQuery } from "../../../utils/queries";
 import { PlatformType } from "../../../utils/type";
 import { handleSearchPlatform } from "../../../utils/utils";
-
-const resolveSearchPlatformIcon = (platform) => {
-  return (
-    {
-      [PlatformType.twitter]: "/icons/icon-twitter.svg",
-      [PlatformType.nextid]: "/icons/icon-nextid.svg",
-      [PlatformType.ethereum]: "/icons/icon-ethereum.svg",
-      [PlatformType.ens]: "/icons/icon-ethereum.svg",
-      [PlatformType.farcaster]: "/icons/icon-farcaster.svg",
-      [PlatformType.lens]: "/icons/icon-lens.svg",
-      [PlatformType.dotbit]: "/icons/icon-dotbit.svg",
-      [PlatformType.unstoppableDomains]: "icons/icon-unstoppabledomains.svg",
-      [PlatformType.space_id]: "/icons/icon-spaceid.svg",
-    }[platform] || ""
-  );
-};
 
 const isQuerySplit = (query: string) => {
   return query.includes(".") || query.includes("。");
@@ -61,7 +45,7 @@ export const SearchInput = (props) => {
         backupDomains.reduce((pre, cur) => {
           if (cur.includes(query.replace("。", "."))) {
             pre.push({
-              icon: resolveSearchPlatformIcon(handleSearchPlatform(cur)) || "",
+              icon: SocialPlatformMapping[handleSearchPlatform(cur)].icon || "",
               label: cur,
             });
           }
@@ -77,7 +61,7 @@ export const SearchInput = (props) => {
           if (!isLastDot || cur.label.length > 0) {
             pre.push({
               key: cur.key,
-              icon: resolveSearchPlatformIcon(cur.key),
+              icon: SocialPlatformMapping[cur.key].icon,
               label: label,
             });
           }

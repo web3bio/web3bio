@@ -2,6 +2,7 @@ import { BigNumber } from "bignumber.js";
 import { EthereumAddress } from "wallet.ts";
 import { resolveIPFS_URL } from "./ipfs";
 import { pow10 } from "./number";
+import { SocialPlatformMapping } from "./platform";
 import {
   regexDotbit,
   regexEns,
@@ -103,25 +104,15 @@ export enum SocialPlatform {
 }
 
 export function resolveSocialMediaLink(name, type) {
+  if (!Object.keys(PlatformType).includes(type))
+    return `https://web5.bio/?s=${name}`;
   switch (type) {
     case SocialPlatform.url:
       return `${name}`;
     case SocialPlatform.website:
       return `https://${name}`;
-    case SocialPlatform.github:
-      return `https://github.com/${name}`;
-    case SocialPlatform.twitter:
-      return `https://twitter.com/${name}`;
-    case SocialPlatform.telegram:
-      return `https://t.me/${name}`;
-    case SocialPlatform.reddit:
-      return `https://www.reddit.com/user/${name}`;
-    case SocialPlatform.discord:
-      return `https://discord.gg/${name}`;
-    case SocialPlatform.instagram:
-      return `https://instagram.com/${name}`;
     default:
-      return `https://web5.bio/?s=${name}`;
+      return SocialPlatformMapping[type].urlPrefix + name;
   }
 }
 
