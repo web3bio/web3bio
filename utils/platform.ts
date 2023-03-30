@@ -118,7 +118,7 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
       icon: "icons/icon-telegram.svg",
       iconW: "icons/icon-telegram-w.svg",
       label: "Telegram",
-      ensText: ["org.telegram"],
+      ensText: ["org.telegram", "vnd.telegram", "VND.TELEGRAM"],
       urlPrefix: "https://t.me/",
     },
     [PlatformType.instagram]: {
@@ -157,7 +157,6 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
       iconW: "icons/icon-cyberconnect-w.svg",
       label: "CyberConnect",
       ensText: [],
-      urlPrefix: "https://link3.to/cyberconnect",
     },
     [PlatformType.opensea]: {
       key: PlatformType.cyberconnect,
@@ -185,7 +184,7 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
       iconW: "icons/icon-discord-w.svg",
       label: "Discord",
       ensText: ["com.discord"],
-      urlPrefix: "https://discord.gg/",
+      urlPrefix: "https://discord.com/",
     },
     [PlatformType.unknown]: {
       key: PlatformType.unknown,
@@ -194,6 +193,25 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
       iconW: "icons/icon-nextid-w.svg",
       label: "Unknown",
       ensText: [],
-      urlPrefix: "https://web5.bio",
+    },
+    [PlatformType.url]: {
+      key: PlatformType.url,
+      color: "#121212",
+      label: "Unknown",
+      ensText: ["url"],
+    },
+    [PlatformType.website]: {
+      key: PlatformType.website,
+      color: "#121212",
+      label: "Unknown",
+      ensText: [],
+    },
+    [PlatformType.linkedin]: {
+      key: PlatformType.linkedin,
+      color: "#195DB4",
+      label: "LinkedIn",
+      icon: "ioncs/social-linkedin.svg",
+      ensText: ["com.linkedin"],
+      urlPrefix: "https://www.linkedin.com/in/",
     },
   };

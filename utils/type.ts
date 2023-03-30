@@ -19,4 +19,7 @@ export enum PlatformType {
   sybil = "sybil",
   discord = "discord",
   unknown = "unknown",
+  url = 'url',
+  website = 'website',
+  linkedin= 'linkedin'
 }

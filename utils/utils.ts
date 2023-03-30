@@ -96,9 +96,9 @@ export function resolveSocialMediaLink(name, type) {
   if (!Object.keys(PlatformType).includes(type))
     return `https://web5.bio/?s=${name}`;
   switch (type) {
-    case "url":
+    case SocialPlatformMapping.url.key:
       return `${name}`;
-    case "website":
+    case SocialPlatformMapping.website.key:
       return `https://${name}`;
     default:
       return SocialPlatformMapping[type].urlPrefix + name;
@@ -179,11 +179,6 @@ export function isValidAddress(address?: string) {
 }
 
 export const resolveMediaURL = (asset) => {
-  const eipPrefix = "eip155:1/erc721:";
-  if (asset) {
-    return asset.startsWith("data:", "https:", eipPrefix)
-      ? asset
-      : resolveIPFS_URL(asset);
-  }
-  return "";
+  if (!asset) return null;
+  return asset.startsWith("data:", "https:") ? asset : resolveIPFS_URL(asset);
 };

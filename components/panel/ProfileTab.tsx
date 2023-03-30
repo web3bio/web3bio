@@ -3,6 +3,7 @@ import SVG from "react-inlinesvg";
 import { useAsync } from "react-use";
 import useSWR from "swr";
 import { ens, globalRecordKeys, provider } from "../../utils/domains";
+import { SocialPlatformMapping } from "../../utils/platform";
 import { isValidAddress, resolveSocialMediaLink } from "../../utils/utils";
 import { ENSFetcher, ENS_METADATA_END_POINT } from "../apis/ens";
 import { Loading } from "../shared/Loading";
@@ -13,39 +14,39 @@ import { Poaps } from "./components/Poaps";
 const socialButtonMapping = {
   ["com.github"]: {
     icon: "icons/icon-github.svg",
-    type: "github",
+    type: SocialPlatformMapping.github.key,
   },
   ["com.twitter"]: {
     icon: "icons/icon-twitter.svg",
-    type: "twitter",
+    type: SocialPlatformMapping.twitter.key,
   },
   ["vnd.github"]: {
     icon: "icons/icon-github.svg",
-    type: "github",
+    type: SocialPlatformMapping.github.key,
   },
   ["vnd.twitter"]: {
     icon: "icons/icon-twitter.svg",
-    type: "twitter",
+    type: SocialPlatformMapping.twitter.key,
   },
   ["com.instagram"]: {
     icon: "icons/icon-instagram.svg",
-    type: "instagram",
+    type: SocialPlatformMapping.instagram.key,
   },
   ["com.discord"]: {
     icon: "icons/icon-discord.svg",
-    type: "discord",
+    type: SocialPlatformMapping.discord.key,
   },
   ["com.reddit"]: {
     icon: "icons/icon-reddit.svg",
-    type: "reddit",
+    type: SocialPlatformMapping.reddit.key,
   },
   ["org.telegram"]: {
     icon: "icons/icon-telegram.svg",
-    type: "telegram",
+    type: SocialPlatformMapping.telegram.key,
   },
   ["url"]: {
     icon: "icons/icon-web.svg",
-    type: "url",
+    type: SocialPlatformMapping.url.key,
   },
 };
 
@@ -65,8 +66,7 @@ export function useProfile(domain: string, initialData) {
 }
 
 export const ProfileTab = (props) => {
-  const { identity, toNFT, network, poaps, prefetchingCollections } =
-    props;
+  const { identity, toNFT, network, poaps, prefetchingCollections } = props;
   const domain = identity.displayName || identity.identity;
   const [dialogOpen, setDialogOpen] = useState(false);
   const [currentPoap, setCurrentPoap] = useState(null);
