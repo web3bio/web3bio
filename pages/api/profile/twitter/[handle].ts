@@ -41,7 +41,7 @@ const resolveHandle = async (
       ),
       email: null,
       description: response.description,
-      location: null,
+      location: response.location,
       header: response.profile_banner_url,
       notice: null,
       keywords: null,
