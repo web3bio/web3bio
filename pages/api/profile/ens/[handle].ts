@@ -61,138 +61,6 @@ const resolve = (from: string, to: string) => {
   return resolvedUrl.toString();
 };
 
-const resolveAddress = async (
-  lowercaseAddress: string,
-  res: NextApiResponse<ENSResponseData>
-) => {
-  const address = getAddress(lowercaseAddress);
-  let displayName = address.replace(
-    /^(0x[0-9A-F]{3})[0-9A-F]+([0-9A-F]{4})$/i,
-    "$1…$2"
-  );
-
-  try {
-    const name = await provider.lookupAddress(address);
-    if (name) {
-      displayName = name;
-    }
-
-    const avatar = name
-      ? resolveEipAssetURL((await provider.getAvatar(name)) || null)
-      : null;
-
-    const gtext = await getENSTexts(name);
-    const resolver = await provider.getResolver(name);
-    let LINKRES = {};
-    let CRYPTORES = {
-      eth: address,
-      btc: null,
-      ltc: null,
-      doge: null,
-    };
-    if (gtext && gtext[0].resolver.texts) {
-      const linksRecords = gtext[0].resolver.texts;
-      const linksToFetch = linksRecords.reduce((pre, cur) => {
-        if (!ensRecordsDefaultOrShouldSkipText.includes(cur)) pre.push(cur);
-        return pre;
-      }, []);
-      const getLink = async () => {
-        const _linkRes = {};
-        for (let i = 0; i < linksToFetch.length; i++) {
-          const recordText = linksToFetch[i];
-          const key = _.findKey(SocialPlatformMapping, (o) => {
-            return o.ensText.includes(recordText);
-          });
-          const handle = resolveHandle(
-            (await resolver.getText(recordText)) || null
-          );
-          _linkRes[key] = {
-            link: getSocialMediaLink(handle, key),
-            handle: handle,
-          };
-        }
-        return _linkRes;
-      };
-      LINKRES = await getLink();
-    }
-    if (gtext && gtext[0].resolver.coinTypes) {
-      const cryptoRecrods = gtext[0].resolver.coinTypes;
-      const cryptoRecordsToFetch = cryptoRecrods.reduce((pre, cur) => {
-        if (
-          ![CoinType.btc, CoinType.eth, CoinType.ltc, CoinType.doge].includes(
-            Number(cur)
-          ) &&
-          _.findKey(CoinType, (o) => o == cur)
-        )
-          pre.push(cur);
-        return pre;
-      }, []);
-      const getCrypto = async () => {
-        const _cryptoRes = {};
-        for (let i = 0; i < cryptoRecordsToFetch.length; i++) {
-          const _coinType = cryptoRecordsToFetch[i];
-          const key = _.findKey(CoinType, (o) => {
-            return o == _coinType;
-          });
-
-          _cryptoRes[key] = (await resolver.getAddress(_coinType)) || null;
-        }
-        return _cryptoRes;
-      };
-      CRYPTORES = {
-        eth: address,
-        btc: await resolver.getAddress(CoinType.btc),
-        ltc: await resolver.getAddress(CoinType.ltc),
-        doge: await resolver.getAddress(CoinType.doge),
-        ...(await getCrypto()),
-      };
-    }
-    const headerHandle = (await resolver.getText("header")) || null;
-    const resJSON = {
-      owner: address,
-      identity: name,
-      displayName: name,
-      avatar: await resolveEipAssetURL(avatar || null),
-      email: (await resolver.getText("email")) || null,
-      description: (await resolver.getText("description")) || null,
-      location: (await resolver.getText("location")) || null,
-      header: await resolveEipAssetURL(headerHandle || null),
-      notice: (await resolver.getText("notice")) || null,
-      keywords: (await resolver.getText("keywords")) || null,
-      url: getSocialMediaLink(
-        (await resolver.getText("url")) || null,
-        PlatformType.url
-      ),
-      links: LINKRES,
-      addresses: CRYPTORES,
-    };
-
-    res
-      .status(200)
-      .setHeader(
-        "CDN-Cache-Control",
-        `s-maxage=${60 * 60 * 24}, stale-while-revalidate`
-      )
-      .json(resJSON);
-  } catch (error: any) {
-    res.status(500).json({
-      owner: address,
-      identity: null,
-      displayName: null,
-      avatar: null,
-      email: null,
-      description: null,
-      location: null,
-      header: null,
-      notice: null,
-      keywords: null,
-      links: {},
-      addresses: {},
-      error: error.message,
-    });
-  }
-};
-
 const resolveEipAssetURL = async (asset) => {
   if (!asset) return null;
   const eipPrefix = "eip155:1/erc721:";
@@ -217,15 +85,25 @@ const resolveHandle = (handle: string) => {
   return handle;
 };
 
-const resolveName = async (
-  name: string,
+const resolveHandleFromURL = async (
+  handle: string,
   res: NextApiResponse<ENSResponseData>
 ) => {
   try {
-    const [address, avatar] = await Promise.all([
-      provider.resolveName(name),
-      provider.getAvatar(name),
-    ]);
+    let address = "";
+    let name = "";
+    let avatar = null;
+    if (isAddress(handle)) {
+      address = getAddress(handle);
+      name = await provider.lookupAddress(address);
+    } else {
+      [address, avatar] = await Promise.all([
+        provider.resolveName(handle),
+        provider.getAvatar(handle),
+      ]);
+      name = handle;
+    }
+
     const gtext = await getENSTexts(name);
     const resolver = await provider.getResolver(name);
     let LINKRES = {};
@@ -321,9 +199,9 @@ const resolveName = async (
       .json(resJSON);
   } catch (error: any) {
     res.status(500).json({
-      owner: null,
-      identity: name,
-      displayName: name,
+      owner: isAddress(handle) ? handle : null,
+      identity: isAddress(handle) ? null : handle,
+      displayName: isAddress(handle) ? null : handle,
       avatar: null,
       email: null,
       description: null,
@@ -363,7 +241,5 @@ export default async function handler(
     return res.redirect(307, resolve(req.url!, lowercaseAddress));
   }
 
-  return isAddress(lowercaseAddress)
-    ? resolveAddress(lowercaseAddress, res)
-    : resolveName(lowercaseAddress, res);
+  return resolveHandleFromURL(lowercaseAddress, res);
 }
