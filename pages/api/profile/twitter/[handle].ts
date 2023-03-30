@@ -28,8 +28,9 @@ const resolveHandle = async (
 ) => {
   try {
     const response = await FetchFromOrigin(handle);
-    const url = response.url || _.findKey(response.entities, "urls")[0];
-    console.log(url, response.profile_background_image_url_https, "kkkkk");
+    const url = response.entities.url
+      ? response.entities.url.urls[0].expanded_url
+      : response.url || null;
     const resJSON = {
       owner: handle,
       identity: handle,
