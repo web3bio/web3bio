@@ -194,7 +194,6 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
       iconW: "icons/icon-nextid-w.svg",
       label: "Unknown",
       ensText: [],
-      urlPrefix: "https://web5.bio",
     },
     [PlatformType.url]: {
       key: PlatformType.url,
