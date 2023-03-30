@@ -2,7 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { StaticJsonRpcProvider } from "@ethersproject/providers";
 import { getAddress, isAddress } from "@ethersproject/address";
-import { CoinType, ENSResponseData } from "./types";
+import { CoinType, HandleResponseData } from "./types";
 import { getSocialMediaLink } from "./utils";
 import { resolveMediaURL } from "../../../../utils/utils";
 import {
@@ -88,7 +88,7 @@ const resolveHandle = (handle: string) => {
 
 const resolveHandleFromURL = async (
   handle: string,
-  res: NextApiResponse<ENSResponseData>
+  res: NextApiResponse<HandleResponseData>
 ) => {
   try {
     let address = "";
@@ -134,9 +134,13 @@ const resolveHandleFromURL = async (
             (await resolver.getText(recordText)) || null
           );
           if (handle) {
+            const resolvedHandle =
+              key === SocialPlatformMapping.twitter.key
+                ? handle.replaceAll("@", "")
+                : handle;
             _linkRes[key] = {
-              link: getSocialMediaLink(handle, key),
-              handle: handle,
+              link: getSocialMediaLink(resolvedHandle, key),
+              handle: resolvedHandle,
             };
           }
         }
@@ -238,7 +242,7 @@ export const getENSTexts = async (name: string) => {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ENSResponseData>
+  res: NextApiResponse<HandleResponseData>
 ) {
   const inputAddress = firstParam(req.query.handle);
   const lowercaseAddress = inputAddress.toLowerCase();
