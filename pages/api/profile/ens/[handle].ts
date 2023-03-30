@@ -133,10 +133,12 @@ const resolveHandleFromURL = async (
           const handle = resolveHandle(
             (await resolver.getText(recordText)) || null
           );
-          _linkRes[key] = {
-            link: getSocialMediaLink(handle, key),
-            handle: handle,
-          };
+          if (handle) {
+            _linkRes[key] = {
+              link: getSocialMediaLink(handle, key),
+              handle: handle,
+            };
+          }
         }
         return _linkRes;
       };
