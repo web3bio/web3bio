@@ -134,9 +134,13 @@ const resolveHandleFromURL = async (
             (await resolver.getText(recordText)) || null
           );
           if (handle) {
+            const resolvedHandle =
+              key === SocialPlatformMapping.twitter.key
+                ? handle.replaceAll("@", "")
+                : handle;
             _linkRes[key] = {
-              link: getSocialMediaLink(handle, key),
-              handle: handle,
+              link: getSocialMediaLink(resolvedHandle, key),
+              handle: resolvedHandle,
             };
           }
         }
