@@ -16,6 +16,7 @@ import { SocialPlatformMapping } from "../../../../utils/platform";
 import { PlatformType } from "../../../../utils/type";
 
 const ensRecordsDefaultOrShouldSkipText = [
+  "name",
   "email",
   "snapshot",
   "avatar",
@@ -151,7 +152,7 @@ const resolveAddress = async (
     const resJSON = {
       owner: address,
       identity: name,
-      displayName: name,
+      displayName: (await resolver.getText("name")) || name,
       avatar: await resolveEipAssetURL(avatar || null),
       email: (await resolver.getText("email")) || null,
       description: (await resolver.getText("description")) || null,
@@ -297,7 +298,7 @@ const resolveName = async (
     const resJSON = {
       owner: address,
       identity: name,
-      displayName: name,
+      displayName: (await resolver.getText("name")) || name,
       avatar: await resolveEipAssetURL(avatar || null),
       email: (await resolver.getText("email")) || null,
       description: (await resolver.getText("description")) || null,
