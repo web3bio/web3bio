@@ -118,7 +118,7 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
       icon: "icons/icon-telegram.svg",
       iconW: "icons/icon-telegram-w.svg",
       label: "Telegram",
-      ensText: ["org.telegram"],
+      ensText: ["org.telegram", "vnd.telegram", "VND.TELEGRAM"],
       urlPrefix: "https://t.me/",
     },
     [PlatformType.instagram]: {

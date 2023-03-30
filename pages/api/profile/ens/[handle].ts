@@ -121,17 +121,19 @@ const resolveHandleFromURL = async (
         if (!ensRecordsDefaultOrShouldSkipText.includes(cur)) pre.push(cur);
         return pre;
       }, []);
+
       const getLink = async () => {
         const _linkRes = {};
         for (let i = 0; i < linksToFetch.length; i++) {
           const recordText = linksToFetch[i];
-          const key = _.findKey(SocialPlatformMapping, (o) => {
-            return o.ensText.includes(recordText);
-          });
+          const key =
+            _.findKey(SocialPlatformMapping, (o) => {
+              return o.ensText.includes(recordText);
+            }) || recordText;
           const handle = resolveHandle(
             (await resolver.getText(recordText)) || null
           );
-          _linkRes[key || SocialPlatformMapping.ENS.key] = {
+          _linkRes[key] = {
             link: getSocialMediaLink(handle, key),
             handle: handle,
           };
