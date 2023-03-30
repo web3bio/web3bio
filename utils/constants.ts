@@ -1,89 +1,95 @@
+import { PlatformType } from "./type";
+
 // empty for twitter and farcaster
 export const DomainSearchSuffix = [
   {
-    key: "ethereum",
+    key: PlatformType.ens,
     label: "eth",
   },
   {
-    key: "lens",
-    label: "lens",
+    key: PlatformType.lens,
+    label: PlatformType.lens,
   },
   {
-    key: "twitter",
+    key: PlatformType.twitter,
     label: "",
   },
   {
-    key: "farcaster",
+    key: PlatformType.farcaster,
     label: "",
   },
   {
-    key: "unstoppabledomains",
+    key: PlatformType.unstoppableDomains,
     label: "crypto",
   },
 ];
 export const fuzzyDomainSuffix = [
   {
-    key: "ethereum",
+    key: PlatformType.ens,
     label: "eth",
   },
   {
-    key: "lens",
+    key: PlatformType.lens,
     label: "lens",
   },
   {
-    key: "unstoppabledomains",
+    key: PlatformType.unstoppableDomains,
     label: "crypto",
   },
   {
-    key: "unstoppabledomains",
+    key: PlatformType.unstoppableDomains,
     label: "dao",
   },
   {
-    key: "unstoppabledomains",
+    key: PlatformType.unstoppableDomains,
     label: "bitcoin",
   },
   {
-    key: "unstoppabledomains",
+    key: PlatformType.unstoppableDomains,
     label: "blockchain",
   },
   {
-    key: "dotbit",
+    key: PlatformType.dotbit,
     label: "bit",
   },
   {
-    key: "unstoppabledomains",
+    key: PlatformType.unstoppableDomains,
     label: "nft",
   },
   {
-    key: "unstoppabledomains",
+    key: PlatformType.unstoppableDomains,
     label: "888",
   },
   {
-    key: "unstoppabledomains",
+    key: PlatformType.unstoppableDomains,
     label: "wallet",
   },
   {
-    key: "unstoppabledomains",
+    key: PlatformType.unstoppableDomains,
     label: "x",
   },
   {
-    key: "unstoppabledomains",
+    key: PlatformType.unstoppableDomains,
     label: "klever",
   },
   {
-    key: "unstoppabledomains",
+    key: PlatformType.unstoppableDomains,
     label: "zil",
   },
   {
-    key: "unstoppabledomains",
+    key: PlatformType.unstoppableDomains,
     label: "hi",
   },
   {
-    key: "unstoppabledomains",
+    key: PlatformType.unstoppableDomains,
     label: "kresus",
   },
   {
-    key: "space_id",
+    key: PlatformType.unstoppableDomains,
+    label: "polygon",
+  },
+  {
+    key: PlatformType.space_id,
     label: "bnb",
   },
   // {

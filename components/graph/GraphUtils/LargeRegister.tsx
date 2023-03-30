@@ -1,29 +1,10 @@
 import isArray from "@antv/util/lib/is-array";
 import isNumber from "@antv/util/lib/is-number";
-import { colorsMap } from "../../../utils/maps";
+import { SocialPlatformMapping } from "../../../utils/platform";
 import { PlatformType } from "../../../utils/type";
 
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;
-
-const resolvePlatformIcon = (platform) => {
-  return (
-    {
-      [PlatformType.twitter]: "/icons/icon-twitter-w.svg",
-      [PlatformType.nextid]: "/icons/icon-nextid-w.svg",
-      [PlatformType.keybase]: "/icons/icon-keybase-w.svg",
-      [PlatformType.ethereum]: "/icons/icon-ethereum-w.svg",
-      [PlatformType.reddit]: "/icons/icon-reddit-w.svg",
-      [PlatformType.ens.toLowerCase()]: "/icons/icon-ens-w.svg",
-      [PlatformType.lens]: "/icons/icon-lens-w.svg",
-      [PlatformType.github]: "/icons/icon-github-w.svg",
-      [PlatformType.dotbit]: "/icons/icon-dotbit-w.svg",
-      [PlatformType.farcaster]: "/icons/icon-farcaster-w.svg",
-      [PlatformType.space_id]: "/icons/icon-spaceid-w.svg",
-      [PlatformType.unstoppableDomains]:"icons/icon-unstoppabledomains.svg"
-    }[platform] || ""
-  );
-};
 
 export const register = () => {
   if (G6) {
@@ -48,7 +29,9 @@ export const register = () => {
               y: 0,
               r,
               fill: "#fff",
-              stroke: colorsMap[cfg.platform] || "rgba(0, 0, 0, .15)",
+              stroke:
+                SocialPlatformMapping[cfg.platform].color ||
+                "rgba(0, 0, 0, .15)",
               opacity: 1,
               lineWidth: 2,
               cursor: "pointer",
@@ -77,7 +60,7 @@ export const register = () => {
               attrs: {
                 text,
                 x: 0,
-                y: cfg.platform === "ens" ? 28 : 8 * lineNum,
+                y: cfg.platform === "ENS" ? 28 : 8 * lineNum,
                 textAlign: "center",
                 textBaseLine: "middle",
                 cursor: "pointer",
@@ -98,7 +81,7 @@ export const register = () => {
                   x: r - 14,
                   y: -r + 14,
                   r: 14,
-                  fill: colorsMap[cfg.platform],
+                  fill: SocialPlatformMapping[cfg.platform].color,
                   zIndex: 9,
                 },
                 name: "image-shape",
@@ -109,7 +92,7 @@ export const register = () => {
                   y: -r + 4,
                   width: 20,
                   height: 20,
-                  img: resolvePlatformIcon(cfg.platform),
+                  img: SocialPlatformMapping[cfg.platform].iconW,
                   zIndex: 9,
                   cursor: "pointer",
                 },
@@ -123,7 +106,7 @@ export const register = () => {
                   x: 0,
                   y: 0,
                   r: 12,
-                  fill: colorsMap[cfg.platform],
+                  fill: SocialPlatformMapping[cfg.platform].color,
                   zIndex: 9,
                 },
                 name: "image-shape",
@@ -134,7 +117,7 @@ export const register = () => {
                   y: -8,
                   width: 16,
                   height: 16,
-                  img: resolvePlatformIcon(cfg.platform),
+                  img: SocialPlatformMapping[cfg.platform].iconW,
                   zIndex: 9,
                   cursor: "pointer",
                 },

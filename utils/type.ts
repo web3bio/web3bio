@@ -11,4 +11,15 @@ export enum PlatformType {
   unstoppableDomains = "unstoppabledomains",
   farcaster = "farcaster",
   space_id = "space_id",
+  telegram = "telegram",
+  instagram = "instagram",
+  rss3 = "rss3",
+  cyberconnect = "cyberconnect",
+  opensea = "opensea",
+  sybil = "sybil",
+  discord = "discord",
+  unknown = "unknown",
+  url = 'url',
+  website = 'website',
+  linkedin= 'linkedin'
 }
