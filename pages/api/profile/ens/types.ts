@@ -16,7 +16,7 @@ type AddressesData = {
   ltc?: string | null;
   doge?: string | null;
 };
-export type ENSResponseData = {
+export type HandleResponseData = {
   owner: string | null;
   identity: string | null;
   displayName: string | null;
@@ -29,8 +29,10 @@ export type ENSResponseData = {
   keywords: string | null;
   links: LinksData | null;
   addresses: AddressesData | null;
+  url?: string
   error?: string;
 };
+
 
 export const CoinType = {
   btc: 0,
