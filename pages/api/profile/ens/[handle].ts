@@ -96,7 +96,8 @@ const resolveHandleFromURL = async (
     let avatar = null;
     if (isAddress(handle)) {
       address = getAddress(handle);
-      name = await provider.lookupAddress(address);
+      name = (await provider.lookupAddress(address)) || null;
+      avatar = (await provider.getAvatar(name)) || null;
     } else {
       [address, avatar] = await Promise.all([
         provider.resolveName(handle),
