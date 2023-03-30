@@ -207,4 +207,11 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
       label: "Unknown",
       ensText: [],
     },
+    [PlatformType.linkedin]: {
+      key: PlatformType.linkedin,
+      color: "#121212",
+      label: "Unknown",
+      icon: "ioncs/social-linkedin.svg",
+      ensText: ["com.linkedin"],
+    },
   };

@@ -131,7 +131,7 @@ const resolveHandleFromURL = async (
           const handle = resolveHandle(
             (await resolver.getText(recordText)) || null
           );
-          _linkRes[key] = {
+          _linkRes[key || SocialPlatformMapping.ENS.key] = {
             link: getSocialMediaLink(handle, key),
             handle: handle,
           };
