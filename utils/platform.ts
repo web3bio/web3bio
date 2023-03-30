@@ -157,7 +157,6 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
       iconW: "icons/icon-cyberconnect-w.svg",
       label: "CyberConnect",
       ensText: [],
-      urlPrefix: "https://link3.to/cyberconnect",
     },
     [PlatformType.opensea]: {
       key: PlatformType.cyberconnect,
@@ -185,7 +184,7 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
       iconW: "icons/icon-discord-w.svg",
       label: "Discord",
       ensText: ["com.discord"],
-      urlPrefix: "https://discord.gg/",
+      urlPrefix: "https://discord.com/",
     },
     [PlatformType.unknown]: {
       key: PlatformType.unknown,
@@ -209,9 +208,10 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
     },
     [PlatformType.linkedin]: {
       key: PlatformType.linkedin,
-      color: "#121212",
-      label: "Unknown",
+      color: "#195DB4",
+      label: "LinkedIn",
       icon: "ioncs/social-linkedin.svg",
       ensText: ["com.linkedin"],
+      urlPrefix: "https://www.linkedin.com/in/",
     },
   };
