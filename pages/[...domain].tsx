@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import { memo, useEffect, useRef, useState } from "react";
 import { IdentityPanel, TabsMap } from "../components/panel/IdentityPanel";
@@ -34,7 +34,7 @@ const RenderDomainPanel = (props) => {
   const [nftDialogOpen, setNftDialogOpen] = useState(false);
   const profileContainer = useRef(null);
 
-  const { loading, error, data, refetch } = useQuery(
+  const [fetchIdentity, { loading, error, data, called }] = useLazyQuery(
     platform === PlatformType.lens
       ? GET_PROFILE_LENS
       : isDomainSearch(platform)
@@ -48,25 +48,17 @@ const RenderDomainPanel = (props) => {
           context: {
             uri: process.env.NEXT_PUBLIC_LENS_GRAPHQL_SERVER,
           },
-          skip: domain && platform ? false : true,
+          fetchPolicy: "cache-and-network",
         }
       : {
           variables: {
             platform: platform,
             identity: domain[0] || null,
           },
-          skip: domain && platform ? false : true,
+          fetchPolicy: "cache-and-network",
         }
   );
-  useEffect(() => {
-    if (!router.isReady) return;
-    if (!router.query.domain) return;
-    if (router.query.domain.length > 1) {
-      setPanelTab(router.query.domain[1]);
-    } else {
-      setPanelTab(TabsMap.profile.key);
-    }
-  }, [router.isReady, router.query.domain]);
+
   useEffect(() => {
     if (asComponent) {
       setPlatform(handleSearchPlatform(domain[0]));
@@ -76,8 +68,9 @@ const RenderDomainPanel = (props) => {
       setDomain(router.query.domain as string[]);
       setPlatform(handleSearchPlatform(router.query.domain[0] || domain[0]));
     }
+    if (platform && domain && !called) fetchIdentity();
     const _identity = (() => {
-      if (!data) return null;
+      if (!data || !called) return null;
       if (platform === PlatformType.lens) return data.profile;
       if (isDomainSearch(platform)) {
         if (data.domain) return data.domain.owner;
@@ -128,6 +121,15 @@ const RenderDomainPanel = (props) => {
       window.removeEventListener("popstate", setPanelTabFromURL, false);
   }, [panelTab, identity, asComponent]);
 
+  useEffect(() => {
+    if (!router.isReady) return;
+    if (!router.query.domain) return;
+    if (router.query.domain.length > 1) {
+      setPanelTab(router.query.domain[1]);
+    } else {
+      setPanelTab(TabsMap.profile.key);
+    }
+  }, [router.isReady, router.query.domain]);
   const EmptyRender = () => {
     return (
       <div className="identity-panel">
@@ -144,8 +146,8 @@ const RenderDomainPanel = (props) => {
         {loading ? (
           <Loading />
         ) : error ? (
-          <Error retry={refetch} text={error} />
-        ) : !identity ? (
+          <Error retry={fetchIdentity} text={error} />
+        ) : !identity && called ? (
           <EmptyRender />
         ) : platform === PlatformType.lens ? (
           <LensProfilePanel
@@ -181,11 +183,11 @@ const RenderDomainPanel = (props) => {
     <div className="web3bio-container">
       <div className="web3bio-cover flare"></div>
       <div ref={profileContainer} className="profile-main">
-        {loading ? (
+        {loading || !called ? (
           <Loading />
         ) : error ? (
-          <Error retry={refetch} text={error} />
-        ) : !identity ? (
+          <Error retry={fetchIdentity} text={error} />
+        ) : !identity && called ? (
           <EmptyRender />
         ) : platform === PlatformType.lens ? (
           <LensProfilePanel
