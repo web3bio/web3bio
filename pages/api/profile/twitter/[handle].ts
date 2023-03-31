@@ -1,6 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import _ from "underscore";
+import { firstParam } from "../../../../utils/utils";
 import { HandleResponseData } from "../ens/types";
 
 const originBase =
@@ -12,10 +13,6 @@ const FetchFromOrigin = async (value: string) => {
     originBase + `twitter-identity?screenName=${value}`
   ).then((res) => res.json());
   return res;
-};
-
-const firstParam = (param: string | string[]) => {
-  return Array.isArray(param) ? param[0] : param;
 };
 
 const transformImageURLSize = (url: string, size: string = "400x400") => {

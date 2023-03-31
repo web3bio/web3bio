@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { isAddress } from "@ethersproject/address";
-import { resolveMediaURL } from "../../../../utils/utils";
+import { firstParam, getSocialMediaLink, resolveEipAssetURL, resolveHandle, resolveMediaURL } from "../../../../utils/utils";
 import {
   NFTSCANFetcher,
   NFTSCAN_BASE_API_ENDPOINT,
@@ -11,7 +11,6 @@ import _ from "lodash";
 import { GET_PROFILE_LENS } from "../../../../utils/lens";
 import { HandleResponseData } from "../ens/types";
 import { SocialPlatformMapping } from "../../../../utils/platform";
-import { getSocialMediaLink } from "../ens/utils";
 
 export const getLensProfile = async (handle: string) => {
   const fetchRes = await client.query({
@@ -25,34 +24,6 @@ export const getLensProfile = async (handle: string) => {
   });
   if (fetchRes) return fetchRes.data.profile;
   return null;
-};
-
-const firstParam = (param: string | string[]) => {
-  return Array.isArray(param) ? param[0] : param;
-};
-
-const resolveEipAssetURL = async (asset) => {
-  if (!asset) return null;
-  const eipPrefix = "eip155:1/erc721:";
-  if (asset.startsWith(eipPrefix)) {
-    const arr = asset.split(eipPrefix)[1].split("/");
-    const url =
-      NFTSCAN_BASE_API_ENDPOINT +
-      `assets/${arr[0]}/${arr[1]}?show_attribute=false`;
-    const res = await NFTSCANFetcher(url);
-    if (res && res.data) {
-      return resolveMediaURL(res.data.image_uri || res.data.content_uri);
-    }
-  }
-  return resolveMediaURL(asset);
-};
-
-const resolveHandle = (handle: string) => {
-  const prefix = "https://";
-  if (handle && handle.startsWith(prefix)) {
-    return handle.split(prefix)[1];
-  }
-  return handle;
 };
 
 const resolveNameFromLens = async (

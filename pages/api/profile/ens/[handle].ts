@@ -3,8 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { StaticJsonRpcProvider } from "@ethersproject/providers";
 import { getAddress, isAddress } from "@ethersproject/address";
 import { CoinType, HandleResponseData } from "./types";
-import { getSocialMediaLink } from "./utils";
-import { resolveMediaURL } from "../../../../utils/utils";
+import { firstParam, getSocialMediaLink, resolveEipAssetURL, resolveHandle, resolveMediaURL } from "../../../../utils/utils";
 import {
   NFTSCANFetcher,
   NFTSCAN_BASE_API_ENDPOINT,
@@ -49,9 +48,6 @@ const provider = new StaticJsonRpcProvider(
   process.env.NEXT_PUBLIC_ETHEREUM_RPC_URL
 );
 
-const firstParam = (param: string | string[]) => {
-  return Array.isArray(param) ? param[0] : param;
-};
 
 const resolve = (from: string, to: string) => {
   const resolvedUrl = new URL(to, new URL(from, "resolve://"));
@@ -62,29 +58,8 @@ const resolve = (from: string, to: string) => {
   return resolvedUrl.toString();
 };
 
-const resolveEipAssetURL = async (asset) => {
-  if (!asset) return null;
-  const eipPrefix = "eip155:1/erc721:";
-  if (asset.startsWith(eipPrefix)) {
-    const arr = asset.split(eipPrefix)[1].split("/");
-    const url =
-      NFTSCAN_BASE_API_ENDPOINT +
-      `assets/${arr[0]}/${arr[1]}?show_attribute=false`;
-    const res = await NFTSCANFetcher(url);
-    if (res && res.data) {
-      return resolveMediaURL(res.data.image_uri || res.data.content_uri);
-    }
-  }
-  return resolveMediaURL(asset);
-};
 
-const resolveHandle = (handle: string) => {
-  const prefix = "https://";
-  if (handle && handle.startsWith(prefix)) {
-    return handle.split(prefix)[1];
-  }
-  return handle;
-};
+
 
 const resolveHandleFromURL = async (
   handle: string,
