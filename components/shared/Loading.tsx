@@ -22,7 +22,6 @@ export const Loading = (props: LoadingProps) => {
     return [second];
   };
   const [second, setSecond] = useCount(1);
-  console.log(second, "second");
   return (
     <div className="loading-container">
       <div className="loading"></div>

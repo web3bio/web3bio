@@ -141,8 +141,8 @@ const RenderDomainPanel = (props) => {
   return asComponent ? (
     <div className="web3bio-mask-cover">
       <div ref={profileContainer} className="profile-main">
-        {loading ? (
-          <Loading />
+        {loading || !called ? (
+          <Loading retry={() => window.location.reload()} />
         ) : error ? (
           <Error retry={fetchIdentity} text={error} />
         ) : !identity && called ? (
@@ -182,7 +182,7 @@ const RenderDomainPanel = (props) => {
       <div className="web3bio-cover flare"></div>
       <div ref={profileContainer} className="profile-main">
         {loading || !called ? (
-          <Loading retry={fetchIdentity} />
+          <Loading retry={() => window.location.reload()} />
         ) : error ? (
           <Error retry={fetchIdentity} text={error} />
         ) : !identity && called ? (
