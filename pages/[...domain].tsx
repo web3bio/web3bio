@@ -34,7 +34,7 @@ const RenderDomainPanel = (props) => {
   const [nftDialogOpen, setNftDialogOpen] = useState(false);
   const profileContainer = useRef(null);
 
-  const { loading, error, data } = useQuery(
+  const { loading, error, data, refetch } = useQuery(
     platform === PlatformType.lens
       ? GET_PROFILE_LENS
       : isDomainSearch(platform)
@@ -63,8 +63,8 @@ const RenderDomainPanel = (props) => {
     if (!router.query.domain) return;
     if (router.query.domain.length > 1) {
       setPanelTab(router.query.domain[1]);
-    }else{
-      setPanelTab(TabsMap.profile.key)
+    } else {
+      setPanelTab(TabsMap.profile.key);
     }
   }, [router.isReady, router.query.domain]);
   useEffect(() => {
@@ -144,7 +144,7 @@ const RenderDomainPanel = (props) => {
         {loading ? (
           <Loading />
         ) : error ? (
-          <Error text={error} />
+          <Error retry={refetch} text={error} />
         ) : !identity ? (
           <EmptyRender />
         ) : platform === PlatformType.lens ? (
