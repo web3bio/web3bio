@@ -184,7 +184,7 @@ const RenderDomainPanel = (props) => {
         {loading ? (
           <Loading />
         ) : error ? (
-          <Error text={error} />
+          <Error retry={refetch} text={error} />
         ) : !identity ? (
           <EmptyRender />
         ) : platform === PlatformType.lens ? (

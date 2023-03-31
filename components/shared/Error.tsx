@@ -9,10 +9,11 @@ export const Error = (props: ErrorProps) => {
   const { text } = props;
   return (
     <div className="empty">
-      <p>Error {text.message}</p>
+      <p>Error {text ? text.message : "Unknown Reason"}</p>
       <button className="form-button btn" onClick={props.retry}>
         <SVG
-          src="icons/icon-search.svg"
+          // todo: add retry icon
+          src="icons/switch.svg"
           width={24}
           height={24}
           className="icon"
