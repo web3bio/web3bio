@@ -1,13 +1,11 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { StaticJsonRpcProvider } from "@ethersproject/providers";
-import { getAddress, isAddress } from "@ethersproject/address";
+import { isAddress } from "@ethersproject/address";
 import { resolveMediaURL } from "../../../../utils/utils";
 import {
   NFTSCANFetcher,
   NFTSCAN_BASE_API_ENDPOINT,
 } from "../../../../components/apis/nftscan";
-import { gql } from "@apollo/client";
 import client from "../../../../utils/apollo";
 import _ from "lodash";
 import { GET_PROFILE_LENS } from "../../../../utils/lens";
@@ -29,21 +27,8 @@ export const getLensProfile = async (handle: string) => {
   return null;
 };
 
-const provider = new StaticJsonRpcProvider(
-  process.env.NEXT_PUBLIC_ETHEREUM_RPC_URL
-);
-
 const firstParam = (param: string | string[]) => {
   return Array.isArray(param) ? param[0] : param;
-};
-
-const resolve = (from: string, to: string) => {
-  const resolvedUrl = new URL(to, new URL(from, "resolve://"));
-  if (resolvedUrl.protocol === "resolve:") {
-    const { pathname, search, hash } = resolvedUrl;
-    return `${pathname}${search}${hash}`;
-  }
-  return resolvedUrl.toString();
 };
 
 const resolveEipAssetURL = async (asset) => {
@@ -167,12 +152,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<HandleResponseData>
 ) {
-  const inputAddress = firstParam(req.query.handle);
-  const lowercaseAddress = inputAddress.toLowerCase();
-
-  if (inputAddress !== lowercaseAddress) {
-    return res.redirect(307, resolve(req.url!, lowercaseAddress));
-  }
-
-  return resolveNameFromLens(lowercaseAddress, res);
+  const inputName = firstParam(req.query.handle);
+  return resolveNameFromLens(inputName, res);
 }
