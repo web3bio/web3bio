@@ -59,6 +59,15 @@ const RenderDomainPanel = (props) => {
         }
   );
   useEffect(() => {
+    if (!router.isReady) return;
+    if (!router.query.domain) return;
+    if (router.query.domain.length > 1) {
+      setPanelTab(router.query.domain[1]);
+    }else{
+      setPanelTab(TabsMap.profile.key)
+    }
+  }, [router.isReady, router.query.domain]);
+  useEffect(() => {
     if (asComponent) {
       setPlatform(handleSearchPlatform(domain[0]));
     } else {
@@ -90,7 +99,7 @@ const RenderDomainPanel = (props) => {
     };
     window.document.addEventListener("mousedown", clickEvent);
     return () => window.document.removeEventListener("mousedown", clickEvent);
-  }, [panelTab, domain, router, asComponent, platform, nftDialogOpen]);
+  }, [panelTab, domain, router, asComponent, platform, nftDialogOpen, data]);
 
   useEffect(() => {
     if (asComponent || !identity) return;
@@ -112,7 +121,7 @@ const RenderDomainPanel = (props) => {
         identity.platform === PlatformType.lens
           ? identity.identity
           : identity.displayName || identity.identity
-      }${panelTab && panelTab === TabsMap.profile.key ? "" : `/${panelTab}`}`
+      }${!panelTab || panelTab === TabsMap.profile.key ? "" : `/${panelTab}`}`
     );
     window.addEventListener("popstate", setPanelTabFromURL, false);
     return () =>
