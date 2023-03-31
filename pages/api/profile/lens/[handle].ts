@@ -115,7 +115,7 @@ const resolveNameFromLens = async (
 
     const resJSON = {
       owner: response.ownedBy,
-      identity: response.name,
+      identity: response.ownedBy,
       displayName: response.name,
       avatar: await resolveEipAssetURL(response.picture.original.url),
       email: null,
