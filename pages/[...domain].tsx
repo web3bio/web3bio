@@ -184,7 +184,7 @@ const RenderDomainPanel = (props) => {
       <div className="web3bio-cover flare"></div>
       <div ref={profileContainer} className="profile-main">
         {loading || !called ? (
-          <Loading />
+          <Loading retry={fetchIdentity} />
         ) : error ? (
           <Error retry={fetchIdentity} text={error} />
         ) : !identity && called ? (
