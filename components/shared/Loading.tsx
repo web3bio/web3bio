@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { counter } from "../../utils/utils";
 import { RetryButton } from "../panel/components/RetryButton";
 
 interface LoadingProps {
