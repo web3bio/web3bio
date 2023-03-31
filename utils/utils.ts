@@ -182,23 +182,3 @@ export const resolveMediaURL = (asset) => {
   if (!asset) return null;
   return asset.startsWith("data:", "https:") ? asset : resolveIPFS_URL(asset);
 };
-
-export const counter = (ms, callback) => {
-  const start = document.timeline
-    ? document.timeline.currentTime
-    : performance.now();
-  function timer1(time) {
-    const gaps = time - start;
-    const seconds = Math.round(gaps / ms);
-    callback(seconds);
-    console.log(seconds);
-    const targetNext = (seconds + 1) * ms + start;
-    const delay = document.timeline
-      ? document.timeline.currentTime
-      : performance.now();
-    setTimeout(() => {
-      requestAnimationFrame(timer1);
-    }, targetNext - delay);
-  }
-  timer1(start);
-};
