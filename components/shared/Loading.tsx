@@ -6,18 +6,27 @@ interface LoadingProps {
   retry?: () => void;
 }
 
+const TIMEOUT_SECOND = 10;
+
 export const Loading = (props: LoadingProps) => {
   const { retry } = props;
-  const [isTimeout, setIsTimeout] = useState(false);
-  useEffect(() => {
-    counter(5, () => {
-      setIsTimeout(true);
-    });
-  }, []);
+  const useCount = (num: number) => {
+    const [second, setSecond] = useState(num);
+    useEffect(() => {
+      setTimeout(() => {
+        if (second > 0) {
+          setSecond((c) => c + 1);
+        }
+      }, 1000);
+    }, [second]);
+    return [second];
+  };
+  const [second, setSecond] = useCount(1);
+  console.log(second, "second");
   return (
     <div className="loading-container">
       <div className="loading"></div>
-      {retry && isTimeout && (
+      {retry && second >= TIMEOUT_SECOND && (
         <div>
           <p>Currently loading slow, Click Retry</p>
           <RetryButton retry={retry} />

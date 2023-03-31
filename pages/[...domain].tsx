@@ -110,11 +110,9 @@ const RenderDomainPanel = (props) => {
     window.history.pushState(
       {},
       "",
-      `/${
-        identity.platform === PlatformType.lens
-          ? identity.identity
-          : identity.displayName || identity.identity
-      }${!panelTab || panelTab === TabsMap.profile.key ? "" : `/${panelTab}`}`
+      `/${domain}${
+        !panelTab || panelTab === TabsMap.profile.key ? "" : `/${panelTab}`
+      }`
     );
     window.addEventListener("popstate", setPanelTabFromURL, false);
     return () =>
