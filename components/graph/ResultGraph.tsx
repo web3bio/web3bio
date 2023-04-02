@@ -54,6 +54,7 @@ const resolveGraphData = (source) => {
   source.forEach((x, idx) => {
     const from = x.from;
     const to = x.to;
+    const resolvedPlatform = SocialPlatformMapping[x.source];
     nodes.push({
       id: to.uuid,
       label: formatText(to.displayName ?? to.identity),
@@ -75,7 +76,7 @@ const resolveGraphData = (source) => {
     edges.push({
       source: from.uuid,
       target: to.uuid,
-      label: SocialPlatformMapping[x.source].label,
+      label: resolvedPlatform ? resolvedPlatform.label : x.source,
       id: `${from.uuid}-${to.uuid}`,
       isIdentity: true,
     });
