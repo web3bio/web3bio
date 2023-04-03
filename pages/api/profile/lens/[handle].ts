@@ -32,7 +32,6 @@ const resolveNameFromLens = async (
 ) => {
   try {
     const response = await getLensProfile(handle);
-    console.log(response, "res");
     let LINKRES = {};
     let CRYPTORES = {
       eth: response.ownedBy,
@@ -51,7 +50,7 @@ const resolveNameFromLens = async (
         for (let i = 0; i < linksToFetch.length; i++) {
           const recordText = linksToFetch[i];
           const handle = resolveHandle(
-            _.find(linksRecords, (o) => o.key === recordText).value
+            _.find(linksRecords, (o) => o.key === recordText)?.value
           );
           if (handle) {
             const resolvedHandle =
@@ -68,16 +67,15 @@ const resolveNameFromLens = async (
       };
       LINKRES = await getLink();
     }
-
     const resJSON = {
       owner: response.ownedBy,
-      identity: response.ownedBy,
+      identity: response.handle,
       displayName: response.name,
-      avatar: await resolveEipAssetURL(response.picture.original.url),
+      avatar: await resolveEipAssetURL(response.picture.original.url || null),
       email: null,
       description: response.bio,
       location: response.attributes
-        ? _.find(response.attributes, (o) => o.key === "location").value
+        ? _.find(response.attributes, (o) => o.key === "location")?.value
         : null,
       header: null,
       notice: null,
@@ -85,7 +83,7 @@ const resolveNameFromLens = async (
       url: response.attributes
         ? getSocialMediaLink(
             resolveHandle(
-              _.find(response.attributes, (o) => o.key === "website").value
+              _.find(response.attributes, (o) => o.key === "website")?.value
             ),
             SocialPlatformMapping.website.key
           )
