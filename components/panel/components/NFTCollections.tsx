@@ -111,7 +111,7 @@ const RenderNFTCollections = (props) => {
         container.addEventListener("wheel", judgeActiveCollection);
       }
       return () =>
-        container.removeEventListener("wheel", judgeActiveCollection);
+        container?.removeEventListener("wheel", judgeActiveCollection);
     }
   }, [initialData, anchorName, activeCollection, data, renderData]);
 

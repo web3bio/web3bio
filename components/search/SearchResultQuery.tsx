@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { GET_PROFILES_QUERY } from "../../utils/queries";
 import { ResultGraph } from "../graph/ResultGraph";
@@ -12,17 +12,23 @@ export const SearchResultQuery = ({
   searchPlatform,
   openProfile,
 }) => {
-  const { loading, error, data } = useQuery(GET_PROFILES_QUERY, {
-    variables: {
-      platform: searchPlatform,
-      identity: searchTerm,
-    },
-  });
+  const [getQuery, { loading, error, data }] = useLazyQuery(
+    GET_PROFILES_QUERY,
+    {
+      variables: {
+        platform: searchPlatform,
+        identity: searchTerm,
+      },
+    }
+  );
   const [resultNeighbor, setResultNeighbor] = useState([]);
   const [open, setOpen] = useState(false);
   const [graphData, setGraphData] = useState([]);
 
   useEffect(() => {
+    if (searchPlatform && searchTerm) {
+      getQuery();
+    }
     if (!data || !data.identity) return;
     const results = data?.identity;
     const resultOwner = {
@@ -60,10 +66,10 @@ export const SearchResultQuery = ({
 
       setGraphData(data.identity.neighborWithTraversal || []);
     }
-  }, [data]);
+  }, [data, searchPlatform, searchTerm, getQuery]);
 
-  if (loading) return <Loading />;
-  if (error) return <Error text={error} />;
+  if (loading) return <Loading retry={()=>window.location.reload()} />;
+  if (error) return <Error retry={getQuery} text={error} />;
   if (!data?.identity) return <Empty />;
 
   return (
