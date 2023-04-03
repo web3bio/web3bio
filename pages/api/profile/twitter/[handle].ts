@@ -35,6 +35,18 @@ const resolveTwitterHandle = async (
         : response.url || null
     );
     const resolvedHandle = resolveHandle(handle);
+    const LINKRES = {
+      [SocialPlatformMapping.twitter.key]: {
+        link: "https://twitter.com/" + resolvedHandle,
+        handle: resolvedHandle,
+      },
+    };
+    if (urlHandle) {
+      LINKRES[SocialPlatformMapping.website.key] = {
+        link: getSocialMediaLink(urlHandle, SocialPlatformMapping.website.key),
+        handle: urlHandle,
+      };
+    }
     const resJSON = {
       owner: resolvedHandle,
       identity: resolvedHandle,
@@ -49,19 +61,7 @@ const resolveTwitterHandle = async (
       header: response.profile_banner_url,
       notice: null,
       keywords: null,
-      links: {
-        [SocialPlatformMapping.twitter.key]: {
-          link: "https://twitter.com/" + resolvedHandle,
-          handle: resolvedHandle,
-        },
-        [SocialPlatformMapping.website.key]: {
-          link: getSocialMediaLink(
-            urlHandle,
-            SocialPlatformMapping.website.key
-          ),
-          handle: urlHandle,
-        },
-      },
+      links: LINKRES,
       addresses: null,
     };
     res
