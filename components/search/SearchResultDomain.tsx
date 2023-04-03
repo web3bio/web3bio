@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import { memo, useEffect, useState } from "react";
 import { GET_PROFILES_DOMAIN } from "../../utils/queries";
 import { ResultGraph } from "../graph/ResultGraph";
@@ -9,14 +9,18 @@ import { ResultAccount } from "./ResultAccount";
 const RenderResultDomain = ({ searchTerm, searchPlatform, openProfile }) => {
   const [open, setOpen] = useState(false);
   const [graphData, setGraphData] = useState([]);
-  const { loading, error, data } = useQuery(GET_PROFILES_DOMAIN, {
-    variables: {
-      platform: searchPlatform,
-      identity: searchTerm,
-    },
-  });
+  const [getQuery, { loading, error, data }] = useLazyQuery(
+    GET_PROFILES_DOMAIN,
+    {
+      variables: {
+        platform: searchPlatform,
+        identity: searchTerm,
+      },
+    }
+  );
   const [resultNeighbor, setResultNeighbor] = useState([]);
   useEffect(() => {
+    if (searchTerm && searchPlatform) getQuery();
     if (!data || !data.domain) return;
     const results = data?.domain.owner;
     const resultOwner = {
@@ -63,11 +67,11 @@ const RenderResultDomain = ({ searchTerm, searchPlatform, openProfile }) => {
               : null,
           ]
     );
-  }, [data, searchTerm]);
-  if (loading) return <Loading />;
-  if (error) return <Error text={error} />;
+  }, [data, searchTerm, searchPlatform, getQuery, resultNeighbor]);
+  if (loading) return <Loading retry={getQuery} />;
+  if (error) return <Error retry={getQuery} text={error} />;
   if (!data?.domain) return <Empty />;
-  
+
   return (
     <>
       <ResultAccount
