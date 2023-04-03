@@ -22,7 +22,7 @@ const RenderNFTsTab = (props) => {
           showDialog();
         }}
         isDetail
-        initialData={collections}
+        // initialData={collections}
         network={network}
       />
       {dialogOpen && asset && (

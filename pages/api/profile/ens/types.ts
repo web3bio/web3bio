@@ -15,6 +15,7 @@ type AddressesData = {
   btc?: string | null;
   ltc?: string | null;
   doge?: string | null;
+  matic?: string | null;
 };
 export type HandleResponseData = {
   owner: string | null;
@@ -29,10 +30,8 @@ export type HandleResponseData = {
   keywords: string | null;
   links: LinksData | null;
   addresses: AddressesData | null;
-  url?: string
   error?: string;
 };
-
 
 export const CoinType = {
   btc: 0,
@@ -53,5 +52,5 @@ export const CoinType = {
   // eos: 194,
   // xem: 43,
   // trx: 195,
-  xdai: 700
+  xdai: 700,
 };

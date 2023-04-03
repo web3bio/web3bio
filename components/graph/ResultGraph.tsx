@@ -107,13 +107,16 @@ const resolveGraphData = (source) => {
           category: k.category,
           chain: k.chain,
           holder: to.identity,
+          identity: k.id,
           platform: PlatformType.ens,
+          isTransferred: true,
         });
         edges.push({
           source: to.uuid,
           target: k.uuid,
           // label: "hold",
           id: `${to.uuid}-${k.uuid}`,
+          isTransferred: true,
         });
       }
     });
@@ -225,11 +228,12 @@ const RenderResultGraph = (props) => {
             <li>DisplayName: ${e.item.getModel().displayName || "-"}</li>
             <li>Identity: ${e.item.getModel().identity || "-"}</li>
             <li>Platform: ${
-              SocialPlatformMapping[e.item.getModel().platform].label ||
+              SocialPlatformMapping[e.item.getModel().platform]?.label ||
+              e.item.getModel().platform ||
               "Unknown"
             }</li>
             <li>Source: ${
-              SocialPlatformMapping[e.item.getModel().source].label ||
+              SocialPlatformMapping[e.item.getModel().source]?.label ||
               e.item.getModel().source ||
               "Unknown"
             }</li>

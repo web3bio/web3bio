@@ -1,19 +1,17 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { StaticJsonRpcProvider } from "@ethersproject/providers";
 import { getAddress, isAddress } from "@ethersproject/address";
 import { CoinType, HandleResponseData } from "./types";
-import { getSocialMediaLink } from "./utils";
-import { resolveMediaURL } from "../../../../utils/utils";
 import {
-  NFTSCANFetcher,
-  NFTSCAN_BASE_API_ENDPOINT,
-} from "../../../../components/apis/nftscan";
+  firstParam,
+  getSocialMediaLink,
+  resolveEipAssetURL,
+  resolveHandle,
+} from "../../../../utils/utils";
 import { gql } from "@apollo/client";
 import client from "../../../../utils/apollo";
 import _ from "lodash";
 import { SocialPlatformMapping } from "../../../../utils/platform";
-import { PlatformType } from "../../../../utils/type";
 
 const ensRecordsDefaultOrShouldSkipText = [
   "name",
@@ -26,7 +24,6 @@ const ensRecordsDefaultOrShouldSkipText = [
   "notice",
   "keywords",
   "location",
-  "url",
 ];
 
 const getENSRecordsQuery = gql`
@@ -49,10 +46,6 @@ const provider = new StaticJsonRpcProvider(
   process.env.NEXT_PUBLIC_ETHEREUM_RPC_URL
 );
 
-const firstParam = (param: string | string[]) => {
-  return Array.isArray(param) ? param[0] : param;
-};
-
 const resolve = (from: string, to: string) => {
   const resolvedUrl = new URL(to, new URL(from, "resolve://"));
   if (resolvedUrl.protocol === "resolve:") {
@@ -60,30 +53,6 @@ const resolve = (from: string, to: string) => {
     return `${pathname}${search}${hash}`;
   }
   return resolvedUrl.toString();
-};
-
-const resolveEipAssetURL = async (asset) => {
-  if (!asset) return null;
-  const eipPrefix = "eip155:1/erc721:";
-  if (asset.startsWith(eipPrefix)) {
-    const arr = asset.split(eipPrefix)[1].split("/");
-    const url =
-      NFTSCAN_BASE_API_ENDPOINT +
-      `assets/${arr[0]}/${arr[1]}?show_attribute=false`;
-    const res = await NFTSCANFetcher(url);
-    if (res && res.data) {
-      return resolveMediaURL(res.data.image_uri || res.data.content_uri);
-    }
-  }
-  return resolveMediaURL(asset);
-};
-
-const resolveHandle = (handle: string) => {
-  const prefix = "https://";
-  if (handle && handle.startsWith(prefix)) {
-    return handle.split(prefix)[1];
-  }
-  return handle;
 };
 
 const resolveHandleFromURL = async (
@@ -134,13 +103,13 @@ const resolveHandleFromURL = async (
             (await resolver.getText(recordText)) || null
           );
           if (handle) {
-            const resolvedHandle =
-              key === SocialPlatformMapping.twitter.key
-                ? handle.replaceAll("@", "")
-                : handle;
-            _linkRes[key] = {
-              link: getSocialMediaLink(resolvedHandle, key),
-              handle: resolvedHandle,
+            const resolvedKey =
+              key === SocialPlatformMapping.url.key
+                ? SocialPlatformMapping.website.key
+                : key;
+            _linkRes[resolvedKey] = {
+              link: getSocialMediaLink(handle, resolvedKey),
+              handle: resolveHandle(handle),
             };
           }
         }
@@ -193,10 +162,6 @@ const resolveHandleFromURL = async (
       header: await resolveEipAssetURL(headerHandle || null),
       notice: (await resolver.getText("notice")) || null,
       keywords: (await resolver.getText("keywords")) || null,
-      url: getSocialMediaLink(
-        (await resolver.getText("url")) || null,
-        PlatformType.url
-      ),
       links: LINKRES,
       addresses: CRYPTORES,
     };

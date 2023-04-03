@@ -32,8 +32,9 @@ const LensProfilePanelRender = (props) => {
     nftDialogOpen,
     onCloseNFTDialog,
     onShowNFTDialog,
+    curTab,
   } = props;
-  const [activeTab, setActiveTab] = useState(TabsMap.profile.key);
+  const [activeTab, setActiveTab] = useState(curTab || TabsMap.profile.key);
   const [copied, setCopied] = useState(null);
   const onCopySuccess = () => {
     setCopied(true);
