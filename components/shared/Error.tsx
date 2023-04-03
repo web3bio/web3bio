@@ -1,6 +1,4 @@
 import { ApolloError } from "@apollo/client";
-import SVG from "react-inlinesvg";
-import { RetryButton } from "../panel/components/RetryButton";
 interface ErrorProps {
   text: ApolloError;
   retry?: () => void;
@@ -10,8 +8,12 @@ export const Error = (props: ErrorProps) => {
   const { text, retry } = props;
   return (
     <div className="empty">
-      <p>Error {text ? text.message : "Unknown Reason"}</p>
-      <RetryButton retry={retry} />
+      <div className="empty-icon h1">😵</div>
+      <p className="empty-title h4">Something went wrong! </p>
+      {text ? <p className="empty-subtitle">{text.message}</p> : "Please try again"}
+      <button className="btn btn-primary mt-4" onClick={retry}>
+        Try again
+      </button>
     </div>
   );
 };
