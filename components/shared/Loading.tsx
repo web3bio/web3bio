@@ -5,7 +5,7 @@ interface LoadingProps {
   retry?: () => void;
 }
 
-const TIMEOUT_SECOND = 10;
+const TIMEOUT_SECOND = 2;
 
 export const Loading = (props: LoadingProps) => {
   const { retry } = props;

@@ -68,7 +68,7 @@ const RenderResultDomain = ({ searchTerm, searchPlatform, openProfile }) => {
           ]
     );
   }, [data, searchTerm, searchPlatform, getQuery, resultNeighbor]);
-  if (loading) return <Loading retry={getQuery} />;
+  if (loading) return <Loading retry={()=>window.location.reload()} />;
   if (error) return <Error retry={getQuery} text={error} />;
   if (!data?.domain) return <Empty />;
 
