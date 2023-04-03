@@ -137,8 +137,8 @@ const processNodesEdges = (nodes, edges) => {
       };
       node.stateStyles = {
         selected: {
-          stroke: SocialPlatformMapping[node.platform].color,
-          fill: SocialPlatformMapping[node.platform].color,
+          stroke: SocialPlatformMapping[node.platform]?.color || "#000",
+          fill: SocialPlatformMapping[node.platform]?.color || "#000",
           fillOpacity: 0.1,
           lineWidth: 2,
           shadowColor: "transparent",
@@ -154,7 +154,7 @@ const processNodesEdges = (nodes, edges) => {
       };
       node.style = {
         lineWidth: 2,
-        fill: SocialPlatformMapping[node.platform].color,
+        fill: SocialPlatformMapping[node.platform]?.color || "#000",
         stroke: "rgba(0, 0, 0, .05)",
       };
       node.stateStyles = {

@@ -63,7 +63,7 @@ export const SocialPlatformMapping: { [key in PlatformType]: SocialPlatform } =
       color: "#4162E2",
       icon: "icons/icon-keybase.svg",
       iconW: "icons/icon-keybase-w.svg",
-      label: "KeyBase",
+      label: "Keybase",
       urlPrefix: "https://keybase.io/",
       ensText: [],
     },
