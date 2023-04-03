@@ -1,7 +1,6 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import _ from "underscore";
-import { firstParam } from "../../../../utils/utils";
+import { firstParam, resolveHandle } from "../../../../utils/utils";
 import { HandleResponseData } from "../ens/types";
 
 const originBase =
@@ -19,19 +18,17 @@ const transformImageURLSize = (url: string, size: string = "400x400") => {
   if (!url) return null;
   return url.replaceAll("_normal.", `_${size}.`);
 };
-const resolveHandle = async (
+const resolveTwitterHandle = async (
   handle: string,
   res: NextApiResponse<HandleResponseData>
 ) => {
   try {
     const response = await FetchFromOrigin(handle);
-    const url = response.entities.url
-      ? response.entities.url.urls[0].expanded_url
-      : response.url || null;
+    const resolvedHandle = resolveHandle(handle);
     const resJSON = {
-      owner: handle,
-      identity: handle,
-      displayName: response.name || handle,
+      owner: resolvedHandle,
+      identity: resolvedHandle,
+      displayName: response.name || resolvedHandle,
       avatar: transformImageURLSize(
         response.profile_image_url_https || response.profile_image_url || null,
         "400x400"
@@ -42,11 +39,10 @@ const resolveHandle = async (
       header: response.profile_banner_url,
       notice: null,
       keywords: null,
-      url: url,
       links: {
         twitter: {
-          link: "https://twitter.com/" + handle,
-          handle,
+          link: "https://twitter.com/" + resolvedHandle,
+          handle: resolvedHandle,
         },
       },
       addresses: null,
@@ -70,7 +66,6 @@ const resolveHandle = async (
       header: null,
       notice: null,
       keywords: null,
-      url: null,
       links: {
         twitter: {
           link: "https://twitter.com/" + handle,
@@ -99,5 +94,5 @@ export default async function handler(
   if (!reqValue) {
     return res.redirect(307, resolve(req.url!, reqValue));
   }
-  return resolveHandle(reqValue, res);
+  return resolveTwitterHandle(reqValue, res);
 }

@@ -29,7 +29,6 @@ export type HandleResponseData = {
   keywords: string | null;
   links: LinksData | null;
   addresses: AddressesData | null;
-  url?: string
   error?: string;
 };
 

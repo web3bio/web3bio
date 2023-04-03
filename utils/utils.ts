@@ -1,6 +1,9 @@
 import { BigNumber } from "bignumber.js";
 import { EthereumAddress } from "wallet.ts";
-import { NFTSCANFetcher, NFTSCAN_BASE_API_ENDPOINT } from "../components/apis/nftscan";
+import {
+  NFTSCANFetcher,
+  NFTSCAN_BASE_API_ENDPOINT,
+} from "../components/apis/nftscan";
 import { resolveIPFS_URL } from "./ipfs";
 import { pow10 } from "./number";
 import { SocialPlatformMapping } from "./platform";
@@ -184,7 +187,6 @@ export const resolveMediaURL = (asset) => {
   return asset.startsWith("data:", "https:") ? asset : resolveIPFS_URL(asset);
 };
 
-
 export const resolveEipAssetURL = async (asset) => {
   if (!asset) return null;
   const eipPrefix = "eip155:1/erc721:";
@@ -202,9 +204,16 @@ export const resolveEipAssetURL = async (asset) => {
 };
 
 export const resolveHandle = (handle: string) => {
-  const prefix = "https://";
-  if (handle && handle.startsWith(prefix)) {
-    return handle.split(prefix)[1];
+  const prefixHttps = "https://";
+  const prefixHttp = "http://";
+  if (
+    handle &&
+    (handle.startsWith(prefixHttp) || handle.startsWith(prefixHttps))
+  ) {
+    return handle
+      .replaceAll(prefixHttp, "")
+      .replaceAll(prefixHttps, "")
+      .replaceAll("@", "");
   }
   return handle;
 };
@@ -213,10 +222,9 @@ export const firstParam = (param: string | string[]) => {
   return Array.isArray(param) ? param[0] : param;
 };
 
-
 export const getSocialMediaLink = (url: string, type: string) => {
   let resolvedURL = "";
-  if(!url) return null
+  if (!url) return null;
   if (url.startsWith("https")) {
     resolvedURL = url;
   } else {

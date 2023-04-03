@@ -1,18 +1,17 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { StaticJsonRpcProvider } from "@ethersproject/providers";
 import { getAddress, isAddress } from "@ethersproject/address";
 import { CoinType, HandleResponseData } from "./types";
-import { firstParam, getSocialMediaLink, resolveEipAssetURL, resolveHandle, resolveMediaURL } from "../../../../utils/utils";
 import {
-  NFTSCANFetcher,
-  NFTSCAN_BASE_API_ENDPOINT,
-} from "../../../../components/apis/nftscan";
+  firstParam,
+  getSocialMediaLink,
+  resolveEipAssetURL,
+  resolveHandle,
+} from "../../../../utils/utils";
 import { gql } from "@apollo/client";
 import client from "../../../../utils/apollo";
 import _ from "lodash";
 import { SocialPlatformMapping } from "../../../../utils/platform";
-import { PlatformType } from "../../../../utils/type";
 
 const ensRecordsDefaultOrShouldSkipText = [
   "name",
@@ -25,7 +24,6 @@ const ensRecordsDefaultOrShouldSkipText = [
   "notice",
   "keywords",
   "location",
-  "url",
 ];
 
 const getENSRecordsQuery = gql`
@@ -48,7 +46,6 @@ const provider = new StaticJsonRpcProvider(
   process.env.NEXT_PUBLIC_ETHEREUM_RPC_URL
 );
 
-
 const resolve = (from: string, to: string) => {
   const resolvedUrl = new URL(to, new URL(from, "resolve://"));
   if (resolvedUrl.protocol === "resolve:") {
@@ -57,9 +54,6 @@ const resolve = (from: string, to: string) => {
   }
   return resolvedUrl.toString();
 };
-
-
-
 
 const resolveHandleFromURL = async (
   handle: string,
@@ -109,13 +103,13 @@ const resolveHandleFromURL = async (
             (await resolver.getText(recordText)) || null
           );
           if (handle) {
-            const resolvedHandle =
-              key === SocialPlatformMapping.twitter.key
-                ? handle.replaceAll("@", "")
-                : handle;
-            _linkRes[key] = {
-              link: getSocialMediaLink(resolvedHandle, key),
-              handle: resolvedHandle,
+            const resolvedKey =
+              key === SocialPlatformMapping.url.key
+                ? SocialPlatformMapping.website.key
+                : key;
+            _linkRes[resolvedKey] = {
+              link: getSocialMediaLink(handle, resolvedKey),
+              handle: resolveHandle(handle),
             };
           }
         }
@@ -168,10 +162,6 @@ const resolveHandleFromURL = async (
       header: await resolveEipAssetURL(headerHandle || null),
       notice: (await resolver.getText("notice")) || null,
       keywords: (await resolver.getText("keywords")) || null,
-      url: getSocialMediaLink(
-        (await resolver.getText("url")) || null,
-        PlatformType.url
-      ),
       links: LINKRES,
       addresses: CRYPTORES,
     };

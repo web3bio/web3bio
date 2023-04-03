@@ -1,11 +1,11 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { isAddress } from "@ethersproject/address";
-import { firstParam, getSocialMediaLink, resolveEipAssetURL, resolveHandle, resolveMediaURL } from "../../../../utils/utils";
 import {
-  NFTSCANFetcher,
-  NFTSCAN_BASE_API_ENDPOINT,
-} from "../../../../components/apis/nftscan";
+  firstParam,
+  getSocialMediaLink,
+  resolveEipAssetURL,
+  resolveHandle,
+} from "../../../../utils/utils";
 import client from "../../../../utils/apollo";
 import _ from "lodash";
 import { GET_PROFILE_LENS } from "../../../../utils/lens";
@@ -77,17 +77,11 @@ const resolveNameFromLens = async (
       location: response.attributes
         ? _.find(response.attributes, (o) => o.key === "location")?.value
         : null,
-      header: null,
+      header: await resolveEipAssetURL(
+        response.coverPicture.original.url || null
+      ),
       notice: null,
       keywords: null,
-      url: response.attributes
-        ? getSocialMediaLink(
-            resolveHandle(
-              _.find(response.attributes, (o) => o.key === "website")?.value
-            ),
-            SocialPlatformMapping.website.key
-          )
-        : null,
       links: LINKRES,
       addresses: CRYPTORES,
     };

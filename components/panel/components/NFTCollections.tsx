@@ -5,7 +5,7 @@ import { resolveMediaURL } from "../../../utils/utils";
 import {
   NFTSCANFetcher,
   NFTSCAN_BASE_API_ENDPOINT,
-  NFTSCAN_POLYGON_BASE_API
+  NFTSCAN_POLYGON_BASE_API,
 } from "../../apis/nftscan";
 import { Empty } from "../../shared/Empty";
 import { Error } from "../../shared/Error";
@@ -44,7 +44,11 @@ const RenderNFTCollections = (props) => {
   const scrollContainer = useRef(null);
   useEffect(() => {
     setRenderData(
-      initialData && initialData.length > 0 ? initialData : data.data
+      initialData && initialData.length > 0
+        ? initialData
+        : data
+        ? data.data
+        : []
     );
 
     const container = scrollContainer.current;
