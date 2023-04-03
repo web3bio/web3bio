@@ -110,7 +110,7 @@ const RenderDomainPanel = (props) => {
     window.history.pushState(
       {},
       "",
-      `/${domain}${
+      `/${domain[0]}${
         !panelTab || panelTab === TabsMap.profile.key ? "" : `/${panelTab}`
       }`
     );
@@ -189,11 +189,11 @@ const RenderDomainPanel = (props) => {
           <EmptyRender />
         ) : platform === PlatformType.lens ? (
           <LensProfilePanel
-            collections={prefetchingNFTs}
             poaps={prefetchingPoaps}
             onTabChange={(v) => {
               setPanelTab(v);
             }}
+            curTab={panelTab}
             profile={identity}
             nftDialogOpen={nftDialogOpen}
             onShowNFTDialog={() => setNftDialogOpen(true)}
@@ -202,7 +202,6 @@ const RenderDomainPanel = (props) => {
         ) : (
           <IdentityPanel
             profile={prefetchingProfile}
-            collections={prefetchingNFTs}
             poaps={prefetchingPoaps}
             curTab={panelTab}
             toNFT={() => {
