@@ -1,6 +1,11 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import _ from "underscore";
+import { SocialPlatformMapping } from "../../../../utils/platform";
+import {
+  firstParam,
+  getSocialMediaLink,
+  resolveHandle,
+} from "../../../../utils/utils";
 import { HandleResponseData } from "../ens/types";
 
 const originBase =
@@ -14,27 +19,38 @@ const FetchFromOrigin = async (value: string) => {
   return res;
 };
 
-const firstParam = (param: string | string[]) => {
-  return Array.isArray(param) ? param[0] : param;
-};
-
 const transformImageURLSize = (url: string, size: string = "400x400") => {
   if (!url) return null;
   return url.replaceAll("_normal.", `_${size}.`);
 };
-const resolveHandle = async (
+const resolveTwitterHandle = async (
   handle: string,
   res: NextApiResponse<HandleResponseData>
 ) => {
   try {
     const response = await FetchFromOrigin(handle);
-    const url = response.entities.url
-      ? response.entities.url.urls[0].expanded_url
-      : response.url || null;
+    const urlHandle = resolveHandle(
+      response.entities.url
+        ? response.entities.url.urls[0].expanded_url
+        : response.url || null
+    );
+    const resolvedHandle = resolveHandle(handle);
+    const LINKRES = {
+      [SocialPlatformMapping.twitter.key]: {
+        link: "https://twitter.com/" + resolvedHandle,
+        handle: resolvedHandle,
+      },
+    };
+    if (urlHandle) {
+      LINKRES[SocialPlatformMapping.website.key] = {
+        link: getSocialMediaLink(urlHandle, SocialPlatformMapping.website.key),
+        handle: urlHandle,
+      };
+    }
     const resJSON = {
-      owner: handle,
-      identity: handle,
-      displayName: response.name || handle,
+      owner: resolvedHandle,
+      identity: resolvedHandle,
+      displayName: response.name || resolvedHandle,
       avatar: transformImageURLSize(
         response.profile_image_url_https || response.profile_image_url || null,
         "400x400"
@@ -45,13 +61,7 @@ const resolveHandle = async (
       header: response.profile_banner_url,
       notice: null,
       keywords: null,
-      url: url,
-      links: {
-        twitter: {
-          link: "https://twitter.com/" + handle,
-          handle,
-        },
-      },
+      links: LINKRES,
       addresses: null,
     };
     res
@@ -73,7 +83,6 @@ const resolveHandle = async (
       header: null,
       notice: null,
       keywords: null,
-      url: null,
       links: {
         twitter: {
           link: "https://twitter.com/" + handle,
@@ -102,5 +111,5 @@ export default async function handler(
   if (!reqValue) {
     return res.redirect(307, resolve(req.url!, reqValue));
   }
-  return resolveHandle(reqValue, res);
+  return resolveTwitterHandle(reqValue, res);
 }

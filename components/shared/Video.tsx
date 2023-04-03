@@ -44,7 +44,7 @@ export const Video = forwardRef<VideoRef, VideoProps>(function Video(
         {src ? (
           <source src={src as string} type="video/mp4" />
         ) : (
-          <Loading style={{ margin: 0 }} />
+          <Loading />
         )}
       </video>
     </picture>
