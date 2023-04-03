@@ -219,7 +219,6 @@ const RenderResultGraph = (props) => {
       className: "web5bio-tooltip",
       container: tooltipContainer.current,
       getContent(e) {
-        console.log(e.item.getModel(),'ssss')
         const outDiv = document.createElement("div");
         if (e.item.getModel().isIdentity) {
           outDiv.innerHTML = `
