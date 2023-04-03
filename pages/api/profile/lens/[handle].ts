@@ -34,7 +34,7 @@ const resolveNameFromLens = async (
     const response = await getLensProfile(handle);
     let LINKRES = {};
     let CRYPTORES = {
-      eth: response.ownedBy,
+      matic: response.ownedBy,
     };
 
     if (response.attributes) {
