@@ -1,6 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import _ from "underscore";
-import { firstParam, resolveHandle } from "../../../../utils/utils";
+import { SocialPlatformMapping } from "../../../../utils/platform";
+import {
+  firstParam,
+  getSocialMediaLink,
+  resolveHandle,
+} from "../../../../utils/utils";
 import { HandleResponseData } from "../ens/types";
 
 const originBase =
@@ -24,6 +29,11 @@ const resolveTwitterHandle = async (
 ) => {
   try {
     const response = await FetchFromOrigin(handle);
+    const urlHandle = resolveHandle(
+      response.entities.url
+        ? response.entities.url.urls[0].expanded_url
+        : response.url || null
+    );
     const resolvedHandle = resolveHandle(handle);
     const resJSON = {
       owner: resolvedHandle,
@@ -40,9 +50,16 @@ const resolveTwitterHandle = async (
       notice: null,
       keywords: null,
       links: {
-        twitter: {
+        [SocialPlatformMapping.twitter.key]: {
           link: "https://twitter.com/" + resolvedHandle,
           handle: resolvedHandle,
+        },
+        [SocialPlatformMapping.website.key]: {
+          link: getSocialMediaLink(
+            urlHandle,
+            SocialPlatformMapping.website.key
+          ),
+          handle: urlHandle,
         },
       },
       addresses: null,
