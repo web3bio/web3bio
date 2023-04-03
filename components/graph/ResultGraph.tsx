@@ -107,6 +107,7 @@ const resolveGraphData = (source) => {
           category: k.category,
           chain: k.chain,
           holder: to.identity,
+          identity: k.id,
           platform: PlatformType.ens,
         });
         edges.push({
@@ -218,6 +219,7 @@ const RenderResultGraph = (props) => {
       className: "web5bio-tooltip",
       container: tooltipContainer.current,
       getContent(e) {
+        console.log(e.item.getModel(),'ssss')
         const outDiv = document.createElement("div");
         if (e.item.getModel().isIdentity) {
           outDiv.innerHTML = `
