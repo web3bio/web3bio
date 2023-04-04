@@ -2,7 +2,7 @@ import { PlatformType } from "./type";
 
 type SocialPlatform = {
   key: string;
-  color: string;
+  color?: string;
   icon?: string;
   iconW?: string;
   label: string;
