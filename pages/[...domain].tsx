@@ -33,7 +33,6 @@ const RenderDomainPanel = (props) => {
   const [identity, setIdentity] = useState(null);
   const [nftDialogOpen, setNftDialogOpen] = useState(false);
   const profileContainer = useRef(null);
-
   const [fetchIdentity, { loading, error, data, called }] = useLazyQuery(
     platform === PlatformType.lens
       ? GET_PROFILE_LENS
