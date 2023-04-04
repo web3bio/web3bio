@@ -73,8 +73,6 @@ export const SearchInput = (props) => {
 
     const onKeyDown = (e) => {
       if (e.key === "Enter") {
-        console.log('kkkkkk')
-
         const ipt = inputRef.current;
         const _value =
           activeIndex !== null ? searchList[activeIndex] : ipt ? ipt.value : "";
