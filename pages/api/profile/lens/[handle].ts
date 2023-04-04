@@ -10,7 +10,7 @@ import client from "../../../../utils/apollo";
 import _ from "lodash";
 import { GET_PROFILE_LENS } from "../../../../utils/lens";
 import { HandleResponseData } from "../ens/types";
-import { SocialPlatformMapping } from "../../../../utils/platform";
+import { platfomData } from "../../../../utils/platform";
 import { PlatformType } from "../../../../utils/type";
 
 export const getLensProfile = async (handle: string) => {
@@ -41,7 +41,7 @@ const resolveNameFromLens = async (
     if (response.attributes) {
       const linksRecords = response.attributes;
       const linksToFetch = linksRecords.reduce((pre, cur) => {
-        if (Object.keys(SocialPlatformMapping).includes(cur.key))
+        if (Object.keys(platfomData).includes(cur.key))
           pre.push(cur.key);
         return pre;
       }, []);

@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import _ from "underscore";
-import { SocialPlatformMapping } from "../../../../utils/platform";
 import { PlatformType } from "../../../../utils/type";
 import {
   firstParam,

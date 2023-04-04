@@ -11,7 +11,7 @@ import {
 import { gql } from "@apollo/client";
 import client from "../../../../utils/apollo";
 import _ from "lodash";
-import { SocialPlatformMapping } from "../../../../utils/platform";
+import { platfomData } from "../../../../utils/platform";
 import { PlatformType } from "../../../../utils/type";
 
 const ensRecordsDefaultOrShouldSkipText = [
@@ -96,8 +96,9 @@ const resolveHandleFromURL = async (
         const _linkRes = {};
         for (let i = 0; i < linksToFetch.length; i++) {
           const recordText = linksToFetch[i];
+          
           const key =
-            _.findKey(SocialPlatformMapping, (o) => {
+            _.findKey(platfomData, (o) => {
               return o.ensText.includes(recordText);
             }) || recordText;
           const handle = resolveHandle(
