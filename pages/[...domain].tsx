@@ -57,7 +57,6 @@ const RenderDomainPanel = (props) => {
           fetchPolicy: "cache-and-network",
         }
   );
-
   useEffect(() => {
     if (asComponent) {
       setPlatform(handleSearchPlatform(domain[0]));

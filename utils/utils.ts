@@ -119,27 +119,24 @@ export function isValidJson(str) {
 }
 
 export const handleSearchPlatform = (term: string) => {
-  if (term.includes(".")) {
-    switch (true) {
-      case regexEns.test(term):
-        return PlatformType.ens;
-      case regexLens.test(term):
-        return PlatformType.lens;
-      case regexDotbit.test(term):
-        return PlatformType.dotbit;
-      case regexEth.test(term):
-        return PlatformType.ethereum;
-      case regexUnstoppableDomains.test(term):
-        return PlatformType.unstoppableDomains;
-      case regexSpaceid.test(term):
-        return PlatformType.space_id;
-      case regexTwitter.test(term):
-        return PlatformType.twitter;
-      default:
-        return PlatformType.nextid;
-    }
+  switch (true) {
+    case regexEns.test(term):
+      return PlatformType.ens;
+    case regexLens.test(term):
+      return PlatformType.lens;
+    case regexDotbit.test(term):
+      return PlatformType.dotbit;
+    case regexEth.test(term):
+      return PlatformType.ethereum;
+    case regexUnstoppableDomains.test(term):
+      return PlatformType.unstoppableDomains;
+    case regexSpaceid.test(term):
+      return PlatformType.space_id;
+    case regexTwitter.test(term):
+      return PlatformType.twitter;
+    default:
+      return PlatformType.nextid;
   }
-  return PlatformType.twitter;
 };
 
 export const isDomainSearch = (term) => {
