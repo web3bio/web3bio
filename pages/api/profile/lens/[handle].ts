@@ -9,8 +9,8 @@ import {
 import client from "../../../../utils/apollo";
 import _ from "lodash";
 import { GET_PROFILE_LENS } from "../../../../utils/lens";
-import { HandleResponseData } from "../ens/types";
 import { SocialPlatformMapping } from "../../../../utils/platform";
+import { HandleResponseData } from "../../../../utils/api";
 
 export const getLensProfile = async (handle: string) => {
   const fetchRes = await client.query({

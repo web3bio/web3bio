@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { StaticJsonRpcProvider } from "@ethersproject/providers";
 import { getAddress, isAddress } from "@ethersproject/address";
-import { CoinType, HandleResponseData } from "./types";
 import {
   firstParam,
   getSocialMediaLink,
@@ -12,6 +11,7 @@ import { gql } from "@apollo/client";
 import client from "../../../../utils/apollo";
 import _ from "lodash";
 import { SocialPlatformMapping } from "../../../../utils/platform";
+import { CoinType, HandleResponseData } from "../../../../utils/api";
 
 const ensRecordsDefaultOrShouldSkipText = [
   "name",
