@@ -8,7 +8,6 @@ import { Loading } from "../shared/Loading";
 import { ResultAccount } from "./ResultAccount";
 const RenderResultDomain = ({ searchTerm, searchPlatform, openProfile }) => {
   const [open, setOpen] = useState(false);
-  const [graphData, setGraphData] = useState([]);
   const [getQuery, { loading, error, data }] = useLazyQuery(
     GET_PROFILES_DOMAIN,
     {
@@ -54,24 +53,22 @@ const RenderResultDomain = ({ searchTerm, searchPlatform, openProfile }) => {
           temp.findIndex((elem) => elem.identity.uuid == ele.identity.uuid)
       )
     );
-    setGraphData(
-      data.domain.owner.neighborWithTraversal.length > 0
-        ? data.domain.owner.neighborWithTraversal
-        : [
-            resultNeighbor.length > 0
-              ? {
-                  from: resultNeighbor[0].identity,
-                  to: resultNeighbor[0].identity,
-                  source: "nextid",
-                }
-              : null,
-          ]
-    );
   }, [data, searchTerm, searchPlatform, getQuery]);
-  if (loading) return <Loading retry={()=>window.location.reload()} />;
+  if (loading) return <Loading retry={() => window.location.reload()} />;
   if (error) return <Error retry={getQuery} text={error} />;
   if (!data?.domain) return <Empty />;
-
+  const graphData =
+    data.domain.owner.neighborWithTraversal.length > 0
+      ? data.domain.owner.neighborWithTraversal
+      : resultNeighbor.length > 0
+      ? [
+          {
+            from: resultNeighbor[0].identity,
+            to: resultNeighbor[0].identity,
+            source: "nextid",
+          },
+        ]
+      : [];
   return (
     <>
       <ResultAccount
