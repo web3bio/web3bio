@@ -1,5 +1,6 @@
 import { memo } from "react";
 import SVG from "react-inlinesvg";
+import { SocialPlatformMapping } from "../../utils/platform";
 
 export const RenderSourceFooter = ({sources}) => {
   return (
@@ -12,8 +13,8 @@ export const RenderSourceFooter = ({sources}) => {
           title="Data sources"
         />
         {sources.map((source) => (
-          <span key={source} className="text-uppercase mr-1">
-            {source}
+          <span key={source} className="mr-1">
+            {SocialPlatformMapping(source).label}
           </span>
         ))}
       </div>

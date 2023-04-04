@@ -30,7 +30,7 @@ export const register = () => {
               r,
               fill: "#fff",
               stroke:
-                SocialPlatformMapping[cfg.platform]?.color ||
+                SocialPlatformMapping(cfg.platform)?.color ||
                 "rgba(0, 0, 0, .15)",
               opacity: 1,
               lineWidth: 2,
@@ -60,7 +60,7 @@ export const register = () => {
               attrs: {
                 text,
                 x: 0,
-                y: cfg.platform === "ENS" ? 28 : 8 * lineNum,
+                y: cfg.platform === PlatformType.ens ? 28 : 8 * lineNum,
                 textAlign: "center",
                 textBaseLine: "middle",
                 cursor: "pointer",
@@ -81,18 +81,18 @@ export const register = () => {
                   x: r - 14,
                   y: -r + 14,
                   r: 14,
-                  fill: SocialPlatformMapping[cfg.platform]?.color || "transparent",
+                  fill: SocialPlatformMapping(cfg.platform)?.color,
                   zIndex: 9,
                 },
                 name: "image-shape",
               });
               group.addShape("image", {
                 attrs: {
-                  x: r - 24,
-                  y: -r + 4,
-                  width: 20,
-                  height: 20,
-                  img: SocialPlatformMapping[cfg.platform]?.iconW,
+                  x: r - 23,
+                  y: -r + 5,
+                  width: 18,
+                  height: 18,
+                  img: SocialPlatformMapping(cfg.platform)?.iconW,
                   zIndex: 9,
                   cursor: "pointer",
                 },
@@ -106,7 +106,7 @@ export const register = () => {
                   x: 0,
                   y: 0,
                   r: 12,
-                  fill: SocialPlatformMapping[cfg.platform]?.color || "transparent",
+                  fill: SocialPlatformMapping(cfg.platform)?.color,
                   zIndex: 9,
                 },
                 name: "image-shape",
@@ -117,7 +117,7 @@ export const register = () => {
                   y: -8,
                   width: 16,
                   height: 16,
-                  img: SocialPlatformMapping[cfg.platform]?.iconW,
+                  img: SocialPlatformMapping(cfg.platform)?.iconW,
                   zIndex: 9,
                   cursor: "pointer",
                 },
