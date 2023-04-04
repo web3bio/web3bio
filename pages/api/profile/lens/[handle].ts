@@ -9,7 +9,7 @@ import {
 import client from "../../../../utils/apollo";
 import _ from "lodash";
 import { GET_PROFILE_LENS } from "../../../../utils/lens";
-import { HandleResponseData } from "../ens/types";
+import { HandleResponseData } from "../../../../utils/api";
 import { platfomData } from "../../../../utils/platform";
 import { PlatformType } from "../../../../utils/type";
 

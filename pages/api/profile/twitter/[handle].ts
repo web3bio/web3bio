@@ -6,7 +6,7 @@ import {
   getSocialMediaLink,
   resolveHandle,
 } from "../../../../utils/utils";
-import { HandleResponseData } from "../ens/types";
+import { HandleResponseData } from "../../../../utils/api";
 
 const originBase =
   "https://mr8asf7i4h.execute-api.us-east-1.amazonaws.com/prod/";
@@ -37,7 +37,7 @@ const resolveTwitterHandle = async (
     const resolvedHandle = resolveHandle(handle);
     const LINKRES = {
       [PlatformType.twitter]: {
-        link: "https://twitter.com/" + resolvedHandle,
+        link: getSocialMediaLink(resolvedHandle, PlatformType.twitter),
         handle: resolvedHandle,
       },
     };
@@ -105,7 +105,7 @@ const resolve = (from: string, to: string) => {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse<HandleResponseData>
 ) {
   const reqValue = firstParam(req.query.handle);
   if (!reqValue) {

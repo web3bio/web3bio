@@ -1,8 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import _ from "underscore";
 import { HandleResponseData } from "../../../../utils/api";
-import { SocialPlatformMapping } from "../../../../utils/platform";
-import { firstParam, resolveHandle } from "../../../../utils/utils";
+import { PlatformType } from "../../../../utils/type";
+import {
+  firstParam,
+  getSocialMediaLink,
+  resolveEipAssetURL,
+  resolveHandle,
+} from "../../../../utils/utils";
 
 const originBase = "https://searchcaster.xyz/api/";
 
@@ -24,18 +29,18 @@ const resolveFarcasterHandle = async (
     const _res = response[0].body;
     const resolvedHandle = resolveHandle(_res.username);
     const LINKRES = {
-      [SocialPlatformMapping.farcaster.key]: {
+      [PlatformType.farcaster]: {
         link: "https://warpcast.com/" + resolvedHandle,
         handle: resolvedHandle,
       },
     };
     const resJSON = {
-      owner: _res.username || _res.displayName,
+      owner: response[0].connectedAddress || _res.address,
       identity: _res.username || _res.displayName,
       displayName: _res.displayName || resolvedHandle,
       avatar: _res.avatarUrl,
       email: null,
-      description: response.bio,
+      description: _res.bio,
       location: null,
       header: null,
       notice: null,
@@ -65,9 +70,9 @@ const resolveFarcasterHandle = async (
       notice: null,
       keywords: null,
       links: {
-        twitter: {
-          link: "https://twitter.com/" + handle,
-          handle,
+        [PlatformType.farcaster]: {
+          link: "https://warpcast.com/" + handle,
+          handle: handle,
         },
       },
       addresses: null,
@@ -86,7 +91,7 @@ const resolve = (from: string, to: string) => {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse<HandleResponseData>
 ) {
   const reqValue = firstParam(req.query.handle);
   if (!reqValue) {
