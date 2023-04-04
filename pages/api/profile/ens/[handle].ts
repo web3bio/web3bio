@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { StaticJsonRpcProvider } from "@ethersproject/providers";
 import { getAddress, isAddress } from "@ethersproject/address";
-import { CoinType, HandleResponseData } from "./types";
+import { CoinType, HandleResponseData } from "../../../../utils/api";
 import {
   firstParam,
   getSocialMediaLink,
