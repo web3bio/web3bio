@@ -73,6 +73,8 @@ export const SearchInput = (props) => {
 
     const onKeyDown = (e) => {
       if (e.key === "Enter") {
+        console.log('kkkkkk')
+
         const ipt = inputRef.current;
         const _value =
           activeIndex !== null ? searchList[activeIndex] : ipt ? ipt.value : "";
@@ -94,9 +96,9 @@ export const SearchInput = (props) => {
       }
     };
 
-    window.addEventListener("keydown", onKeyDown, false);
+    window.addEventListener("keydown", onKeyDown, true);
 
-    return () => window.removeEventListener("keydown", onKeyDown, false);
+    return () => window.removeEventListener("keydown", onKeyDown, true);
   }, [query, activeIndex]);
   return (
     <>
@@ -108,8 +110,7 @@ export const SearchInput = (props) => {
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={(e) => {
           if (["Enter", "ArrowUp", "ArrowDown"].includes(e.key)) {
-            if (inputRef.current.value) {
-              e.preventDefault();
+            if (!inputRef.current.value) {
               return false;
             }
           }
