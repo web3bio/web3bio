@@ -52,7 +52,7 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     color: "#000000",
     icon: "icons/icon-github.svg",
     iconW: "icons/icon-github-w.svg",
-    label: "Github",
+    label: "GitHub",
     urlPrefix: "https://github.com/",
     ensText: ["com.github", "vnd.github"],
   },
@@ -157,11 +157,11 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     ensText: [],
   },
   [PlatformType.opensea]: {
-    key: PlatformType.cyberconnect,
+    key: PlatformType.opensea,
     color: "#407FDB",
     icon: "icons/icon-opensea.svg",
     iconW: "icons/icon-opensea.svg",
-    label: "Opensea",
+    label: "OpenSea",
     ensText: [],
     urlPrefix: "https://opensea.io/",
   },
@@ -182,19 +182,18 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     iconW: "icons/icon-discord-w.svg",
     label: "Discord",
     ensText: ["com.discord"],
-    urlPrefix: "https://discord.com/",
   },
   [PlatformType.url]: {
     key: PlatformType.url,
     color: "#121212",
     label: "Unknown",
-    ensText: ["url"],
+    ensText: [],
   },
   [PlatformType.website]: {
     key: PlatformType.website,
     color: "#121212",
     label: "Unknown",
-    ensText: [],
+    ensText: ["url"],
   },
   [PlatformType.linkedin]: {
     key: PlatformType.linkedin,
@@ -204,16 +203,20 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     ensText: ["com.linkedin"],
     urlPrefix: "https://www.linkedin.com/in/",
   },
+  [PlatformType.dns]: {
+    key: PlatformType.dns,
+    label: "DNS",
+  },
 };
 
 export const SocialPlatformMapping = (platform: PlatformType) => {
   return (
     platfomData[platform] ?? {
-      key: "unknown",
-      color: "#121212",
-      icon: "icons/icon-nextid.svg",
-      iconW: "icons/icon-nextid-w.svg",
-      label: "Unknown",
+      key: platform,
+      color: "",
+      icon: "",
+      iconW: "",
+      label: platform,
       ensText: [],
     }
   );

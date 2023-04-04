@@ -20,5 +20,6 @@ export enum PlatformType {
   discord = "discord",
   url = 'url',
   website = 'website',
-  linkedin= 'linkedin'
+  linkedin= 'linkedin',
+  dns= 'dns'
 }

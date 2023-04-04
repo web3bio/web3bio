@@ -225,7 +225,7 @@ const RenderResultGraph = (props) => {
         if (e.item.getModel().isIdentity) {
           outDiv.innerHTML = `
           <ul>
-            <li>DisplayName: ${e.item.getModel().displayName || "-"}</li>
+            <li class="text-large text-bold">${e.item.getModel().displayName || "-"}</li>
             <li>Identity: ${e.item.getModel().identity || "-"}</li>
             <li>Platform: ${
               SocialPlatformMapping(e.item.getModel().platform)?.label ||
