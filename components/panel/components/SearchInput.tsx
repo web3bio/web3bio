@@ -21,15 +21,50 @@ export const SearchInput = (props) => {
   const inputRef = useRef(null);
 
   const emitSubmit = (e, value?) => {
-    const platfrom =
-      typeof value !== "string" && value.key === PlatformType.farcaster
-        ? PlatformType.farcaster
-        : "";
-    const _value = typeof value === "string" ? value : value.label;
+    const platfrom = (() => {
+      if (!value) return "";
+      if (typeof value === "string") return "";
+      if (value.key && value.key === PlatformType.farcaster)
+        return PlatformType.farcaster;
+    })();
+    const _value = (() => {
+      if (!value) return "";
+      if (typeof value === "string") return value;
+      return value.label;
+    })();
     handleSubmit(_value, platfrom);
     setSearchList([]);
+    setActiveIndex(null);
   };
 
+  const onKeyDown = (e) => {
+    if (e.key === "Enter") {
+      const _value = searchList[activeIndex] ? searchList[activeIndex] : query;
+      emitSubmit(e, _value);
+    }
+    if (e.key === "ArrowUp") {
+      if (searchList && searchList.length === 1) {
+        setActiveIndex(0);
+        return;
+      }
+      if (!activeIndex) {
+        setActiveIndex(searchList.length - 1);
+      } else {
+        setActiveIndex(activeIndex - 1);
+      }
+    }
+    if (e.key === "ArrowDown") {
+      if (searchList && searchList.length === 1) {
+        setActiveIndex(0);
+        return;
+      }
+      if (activeIndex === null || activeIndex >= searchList.length - 1) {
+        setActiveIndex(0);
+      } else {
+        setActiveIndex(activeIndex + 1);
+      }
+    }
+  };
   useEffect(() => {
     if (!query || query.length > 20) {
       setSearchList([]);
@@ -45,7 +80,7 @@ export const SearchInput = (props) => {
         backupDomains.reduce((pre, cur) => {
           if (cur.includes(query.replace("。", "."))) {
             pre.push({
-              icon: SocialPlatformMapping[handleSearchPlatform(cur)].icon || "",
+              icon: SocialPlatformMapping(handleSearchPlatform(cur)).icon || "",
               label: cur,
             });
           }
@@ -61,7 +96,7 @@ export const SearchInput = (props) => {
           if (!isLastDot || cur.label.length > 0) {
             pre.push({
               key: cur.key,
-              icon: SocialPlatformMapping[cur.key].icon,
+              icon: SocialPlatformMapping(cur.key).icon,
               label: label,
             });
           }
@@ -70,33 +105,6 @@ export const SearchInput = (props) => {
         }, [])
       );
     }
-
-    const onKeyDown = (e) => {
-      if (e.key === "Enter") {
-        const ipt = inputRef.current;
-        const _value =
-          activeIndex !== null ? searchList[activeIndex] : ipt ? ipt.value : "";
-        emitSubmit(e, _value);
-      }
-      if (e.key === "ArrowUp") {
-        if (!activeIndex) {
-          setActiveIndex(searchList.length - 1);
-        } else {
-          setActiveIndex(activeIndex - 1);
-        }
-      }
-      if (e.key === "ArrowDown") {
-        if (activeIndex === null || activeIndex >= searchList.length - 1) {
-          setActiveIndex(0);
-        } else {
-          setActiveIndex(activeIndex + 1);
-        }
-      }
-    };
-
-    window.addEventListener("keydown", onKeyDown, false);
-
-    return () => window.removeEventListener("keydown", onKeyDown, false);
   }, [query, activeIndex]);
   return (
     <>
@@ -106,16 +114,10 @@ export const SearchInput = (props) => {
         placeholder="Search ENS, Lens, Twitter, UD or Ethereum"
         defaultValue={defaultValue}
         onChange={(e) => setQuery(e.target.value)}
-        onKeyDown={(e) => {
-          if (["Enter", "ArrowUp", "ArrowDown"].includes(e.key)) {
-            if (inputRef.current.value) {
-              e.preventDefault();
-              return false;
-            }
-          }
-        }}
+        onKeyDown={onKeyDown}
         className="form-input input-lg"
         autoCorrect="off"
+        autoComplete="off"
         autoFocus
         spellCheck="false"
         id="searchbox"

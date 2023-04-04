@@ -100,12 +100,12 @@ export function resolveSocialMediaLink(name, type) {
   if (!Object.keys(PlatformType).includes(type))
     return `https://web5.bio/?s=${name}`;
   switch (type) {
-    case SocialPlatformMapping.url.key:
+    case PlatformType.url:
       return `${name}`;
-    case SocialPlatformMapping.website.key:
+    case PlatformType.website:
       return `https://${name}`;
     default:
-      return SocialPlatformMapping[type].urlPrefix + name;
+      return SocialPlatformMapping(type).urlPrefix + name;
   }
 }
 
@@ -122,18 +122,18 @@ export const handleSearchPlatform = (term: string) => {
   switch (true) {
     case regexEns.test(term):
       return PlatformType.ens;
-    case regexLens.test(term):
-      return PlatformType.lens;
-    case regexDotbit.test(term):
-      return PlatformType.dotbit;
     case regexEth.test(term):
       return PlatformType.ethereum;
+    case regexLens.test(term):
+      return PlatformType.lens;
     case regexUnstoppableDomains.test(term):
       return PlatformType.unstoppableDomains;
     case regexSpaceid.test(term):
       return PlatformType.space_id;
     case regexTwitter.test(term):
       return PlatformType.twitter;
+      case regexDotbit.test(term):
+        return PlatformType.dotbit;
     default:
       return PlatformType.nextid;
   }

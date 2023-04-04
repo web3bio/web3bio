@@ -18,8 +18,8 @@ export enum PlatformType {
   opensea = "opensea",
   sybil = "sybil",
   discord = "discord",
-  unknown = "unknown",
   url = 'url',
   website = 'website',
-  linkedin= 'linkedin'
+  linkedin= 'linkedin',
+  dns= 'dns'
 }
