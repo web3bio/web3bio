@@ -20,39 +20,38 @@ const resolveFarcasterHandle = async (
 ) => {
   try {
     const response = await FetchFromOrigin(handle);
-    if (response && response.body) {
-      const _res = response.body;
-      const resolvedHandle = resolveHandle(_res.username);
-      const LINKRES = {
-        [SocialPlatformMapping.farcaster.key]: {
-          link: "https://warpcast.com/" + resolvedHandle,
-          handle: resolvedHandle,
-        },
-      };
-      const resJSON = {
-        owner: _res.username || _res.displayName,
-        identity: _res.username || _res.displayName,
-        displayName: response.name || resolvedHandle,
-        avatar: _res.avatarUrl,
-        email: null,
-        description: response.bio,
-        location: null,
-        header: null,
-        notice: null,
-        keywords: null,
-        links: LINKRES,
-        addresses: {
-          eth: response.connectedAddress || _res.address,
-        },
-      };
-      res
-        .status(200)
-        .setHeader(
-          "CDN-Cache-Control",
-          `s-maxage=${60 * 60 * 24}, stale-while-revalidate`
-        )
-        .json(resJSON);
-    }
+    if(!response || !response.length) throw new Error('not found')
+    const _res = response[0].body;
+    const resolvedHandle = resolveHandle(_res.username);
+    const LINKRES = {
+      [SocialPlatformMapping.farcaster.key]: {
+        link: "https://warpcast.com/" + resolvedHandle,
+        handle: resolvedHandle,
+      },
+    };
+    const resJSON = {
+      owner: _res.username || _res.displayName,
+      identity: _res.username || _res.displayName,
+      displayName: _res.displayName || resolvedHandle,
+      avatar: _res.avatarUrl,
+      email: null,
+      description: response.bio,
+      location: null,
+      header: null,
+      notice: null,
+      keywords: null,
+      links: LINKRES,
+      addresses: {
+        eth: response[0].connectedAddress || _res.address,
+      },
+    };
+    res
+      .status(200)
+      .setHeader(
+        "CDN-Cache-Control",
+        `s-maxage=${60 * 60 * 24}, stale-while-revalidate`
+      )
+      .json(resJSON);
   } catch (e: any) {
     res.status(500).json({
       owner: handle,
