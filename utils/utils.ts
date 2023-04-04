@@ -214,6 +214,7 @@ export const resolveHandle = (handle: string) => {
     return handle
       .replaceAll(prefixHttp, "")
       .replaceAll(prefixHttps, "")
+      .replaceAll("/", "")
       .replaceAll("@", "");
   }
   return handle;
