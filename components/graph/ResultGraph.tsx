@@ -142,8 +142,8 @@ const processNodesEdges = (nodes, edges) => {
       };
       node.stateStyles = {
         selected: {
-          stroke: SocialPlatformMapping(node.platform)?.color || "#000",
-          fill: SocialPlatformMapping(node.platform)?.color || "#000",
+          stroke: SocialPlatformMapping(node.platform)?.color || "rgba(0, 0, 0, .25)",
+          fill: SocialPlatformMapping(node.platform)?.color,
           fillOpacity: 0.1,
           lineWidth: 2,
           shadowColor: "transparent",
@@ -159,7 +159,7 @@ const processNodesEdges = (nodes, edges) => {
       };
       node.style = {
         lineWidth: 2,
-        fill: SocialPlatformMapping(node.platform)?.color || "#000",
+        fill: SocialPlatformMapping(node.platform)?.color,
         stroke: "rgba(0, 0, 0, .05)",
       };
       node.stateStyles = {
@@ -172,11 +172,11 @@ const processNodesEdges = (nodes, edges) => {
     }
     node.type = "identity-node";
     node.label = formatText(node.label);
-    if (node.platform && node.platform.toLowerCase() === "ethereum") {
+    if (node.platform && node.platform.toLowerCase() === PlatformType.ethereum) {
       node.label = `${node.displayName || formatText(node.identity)} ${
         node.displayName ? `\n${formatText(node.identity)}` : ""
       }`;
-      node.labelLineNum = node.displayName ? 2 : 1;
+      node.labelLineNum = 1;
     }
   });
   edges.forEach((edge) => {
@@ -280,6 +280,13 @@ const RenderResultGraph = (props) => {
             stroke: "#cecece",
           },
         },
+      },
+      defaultNode: {
+        stroke: "rgba(0, 0, 0, .25)",
+        fillOpacity: 0.1,
+        lineWidth: 2,
+        shadowColor: "transparent",
+        zIndex: 999,
       },
       layout: {
         type: "gForce",

@@ -140,9 +140,6 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.rss3]: {
     key: PlatformType.rss3,
     color: "#3070F6",
-    // TODO: icons to add
-    icon: "icons/icon-rss3.svg",
-    iconW: "icons/icon-rss3-w.svg",
     label: "RSS3",
     ensText: [],
     urlPrefix: "https://rss3.io/",
@@ -185,14 +182,16 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
   },
   [PlatformType.url]: {
     key: PlatformType.url,
+    icon: "icons/icon-web.svg",
     color: "#121212",
-    label: "Unknown",
+    label: "Website",
     ensText: [],
   },
   [PlatformType.website]: {
     key: PlatformType.website,
+    icon: "icons/icon-web.svg",
     color: "#121212",
-    label: "Unknown",
+    label: "Website",
     ensText: ["url"],
   },
   [PlatformType.linkedin]: {
@@ -205,6 +204,8 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
   },
   [PlatformType.dns]: {
     key: PlatformType.dns,
+    icon: "icons/icon-web.svg",
+    iconW: "icons/icon-web.svg",
     label: "DNS",
   },
 };

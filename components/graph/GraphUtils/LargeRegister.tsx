@@ -60,7 +60,7 @@ export const register = () => {
               attrs: {
                 text,
                 x: 0,
-                y: cfg.platform === "ENS" ? 28 : 8 * lineNum,
+                y: cfg.platform === PlatformType.ens ? 28 : 8 * lineNum,
                 textAlign: "center",
                 textBaseLine: "middle",
                 cursor: "pointer",
@@ -88,10 +88,10 @@ export const register = () => {
               });
               group.addShape("image", {
                 attrs: {
-                  x: r - 24,
-                  y: -r + 4,
-                  width: 20,
-                  height: 20,
+                  x: r - 23,
+                  y: -r + 5,
+                  width: 18,
+                  height: 18,
                   img: SocialPlatformMapping(cfg.platform)?.iconW,
                   zIndex: 9,
                   cursor: "pointer",
