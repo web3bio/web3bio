@@ -54,7 +54,7 @@ const resolveGraphData = (source) => {
   source.forEach((x, idx) => {
     const from = x.from;
     const to = x.to;
-    const resolvedPlatform = SocialPlatformMapping[x.source];
+    const resolvedPlatform = SocialPlatformMapping(x.source);
     nodes.push({
       id: to.uuid,
       label: formatText(to.displayName ?? to.identity),
@@ -137,8 +137,8 @@ const processNodesEdges = (nodes, edges) => {
       };
       node.stateStyles = {
         selected: {
-          stroke: SocialPlatformMapping[node.platform]?.color || "#000",
-          fill: SocialPlatformMapping[node.platform]?.color || "#000",
+          stroke: SocialPlatformMapping(node.platform)?.color || "#000",
+          fill: SocialPlatformMapping(node.platform)?.color || "#000",
           fillOpacity: 0.1,
           lineWidth: 2,
           shadowColor: "transparent",
@@ -154,7 +154,7 @@ const processNodesEdges = (nodes, edges) => {
       };
       node.style = {
         lineWidth: 2,
-        fill: SocialPlatformMapping[node.platform]?.color || "#000",
+        fill: SocialPlatformMapping(node.platform)?.color || "#000",
         stroke: "rgba(0, 0, 0, .05)",
       };
       node.stateStyles = {
@@ -228,12 +228,12 @@ const RenderResultGraph = (props) => {
             <li>DisplayName: ${e.item.getModel().displayName || "-"}</li>
             <li>Identity: ${e.item.getModel().identity || "-"}</li>
             <li>Platform: ${
-              SocialPlatformMapping[e.item.getModel().platform]?.label ||
+              SocialPlatformMapping(e.item.getModel().platform)?.label ||
               e.item.getModel().platform ||
               "Unknown"
             }</li>
             <li>Source: ${
-              SocialPlatformMapping[e.item.getModel().source]?.label ||
+              SocialPlatformMapping(e.item.getModel().source)?.label ||
               e.item.getModel().source ||
               "Unknown"
             }</li>

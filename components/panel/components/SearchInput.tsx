@@ -45,7 +45,7 @@ export const SearchInput = (props) => {
         backupDomains.reduce((pre, cur) => {
           if (cur.includes(query.replace("。", "."))) {
             pre.push({
-              icon: SocialPlatformMapping[handleSearchPlatform(cur)].icon || "",
+              icon: SocialPlatformMapping(handleSearchPlatform(cur)).icon || "",
               label: cur,
             });
           }
@@ -61,7 +61,7 @@ export const SearchInput = (props) => {
           if (!isLastDot || cur.label.length > 0) {
             pre.push({
               key: cur.key,
-              icon: SocialPlatformMapping[cur.key].icon,
+              icon: SocialPlatformMapping(cur.key).icon,
               label: label,
             });
           }

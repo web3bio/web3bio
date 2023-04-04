@@ -12,6 +12,7 @@ import { gql } from "@apollo/client";
 import client from "../../../../utils/apollo";
 import _ from "lodash";
 import { SocialPlatformMapping } from "../../../../utils/platform";
+import { PlatformType } from "../../../../utils/type";
 
 const ensRecordsDefaultOrShouldSkipText = [
   "name",
@@ -104,8 +105,8 @@ const resolveHandleFromURL = async (
           );
           if (handle) {
             const resolvedKey =
-              key === SocialPlatformMapping.url.key
-                ? SocialPlatformMapping.website.key
+              key === PlatformType.url
+                ? PlatformType.website
                 : key;
             _linkRes[resolvedKey] = {
               link: getSocialMediaLink(handle, resolvedKey),

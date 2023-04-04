@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import _ from "underscore";
 import { SocialPlatformMapping } from "../../../../utils/platform";
+import { PlatformType } from "../../../../utils/type";
 import {
   firstParam,
   getSocialMediaLink,
@@ -36,14 +37,14 @@ const resolveTwitterHandle = async (
     );
     const resolvedHandle = resolveHandle(handle);
     const LINKRES = {
-      [SocialPlatformMapping.twitter.key]: {
+      [PlatformType.twitter]: {
         link: "https://twitter.com/" + resolvedHandle,
         handle: resolvedHandle,
       },
     };
     if (urlHandle) {
-      LINKRES[SocialPlatformMapping.website.key] = {
-        link: getSocialMediaLink(urlHandle, SocialPlatformMapping.website.key),
+      LINKRES[PlatformType.website] = {
+        link: getSocialMediaLink(urlHandle, PlatformType.website),
         handle: urlHandle,
       };
     }

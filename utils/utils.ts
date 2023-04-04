@@ -100,12 +100,12 @@ export function resolveSocialMediaLink(name, type) {
   if (!Object.keys(PlatformType).includes(type))
     return `https://web5.bio/?s=${name}`;
   switch (type) {
-    case SocialPlatformMapping.url.key:
+    case PlatformType.url:
       return `${name}`;
-    case SocialPlatformMapping.website.key:
+    case PlatformType.website:
       return `https://${name}`;
     default:
-      return SocialPlatformMapping[type].urlPrefix + name;
+      return SocialPlatformMapping(type).urlPrefix + name;
   }
 }
 

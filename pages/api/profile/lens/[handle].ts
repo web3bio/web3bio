@@ -11,6 +11,7 @@ import _ from "lodash";
 import { GET_PROFILE_LENS } from "../../../../utils/lens";
 import { HandleResponseData } from "../ens/types";
 import { SocialPlatformMapping } from "../../../../utils/platform";
+import { PlatformType } from "../../../../utils/type";
 
 export const getLensProfile = async (handle: string) => {
   const fetchRes = await client.query({
@@ -54,7 +55,7 @@ const resolveNameFromLens = async (
           );
           if (handle) {
             const resolvedHandle =
-              recordText === SocialPlatformMapping.twitter.key
+              recordText === PlatformType.twitter
                 ? handle.replaceAll("@", "")
                 : handle;
             _linkRes[recordText] = {
