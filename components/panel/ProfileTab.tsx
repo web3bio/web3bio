@@ -3,7 +3,7 @@ import SVG from "react-inlinesvg";
 import { useAsync } from "react-use";
 import useSWR from "swr";
 import { ens, globalRecordKeys, provider } from "../../utils/domains";
-import { SocialPlatformMapping } from "../../utils/platform";
+import { PlatformType } from "../../utils/type";
 import { isValidAddress, resolveSocialMediaLink } from "../../utils/utils";
 import { ENSFetcher, ENS_METADATA_END_POINT } from "../apis/ens";
 import { Loading } from "../shared/Loading";
@@ -14,39 +14,39 @@ import { Poaps } from "./components/Poaps";
 const socialButtonMapping = {
   ["com.github"]: {
     icon: "icons/icon-github.svg",
-    type: SocialPlatformMapping.github.key,
+    type: PlatformType.github,
   },
   ["com.twitter"]: {
     icon: "icons/icon-twitter.svg",
-    type: SocialPlatformMapping.twitter.key,
+    type: PlatformType.twitter,
   },
   ["vnd.github"]: {
     icon: "icons/icon-github.svg",
-    type: SocialPlatformMapping.github.key,
+    type: PlatformType.github,
   },
   ["vnd.twitter"]: {
     icon: "icons/icon-twitter.svg",
-    type: SocialPlatformMapping.twitter.key,
+    type: PlatformType.twitter,
   },
   ["com.instagram"]: {
     icon: "icons/icon-instagram.svg",
-    type: SocialPlatformMapping.instagram.key,
+    type: PlatformType.instagram,
   },
   ["com.discord"]: {
     icon: "icons/icon-discord.svg",
-    type: SocialPlatformMapping.discord.key,
+    type: PlatformType.discord,
   },
   ["com.reddit"]: {
     icon: "icons/icon-reddit.svg",
-    type: SocialPlatformMapping.reddit.key,
+    type: PlatformType.reddit,
   },
   ["org.telegram"]: {
     icon: "icons/icon-telegram.svg",
-    type: SocialPlatformMapping.telegram.key,
+    type: PlatformType.telegram,
   },
   ["url"]: {
     icon: "icons/icon-web.svg",
-    type: SocialPlatformMapping.url.key,
+    type: PlatformType.url,
   },
 };
 

@@ -9,8 +9,9 @@ import {
 import client from "../../../../utils/apollo";
 import _ from "lodash";
 import { GET_PROFILE_LENS } from "../../../../utils/lens";
-import { SocialPlatformMapping } from "../../../../utils/platform";
-import { HandleResponseData } from "../../../../utils/api";
+import { HandleResponseData } from "../ens/types";
+import { platfomData } from "../../../../utils/platform";
+import { PlatformType } from "../../../../utils/type";
 
 export const getLensProfile = async (handle: string) => {
   const fetchRes = await client.query({
@@ -40,7 +41,7 @@ const resolveNameFromLens = async (
     if (response.attributes) {
       const linksRecords = response.attributes;
       const linksToFetch = linksRecords.reduce((pre, cur) => {
-        if (Object.keys(SocialPlatformMapping).includes(cur.key))
+        if (Object.keys(platfomData).includes(cur.key))
           pre.push(cur.key);
         return pre;
       }, []);
@@ -54,7 +55,7 @@ const resolveNameFromLens = async (
           );
           if (handle) {
             const resolvedHandle =
-              recordText === SocialPlatformMapping.twitter.key
+              recordText === PlatformType.twitter
                 ? handle.replaceAll("@", "")
                 : handle;
             _linkRes[recordText] = {

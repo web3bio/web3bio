@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { StaticJsonRpcProvider } from "@ethersproject/providers";
 import { getAddress, isAddress } from "@ethersproject/address";
+import { CoinType, HandleResponseData } from "./types";
 import {
   firstParam,
   getSocialMediaLink,
@@ -10,8 +11,8 @@ import {
 import { gql } from "@apollo/client";
 import client from "../../../../utils/apollo";
 import _ from "lodash";
-import { SocialPlatformMapping } from "../../../../utils/platform";
-import { CoinType, HandleResponseData } from "../../../../utils/api";
+import { platfomData } from "../../../../utils/platform";
+import { PlatformType } from "../../../../utils/type";
 
 const ensRecordsDefaultOrShouldSkipText = [
   "name",
@@ -95,8 +96,9 @@ const resolveHandleFromURL = async (
         const _linkRes = {};
         for (let i = 0; i < linksToFetch.length; i++) {
           const recordText = linksToFetch[i];
+          
           const key =
-            _.findKey(SocialPlatformMapping, (o) => {
+            _.findKey(platfomData, (o) => {
               return o.ensText.includes(recordText);
             }) || recordText;
           const handle = resolveHandle(
@@ -104,8 +106,8 @@ const resolveHandleFromURL = async (
           );
           if (handle) {
             const resolvedKey =
-              key === SocialPlatformMapping.url.key
-                ? SocialPlatformMapping.website.key
+              key === PlatformType.url
+                ? PlatformType.website
                 : key;
             _linkRes[resolvedKey] = {
               link: getSocialMediaLink(handle, resolvedKey),

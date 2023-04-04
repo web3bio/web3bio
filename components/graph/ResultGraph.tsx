@@ -15,17 +15,18 @@ const insertCss = isBrowser ? require("insert-css") : null;
 if (isBrowser) {
   insertCss(`
   .web5bio-tooltip {
-    background: #fff;
+    background: #fcfcfc;
     z-index: 999;
     list-style-type: none;
     border-radius: 8px;
     font-size: .6rem;
-    width: fit-content;
-    transition: opacity .2s;
+    max-width: 400px;
     text-align: left;
     user-select: none;
-    padding: 4px 8px;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .15);
+    padding: 8px 12px;
+    pointer-events: none;
+    border: 1px solid rgba(0, 0, 0, .25);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 4px 24px rgba(0, 0, 0, .05);
     border: 0;
   }
   .web5bio-tooltip ul {
@@ -33,10 +34,14 @@ if (isBrowser) {
     margin: 0;
   }
   .web5bio-tooltip li {
-    cursor: pointer;
     list-style-type: none;
     list-style: none;
+    overflow-wrap: break-word;
+    word-break: break-all; 
     margin: 0;
+	}
+  .web5bio-tooltip li span {
+    font-size: .5rem;
 	}
 	`);
 }
@@ -54,7 +59,7 @@ const resolveGraphData = (source) => {
   source.forEach((x, idx) => {
     const from = x.from;
     const to = x.to;
-    const resolvedPlatform = SocialPlatformMapping[x.source];
+    const resolvedPlatform = SocialPlatformMapping(x.source);
     nodes.push({
       id: to.uuid,
       label: formatText(to.displayName ?? to.identity),
@@ -137,8 +142,8 @@ const processNodesEdges = (nodes, edges) => {
       };
       node.stateStyles = {
         selected: {
-          stroke: SocialPlatformMapping[node.platform].color,
-          fill: SocialPlatformMapping[node.platform].color,
+          stroke: SocialPlatformMapping(node.platform)?.color || "rgba(0, 0, 0, .25)",
+          fill: SocialPlatformMapping(node.platform)?.color,
           fillOpacity: 0.1,
           lineWidth: 2,
           shadowColor: "transparent",
@@ -154,7 +159,7 @@ const processNodesEdges = (nodes, edges) => {
       };
       node.style = {
         lineWidth: 2,
-        fill: SocialPlatformMapping[node.platform].color,
+        fill: SocialPlatformMapping(node.platform)?.color,
         stroke: "rgba(0, 0, 0, .05)",
       };
       node.stateStyles = {
@@ -167,11 +172,11 @@ const processNodesEdges = (nodes, edges) => {
     }
     node.type = "identity-node";
     node.label = formatText(node.label);
-    if (node.platform && node.platform.toLowerCase() === "ethereum") {
+    if (node.platform && node.platform.toLowerCase() === PlatformType.ethereum) {
       node.label = `${node.displayName || formatText(node.identity)} ${
         node.displayName ? `\n${formatText(node.identity)}` : ""
       }`;
-      node.labelLineNum = node.displayName ? 2 : 1;
+      node.labelLineNum = 1;
     }
   });
   edges.forEach((edge) => {
@@ -225,15 +230,16 @@ const RenderResultGraph = (props) => {
         if (e.item.getModel().isIdentity) {
           outDiv.innerHTML = `
           <ul>
-            <li>DisplayName: ${e.item.getModel().displayName || "-"}</li>
-            <li>Identity: ${e.item.getModel().identity || "-"}</li>
-            <li>Platform: ${
-              SocialPlatformMapping[e.item.getModel().platform]?.label ||
+            <li class="text-large text-bold">${e.item.getModel().displayName || "-"}</li>
+            <li class="mb-1">${e.item.getModel().identity != e.item.getModel().displayName
+                ? e.item.getModel().identity : "" }</li>
+            <li><span class="text-gray">Platform: </span>${
+              SocialPlatformMapping(e.item.getModel().platform)?.label ||
               e.item.getModel().platform ||
               "Unknown"
             }</li>
-            <li>Source: ${
-              SocialPlatformMapping[e.item.getModel().source]?.label ||
+            <li><span class="text-gray">Source: </span>${
+              SocialPlatformMapping(e.item.getModel().source)?.label ||
               e.item.getModel().source ||
               "Unknown"
             }</li>
@@ -241,8 +247,9 @@ const RenderResultGraph = (props) => {
         } else {
           outDiv.innerHTML = `
           <ul>
-            <li>ENS: ${e.item.getModel().identity || "Unknown"}</li>
-            <li>Owner: ${e.item.getModel().holder || "Unknown"}</li>
+            <li class="text-large text-bold mb-1">${e.item.getModel().identity || ""}</li>
+            <li><span class="text-gray">Platform: </span>${e.item.getModel().platform || ""}</li>
+            <li><span class="text-gray">Owner: </span>${e.item.getModel().holder || ""}</li>
           </ul>`;
         }
 
@@ -273,6 +280,13 @@ const RenderResultGraph = (props) => {
             stroke: "#cecece",
           },
         },
+      },
+      defaultNode: {
+        stroke: "rgba(0, 0, 0, .25)",
+        fillOpacity: 0.1,
+        lineWidth: 2,
+        shadowColor: "transparent",
+        zIndex: 999,
       },
       layout: {
         type: "gForce",

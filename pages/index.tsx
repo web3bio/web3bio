@@ -106,13 +106,13 @@ export default function Home() {
     <div>
       <Head>
         {searchTerm ? (
-          <title>{searchTerm} - Web5.bio</title>
+          <title>{searchTerm} - Web3.bio</title>
         ) : (
-          <title>Web5.bio</title>
+          <title>Web3.bio</title>
         )}
         <meta
           name="description"
-          content="Web5.bio is a Web3 and Web 2.0 Identity Graph search service which is powered by Next.ID. Web5.bio will provide a list of relevant identities when you are searching any Twitter handle, Ethereum address, ENS domain or Lens Profile."
+          content="Web3.bio (Previously Web5.bio) is a Web3 and Web 2.0 Identity Graph search service which is powered by Next.ID. Web3.bio will provide a list of relevant identities when you are searching any Twitter handle, Ethereum address, ENS domain, Lens profile or Unstoppable Domains, and other Web3 identities."
         />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       </Head>
@@ -123,24 +123,16 @@ export default function Home() {
           className={searchFocus ? "web3bio-search focused" : "web3bio-search"}
         >
           <div className="container grid-xs">
-            <form
-              autoComplete="off"
-              role="search"
-              className="search-form"
-              onSubmit={(e) => {
-                e.preventDefault();
-                return false;
-              }}
-            >
+            <div className="search-form">
               <Link
                 href={{
                   pathname: "/",
                   query: {},
                 }}
               >
-                <div className="web3bio-logo" title="Web5.bio">
+                <div className="web3bio-logo" title="Web3.bio">
                   <h1 className="text-pride">
-                    WEB5
+                    WEB3
                     <br />
                     BIO
                   </h1>
@@ -154,12 +146,12 @@ export default function Home() {
                   // add key here to make defaultValue reactive
                   key={searchTerm}
                   defaultValue={searchTerm}
-                  handleSubmit={(value, platform) =>
-                    handleSubmit(value, platform)
-                  }
+                  handleSubmit={(value, platform) => {
+                    handleSubmit(value, platform);
+                  }}
                 />
               </div>
-            </form>
+            </div>
             {searchPlatform ? (
               isDomainSearch(searchPlatform) ? (
                 <SearchResultDomain
