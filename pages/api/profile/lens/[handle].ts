@@ -88,14 +88,14 @@ const resolveNameFromLens = async (
       .status(200)
       .setHeader(
         "CDN-Cache-Control",
-        `s-maxage=${60 * 60 * 24}, stale-while-revalidate`
+        `s-maxage=${60 * 60 * 2}, stale-while-revalidate=${60 * 10}`
       )
       .json(resJSON);
   } catch (error: any) {
     res.status(500).json({
-      owner: isAddress(handle) ? handle : null,
-      identity: isAddress(handle) ? null : handle,
-      displayName: isAddress(handle) ? null : handle,
+      owner: null,
+      identity: handle,
+      displayName: null,
       avatar: null,
       email: null,
       description: null,

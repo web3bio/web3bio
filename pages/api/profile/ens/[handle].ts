@@ -166,7 +166,7 @@ const resolveHandleFromURL = async (
       .status(200)
       .setHeader(
         "CDN-Cache-Control",
-        `s-maxage=${60 * 60 * 24}, stale-while-revalidate`
+        `s-maxage=${60 * 60 * 2}, stale-while-revalidate=${60 * 10}`
       )
       .json(resJSON);
   } catch (error: any) {
