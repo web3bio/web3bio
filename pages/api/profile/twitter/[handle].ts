@@ -66,22 +66,22 @@ const resolveTwitterHandle = async (
       .status(200)
       .setHeader(
         "CDN-Cache-Control",
-        `s-maxage=${60 * 60 * 24}, stale-while-revalidate`
+        `s-maxage=${60 * 60 * 24}, stale-while-revalidate=${60 * 10}`
       )
       .json(resJSON);
   } catch (e: any) {
     res.status(500).json({
-      owner: handle,
+      owner: null,
       identity: handle,
-      displayName: handle,
+      displayName: null,
       avatar: null,
       email: null,
       description: null,
       location: null,
       header: null,
       links: {
-        twitter: {
-          link: "https://twitter.com/" + handle,
+        [PlatformType.twitter]: {
+          link: getSocialMediaLink(handle, PlatformType.twitter),
           handle,
         },
       },

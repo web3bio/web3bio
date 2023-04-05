@@ -5,7 +5,6 @@ import { PlatformType } from "../../../../utils/type";
 import {
   firstParam,
   getSocialMediaLink,
-  resolveEipAssetURL,
   resolveHandle,
 } from "../../../../utils/utils";
 
@@ -52,14 +51,14 @@ const resolveFarcasterHandle = async (
       .status(200)
       .setHeader(
         "CDN-Cache-Control",
-        `s-maxage=${60 * 60 * 24}, stale-while-revalidate`
+        `s-maxage=${60 * 60 * 24}, stale-while-revalidate=${60 * 10}`
       )
       .json(resJSON);
   } catch (e: any) {
     res.status(500).json({
-      owner: handle,
+      owner: null,
       identity: handle,
-      displayName: handle,
+      displayName: null,
       avatar: null,
       email: null,
       description: null,
@@ -67,7 +66,7 @@ const resolveFarcasterHandle = async (
       header: null,
       links: {
         [PlatformType.farcaster]: {
-          link: "https://warpcast.com/" + handle,
+          link: getSocialMediaLink(handle, PlatformType.farcaster),
           handle: handle,
         },
       },
