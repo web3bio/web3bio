@@ -62,22 +62,22 @@ const resolveHandleFromURL = async (
 ) => {
   try {
     let address = "";
-    let name = "";
+    let ensDomain = "";
     let avatar = null;
     if (isAddress(handle)) {
       address = getAddress(handle);
-      name = (await provider.lookupAddress(address)) || null;
-      avatar = (await provider.getAvatar(name)) || null;
+      ensDomain = (await provider.lookupAddress(address)) || null;
+      avatar = (await provider.getAvatar(ensDomain)) || null;
     } else {
       [address, avatar] = await Promise.all([
         provider.resolveName(handle),
         provider.getAvatar(handle),
       ]);
-      name = handle;
+      ensDomain = handle;
     }
 
-    const gtext = await getENSTexts(name);
-    const resolver = await provider.getResolver(name);
+    const gtext = await getENSTexts(ensDomain);
+    const resolver = await provider.getResolver(ensDomain);
     let LINKRES = {};
     let CRYPTORES = {
       eth: address,
@@ -151,18 +151,17 @@ const resolveHandleFromURL = async (
 
     const resJSON = {
       owner: address,
-      identity: name,
-      displayName: (await resolver.getText("name")) || name,
+      identity: ensDomain,
+      displayName: (await resolver.getText("name")) || ensDomain,
       avatar: await resolveEipAssetURL(avatar || null),
       email: (await resolver.getText("email")) || null,
       description: (await resolver.getText("description")) || null,
       location: (await resolver.getText("location")) || null,
       header: await resolveEipAssetURL(headerHandle || null),
-      notice: (await resolver.getText("notice")) || null,
-      keywords: (await resolver.getText("keywords")) || null,
       links: LINKRES,
       addresses: CRYPTORES,
     };
+    
     res
       .status(200)
       .setHeader(

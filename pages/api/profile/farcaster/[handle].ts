@@ -30,7 +30,7 @@ const resolveFarcasterHandle = async (
     const resolvedHandle = resolveHandle(_res.username);
     const LINKRES = {
       [PlatformType.farcaster]: {
-        link: "https://warpcast.com/" + resolvedHandle,
+        link: getSocialMediaLink(resolvedHandle, PlatformType.farcaster),
         handle: resolvedHandle,
       },
     };
