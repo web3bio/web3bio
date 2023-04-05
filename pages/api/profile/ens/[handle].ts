@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { StaticJsonRpcProvider } from "@ethersproject/providers";
 import { getAddress, isAddress } from "@ethersproject/address";
-import { CoinType, HandleResponseData } from "./types";
+import { CoinType, HandleResponseData } from "../../../../utils/api";
 import {
   firstParam,
   getSocialMediaLink,
@@ -62,28 +62,26 @@ const resolveHandleFromURL = async (
 ) => {
   try {
     let address = "";
-    let name = "";
+    let ensDomain = "";
     let avatar = null;
     if (isAddress(handle)) {
       address = getAddress(handle);
-      name = (await provider.lookupAddress(address)) || null;
-      avatar = (await provider.getAvatar(name)) || null;
+      ensDomain = (await provider.lookupAddress(address)) || null;
+      avatar = (await provider.getAvatar(ensDomain)) || null;
     } else {
       [address, avatar] = await Promise.all([
         provider.resolveName(handle),
         provider.getAvatar(handle),
       ]);
-      name = handle;
+      ensDomain = handle;
     }
 
-    const gtext = await getENSTexts(name);
-    const resolver = await provider.getResolver(name);
+    const gtext = await getENSTexts(ensDomain);
+    const resolver = await provider.getResolver(ensDomain);
     let LINKRES = {};
     let CRYPTORES = {
       eth: address,
       btc: null,
-      ltc: null,
-      doge: null,
     };
     if (gtext && gtext[0].resolver.texts) {
       const linksRecords = gtext[0].resolver.texts;
@@ -123,7 +121,7 @@ const resolveHandleFromURL = async (
       const cryptoRecrods = gtext[0].resolver.coinTypes;
       const cryptoRecordsToFetch = cryptoRecrods.reduce((pre, cur) => {
         if (
-          ![CoinType.btc, CoinType.eth, CoinType.ltc, CoinType.doge].includes(
+          ![CoinType.btc, CoinType.eth].includes(
             Number(cur)
           ) &&
           _.findKey(CoinType, (o) => o == cur)
@@ -146,8 +144,6 @@ const resolveHandleFromURL = async (
       CRYPTORES = {
         eth: address,
         btc: await resolver.getAddress(CoinType.btc),
-        ltc: await resolver.getAddress(CoinType.ltc),
-        doge: await resolver.getAddress(CoinType.doge),
         ...(await getCrypto()),
       };
     }
@@ -155,18 +151,17 @@ const resolveHandleFromURL = async (
 
     const resJSON = {
       owner: address,
-      identity: name,
-      displayName: (await resolver.getText("name")) || name,
+      identity: ensDomain,
+      displayName: (await resolver.getText("name")) || ensDomain,
       avatar: await resolveEipAssetURL(avatar || null),
       email: (await resolver.getText("email")) || null,
       description: (await resolver.getText("description")) || null,
       location: (await resolver.getText("location")) || null,
       header: await resolveEipAssetURL(headerHandle || null),
-      notice: (await resolver.getText("notice")) || null,
-      keywords: (await resolver.getText("keywords")) || null,
       links: LINKRES,
       addresses: CRYPTORES,
     };
+    
     res
       .status(200)
       .setHeader(
@@ -177,15 +172,13 @@ const resolveHandleFromURL = async (
   } catch (error: any) {
     res.status(500).json({
       owner: isAddress(handle) ? handle : null,
-      identity: isAddress(handle) ? null : handle,
-      displayName: isAddress(handle) ? null : handle,
+      identity: isAddress(handle) ? handle : null,
+      displayName: null,
       avatar: null,
       email: null,
       description: null,
       location: null,
       header: null,
-      notice: null,
-      keywords: null,
       links: {},
       addresses: {},
       error: error.message,

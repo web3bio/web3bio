@@ -105,7 +105,8 @@ export function resolveSocialMediaLink(name, type) {
     case PlatformType.website:
       return `https://${name}`;
     default:
-      return SocialPlatformMapping(type).urlPrefix + name;
+      return SocialPlatformMapping(type).urlPrefix ? 
+        SocialPlatformMapping(type).urlPrefix + name : null;
   }
 }
 
@@ -213,6 +214,7 @@ export const resolveHandle = (handle: string) => {
     return handle
       .replaceAll(prefixHttp, "")
       .replaceAll(prefixHttps, "")
+      .replaceAll("/", "")
       .replaceAll("@", "");
   }
   return handle;

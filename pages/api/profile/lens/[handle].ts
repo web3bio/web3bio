@@ -9,7 +9,7 @@ import {
 import client from "../../../../utils/apollo";
 import _ from "lodash";
 import { GET_PROFILE_LENS } from "../../../../utils/lens";
-import { HandleResponseData } from "../ens/types";
+import { HandleResponseData } from "../../../../utils/api";
 import { platfomData } from "../../../../utils/platform";
 import { PlatformType } from "../../../../utils/type";
 
@@ -81,8 +81,6 @@ const resolveNameFromLens = async (
       header: await resolveEipAssetURL(
         response.coverPicture.original.url || null
       ),
-      notice: null,
-      keywords: null,
       links: LINKRES,
       addresses: CRYPTORES,
     };
@@ -103,8 +101,6 @@ const resolveNameFromLens = async (
       description: null,
       location: null,
       header: null,
-      notice: null,
-      keywords: null,
       links: {},
       addresses: {},
       error: error.message,

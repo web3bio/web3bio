@@ -1,14 +1,16 @@
 type LinksItem = {
-  link: string | null;
-  handle: string | null;
-};
+    link: string | null;
+    handle: string | null;
+  };
 type LinksData = {
   twitter?: LinksItem;
   github?: LinksItem;
   telegram?: LinksItem;
   discord?: LinksItem;
   reddit?: LinksItem;
-  url?: LinksItem;
+  linkedin?: LinksItem;
+  website?: LinksItem;
+  farcaster?: LinksItem;
 };
 type AddressesData = {
   eth?: string | null;
@@ -26,8 +28,6 @@ export type HandleResponseData = {
   description: string | null;
   location: string | null;
   header: string | null;
-  notice: string | null;
-  keywords: string | null;
   links: LinksData | null;
   addresses: AddressesData | null;
   error?: string;
@@ -40,7 +40,7 @@ export const CoinType = {
   // dash: 5,
   // monacoin: 22,
   eth: 60,
-  etc: 61,
+  // etc: 61,
   // xrp: 145,
   // atom: 118,
   // rootstock: 137,
@@ -52,5 +52,6 @@ export const CoinType = {
   // eos: 194,
   // xem: 43,
   // trx: 195,
-  xdai: 700,
+  // xdai: 700,
+  matic: 2147483785,
 };
