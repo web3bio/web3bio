@@ -43,8 +43,6 @@ const resolveFarcasterHandle = async (
       description: _res.bio,
       location: null,
       header: null,
-      notice: null,
-      keywords: null,
       links: LINKRES,
       addresses: {
         eth: response[0].connectedAddress || _res.address,
@@ -67,8 +65,6 @@ const resolveFarcasterHandle = async (
       description: null,
       location: null,
       header: null,
-      notice: null,
-      keywords: null,
       links: {
         [PlatformType.farcaster]: {
           link: "https://warpcast.com/" + handle,

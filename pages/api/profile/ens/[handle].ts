@@ -82,8 +82,6 @@ const resolveHandleFromURL = async (
     let CRYPTORES = {
       eth: address,
       btc: null,
-      ltc: null,
-      doge: null,
     };
     if (gtext && gtext[0].resolver.texts) {
       const linksRecords = gtext[0].resolver.texts;
@@ -123,7 +121,7 @@ const resolveHandleFromURL = async (
       const cryptoRecrods = gtext[0].resolver.coinTypes;
       const cryptoRecordsToFetch = cryptoRecrods.reduce((pre, cur) => {
         if (
-          ![CoinType.btc, CoinType.eth, CoinType.ltc, CoinType.doge].includes(
+          ![CoinType.btc, CoinType.eth].includes(
             Number(cur)
           ) &&
           _.findKey(CoinType, (o) => o == cur)
@@ -146,8 +144,6 @@ const resolveHandleFromURL = async (
       CRYPTORES = {
         eth: address,
         btc: await resolver.getAddress(CoinType.btc),
-        ltc: await resolver.getAddress(CoinType.ltc),
-        doge: await resolver.getAddress(CoinType.doge),
         ...(await getCrypto()),
       };
     }
@@ -177,15 +173,13 @@ const resolveHandleFromURL = async (
   } catch (error: any) {
     res.status(500).json({
       owner: isAddress(handle) ? handle : null,
-      identity: isAddress(handle) ? null : handle,
-      displayName: isAddress(handle) ? null : handle,
+      identity: isAddress(handle) ? handle : null,
+      displayName: null,
       avatar: null,
       email: null,
       description: null,
       location: null,
       header: null,
-      notice: null,
-      keywords: null,
       links: {},
       addresses: {},
       error: error.message,

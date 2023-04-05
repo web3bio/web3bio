@@ -28,8 +28,8 @@ type LinksItem = {
     description: string | null;
     location: string | null;
     header: string | null;
-    notice: string | null;
-    keywords: string | null;
+    notice?: string | null;
+    keywords?: string | null;
     links: LinksData | null;
     addresses: AddressesData | null;
     error?: string;
@@ -55,5 +55,6 @@ type LinksItem = {
     // xem: 43,
     // trx: 195,
     xdai: 700,
+    matic: 2147483785,
   };
   

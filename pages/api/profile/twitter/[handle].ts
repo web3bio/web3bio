@@ -59,8 +59,6 @@ const resolveTwitterHandle = async (
       description: response.description,
       location: response.location,
       header: response.profile_banner_url,
-      notice: null,
-      keywords: null,
       links: LINKRES,
       addresses: null,
     };
@@ -81,8 +79,6 @@ const resolveTwitterHandle = async (
       description: null,
       location: null,
       header: null,
-      notice: null,
-      keywords: null,
       links: {
         twitter: {
           link: "https://twitter.com/" + handle,

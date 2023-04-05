@@ -81,8 +81,6 @@ const resolveNameFromLens = async (
       header: await resolveEipAssetURL(
         response.coverPicture.original.url || null
       ),
-      notice: null,
-      keywords: null,
       links: LINKRES,
       addresses: CRYPTORES,
     };
@@ -103,8 +101,6 @@ const resolveNameFromLens = async (
       description: null,
       location: null,
       header: null,
-      notice: null,
-      keywords: null,
       links: {},
       addresses: {},
       error: error.message,
