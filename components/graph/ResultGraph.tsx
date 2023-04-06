@@ -415,11 +415,10 @@ const RenderResultGraph = (props) => {
 
     bindListener();
     return () => {
-      console.log('destory')
       graph.destroy();
       graph = null;
     };
-  }, [data]);
+  }, [data,onClose,title]);
 
   return (
     <div
