@@ -306,15 +306,15 @@ const RenderResultGraph = (props) => {
         },
         nodeStrength: (d) => {
           if (d.isIdentity) {
-            return 480;
+            return 240;
           }
-          return 180;
+          return 120;
         },
         edgeStrength: (d) => {
           if (d.isIdentity) {
-            return 30;
+            return 10;
           }
-          return 20;
+          return 100;
         },
         onLayoutEnd: () => {
           setLoading(false);
@@ -415,6 +415,7 @@ const RenderResultGraph = (props) => {
 
     bindListener();
     return () => {
+      console.log('destory')
       graph.destroy();
       graph = null;
     };
