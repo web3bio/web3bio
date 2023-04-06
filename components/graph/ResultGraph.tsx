@@ -142,7 +142,8 @@ const processNodesEdges = (nodes, edges) => {
       };
       node.stateStyles = {
         selected: {
-          stroke: SocialPlatformMapping(node.platform)?.color || "rgba(0, 0, 0, .25)",
+          stroke:
+            SocialPlatformMapping(node.platform)?.color || "rgba(0, 0, 0, .25)",
           fill: SocialPlatformMapping(node.platform)?.color,
           fillOpacity: 0.1,
           lineWidth: 2,
@@ -172,7 +173,10 @@ const processNodesEdges = (nodes, edges) => {
     }
     node.type = "identity-node";
     node.label = formatText(node.label);
-    if (node.platform && node.platform.toLowerCase() === PlatformType.ethereum) {
+    if (
+      node.platform &&
+      node.platform.toLowerCase() === PlatformType.ethereum
+    ) {
       node.label = `${node.displayName || formatText(node.identity)} ${
         node.displayName ? `\n${formatText(node.identity)}` : ""
       }`;
@@ -230,9 +234,14 @@ const RenderResultGraph = (props) => {
         if (e.item.getModel().isIdentity) {
           outDiv.innerHTML = `
           <ul>
-            <li class="text-large text-bold">${e.item.getModel().displayName || "-"}</li>
-            <li class="mb-1">${e.item.getModel().identity != e.item.getModel().displayName
-                ? e.item.getModel().identity : "" }</li>
+            <li class="text-large text-bold">${
+              e.item.getModel().displayName || "-"
+            }</li>
+            <li class="mb-1">${
+              e.item.getModel().identity != e.item.getModel().displayName
+                ? e.item.getModel().identity
+                : ""
+            }</li>
             <li><span class="text-gray">Platform: </span>${
               SocialPlatformMapping(e.item.getModel().platform)?.label ||
               e.item.getModel().platform ||
@@ -247,9 +256,15 @@ const RenderResultGraph = (props) => {
         } else {
           outDiv.innerHTML = `
           <ul>
-            <li class="text-large text-bold mb-1">${e.item.getModel().identity || ""}</li>
-            <li><span class="text-gray">Platform: </span>${e.item.getModel().platform || ""}</li>
-            <li><span class="text-gray">Owner: </span>${e.item.getModel().holder || ""}</li>
+            <li class="text-large text-bold mb-1">${
+              e.item.getModel().identity || ""
+            }</li>
+            <li><span class="text-gray">Platform: </span>${
+              e.item.getModel().platform || ""
+            }</li>
+            <li><span class="text-gray">Owner: </span>${
+              e.item.getModel().holder || ""
+            }</li>
           </ul>`;
         }
 
@@ -263,6 +278,8 @@ const RenderResultGraph = (props) => {
       container: container.current,
       CANVAS_WIDTH,
       CANVAS_HEIGHT,
+      fitView: true,
+      fitCenter: true,
       defaultEdge: {
         labelCfg: {
           autoRotate: true,
@@ -296,7 +313,7 @@ const RenderResultGraph = (props) => {
           if (d.isIdentity) {
             return 240;
           }
-          return 180;
+          return 500;
         },
         nodeSpacing: (d) => {
           if (d.isIdentity) {
@@ -308,13 +325,13 @@ const RenderResultGraph = (props) => {
           if (d.isIdentity) {
             return 240;
           }
-          return 120;
+          return 480;
         },
         edgeStrength: (d) => {
           if (d.isIdentity) {
             return 10;
           }
-          return 100;
+          return 10;
         },
         onLayoutEnd: () => {
           setLoading(false);
@@ -418,7 +435,7 @@ const RenderResultGraph = (props) => {
       graph.destroy();
       graph = null;
     };
-  }, [data,onClose,title]);
+  }, [data, onClose, title]);
 
   return (
     <div
