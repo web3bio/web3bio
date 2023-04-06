@@ -94,13 +94,13 @@ const RenderNFTCollections = (props) => {
       };
 
       if (container) {
-        container.addEventListener("wheel", judgeActiveCollection,{
-          passive: true
+        container.addEventListener("wheel", judgeActiveCollection, {
+          passive: true,
         });
       }
       return () =>
-        container?.removeEventListener("wheel", judgeActiveCollection,{
-          passive: true
+        container?.removeEventListener("wheel", judgeActiveCollection, {
+          passive: true,
         });
     }
   }, [anchorName, activeCollection, data]);
