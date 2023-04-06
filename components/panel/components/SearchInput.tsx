@@ -8,6 +8,7 @@ import { SocialPlatformMapping } from "../../../utils/platform";
 import { matchQuery } from "../../../utils/queries";
 import { PlatformType } from "../../../utils/type";
 import { handleSearchPlatform } from "../../../utils/utils";
+import { useRouter } from "next/router";
 
 const isQuerySplit = (query: string) => {
   return query.includes(".") || query.includes("。");
@@ -15,11 +16,11 @@ const isQuerySplit = (query: string) => {
 
 export const SearchInput = (props) => {
   const { defaultValue, handleSubmit } = props;
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(defaultValue);
   const [searchList, setSearchList] = useState([]);
   const [activeIndex, setActiveIndex] = useState(null);
+  const router = useRouter();
   const inputRef = useRef(null);
-
   const emitSubmit = (e, value?) => {
     const platfrom = (() => {
       if (!value) return "";
@@ -32,6 +33,11 @@ export const SearchInput = (props) => {
       if (typeof value === "string") return value;
       return value.label;
     })();
+    if (_value && _value === router.query.s) {
+      setQuery(_value);
+      setSearchList([]);
+      return;
+    }
     handleSubmit(_value, platfrom);
     setSearchList([]);
     setActiveIndex(null);
@@ -66,7 +72,7 @@ export const SearchInput = (props) => {
     }
   };
   useEffect(() => {
-    if (!query || query.length > 20) {
+    if (!query || query.length > 20 || query === router.query.s) {
       setSearchList([]);
       return;
     }
@@ -105,15 +111,17 @@ export const SearchInput = (props) => {
         }, [])
       );
     }
-  }, [query, activeIndex]);
+  }, [query, activeIndex, router.query.s]);
   return (
     <>
       <input
         ref={inputRef}
         type="text"
         placeholder="Search ENS, Lens, Twitter, UD or Ethereum"
-        defaultValue={defaultValue}
-        onChange={(e) => setQuery(e.target.value)}
+        value={query}
+        onChange={(e) => {
+          setQuery(e.target.value);
+        }}
         onKeyDown={onKeyDown}
         className="form-input input-lg"
         autoCorrect="off"
