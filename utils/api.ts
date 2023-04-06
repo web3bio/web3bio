@@ -1,8 +1,8 @@
-type LinksItem = {
+export type LinksItem = {
     link: string | null;
     handle: string | null;
   };
-type LinksData = {
+export type LinksData = {
   twitter?: LinksItem;
   github?: LinksItem;
   telegram?: LinksItem;

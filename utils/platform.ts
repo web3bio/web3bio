@@ -198,7 +198,7 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     key: PlatformType.linkedin,
     color: "#195DB4",
     label: "LinkedIn",
-    icon: "ioncs/social-linkedin.svg",
+    icon: "ioncs/icon-linkedin.svg",
     ensText: ["com.linkedin"],
     urlPrefix: "https://www.linkedin.com/in/",
   },

@@ -1,38 +1,146 @@
 // Profile
-//- New Profile
+// New Profile
 .web3-profile {
-  .profile-header {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
+  padding: 2rem;
+
+  @media screen and (max-width: $size-md) {
+    padding: 1rem;
+  }
+
+  .web3bio-custom {
+    background-color: $light-color;
+    background-size: cover;
+    display: block;
+    filter: blur(2rem);
+    height: 100vh;
+    left: 0;
+    opacity: .25;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    z-index: -1;
   }
 
   .profile-avatar {
-    border: .1rem solid $light-color;
-    box-shadow: 0 .1rem 1rem rgba(0, 0, 0, .1);
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 .1rem rgba($light-color, .1);
+    height: 8rem;
+    width: 8rem;
+
+    .avatar {
+      box-shadow: 0 .4rem 1rem rgba(0, 0, 0, .1);
+      height: 8rem;
+      position: relative;
+      width: 8rem;
+      z-index: -1;
+    }
   }
 
   .profile-name {
     color: $dark-color;
-    font-size: 1.2rem;
+    font-size: 1.6rem;
     font-weight: 800;
-    margin-top: .5rem;
+    margin-bottom: .5rem;
+    margin-top: 1rem;
     max-width: 600px;
   }
 
-  .profile-address {
+  .profile-identity {
     align-items: center;
-    color: rgba($dark-color, .5);
     display: flex;
+    margin-bottom: 1rem;
+    font-size: .6rem;
+    line-height: 1rem;
 
     .action {
+      color: $gray-color;
       cursor: pointer;
-      flex: 0 0;
+      flex: 0 1;
       height: 1rem;
-      margin-left: 0.2rem;
+      margin-left: .2rem;
       position: relative;
-      transition: all 0.2s ease-in-out;
+      transition: all .2s ease-in-out;
       width: 1rem;
+
+      &:focus,
+      &:hover {
+        color: $dark-color;
+      }
+    }
+  }
+
+  .profile-description {
+    font-size: .9rem;
+    max-width: 20rem;
+  }
+}
+
+.section-title {
+  font-weight: 500;
+}
+
+.web3-profile-widgets {
+  display: flex;
+  flex-wrap: wrap;
+
+  .profile-widget {
+    background: $light-color;
+    border: .05rem solid rgba(0, 0, 0, .15);
+    border-radius: .8rem;
+    box-shadow: 0 .2rem .8rem rgba(0, 0, 0, .05);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    height: 9rem;
+    margin: .5rem;
+    padding: 1rem;
+    text-decoration: none;
+    transition: all .25s ease-in-out;
+    width: 9rem;
+    --widget-theme-color: $light-color;
+
+    &:focus,
+    &:hover {
+      box-shadow: 0 .4rem 1.2rem rgba(0, 0, 0, .15);
+      z-index: 99;
+
+      .platform-action {
+        .btn {
+          display: inline-flex;
+        }
+      }
+    }
+
+    .platform-icon {
+      align-items: center;
+      background: var(--widget-theme-color);
+      border-radius: .6rem;
+      color: $light-color;
+      display: flex;
+      height: 2rem;
+      justify-content: center;
+      width: 2rem;
+    }
+
+    .platform-title {
+      font-weight: 500;
+      margin-top: .5rem;
+      width: 100%;
+    }
+
+    .platform-handle {
+      color: $gray-color;
+      font-size: .6rem;
+      width: 100%;
+    }
+
+    .platform-action {
+      margin-top: auto;
+      
+      .btn {
+        display: none;
+        position: relative;
+      }
     }
   }
 }
