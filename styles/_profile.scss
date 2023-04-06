@@ -14,7 +14,7 @@
     filter: blur(2rem);
     height: 100vh;
     left: 0;
-    opacity: .25;
+    opacity: .15;
     position: fixed;
     top: 0;
     width: 100vw;
@@ -97,7 +97,6 @@
     text-decoration: none;
     transition: all .25s ease-in-out;
     width: 9rem;
-    --widget-theme-color: $light-color;
 
     &:focus,
     &:hover {
@@ -113,13 +112,16 @@
 
     .platform-icon {
       align-items: center;
-      background: var(--widget-theme-color);
       border-radius: .6rem;
       color: $light-color;
       display: flex;
       height: 2rem;
       justify-content: center;
       width: 2rem;
+
+      &.bg-pride {
+        box-shadow: inset 0 0 0 .1rem rgba($light-color, .25);
+      }
     }
 
     .platform-title {

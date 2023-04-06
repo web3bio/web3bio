@@ -26,9 +26,11 @@ const WidgetItem = (props) => {
           title={`Open ${item.handle} Twitter`}
           target="_blank"
           rel="noopener noreferrer"
-          style={{"--widget-theme-color": SocialPlatformMapping(item.platform)?.color}}
         >
-          <div className="platform-icon">
+          <div 
+            className="platform-icon"
+            style={{"background": SocialPlatformMapping(item.platform)?.color}}
+          >
             <SVG src="../icons/icon-twitter.svg" width={24} height={24} />
           </div>
           <div className="platform-title">Twitter</div>
@@ -46,9 +48,10 @@ const WidgetItem = (props) => {
           title={`Open ${item.handle} Website`}
           target="_blank"
           rel="noopener noreferrer"
-          style={{"--widget-theme-color": SocialPlatformMapping(item.platform)?.color}}
         >
-          <div className="platform-icon">
+          <div 
+            className="platform-icon bg-pride"
+          >
             <SVG src="../icons/icon-web.svg" width={24} height={24} />
           </div>
           <div className="platform-title">Website</div>
@@ -66,9 +69,11 @@ const WidgetItem = (props) => {
           title={`Open ${item.handle} GitHub`}
           target="_blank"
           rel="noopener noreferrer"
-          style={{"--widget-theme-color": SocialPlatformMapping(item.platform)?.color}}
         >
-          <div className="platform-icon">
+          <div 
+            className="platform-icon"
+            style={{"background": SocialPlatformMapping(item.platform)?.color}}
+          >
             <SVG src="../icons/icon-github.svg" width={24} height={24} />
           </div>
           <div className="platform-title">GitHub</div>
@@ -86,9 +91,11 @@ const WidgetItem = (props) => {
           title={`Open ${item.handle} Telegram`}
           target="_blank"
           rel="noopener noreferrer"
-          style={{"--widget-theme-color": SocialPlatformMapping(item.platform)?.color}}
         >
-          <div className="platform-icon">
+          <div 
+            className="platform-icon"
+            style={{"background": SocialPlatformMapping(item.platform)?.color}}
+          >
             <SVG src="../icons/icon-telegram.svg" width={24} height={24} />
           </div>
           <div className="platform-title">Telegram</div>
@@ -105,16 +112,18 @@ const WidgetItem = (props) => {
           data-clipboard-text={item.handle}
           onSuccess={onCopySuccess}
           className={`profile-widget ${item.platform}`}
-          style={{"--widget-theme-color": SocialPlatformMapping(item.platform)?.color}}
         >
-          <div className="platform-icon">
+          <div 
+            className="platform-icon"
+            style={{"background": SocialPlatformMapping(item.platform)?.color}}
+          >
             <SVG src="../icons/icon-discord.svg" width={24} height={24} />
           </div>
           <div className="platform-title">Discord</div>
           <div className="platform-handle">{item.handle}</div>
           <div className="platform-action">
             <div className="btn btn-sm">
-              Open
+              Copy
               {isCopied && <div className="tooltip-copy">COPIED</div>}
             </div>
           </div>
@@ -128,9 +137,11 @@ const WidgetItem = (props) => {
           title={`Open ${item.handle} Reddit`}
           target="_blank"
           rel="noopener noreferrer"
-          style={{"--widget-theme-color": SocialPlatformMapping(item.platform)?.color}}
         >
-          <div className="platform-icon">
+          <div 
+            className="platform-icon"
+            style={{"background": SocialPlatformMapping(item.platform)?.color}}
+          >
             <SVG src="../icons/icon-reddit.svg" width={24} height={24} />
           </div>
           <div className="platform-title">Reddit</div>
@@ -148,9 +159,11 @@ const WidgetItem = (props) => {
           title={`Open ${item.handle} LinkedIn`}
           target="_blank"
           rel="noopener noreferrer"
-          style={{"--widget-theme-color": SocialPlatformMapping(item.platform)?.color}}
         >
-          <div className="platform-icon">
+          <div 
+            className="platform-icon"
+            style={{"background": SocialPlatformMapping(item.platform)?.color}}
+          >
             <SVG src="../icons/icon-linkedin.svg" width={24} height={24} />
           </div>
           <div className="platform-title">LinkedIn</div>
@@ -168,9 +181,11 @@ const WidgetItem = (props) => {
           title={`Open ${item.handle} Farcaster`}
           target="_blank"
           rel="noopener noreferrer"
-          style={{"--widget-theme-color": SocialPlatformMapping(item.platform)?.color}}
         >
-          <div className="platform-icon">
+          <div 
+            className="platform-icon"
+            style={{"background": SocialPlatformMapping(item.platform)?.color}}
+          >
             <SVG src="../icons/icon-farcaster.svg" width={24} height={24} />
           </div>
           <div className="platform-title">Farcaster</div>
