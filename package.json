@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.10.0",
+    "underscore": "^1.13.6",
     "wallet.ts": "^1.0.1"
   },
   "devDependencies": {
@@ -24,15 +25,15 @@
     "bn.js": "^5.2.1",
     "date-fns": "^2.29.3",
     "eslint": "8.19.0",
-    "eslint-config-next": "13.0.1",
+    "eslint-config-next": "^13.2.4",
     "ethers": "^5.7.2",
     "graphql": "^15.8.0",
     "lodash": "^4.17.21",
-    "next": "^13.0.1",
+    "next": "^13.2.4",
     "nextjs-google-analytics": "^2.0.0",
-    "react": "18.2.0",
+    "react": "^18.2.0",
     "react-clipboard.js": "^2.0.16",
-    "react-dom": "18.2.0",
+    "react-dom": "^18.2.0",
     "react-inlinesvg": "^3.0.0",
     "react-redux": "^8.0.5",
     "react-use": "^17.4.0",

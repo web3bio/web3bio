@@ -51,7 +51,7 @@ const resolveFarcasterHandle = async (
       .status(200)
       .setHeader(
         "CDN-Cache-Control",
-        `s-maxage=${60 * 60 * 2}, stale-while-revalidate=${60 * 10}`
+        `s-maxage=${60 * 60 * 8}, stale-while-revalidate=${60 * 10}`
       )
       .json(resJSON);
   } catch (e: any) {
