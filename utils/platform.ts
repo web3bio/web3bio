@@ -6,6 +6,7 @@ type SocialPlatform = {
   label: string;
   urlPrefix?: string;
   ensText?: string[];
+  dotbitText?: string[];
 };
 
 export enum PlatformType {
@@ -33,8 +34,17 @@ export enum PlatformType {
   linkedin = "linkedin",
   dns = "dns",
   lenster = "lenster",
+  facebook = "facebook",
+  weibo = "weibo",
+  youtube = "youtube",
+  tiktok = "tiktok",
+  bilibili = "bilibili",
+  medium = "medium",
+  mirror = "mirror",
+  jike = "jike",
+  dribbble = "dribbble",
+  nostr = "nostr",
 }
-
 
 export const platfomData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.twitter]: {
@@ -45,6 +55,7 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     label: "Twitter",
     urlPrefix: "https://twitter.com/",
     ensText: ["com.twitter", "vnd.twitter"],
+    dotbitText: ["profile.twitter"],
   },
   [PlatformType.ens]: {
     key: PlatformType.ens,
@@ -82,6 +93,7 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     label: "GitHub",
     urlPrefix: "https://github.com/",
     ensText: ["com.github", "vnd.github"],
+    dotbitText: ["profile.github"],
   },
   [PlatformType.keybase]: {
     key: PlatformType.keybase,
@@ -109,6 +121,7 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     label: "Next.ID",
     urlPrefix: "https://web5.bio",
     ensText: [],
+    dotbitText: ["profile.nextid"],
   },
   [PlatformType.reddit]: {
     key: PlatformType.reddit,
@@ -118,6 +131,7 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     label: "Reddit",
     urlPrefix: "https://www.reddit.com/user/",
     ensText: ["com.reddit"],
+    dotbitText: ["profile.reddit"],
   },
   [PlatformType.space_id]: {
     key: PlatformType.space_id,
@@ -144,6 +158,7 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     iconW: "icons/icon-telegram-w.svg",
     label: "Telegram",
     ensText: ["org.telegram", "vnd.telegram", "VND.TELEGRAM"],
+    dotbitText: ["profile.telegram"],
     urlPrefix: "https://t.me/",
   },
   [PlatformType.instagram]: {
@@ -153,7 +168,17 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     iconW: "icons/icon-instagram-w.svg",
     label: "Instagram",
     ensText: ["com.instagram"],
+    dotbitText: ["profile.instagram"],
     urlPrefix: "https://www.instagram.com/",
+  },
+  [PlatformType.weibo]: {
+    key: PlatformType.instagram,
+    icon: "",
+    iconW: "",
+    label: "Weibo",
+    ensText: [],
+    dotbitText: ["profile.weibo"],
+    urlPrefix: "https://m.weibo.cn/",
   },
   [PlatformType.dotbit]: {
     key: PlatformType.dotbit,
@@ -206,6 +231,7 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     iconW: "icons/icon-discord-w.svg",
     label: "Discord",
     ensText: ["com.discord"],
+    dotbitText: ["profile.discord"],
   },
   [PlatformType.url]: {
     key: PlatformType.url,
@@ -220,6 +246,7 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     color: "#121212",
     label: "Website",
     ensText: ["url"],
+    dotbitText: ["profile.website"],
   },
   [PlatformType.linkedin]: {
     key: PlatformType.linkedin,
@@ -228,6 +255,7 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     icon: "ioncs/icon-linkedin.svg",
     ensText: ["com.linkedin"],
     urlPrefix: "https://www.linkedin.com/in/",
+    dotbitText: ["profile.linkedin"],
   },
   [PlatformType.dns]: {
     key: PlatformType.dns,
@@ -240,7 +268,79 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     icon: "icons/icon-lens.svg",
     iconW: "icons/icon-lens-w.svg",
     label: "Lenster",
-    urlPrefix:'https://lenster.xyz/u/'
+    urlPrefix: "https://lenster.xyz/u/",
+  },
+  [PlatformType.facebook]: {
+    key: PlatformType.facebook,
+    icon: "icons/social-facebook.svg",
+    iconW: "icons/social-facebook.svg",
+    label: "Facebook",
+    urlPrefix: "https://www.facebook.com/",
+    dotbitText: ["profile.facebook"],
+  },
+  [PlatformType.youtube]: {
+    key: PlatformType.youtube,
+    icon: "",
+    iconW: "",
+    label: "Youtube",
+    urlPrefix: "https://www.youtube.com/",
+    dotbitText: ["profile.youtube"],
+  },
+  [PlatformType.tiktok]: {
+    key: PlatformType.tiktok,
+    icon: "",
+    iconW: "",
+    label: "TikTok",
+    urlPrefix: "https://www.tiktok.com/",
+    dotbitText: ["profile.tiktok"],
+  },
+  [PlatformType.bilibili]: {
+    key: PlatformType.bilibili,
+    icon: "",
+    iconW: "",
+    label: "Bilibili",
+    urlPrefix: "https://www.bilibili.com/",
+    dotbitText: ["profile.bilibili"],
+  },
+  [PlatformType.medium]: {
+    key: PlatformType.medium,
+    icon: "icons/social-medium.svg",
+    iconW: "",
+    label: "Medium",
+    urlPrefix: "https://medium.com/",
+    dotbitText: ["profile.medium"],
+  },
+  [PlatformType.mirror]: {
+    key: PlatformType.mirror,
+    icon: "",
+    iconW: "",
+    label: "Mirror",
+    urlPrefix: "https://mirror.xyz/",
+    dotbitText: ["profile.mirror"],
+  },
+  [PlatformType.jike]: {
+    key: PlatformType.jike,
+    icon: "",
+    iconW: "",
+    label: "Jike",
+    urlPrefix: "https://web.okjike.com/",
+    dotbitText: ["profile.jike"],
+  },
+  [PlatformType.dribbble]: {
+    key: PlatformType.dribbble,
+    icon: "",
+    iconW: "",
+    label: "Dribbble",
+    urlPrefix: "https://dribbble.com/search/",
+    dotbitText: ["profile.dribbble"],
+  },
+  [PlatformType.nostr]: {
+    key: PlatformType.nostr,
+    icon: "",
+    iconW: "",
+    label: "Nostr",
+    urlPrefix: "https://app.coracle.social/",
+    dotbitText: ["profile.nostr"],
   },
 };
 

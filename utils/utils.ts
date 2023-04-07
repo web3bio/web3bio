@@ -104,8 +104,9 @@ export function resolveSocialMediaLink(name, type) {
     case PlatformType.website:
       return `https://${name}`;
     default:
-      return SocialPlatformMapping(type).urlPrefix ? 
-        SocialPlatformMapping(type).urlPrefix + name : null;
+      return SocialPlatformMapping(type).urlPrefix
+        ? SocialPlatformMapping(type).urlPrefix + name
+        : null;
   }
 }
 
@@ -130,10 +131,10 @@ export const handleSearchPlatform = (term: string) => {
       return PlatformType.unstoppableDomains;
     case regexSpaceid.test(term):
       return PlatformType.space_id;
+    case regexDotbit.test(term):
+      return PlatformType.dotbit;
     case regexTwitter.test(term):
       return PlatformType.twitter;
-      case regexDotbit.test(term):
-        return PlatformType.dotbit;
     default:
       return PlatformType.nextid;
   }
