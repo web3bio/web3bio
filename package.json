@@ -10,7 +10,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@dotbit/plugin-avatar": "^0.0.1",
     "@supabase/supabase-js": "^2.10.0",
+    "dotbit": "^0.4.17",
     "wallet.ts": "^1.0.1"
   },
   "devDependencies": {
