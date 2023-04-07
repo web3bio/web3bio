@@ -9,7 +9,7 @@ import _ from "lodash";
 import { HandleResponseData } from "../../../../utils/api";
 import { createInstance } from "dotbit";
 import { BitPluginAvatar } from "@dotbit/plugin-avatar";
-import { PlatformType, platfomData } from "../../../../utils/platform";
+import { platfomData } from "../../../../utils/platform";
 
 const resolveNameFromDotbit = async (
   handle: string,
@@ -18,11 +18,11 @@ const resolveNameFromDotbit = async (
   try {
     const dotbit = createInstance();
     dotbit.installPlugin(new BitPluginAvatar());
-
     const baseInfo = await dotbit.accountInfo(handle);
     const avatar =
-      (await dotbit.avatar(handle)) ||
+      (await dotbit.avatar(handle))?.url ||
       (await dotbit.records(handle, "profile.avatar"))[0]?.value;
+
     const records = await dotbit.records(handle);
     const addresses = await dotbit.addresses(handle);
     let LINKRES = {};
@@ -31,15 +31,20 @@ const resolveNameFromDotbit = async (
       const getLink = async () => {
         const _linkRes = {};
         records.map((x) => {
-          if (x.type === "profile") {
+          if (
+            x.type === "profile" &&
+            !["avatar", "description", "email"].includes(x.subtype)
+          ) {
             const key =
-              _.find(platfomData, (o) => o.dotbitText.includes(x.key))?.key ||
+              _.find(platfomData, (o) => o.dotbitText?.includes(x.key))?.key ||
               x.key;
             const resolvedHandle = resolveHandle(x.value);
+        
             _linkRes[key] = {
               link: getSocialMediaLink(resolvedHandle, key),
               handle: resolvedHandle,
             };
+            
           }
         });
         return _linkRes;
