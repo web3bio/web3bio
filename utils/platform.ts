@@ -1,5 +1,3 @@
-import { PlatformType } from "./type";
-
 type SocialPlatform = {
   key: string;
   color?: string;
@@ -9,6 +7,35 @@ type SocialPlatform = {
   urlPrefix?: string;
   ensText?: string[];
 };
+
+export enum PlatformType {
+  ens = "ENS",
+  dotbit = "dotbit",
+  lens = "lens",
+  ethereum = "ethereum",
+  twitter = "twitter",
+  nextid = "nextid",
+  keybase = "keybase",
+  reddit = "reddit",
+  github = "github",
+  unstoppableDomains = "unstoppabledomains",
+  farcaster = "farcaster",
+  space_id = "space_id",
+  telegram = "telegram",
+  instagram = "instagram",
+  rss3 = "rss3",
+  cyberconnect = "cyberconnect",
+  opensea = "opensea",
+  sybil = "sybil",
+  discord = "discord",
+  url = "url",
+  website = "website",
+  linkedin = "linkedin",
+  dns = "dns",
+  lenster = "lenster",
+}
+
+
 export const platfomData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.twitter]: {
     key: PlatformType.twitter,

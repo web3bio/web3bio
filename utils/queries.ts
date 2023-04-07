@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
-import { PlatformType } from "./type";
 import { isDomainSearch } from "./utils";
+import { PlatformType } from "./platform";
 
 export const GET_PROFILES_DOMAIN = gql`
   query GET_PROFILES_DOMAIN($platform: String, $identity: String) {

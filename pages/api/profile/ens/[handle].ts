@@ -11,8 +11,7 @@ import {
 import { gql } from "@apollo/client";
 import client from "../../../../utils/apollo";
 import _ from "lodash";
-import { platfomData } from "../../../../utils/platform";
-import { PlatformType } from "../../../../utils/type";
+import { PlatformType, platfomData } from "../../../../utils/platform";
 
 const ensRecordsDefaultOrShouldSkipText = [
   "name",

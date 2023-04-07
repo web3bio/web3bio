@@ -1,7 +1,6 @@
 import isArray from "@antv/util/lib/is-array";
 import isNumber from "@antv/util/lib/is-number";
-import { SocialPlatformMapping } from "../../../utils/platform";
-import { PlatformType } from "../../../utils/type";
+import { PlatformType, SocialPlatformMapping } from "../../../utils/platform";
 
 const isBrowser = typeof window !== "undefined";
 const G6 = isBrowser ? require("@antv/g6") : null;

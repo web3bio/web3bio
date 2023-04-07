@@ -1,12 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import _ from "underscore";
-import { PlatformType } from "../../../../utils/type";
 import {
   firstParam,
   getSocialMediaLink,
   resolveHandle,
 } from "../../../../utils/utils";
 import { HandleResponseData } from "../../../../utils/api";
+import { PlatformType } from "../../../../utils/platform";
 
 const originBase =
   "https://mr8asf7i4h.execute-api.us-east-1.amazonaws.com/prod/";

@@ -4,9 +4,8 @@ import {
   DomainSearchSuffix,
   fuzzyDomainSuffix,
 } from "../../../utils/constants";
-import { SocialPlatformMapping } from "../../../utils/platform";
+import { PlatformType, SocialPlatformMapping } from "../../../utils/platform";
 import { matchQuery } from "../../../utils/queries";
-import { PlatformType } from "../../../utils/type";
 import { handleSearchPlatform } from "../../../utils/utils";
 import { useRouter } from "next/router";
 

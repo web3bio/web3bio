@@ -7,9 +7,9 @@ import { SearchInput } from "../components/panel/components/SearchInput";
 import { TabsMap } from "../components/panel/IdentityPanel";
 import { SearchResultDomain } from "../components/search/SearchResultDomain";
 import { SearchResultQuery } from "../components/search/SearchResultQuery";
-import { PlatformType } from "../utils/type";
 import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
 import ProfilePage from "./[...domain]";
+import { PlatformType } from "../utils/platform";
 
 export default function Home() {
   const [searchFocus, setSearchFocus] = useState(false);

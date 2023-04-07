@@ -8,8 +8,8 @@ import { Error } from "../components/shared/Error";
 import { Loading } from "../components/shared/Loading";
 import { GET_PROFILE_LENS } from "../utils/lens";
 import { GET_PROFILES_DOMAIN, GET_PROFILES_QUERY } from "../utils/queries";
-import { PlatformType } from "../utils/type";
 import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
+import { PlatformType } from "../utils/platform";
 
 const RenderDomainPanel = (props) => {
   const {

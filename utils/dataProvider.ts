@@ -7,8 +7,8 @@ import {
 import { POAPFetcher, POAP_END_POINT } from "../components/apis/poap";
 import client from "./apollo";
 import { GET_PROFILE_LENS } from "./lens";
+import { PlatformType } from "./platform";
 import { GET_PROFILES_DOMAIN, GET_PROFILES_QUERY } from "./queries";
-import { PlatformType } from "./type";
 import { isDomainSearch } from "./utils";
 
 export const identityProvider = async (platform: string, name: string) => {

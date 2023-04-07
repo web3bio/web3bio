@@ -6,7 +6,7 @@ import {
 } from "../components/apis/nftscan";
 import { resolveIPFS_URL } from "./ipfs";
 import { pow10 } from "./number";
-import { SocialPlatformMapping } from "./platform";
+import { PlatformType, SocialPlatformMapping } from "./platform";
 import {
   regexDotbit,
   regexEns,
@@ -16,7 +16,6 @@ import {
   regexUnstoppableDomains,
   regexSpaceid,
 } from "./regexp";
-import { PlatformType } from "./type";
 export const formatText = (string, length?) => {
   const len = length ?? 12;
   if (string.length <= len) {

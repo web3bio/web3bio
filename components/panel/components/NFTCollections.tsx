@@ -1,6 +1,5 @@
 import { memo, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
-import { PlatformType } from "../../../utils/type";
 import { resolveMediaURL } from "../../../utils/utils";
 import {
   NFTSCANFetcher,
@@ -12,6 +11,7 @@ import { Error } from "../../shared/Error";
 import { Loading } from "../../shared/Loading";
 import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
 import { CollectionSwitcher } from "./CollectionSwitcher";
+import { PlatformType } from "../../../utils/platform";
 
 function useCollections(address: string, network: string) {
   const baseURL =
