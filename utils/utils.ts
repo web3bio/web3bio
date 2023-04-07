@@ -6,7 +6,7 @@ import {
 } from "../components/apis/nftscan";
 import { resolveIPFS_URL } from "./ipfs";
 import { pow10 } from "./number";
-import { SocialPlatformMapping } from "./platform";
+import { PlatformType, SocialPlatformMapping } from "./platform";
 import {
   regexDotbit,
   regexEns,
@@ -16,7 +16,6 @@ import {
   regexUnstoppableDomains,
   regexSpaceid,
 } from "./regexp";
-import { PlatformType } from "./type";
 export const formatText = (string, length?) => {
   const len = length ?? 12;
   if (string.length <= len) {
@@ -105,8 +104,9 @@ export function resolveSocialMediaLink(name, type) {
     case PlatformType.website:
       return `https://${name}`;
     default:
-      return SocialPlatformMapping(type).urlPrefix ? 
-        SocialPlatformMapping(type).urlPrefix + name : null;
+      return SocialPlatformMapping(type).urlPrefix
+        ? SocialPlatformMapping(type).urlPrefix + name
+        : null;
   }
 }
 
@@ -131,10 +131,10 @@ export const handleSearchPlatform = (term: string) => {
       return PlatformType.unstoppableDomains;
     case regexSpaceid.test(term):
       return PlatformType.space_id;
+    case regexDotbit.test(term):
+      return PlatformType.dotbit;
     case regexTwitter.test(term):
       return PlatformType.twitter;
-      case regexDotbit.test(term):
-        return PlatformType.dotbit;
     default:
       return PlatformType.nextid;
   }

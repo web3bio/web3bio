@@ -11,8 +11,7 @@ import {
 import { gql } from "@apollo/client";
 import client from "../../../../utils/apollo";
 import _ from "lodash";
-import { platfomData } from "../../../../utils/platform";
-import { PlatformType } from "../../../../utils/type";
+import { PlatformType, platfomData } from "../../../../utils/platform";
 
 const ensRecordsDefaultOrShouldSkipText = [
   "name",
@@ -166,7 +165,7 @@ const resolveHandleFromURL = async (
       .status(200)
       .setHeader(
         "CDN-Cache-Control",
-        `s-maxage=${60 * 60 * 2}, stale-while-revalidate=${60 * 10}`
+        `s-maxage=${60 * 60 * 8}, stale-while-revalidate=${60 * 10}`
       )
       .json(resJSON);
   } catch (error: any) {

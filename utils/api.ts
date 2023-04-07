@@ -1,16 +1,9 @@
-type LinksItem = {
-    link: string | null;
-    handle: string | null;
-  };
-type LinksData = {
-  twitter?: LinksItem;
-  github?: LinksItem;
-  telegram?: LinksItem;
-  discord?: LinksItem;
-  reddit?: LinksItem;
-  linkedin?: LinksItem;
-  website?: LinksItem;
-  farcaster?: LinksItem;
+export type LinksItem = {
+  link: string | null;
+  handle: string | null;
+};
+export type LinksData = {
+  [index: string]: LinksItem;
 };
 type AddressesData = {
   eth?: string | null;
