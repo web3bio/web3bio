@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.10.0",
     "underscore": "^1.13.6",
     "wallet.ts": "^1.0.1"
   },
