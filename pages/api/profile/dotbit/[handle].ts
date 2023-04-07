@@ -20,9 +20,8 @@ const resolveNameFromDotbit = async (
     dotbit.installPlugin(new BitPluginAvatar());
     const baseInfo = await dotbit.accountInfo(handle);
     const avatar =
-      (await dotbit.avatar(handle))?.url ||
-      (await dotbit.records(handle, "profile.avatar"))[0]?.value;
-
+      (await dotbit.records(handle, "profile.avatar"))[0]?.value ||
+      (await dotbit.avatar(handle))?.url;
     const records = await dotbit.records(handle);
     const addresses = await dotbit.addresses(handle);
     let LINKRES = {};
@@ -39,12 +38,11 @@ const resolveNameFromDotbit = async (
               _.find(platfomData, (o) => o.dotbitText?.includes(x.key))?.key ||
               x.key;
             const resolvedHandle = resolveHandle(x.value);
-        
+
             _linkRes[key] = {
               link: getSocialMediaLink(resolvedHandle, key),
               handle: resolvedHandle,
             };
-            
           }
         });
         return _linkRes;
