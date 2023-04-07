@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { RenderWidgetItem } from "../../components/profile/WidgetItem";
+import { NextSeo } from "next-seo";
 import { LinksItem } from "../../utils/api";
 
 const NewProfile = ({data}) => {
@@ -12,7 +13,6 @@ const NewProfile = ({data}) => {
       ...value as LinksItem,
     };
   });
-  console.log(linksData);
 
   const onCopySuccess = () => {
     setCopied(true);
@@ -27,6 +27,17 @@ const NewProfile = ({data}) => {
 
   return (
     <div className="web3-profile container">
+      <NextSeo
+        title={`${data.displayName} (${data.identity}) - Web3.bio`}
+        description={data.description}
+        openGraph={{
+          images: [
+            {
+              url: data.avatar ? data.avatar : `${process.env.NEXT_PUBLIC_BASE_URL}/img/web3bio-social.jpg`,
+            },
+          ],
+        }}
+      />
       <div className="web3bio-custom" style={ backgroundCover }></div>
         <div className="columns">
           <div className="column col-4 col-md-12">
