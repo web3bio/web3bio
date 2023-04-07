@@ -33,6 +33,7 @@ const resolveNameFromLens = async (
 ) => {
   try {
     const response = await getLensProfile(handle);
+    const pureHandle = handle.replaceAll(".lens", "");
     let LINKRES = {};
     let CRYPTORES = {
       matic: response.ownedBy,
@@ -40,8 +41,7 @@ const resolveNameFromLens = async (
     if (response.attributes) {
       const linksRecords = response.attributes;
       const linksToFetch = linksRecords.reduce((pre, cur) => {
-        if (Object.keys(platfomData).includes(cur.key))
-          pre.push(cur.key);
+        if (Object.keys(platfomData).includes(cur.key)) pre.push(cur.key);
         return pre;
       }, []);
 
@@ -65,7 +65,13 @@ const resolveNameFromLens = async (
         }
         return _linkRes;
       };
-      LINKRES = await getLink();
+      LINKRES = {
+        [PlatformType.lenster]: {
+          link: getSocialMediaLink(pureHandle, PlatformType.lenster),
+          handle: pureHandle,
+        },
+        ...(await getLink()),
+      };
     }
     const resJSON = {
       owner: response.ownedBy,

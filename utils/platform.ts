@@ -208,6 +208,13 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     iconW: "icons/icon-web.svg",
     label: "DNS",
   },
+  [PlatformType.lenster]: {
+    key: PlatformType.lenster,
+    icon: "icons/icon-lens.svg",
+    iconW: "icons/icon-lens-w.svg",
+    label: "Lenster",
+    urlPrefix:'https://lenster.xyz/u/'
+  },
 };
 
 export const SocialPlatformMapping = (platform: PlatformType) => {
