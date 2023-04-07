@@ -1,8 +1,8 @@
-type LinksItem = {
+export type LinksItem = {
   link: string | null;
   handle: string | null;
 };
-type LinksData = {
+export type LinksData = {
   [index: string]: LinksItem;
 };
 type AddressesData = {
