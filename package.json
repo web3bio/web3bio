@@ -16,7 +16,6 @@
   },
   "devDependencies": {
     "@antv/g6": "^4.7.0",
-    "@antv/g6-react-node": "^1.4.5",
     "@apollo/client": "^3.6.9",
     "@ensdomains/ensjs": "^3.0.0-alpha.50",
     "@types/node": "^18.7.14",

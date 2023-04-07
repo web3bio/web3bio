@@ -1,4 +1,4 @@
-import { PlatformType } from "./type";
+import { PlatformType } from "./platform";
 
 // empty for twitter and farcaster
 export const DomainSearchSuffix = [
