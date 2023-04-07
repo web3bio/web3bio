@@ -3,9 +3,9 @@ import Link from "next/link";
 import { memo, useState } from "react";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
-import { PlatformType } from "../../utils/type";
 import { formatText } from "../../utils/utils";
 import { RenderSourceFooter } from "./SourcesFooter";
+import { PlatformType } from "../../utils/platform";
 
 const RenderAccountItem = (props) => {
   const { onItemClick } = props;

@@ -1,14 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import _ from "underscore";
 import { HandleResponseData } from "../../../../utils/api";
-import { PlatformType } from "../../../../utils/type";
 import {
   firstParam,
   getSocialMediaLink,
   resolveHandle,
 } from "../../../../utils/utils";
+import { PlatformType } from "../../../../utils/platform";
 
 const originBase = "https://searchcaster.xyz/api/";
+
+const regTwitter = /(\S*).twitter/i;
 
 const FetchFromOrigin = async (value: string) => {
   if (!value) return;
@@ -24,7 +26,7 @@ const resolveFarcasterHandle = async (
 ) => {
   try {
     const response = await FetchFromOrigin(handle);
-    if(!response || !response.length) throw new Error('not found')
+    if (!response || !response.length) throw new Error("not found");
     const _res = response[0].body;
     const resolvedHandle = resolveHandle(_res.username);
     const LINKRES = {
@@ -33,6 +35,14 @@ const resolveFarcasterHandle = async (
         handle: resolvedHandle,
       },
     };
+    if (_res.bio && _res.bio.match(regTwitter)) {
+      const matched = _res.bio.match(regTwitter)[1];
+      const resolveMatch = resolveHandle(matched);
+      LINKRES[PlatformType.twitter] = {
+        link: getSocialMediaLink(resolveMatch, PlatformType.twitter),
+        handle: resolveMatch,
+      };
+    }
     const resJSON = {
       owner: response[0].connectedAddress || _res.address,
       identity: _res.username || _res.displayName,

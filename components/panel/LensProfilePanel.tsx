@@ -1,12 +1,12 @@
 import { memo, useState } from "react";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
-import { PlatformType } from "../../utils/type";
 import { formatText, getEnumAsArray, resolveMediaURL } from "../../utils/utils";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { LensProfileTab } from "./components/lensTabs/LensProfileTab";
 import { FeedsTab } from "./FeedsTab";
 import { NFTsTab } from "./NFTsTab";
+import { PlatformType } from "../../utils/platform";
 
 export const TabsMap = {
   profile: {

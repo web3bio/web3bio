@@ -1,5 +1,4 @@
 import { memo } from "react";
-import { PlatformType } from "../../../utils/type";
 import {
   CollectibleCard,
   isCollectibleFeed
@@ -13,6 +12,7 @@ import {
   TokenOperationCard
 } from "./feedCards/TokenOperationCard";
 import { isTokenSwapFeed, TokenSwapCard } from "./feedCards/TokenSwapCard";
+import { PlatformType } from "../../../utils/platform";
 
 export const isSupportedFeed = (feed) => {
   return (

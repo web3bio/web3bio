@@ -1,13 +1,13 @@
 import { memo, useEffect, useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { formatTimestamp } from "../../utils/date";
-import { PlatformType } from "../../utils/type";
 import { debounce } from "../../utils/utils";
 import { RSS3Fetcher, RSS3_END_POINT } from "../apis/rss3";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
 import { Loading } from "../shared/Loading";
 import { FeedItem, isSupportedFeed } from "./components/FeedItem";
+import { PlatformType } from "../../utils/platform";
 
 const PAGE_SIZE = 30;
 const getFeedsURL = (

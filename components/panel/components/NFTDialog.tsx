@@ -1,7 +1,6 @@
 import { memo } from "react";
 import SVG from "react-inlinesvg";
 import useSWR from "swr";
-import { PlatformType } from "../../../utils/type";
 import { isValidJson } from "../../../utils/utils";
 import {
   NFTSCANFetcher,
@@ -10,6 +9,7 @@ import {
 } from "../../apis/nftscan";
 import { Error } from "../../shared/Error";
 import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
+import { PlatformType } from "../../../utils/platform";
 
 export const enum NFTDialogType {
   NFT = "nft",
