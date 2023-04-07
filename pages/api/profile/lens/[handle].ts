@@ -37,7 +37,6 @@ const resolveNameFromLens = async (
     let CRYPTORES = {
       matic: response.ownedBy,
     };
-
     if (response.attributes) {
       const linksRecords = response.attributes;
       const linksToFetch = linksRecords.reduce((pre, cur) => {
@@ -72,14 +71,14 @@ const resolveNameFromLens = async (
       owner: response.ownedBy,
       identity: response.handle,
       displayName: response.name,
-      avatar: await resolveEipAssetURL(response.picture.original.url || null),
+      avatar: await resolveEipAssetURL(response.picture?.original.url || null),
       email: null,
       description: response.bio,
       location: response.attributes
         ? _.find(response.attributes, (o) => o.key === "location")?.value
         : null,
       header: await resolveEipAssetURL(
-        response.coverPicture.original.url || null
+        response.coverPicture?.original.url || null
       ),
       links: LINKRES,
       addresses: CRYPTORES,
