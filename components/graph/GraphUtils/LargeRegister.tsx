@@ -19,8 +19,6 @@ export const register = () => {
             r = cfg.size[0] / 2;
           }
           const style = cfg.style || {};
-          // const colorSet = cfg.colorSet || colorSets[0];
-
           const keyShape = group.addShape("circle", {
             attrs: {
               ...style,

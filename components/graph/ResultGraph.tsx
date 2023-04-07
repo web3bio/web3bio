@@ -179,7 +179,7 @@ const processNodesEdges = (nodes, edges) => {
       node.label = `${node.displayName || formatText(node.identity)} ${
         node.displayName ? `\n${formatText(node.identity)}` : ""
       }`;
-      node.labelLineNum = 1;
+      node.labelLineNum = node.displayName ? 1.5 : 1;
     }
   });
   edges.forEach((edge) => {
@@ -246,11 +246,6 @@ const RenderResultGraph = (props) => {
               e.item.getModel().platform ||
               "Unknown"
             }</li>
-            <li><span class="text-gray">Source: </span>${
-              SocialPlatformMapping(e.item.getModel().source)?.label ||
-              e.item.getModel().source ||
-              "Unknown"
-            }</li>
           </ul>`;
         } else {
           outDiv.innerHTML = `
@@ -275,9 +270,8 @@ const RenderResultGraph = (props) => {
 
     graph = new G6.Graph({
       container: container.current,
-      CANVAS_WIDTH,
-      CANVAS_HEIGHT,
-      fitView: true,
+      width: CANVAS_WIDTH,
+      height: CANVAS_HEIGHT,
       fitCenter: true,
       defaultEdge: {
         labelCfg: {
@@ -286,7 +280,7 @@ const RenderResultGraph = (props) => {
             stroke: "#fff",
             linWidth: 4,
             fill: "#999",
-            fontSize: "10px",
+            fontSize: 10,
           },
         },
         style: {
@@ -306,31 +300,31 @@ const RenderResultGraph = (props) => {
       },
       layout: {
         type: "gForce",
+        gravity: 20,
         preventOverlap: true,
-        // gpuEnabled: true,
         linkDistance: (d) => {
           if (d.isIdentity) {
-            return 240;
+            return 200;
           }
-          return 500;
+          return 100;
         },
         nodeSpacing: (d) => {
           if (d.isIdentity) {
-            return 240;
+            return 160;
           }
-          return 180;
+          return 10;
         },
         nodeStrength: (d) => {
           if (d.isIdentity) {
-            return 240;
+            return 1200;
           }
-          return 480;
+          return 800;
         },
-        edgeStrength: (d) => {
+        nodeSize: (d) => {
           if (d.isIdentity) {
-            return 10;
+            return 120;
           }
-          return 10;
+          return 40;
         },
         onLayoutEnd: () => {
           setLoading(false);
