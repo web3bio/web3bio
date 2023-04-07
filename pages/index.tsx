@@ -115,6 +115,7 @@ export default function Home() {
           content="Web3.bio (Previously Web5.bio) is a Web3 and Web 2.0 Identity Graph search service which is powered by Next.ID. Web3.bio will provide a list of relevant identities when you are searching any Twitter handle, Ethereum address, ENS domain, Lens profile or Unstoppable Domains, and other Web3 identities."
         />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <meta name="google-site-verification" content="iaUpA0X2l6UNb8C38RvUe4i_DOMvo5Ciqvf6MtYjzPs" />
       </Head>
       <main className="web3bio-container">
         <div className="web3bio-cover flare"></div>
