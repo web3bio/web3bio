@@ -6,30 +6,83 @@ import SVG from "react-inlinesvg";
 import { PlatformType } from "../../utils/platform";
 import { SocialPlatformMapping } from "../../utils/platform";
 import { formatText } from "../../utils/utils";
+import { NFTSCANFetcher, NFTSCAN_BASE_API_ENDPOINT } from "../apis/nftscan";
+import useSWR from "swr";
+import { Loading } from "../shared/Loading";
+import { Error } from "../shared/Error";
+import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
+import { resolveIPFS_URL } from "../../utils/ipfs";
+import { NFTPanel } from "./NFTPanel";
+
+function useCollections(address: string) {
+  const { data, error } = useSWR<any>(
+    NFTSCAN_BASE_API_ENDPOINT + `account/own/all/${address}?erc_type=erc721`,
+    NFTSCANFetcher
+  );
+  return {
+    data: data,
+    isLoading: !error && !data,
+    isError: error,
+  };
+}
 
 const RenderNFTCollectionWidget = (props) => {
-  const onCopySuccess = () => {
-    setIsCopied(true);
-    setTimeout(() => {
-      setIsCopied(false);
-    }, 1500);
-  };
   const { identity } = props;
-  const [isCopied, setIsCopied] = useState(false);
+  const { data, isLoading, isError } = useCollections(identity.owner);
+  const [detailMode, setDetailMode] = useState(false);
 
+
+  const toCertainNFT = (address: string)=>{
+    localStorage.setItem("nft_anchor", address);
+    setDetailMode(true)
+  }
+
+  
+  if (isLoading) return <Loading />;
+  if (isError) return <Error text={isError} />;
+  if (!data || !data.data) return null;
   return (
-    <div className='profile-widget profile-collection-widgets'>
+    <div
+      className="profile-widget profile-collection-widgets"
+      onClick={() => {
+        setDetailMode(!detailMode);
+      }}
+    >
       <div
         className="platform-icon"
-        style={{ background: SocialPlatformMapping(PlatformType.twitter)?.color }}
+        style={{
+          background: SocialPlatformMapping(PlatformType.twitter)?.color,
+        }}
       >
         <SVG src="/icons/icon-view.svg" width={24} height={24} />
       </div>
       <div className="platform-title">Collections</div>
       <div className="platform-handle">{identity.displayName}</div>
-      {/* <div className="platform-action">
-        <div className="btn btn-sm">Open</div>
-      </div> */}
+      {(detailMode && (
+        <NFTPanel address={identity.owner} network={PlatformType.ens} />
+      )) || (
+        <div className="widgets-collection-list">
+          {data.data.map((x, idx) => (
+            <div
+              onClick={(e) => {
+                e.stopPropagation()
+                toCertainNFT(x.contract_address)
+              }}
+              className="collection-item"
+              key={idx}
+            >
+              <NFTAssetPlayer
+                className="collection-img"
+                src={resolveIPFS_URL(x.logo_url)}
+                alt={x.contract_name}
+              />
+              <div className="collection-name text-assistive">
+                {x.contract_name}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

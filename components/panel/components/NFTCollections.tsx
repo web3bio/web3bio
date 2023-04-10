@@ -28,13 +28,10 @@ function useCollections(address: string, network: string) {
 }
 
 const RenderNFTCollections = (props) => {
-  const { onShowDetail, identity, network } = props;
+  const { onShowDetail, identity, network, address } = props;
   const [collections, setCollections] = useState([]);
   const [anchorName, setAnchorName] = useState("");
-  const { data, isLoading, isError } = useCollections(
-    network === PlatformType.lens ? identity.ownedBy : identity.identity,
-    network
-  );
+  const { data, isLoading, isError } = useCollections(address, network);
 
   const [activeCollection, setActiveCollection] = useState(null);
   const scrollContainer = useRef(null);

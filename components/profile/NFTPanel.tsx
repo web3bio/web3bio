@@ -1,25 +1,17 @@
 import { memo, useState } from "react";
-import { NFTCollections } from "./components/NFTCollections";
-import { NFTDialog } from "./components/NFTDialog";
+import { NFTCollections } from "../panel/components/NFTCollections";
+import { NFTDialog } from "../panel/components/NFTDialog";
 import { PlatformType } from "../../utils/platform";
 
-const RenderNFTsTab = (props) => {
-  const {
-    identity,
-    dialogOpen,
-    showDialog,
-    closeDialog,
-    network,
-    collections,
-  } = props;
+const RenderNFTPanel = (props) => {
+  const { address, dialogOpen, showDialog, closeDialog, network, collections } =
+    props;
   const [asset, setAsset] = useState(null);
 
   return (
     <>
       <NFTCollections
-        address={
-          network === PlatformType.lens ? identity.ownedBy : identity.identity
-        }
+        address={address}
         onShowDetail={(a) => {
           setAsset(a);
           showDialog();
@@ -42,4 +34,4 @@ const RenderNFTsTab = (props) => {
   );
 };
 
-export const NFTsTab = memo(RenderNFTsTab);
+export const NFTPanel = memo(RenderNFTPanel);
