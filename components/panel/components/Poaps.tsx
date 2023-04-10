@@ -38,7 +38,7 @@ const RenderPoaps = (props) => {
               return (
                 <div
                   key={idx}
-                  className="collection-item"
+                  className="nft-container c-hand"
                   onClick={() => {
                     onShowDetail({
                       collection: {
@@ -55,7 +55,7 @@ const RenderPoaps = (props) => {
                 >
                   <div className="nft-item">
                     <NFTAssetPlayer
-                      className="collection-img"
+                      className="img-container"
                       src={resolveIPFS_URL(x.event.image_url)}
                       alt={x.event.name}
                     />
