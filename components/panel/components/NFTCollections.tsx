@@ -145,8 +145,8 @@ const RenderNFTCollections = (props) => {
                       <div
                         key={ydx}
                         className="nft-container c-hand"
-                        onClick={() =>
-                          onShowDetail({
+                        onClick={(e) =>
+                          onShowDetail(e, {
                             collection: {
                               url: x.logo_url,
                               name: x.contract_name,

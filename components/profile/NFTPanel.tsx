@@ -1,23 +1,22 @@
 import { memo, useState } from "react";
 import { NFTCollections } from "../panel/components/NFTCollections";
 import { NFTDialog } from "../panel/components/NFTDialog";
-import { PlatformType } from "../../utils/platform";
 
 const RenderNFTPanel = (props) => {
-  const { address, dialogOpen, showDialog, closeDialog, network, collections } =
-    props;
+  const { address, network } = props;
   const [asset, setAsset] = useState(null);
-
+  const [dialogOpen, setDialogOpen] = useState(false);
   return (
     <>
       <NFTCollections
         address={address}
-        onShowDetail={(a) => {
+        onShowDetail={(e, a) => {
+          e.stopPropagation();
+          e.preventDefault();
           setAsset(a);
-          showDialog();
+          setDialogOpen(true);
         }}
         isDetail
-        // initialData={collections}
         network={network}
       />
       {dialogOpen && asset && (
@@ -27,7 +26,7 @@ const RenderNFTPanel = (props) => {
           tokenId={asset.asset.token_id}
           asset={asset}
           open={dialogOpen}
-          onClose={closeDialog}
+          onClose={() => setDialogOpen(false)}
         />
       )}
     </>

@@ -152,6 +152,121 @@
     height: auto;
     max-height: 30rem;
 
+    .nft-panel {
+      height: calc(100vh - 1rem);
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50%;
+
+      .panel-container {
+        height: calc(100vh - 2rem);
+      }
+
+      .panel-header {
+        overflow: hidden auto;
+        padding: 1rem;
+
+        .img-container {
+          display: flex;
+          min-width: 100%;
+
+        }
+
+        .panel-header-img {
+          flex: 1 1 50%;
+          margin-right: 1rem;
+          width: 50%;
+        }
+
+        .img-responsive {
+          width: 100%;
+          border-radius: .5rem;
+        }
+
+        .collection-title {
+          align-items: center;
+          display: flex;
+          padding: 1rem 0 .5rem 0;
+
+          .collection-logo {
+            flex: 0 0 1.2rem;
+            margin-right: .25rem;
+
+            .img-responsive {
+              border-radius: .4rem;
+              box-shadow: 0 .2rem .8rem rgba($dark-color, .2);
+              font-size: 1rem;
+              height: 1.2rem;
+              width: 1.2rem;
+            }
+          }
+
+          .collection-name {
+            font-size: .65rem;
+            font-weight: 700;
+          }
+        }
+
+        .nft-header-name {
+          font-size: 1.2rem;
+          font-weight: 900;
+        }
+
+        .nft-header-actions {
+          margin-top: .5rem;
+        }
+      }
+
+      .panel-body {
+        padding: 0 1rem 1rem 1rem;
+      }
+
+      .panel-widget {
+        margin: 1rem 0;
+
+        .panel-widget-title {
+          font-size: .7rem;
+          font-weight: 900;
+          margin-bottom: .5rem;
+          text-transform: uppercase;
+        }
+
+        .panel-widget-content {
+          font-size: .6rem;
+          line-height: 1rem;
+        }
+
+        .traits-cards {
+          display: flex;
+          flex-wrap: wrap;
+          gap: .5rem;
+
+          .traits-card {
+            background: $light-color;
+            border: .05rem solid rgba(18, 18, 18, 0.08);
+            box-shadow: 0 .2rem .8rem rgba(0, 0, 0, 0.05);
+            border-radius: .4rem;
+            color: $dark-color;
+            text-transform: uppercase;
+            padding: .2rem .4rem;
+
+            .trait-type {
+              font-size: .5rem;
+              line-height: 2;
+            }
+
+            .trait-value {
+              font-weight: 700;
+              font-size: .6rem;
+              line-height: 1.5;
+            }
+          }
+        }
+      }
+    }
+
     .widgets-collection-list {
       display: flex;
       flex-flow: column wrap;

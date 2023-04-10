@@ -31,13 +31,11 @@ const RenderNFTCollectionWidget = (props) => {
   const { data, isLoading, isError } = useCollections(identity.owner);
   const [detailMode, setDetailMode] = useState(false);
 
-
-  const toCertainNFT = (address: string)=>{
+  const toCertainNFT = (address: string) => {
     localStorage.setItem("nft_anchor", address);
-    setDetailMode(true)
-  }
+    setDetailMode(true);
+  };
 
-  
   if (isLoading) return <Loading />;
   if (isError) return <Error text={isError} />;
   if (!data || !data.data) return null;
@@ -65,8 +63,9 @@ const RenderNFTCollectionWidget = (props) => {
           {data.data.map((x, idx) => (
             <div
               onClick={(e) => {
-                e.stopPropagation()
-                toCertainNFT(x.contract_address)
+                e.stopPropagation();
+                e.preventDefault()
+                toCertainNFT(x.contract_address);
               }}
               className="collection-item"
               key={idx}
