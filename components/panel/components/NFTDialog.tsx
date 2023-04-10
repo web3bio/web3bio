@@ -47,7 +47,6 @@ const NFTDialogRender = (props) => {
   } = props;
   const { data, isError } = useAsset(address, tokenId, network);
   const resolveOpenseaLink = `https://opensea.io/assets/ethereum/${address}/${tokenId}`;
-
   if (isError) return <Error text={isError} />;
   if (type === "poap")
     return (

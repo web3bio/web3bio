@@ -28,7 +28,7 @@ function useCollections(address: string, network: string) {
 }
 
 const RenderNFTCollections = (props) => {
-  const { onShowDetail, identity, network, address } = props;
+  const { onShowDetail, network, address } = props;
   const [collections, setCollections] = useState([]);
   const [anchorName, setAnchorName] = useState("");
   const { data, isLoading, isError } = useCollections(address, network);

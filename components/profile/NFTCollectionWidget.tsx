@@ -1,11 +1,7 @@
-import Image from "next/image";
-import Link from "next/link";
 import { memo, useState } from "react";
-import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { PlatformType } from "../../utils/platform";
 import { SocialPlatformMapping } from "../../utils/platform";
-import { formatText } from "../../utils/utils";
 import { NFTSCANFetcher, NFTSCAN_BASE_API_ENDPOINT } from "../apis/nftscan";
 import useSWR from "swr";
 import { Loading } from "../shared/Loading";
@@ -64,7 +60,7 @@ const RenderNFTCollectionWidget = (props) => {
             <div
               onClick={(e) => {
                 e.stopPropagation();
-                e.preventDefault()
+                e.preventDefault();
                 toCertainNFT(x.contract_address);
               }}
               className="collection-item"

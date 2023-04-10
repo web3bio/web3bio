@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { NFTCollections } from "../panel/components/NFTCollections";
 import { NFTDialog } from "../panel/components/NFTDialog";
 
@@ -6,6 +6,7 @@ const RenderNFTPanel = (props) => {
   const { address, network } = props;
   const [asset, setAsset] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+
   return (
     <>
       <NFTCollections
@@ -26,7 +27,11 @@ const RenderNFTPanel = (props) => {
           tokenId={asset.asset.token_id}
           asset={asset}
           open={dialogOpen}
-          onClose={() => setDialogOpen(false)}
+          onClose={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            setDialogOpen(false);
+          }}
         />
       )}
     </>
