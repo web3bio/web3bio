@@ -39,14 +39,12 @@ const resolveNameFromDotbit = async (
               x.key;
 
             const resolvedHandle = resolveHandle(x.value);
-            const domainRegexp = /^http(s)?:\/\/(.*?)\//
-
             _linkRes[key] = {
               link:
                 key === PlatformType.website
                   ? x.value
                   : getSocialMediaLink(resolvedHandle, key),
-              handle: key === PlatformType.website?domainRegexp.exec(x.value)[2]  : resolvedHandle,
+              handle: resolvedHandle,
             };
           }
         });
