@@ -11,6 +11,7 @@ import {
   NFTDialogType,
 } from "../../components/panel/components/NFTDialog";
 import { PlatformType } from "../../utils/platform";
+import Avatar from "boring-avatars";
 
 const NewProfile = ({ data }) => {
   const [copied, setCopied] = useState(null);
@@ -54,7 +55,16 @@ const NewProfile = ({ data }) => {
       <div className="columns">
         <div className="column col-4 col-md-12">
           <div className="profile-avatar">
-            {data.avatar ? <img src={data.avatar} className="avatar" /> : <></>}
+            {data.avatar ? 
+              <img src={data.avatar} className="avatar" />
+              : 
+              <Avatar
+                size={160}
+                name={data.identity}
+                variant="marble"
+                colors={["#FBF4EC", "#ECD7C8", "#EEA4BC", "#BE88C4", "#9186E7", "#92C9F9", "#92C9F9"]}
+              />
+            }
           </div>
           <div className="profile-name">{data.displayName}</div>
           <div className="profile-identity">
