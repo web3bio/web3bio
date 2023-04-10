@@ -4,6 +4,7 @@ import SVG from "react-inlinesvg";
 import { RenderWidgetItem } from "../../components/profile/WidgetItem";
 import { NextSeo } from "next-seo";
 import { LinksItem } from "../../utils/api";
+import { NFTCollectionWidget } from "../../components/profile/NFTCollectionWidget";
 
 const NewProfile = ({data}) => {
   const [copied, setCopied] = useState(null);
@@ -70,6 +71,9 @@ const NewProfile = ({data}) => {
                   <RenderWidgetItem key={idx} item={item} />
                 );
               })}
+            </div>
+            <div className="web3-profile-widgets" >
+              <NFTCollectionWidget identity={data} />
             </div>
           </div>
         </div>

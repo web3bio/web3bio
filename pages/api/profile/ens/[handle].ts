@@ -147,11 +147,10 @@ const resolveHandleFromURL = async (
       };
     }
     const headerHandle = (await resolver.getText("header")) || null;
-
     const resJSON = {
       owner: address,
       identity: ensDomain,
-      displayName: (await resolver.getText("name")) || ensDomain,
+      displayName: (await resolver.getText("display")) || ensDomain,
       avatar: await resolveEipAssetURL(avatar || null),
       email: (await resolver.getText("email")) || null,
       description: (await resolver.getText("description")) || null,
