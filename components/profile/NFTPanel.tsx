@@ -3,9 +3,7 @@ import { NFTCollections } from "../panel/components/NFTCollections";
 import { NFTDialog } from "../panel/components/NFTDialog";
 
 const RenderNFTPanel = (props) => {
-  const { address, network } = props;
-  const [asset, setAsset] = useState(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const { address, network, onShowDetail } = props;
 
   return (
     <>
@@ -14,26 +12,11 @@ const RenderNFTPanel = (props) => {
         onShowDetail={(e, a) => {
           e.stopPropagation();
           e.preventDefault();
-          setAsset(a);
-          setDialogOpen(true);
+          onShowDetail(a);
         }}
         isDetail
         network={network}
       />
-      {dialogOpen && asset && (
-        <NFTDialog
-          network={network}
-          address={asset.asset.contract_address}
-          tokenId={asset.asset.token_id}
-          asset={asset}
-          open={dialogOpen}
-          onClose={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            setDialogOpen(false);
-          }}
-        />
-      )}
     </>
   );
 };

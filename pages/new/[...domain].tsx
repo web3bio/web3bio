@@ -5,9 +5,18 @@ import { RenderWidgetItem } from "../../components/profile/WidgetItem";
 import { NextSeo } from "next-seo";
 import { LinksItem } from "../../utils/api";
 import { NFTCollectionWidget } from "../../components/profile/NFTCollectionWidget";
+import { PoapWidget } from "../../components/profile/PoapsWidget";
+import {
+  NFTDialog,
+  NFTDialogType,
+} from "../../components/panel/components/NFTDialog";
+import { PlatformType } from "../../utils/platform";
 
 const NewProfile = ({ data }) => {
   const [copied, setCopied] = useState(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [curAsset, setCurAsset] = useState(null);
+  const [dialogType, setDialogType] = useState(NFTDialogType.NFT);
   const linksData = Object.entries(data.links).map(([key, value]) => {
     return {
       platform: key,
@@ -69,10 +78,51 @@ const NewProfile = ({ data }) => {
             })}
           </div>
           <div className="web3-profile-widgets">
-            <NFTCollectionWidget identity={data} />
+            <NFTCollectionWidget
+              onShowDetail={(v) => {
+                setDialogType(NFTDialogType.NFT);
+                setCurAsset(v);
+                setDialogOpen(true);
+              }}
+              identity={data}
+            />
+          </div>
+          <div className="web3-profile-widgets">
+            <PoapWidget
+              onShowDetail={(v) => {
+                setDialogType(NFTDialogType.POAP);
+                setCurAsset(v);
+                setDialogOpen(true);
+              }}
+              identity={data}
+            />
           </div>
         </div>
       </div>
+      {dialogOpen && curAsset && (
+        <NFTDialog
+          address={
+            dialogType === NFTDialogType.NFT
+              ? curAsset.asset.contract_address
+              : curAsset.address
+          }
+          tokenId={
+            dialogType === NFTDialogType.NFT
+              ? curAsset.asset.token_id
+              : curAsset.tokenId
+          }
+          asset={curAsset}
+          open={dialogOpen}
+          onClose={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            setDialogOpen(false);
+          }}
+          network={PlatformType.ens}
+          poap={curAsset}
+          type={dialogType}
+        />
+      )}
     </div>
   );
 };

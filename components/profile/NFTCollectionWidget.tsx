@@ -23,7 +23,7 @@ function useCollections(address: string) {
 }
 
 const RenderNFTCollectionWidget = (props) => {
-  const { identity } = props;
+  const { identity, onShowDetail } = props;
   const { data, isLoading, isError } = useCollections(identity.owner);
   const [detailMode, setDetailMode] = useState(false);
 
@@ -53,7 +53,11 @@ const RenderNFTCollectionWidget = (props) => {
       <div className="platform-title">Collections</div>
       <div className="platform-handle">{identity.displayName}</div>
       {(detailMode && (
-        <NFTPanel address={identity.owner} network={PlatformType.ens} />
+        <NFTPanel
+          onShowDetail={onShowDetail}
+          address={identity.owner}
+          network={PlatformType.ens}
+        />
       )) || (
         <div className="widgets-collection-list">
           {data.data.map((x, idx) => (

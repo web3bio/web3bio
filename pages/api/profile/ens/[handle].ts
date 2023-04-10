@@ -150,7 +150,7 @@ const resolveHandleFromURL = async (
     const resJSON = {
       owner: address,
       identity: ensDomain,
-      displayName: (await resolver.getText("display")) || ensDomain,
+      displayName: (await resolver.getText("name")) || ensDomain,
       avatar: await resolveEipAssetURL(avatar || null),
       email: (await resolver.getText("email")) || null,
       description: (await resolver.getText("description")) || null,
