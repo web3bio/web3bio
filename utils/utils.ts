@@ -212,6 +212,7 @@ export const resolveHandle = (handle: string) => {
     handle &&
     (handle.startsWith(prefixHttp) || handle.startsWith(prefixHttps))
   ) {
+    if (!handle.endsWith("/")) handle += "/";
     return domainRegexp.exec(handle)[2].replaceAll("@", "");
   }
   return handle;

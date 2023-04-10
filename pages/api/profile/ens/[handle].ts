@@ -108,7 +108,7 @@ const resolveHandleFromURL = async (
                 : key;
             _linkRes[resolvedKey] = {
               link: getSocialMediaLink(handle, resolvedKey),
-              handle: resolveHandle(handle),
+              handle: handle,
             };
           }
         }
