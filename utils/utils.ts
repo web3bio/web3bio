@@ -207,15 +207,12 @@ export const resolveEipAssetURL = async (asset) => {
 export const resolveHandle = (handle: string) => {
   const prefixHttps = "https://";
   const prefixHttp = "http://";
+  const domainRegexp = /^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)/;
   if (
     handle &&
     (handle.startsWith(prefixHttp) || handle.startsWith(prefixHttps))
   ) {
-    return handle
-      .replaceAll(prefixHttp, "")
-      .replaceAll(prefixHttps, "")
-      .replaceAll("/", "")
-      .replaceAll("@", "");
+    return domainRegexp.exec(handle)[1].replaceAll("@", "");
   }
   return handle;
 };
