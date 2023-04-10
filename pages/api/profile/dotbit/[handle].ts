@@ -9,7 +9,7 @@ import _ from "lodash";
 import { HandleResponseData } from "../../../../utils/api";
 import { createInstance } from "dotbit";
 import { BitPluginAvatar } from "@dotbit/plugin-avatar";
-import { platfomData } from "../../../../utils/platform";
+import { PlatformType, platfomData } from "../../../../utils/platform";
 
 const resolveNameFromDotbit = async (
   handle: string,
@@ -37,11 +37,16 @@ const resolveNameFromDotbit = async (
             const key =
               _.find(platfomData, (o) => o.dotbitText?.includes(x.key))?.key ||
               x.key;
+
             const resolvedHandle = resolveHandle(x.value);
+            const domainRegexp = /^http(s)?:\/\/(.*?)\//
 
             _linkRes[key] = {
-              link: getSocialMediaLink(resolvedHandle, key),
-              handle: resolvedHandle,
+              link:
+                key === PlatformType.website
+                  ? x.value
+                  : getSocialMediaLink(resolvedHandle, key),
+              handle: key === PlatformType.website?domainRegexp.exec(x.value)[2]  : resolvedHandle,
             };
           }
         });
