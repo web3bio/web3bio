@@ -22,8 +22,8 @@ function usePoaps(address: string, initialData) {
 }
 
 const RenderPoaps = (props) => {
-  const { address, onShowDetail, initialData } = props;
-  const { data, isLoading, isError } = usePoaps(address, initialData);
+  const { identity, onShowDetail, initialData } = props;
+  const { data, isLoading, isError } = usePoaps(identity.identity, initialData);
 
   if (isLoading || (initialData && (!data || !data.length))) return <Loading />;
   if (isError) return <Error text={isError} />;
@@ -38,7 +38,7 @@ const RenderPoaps = (props) => {
               return (
                 <div
                   key={idx}
-                  className="collection-item"
+                  className="nft-container c-hand"
                   onClick={() => {
                     onShowDetail({
                       collection: {
@@ -55,7 +55,7 @@ const RenderPoaps = (props) => {
                 >
                   <div className="nft-item">
                     <NFTAssetPlayer
-                      className="collection-img"
+                      className="img-container"
                       src={resolveIPFS_URL(x.event.image_url)}
                       alt={x.event.name}
                     />
