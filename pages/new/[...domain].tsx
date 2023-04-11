@@ -159,23 +159,25 @@ const NewProfile = ({ data }) => {
 
 export async function getServerSideProps({ params }) {
   const platform = handleSearchPlatform(params.domain);
-
-  if (
-    ![
-      PlatformType.dotbit,
-      PlatformType.ens,
-      PlatformType.farcaster,
-      PlatformType.twitter,
-      PlatformType.lens,
-    ].includes(platform)
-  )
-    return { props: { data: { error: "UnSupport Platform" } } };
-  const res = await fetch(
-    `https://web3.bio/api/profile/${platform}/${params.domain}`
-  );
-  const data = await res.json();
-
-  return { props: { data } };
+  try {
+    if (
+      ![
+        PlatformType.dotbit,
+        PlatformType.ens,
+        PlatformType.farcaster,
+        PlatformType.twitter,
+        PlatformType.lens,
+      ].includes(platform)
+    )
+      return { props: { data: { error: "UnSupportted Platform" } } };
+    const res = await fetch(
+      `https://web3.bio/api/profile/${platform}/${params.domain}`
+    );
+    const data = await res.json();
+    return { props: { data } };
+  } catch (e) {
+    return { props: { data: { error: e } } };
+  }
 }
 
 export default NewProfile;

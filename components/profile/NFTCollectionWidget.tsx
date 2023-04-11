@@ -24,9 +24,10 @@ function useCollections(address: string) {
 
 const RenderNFTCollectionWidget = (props) => {
   const { identity, onShowDetail } = props;
-  const { data, isLoading, isError } = useCollections(identity.owner);
+  const { data, isLoading, isError } = useCollections(
+    identity.addresses?.eth ?? identity.owner
+  );
   const [detailMode, setDetailMode] = useState(false);
-
   const toCertainNFT = (address: string) => {
     localStorage.setItem("nft_anchor", address);
     setDetailMode(true);

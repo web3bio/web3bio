@@ -23,12 +23,14 @@ function usePoaps(address: string) {
 
 const RenderPoapWidget = (props) => {
   const { identity, onShowDetail } = props;
-  const { data, isLoading, isError } = usePoaps(identity.owner);
+  const { data, isLoading, isError } = usePoaps(
+    identity.addresses?.eth ?? identity.owner
+  );
 
   if (isLoading || !data || !data.length) return <Loading />;
   if (isError) return <Error text={isError} />;
   if (!data || !data.length) return null;
-  
+
   return (
     <div className="profile-widget profile-poaps-widgets">
       <div
