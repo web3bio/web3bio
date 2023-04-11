@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { RenderWidgetItem } from "../../components/profile/WidgetItem";
 import { NextSeo } from "next-seo";
 import { LinksItem } from "../../utils/api";
-import { NFTCollectionWidget } from "../../components/profile/NFTCollectionWidget";
 import { PoapWidget } from "../../components/profile/PoapsWidget";
 import {
   NFTDialog,
@@ -14,12 +13,36 @@ import { PlatformType } from "../../utils/platform";
 import { Error } from "../../components/shared/Error";
 import Avatar from "boring-avatars";
 import { handleSearchPlatform } from "../../utils/utils";
+import { Loading } from "../../components/shared/Loading";
+import { NFTCollectionWidget } from "../../components/profile/NFTCollectionWidget";
 
 const NewProfile = ({ data }) => {
   const [copied, setCopied] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [curAsset, setCurAsset] = useState(null);
+  const [linksData, setLinkData] = useState([]);
   const [dialogType, setDialogType] = useState(NFTDialogType.NFT);
+
+  const onCopySuccess = () => {
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, 1500);
+  };
+
+  useEffect(() => {
+    if (data && data.links) {
+      setLinkData(
+        Object.entries(data.links).map(([key, value]) => {
+          return {
+            platform: key,
+            ...(value as LinksItem),
+          };
+        })
+      );
+    }
+  }, [data]);
+
   if (!data || data.error) {
     return (
       <div className="web3-profile container">
@@ -30,19 +53,6 @@ const NewProfile = ({ data }) => {
       </div>
     );
   }
-  const linksData = Object.entries(data.links).map(([key, value]) => {
-    return {
-      platform: key,
-      ...(value as LinksItem),
-    };
-  });
-
-  const onCopySuccess = () => {
-    setCopied(true);
-    setTimeout(() => {
-      setCopied(false);
-    }, 1500);
-  };
 
   const backgroundCover = {
     backgroundImage: "url(" + data.header + ")",
@@ -157,7 +167,7 @@ const NewProfile = ({ data }) => {
   );
 };
 
-export async function getServerSideProps({ params,res }) {
+export async function getServerSideProps({ params, res }) {
   res.setHeader(
     "Cache-Control",
     "public, s-maxage=10, stale-while-revalidate=59"
