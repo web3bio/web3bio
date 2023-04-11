@@ -157,7 +157,11 @@ const NewProfile = ({ data }) => {
   );
 };
 
-export async function getServerSideProps({ params }) {
+export async function getServerSideProps({ params,res }) {
+  res.setHeader(
+    "Cache-Control",
+    "public, s-maxage=10, stale-while-revalidate=59"
+  );
   const platform = handleSearchPlatform(params.domain);
   try {
     if (
