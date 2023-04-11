@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import SVG from "react-inlinesvg";
 import { PlatformType } from "../../utils/platform";
 import { SocialPlatformMapping } from "../../utils/platform";
@@ -9,6 +9,7 @@ import { Error } from "../shared/Error";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 import { NFTPanel } from "./NFTPanel";
+import { Empty } from "../shared/Empty";
 
 function useCollections(address: string) {
   const { data, error } = useSWR<any>(
@@ -33,9 +34,12 @@ const RenderNFTCollectionWidget = (props) => {
     setDetailMode(true);
   };
 
-  if (isLoading) return <Loading />;
-  if (isError) return <Error text={isError} />;
-  if (!data || !data.data) return null;
+  const getBoundaryRender = useCallback(() => {
+    if (isLoading) return <Loading />;
+    if (isError) return <Error />;
+    if (!data || !data.data) return <Empty />;
+    return null;
+  }, [data, isLoading, isError]);
   return (
     <div
       className="profile-widget profile-collection-widgets"
@@ -61,26 +65,27 @@ const RenderNFTCollectionWidget = (props) => {
         />
       )) || (
         <div className="widgets-collection-list">
-          {data.data.map((x, idx) => (
-            <div
-              onClick={(e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                toCertainNFT(x.contract_address);
-              }}
-              className="collection-item"
-              key={idx}
-            >
-              <NFTAssetPlayer
-                className="collection-img"
-                src={resolveIPFS_URL(x.logo_url)}
-                alt={x.contract_name}
-              />
-              <div className="collection-name text-assistive">
-                {x.contract_name}
+          {getBoundaryRender() ||
+            data.data.map((x, idx) => (
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  toCertainNFT(x.contract_address);
+                }}
+                className="collection-item"
+                key={idx}
+              >
+                <NFTAssetPlayer
+                  className="collection-img"
+                  src={resolveIPFS_URL(x.logo_url)}
+                  alt={x.contract_name}
+                />
+                <div className="collection-name text-assistive">
+                  {x.contract_name}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       )}
     </div>

@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import SVG from "react-inlinesvg";
 import { PlatformType } from "../../utils/platform";
 import { SocialPlatformMapping } from "../../utils/platform";
@@ -8,6 +8,7 @@ import { Error } from "../shared/Error";
 import { POAPFetcher, POAP_END_POINT } from "../apis/poap";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
+import { Empty } from "../shared/Empty";
 
 function usePoaps(address: string) {
   const { data, error } = useSWR<any>(
@@ -27,9 +28,12 @@ const RenderPoapWidget = (props) => {
     identity.addresses?.eth ?? identity.owner
   );
 
-  if (isLoading || !data || !data.length) return <Loading />;
-  if (isError) return <Error text={isError} />;
-  if (!data || !data.length) return null;
+  const getBoundaryRender = useCallback(() => {
+    if (isLoading) return <Loading />;
+    if (isError) return <Error />;
+    if (!data || !data.length) return <Empty />;
+    return null;
+  }, [data, isLoading, isError]);
 
   return (
     <div className="profile-widget profile-poaps-widgets">
@@ -44,37 +48,38 @@ const RenderPoapWidget = (props) => {
       <div className="platform-title">Poaps</div>
       <div className="platform-handle">{identity.displayName}</div>
       <div className="widgets-collection-list">
-        {data.map((x, idx) => {
-          return (
-            <div
-              key={idx}
-              className="nft-container c-hand"
-              onClick={(e) => {
-                onShowDetail({
-                  collection: {
-                    url: "",
-                    name: "",
-                  },
-                  address: x.owner,
-                  tokenId: x.tokenId,
-                  asset: x,
-                  mediaURL: resolveIPFS_URL(x.event.image_url),
-                  contentURL: resolveIPFS_URL(x.event.image_url),
-                });
-              }}
-            >
-              <div className="nft-item">
-                <NFTAssetPlayer
-                  className="img-container"
-                  src={resolveIPFS_URL(x.event.image_url)}
-                  alt={x.event.name}
-                />
-                <div className="collection-name">{x.event.start_date}</div>
-                <div className="nft-name">{x.event.name}</div>
+        {getBoundaryRender() ||
+          data.map((x, idx) => {
+            return (
+              <div
+                key={idx}
+                className="nft-container c-hand"
+                onClick={(e) => {
+                  onShowDetail({
+                    collection: {
+                      url: "",
+                      name: "",
+                    },
+                    address: x.owner,
+                    tokenId: x.tokenId,
+                    asset: x,
+                    mediaURL: resolveIPFS_URL(x.event.image_url),
+                    contentURL: resolveIPFS_URL(x.event.image_url),
+                  });
+                }}
+              >
+                <div className="nft-item">
+                  <NFTAssetPlayer
+                    className="img-container"
+                    src={resolveIPFS_URL(x.event.image_url)}
+                    alt={x.event.name}
+                  />
+                  <div className="collection-name">{x.event.start_date}</div>
+                  <div className="nft-name">{x.event.name}</div>
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
       </div>
     </div>
   );
