@@ -11,13 +11,25 @@ import {
   NFTDialogType,
 } from "../../components/panel/components/NFTDialog";
 import { PlatformType } from "../../utils/platform";
+import { Error } from "../../components/shared/Error";
 import Avatar from "boring-avatars";
+import { handleSearchPlatform } from "../../utils/utils";
 
 const NewProfile = ({ data }) => {
   const [copied, setCopied] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [curAsset, setCurAsset] = useState(null);
   const [dialogType, setDialogType] = useState(NFTDialogType.NFT);
+  if (!data || data.error) {
+    return (
+      <div className="web3-profile container">
+        <Error
+          retry={() => window.location.reload()}
+          msg={data.error || "Error"}
+        />
+      </div>
+    );
+  }
   const linksData = Object.entries(data.links).map(([key, value]) => {
     return {
       platform: key,
@@ -55,16 +67,24 @@ const NewProfile = ({ data }) => {
       <div className="columns">
         <div className="column col-4 col-md-12">
           <div className="profile-avatar">
-            {data.avatar ? 
+            {data.avatar ? (
               <img src={data.avatar} className="avatar" />
-              : 
+            ) : (
               <Avatar
                 size={160}
                 name={data.identity}
                 variant="marble"
-                colors={["#FBF4EC", "#ECD7C8", "#EEA4BC", "#BE88C4", "#9186E7", "#92C9F9", "#92C9F9"]}
+                colors={[
+                  "#FBF4EC",
+                  "#ECD7C8",
+                  "#EEA4BC",
+                  "#BE88C4",
+                  "#9186E7",
+                  "#92C9F9",
+                  "#92C9F9",
+                ]}
               />
-            }
+            )}
           </div>
           <div className="profile-name">{data.displayName}</div>
           <div className="profile-identity">
@@ -138,7 +158,21 @@ const NewProfile = ({ data }) => {
 };
 
 export async function getServerSideProps({ params }) {
-  const res = await fetch(`https://web3.bio/api/profile/ens/${params.domain}`);
+  const platform = handleSearchPlatform(params.domain);
+
+  if (
+    ![
+      PlatformType.dotbit,
+      PlatformType.ens,
+      PlatformType.farcaster,
+      PlatformType.twitter,
+      PlatformType.lens,
+    ].includes(platform)
+  )
+    return { props: { data: { error: "UnSupport Platform" } } };
+  const res = await fetch(
+    `https://web3.bio/api/profile/${platform}/${params.domain}`
+  );
   const data = await res.json();
 
   return { props: { data } };
