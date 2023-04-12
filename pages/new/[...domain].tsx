@@ -14,6 +14,7 @@ import { Error } from "../../components/shared/Error";
 import Avatar from "boring-avatars";
 import { handleSearchPlatform } from "../../utils/utils";
 import { Loading } from "../../components/shared/Loading";
+import { formatText } from "../../utils/utils";
 import { NFTCollectionWidget } from "../../components/profile/NFTCollectionWidget";
 
 const NewProfile = ({ data }) => {
@@ -59,9 +60,14 @@ const NewProfile = ({ data }) => {
   };
 
   return (
-    <div className="web3-profile container">
+    <div className="web3-profile container grid-xl">
       <NextSeo
-        title={`${data.displayName} (${data.identity}) - Web3.bio`}
+        title={
+          data.identity == data.displayName ? 
+          `${data.displayName} - Web3.bio`
+          :
+          `${data.displayName} (${data.identity}) - Web3.bio`
+        }
         description={data.description}
         openGraph={{
           images: [
@@ -76,40 +82,60 @@ const NewProfile = ({ data }) => {
       <div className="web3bio-custom" style={backgroundCover}></div>
       <div className="columns">
         <div className="column col-4 col-md-12">
-          <div className="profile-avatar">
-            {data.avatar ? (
-              <img src={data.avatar} className="avatar" />
-            ) : (
-              <Avatar
-                size={160}
-                name={data.identity}
-                variant="marble"
-                colors={[
-                  "#FBF4EC",
-                  "#ECD7C8",
-                  "#EEA4BC",
-                  "#BE88C4",
-                  "#9186E7",
-                  "#92C9F9",
-                  "#92C9F9",
-                ]}
-              />
-            )}
+          <div className="web3-profile-base">
+            <div className="profile-avatar">
+              {data.avatar ? (
+                <img src={data.avatar} className="avatar" />
+              ) : (
+                <Avatar
+                  size={160}
+                  name={data.identity}
+                  variant="marble"
+                  colors={[
+                    "#FBF4EC",
+                    "#ECD7C8",
+                    "#EEA4BC",
+                    "#BE88C4",
+                    "#9186E7",
+                    "#92C9F9",
+                    "#92C9F9",
+                  ]}
+                />
+              )}
+            </div>
+
+            <div className="profile-name">{data.displayName}</div>
+            {
+              data.identity == data.displayName ?
+              <div className="profile-identity">
+                {formatText(data.owner)}
+                <Clipboard
+                  component="div"
+                  className="action"
+                  data-clipboard-text={data.owner}
+                  onSuccess={onCopySuccess}
+                >
+                  <SVG src="../icons/icon-copy.svg" width={20} height={20} />
+                  {copied && <div className="tooltip-copy">COPIED</div>}
+                </Clipboard>
+              </div>
+              : 
+              <div className="profile-identity">
+                {data.identity}{" "}·{" "}
+                {formatText(data.owner)}
+                <Clipboard
+                  component="div"
+                  className="action"
+                  data-clipboard-text={data.owner}
+                  onSuccess={onCopySuccess}
+                >
+                  <SVG src="../icons/icon-copy.svg" width={20} height={20} />
+                  {copied && <div className="tooltip-copy">COPIED</div>}
+                </Clipboard>
+              </div>
+            }
+            <div className="profile-description">{data.description}</div>
           </div>
-          <div className="profile-name">{data.displayName}</div>
-          <div className="profile-identity">
-            {data.identity}
-            <Clipboard
-              component="div"
-              className="action"
-              data-clipboard-text={data.identity}
-              onSuccess={onCopySuccess}
-            >
-              <SVG src="../icons/icon-copy.svg" width={20} height={20} />
-              {copied && <div className="tooltip-copy">COPIED</div>}
-            </Clipboard>
-          </div>
-          <div className="profile-description">{data.description}</div>
         </div>
         <div className="column col-8 col-md-12">
           <div className="web3-profile-widgets">
@@ -170,7 +196,7 @@ const NewProfile = ({ data }) => {
 export async function getServerSideProps({ params, res }) {
   res.setHeader(
     "Cache-Control",
-    "public, s-maxage=10, stale-while-revalidate=59"
+    `s-maxage=${60 * 60 * 8}, stale-while-revalidate=${60 * 10}`
   );
   const platform = handleSearchPlatform(params.domain);
   try {
@@ -183,7 +209,7 @@ export async function getServerSideProps({ params, res }) {
         PlatformType.lens,
       ].includes(platform)
     )
-      return { props: { data: { error: "UnSupportted Platform" } } };
+      return { props: { data: { error: "Unsupported Platform" } } };
     const res = await fetch(
       `https://web3.bio/api/profile/${platform}/${params.domain}`
     );

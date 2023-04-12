@@ -11,15 +11,19 @@
     background-color: $light-color;
     background-size: cover;
     display: block;
-    filter: blur(2rem);
+    filter: blur(4rem);
     height: 100vh;
     left: 0;
-    opacity: .15;
+    opacity: .1;
     position: fixed;
     top: 0;
     width: 100vw;
     z-index: -1;
   }
+}
+
+.web3-profile-base {
+  margin: .5rem;
 
   .profile-avatar {
     border-radius: 50%;
@@ -75,19 +79,19 @@
   }
 }
 
-.section-title {
-  font-weight: 500;
-}
-
 .web3-profile-widgets {
   display: flex;
   flex-wrap: wrap;
 
+  .section-title {
+    font-weight: 500;
+  }
+
   .profile-widget {
     background: $light-color;
-    border: .05rem solid rgba(0, 0, 0, .1);
+    border: .05rem solid rgba($dark-color, .075);
     border-radius: .8rem;
-    box-shadow: 0 .2rem .8rem rgba(0, 0, 0, .05);
+    box-shadow: 0 .1rem .2rem rgba($dark-color, .04);
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -97,10 +101,11 @@
     text-decoration: none;
     transition: all .25s ease-in-out;
     width: 9rem;
+    will-change: transform;
 
     &:focus,
     &:hover {
-      box-shadow: 0 .4rem 1.2rem rgba(0, 0, 0, .15);
+      box-shadow: 0 .4rem .8rem rgba(0, 0, 0, .075);
       z-index: 99;
 
       .platform-action {
@@ -120,7 +125,7 @@
       width: 2rem;
 
       &.bg-pride {
-        box-shadow: inset 0 0 0 .1rem rgba($light-color, .25);
+        box-shadow: inset 0 0 0 .05rem rgba($light-color, .25);
       }
     }
 
@@ -151,8 +156,6 @@
     max-width: 50%;
     height: auto;
     max-height: 30rem;
-
-
 
     .widgets-collection-list {
       display: flex;
@@ -277,10 +280,6 @@
         }
       }
     }
-
-
-
-
   }
 
   .profile-poaps-widgets {
