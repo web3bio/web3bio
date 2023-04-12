@@ -14,7 +14,7 @@
     filter: blur(4rem);
     height: 100vh;
     left: 0;
-    opacity: .1;
+    opacity: .05;
     position: fixed;
     top: 0;
     width: 100vw;
@@ -51,6 +51,7 @@
 
   .profile-identity {
     align-items: center;
+    color: $gray-color-dark;
     display: flex;
     margin-bottom: 1rem;
     font-size: .6rem;
@@ -75,7 +76,24 @@
 
   .profile-description {
     font-size: .9rem;
+    margin-bottom: 1rem;
     max-width: 20rem;
+  }
+
+  .profile-location {
+    font-size: .9rem;
+    margin-bottom: 1rem;
+  }
+
+  .profile-email {
+    font-size: .9rem;
+    margin-bottom: 1rem;
+    vertical-align: middle;
+
+    a {
+      border-bottom: .05rem dashed;
+      text-decoration: none;
+    }
   }
 }
 

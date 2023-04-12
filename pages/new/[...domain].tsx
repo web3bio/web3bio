@@ -107,34 +107,36 @@ const NewProfile = ({ data }) => {
             <div className="profile-name">{data.displayName}</div>
             {
               data.identity == data.displayName ?
-              <div className="profile-identity">
-                {formatText(data.owner)}
-                <Clipboard
-                  component="div"
-                  className="action"
-                  data-clipboard-text={data.owner}
-                  onSuccess={onCopySuccess}
-                >
-                  <SVG src="../icons/icon-copy.svg" width={20} height={20} />
-                  {copied && <div className="tooltip-copy">COPIED</div>}
-                </Clipboard>
-              </div>
-              : 
-              <div className="profile-identity">
-                {data.identity}{" "}·{" "}
-                {formatText(data.owner)}
-                <Clipboard
-                  component="div"
-                  className="action"
-                  data-clipboard-text={data.owner}
-                  onSuccess={onCopySuccess}
-                >
-                  <SVG src="../icons/icon-copy.svg" width={20} height={20} />
-                  {copied && <div className="tooltip-copy">COPIED</div>}
-                </Clipboard>
-              </div>
+                <div className="profile-identity">
+                  {formatText(data.owner)}
+                  <Clipboard
+                    component="div"
+                    className="action"
+                    data-clipboard-text={data.owner}
+                    onSuccess={onCopySuccess}
+                  >
+                    <SVG src="../icons/icon-copy.svg" width={20} height={20} />
+                    {copied && <div className="tooltip-copy">COPIED</div>}
+                  </Clipboard>
+                </div>
+                : 
+                <div className="profile-identity" title={data.owner}>
+                  {data.identity}
+                  {" · "}{formatText(data.owner)}
+                  <Clipboard
+                    component="div"
+                    className="action"
+                    data-clipboard-text={data.owner}
+                    onSuccess={onCopySuccess}
+                  >
+                    <SVG src="../icons/icon-copy.svg" width={20} height={20} />
+                    {copied && <div className="tooltip-copy">COPIED</div>}
+                  </Clipboard>
+                </div>
             }
-            <div className="profile-description">{data.description}</div>
+            {data.description && <div className="profile-description">{data.description}</div>}
+            {/* {data.location && <div className="profile-location">{data.location}</div>} */}
+            {data.email && <div className="profile-email">✉️ <a href={`mailto:${data.email}`}>{data.email}</a></div>}
           </div>
         </div>
         <div className="column col-8 col-md-12">
@@ -200,16 +202,16 @@ export async function getServerSideProps({ params, res }) {
   );
   const platform = handleSearchPlatform(params.domain);
   try {
-    if (
-      ![
-        PlatformType.dotbit,
-        PlatformType.ens,
-        PlatformType.farcaster,
-        PlatformType.twitter,
-        PlatformType.lens,
-      ].includes(platform)
-    )
-      return { props: { data: { error: "Unsupported Platform" } } };
+    // if (
+    //   ![
+    //     PlatformType.dotbit,
+    //     PlatformType.ens,
+    //     PlatformType.farcaster,
+    //     PlatformType.twitter,
+    //     PlatformType.lens,
+    //   ].includes(platform)
+    // )
+    //   return { props: { data: { error: "Unsupported Platform" } } };
     const res = await fetch(
       `https://web3.bio/api/profile/${platform}/${params.domain}`
     );
