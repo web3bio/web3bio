@@ -53,7 +53,7 @@ const NFTDialogRender = (props) => {
       <>
         <div
           id="nft-dialog"
-          className="nft-panel"
+          className="nft-preview"
           style={{ margin: "0 -1.5rem" }}
         >
           <div className="panel-container">
@@ -126,7 +126,7 @@ const NFTDialogRender = (props) => {
 
   return (
     <>
-      <div id="nft-dialog" className="nft-panel">
+      <div id="nft-dialog" className="nft-preview">
         <div className="panel-container">
           <div className="btn btn-close" onClick={onClose}>
             <SVG src={"/icons/icon-close.svg"} width="20" height="20" />

@@ -88,7 +88,7 @@ const NewProfile = ({ data }) => {
                 <img src={data.avatar} className="avatar" />
               ) : (
                 <Avatar
-                  size={160}
+                  size={180}
                   name={data.identity}
                   variant="marble"
                   colors={[
@@ -103,8 +103,7 @@ const NewProfile = ({ data }) => {
                 />
               )}
             </div>
-
-            <div className="profile-name">{data.displayName}</div>
+            <h1 className="profile-name">{data.displayName}</h1>
             {
               data.identity == data.displayName ?
                 <div className="profile-identity">
@@ -134,18 +133,19 @@ const NewProfile = ({ data }) => {
                   </Clipboard>
                 </div>
             }
-            {data.description && <div className="profile-description">{data.description}</div>}
-            {/* {data.location && <div className="profile-location">{data.location}</div>} */}
+            {data.description && <h2 className="profile-description">{data.description}</h2>}
+            {data.location && <div className="profile-location">📍 {data.location}</div>}
             {data.email && <div className="profile-email">✉️ <a href={`mailto:${data.email}`}>{data.email}</a></div>}
           </div>
         </div>
         <div className="column col-8 col-md-12">
-          <div className="web3-profile-widgets">
+          <div className="web3-section-widgets">
             {linksData.map((item, idx) => {
               return <RenderWidgetItem key={idx} item={item} />;
             })}
           </div>
-          <div className="web3-profile-widgets">
+          <div className="web3-section-title">🖼 NFT Collections</div>
+          <div className="web3-section-widgets">
             <NFTCollectionWidget
               onShowDetail={(v) => {
                 setDialogType(NFTDialogType.NFT);
@@ -155,7 +155,7 @@ const NewProfile = ({ data }) => {
               identity={data}
             />
           </div>
-          <div className="web3-profile-widgets">
+          <div className="web3-section-widgets">
             <PoapWidget
               onShowDetail={(v) => {
                 setDialogType(NFTDialogType.POAP);

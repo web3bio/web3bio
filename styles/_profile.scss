@@ -24,25 +24,30 @@
 
 .web3-profile-base {
   margin: .5rem;
+  position: sticky;
+  top: 2.5rem;
 
   .profile-avatar {
+    align-items: center;
     border-radius: 50%;
-    box-shadow: inset 0 0 0 .1rem rgba($light-color, .1);
-    height: 8rem;
-    width: 8rem;
+    box-shadow: inset 0 0 0 .2rem rgba($light-color, .1);
+    display: flex;
+    height: 9rem;
+    justify-content: center;
+    width: 9rem;
 
     .avatar {
       box-shadow: 0 .4rem 1rem rgba(0, 0, 0, .1);
-      height: 8rem;
+      height: 9rem;
       position: relative;
-      width: 8rem;
+      width: 9rem;
       z-index: -1;
     }
   }
 
   .profile-name {
     color: $dark-color;
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     font-weight: 800;
     margin-bottom: .5rem;
     margin-top: 1rem;
@@ -76,34 +81,41 @@
 
   .profile-description {
     font-size: .9rem;
+    font-weight: 400;
+    line-height: 1.5;
     margin-bottom: 1rem;
     max-width: 20rem;
   }
 
   .profile-location {
-    font-size: .9rem;
-    margin-bottom: 1rem;
+    margin-bottom: .5rem;
   }
 
   .profile-email {
-    font-size: .9rem;
     margin-bottom: 1rem;
     vertical-align: middle;
 
     a {
       border-bottom: .05rem dashed;
       text-decoration: none;
+
+      &:focus,
+      &:hover {
+        border-bottom: .05rem solid;
+      }
     }
   }
 }
 
-.web3-profile-widgets {
+.web3-section-title {
+  font-size: .9rem;
+  font-weight: 500;
+  padding: 1rem 1.5rem;
+}
+
+.web3-section-widgets {
   display: flex;
   flex-wrap: wrap;
-
-  .section-title {
-    font-weight: 500;
-  }
 
   .profile-widget {
     background: $light-color;
@@ -123,7 +135,7 @@
 
     &:focus,
     &:hover {
-      box-shadow: 0 .4rem .8rem rgba(0, 0, 0, .075);
+      box-shadow: 0 .4rem 1.6rem rgba(0, 0, 0, .075), 0 .1rem .2rem rgba(0, 0, 0, .01);
       z-index: 99;
 
       .platform-action {
@@ -136,15 +148,12 @@
     .platform-icon {
       align-items: center;
       border-radius: .6rem;
+      box-shadow: inset 0 0 0 .075rem rgba($dark-color, .1), 0 .2rem .4rem rgba($dark-color, .2);
       color: $light-color;
       display: flex;
       height: 2rem;
       justify-content: center;
       width: 2rem;
-
-      &.bg-pride {
-        box-shadow: inset 0 0 0 .05rem rgba($light-color, .25);
-      }
     }
 
     .platform-title {
@@ -327,7 +336,7 @@
   }
 }
 
-.nft-panel {
+.nft-preview {
   height: calc(100vh - 1rem);
   position: fixed;
   bottom: 0;

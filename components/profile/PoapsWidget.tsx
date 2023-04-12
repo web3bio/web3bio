@@ -37,14 +37,6 @@ const RenderPoapWidget = (props) => {
 
   return (
     <div className="profile-widget profile-poaps-widgets">
-      <div
-        className="platform-icon"
-        style={{
-          background: SocialPlatformMapping(PlatformType.instagram)?.color,
-        }}
-      >
-        <SVG src="/icons/icon-view.svg" width={24} height={24} />
-      </div>
       <div className="platform-title">Poaps</div>
       <div className="platform-handle">{identity.displayName}</div>
       <div className="widgets-collection-list">
