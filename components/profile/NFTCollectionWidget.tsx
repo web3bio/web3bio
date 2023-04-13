@@ -10,6 +10,7 @@ import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 import { NFTPanel } from "./NFTPanel";
 import { Empty } from "../shared/Empty";
+import { ExpandController } from "./ExpandController";
 
 function useCollections(address: string) {
   const { data, error } = useSWR<any>(
@@ -41,12 +42,8 @@ const RenderNFTCollectionWidget = (props) => {
     return null;
   }, [data, isLoading, isError]);
   return (
-    <div
-      className="profile-widget profile-collection-widgets"
-      onClick={() => {
-        setDetailMode(!detailMode);
-      }}
-    >
+    <div className="profile-widget profile-collection-widgets">
+      <ExpandController expand={detailMode} onToggle={()=>setDetailMode(!detailMode)} />
       <div
         className="platform-icon"
         style={{

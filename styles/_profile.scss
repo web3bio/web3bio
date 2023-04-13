@@ -179,10 +179,19 @@
   }
 
   .profile-collection-widgets {
+    position: relative;
     min-width: 50%;
     max-width: 50%;
     height: auto;
     max-height: 30rem;
+
+    .expand-icon {
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
+      color: #121212;
+      cursor: pointer;
+    }
 
     .widgets-collection-list {
       display: flex;
