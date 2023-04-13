@@ -218,7 +218,7 @@ export async function getServerSideProps({ params, res }) {
     const data = await res.json();
     return { props: { data } };
   } catch (e) {
-    return { props: { data: { error: e } } };
+    return { props: { data: { error: 'Unsupproted Platform' } } };
   }
 }
 
