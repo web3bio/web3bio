@@ -53,7 +53,6 @@ const RenderNFTCollectionWidget = (props) => {
         <SVG src="/icons/icon-view.svg" width={24} height={24} />
       </div>
       <div className="platform-title">Collections</div>
-      <div className="platform-handle">{identity.displayName}</div>
       {(detailMode && (
         <NFTPanel
           onShowDetail={onShowDetail}

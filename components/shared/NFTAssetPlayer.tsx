@@ -51,7 +51,6 @@ const RenderNFTAssetPlayer = (props) => {
     ) : (
       isVideo(type) && (
         <video
-          style={{ borderRadius: 8 }}
           className="video-responsive"
           width={"100%"}
           height={"100%"}

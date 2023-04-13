@@ -55,10 +55,6 @@ const NewProfile = ({ data }) => {
     );
   }
 
-  const backgroundCover = {
-    backgroundImage: "url(" + data.header + ")",
-  };
-
   return (
     <div className="web3-profile container grid-xl">
       <NextSeo
@@ -78,7 +74,7 @@ const NewProfile = ({ data }) => {
           ],
         }}
       />
-      <div className="web3bio-custom" style={backgroundCover}></div>
+      <div className="web3bio-custom" style={{backgroundImage: "url(" + data.header + ")"}}></div>
       <div className="columns">
         <div className="column col-4 col-md-12">
           <div className="web3-profile-base">
