@@ -13,7 +13,7 @@ export function useSearchProfile(props: SearchProfileProps) {
       if(!handle || !platform) return null
       try {
         const host = window.location.origin ||  "https://staging.web5.bio";
-        const url = host + `/api/profile/${platform}/${handle}`;
+        const url = host + `/api/profile/${platform.toLowerCase()}/${handle}`;
         const res =  await fetch(url, { next: { revalidate: 600 } })
         return await res.json();
       } catch (e) {
