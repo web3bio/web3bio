@@ -1,11 +1,23 @@
 import Image from "next/image";
 import Link from "next/link";
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { formatText } from "../../utils/utils";
 import { RenderSourceFooter } from "./SourcesFooter";
 import { PlatformType } from "../../utils/platform";
+import { useSearchProfile } from "../../hooks/useSearchProfile";
+import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
+
+const resolveSearchHandle = (identity) => {
+  return {
+    [PlatformType.ethereum]: identity.displayName,
+    [PlatformType.twitter]: identity.identity,
+    [PlatformType.farcaster]: identity.identity,
+    [PlatformType.dotbit]: identity.identity,
+    [PlatformType.lens]: identity.identity,
+  }[identity.platform];
+};
 
 const RenderAccountItem = (props) => {
   const { onItemClick } = props;
@@ -16,8 +28,38 @@ const RenderAccountItem = (props) => {
     }, 1500);
   };
   const { identity, sources } = props;
+  const [profileHandle, setProfileHandle] = useState(null);
+  const [profilePlatform, setProfilePlatform] = useState(null);
   const [isCopied, setIsCopied] = useState(false);
+  const {
+    data: profile,
+    trigger,
+    isMutating,
+  } = useSearchProfile({
+    handle: profileHandle,
+    platform: profilePlatform,
+  });
+  useEffect(() => {
+    if (
+      ![
+        PlatformType.twitter,
+        PlatformType.ethereum,
+        PlatformType.farcaster,
+        PlatformType.dotbit,
+        PlatformType.lens,
+      ].includes(identity.platform)
+    )
+      return;
+    setProfileHandle(resolveSearchHandle(identity));
+    setProfilePlatform(
+      identity.platform === PlatformType.ethereum
+        ? PlatformType.ens
+        : identity.platform
+    );
+    trigger();
+  }, [identity, trigger, profileHandle, profilePlatform]);
 
+  console.log(profile, "profile");
   switch (identity.platform) {
     case PlatformType.ethereum:
       return (
@@ -94,7 +136,12 @@ const RenderAccountItem = (props) => {
           <div className="social-main">
             <div className="social">
               <figure className="avatar bg-lens">
-                <SVG src="icons/icon-lens.svg" width={20} height={20} />
+                <NFTAssetPlayer
+                  src={profile?.avatar}
+                  width={20}
+                  height={20}
+                  alt={identity.identity}
+                />
               </figure>
               <div className="content">
                 <div className="content-title text-bold">
@@ -122,7 +169,7 @@ const RenderAccountItem = (props) => {
               className="btn btn-sm btn-link action"
               title="Open Identity Panel"
               onClickCapture={() => {
-                onItemClick(identity, PlatformType.lens)
+                onItemClick(identity, PlatformType.lens);
               }}
             >
               <SVG src="icons/icon-open.svg" width={20} height={20} />
@@ -178,7 +225,11 @@ const RenderAccountItem = (props) => {
               className="social"
             >
               <div className="icon">
-                <SVG src="icons/icon-unstoppabledomains.svg" width={20} height={20} />
+                <SVG
+                  src="icons/icon-unstoppabledomains.svg"
+                  width={20}
+                  height={20}
+                />
               </div>
               <div className="title">{identity.displayName}</div>
             </Link>
@@ -203,7 +254,12 @@ const RenderAccountItem = (props) => {
           <div className="social-main">
             <div className="social">
               <figure className="avatar bg-farcaster">
-                <SVG src="icons/icon-farcaster.svg" width={20} height={20} />
+                <NFTAssetPlayer
+                  src={profile?.avatar}
+                  width={20}
+                  height={20}
+                  alt={identity.identity}
+                />
               </figure>
               <div className="content">
                 <div className="content-title text-bold">
@@ -283,10 +339,35 @@ const RenderAccountItem = (props) => {
               }}
               className="social"
             >
-              <div className="icon">
-                <SVG src="icons/icon-twitter.svg" width={20} height={20} />
+              <figure className="avatar bg-pride">
+                <NFTAssetPlayer
+                  src={profile?.avatar}
+                  width={20}
+                  height={20}
+                  alt={identity.identity}
+                />
+              </figure>
+              <div className="content">
+                <div className="content-title text-bold">
+                  {profile?.displayName
+                    ? profile.displayName
+                    : identity.displayName}
+                </div>
+                <div className="content-subtitle text-gray">
+                  <div className="address">
+                    {profile?.identity || identity.identity}
+                  </div>
+                  <Clipboard
+                    component="div"
+                    className="action"
+                    data-clipboard-text={profile?.identity || identity.identity}
+                    onSuccess={onCopySuccess}
+                  >
+                    <SVG src="icons/icon-copy.svg" width={20} height={20} />
+                    {isCopied && <div className="tooltip-copy">COPIED</div>}
+                  </Clipboard>
+                </div>
               </div>
-              <div className="title">{identity.displayName}</div>
             </Link>
           </div>
           <div className="social-actions actions">

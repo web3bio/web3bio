@@ -20,7 +20,18 @@ const isVideo = (type) => {
   return ["video/mp4", "audio/mpeg", "audio/wav"].includes(type);
 };
 
-const RenderNFTAssetPlayer = (props) => {
+interface AssetPlayerProps {
+  type?: string;
+  className?: string;
+  src: string;
+  contentUrl?: string;
+  width?: number;
+  height?: number;
+  onClick?: () => void;
+  alt?: string;
+  style?: any;
+}
+const RenderNFTAssetPlayer = (props: AssetPlayerProps) => {
   const {
     type = "image/png",
     className,
