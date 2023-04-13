@@ -38,53 +38,60 @@ const RenderNFTCollectionWidget = (props) => {
   const getBoundaryRender = useCallback(() => {
     if (isLoading) return <Loading />;
     if (isError) return <Error />;
-    if (!data || !data.data) return <Empty />;
+
     return null;
-  }, [data, isLoading, isError]);
+  }, [isLoading, isError]);
+  if (!data || !data.data) return null;
   return (
-    <div className="profile-widget profile-collection-widgets">
-      <ExpandController expand={detailMode} onToggle={()=>setDetailMode(!detailMode)} />
-      <div
-        className="platform-icon"
-        style={{
-          background: SocialPlatformMapping(PlatformType.twitter)?.color,
-        }}
-      >
-        <SVG src="/icons/icon-view.svg" width={24} height={24} />
-      </div>
-      <div className="platform-title">Collections</div>
-      {(detailMode && (
-        <NFTPanel
-          onShowDetail={onShowDetail}
-          address={identity.owner}
-          network={PlatformType.ens}
+    <>
+      <div className="web3-section-title">🖼 NFT Collections</div>
+      <div className="profile-widget profile-collection-widgets">
+        <ExpandController
+          expand={detailMode}
+          onToggle={() => setDetailMode(!detailMode)}
         />
-      )) || (
-        <div className="widgets-collection-list">
-          {getBoundaryRender() ||
-            data.data.map((x, idx) => (
-              <div
-                onClick={(e) => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                  toCertainNFT(x.contract_address);
-                }}
-                className="collection-item"
-                key={idx}
-              >
-                <NFTAssetPlayer
-                  className="collection-img"
-                  src={resolveIPFS_URL(x.logo_url)}
-                  alt={x.contract_name}
-                />
-                <div className="collection-name text-assistive">
-                  {x.contract_name}
-                </div>
-              </div>
-            ))}
+        <div
+          className="platform-icon"
+          style={{
+            background: SocialPlatformMapping(PlatformType.twitter)?.color,
+          }}
+        >
+          <SVG src="/icons/icon-view.svg" width={24} height={24} />
         </div>
-      )}
-    </div>
+        <div className="platform-title">Collections</div>
+        {(detailMode && (
+          <NFTPanel
+            onShowDetail={onShowDetail}
+            address={identity.owner}
+            network={PlatformType.ens}
+          />
+        )) || (
+          <div className="widgets-collection-list">
+            {getBoundaryRender() ||
+              data.data.map((x, idx) => (
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    toCertainNFT(x.contract_address);
+                  }}
+                  className="collection-item"
+                  key={idx}
+                >
+                  <NFTAssetPlayer
+                    className="collection-img"
+                    src={resolveIPFS_URL(x.logo_url)}
+                    alt={x.contract_name}
+                  />
+                  <div className="collection-name text-assistive">
+                    {x.contract_name}
+                  </div>
+                </div>
+              ))}
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

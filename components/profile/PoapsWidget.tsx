@@ -1,14 +1,10 @@
 import { memo, useCallback } from "react";
-import SVG from "react-inlinesvg";
-import { PlatformType } from "../../utils/platform";
-import { SocialPlatformMapping } from "../../utils/platform";
 import useSWR from "swr";
 import { Loading } from "../shared/Loading";
 import { Error } from "../shared/Error";
 import { POAPFetcher, POAP_END_POINT } from "../apis/poap";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { Empty } from "../shared/Empty";
 
 function usePoaps(address: string) {
   const { data, error } = useSWR<any>(
@@ -31,10 +27,9 @@ const RenderPoapWidget = (props) => {
   const getBoundaryRender = useCallback(() => {
     if (isLoading) return <Loading />;
     if (isError) return <Error />;
-    if (!data || !data.length) return <Empty />;
     return null;
-  }, [data, isLoading, isError]);
-
+  }, [isLoading, isError]);
+  if (!data || !data.length) return null;
   return (
     <div className="profile-widget profile-poaps-widgets">
       <div className="platform-title">Poaps</div>

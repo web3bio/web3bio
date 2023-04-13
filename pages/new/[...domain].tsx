@@ -74,7 +74,10 @@ const NewProfile = ({ data }) => {
           ],
         }}
       />
-      <div className="web3bio-custom" style={{backgroundImage: "url(" + data.header + ")"}}></div>
+      <div
+        className="web3bio-custom"
+        style={{ backgroundImage: "url(" + data.header + ")" }}
+      ></div>
       <div className="columns">
         <div className="column col-4 col-md-12">
           <div className="web3-profile-base">
@@ -147,8 +150,10 @@ const NewProfile = ({ data }) => {
               return <RenderWidgetItem key={idx} item={item} />;
             })}
           </div>
-          <div className="web3-section-title">🖼 NFT Collections</div>
-          <div className="web3-section-widgets">
+          <div
+            className="web3-section-widgets"
+            style={{ flexDirection: "column" }}
+          >
             <NFTCollectionWidget
               onShowDetail={(v) => {
                 setDialogType(NFTDialogType.NFT);
