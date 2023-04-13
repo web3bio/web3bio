@@ -20,7 +20,7 @@ const isVideo = (type) => {
   return ["video/mp4", "audio/mpeg", "audio/wav"].includes(type);
 };
 
-interface AssetPlayerProps {
+export interface AssetPlayerProps {
   type?: string;
   className?: string;
   src: string;

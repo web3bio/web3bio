@@ -7,7 +7,7 @@ import { formatText } from "../../utils/utils";
 import { RenderSourceFooter } from "./SourcesFooter";
 import { PlatformType } from "../../utils/platform";
 import { useSearchProfile } from "../../hooks/useSearchProfile";
-import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
+import { Avatar } from "../shared/Avatar";
 
 const resolveSearchHandle = (identity) => {
   return {
@@ -59,16 +59,27 @@ const RenderAccountItem = (props) => {
     trigger();
   }, [identity, trigger, profileHandle, profilePlatform]);
 
-  console.log(profile, "profile");
+  // if (isMutating)
+  //   return (
+  //     <div className="social-item social-web3">
+  //       {/* loading here */}
+  //       loading...
+  //     </div>
+  //   );
   switch (identity.platform) {
     case PlatformType.ethereum:
       return (
         <div className="social-item social-web3 ethereum">
           <div className="social-main">
             <div className="social">
-              <figure className="avatar bg-pride">
-                <SVG src="icons/icon-ethereum.svg" width={20} height={20} />
-              </figure>
+              <Avatar
+                className=" bg-pride"
+                src={profile?.avatar}
+                width={20}
+                height={20}
+                fallbackImg="icons/icon-ethereum.svg"
+                fallbackClassName="avatar bg-pride"
+              />
               <div className="content">
                 <div className="content-title text-bold">
                   {identity.displayName
@@ -135,14 +146,13 @@ const RenderAccountItem = (props) => {
         <div className="social-item lens">
           <div className="social-main">
             <div className="social">
-              <figure className="avatar bg-lens">
-                <NFTAssetPlayer
-                  src={profile?.avatar}
-                  width={20}
-                  height={20}
-                  alt={identity.identity}
-                />
-              </figure>
+              <Avatar
+                src={profile?.avatar}
+                width={20}
+                height={20}
+                fallbackImg="icons/icon-lens.svg"
+                fallbackClassName="avatar bg-lens"
+              />
               <div className="content">
                 <div className="content-title text-bold">
                   {identity.displayName
@@ -191,9 +201,14 @@ const RenderAccountItem = (props) => {
               }}
               className="social"
             >
-              <div className="icon">
-                <SVG src="icons/icon-dotbit.svg" width={20} height={20} />
-              </div>
+              <Avatar
+                src={profile?.avatar}
+                width={20}
+                height={20}
+                fallbackImg="icons/icon-dotbit.svg"
+                fallbackClassName="icon"
+              />
+
               <div className="title">{identity.displayName}</div>
             </Link>
           </div>
@@ -253,14 +268,13 @@ const RenderAccountItem = (props) => {
         <div className="social-item farcaster">
           <div className="social-main">
             <div className="social">
-              <figure className="avatar bg-farcaster">
-                <NFTAssetPlayer
-                  src={profile?.avatar}
-                  width={20}
-                  height={20}
-                  alt={identity.identity}
-                />
-              </figure>
+              <Avatar
+                src={profile?.avatar}
+                width={20}
+                height={20}
+                fallbackClassName="avatar bg-farcaster"
+                fallbackImg="icons/icon-farcaster.svg"
+              />
               <div className="content">
                 <div className="content-title text-bold">
                   {identity.displayName
@@ -339,14 +353,13 @@ const RenderAccountItem = (props) => {
               }}
               className="social"
             >
-              <figure className="avatar bg-pride">
-                <NFTAssetPlayer
-                  src={profile?.avatar}
-                  width={20}
-                  height={20}
-                  alt={identity.identity}
-                />
-              </figure>
+              <Avatar
+                src={profile?.avatar}
+                width={20}
+                height={20}
+                fallbackImg="icons/icon-twitter.svg"
+                fallbackClassName="icon"
+              />
               <div className="content">
                 <div className="content-title text-bold">
                   {profile?.displayName
