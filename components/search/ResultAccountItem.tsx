@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { memo, useEffect, useState } from "react";
+import { memo, useState } from "react";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { formatText } from "../../utils/utils";
@@ -16,27 +16,15 @@ const RenderAccountItem = (props) => {
       setIsCopied(false);
     }, 1500);
   };
-  const { avatar } = props;
+  const { identity, sources, profile } = props;
 
   const [isCopied, setIsCopied] = useState(false);
-  const [identity, setIdentity] = useState(avatar.identity);
-  const [profile, setProfile] = useState(avatar.identity.profile);
-  const [sources, setSources] = useState(avatar.sources);
-
-  useEffect(() => {
-    if (avatar.identity) setIdentity(avatar.identity);
-    if (avatar.identity?.profile) setProfile(avatar.identity.profile);
-    if (avatar.sources) setSources(avatar.sources);
-  }, [avatar.identity, avatar.sources, profile]);
-
   const displayName = formatText(
     profile?.displayName
       ? profile.displayName
       : identity.displayName || identity.identity,
     30
   );
-  if (!identity) return null;
-  console.log(profile, "profile");
   switch (identity.platform) {
     case PlatformType.ethereum:
       return (
