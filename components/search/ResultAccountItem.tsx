@@ -160,7 +160,7 @@ const RenderAccountItem = (props) => {
                 fallbackClassName="icon"
               />
 
-              <div className="title">{identity.displayName}</div>
+              <div className="title">{displayName}</div>
             </Link>
           </div>
           <div className="social-actions actions">
@@ -197,7 +197,7 @@ const RenderAccountItem = (props) => {
                   height={20}
                 />
               </div>
-              <div className="title">{identity.displayName}</div>
+              <div className="title">{displayName}</div>
             </Link>
           </div>
           <div className="social-actions actions">
@@ -228,9 +228,7 @@ const RenderAccountItem = (props) => {
               />
               <div className="content">
                 <div className="content-title text-bold">
-                  {identity.displayName
-                    ? identity.displayName
-                    : identity.identity}
+                  {displayName}
                 </div>
                 <div className="content-subtitle text-gray">
                   <div className="address">{identity.identity}</div>
@@ -271,9 +269,7 @@ const RenderAccountItem = (props) => {
               </figure>
               <div className="content">
                 <div className="content-title text-bold">
-                  {identity.displayName
-                    ? identity.displayName
-                    : identity.identity}
+                  {displayName}
                 </div>
                 <div className="content-subtitle text-gray">
                   <div className="address">{identity.ownedBy.identity}</div>
@@ -361,7 +357,7 @@ const RenderAccountItem = (props) => {
               <div className="icon">
                 <SVG src="icons/icon-github.svg" width={20} height={20} />
               </div>
-              <div className="title">{identity.displayName}</div>
+              <div className="title">{displayName}</div>
             </Link>
           </div>
           <div className="social-actions actions">
@@ -395,7 +391,7 @@ const RenderAccountItem = (props) => {
               <div className="icon">
                 <SVG src="icons/icon-keybase.svg" width={20} height={20} />
               </div>
-              <div className="title">{identity.displayName}</div>
+              <div className="title">{displayName}</div>
             </Link>
           </div>
           <div className="social-actions actions">
@@ -429,7 +425,7 @@ const RenderAccountItem = (props) => {
               <div className="icon">
                 <SVG src="icons/icon-reddit.svg" width={20} height={20} />
               </div>
-              <div className="title">{identity.displayName}</div>
+              <div className="title">{displayName}</div>
             </Link>
           </div>
           <div className="social-actions actions">
