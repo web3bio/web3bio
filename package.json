@@ -12,6 +12,7 @@
   "dependencies": {
     "@dotbit/plugin-avatar": "^0.0.1",
     "@supabase/supabase-js": "^2.10.0",
+    "boring-avatars": "^1.7.0",
     "dotbit": "^0.4.17",
     "next-seo": "^6.0.0",
     "underscore": "^1.13.6",

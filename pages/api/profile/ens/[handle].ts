@@ -108,7 +108,7 @@ const resolveHandleFromURL = async (
                 : key;
             _linkRes[resolvedKey] = {
               link: getSocialMediaLink(handle, resolvedKey),
-              handle: resolveHandle(handle),
+              handle: handle,
             };
           }
         }
@@ -147,7 +147,6 @@ const resolveHandleFromURL = async (
       };
     }
     const headerHandle = (await resolver.getText("header")) || null;
-
     const resJSON = {
       owner: address,
       identity: ensDomain,
@@ -164,7 +163,7 @@ const resolveHandleFromURL = async (
     res
       .status(200)
       .setHeader(
-        "CDN-Cache-Control",
+        "Cache-Control",
         `s-maxage=${60 * 60 * 8}, stale-while-revalidate=${60 * 10}`
       )
       .json(resJSON);

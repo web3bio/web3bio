@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { NextSeo } from 'next-seo';
 import { useEffect, useState } from "react";
 import SVG from "react-inlinesvg";
 import { SearchInput } from "../components/panel/components/SearchInput";
@@ -110,13 +111,11 @@ export default function Home() {
         ) : (
           <title>Web3.bio</title>
         )}
-        <meta
-          name="description"
-          content="Web3.bio (Previously Web5.bio) is a Web3 and Web 2.0 Identity Graph search service which is powered by Next.ID. Web3.bio will provide a list of relevant identities when you are searching any Twitter handle, Ethereum address, ENS domain, Lens profile or Unstoppable Domains, and other Web3 identities."
-        />
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <meta name="google-site-verification" content="iaUpA0X2l6UNb8C38RvUe4i_DOMvo5Ciqvf6MtYjzPs" />
+
       </Head>
+      <NextSeo
+        title={searchTerm ? `${searchTerm} - Web3.bio` : "Web3.bio"}
+      />
       <main className="web3bio-container">
         <div className="web3bio-cover flare"></div>
 

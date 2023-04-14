@@ -22,8 +22,8 @@ function usePoaps(address: string, initialData) {
 }
 
 const RenderPoaps = (props) => {
-  const { identity, onShowDetail, initialData } = props;
-  const { data, isLoading, isError } = usePoaps(identity.identity, initialData);
+  const { address, onShowDetail, initialData } = props;
+  const { data, isLoading, isError } = usePoaps(address, initialData);
 
   if (isLoading || (initialData && (!data || !data.length))) return <Loading />;
   if (isError) return <Error text={isError} />;

@@ -102,7 +102,7 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     iconW: "icons/icon-keybase-w.svg",
     label: "Keybase",
     urlPrefix: "https://keybase.io/",
-    ensText: [],
+    ensText: ['io.keybase'],
   },
   [PlatformType.lens]: {
     key: PlatformType.lens,
