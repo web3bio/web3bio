@@ -1,6 +1,7 @@
 import { memo, useState } from "react";
 import { NFTCollections } from "./components/NFTCollections";
 import { NFTDialog } from "./components/NFTDialog";
+import { PlatformType } from "../../utils/platform";
 
 const RenderNFTsTab = (props) => {
   const {
@@ -16,7 +17,9 @@ const RenderNFTsTab = (props) => {
   return (
     <>
       <NFTCollections
-        identity={identity}
+        address={
+          network === PlatformType.lens ? identity.ownedBy : identity.identity
+        }
         onShowDetail={(a) => {
           setAsset(a);
           showDialog();

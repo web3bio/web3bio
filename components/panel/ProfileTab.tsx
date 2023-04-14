@@ -180,7 +180,7 @@ export const ProfileTab = (props) => {
           setDialogOpen(true);
         }}
         initialData={poaps}
-        identity={identity}
+        address={identity.identity}
       />
 
       {dialogOpen && currentPoap && (

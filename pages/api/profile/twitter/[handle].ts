@@ -65,7 +65,7 @@ const resolveTwitterHandle = async (
     res
       .status(200)
       .setHeader(
-        "CDN-Cache-Control",
+        "Cache-Control",
         `s-maxage=${60 * 60 * 8}, stale-while-revalidate=${60 * 10}`
       )
       .json(resJSON);
