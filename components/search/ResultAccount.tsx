@@ -51,9 +51,7 @@ const RenderAccount = (props) => {
             {renderData.map((avatar) => (
               <ResultAccountItem
                 onItemClick={openProfile}
-                identity={avatar.identity}
-                sources={avatar.sources}
-                profile={avatar.identity.profile}
+                avatar={avatar}
                 key={avatar.identity.uuid + avatar.identity.profile?.owner}
               />
             ))}
