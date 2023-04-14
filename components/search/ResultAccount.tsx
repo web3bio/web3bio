@@ -1,9 +1,36 @@
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 import SVG from "react-inlinesvg";
 import { ResultAccountItem } from "./ResultAccountItem";
+import { PlatformType } from "../../utils/platform";
+import { fetchProfile } from "../../api/fetchProfile";
 
 const RenderAccount = (props) => {
   const { openGraph, resultNeighbor, graphData, openProfile } = props;
+  const [renderData, setRenderData] = useState(resultNeighbor);
+  useEffect(() => {
+    if (!resultNeighbor || !resultNeighbor.length) return;
+    const enhanceResultNeighbor = async () => {
+      for (let i = 0; i < resultNeighbor.length; i++) {
+        const item = resultNeighbor[i];
+        if (
+          [
+            PlatformType.twitter,
+            PlatformType.ethereum,
+            PlatformType.farcaster,
+            PlatformType.dotbit,
+            PlatformType.lens,
+          ].includes(item.identity.platform)
+        ) {
+          item.identity = {
+            ...item.identity,
+            profile: await fetchProfile(item.identity),
+          };
+        }
+      }
+    };
+    enhanceResultNeighbor();
+    setRenderData([...resultNeighbor]);
+  }, [resultNeighbor.length, resultNeighbor]);
 
   return (
     <div className="search-result">
@@ -19,14 +46,15 @@ const RenderAccount = (props) => {
         )}
       </div>
       <div className="search-result-body">
-        {resultNeighbor.length > 0 ? (
+        {renderData.length > 0 ? (
           <>
-            {resultNeighbor.map((avatar) => (
+            {renderData.map((avatar) => (
               <ResultAccountItem
                 onItemClick={openProfile}
                 identity={avatar.identity}
                 sources={avatar.sources}
-                key={avatar.identity.uuid}
+                profile={avatar.identity.profile}
+                key={avatar.identity.uuid + avatar.identity.profile?.owner}
               />
             ))}
           </>

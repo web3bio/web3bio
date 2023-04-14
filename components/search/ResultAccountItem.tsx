@@ -1,23 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-import { memo, useEffect, useState } from "react";
+import { memo, useState } from "react";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { formatText } from "../../utils/utils";
 import { RenderSourceFooter } from "./SourcesFooter";
 import { PlatformType } from "../../utils/platform";
-import { useSearchProfile } from "../../hooks/useSearchProfile";
 import { Avatar } from "../shared/Avatar";
-
-const resolveSearchHandle = (identity) => {
-  return {
-    [PlatformType.ethereum]: identity.displayName,
-    [PlatformType.twitter]: identity.identity,
-    [PlatformType.farcaster]: identity.identity,
-    [PlatformType.dotbit]: identity.identity,
-    [PlatformType.lens]: identity.identity,
-  }[identity.platform];
-};
 
 const RenderAccountItem = (props) => {
   const { onItemClick } = props;
@@ -27,45 +16,15 @@ const RenderAccountItem = (props) => {
       setIsCopied(false);
     }, 1500);
   };
-  const { identity, sources } = props;
-  const [profileHandle, setProfileHandle] = useState(null);
-  const [profilePlatform, setProfilePlatform] = useState(null);
-  const [isCopied, setIsCopied] = useState(false);
-  const {
-    data: profile,
-    trigger,
-    isMutating,
-  } = useSearchProfile({
-    handle: profileHandle,
-    platform: profilePlatform,
-  });
-  useEffect(() => {
-    if (
-      ![
-        PlatformType.twitter,
-        PlatformType.ethereum,
-        PlatformType.farcaster,
-        PlatformType.dotbit,
-        PlatformType.lens,
-      ].includes(identity.platform)
-    )
-      return;
-    setProfileHandle(resolveSearchHandle(identity));
-    setProfilePlatform(
-      identity.platform === PlatformType.ethereum
-        ? PlatformType.ens
-        : identity.platform
-    );
-    trigger();
-  }, [identity, trigger, profileHandle, profilePlatform]);
+  const { identity, sources, profile } = props;
 
-  // if (isMutating)
-  //   return (
-  //     <div className="social-item social-web3">
-  //       {/* loading here */}
-  //       loading...
-  //     </div>
-  //   );
+  const [isCopied, setIsCopied] = useState(false);
+  const displayName = formatText(
+    profile?.displayName
+      ? profile.displayName
+      : identity.displayName || identity.identity,
+    30
+  );
   switch (identity.platform) {
     case PlatformType.ethereum:
       return (
@@ -81,11 +40,7 @@ const RenderAccountItem = (props) => {
                 fallbackClassName="avatar bg-pride"
               />
               <div className="content">
-                <div className="content-title text-bold">
-                  {identity.displayName
-                    ? identity.displayName
-                    : formatText(identity.identity)}
-                </div>
+                <div className="content-title text-bold">{displayName}</div>
                 <div className="content-subtitle text-gray">
                   <div className="address hide-xs">{identity.identity}</div>
                   <div className="address show-xs">
@@ -154,11 +109,7 @@ const RenderAccountItem = (props) => {
                 fallbackClassName="avatar bg-lens"
               />
               <div className="content">
-                <div className="content-title text-bold">
-                  {identity.displayName
-                    ? identity.displayName
-                    : identity.identity}
-                </div>
+                <div className="content-title text-bold">{displayName}</div>
                 <div className="content-subtitle text-gray">
                   <div className="address">{identity.identity}</div>
                   <Clipboard
@@ -361,11 +312,7 @@ const RenderAccountItem = (props) => {
                 fallbackClassName="icon"
               />
               <div className="content">
-                <div className="content-title text-bold">
-                  {profile?.displayName
-                    ? profile.displayName
-                    : identity.displayName}
-                </div>
+                <div className="content-title text-bold">{displayName}</div>
                 <div className="content-subtitle text-gray">
                   <div className="address">
                     {profile?.identity || identity.identity}
