@@ -104,6 +104,11 @@
   
     .loading-container {
       margin-top: 4rem;
+      .loading-subtitle{
+        width: 100%;
+        text-align: center;
+        font-size: .6rem;
+      }
     }
   }
 

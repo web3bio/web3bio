@@ -48,7 +48,6 @@ const RenderAccount = (props) => {
   }, [resultNeighbor.length, resultNeighbor, graphData]);
 
   const resolvedGraphData = graphData.reduce((pre, cur) => {
-    console.log(cur);
     pre.push({
       ...cur,
       to: {
@@ -81,7 +80,7 @@ const RenderAccount = (props) => {
         </div>
         <div className="search-result-body">
           {profileLoading ? (
-            <Loading styles={{ margin: 16 }} />
+            <Loading placeholder="Waiting from Web5.bio Profile API..." styles={{ margin: 16 }} />
           ) : renderData.length > 0 ? (
             <>
               {renderData.map((avatar) => (

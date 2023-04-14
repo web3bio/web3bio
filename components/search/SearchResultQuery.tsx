@@ -67,7 +67,7 @@ export const SearchResultQuery = ({
     }
   }, [data, searchPlatform, searchTerm, getQuery]);
 
-  if (loading) return <Loading retry={() => window.location.reload()} />;
+  if (loading) return <Loading placeholder="Waiting from Relation Service..." retry={() => window.location.reload()} />;
   if (error) return <Error retry={getQuery} text={error} />;
   if (!data?.identity) return <Empty />;
 

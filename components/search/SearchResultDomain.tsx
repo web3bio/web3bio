@@ -54,7 +54,13 @@ const RenderResultDomain = ({ searchTerm, searchPlatform, openProfile }) => {
     );
   }, [data, searchTerm, searchPlatform, getQuery]);
 
-  if (loading) return <Loading retry={() => window.location.reload()} />;
+  if (loading)
+    return (
+      <Loading
+        placeholder="Waiting from Relation Service..."
+        retry={() => window.location.reload()}
+      />
+    );
   if (error) return <Error retry={getQuery} text={error} />;
   if (!data?.domain) return <Empty />;
   const graphData =
