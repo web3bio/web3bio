@@ -21,7 +21,7 @@ export const fetchProfile = async (identity) => {
     const res = await fetch(url, { next: { revalidate: 600 } });
     return await res.json();
   } catch (e) {
-    console.error(e, "error");
+  
     return null;
   }
 };

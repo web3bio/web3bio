@@ -12,7 +12,6 @@ const RenderAccount = (props) => {
   const [renderData, setRenderData] = useState(resultNeighbor);
 
   const [open, setOpen] = useState(false);
-  const [resolvedGraphData, setResolvedGraphData] = useState(graphData);
   const [profileLoading, setProfileLoading] = useState(false);
 
   useEffect(() => {
@@ -38,7 +37,7 @@ const RenderAccount = (props) => {
           }
         }
       } catch (e) {
-        console.error("fetch profile", e);
+        console.error("search Item fetch Profile", e);
       } finally {
         setRenderData([...resultNeighbor]);
         setProfileLoading(false);
@@ -46,31 +45,26 @@ const RenderAccount = (props) => {
     };
 
     enhanceResultNeighbor();
-    setResolvedGraphData(
-      graphData.reduce((pre, cur) => {
-        pre.push({
-          ...cur,
-          to: {
-            ...cur.to,
-            profile: _.find(
-              resultNeighbor,
-              (x) => x.identity.uuid == cur.to.uuid
-            )?.identity.profile,
-          },
-          from: {
-            ...cur.from,
-            profile: _.find(
-              resultNeighbor,
-              (x) => x.identity.uuid == cur.from.uuid
-            )?.identity.profile,
-          },
-        });
-        return pre;
-      }, [])
-    );
   }, [resultNeighbor.length, resultNeighbor, graphData]);
 
-  console.log(resolvedGraphData,'resolved')
+  const resolvedGraphData = graphData.reduce((pre, cur) => {
+    console.log(cur);
+    pre.push({
+      ...cur,
+      to: {
+        ...cur.to,
+        profile: _.find(renderData, (i) => i.identity.uuid == cur.to.uuid)
+          ?.identity.profile,
+      },
+      from: {
+        ...cur.from,
+        profile: _.find(renderData, (i) => i.identity.uuid == cur.from.uuid)
+          ?.identity.profile,
+      },
+    });
+    return pre;
+  }, []);
+
   return (
     <>
       <div className="search-result">
