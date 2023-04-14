@@ -10,12 +10,16 @@ import _ from "lodash";
 const RenderAccount = (props) => {
   const { graphData, resultNeighbor, openProfile, graphTitle } = props;
   const [renderData, setRenderData] = useState(resultNeighbor);
-
   const [open, setOpen] = useState(false);
   const [profileLoading, setProfileLoading] = useState(false);
 
   useEffect(() => {
-    if (!resultNeighbor || !resultNeighbor.length) return;
+    if (
+      !resultNeighbor ||
+      !resultNeighbor.length ||
+      resultNeighbor.length === renderData.length
+    )
+      return;
     const enhanceResultNeighbor = async () => {
       try {
         setProfileLoading(true);
@@ -45,19 +49,19 @@ const RenderAccount = (props) => {
     };
 
     enhanceResultNeighbor();
-  }, [resultNeighbor.length, resultNeighbor, graphData]);
+  }, [resultNeighbor.length, resultNeighbor, graphTitle, renderData]);
 
   const resolvedGraphData = graphData.reduce((pre, cur) => {
     pre.push({
       ...cur,
       to: {
         ...cur.to,
-        profile: _.find(renderData, (i) => i.identity.uuid == cur.to.uuid)
+        profile: _.find(resultNeighbor, (i) => i.identity.uuid == cur.to.uuid)
           ?.identity.profile,
       },
       from: {
         ...cur.from,
-        profile: _.find(renderData, (i) => i.identity.uuid == cur.from.uuid)
+        profile: _.find(resultNeighbor, (i) => i.identity.uuid == cur.from.uuid)
           ?.identity.profile,
       },
     });
@@ -80,7 +84,10 @@ const RenderAccount = (props) => {
         </div>
         <div className="search-result-body">
           {profileLoading ? (
-            <Loading placeholder="Waiting from Web5.bio Profile API..." styles={{ margin: 16 }} />
+            <Loading
+              placeholder="Waiting from Web5.bio Profile API..."
+              styles={{ margin: 16 }}
+            />
           ) : renderData.length > 0 ? (
             <>
               {renderData.map((avatar) => (
