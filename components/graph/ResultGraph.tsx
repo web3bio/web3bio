@@ -64,7 +64,7 @@ const resolveGraphData = (source) => {
       label: formatText(to.displayName ?? to.identity),
       platform: to.platform,
       source: x.source,
-      displayName: to.displayName,
+      displayName: to.profile?.displayName || to.displayName,
       identity: to.identity,
       isIdentity: true,
     });
@@ -73,7 +73,7 @@ const resolveGraphData = (source) => {
       label: formatText(from.displayName ?? from.identity),
       platform: from.platform,
       source: x.source,
-      displayName: from.displayName,
+      displayName: from.profile?.displayName || from.displayName,
       identity: from.identity,
       isIdentity: true,
     });
