@@ -36,7 +36,7 @@ const WidgetItem = (props) => {
           <div className="platform-title">Twitter</div>
           <div className="platform-handle">@{item.handle}</div>
           <div className="platform-action">
-            <div className="btn btn-sm">Open</div>
+            <div className="btn btn-sm">Follow</div>
           </div>
         </Link>
       );
@@ -79,7 +79,7 @@ const WidgetItem = (props) => {
           <div className="platform-title">GitHub</div>
           <div className="platform-handle">{item.handle}</div>
           <div className="platform-action">
-            <div className="btn btn-sm">Open</div>
+            <div className="btn btn-sm">Follow</div>
           </div>
         </Link>
       );
@@ -101,7 +101,7 @@ const WidgetItem = (props) => {
           <div className="platform-title">Telegram</div>
           <div className="platform-handle">{item.handle}</div>
           <div className="platform-action">
-            <div className="btn btn-sm">Open</div>
+            <div className="btn btn-sm">Message</div>
           </div>
         </Link>
       );
