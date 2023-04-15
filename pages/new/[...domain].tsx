@@ -17,12 +17,11 @@ import { Loading } from "../../components/shared/Loading";
 import { formatText } from "../../utils/utils";
 import { NFTCollectionWidget } from "../../components/profile/NFTCollectionWidget";
 
-const NewProfile = ({ data, platform }) => {
+const NewProfile = ({ data, platform, pageTitle }) => {
   const [copied, setCopied] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [curAsset, setCurAsset] = useState(null);
   const [linksData, setLinkData] = useState([]);
-  const [pageTitle, setPageTitle] = useState("");
   const [dialogType, setDialogType] = useState(NFTDialogType.NFT);
 
   const onCopySuccess = () => {
@@ -42,13 +41,6 @@ const NewProfile = ({ data, platform }) => {
           };
         })
       );
-    }
-    if (data) {
-      setPageTitle(
-        data.identity == data.displayName
-          ? `${data.displayName}`
-          : `${data.displayName} (${data.identity})`
-      )
     }
   }, [data]);
 
@@ -235,7 +227,10 @@ export async function getServerSideProps({ params, res }) {
       `https://web3.bio/api/profile/${platform}/${params.domain}`
     );
     const data = await res.json();
-    return { props: { data, platform } };
+    const pageTitle = data.identity == data.displayName
+      ? `${data.displayName}`
+      : `${data.displayName} (${data.identity})`
+    return { props: { data, platform, pageTitle } };
   } catch (e) {
     return { props: { data: { error: e.message } } };
   }
