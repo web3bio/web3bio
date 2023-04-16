@@ -136,7 +136,7 @@
 
     &:focus,
     &:hover {
-      box-shadow: 0 .4rem 1.6rem -.4rem rgba(0, 0, 0, .075), 0 .1rem .2rem rgba(0, 0, 0, .01);
+      box-shadow: 0 .4rem 1.6rem -.4rem rgba($dark-color, .15), 0 .1rem .2rem rgba($dark-color, .01);
       z-index: 99;
 
       .platform-action {
@@ -161,6 +161,7 @@
         img {
           border-radius: .6rem;
           height: 2rem;
+          position: absolute;
           width: 2rem;
         }
       }
@@ -180,6 +181,12 @@
 
     .platform-action {
       margin-top: auto;
+
+      &.active {
+        .btn {
+          display: inline-flex;
+        }
+      }
 
       .btn {
         display: none;
@@ -349,7 +356,6 @@
           flex: 0 0 50%;
         }
       }
-
     }
   }
 }
@@ -419,12 +425,12 @@
     }
 
     .preview-image-bg {
-      background-size: 300%;
+      background-size: 400%;
       background-position: center;
       display: block;
       filter: blur(4rem);
       height: 100%;
-      opacity: .5;
+      opacity: .75;
       position: absolute;
       width: 100%;
     }

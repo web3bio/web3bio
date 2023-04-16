@@ -60,8 +60,8 @@ const NewProfile = ({ data, platform, pageTitle }) => {
       <NextSeo
         title={`${pageTitle} - Web3.bio`}
         description={data.description
-          ? `${data.description} - View ${pageTitle} Web3 identity ${SocialPlatformMapping(platform).label} profile info, description, addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on Web3.bio.` 
-          : `View ${pageTitle} Web3 identity ${SocialPlatformMapping(platform).label} profile info, description, addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on Web3.bio.`
+          ? `${data.description} - View ${pageTitle} Web3 identity ${SocialPlatformMapping(platform).label} profile info, description, addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.` 
+          : `View ${pageTitle} Web3 identity ${SocialPlatformMapping(platform).label} profile info, description, addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`
         }
         openGraph={{
           images: [
@@ -101,7 +101,7 @@ const NewProfile = ({ data, platform, pageTitle }) => {
               )}
             </div>
             <h1 className="text-assistive">{`${pageTitle} ${SocialPlatformMapping(platform).label} Web3 Profile`}</h1>
-            <h2 className="text-assistive">{`${pageTitle} Web3 identity profile info, description, addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on Web3.bio.`}</h2>
+            <h2 className="text-assistive">{`${pageTitle} Web3 identity profile info, description, addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`}</h2>
             <div className="profile-name">{data.displayName}</div>
             {data.identity == data.displayName ? (
               <div className="profile-identity">
@@ -207,7 +207,7 @@ const NewProfile = ({ data, platform, pageTitle }) => {
 export async function getServerSideProps({ params, res }) {
   res.setHeader(
     "Cache-Control",
-    `s-maxage=${60 * 60 * 8}, stale-while-revalidate=${60 * 10}`
+    `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${60 * 30}`
   );
   const platform = handleSearchPlatform(params.domain);
   try {

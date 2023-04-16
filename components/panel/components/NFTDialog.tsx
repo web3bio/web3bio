@@ -88,7 +88,7 @@ const NFTDialogRender = (props) => {
                     </div>
                   </div>
                 )}
-                
+
                 {poap.asset.event.description && (
                   <div className="panel-widget">
                     <div className="panel-widget-content">
@@ -105,7 +105,7 @@ const NFTDialogRender = (props) => {
                         <div className="trait-type">Event Start</div>
                         <div className="trait-value">{poap.asset.event.start_date}</div>
                       </div>
-                      {poap.asset.event.city || poap.asset.event.country && <div className="traits-card">
+                      {(poap.asset.event.city || poap.asset.event.country) && <div className="traits-card">
                         <div className="trait-type">Event Location</div>
                         <div className="trait-value">{poap.asset.event.city} {poap.asset.event.country}</div>
                       </div>}

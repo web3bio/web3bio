@@ -35,7 +35,7 @@ const WidgetItem = (props) => {
           <div className="platform-title">Twitter</div>
           <div className="platform-handle">@{item.handle}</div>
           <h3 className="text-assistive">{`${displayName} (${item.handle}) Twitter`}</h3>
-          <div className="platform-action">
+          <div className="platform-action active">
             <div className="btn btn-sm">Follow</div>
           </div>
         </Link>
@@ -54,7 +54,7 @@ const WidgetItem = (props) => {
           >
             <SVG src="../icons/icon-web.svg" width={24} height={24} />
             <img 
-              src={`https://www.google.com/s2/favicons?domain=${item.handle}&sz=128`} 
+              src={`https://icon.horse/icon/${item.handle}`} 
               alt={`${item.handle} Website Favicon`} 
               loading="lazy"
             />

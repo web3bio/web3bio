@@ -160,7 +160,7 @@ const resolveHandleFromURL = async (
       .status(200)
       .setHeader(
         "Cache-Control",
-        `public, s-maxage=${60 * 60 * 20}, stale-while-revalidate=${60 * 10}`
+        `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${60 * 30}`
       )
       .json(resJSON);
   } catch (error: any) {
