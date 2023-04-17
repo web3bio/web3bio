@@ -9,9 +9,9 @@ import _ from "lodash";
 
 const RenderAccount = (props) => {
   const { graphData, resultNeighbor, openProfile, graphTitle } = props;
-  const [renderData, setRenderData] = useState(resultNeighbor);
+  const [renderData, setRenderData] = useState([]);
   const [open, setOpen] = useState(false);
-  const [profileLoading, setProfileLoading] = useState(false);
+  const [profileLoading, setProfileLoading] = useState(true);
 
   useEffect(() => {
     if (
@@ -22,16 +22,15 @@ const RenderAccount = (props) => {
       return;
     const enhanceResultNeighbor = async () => {
       try {
-        setProfileLoading(true);
         for (let i = 0; i < resultNeighbor.length; i++) {
           const item = resultNeighbor[i];
           if (
             [
               PlatformType.twitter,
-              PlatformType.ethereum,
-              PlatformType.farcaster,
-              PlatformType.dotbit,
-              PlatformType.lens,
+              // PlatformType.ethereum,
+              // PlatformType.farcaster,
+              // PlatformType.dotbit,
+              // PlatformType.lens,
             ].includes(item.identity.platform)
           ) {
             item.identity = {
@@ -83,24 +82,17 @@ const RenderAccount = (props) => {
           )}
         </div>
         <div className="search-result-body">
-          {profileLoading ? (
-            <Loading
-              placeholder="Waiting from Web5.bio Profile API..."
-              styles={{ margin: 16 }}
-            />
-          ) : renderData.length > 0 ? (
-            <>
-              {renderData.map((avatar) => (
-                <ResultAccountItem
-                  onItemClick={openProfile}
-                  identity={avatar.identity}
-                  sources={avatar.sources}
-                  profile={avatar.identity.profile}
-                  key={avatar.identity.uuid}
-                />
-              ))}
-            </>
-          ) : null}
+          {renderData &&
+            renderData.map((avatar) => (
+              <ResultAccountItem
+                profileLoading={profileLoading}
+                onItemClick={openProfile}
+                identity={avatar.identity}
+                sources={avatar.sources}
+                profile={avatar.identity.profile}
+                key={avatar.identity.uuid}
+              />
+            ))}
         </div>
       </div>
       {open && (
