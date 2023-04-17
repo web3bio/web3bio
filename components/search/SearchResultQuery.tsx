@@ -22,7 +22,6 @@ export const SearchResultQuery = ({
     }
   );
   const [resultNeighbor, setResultNeighbor] = useState([]);
-  const [open, setOpen] = useState(false);
   const [graphData, setGraphData] = useState([]);
 
   useEffect(() => {
@@ -68,26 +67,16 @@ export const SearchResultQuery = ({
     }
   }, [data, searchPlatform, searchTerm, getQuery]);
 
-  if (loading) return <Loading retry={()=>window.location.reload()} />;
+  if (loading) return <Loading placeholder="Fetching information..." retry={() => window.location.reload()} />;
   if (error) return <Error retry={getQuery} text={error} />;
   if (!data?.identity) return <Empty />;
 
   return (
-    <>
-      <ResultAccount
-        openProfile={openProfile}
-        searchTerm={searchTerm}
-        resultNeighbor={resultNeighbor}
-        graphData={graphData}
-        openGraph={() => setOpen(true)}
-      />
-      {open && (
-        <ResultGraph
-          onClose={() => setOpen(false)}
-          data={graphData}
-          title={searchTerm}
-        />
-      )}
-    </>
+    <ResultAccount
+      openProfile={openProfile}
+      graphTitle={searchTerm}
+      resultNeighbor={resultNeighbor}
+      graphData={graphData}
+    />
   );
 };

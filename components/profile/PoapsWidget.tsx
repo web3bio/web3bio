@@ -31,9 +31,8 @@ const RenderPoapWidget = (props) => {
   }, [isLoading, isError]);
   if (!data || !data.length) return null;
   return (
-    <div className="profile-widget profile-poaps-widgets">
-      <div className="platform-title">Poaps</div>
-      <div className="platform-handle">{identity.displayName}</div>
+    <div className="profile-widget profile-widget-poap">
+      <div className="platform-title">🖼 POAP</div>
       <div className="widgets-collection-list">
         {getBoundaryRender() ||
           data.map((x, idx) => {
@@ -61,8 +60,7 @@ const RenderPoapWidget = (props) => {
                     src={resolveIPFS_URL(x.event.image_url)}
                     alt={x.event.name}
                   />
-                  <div className="collection-name">{x.event.start_date}</div>
-                  <div className="nft-name">{x.event.name}</div>
+                  {/* <div className="nft-name">{x.event.name}</div> */}
                 </div>
               </div>
             );

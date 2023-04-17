@@ -17,6 +17,7 @@ import {
   regexSpaceid,
 } from "./regexp";
 export const formatText = (string, length?) => {
+  if(!string) return ''
   const len = length ?? 12;
   if (string.length <= len) {
     return string;

@@ -46,7 +46,6 @@ const NFTDialogRender = (props) => {
     poap,
   } = props;
   const { data, isError } = useAsset(address, tokenId, network);
-  const resolveOpenseaLink = `https://opensea.io/assets/ethereum/${address}/${tokenId}`;
   if (isError) return <Error text={isError} />;
   if (type === "poap")
     return (
@@ -58,7 +57,7 @@ const NFTDialogRender = (props) => {
               <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
             </div>
             <div className="col-6 col-md-12">
-              <div className="preview-image">
+              <div className="preview-image preview-image-poap">
                 <NFTAssetPlayer
                   className={"img-container"}
                   type={"image/png"}
@@ -66,24 +65,30 @@ const NFTDialogRender = (props) => {
                   contentUrl={poap.contentURL}
                   alt={poap.asset.event.name}
                 />
+                <div className="preview-image-bg" style={{ backgroundImage: "url(" + poap.mediaURL + ")" }}></div>
               </div>
             </div>
             <div className="col-6 col-md-12">
               <div className="preview-content">
                 <div className="nft-header-collection collection-title">
-                  <NFTAssetPlayer
-                    type={"image/png"}
-                    className="collection-logo"
-                    src={asset.collection.url}
-                    alt={asset.collection.name}
-                  />
                   <div className="collection-name text-ellipsis">
-                    {asset.collection.name}
+                    POAP
                   </div>
                 </div>
                 <div className="nft-header-name">
-                  {poap.asset.event.name || `#${asset.tokenId}`}
+                  {poap.asset.event.name}
                 </div>
+
+                {poap.asset.event.event_url && (
+                  <div className="panel-widget">
+                    <div className="panel-widget-content">
+                      <a href={poap.asset.event.event_url} target="_blank" className="btn btn-sm">
+                        Website
+                      </a>
+                    </div>
+                  </div>
+                )}
+
                 {poap.asset.event.description && (
                   <div className="panel-widget">
                     <div className="panel-widget-content">
@@ -91,6 +96,26 @@ const NFTDialogRender = (props) => {
                     </div>
                   </div>
                 )}
+                
+                <div className="panel-widget">
+                  <div className="panel-widget-title">Attributes</div>
+                  <div className="panel-widget-content">
+                    <div className="traits-cards">
+                      <div className="traits-card">
+                        <div className="trait-type">Event Start</div>
+                        <div className="trait-value">{poap.asset.event.start_date}</div>
+                      </div>
+                      {(poap.asset.event.city || poap.asset.event.country) && <div className="traits-card">
+                        <div className="trait-type">Event Location</div>
+                        <div className="trait-value">{poap.asset.event.city} {poap.asset.event.country}</div>
+                      </div>}
+                      <div className="traits-card">
+                        <div className="trait-type">POAP Supply</div>
+                        <div className="trait-value">{poap.asset.event.supply}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

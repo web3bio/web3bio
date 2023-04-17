@@ -9,7 +9,7 @@ import {
   NFTDialog,
   NFTDialogType,
 } from "../../components/panel/components/NFTDialog";
-import { PlatformType } from "../../utils/platform";
+import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import { Error } from "../../components/shared/Error";
 import Avatar from "boring-avatars";
 import { handleSearchPlatform } from "../../utils/utils";
@@ -17,7 +17,7 @@ import { Loading } from "../../components/shared/Loading";
 import { formatText } from "../../utils/utils";
 import { NFTCollectionWidget } from "../../components/profile/NFTCollectionWidget";
 
-const NewProfile = ({ data }) => {
+const NewProfile = ({ data, platform, pageTitle }) => {
   const [copied, setCopied] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [curAsset, setCurAsset] = useState(null);
@@ -58,12 +58,11 @@ const NewProfile = ({ data }) => {
   return (
     <div className="web3-profile container grid-xl">
       <NextSeo
-        title={
-          data.identity == data.displayName
-            ? `${data.displayName} - Web3.bio`
-            : `${data.displayName} (${data.identity}) - Web3.bio`
+        title={`${pageTitle} - Web3.bio`}
+        description={data.description
+          ? `${data.description} - View ${pageTitle} Web3 identity ${SocialPlatformMapping(platform).label} profile info, description, addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.` 
+          : `View ${pageTitle} Web3 identity ${SocialPlatformMapping(platform).label} profile info, description, addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`
         }
-        description={data.description}
         openGraph={{
           images: [
             {
@@ -83,7 +82,7 @@ const NewProfile = ({ data }) => {
           <div className="web3-profile-base">
             <div className="profile-avatar">
               {data.avatar ? (
-                <img src={data.avatar} className="avatar" />
+                <img src={data.avatar} className="avatar" loading="lazy" alt={`${pageTitle} Avatar / Profile Photo`}/>
               ) : (
                 <Avatar
                   size={180}
@@ -101,7 +100,9 @@ const NewProfile = ({ data }) => {
                 />
               )}
             </div>
-            <h1 className="profile-name">{data.displayName}</h1>
+            <h1 className="text-assistive">{`${pageTitle} ${SocialPlatformMapping(platform).label} Web3 Profile`}</h1>
+            <h2 className="text-assistive">{`${pageTitle} Web3 identity profile info, description, addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`}</h2>
+            <div className="profile-name">{data.displayName}</div>
             {data.identity == data.displayName ? (
               <div className="profile-identity">
                 {formatText(data.owner)}
@@ -147,7 +148,7 @@ const NewProfile = ({ data }) => {
         <div className="column col-8 col-md-12">
           <div className="web3-section-widgets">
             {linksData.map((item, idx) => {
-              return <RenderWidgetItem key={idx} item={item} />;
+              return <RenderWidgetItem key={idx} displayName={pageTitle} item={item} />;
             })}
           </div>
           <div
@@ -206,7 +207,7 @@ const NewProfile = ({ data }) => {
 export async function getServerSideProps({ params, res }) {
   res.setHeader(
     "Cache-Control",
-    `s-maxage=${60 * 60 * 8}, stale-while-revalidate=${60 * 10}`
+    `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${60 * 30}`
   );
   const platform = handleSearchPlatform(params.domain);
   try {
@@ -226,7 +227,10 @@ export async function getServerSideProps({ params, res }) {
       `https://web3.bio/api/profile/${platform}/${params.domain}`
     );
     const data = await res.json();
-    return { props: { data } };
+    const pageTitle = data.identity == data.displayName
+      ? `${data.displayName}`
+      : `${data.displayName} (${data.identity})`
+    return { props: { data, platform, pageTitle } };
   } catch (e) {
     return { props: { data: { error: e.message } } };
   }

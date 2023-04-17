@@ -80,7 +80,7 @@ const resolveNameFromDotbit = async (
       .status(200)
       .setHeader(
         "Cache-Control",
-        `s-maxage=${60 * 60 * 8}, stale-while-revalidate=${60 * 10}`
+        `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${60 * 30}`
       )
       .json(resJSON);
   } catch (error: any) {

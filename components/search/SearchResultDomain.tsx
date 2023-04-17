@@ -7,7 +7,6 @@ import { Error } from "../shared/Error";
 import { Loading } from "../shared/Loading";
 import { ResultAccount } from "./ResultAccount";
 const RenderResultDomain = ({ searchTerm, searchPlatform, openProfile }) => {
-  const [open, setOpen] = useState(false);
   const [getQuery, { loading, error, data }] = useLazyQuery(
     GET_PROFILES_DOMAIN,
     {
@@ -54,7 +53,14 @@ const RenderResultDomain = ({ searchTerm, searchPlatform, openProfile }) => {
       )
     );
   }, [data, searchTerm, searchPlatform, getQuery]);
-  if (loading) return <Loading retry={() => window.location.reload()} />;
+
+  if (loading)
+    return (
+      <Loading
+        placeholder="Fetching information..."
+        retry={() => window.location.reload()}
+      />
+    );
   if (error) return <Error retry={getQuery} text={error} />;
   if (!data?.domain) return <Empty />;
   const graphData =
@@ -69,23 +75,14 @@ const RenderResultDomain = ({ searchTerm, searchPlatform, openProfile }) => {
           },
         ]
       : [];
+
   return (
-    <>
-      <ResultAccount
-        searchTerm={searchTerm}
-        resultNeighbor={resultNeighbor}
-        openProfile={openProfile}
-        graphData={graphData}
-        openGraph={() => setOpen(true)}
-      />
-      {open && (
-        <ResultGraph
-          onClose={() => setOpen(false)}
-          data={graphData}
-          title={searchTerm}
-        />
-      )}
-    </>
+    <ResultAccount
+      resultNeighbor={resultNeighbor}
+      openProfile={openProfile}
+      graphData={graphData}
+      graphTitle={searchTerm}
+    />
   );
 };
 

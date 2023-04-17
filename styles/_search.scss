@@ -104,6 +104,11 @@
   
     .loading-container {
       margin-top: 4rem;
+      .loading-subtitle{
+        width: 100%;
+        text-align: center;
+        font-size: .6rem;
+      }
     }
   }
 
@@ -188,7 +193,19 @@
         display: flex;
         flex: 0 0 1.6rem;
         justify-content: center;
-        margin-right: .4rem;
+        position: relative;
+
+        .avatar-img {
+          border-radius: .5rem;
+
+          & + .icon {
+            bottom: -.6rem;
+            position: absolute;
+            right: -.6rem;
+            transform: scale(.5);
+            z-index: 1;
+          }
+        }
       }
 
       .social {
@@ -196,6 +213,7 @@
       }
 
       .title {
+        margin-left: .5rem;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -234,22 +252,29 @@
     }
 
     &.lens {
-      .bg-lens {
+      .icon {
         background: #BDFC5A;
         color: #204F24;
       }
     }
 
     &.farcaster {
-      .bg-farcaster {
+      .icon {
         background: #8a63d2;
         color: #fff;
       }
     }
 
     &.spaceid {
-      .bg-spaceid {
+      .icon {
         background: #71EBAA;
+        color: #fff;
+      }
+    }
+
+    &.twitter {
+      .icon {
+        background: #4A99E9;
         color: #fff;
       }
     }
@@ -320,13 +345,13 @@
     color: $dark-color;
     font-size: .7rem;
     height: 1.6rem;
-    margin-right: .2rem;
     padding: .3rem;
     width: 1.6rem;
   }
 
   .content {
     flex: 1;
+    margin-left: .5rem;
   }
 
   .content-title {
