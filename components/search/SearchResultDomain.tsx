@@ -57,7 +57,7 @@ const RenderResultDomain = ({ searchTerm, searchPlatform, openProfile }) => {
   if (loading)
     return (
       <Loading
-        placeholder="Waiting from Relation Service..."
+        placeholder="Fetching information..."
         retry={() => window.location.reload()}
       />
     );

@@ -203,7 +203,7 @@
             position: absolute;
             right: -.6rem;
             transform: scale(.5);
-            z-index: 99;
+            z-index: 1;
           }
         }
       }
@@ -213,6 +213,7 @@
       }
 
       .title {
+        margin-left: .5rem;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -350,7 +351,7 @@
 
   .content {
     flex: 1;
-    margin-left: .4rem;
+    margin-left: .5rem;
   }
 
   .content-title {
