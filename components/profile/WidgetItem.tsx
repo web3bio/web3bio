@@ -5,7 +5,6 @@ import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { PlatformType } from "../../utils/platform";
 import { SocialPlatformMapping } from "../../utils/platform";
-import { formatText } from "../../utils/utils";
 
 const WidgetItem = (props) => {
   const onCopySuccess = () => {
@@ -14,7 +13,7 @@ const WidgetItem = (props) => {
       setIsCopied(false);
     }, 1500);
   };
-  const {item} = props;
+  const {item, displayName} = props;
   const [isCopied, setIsCopied] = useState(false);
 
   switch (item.platform) {
@@ -23,7 +22,7 @@ const WidgetItem = (props) => {
         <Link
           href={item.link}
           className={`profile-widget ${item.platform}`}
-          title={`Open ${item.handle} Twitter`}
+          title={`Open ${displayName} (${item.handle}) Twitter`}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -35,7 +34,8 @@ const WidgetItem = (props) => {
           </div>
           <div className="platform-title">Twitter</div>
           <div className="platform-handle">@{item.handle}</div>
-          <div className="platform-action">
+          <h3 className="text-assistive">{`${displayName} (${item.handle}) Twitter`}</h3>
+          <div className="platform-action active">
             <div className="btn btn-sm">Follow</div>
           </div>
         </Link>
@@ -45,17 +45,23 @@ const WidgetItem = (props) => {
         <Link
           href={item.link}
           className={`profile-widget ${item.platform}`}
-          title={`Open ${item.handle} Website`}
+          title={`Open ${displayName} (${item.handle}) Website`}
           target="_blank"
           rel="noopener noreferrer"
         >
           <div 
-            className="platform-icon bg-pride"
+            className="platform-icon website bg-pride"
           >
             <SVG src="../icons/icon-web.svg" width={24} height={24} />
+            <img 
+              src={`https://icon.horse/icon/${item.handle}`} 
+              alt={`${item.handle} Website Favicon`} 
+              loading="lazy"
+            />
           </div>
           <div className="platform-title">Website</div>
           <div className="platform-handle">{item.handle}</div>
+          <h3 className="text-assistive">{`${displayName} (${item.handle}) Website`}</h3>
           <div className="platform-action">
             <div className="btn btn-sm">Open</div>
           </div>
@@ -78,6 +84,7 @@ const WidgetItem = (props) => {
           </div>
           <div className="platform-title">GitHub</div>
           <div className="platform-handle">{item.handle}</div>
+          <h3 className="text-assistive">{`${displayName} (${item.handle}) GitHub`}</h3>
           <div className="platform-action">
             <div className="btn btn-sm">Follow</div>
           </div>
@@ -100,6 +107,7 @@ const WidgetItem = (props) => {
           </div>
           <div className="platform-title">Telegram</div>
           <div className="platform-handle">{item.handle}</div>
+          <h3 className="text-assistive">{`${displayName} (${item.handle}) Telegram`}</h3>
           <div className="platform-action">
             <div className="btn btn-sm">Message</div>
           </div>
@@ -121,6 +129,7 @@ const WidgetItem = (props) => {
           </div>
           <div className="platform-title">Discord</div>
           <div className="platform-handle">{item.handle}</div>
+          <h3 className="text-assistive">{`${displayName} (${item.handle}) Discord`}</h3>
           <div className="platform-action">
             <div className="btn btn-sm">
               Copy
@@ -146,6 +155,7 @@ const WidgetItem = (props) => {
           </div>
           <div className="platform-title">Reddit</div>
           <div className="platform-handle">{item.handle}</div>
+          <h3 className="text-assistive">{`${displayName} (${item.handle}) Reddit`}</h3>
           <div className="platform-action">
             <div className="btn btn-sm">Open</div>
           </div>
@@ -168,6 +178,7 @@ const WidgetItem = (props) => {
           </div>
           <div className="platform-title">LinkedIn</div>
           <div className="platform-handle">{item.handle}</div>
+          <h3 className="text-assistive">{`${displayName} (${item.handle}) LinkedIn`}</h3>
           <div className="platform-action">
             <div className="btn btn-sm">Open</div>
           </div>
@@ -190,6 +201,7 @@ const WidgetItem = (props) => {
           </div>
           <div className="platform-title">Farcaster</div>
           <div className="platform-handle">{item.handle}</div>
+          <h3 className="text-assistive">{`${displayName} (${item.handle}) Farcaster`}</h3>
           <div className="platform-action">
             <div className="btn btn-sm">Open</div>
           </div>

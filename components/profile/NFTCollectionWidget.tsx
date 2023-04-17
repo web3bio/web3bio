@@ -44,8 +44,8 @@ const RenderNFTCollectionWidget = (props) => {
   if (!data || !data.data) return null;
   return (
     <>
-      <div className="web3-section-title">🖼 NFT Collections</div>
-      <div className="profile-widget profile-collection-widgets">
+      
+      <div className="profile-widget profile-widget-nft">
         <ExpandController
           expand={detailMode}
           onToggle={() => setDetailMode(!detailMode)}
@@ -58,7 +58,7 @@ const RenderNFTCollectionWidget = (props) => {
         >
           <SVG src="/icons/icon-view.svg" width={24} height={24} />
         </div>
-        <div className="platform-title">Collections</div>
+        <div className="platform-title">🖼 NFT Collections</div>
         {(detailMode && (
           <NFTPanel
             onShowDetail={onShowDetail}

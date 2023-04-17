@@ -93,7 +93,7 @@ const resolveHandleFromURL = async (
         const _linkRes = {};
         for (let i = 0; i < linksToFetch.length; i++) {
           const recordText = linksToFetch[i];
-          
+
           const key =
             _.findKey(platfomData, (o) => {
               return o.ensText.includes(recordText);
@@ -103,9 +103,7 @@ const resolveHandleFromURL = async (
           );
           if (handle) {
             const resolvedKey =
-              key === PlatformType.url
-                ? PlatformType.website
-                : key;
+              key === PlatformType.url ? PlatformType.website : key;
             _linkRes[resolvedKey] = {
               link: getSocialMediaLink(handle, resolvedKey),
               handle: handle,
@@ -120,9 +118,7 @@ const resolveHandleFromURL = async (
       const cryptoRecrods = gtext[0].resolver.coinTypes;
       const cryptoRecordsToFetch = cryptoRecrods.reduce((pre, cur) => {
         if (
-          ![CoinType.btc, CoinType.eth].includes(
-            Number(cur)
-          ) &&
+          ![CoinType.btc, CoinType.eth].includes(Number(cur)) &&
           _.findKey(CoinType, (o) => o == cur)
         )
           pre.push(cur);
@@ -159,12 +155,12 @@ const resolveHandleFromURL = async (
       links: LINKRES,
       addresses: CRYPTORES,
     };
-    
+
     res
       .status(200)
       .setHeader(
         "Cache-Control",
-        `s-maxage=${60 * 60 * 8}, stale-while-revalidate=${60 * 10}`
+        `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${60 * 30}`
       )
       .json(resJSON);
   } catch (error: any) {

@@ -64,8 +64,8 @@ const resolveGraphData = (source) => {
       label: formatText(to.displayName ?? to.identity),
       platform: to.platform,
       source: x.source,
-      displayName: to.displayName,
-      identity: to.identity,
+      displayName: to.profile?.displayName || to.displayName,
+      identity: to.profile?.owner || to.identity,
       isIdentity: true,
     });
     nodes.push({
@@ -73,8 +73,8 @@ const resolveGraphData = (source) => {
       label: formatText(from.displayName ?? from.identity),
       platform: from.platform,
       source: x.source,
-      displayName: from.displayName,
-      identity: from.identity,
+      displayName: from.profile?.displayName || from.displayName,
+      identity: from.profile?.owner || from.identity,
       isIdentity: true,
     });
     edges.push({
@@ -150,6 +150,18 @@ const processNodesEdges = (nodes, edges) => {
           zIndex: 999,
         },
       };
+      if (node.displayName) {
+        node.label = `${formatText(node.displayName)}`;
+        if (node.displayName !== node.identity) {
+          node.label += `\n${formatText(
+            node.profile?.identity || node.identity
+          )}`;
+          node.labelLineNum = 1.5;
+        }
+      } else {
+        node.label = formatText(node.identity);
+        node.labelLineNum = 1;
+      }
     } else {
       // ENS
       node.size = 24;
@@ -171,16 +183,6 @@ const processNodesEdges = (nodes, edges) => {
       };
     }
     node.type = "identity-node";
-    node.label = formatText(node.label);
-    if (
-      node.platform &&
-      node.platform.toLowerCase() === PlatformType.ethereum
-    ) {
-      node.label = `${node.displayName || formatText(node.identity)} ${
-        node.displayName ? `\n${formatText(node.identity)}` : ""
-      }`;
-      node.labelLineNum = node.displayName ? 1.5 : 1;
-    }
   });
   edges.forEach((edge) => {
     if (edge.isIdentity) {
