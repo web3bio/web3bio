@@ -65,7 +65,7 @@ const resolveGraphData = (source) => {
       platform: to.platform,
       source: x.source,
       displayName: to.profile?.displayName || to.displayName,
-      identity: to.identity,
+      identity: to.profile?.owner || to.identity,
       isIdentity: true,
     });
     nodes.push({
@@ -74,7 +74,7 @@ const resolveGraphData = (source) => {
       platform: from.platform,
       source: x.source,
       displayName: from.profile?.displayName || from.displayName,
-      identity: from.identity,
+      identity: from.profile?.owner || from.identity,
       isIdentity: true,
     });
     edges.push({
@@ -171,15 +171,19 @@ const processNodesEdges = (nodes, edges) => {
       };
     }
     node.type = "identity-node";
-    node.label = formatText(node.label);
-    if (
-      node.platform &&
-      node.platform.toLowerCase() === PlatformType.ethereum
-    ) {
-      node.label = `${node.displayName || formatText(node.identity)} ${
-        node.displayName ? `\n${formatText(node.identity)}` : ""
-      }`;
-      node.labelLineNum = node.displayName ? 1.5 : 1;
+    if (node.platform && node.isIdentity) {
+      if (node.diplayName !== "") {
+        node.label = `${formatText(node.displayName)}`;
+        if (node.displayName !== node.identity) {
+          node.label += `\n${formatText(
+            node.profile?.identity || node.identity
+          )}`;
+          node.labelLineNum = 1.5;
+        }
+      } else {
+        node.label = formatText(node.identity);
+        node.labelLineNum = 1;
+      }
     }
   });
   edges.forEach((edge) => {

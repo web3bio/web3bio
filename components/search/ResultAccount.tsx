@@ -3,7 +3,6 @@ import SVG from "react-inlinesvg";
 import { ResultAccountItem } from "./ResultAccountItem";
 import { PlatformType } from "../../utils/platform";
 import { fetchProfile } from "../../api/fetchProfile";
-import { Loading } from "../shared/Loading";
 import { ResultGraph } from "../graph/ResultGraph";
 import _ from "lodash";
 
@@ -44,6 +43,9 @@ const RenderAccount = (props) => {
   }, [resultNeighbor.length, resultNeighbor, graphTitle]);
 
   const resolvedGraphData = graphData.reduce((pre, cur) => {
+    if (cur.to.platform === PlatformType.lens) {
+      console.log(cur.to);
+    }
     pre.push({
       ...cur,
       to: {
@@ -90,6 +92,7 @@ const RenderAccount = (props) => {
       </div>
       {open && (
         <ResultGraph
+          profileLoading={profileLoading}
           onClose={() => setOpen(false)}
           data={resolvedGraphData}
           title={graphTitle}
