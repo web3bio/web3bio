@@ -43,9 +43,6 @@ const RenderAccount = (props) => {
   }, [resultNeighbor.length, resultNeighbor, graphTitle]);
 
   const resolvedGraphData = graphData.reduce((pre, cur) => {
-    if (cur.to.platform === PlatformType.lens) {
-      console.log(cur.to);
-    }
     pre.push({
       ...cur,
       to: {

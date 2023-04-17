@@ -150,6 +150,18 @@ const processNodesEdges = (nodes, edges) => {
           zIndex: 999,
         },
       };
+      if (node.displayName) {
+        node.label = `${formatText(node.displayName)}`;
+        if (node.displayName !== node.identity) {
+          node.label += `\n${formatText(
+            node.profile?.identity || node.identity
+          )}`;
+          node.labelLineNum = 1.5;
+        }
+      } else {
+        node.label = formatText(node.identity);
+        node.labelLineNum = 1;
+      }
     } else {
       // ENS
       node.size = 24;
@@ -171,20 +183,6 @@ const processNodesEdges = (nodes, edges) => {
       };
     }
     node.type = "identity-node";
-    if (node.platform && node.isIdentity) {
-      if (node.diplayName !== "") {
-        node.label = `${formatText(node.displayName)}`;
-        if (node.displayName !== node.identity) {
-          node.label += `\n${formatText(
-            node.profile?.identity || node.identity
-          )}`;
-          node.labelLineNum = 1.5;
-        }
-      } else {
-        node.label = formatText(node.identity);
-        node.labelLineNum = 1;
-      }
-    }
   });
   edges.forEach((edge) => {
     if (edge.isIdentity) {
