@@ -101,13 +101,12 @@ const RenderAccountItem = (props) => {
         <div className="social-item lens">
           <div className="social-main">
             <div className="social">
-              <Avatar
-                src={profile?.avatar}
-                width={20}
-                height={20}
-                fallbackImg="icons/icon-lens.svg"
-                fallbackClassName="avatar bg-lens"
-              />
+              <div className="avatar">
+                {profile?.avatar && <img src={profile?.avatar} className="avatar-img" />}
+                <div className="icon">
+                  <SVG src="icons/icon-lens.svg" width={20} height={20} />
+                </div>
+              </div>
               <div className="content">
                 <div className="content-title text-bold">{displayName}</div>
                 <div className="content-subtitle text-gray">
@@ -152,14 +151,9 @@ const RenderAccountItem = (props) => {
               }}
               className="social"
             >
-              <Avatar
-                src={profile?.avatar}
-                width={20}
-                height={20}
-                fallbackImg="icons/icon-dotbit.svg"
-                fallbackClassName="icon"
-              />
-
+              <div className="icon">
+                <SVG src="icons/icon-dotbit.svg" width={20} height={20} />
+              </div>
               <div className="title">{displayName}</div>
             </Link>
           </div>
@@ -219,13 +213,12 @@ const RenderAccountItem = (props) => {
         <div className="social-item farcaster">
           <div className="social-main">
             <div className="social">
-              <Avatar
-                src={profile?.avatar}
-                width={20}
-                height={20}
-                fallbackClassName="avatar bg-farcaster"
-                fallbackImg="icons/icon-farcaster.svg"
-              />
+              <div className="avatar">
+                {profile?.avatar && <img src={profile?.avatar} className="avatar-img" />}
+                <div className="icon">
+                  <SVG src="icons/icon-farcaster.svg" width={20} height={20} />
+                </div>
+              </div>
               <div className="content">
                 <div className="content-title text-bold">
                   {displayName}
@@ -264,8 +257,10 @@ const RenderAccountItem = (props) => {
         <div className="social-item spaceid">
           <div className="social-main">
             <div className="social">
-              <figure className="avatar bg-spaceid">
-                <SVG src="icons/icon-spaceid.svg" width={20} height={20} />
+              <figure className="avatar">
+                <div className="icon">
+                  <SVG src="icons/icon-spaceid.svg" width={20} height={20} />
+                </div>
               </figure>
               <div className="content">
                 <div className="content-title text-bold">
@@ -293,30 +288,21 @@ const RenderAccountItem = (props) => {
       return (
         <div className="social-item twitter">
           <div className="social-main">
-            <Link
-              href={{
-                pathname: "/",
-                query: { s: identity.identity },
-              }}
-              className="social"
-            >
-              <Avatar
-                src={profile?.avatar}
-                width={20}
-                height={20}
-                fallbackImg="icons/icon-twitter.svg"
-                fallbackClassName="icon"
-              />
+            <div className="social">
+              <div className="avatar">
+                {profile?.avatar && <img src={profile?.avatar} className="avatar-img" />}
+                <div className="icon">
+                  <SVG src="icons/icon-twitter.svg" width={20} height={20} />
+                </div>
+              </div>
               <div className="content">
                 <div className="content-title text-bold">{displayName}</div>
                 <div className="content-subtitle text-gray">
-                  <div className="address">
-                    {profile?.identity || identity.identity}
-                  </div>
+                  <div className="address">{identity.identity}</div>
                   <Clipboard
                     component="div"
                     className="action"
-                    data-clipboard-text={profile?.identity || identity.identity}
+                    data-clipboard-text={identity.identity}
                     onSuccess={onCopySuccess}
                   >
                     <SVG src="icons/icon-copy.svg" width={20} height={20} />
@@ -324,7 +310,7 @@ const RenderAccountItem = (props) => {
                   </Clipboard>
                 </div>
               </div>
-            </Link>
+            </div>
           </div>
           <div className="social-actions actions">
             <a

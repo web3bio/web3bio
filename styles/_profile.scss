@@ -195,7 +195,7 @@
     }
   }
 
-  .profile-collection-widgets {
+  .profile-widget-nft {
     position: relative;
     height: auto;
     max-height: 30rem;
@@ -334,11 +334,11 @@
     }
   }
 
-  .profile-poaps-widgets {
+  .profile-widget-poap {
     min-width: 50%;
-    max-width: 50%;
     height: auto;
     max-height: 30rem;
+    width: 100%;
 
     .widgets-collection-list {
       display: flex;
