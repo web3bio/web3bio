@@ -9,17 +9,11 @@ import _ from "lodash";
 
 const RenderAccount = (props) => {
   const { graphData, resultNeighbor, openProfile, graphTitle } = props;
-  const [renderData, setRenderData] = useState([]);
   const [open, setOpen] = useState(false);
   const [profileLoading, setProfileLoading] = useState(true);
 
   useEffect(() => {
-    if (
-      !resultNeighbor ||
-      !resultNeighbor.length ||
-      resultNeighbor.length === renderData.length
-    )
-      return;
+    if (!resultNeighbor || !resultNeighbor.length) return;
     const enhanceResultNeighbor = async () => {
       try {
         for (let i = 0; i < resultNeighbor.length; i++) {
@@ -28,9 +22,9 @@ const RenderAccount = (props) => {
             [
               PlatformType.twitter,
               // PlatformType.ethereum,
-              // PlatformType.farcaster,
+              PlatformType.farcaster,
               // PlatformType.dotbit,
-              // PlatformType.lens,
+              PlatformType.lens,
             ].includes(item.identity.platform)
           ) {
             item.identity = {
@@ -42,13 +36,12 @@ const RenderAccount = (props) => {
       } catch (e) {
         console.error("search Item fetch Profile", e);
       } finally {
-        setRenderData([...resultNeighbor]);
         setProfileLoading(false);
       }
     };
 
     enhanceResultNeighbor();
-  }, [resultNeighbor.length, resultNeighbor, graphTitle, renderData]);
+  }, [resultNeighbor.length, resultNeighbor, graphTitle]);
 
   const resolvedGraphData = graphData.reduce((pre, cur) => {
     pre.push({
@@ -82,8 +75,8 @@ const RenderAccount = (props) => {
           )}
         </div>
         <div className="search-result-body">
-          {renderData &&
-            renderData.map((avatar) => (
+          {resultNeighbor &&
+            resultNeighbor.map((avatar) => (
               <ResultAccountItem
                 profileLoading={profileLoading}
                 onItemClick={openProfile}
