@@ -6,14 +6,17 @@ import {
   resolveMediaURL,
 } from "../../../../utils/utils";
 import _ from "lodash";
-import { HandleResponseData } from "../../../../utils/api";
+import {
+  HandleNotFoundResponseData,
+  HandleResponseData,
+} from "../../../../utils/api";
 import { createInstance } from "dotbit";
 import { BitPluginAvatar } from "@dotbit/plugin-avatar";
 import { PlatformType, platfomData } from "../../../../utils/platform";
 
 const resolveNameFromDotbit = async (
   handle: string,
-  res: NextApiResponse<HandleResponseData>
+  res: NextApiResponse<HandleResponseData | HandleNotFoundResponseData>
 ) => {
   try {
     const dotbit = createInstance();
@@ -80,22 +83,15 @@ const resolveNameFromDotbit = async (
       .status(200)
       .setHeader(
         "Cache-Control",
-        `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${60 * 30}`
+        `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${
+          60 * 30
+        }`
       )
       .json(resJSON);
-  } catch (error: any) {
+  } catch (error) {
     res.status(500).json({
-      owner: null,
       identity: handle,
-      displayName: null,
-      avatar: null,
-      email: null,
-      description: null,
-      location: null,
-      header: null,
-      links: {},
-      addresses: {},
-      error: error.message,
+      error: error.code === 20006 ? "No results" : error.message,
     });
   }
 };

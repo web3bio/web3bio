@@ -9,7 +9,11 @@ import {
 import client from "../../../../utils/apollo";
 import _ from "lodash";
 import { GET_PROFILE_LENS } from "../../../../utils/lens";
-import { HandleResponseData } from "../../../../utils/api";
+import {
+  HandleNotFoundResponseData,
+  HandleResponseData,
+  errorHandle,
+} from "../../../../utils/api";
 import { PlatformType, platfomData } from "../../../../utils/platform";
 
 export const getLensProfile = async (handle: string) => {
@@ -28,10 +32,11 @@ export const getLensProfile = async (handle: string) => {
 
 const resolveNameFromLens = async (
   handle: string,
-  res: NextApiResponse<HandleResponseData>
+  res: NextApiResponse<HandleResponseData | HandleNotFoundResponseData>
 ) => {
   try {
     const response = await getLensProfile(handle);
+    if (!response) return errorHandle(handle, res);
     const pureHandle = handle.replaceAll(".lens", "");
     let LINKRES = {};
     let CRYPTORES = {
@@ -92,21 +97,14 @@ const resolveNameFromLens = async (
       .status(200)
       .setHeader(
         "Cache-Control",
-        `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${60 * 30}`
+        `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${
+          60 * 30
+        }`
       )
       .json(resJSON);
   } catch (error: any) {
     res.status(500).json({
-      owner: null,
       identity: handle,
-      displayName: null,
-      avatar: null,
-      email: null,
-      description: null,
-      location: null,
-      header: null,
-      links: {},
-      addresses: {},
       error: error.message,
     });
   }

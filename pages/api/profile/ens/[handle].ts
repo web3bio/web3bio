@@ -1,7 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { StaticJsonRpcProvider } from "@ethersproject/providers";
 import { getAddress, isAddress } from "@ethersproject/address";
-import { CoinType, HandleResponseData } from "../../../../utils/api";
+import {
+  CoinType,
+  HandleNotFoundResponseData,
+  HandleResponseData,
+  errorHandle,
+} from "../../../../utils/api";
 import {
   firstParam,
   getSocialMediaLink,
@@ -57,7 +62,7 @@ const resolve = (from: string, to: string) => {
 
 const resolveHandleFromURL = async (
   handle: string,
-  res: NextApiResponse<HandleResponseData>
+  res: NextApiResponse<HandleResponseData | HandleNotFoundResponseData>
 ) => {
   try {
     let address = "";
@@ -77,6 +82,7 @@ const resolveHandleFromURL = async (
 
     const gtext = await getENSTexts(ensDomain);
     const resolver = await provider.getResolver(ensDomain);
+    if (!resolver) return errorHandle(handle, res);
     let LINKRES = {};
     let CRYPTORES = {
       eth: address,
@@ -160,21 +166,14 @@ const resolveHandleFromURL = async (
       .status(200)
       .setHeader(
         "Cache-Control",
-        `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${60 * 30}`
+        `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${
+          60 * 30
+        }`
       )
       .json(resJSON);
-  } catch (error: any) {
+  } catch (error) {
     res.status(500).json({
-      owner: isAddress(handle) ? handle : null,
       identity: isAddress(handle) ? handle : null,
-      displayName: null,
-      avatar: null,
-      email: null,
-      description: null,
-      location: null,
-      header: null,
-      links: {},
-      addresses: {},
       error: error.message,
     });
   }

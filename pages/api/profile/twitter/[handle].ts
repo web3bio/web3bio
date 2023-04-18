@@ -5,7 +5,11 @@ import {
   getSocialMediaLink,
   resolveHandle,
 } from "../../../../utils/utils";
-import { HandleResponseData } from "../../../../utils/api";
+import {
+  HandleNotFoundResponseData,
+  HandleResponseData,
+  errorHandle,
+} from "../../../../utils/api";
 import { PlatformType } from "../../../../utils/platform";
 
 const originBase =
@@ -16,6 +20,7 @@ const FetchFromOrigin = async (value: string) => {
   const res = await fetch(
     originBase + `twitter-identity?screenName=${value}`
   ).then((res) => res.json());
+  console.log(res, "res");
   return res;
 };
 
@@ -25,10 +30,11 @@ const transformImageURLSize = (url: string, size: string = "400x400") => {
 };
 const resolveTwitterHandle = async (
   handle: string,
-  res: NextApiResponse<HandleResponseData>
+  res: NextApiResponse<HandleResponseData | HandleNotFoundResponseData>
 ) => {
   try {
     const response = await FetchFromOrigin(handle);
+    if (!response.id) return errorHandle(handle, res);
     const urlHandle = resolveHandle(
       response.entities.url
         ? response.entities.url.urls[0].expanded_url
@@ -66,26 +72,14 @@ const resolveTwitterHandle = async (
       .status(200)
       .setHeader(
         "Cache-Control",
-        `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${60 * 30}`
+        `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${
+          60 * 30
+        }`
       )
       .json(resJSON);
   } catch (e: any) {
     res.status(500).json({
-      owner: null,
       identity: handle,
-      displayName: null,
-      avatar: null,
-      email: null,
-      description: null,
-      location: null,
-      header: null,
-      links: {
-        [PlatformType.twitter]: {
-          link: getSocialMediaLink(handle, PlatformType.twitter),
-          handle,
-        },
-      },
-      addresses: null,
       error: e.message,
     });
   }
