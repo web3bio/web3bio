@@ -95,9 +95,8 @@ export default async function handler(
   res: NextApiResponse<HandleResponseData | HandleNotFoundResponseData>
 ) {
   const reqValue = firstParam(req.query.handle);
-  if (!regexTwitter.test(reqValue)) return errorHandle(reqValue, res);
-  if (!reqValue) {
-    return res.redirect(307, resolve(req.url!, reqValue));
-  }
+  if (!reqValue || !regexTwitter.test(reqValue))
+    return errorHandle(reqValue, res);
+
   return resolveFarcasterHandle(reqValue, res);
 }
