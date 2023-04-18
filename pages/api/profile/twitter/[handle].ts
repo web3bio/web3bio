@@ -20,7 +20,6 @@ const FetchFromOrigin = async (value: string) => {
   const res = await fetch(
     originBase + `twitter-identity?screenName=${value}`
   ).then((res) => res.json());
-  console.log(res, "res");
   return res;
 };
 
