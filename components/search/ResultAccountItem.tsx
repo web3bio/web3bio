@@ -9,7 +9,6 @@ import { PlatformType } from "../../utils/platform";
 import { Avatar } from "../shared/Avatar";
 
 const RenderAccountItem = (props) => {
-  const { onItemClick } = props;
   const onCopySuccess = () => {
     setIsCopied(true);
     setTimeout(() => {
@@ -84,17 +83,18 @@ const RenderAccountItem = (props) => {
               </div>
             )}
           </div>
-          <div className="social-actions">
+          <Link
+            href={`/${identity.displayName || identity.identity}`}
+            target="_blank"
+            className="social-actions"
+          >
             <button
               className="btn btn-sm btn-link action"
-              title="Open Identity Panel"
-              onClickCapture={() =>
-                onItemClick(identity.displayName || identity.identity)
-              }
+              title="Open ENS Profile"
             >
               <SVG src="icons/icon-open.svg" width={20} height={20} />
             </button>
-          </div>
+          </Link>
           <RenderSourceFooter sources={sources} />
         </div>
       );
@@ -128,17 +128,18 @@ const RenderAccountItem = (props) => {
               </div>
             </div>
           </div>
-          <div className="social-actions">
+          <Link
+            href={`/${identity.identity}`}
+            target="_blank"
+            className="social-actions"
+          >
             <button
               className="btn btn-sm btn-link action"
-              title="Open Profile Page"
-              onClickCapture={() => {
-                onItemClick(identity.identity);
-              }}
+              title="Open Lens Profile"
             >
               <SVG src="icons/icon-open.svg" width={20} height={20} />
             </button>
-          </div>
+          </Link>
           <RenderSourceFooter sources={sources} />
         </div>
       );
@@ -161,17 +162,18 @@ const RenderAccountItem = (props) => {
               <div className="title">{displayName}</div>
             </Link>
           </div>
-          <div className="social-actions actions">
+          <Link
+            href={`/${identity.identity}`}
+            target="_blank"
+            className="social-actions actions"
+          >
             <div
               className="btn btn-sm btn-link action"
-              onClick={() => {
-                onItemClick(identity.identity);
-              }}
               title="Open .bit Profile"
             >
               <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
             </div>
-          </div>
+          </Link>
           <RenderSourceFooter sources={sources} />
         </div>
       );
@@ -316,17 +318,18 @@ const RenderAccountItem = (props) => {
               </div>
             </div>
           </div>
-          <div className="social-actions actions">
+          <Link
+            href={`/${identity.identity}`}
+            target="_blank"
+            className="social-actions actions"
+          >
             <div
               className="btn btn-sm btn-link action"
               title="Open Twitter Profile"
-              onClick={() => {
-                onItemClick(identity.identity);
-              }}
             >
               <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
             </div>
-          </div>
+          </Link>
           <RenderSourceFooter sources={sources} />
         </div>
       );

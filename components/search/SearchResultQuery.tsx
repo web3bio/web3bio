@@ -1,7 +1,6 @@
 import { useLazyQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { GET_PROFILES_QUERY } from "../../utils/queries";
-import { ResultGraph } from "../graph/ResultGraph";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
 import { Loading } from "../shared/Loading";
