@@ -100,7 +100,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<HandleResponseData | HandleNotFoundResponseData>
 ) {
-  const reqValue = firstParam(req.query.handle);
+  const reqValue = req.query.handle as string
   if (!reqValue || !regexTwitter.test(reqValue))
     return errorHandle(reqValue, res);
   return resolveTwitterHandle(reqValue, res);

@@ -202,8 +202,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<HandleResponseData | HandleNotFoundResponseData>
 ) {
-  const inputAddress = firstParam(req.query.handle);
-  const lowercaseAddress = inputAddress.toLowerCase();
-
-  return resolveHandleFromURL(lowercaseAddress, res);
+  const inputAddress = req.query.handle as string;
+  return resolveHandleFromURL(inputAddress.toLowerCase(), res);
 }

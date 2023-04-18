@@ -107,7 +107,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<HandleResponseData | HandleNotFoundResponseData>
 ) {
-  const inputName = firstParam(req.query.handle);
+  const inputName = req.query.handle as string
   if (!regexDotbit.test(inputName)) return errorHandle(inputName, res);
   return resolveNameFromDotbit(inputName, res);
 }

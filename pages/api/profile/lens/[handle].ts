@@ -117,7 +117,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<HandleResponseData | HandleNotFoundResponseData>
 ) {
-  const inputName = firstParam(req.query.handle);
+  const inputName = req.query.handle as string
   if (!regexLens.test(inputName)) return errorHandle(inputName, res);
   return resolveNameFromLens(inputName, res);
 }
