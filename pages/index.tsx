@@ -5,22 +5,14 @@ import { NextSeo } from 'next-seo';
 import { useEffect, useState } from "react";
 import SVG from "react-inlinesvg";
 import { SearchInput } from "../components/panel/components/SearchInput";
-import { TabsMap } from "../components/panel/IdentityPanel";
 import { SearchResultDomain } from "../components/search/SearchResultDomain";
 import { SearchResultQuery } from "../components/search/SearchResultQuery";
 import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
-import ProfilePage from "./[...domain]";
-import { PlatformType } from "../utils/platform";
 
 export default function Home() {
   const [searchFocus, setSearchFocus] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
-  const [profileIdentity, setProfileIdentity] = useState(null);
-  const [profilePlatform, setProfilePlatform] = useState(null);
   const [searchPlatform, setsearchPlatform] = useState("");
-  const [panelTab, setPanelTab] = useState(TabsMap.profile.key);
-  const [domain, setDomain] = useState([]);
   const router = useRouter();
   const handleSubmit = (value, platform?) => {
     setSearchTerm(value);
@@ -38,16 +30,7 @@ export default function Home() {
     setSearchFocus(true);
   };
 
-  const openProfile = (identity, platform) => {
-    setProfileIdentity(identity);
-    setProfilePlatform(platform);
-    if (platform === PlatformType.lens) {
-      setDomain([identity.identity]);
-    } else {
-      setDomain([identity.displayName || identity.identity]);
-    }
-    setModalOpen(true);
-  };
+
   useEffect(() => {
     if (!router.isReady) return;
     if (router.query.s) {
@@ -67,41 +50,6 @@ export default function Home() {
       setsearchPlatform("");
     }
   }, [router.isReady, router.query.s, router.query.platform]);
-  useEffect(() => {
-    if (!router.isReady) return;
-    if (modalOpen) {
-      if (!profileIdentity) return;
-      window.history.pushState(
-        {},
-        "",
-        `/${
-          profileIdentity.platform === PlatformType.lens
-            ? profileIdentity.identity
-            : profileIdentity.displayName || profileIdentity.identity
-        }${panelTab === TabsMap.profile.key ? "" : `/${panelTab}`}`
-      );
-    } else {
-      router.push({
-        pathname: "",
-        query: router.query,
-      });
-    }
-    window.addEventListener(
-      "popstate",
-      function (e) {
-        const url = window.location.href;
-        if (url.includes("?s=")) {
-          setModalOpen(false);
-        } else if (
-          !window.location.search &&
-          window.location.pathname.length > 1
-        ) {
-          setModalOpen(true);
-        }
-      },
-      false
-    );
-  }, [modalOpen, router.query.s, router.isReady, panelTab]);
 
   return (
     <div>
@@ -155,13 +103,11 @@ export default function Home() {
             {searchPlatform ? (
               isDomainSearch(searchPlatform) ? (
                 <SearchResultDomain
-                  openProfile={openProfile}
                   searchTerm={searchTerm}
                   searchPlatform={searchPlatform}
                 />
               ) : (
                 <SearchResultQuery
-                  openProfile={openProfile}
                   searchTerm={searchTerm}
                   searchPlatform={searchPlatform}
                 />
@@ -373,24 +319,7 @@ export default function Home() {
         </div>
       </div>
 
-      {modalOpen && (
-        <ProfilePage
-          toNFT={() => {
-            setPanelTab(TabsMap.nfts.key);
-          }}
-          asComponent
-          onClose={() => {
-            setModalOpen(false);
-            setPanelTab(TabsMap.profile.key);
-          }}
-          overridePanelTab={panelTab}
-          onTabChange={(v) => {
-            setPanelTab(v);
-          }}
-          domainProp={domain}
-          overridePlatform={profilePlatform}
-        />
-      )}
+ 
     </div>
   );
 }

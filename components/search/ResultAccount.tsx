@@ -5,12 +5,13 @@ import { PlatformType } from "../../utils/platform";
 import { fetchProfile } from "../../api/fetchProfile";
 import { ResultGraph } from "../graph/ResultGraph";
 import _ from "lodash";
+import { useRouter } from "next/router";
 
 const RenderAccount = (props) => {
-  const { graphData, resultNeighbor, openProfile, graphTitle } = props;
+  const { graphData, resultNeighbor, graphTitle } = props;
   const [open, setOpen] = useState(false);
   const [profileLoading, setProfileLoading] = useState(true);
-
+  const router = useRouter();
   useEffect(() => {
     if (!resultNeighbor || !resultNeighbor.length) return;
     const enhanceResultNeighbor = async () => {
@@ -77,8 +78,12 @@ const RenderAccount = (props) => {
           {resultNeighbor &&
             resultNeighbor.map((avatar) => (
               <ResultAccountItem
+                onItemClick={(identity) => {
+                  router.push({
+                    pathname: `/${identity}`,
+                  });
+                }}
                 profileLoading={profileLoading}
-                onItemClick={openProfile}
                 identity={avatar.identity}
                 sources={avatar.sources}
                 profile={avatar.identity.profile}

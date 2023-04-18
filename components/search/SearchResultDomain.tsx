@@ -1,12 +1,11 @@
 import { useLazyQuery } from "@apollo/client";
 import { memo, useEffect, useState } from "react";
 import { GET_PROFILES_DOMAIN } from "../../utils/queries";
-import { ResultGraph } from "../graph/ResultGraph";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
 import { Loading } from "../shared/Loading";
 import { ResultAccount } from "./ResultAccount";
-const RenderResultDomain = ({ searchTerm, searchPlatform, openProfile }) => {
+const RenderResultDomain = ({ searchTerm, searchPlatform }) => {
   const [getQuery, { loading, error, data }] = useLazyQuery(
     GET_PROFILES_DOMAIN,
     {
@@ -79,7 +78,6 @@ const RenderResultDomain = ({ searchTerm, searchPlatform, openProfile }) => {
   return (
     <ResultAccount
       resultNeighbor={resultNeighbor}
-      openProfile={openProfile}
       graphData={graphData}
       graphTitle={searchTerm}
     />

@@ -10,7 +10,6 @@ import { ResultAccount } from "./ResultAccount";
 export const SearchResultQuery = ({
   searchTerm,
   searchPlatform,
-  openProfile,
 }) => {
   const [getQuery, { loading, error, data }] = useLazyQuery(
     GET_PROFILES_QUERY,
@@ -73,7 +72,6 @@ export const SearchResultQuery = ({
 
   return (
     <ResultAccount
-      openProfile={openProfile}
       graphTitle={searchTerm}
       resultNeighbor={resultNeighbor}
       graphData={graphData}

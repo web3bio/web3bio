@@ -88,7 +88,9 @@ const RenderAccountItem = (props) => {
             <button
               className="btn btn-sm btn-link action"
               title="Open Identity Panel"
-              onClickCapture={() => onItemClick(identity, PlatformType.ens)}
+              onClickCapture={() =>
+                onItemClick(identity.displayName || identity.identity)
+              }
             >
               <SVG src="icons/icon-open.svg" width={20} height={20} />
             </button>
@@ -102,7 +104,9 @@ const RenderAccountItem = (props) => {
           <div className="social-main">
             <div className="social">
               <div className="avatar">
-                {profile?.avatar && <img src={profile?.avatar} className="avatar-img" />}
+                {profile?.avatar && (
+                  <img src={profile?.avatar} className="avatar-img" />
+                )}
                 <div className="icon">
                   <SVG src="icons/icon-lens.svg" width={20} height={20} />
                 </div>
@@ -127,9 +131,9 @@ const RenderAccountItem = (props) => {
           <div className="social-actions">
             <button
               className="btn btn-sm btn-link action"
-              title="Open Identity Panel"
+              title="Open Profile Page"
               onClickCapture={() => {
-                onItemClick(identity, PlatformType.lens);
+                onItemClick(identity.identity);
               }}
             >
               <SVG src="icons/icon-open.svg" width={20} height={20} />
@@ -158,15 +162,15 @@ const RenderAccountItem = (props) => {
             </Link>
           </div>
           <div className="social-actions actions">
-            <a
+            <div
               className="btn btn-sm btn-link action"
-              href={`https://data.did.id/${identity.displayName}`}
-              title="Open .bit"
-              target="_blank"
-              rel="noopener noreferrer"
+              onClick={() => {
+                onItemClick(identity.identity);
+              }}
+              title="Open .bit Profile"
             >
               <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
-            </a>
+            </div>
           </div>
           <RenderSourceFooter sources={sources} />
         </div>
@@ -214,15 +218,15 @@ const RenderAccountItem = (props) => {
           <div className="social-main">
             <div className="social">
               <div className="avatar">
-                {profile?.avatar && <img src={profile?.avatar} className="avatar-img" />}
+                {profile?.avatar && (
+                  <img src={profile?.avatar} className="avatar-img" />
+                )}
                 <div className="icon">
                   <SVG src="icons/icon-farcaster.svg" width={20} height={20} />
                 </div>
               </div>
               <div className="content">
-                <div className="content-title text-bold">
-                  {displayName}
-                </div>
+                <div className="content-title text-bold">{displayName}</div>
                 <div className="content-subtitle text-gray">
                   <div className="address">{identity.identity}</div>
                   <Clipboard
@@ -263,9 +267,7 @@ const RenderAccountItem = (props) => {
                 </div>
               </figure>
               <div className="content">
-                <div className="content-title text-bold">
-                  {displayName}
-                </div>
+                <div className="content-title text-bold">{displayName}</div>
                 <div className="content-subtitle text-gray">
                   <div className="address">{identity.ownedBy.identity}</div>
                   <Clipboard
@@ -290,7 +292,9 @@ const RenderAccountItem = (props) => {
           <div className="social-main">
             <div className="social">
               <div className="avatar">
-                {profile?.avatar && <img src={profile?.avatar} className="avatar-img" />}
+                {profile?.avatar && (
+                  <img src={profile?.avatar} className="avatar-img" />
+                )}
                 <div className="icon">
                   <SVG src="icons/icon-twitter.svg" width={20} height={20} />
                 </div>
@@ -313,15 +317,15 @@ const RenderAccountItem = (props) => {
             </div>
           </div>
           <div className="social-actions actions">
-            <a
+            <div
               className="btn btn-sm btn-link action"
-              href={`https://twitter.com/${identity.identity}`}
-              title="Open Twitter"
-              target="_blank"
-              rel="noopener noreferrer"
+              title="Open Twitter Profile"
+              onClick={() => {
+                onItemClick(identity.identity);
+              }}
             >
               <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
-            </a>
+            </div>
           </div>
           <RenderSourceFooter sources={sources} />
         </div>
