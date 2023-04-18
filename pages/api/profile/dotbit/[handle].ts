@@ -89,10 +89,15 @@ const resolveNameFromDotbit = async (
       )
       .json(resJSON);
   } catch (error) {
-    res.status(500).json({
-      identity: handle,
-      error: error.code === 20006 ? "No results" : error.message,
-    });
+    error.code === 2006
+      ? res.status(404).json({
+          identity: handle,
+          error: "No results",
+        })
+      : res.status(500).json({
+          identity: handle,
+          error: error.message,
+        });
   }
 };
 

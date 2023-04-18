@@ -34,7 +34,10 @@ const resolveTwitterHandle = async (
 ) => {
   try {
     const response = await FetchFromOrigin(handle);
-    if (!response.id) return errorHandle(handle, res);
+    if (!response.id) {
+      errorHandle(handle, res);
+      return
+    }
     const urlHandle = resolveHandle(
       response.entities.url
         ? response.entities.url.urls[0].expanded_url

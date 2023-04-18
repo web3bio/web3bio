@@ -30,7 +30,10 @@ const resolveFarcasterHandle = async (
 ) => {
   try {
     const response = await FetchFromOrigin(handle);
-    if (!response || !response.length) return errorHandle(handle, res);
+    if (!response || !response.length) {
+      errorHandle(handle, res);
+      return;
+    }
     const _res = response[0].body;
     const resolvedHandle = resolveHandle(_res.username);
     const LINKRES = {

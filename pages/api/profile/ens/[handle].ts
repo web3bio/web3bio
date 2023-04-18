@@ -82,7 +82,10 @@ const resolveHandleFromURL = async (
 
     const gtext = await getENSTexts(ensDomain);
     const resolver = await provider.getResolver(ensDomain);
-    if (!resolver) return errorHandle(handle, res);
+    if (!resolver) {
+      errorHandle(handle, res);
+      return;
+    }
     let LINKRES = {};
     let CRYPTORES = {
       eth: address,
