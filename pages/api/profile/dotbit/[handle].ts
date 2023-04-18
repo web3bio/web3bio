@@ -9,10 +9,12 @@ import _ from "lodash";
 import {
   HandleNotFoundResponseData,
   HandleResponseData,
+  errorHandle,
 } from "../../../../utils/api";
 import { createInstance } from "dotbit";
 import { BitPluginAvatar } from "@dotbit/plugin-avatar";
 import { PlatformType, platfomData } from "../../../../utils/platform";
+import { regexDotbit } from "../../../../utils/regexp";
 
 const resolveNameFromDotbit = async (
   handle: string,
@@ -103,8 +105,9 @@ const resolveNameFromDotbit = async (
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<HandleResponseData>
+  res: NextApiResponse<HandleResponseData | HandleNotFoundResponseData>
 ) {
   const inputName = firstParam(req.query.handle);
+  if (!regexDotbit.test(inputName)) return errorHandle(inputName, res);
   return resolveNameFromDotbit(inputName, res);
 }

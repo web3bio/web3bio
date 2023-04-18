@@ -17,6 +17,7 @@ import { gql } from "@apollo/client";
 import client from "../../../../utils/apollo";
 import _ from "lodash";
 import { PlatformType, platfomData } from "../../../../utils/platform";
+import { regexEns } from "../../../../utils/regexp";
 
 const ensRecordsDefaultOrShouldSkipText = [
   "name",
@@ -73,6 +74,7 @@ const resolveHandleFromURL = async (
       ensDomain = (await provider.lookupAddress(address)) || null;
       avatar = (await provider.getAvatar(ensDomain)) || null;
     } else {
+      if (!regexEns.test(handle)) return errorHandle(handle, res);
       [address, avatar] = await Promise.all([
         provider.resolveName(handle),
         provider.getAvatar(handle),
@@ -198,7 +200,7 @@ export const getENSTexts = async (name: string) => {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<HandleResponseData>
+  res: NextApiResponse<HandleResponseData | HandleNotFoundResponseData>
 ) {
   const inputAddress = firstParam(req.query.handle);
   const lowercaseAddress = inputAddress.toLowerCase();

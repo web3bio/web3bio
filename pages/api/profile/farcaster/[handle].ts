@@ -11,6 +11,7 @@ import {
   resolveHandle,
 } from "../../../../utils/utils";
 import { PlatformType } from "../../../../utils/platform";
+import { regexTwitter } from "../../../../utils/regexp";
 
 const originBase = "https://searchcaster.xyz/api/";
 
@@ -91,9 +92,10 @@ const resolve = (from: string, to: string) => {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<HandleResponseData>
+  res: NextApiResponse<HandleResponseData | HandleNotFoundResponseData>
 ) {
   const reqValue = firstParam(req.query.handle);
+  if (!regexTwitter.test(reqValue)) return errorHandle(reqValue, res);
   if (!reqValue) {
     return res.redirect(307, resolve(req.url!, reqValue));
   }

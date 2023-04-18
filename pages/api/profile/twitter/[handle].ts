@@ -11,6 +11,7 @@ import {
   errorHandle,
 } from "../../../../utils/api";
 import { PlatformType } from "../../../../utils/platform";
+import { regexTwitter } from "../../../../utils/regexp";
 
 const originBase =
   "https://mr8asf7i4h.execute-api.us-east-1.amazonaws.com/prod/";
@@ -35,7 +36,7 @@ const resolveTwitterHandle = async (
     const response = await FetchFromOrigin(handle);
     if (!response.id) {
       errorHandle(handle, res);
-      return
+      return;
     }
     const urlHandle = resolveHandle(
       response.entities.url
@@ -97,9 +98,10 @@ const resolve = (from: string, to: string) => {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<HandleResponseData>
+  res: NextApiResponse<HandleResponseData | HandleNotFoundResponseData>
 ) {
   const reqValue = firstParam(req.query.handle);
+  if (!regexTwitter.test(reqValue)) return errorHandle(reqValue, res);
   if (!reqValue) {
     return res.redirect(307, resolve(req.url!, reqValue));
   }

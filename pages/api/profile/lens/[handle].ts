@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { isAddress } from "@ethersproject/address";
 import {
   firstParam,
   getSocialMediaLink,
@@ -15,6 +14,7 @@ import {
   errorHandle,
 } from "../../../../utils/api";
 import { PlatformType, platfomData } from "../../../../utils/platform";
+import { regexLens } from "../../../../utils/regexp";
 
 export const getLensProfile = async (handle: string) => {
   const fetchRes = await client.query({
@@ -115,8 +115,9 @@ const resolveNameFromLens = async (
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<HandleResponseData>
+  res: NextApiResponse<HandleResponseData | HandleNotFoundResponseData>
 ) {
   const inputName = firstParam(req.query.handle);
+  if (!regexLens.test(inputName)) return errorHandle(inputName, res);
   return resolveNameFromLens(inputName, res);
 }
