@@ -13,7 +13,6 @@ import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import { Error } from "../../components/shared/Error";
 import Avatar from "boring-avatars";
 import { handleSearchPlatform } from "../../utils/utils";
-import { Loading } from "../../components/shared/Loading";
 import { formatText } from "../../utils/utils";
 import { NFTCollectionWidget } from "../../components/profile/NFTCollectionWidget";
 
@@ -59,9 +58,14 @@ const NewProfile = ({ data, platform, pageTitle }) => {
     <div className="web3-profile container grid-xl">
       <NextSeo
         title={`${pageTitle} - Web3.bio`}
-        description={data.description
-          ? `${data.description} - View ${pageTitle} Web3 identity ${SocialPlatformMapping(platform).label} profile info, description, addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.` 
-          : `View ${pageTitle} Web3 identity ${SocialPlatformMapping(platform).label} profile info, description, addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`
+        description={
+          data.description
+            ? `${data.description} - View ${pageTitle} Web3 identity ${
+                SocialPlatformMapping(platform).label
+              } profile info, description, addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`
+            : `View ${pageTitle} Web3 identity ${
+                SocialPlatformMapping(platform).label
+              } profile info, description, addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`
         }
         openGraph={{
           images: [
@@ -82,7 +86,12 @@ const NewProfile = ({ data, platform, pageTitle }) => {
           <div className="web3-profile-base">
             <div className="profile-avatar">
               {data.avatar ? (
-                <img src={data.avatar} className="avatar" loading="lazy" alt={`${pageTitle} Avatar / Profile Photo`}/>
+                <img
+                  src={data.avatar}
+                  className="avatar"
+                  loading="lazy"
+                  alt={`${pageTitle} Avatar / Profile Photo`}
+                />
               ) : (
                 <Avatar
                   size={180}
@@ -100,7 +109,9 @@ const NewProfile = ({ data, platform, pageTitle }) => {
                 />
               )}
             </div>
-            <h1 className="text-assistive">{`${pageTitle} ${SocialPlatformMapping(platform).label} Web3 Profile`}</h1>
+            <h1 className="text-assistive">{`${pageTitle} ${
+              SocialPlatformMapping(platform).label
+            } Web3 Profile`}</h1>
             <h2 className="text-assistive">{`${pageTitle} Web3 identity profile info, description, addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`}</h2>
             <div className="profile-name">{data.displayName}</div>
             {data.identity == data.displayName ? (
@@ -148,7 +159,13 @@ const NewProfile = ({ data, platform, pageTitle }) => {
         <div className="column col-8 col-md-12">
           <div className="web3-section-widgets">
             {linksData.map((item, idx) => {
-              return <RenderWidgetItem key={idx} displayName={pageTitle} item={item} />;
+              return (
+                <RenderWidgetItem
+                  key={idx}
+                  displayName={pageTitle}
+                  item={item}
+                />
+              );
             })}
           </div>
           <div
@@ -205,12 +222,16 @@ const NewProfile = ({ data, platform, pageTitle }) => {
 };
 
 export async function getServerSideProps({ params, res }) {
+  if (!params.domain)
+    return {
+      notFound: true,
+    };
   res.setHeader(
     "Cache-Control",
     `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${60 * 30}`
   );
-  const platform = handleSearchPlatform(params.domain);
   try {
+    const platform = handleSearchPlatform(params.domain);
     if (
       ![
         PlatformType.dotbit,
@@ -226,10 +247,13 @@ export async function getServerSideProps({ params, res }) {
     const res = await fetch(
       `https://web3.bio/api/profile/${platform}/${params.domain}`
     );
+    if (res.status == 404) return { notFound: true };
     const data = await res.json();
-    const pageTitle = data.identity == data.displayName
-      ? `${data.displayName}`
-      : `${data.displayName} (${data.identity})`
+
+    const pageTitle =
+      data.identity == data.displayName
+        ? `${data.displayName}`
+        : `${data.displayName} (${data.identity})`;
     return { props: { data, platform, pageTitle } };
   } catch (e) {
     return { props: { data: { error: e.message } } };

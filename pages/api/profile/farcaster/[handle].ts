@@ -1,12 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import _ from "underscore";
-import { HandleResponseData } from "../../../../utils/api";
+import {
+  HandleNotFoundResponseData,
+  HandleResponseData,
+  errorHandle,
+} from "../../../../utils/api";
 import {
   firstParam,
   getSocialMediaLink,
   resolveHandle,
 } from "../../../../utils/utils";
 import { PlatformType } from "../../../../utils/platform";
+import { regexTwitter } from "../../../../utils/regexp";
 
 const originBase = "https://searchcaster.xyz/api/";
 
@@ -22,11 +27,14 @@ const FetchFromOrigin = async (value: string) => {
 
 const resolveFarcasterHandle = async (
   handle: string,
-  res: NextApiResponse<HandleResponseData>
+  res: NextApiResponse<HandleResponseData | HandleNotFoundResponseData>
 ) => {
   try {
     const response = await FetchFromOrigin(handle);
-    if (!response || !response.length) throw new Error("not found");
+    if (!response || !response.length) {
+      errorHandle(handle, res);
+      return;
+    }
     const _res = response[0].body;
     const resolvedHandle = resolveHandle(_res.username);
     const LINKRES = {
@@ -61,26 +69,14 @@ const resolveFarcasterHandle = async (
       .status(200)
       .setHeader(
         "Cache-Control",
-        `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${60 * 30}`
+        `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${
+          60 * 30
+        }`
       )
       .json(resJSON);
-  } catch (e: any) {
+  } catch (e) {
     res.status(500).json({
-      owner: null,
       identity: handle,
-      displayName: null,
-      avatar: null,
-      email: null,
-      description: null,
-      location: null,
-      header: null,
-      links: {
-        [PlatformType.farcaster]: {
-          link: getSocialMediaLink(handle, PlatformType.farcaster),
-          handle: handle,
-        },
-      },
-      addresses: null,
       error: e.message,
     });
   }
@@ -96,11 +92,10 @@ const resolve = (from: string, to: string) => {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<HandleResponseData>
+  res: NextApiResponse<HandleResponseData | HandleNotFoundResponseData>
 ) {
-  const reqValue = firstParam(req.query.handle);
-  if (!reqValue) {
-    return res.redirect(307, resolve(req.url!, reqValue));
-  }
+  const reqValue = req.query.handle as string;
+  if (!reqValue || !regexTwitter.test(reqValue))
+    return errorHandle(reqValue, res);
   return resolveFarcasterHandle(reqValue, res);
 }

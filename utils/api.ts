@@ -1,3 +1,5 @@
+import { NextApiResponse } from "next";
+
 export type LinksItem = {
   link: string | null;
   handle: string | null;
@@ -26,6 +28,11 @@ export type HandleResponseData = {
   error?: string;
 };
 
+export type HandleNotFoundResponseData = {
+  identity: string | null;
+  error: string;
+};
+
 export const CoinType = {
   btc: 0,
   ltc: 2,
@@ -47,4 +54,14 @@ export const CoinType = {
   // trx: 195,
   // xdai: 700,
   matic: 2147483785,
+};
+
+export const errorHandle = (
+  handle: string,
+  res: NextApiResponse<HandleNotFoundResponseData>
+) => {
+  res.status(404).json({
+    identity: handle,
+    error: "No results",
+  });
 };
