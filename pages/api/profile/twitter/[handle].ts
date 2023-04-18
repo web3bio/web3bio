@@ -34,10 +34,6 @@ const resolveTwitterHandle = async (
 ) => {
   try {
     const response = await FetchFromOrigin(handle);
-    if (!response.id) {
-      errorHandle(handle, res);
-      return;
-    }
     const urlHandle = resolveHandle(
       response.entities.url
         ? response.entities.url.urls[0].expanded_url
@@ -86,14 +82,6 @@ const resolveTwitterHandle = async (
       error: e.message,
     });
   }
-};
-const resolve = (from: string, to: string) => {
-  const resolvedUrl = new URL(to, new URL(from, "resolve://"));
-  if (resolvedUrl.protocol === "resolve:") {
-    const { pathname, search, hash } = resolvedUrl;
-    return `${pathname}${search}${hash}`;
-  }
-  return resolvedUrl.toString();
 };
 
 export default async function handler(
