@@ -2,7 +2,7 @@ import { memo, useEffect, useState } from "react";
 import SVG from "react-inlinesvg";
 import { ResultAccountItem } from "./ResultAccountItem";
 import { PlatformType } from "../../utils/platform";
-import { fetchProfile } from "../../api/fetchProfile";
+import { fetchProfile } from "../../hooks/api/fetchProfile";
 import { ResultGraph } from "../graph/ResultGraph";
 import _ from "lodash";
 
