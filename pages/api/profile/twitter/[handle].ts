@@ -5,8 +5,13 @@ import {
   getSocialMediaLink,
   resolveHandle,
 } from "../../../../utils/utils";
-import { HandleResponseData } from "../../../../utils/api";
+import {
+  HandleNotFoundResponseData,
+  HandleResponseData,
+  errorHandle,
+} from "../../../../utils/api";
 import { PlatformType } from "../../../../utils/platform";
+import { regexTwitter } from "../../../../utils/regexp";
 
 const originBase =
   "https://mr8asf7i4h.execute-api.us-east-1.amazonaws.com/prod/";
@@ -25,10 +30,14 @@ const transformImageURLSize = (url: string, size: string = "400x400") => {
 };
 const resolveTwitterHandle = async (
   handle: string,
-  res: NextApiResponse<HandleResponseData>
+  res: NextApiResponse<HandleResponseData | HandleNotFoundResponseData>
 ) => {
   try {
     const response = await FetchFromOrigin(handle);
+    if (!response.id) {
+      errorHandle(handle, res);
+      return;
+    }
     const urlHandle = resolveHandle(
       response.entities.url
         ? response.entities.url.urls[0].expanded_url
@@ -66,26 +75,14 @@ const resolveTwitterHandle = async (
       .status(200)
       .setHeader(
         "Cache-Control",
-        `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${60 * 30}`
+        `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${
+          60 * 30
+        }`
       )
       .json(resJSON);
   } catch (e: any) {
     res.status(500).json({
-      owner: null,
       identity: handle,
-      displayName: null,
-      avatar: null,
-      email: null,
-      description: null,
-      location: null,
-      header: null,
-      links: {
-        [PlatformType.twitter]: {
-          link: getSocialMediaLink(handle, PlatformType.twitter),
-          handle,
-        },
-      },
-      addresses: null,
       error: e.message,
     });
   }
@@ -101,11 +98,10 @@ const resolve = (from: string, to: string) => {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<HandleResponseData>
+  res: NextApiResponse<HandleResponseData | HandleNotFoundResponseData>
 ) {
-  const reqValue = firstParam(req.query.handle);
-  if (!reqValue) {
-    return res.redirect(307, resolve(req.url!, reqValue));
-  }
+  const reqValue = req.query.handle as string
+  if (!reqValue || !regexTwitter.test(reqValue))
+    return errorHandle(reqValue, res);
   return resolveTwitterHandle(reqValue, res);
 }

@@ -6,14 +6,19 @@ import {
   resolveMediaURL,
 } from "../../../../utils/utils";
 import _ from "lodash";
-import { HandleResponseData } from "../../../../utils/api";
+import {
+  HandleNotFoundResponseData,
+  HandleResponseData,
+  errorHandle,
+} from "../../../../utils/api";
 import { createInstance } from "dotbit";
 import { BitPluginAvatar } from "@dotbit/plugin-avatar";
 import { PlatformType, platfomData } from "../../../../utils/platform";
+import { regexDotbit } from "../../../../utils/regexp";
 
 const resolveNameFromDotbit = async (
   handle: string,
-  res: NextApiResponse<HandleResponseData>
+  res: NextApiResponse<HandleResponseData | HandleNotFoundResponseData>
 ) => {
   try {
     const dotbit = createInstance();
@@ -80,30 +85,29 @@ const resolveNameFromDotbit = async (
       .status(200)
       .setHeader(
         "Cache-Control",
-        `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${60 * 30}`
+        `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${
+          60 * 30
+        }`
       )
       .json(resJSON);
-  } catch (error: any) {
-    res.status(500).json({
-      owner: null,
-      identity: handle,
-      displayName: null,
-      avatar: null,
-      email: null,
-      description: null,
-      location: null,
-      header: null,
-      links: {},
-      addresses: {},
-      error: error.message,
-    });
+  } catch (error) {
+    error.code === 2006
+      ? res.status(404).json({
+          identity: handle,
+          error: "No results",
+        })
+      : res.status(500).json({
+          identity: handle,
+          error: error.message,
+        });
   }
 };
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<HandleResponseData>
+  res: NextApiResponse<HandleResponseData | HandleNotFoundResponseData>
 ) {
-  const inputName = firstParam(req.query.handle);
+  const inputName = req.query.handle as string
+  if (!regexDotbit.test(inputName)) return errorHandle(inputName, res);
   return resolveNameFromDotbit(inputName, res);
 }

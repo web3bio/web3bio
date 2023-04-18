@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect } from "react";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { RenderWidgetItem } from "../components/profile/WidgetItem";
@@ -222,12 +222,16 @@ const NewProfile = ({ data, platform, pageTitle }) => {
 };
 
 export async function getServerSideProps({ params, res }) {
+  if (!params.domain)
+    return {
+      notFound: true,
+    };
   res.setHeader(
     "Cache-Control",
     `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${60 * 30}`
   );
-  const platform = handleSearchPlatform(params.domain);
   try {
+    const platform = handleSearchPlatform(params.domain);
     if (
       ![
         PlatformType.dotbit,
@@ -243,6 +247,7 @@ export async function getServerSideProps({ params, res }) {
     const res = await fetch(
       `https://web3.bio/api/profile/${platform}/${params.domain}`
     );
+    if (res.status == 404) return { notFound: true };
     const data = await res.json();
     const pageTitle =
       data.identity == data.displayName
