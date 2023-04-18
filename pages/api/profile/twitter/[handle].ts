@@ -1,10 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import _ from "underscore";
-import {
-  firstParam,
-  getSocialMediaLink,
-  resolveHandle,
-} from "../../../../utils/utils";
+import { getSocialMediaLink, resolveHandle } from "../../../../utils/utils";
 import {
   HandleNotFoundResponseData,
   HandleResponseData,
@@ -20,7 +16,10 @@ const FetchFromOrigin = async (value: string) => {
   if (!value) return;
   const res = await fetch(
     originBase + `twitter-identity?screenName=${value}`
-  ).then((res) => res.json());
+  ).then((res) => {
+    if (res.status !== 200) return null;
+    return res.json();
+  });
   return res;
 };
 
@@ -34,6 +33,10 @@ const resolveTwitterHandle = async (
 ) => {
   try {
     const response = await FetchFromOrigin(handle);
+    if (!response) {
+      errorHandle(handle, res);
+      return;
+    }
     const urlHandle = resolveHandle(
       response.entities.url
         ? response.entities.url.urls[0].expanded_url
@@ -88,7 +91,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<HandleResponseData | HandleNotFoundResponseData>
 ) {
-  const reqValue = req.query.handle as string
+  const reqValue = req.query.handle as string;
   if (!reqValue || !regexTwitter.test(reqValue))
     return errorHandle(reqValue, res);
   return resolveTwitterHandle(reqValue, res);
