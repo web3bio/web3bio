@@ -9,7 +9,6 @@ import { Error } from "../shared/Error";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 import { NFTPanel } from "./NFTPanel";
-import { Empty } from "../shared/Empty";
 import { ExpandController } from "./ExpandController";
 
 function useCollections(address: string) {
@@ -41,10 +40,10 @@ const RenderNFTCollectionWidget = (props) => {
 
     return null;
   }, [isLoading, isError]);
-  if (!data || !data.data) return null;
+  if (!data || !data.data || !data.data.length) return null;
+
   return (
     <>
-      
       <div className="profile-widget profile-widget-nft">
         <ExpandController
           expand={detailMode}

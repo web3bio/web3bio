@@ -318,18 +318,17 @@ const RenderAccountItem = (props) => {
               </div>
             </div>
           </div>
-          <Link
-            href={`/${identity.identity}`}
-            target="_blank"
-            className="social-actions actions"
-          >
-            <div
+          <div className="social-actions actions">
+            <a
               className="btn btn-sm btn-link action"
-              title="Open Twitter Profile"
+              href={`https://twitter.com/${identity.identity}`}
+              title="Open Twitter"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
-            </div>
-          </Link>
+            </a>
+          </div>
           <RenderSourceFooter sources={sources} />
         </div>
       );
