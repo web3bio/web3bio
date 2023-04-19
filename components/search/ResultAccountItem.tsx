@@ -30,14 +30,14 @@ const RenderAccountItem = (props) => {
         <div className="social-item social-web3 ethereum">
           <div className="social-main">
             <div className="social">
-              <Avatar
-                className=" bg-pride"
-                src={profile?.avatar}
-                width={20}
-                height={20}
-                fallbackImg="icons/icon-ethereum.svg"
-                fallbackClassName="avatar bg-pride"
-              />
+            <div className="avatar">
+                {profile?.avatar && (
+                  <img src={profile?.avatar} className="avatar-img" />
+                )}
+                <div className="icon bg-pride">
+                  <SVG src="icons/icon-ethereum-w.svg" width={20} height={20} />
+                </div>
+              </div>
               <div className="content">
                 <div className="content-title text-bold">{displayName}</div>
                 <div className="content-subtitle text-gray">
