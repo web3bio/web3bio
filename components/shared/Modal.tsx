@@ -30,10 +30,10 @@ export default function Modal(props) {
 
   return (
     <div ref={overlay} className="web3bio-mask-cover" onClick={onClick}>
-      <div className="close-icon" onClick={onDismiss}>
-        <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
-      </div>
       <div ref={wrapper} className="web3bio-modal-container">
+        <div className="btn btn-close modal-close-icon" onClick={onDismiss}>
+          <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
+        </div>
         {children}
       </div>
     </div>

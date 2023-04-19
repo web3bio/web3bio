@@ -74,15 +74,15 @@ body {
     width: 100%;
     height: 100%;
     background: #fff;
+
+    .modal-close-icon {
+      position: absolute;
+      left: 1rem;
+      top: 1rem;
+      z-index: 99;
+    }
   }
 
-  .close-icon {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    cursor: pointer;
-    z-index: 99;
-  }
 }
 
 //- Web3.bio Cover
