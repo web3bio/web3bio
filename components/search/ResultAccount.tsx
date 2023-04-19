@@ -7,7 +7,7 @@ import { ResultGraph } from "../graph/ResultGraph";
 import _ from "lodash";
 
 const RenderAccount = (props) => {
-  const { graphData, resultNeighbor, graphTitle } = props;
+  const { graphData, resultNeighbor, graphTitle, onItemClick } = props;
   const [open, setOpen] = useState(false);
   const [profileLoading, setProfileLoading] = useState(true);
   useEffect(() => {
@@ -19,7 +19,7 @@ const RenderAccount = (props) => {
           if (
             [
               PlatformType.twitter,
-              // PlatformType.ethereum,
+              PlatformType.ethereum,
               PlatformType.farcaster,
               // PlatformType.dotbit,
               PlatformType.lens,
@@ -76,6 +76,7 @@ const RenderAccount = (props) => {
           {resultNeighbor &&
             resultNeighbor.map((avatar) => (
               <ResultAccountItem
+                onItemClick={onItemClick}
                 profileLoading={profileLoading}
                 identity={avatar.identity}
                 sources={avatar.sources}

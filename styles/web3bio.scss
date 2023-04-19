@@ -68,6 +68,21 @@ body {
   width: 100%;
   height: 100vh;
   z-index: 100;
+
+  .web3bio-modal-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+  }
+
+  .close-icon {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    cursor: pointer;
+    z-index: 99;
+  }
 }
 
 //- Web3.bio Cover
@@ -332,21 +347,27 @@ body {
           &.avatar-1 {
             background: rgba(#EC79F6, .25);
           }
+
           &.avatar-2 {
             background: rgba(#F78E4E, .25);
           }
+
           &.avatar-3 {
             background: rgba(#836F6F, .25);
           }
+
           &.avatar-4 {
             background: rgba(#D2CFD1, .25);
           }
+
           &.avatar-5 {
             background: rgba(#4AADCB, .25);
           }
+
           &.avatar-6 {
             background: rgba(#F0415E, .25);
           }
+
           &.avatar-7 {
             background: rgba(#93989B, .25);
           }
@@ -409,38 +430,38 @@ body {
       display: inline-flex;
       margin: .1rem;
       padding: .4rem;
-  
+
       &.identity-spaceid {
         background: rgba(#71EBAA, .2);
         border-color: rgba(#71EBAA, .5);
-  
+
         .icon {
           color: #71EBAA;
         }
       }
-  
+
       &.identity-farcaster {
         background: rgba(#8465CB, .1);
         border-color: rgba(#8465CB, .15);
-  
+
         .icon {
           color: #8465CB;
         }
       }
-  
+
       &.identity-unstoppabledomains {
         background: rgba(#2E65F5, .05);
         border-color: rgba(#2E65F5, .15);
-  
+
         .icon {
           color: #2E65F5;
         }
       }
-  
+
       &.identity-lens {
         background: rgba(#BDFC5A, .25);
         border-color: rgba(#BDFC5A, .75);
-        
+
         .icon {
           color: #204F24;
         }
@@ -465,7 +486,7 @@ body {
 .border-pride {
   border: .05rem solid transparent;
   background: linear-gradient(white, white) padding-box,
-  linear-gradient(70deg, $pride-color-1 -10%, $pride-color-2 5%, $pride-color-3 36%, $pride-color-4 50%, $pride-color-5 63%, $pride-color-6 95%, $pride-color-7 110%) border-box;
+    linear-gradient(70deg, $pride-color-1 -10%, $pride-color-2 5%, $pride-color-3 36%, $pride-color-4 50%, $pride-color-5 63%, $pride-color-6 95%, $pride-color-7 110%) border-box;
 }
 
 .img-placeholder {

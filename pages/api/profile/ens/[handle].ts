@@ -8,7 +8,6 @@ import {
   errorHandle,
 } from "../../../../utils/api";
 import {
-  firstParam,
   getSocialMediaLink,
   resolveEipAssetURL,
   resolveHandle,

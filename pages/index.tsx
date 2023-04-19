@@ -1,18 +1,23 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { NextSeo } from 'next-seo';
+import { NextSeo } from "next-seo";
 import { useEffect, useState } from "react";
 import SVG from "react-inlinesvg";
 import { SearchInput } from "../components/panel/components/SearchInput";
 import { SearchResultDomain } from "../components/search/SearchResultDomain";
 import { SearchResultQuery } from "../components/search/SearchResultQuery";
 import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
+import ProfileModal from "../components/profile/ProfileModal";
 
 export default function Home() {
   const [searchFocus, setSearchFocus] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchPlatform, setsearchPlatform] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [profileIdentity, setProfileIdentity] = useState(null);
+  const [profilePlatform, setProfilePlatform] = useState(null);
+
   const router = useRouter();
   const handleSubmit = (value, platform?) => {
     setSearchTerm(value);
@@ -30,6 +35,12 @@ export default function Home() {
     setSearchFocus(true);
   };
 
+  const handleOpenProfileModal = (identity, platform) => {
+    setProfileIdentity(identity);
+    setProfilePlatform(platform);
+    window.history.pushState({}, "", `/${identity}`);
+    setModalOpen(true);
+  };
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -50,7 +61,13 @@ export default function Home() {
       setsearchPlatform("");
     }
   }, [router.isReady, router.query.s, router.query.platform]);
-
+  useEffect(() => {
+    const handlePopStateChange = () => {
+      if (window.location.search.includes("?s=")) setModalOpen(false);
+    };
+    window.addEventListener("popstate", handlePopStateChange);
+    return () => window.removeEventListener("popstate", handlePopStateChange);
+  });
   return (
     <div>
       <Head>
@@ -59,11 +76,8 @@ export default function Home() {
         ) : (
           <title>Web3.bio</title>
         )}
-
       </Head>
-      <NextSeo
-        title={searchTerm ? `${searchTerm} - Web3.bio` : "Web3.bio"}
-      />
+      <NextSeo title={searchTerm ? `${searchTerm} - Web3.bio` : "Web3.bio"} />
       <main className="web3bio-container">
         <div className="web3bio-cover flare"></div>
 
@@ -103,11 +117,13 @@ export default function Home() {
             {searchPlatform ? (
               isDomainSearch(searchPlatform) ? (
                 <SearchResultDomain
+                  onItemClick={handleOpenProfileModal}
                   searchTerm={searchTerm}
                   searchPlatform={searchPlatform}
                 />
               ) : (
                 <SearchResultQuery
+                  onItemClick={handleOpenProfileModal}
                   searchTerm={searchTerm}
                   searchPlatform={searchPlatform}
                 />
@@ -318,8 +334,16 @@ export default function Home() {
           </div>
         </div>
       </div>
-
- 
+      {modalOpen && (
+        <ProfileModal
+          onClose={() => {
+            window.history.go(-1);
+            setModalOpen(false);
+          }}
+          identity={profileIdentity}
+          platform={profilePlatform}
+        />
+      )}
     </div>
   );
 }

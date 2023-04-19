@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import {
-  firstParam,
   getSocialMediaLink,
   resolveHandle,
   resolveMediaURL,

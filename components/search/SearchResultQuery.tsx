@@ -9,6 +9,7 @@ import { ResultAccount } from "./ResultAccount";
 export const SearchResultQuery = ({
   searchTerm,
   searchPlatform,
+  onItemClick,
 }) => {
   const [getQuery, { loading, error, data }] = useLazyQuery(
     GET_PROFILES_QUERY,
@@ -65,12 +66,19 @@ export const SearchResultQuery = ({
     }
   }, [data, searchPlatform, searchTerm, getQuery]);
 
-  if (loading) return <Loading placeholder="Fetching information..." retry={() => window.location.reload()} />;
+  if (loading)
+    return (
+      <Loading
+        placeholder="Fetching information..."
+        retry={() => window.location.reload()}
+      />
+    );
   if (error) return <Error retry={getQuery} text={error} />;
   if (!data?.identity) return <Empty />;
 
   return (
     <ResultAccount
+      onItemClick={onItemClick}
       graphTitle={searchTerm}
       resultNeighbor={resultNeighbor}
       graphData={graphData}

@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import _ from "underscore";
 import {
-  firstParam,
   getSocialMediaLink,
   resolveHandle,
 } from "../../../../utils/utils";

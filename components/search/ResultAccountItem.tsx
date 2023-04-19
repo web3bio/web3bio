@@ -15,7 +15,7 @@ const RenderAccountItem = (props) => {
       setIsCopied(false);
     }, 1500);
   };
-  const { identity, sources, profile } = props;
+  const { identity, sources, profile, onItemClick } = props;
 
   const [isCopied, setIsCopied] = useState(false);
   const displayName = formatText(
@@ -83,9 +83,13 @@ const RenderAccountItem = (props) => {
               </div>
             )}
           </div>
-          <Link
-            href={`/${identity.displayName || identity.identity}`}
-            target="_blank"
+          <div
+            onClick={() => {
+              onItemClick(
+                identity.displayName || identity.identity,
+                PlatformType.ens
+              );
+            }}
             className="social-actions"
           >
             <button
@@ -94,7 +98,7 @@ const RenderAccountItem = (props) => {
             >
               <SVG src="icons/icon-open.svg" width={20} height={20} />
             </button>
-          </Link>
+          </div>
           <RenderSourceFooter sources={sources} />
         </div>
       );
@@ -128,9 +132,10 @@ const RenderAccountItem = (props) => {
               </div>
             </div>
           </div>
-          <Link
-            href={`/${identity.identity}`}
-            target="_blank"
+          <div
+            onClick={() => {
+              onItemClick(identity.identity, PlatformType.lens);
+            }}
             className="social-actions"
           >
             <button
@@ -139,7 +144,7 @@ const RenderAccountItem = (props) => {
             >
               <SVG src="icons/icon-open.svg" width={20} height={20} />
             </button>
-          </Link>
+          </div>
           <RenderSourceFooter sources={sources} />
         </div>
       );
@@ -162,9 +167,10 @@ const RenderAccountItem = (props) => {
               <div className="title">{displayName}</div>
             </Link>
           </div>
-          <Link
-            href={`/${identity.identity}`}
-            target="_blank"
+          <div
+            onClick={() => {
+              onItemClick(identity.identity, PlatformType.dotbit);
+            }}
             className="social-actions actions"
           >
             <div
@@ -173,7 +179,7 @@ const RenderAccountItem = (props) => {
             >
               <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
             </div>
-          </Link>
+          </div>
           <RenderSourceFooter sources={sources} />
         </div>
       );

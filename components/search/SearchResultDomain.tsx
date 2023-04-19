@@ -5,7 +5,7 @@ import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
 import { Loading } from "../shared/Loading";
 import { ResultAccount } from "./ResultAccount";
-const RenderResultDomain = ({ searchTerm, searchPlatform }) => {
+const RenderResultDomain = ({ searchTerm, searchPlatform, onItemClick }) => {
   const [getQuery, { loading, error, data }] = useLazyQuery(
     GET_PROFILES_DOMAIN,
     {
@@ -77,6 +77,7 @@ const RenderResultDomain = ({ searchTerm, searchPlatform }) => {
 
   return (
     <ResultAccount
+      onItemClick={onItemClick}
       resultNeighbor={resultNeighbor}
       graphData={graphData}
       graphTitle={searchTerm}
