@@ -49,6 +49,7 @@
     color: $dark-color;
     font-size: 1.8rem;
     font-weight: 800;
+    line-height: 1.25;
     margin-bottom: .5rem;
     margin-top: 1rem;
     max-width: 600px;
@@ -159,10 +160,9 @@
 
       &.website {
         img {
-          border-radius: .6rem;
-          height: 2rem;
+          height: 1.2rem;
           position: absolute;
-          width: 2rem;
+          width: 1.2rem;
         }
       }
     }
@@ -400,7 +400,8 @@
 
   .preview-image {
     align-items: center;
-    border-radius: .8rem;
+    border-bottom-left-radius: .8rem;
+    border-top-left-radius: .8rem;
     display: flex;
     height: 100%;
     justify-content: center;
@@ -430,7 +431,7 @@
       display: block;
       filter: blur(4rem);
       height: 100%;
-      opacity: .75;
+      opacity: .5;
       position: absolute;
       width: 100%;
     }

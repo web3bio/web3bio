@@ -50,9 +50,8 @@ const WidgetItem = (props) => {
           rel="noopener noreferrer"
         >
           <div 
-            className="platform-icon website bg-pride"
+            className="platform-icon website"
           >
-            <SVG src="../icons/icon-web.svg" width={24} height={24} />
             <img 
               src={`https://icon.horse/icon/${item.handle}`} 
               alt={`${item.handle} Website Favicon`} 

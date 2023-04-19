@@ -72,7 +72,7 @@ export default function ProfileMain(props) {
             <h1 className="text-assistive">{`${pageTitle} ${
               SocialPlatformMapping(platform).label
             } Web3 Profile`}</h1>
-            <h2 className="text-assistive">{`${pageTitle} Web3 identity profile info, description, addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`}</h2>
+            <h2 className="text-assistive">{`${pageTitle} Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`}</h2>
             <div className="profile-name">{data.displayName}</div>
             {data.identity == data.displayName ? (
               <div className="profile-identity">

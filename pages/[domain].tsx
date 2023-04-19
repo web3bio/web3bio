@@ -12,12 +12,12 @@ const NewProfile = ({ data, platform, pageTitle }) => {
         title={`${pageTitle} - Web3.bio`}
         description={
           data.description
-            ? `${data.description} - View ${pageTitle} Web3 identity ${
+            ? `${data.description} - View ${pageTitle} ${
                 SocialPlatformMapping(platform).label
-              } profile info, description, addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`
-            : `View ${pageTitle} Web3 identity ${
+              } Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`
+            : `View ${pageTitle} ${
                 SocialPlatformMapping(platform).label
-              } profile info, description, addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`
+              } Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`
         }
         openGraph={{
           images: [

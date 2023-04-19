@@ -30,7 +30,7 @@ const RenderAccountItem = (props) => {
         <div className="social-item social-web3 ethereum">
           <div className="social-main">
             <div className="social">
-            <div className="avatar">
+              <div className="avatar">
                 {profile?.avatar && (
                   <img src={profile?.avatar} className="avatar-img" />
                 )}

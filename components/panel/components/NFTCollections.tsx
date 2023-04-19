@@ -168,7 +168,7 @@ const RenderNFTCollections = (props) => {
                           <div className="collection-name">
                             {x.contract_name}
                           </div>
-                          <div className="nft-name">{y.name}</div>
+                          <div className="nft-name">{y.name || `${x.contract_name} #${y.token_id}`}</div>
                         </div>
                       </div>
                     );
