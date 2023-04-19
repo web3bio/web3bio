@@ -3,6 +3,7 @@ import { NextSeo } from "next-seo";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { handleSearchPlatform } from "../utils/utils";
 import ProfileMain from "../components/profile/ProfileMain";
+import { LinksItem } from "../utils/api";
 
 const NewProfile = ({ data, platform, pageTitle }) => {
   return (
@@ -65,7 +66,22 @@ export async function getServerSideProps({ params, res }) {
       data.identity == data.displayName
         ? `${data.displayName}`
         : `${data.displayName} (${data.identity})`;
-    return { props: { data, platform, pageTitle } };
+
+    return {
+      props: {
+        data: {
+          ...data,
+          linksData: Object.entries(data.links).map(([key, value]) => {
+            return {
+              platform: key,
+              ...(value as LinksItem),
+            };
+          }),
+        },
+        platform,
+        pageTitle,
+      },
+    };
   } catch (e) {
     return { props: { data: { error: e.message } } };
   }

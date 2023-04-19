@@ -16,7 +16,6 @@ export default function ProfileMain(props) {
   const [copied, setCopied] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [curAsset, setCurAsset] = useState(null);
-  const [linksData, setLinkData] = useState([]);
   const [dialogType, setDialogType] = useState(NFTDialogType.NFT);
 
   const onCopySuccess = () => {
@@ -25,19 +24,6 @@ export default function ProfileMain(props) {
       setCopied(false);
     }, 1500);
   };
-
-  useEffect(() => {
-    if (data && data.links) {
-      setLinkData(
-        Object.entries(data.links).map(([key, value]) => {
-          return {
-            platform: key,
-            ...(value as LinksItem),
-          };
-        })
-      );
-    }
-  }, [data]);
 
   if (!data || data.error) {
     return (
@@ -132,7 +118,7 @@ export default function ProfileMain(props) {
         </div>
         <div className="column col-8 col-md-12">
           <div className="web3-section-widgets">
-            {linksData.map((item, idx) => {
+            {data?.linksData?.map((item, idx) => {
               return (
                 <RenderWidgetItem
                   key={idx}

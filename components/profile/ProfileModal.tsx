@@ -4,6 +4,7 @@ import Modal from "../shared/Modal";
 import ProfileMain from "./ProfileMain";
 import useSWR from "swr";
 import { _fetcher } from "../apis/ens";
+import { LinksItem } from "../../utils/api";
 
 export function useProfile(identity: string, platform: string) {
   const host = window.location.origin || "https://staging.web5.bio";
@@ -34,7 +35,18 @@ export default function ProfileModal(props) {
       ) : isError ? (
         <Error />
       ) : (
-        <ProfileMain data={data} platform={platform} />
+        <ProfileMain
+          data={{
+            ...data,
+            linksData: Object.entries(data.links).map(([key, value]) => {
+              return {
+                platform: key,
+                ...(value as LinksItem),
+              };
+            }),
+          }}
+          platform={platform}
+        />
       )}
     </Modal>
   );
