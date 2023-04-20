@@ -4,11 +4,11 @@ import { useRouter } from "next/router";
 import { NextSeo } from "next-seo";
 import { useEffect, useState } from "react";
 import SVG from "react-inlinesvg";
-import { SearchInput } from "../components/panel/components/SearchInput";
 import { SearchResultDomain } from "../components/search/SearchResultDomain";
 import { SearchResultQuery } from "../components/search/SearchResultQuery";
 import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
 import ProfileModal from "../components/profile/ProfileModal";
+import { SearchInput } from "../components/profile/SearchInput";
 
 export default function Home() {
   const [searchFocus, setSearchFocus] = useState(false);

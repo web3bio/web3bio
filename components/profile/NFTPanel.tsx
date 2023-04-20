@@ -1,6 +1,5 @@
-import { memo, useEffect, useRef, useState } from "react";
-import { NFTCollections } from "../panel/components/NFTCollections";
-import { NFTDialog } from "../panel/components/NFTDialog";
+import { memo } from "react";
+import { NFTCollections } from "./NFTCollections";
 
 const RenderNFTPanel = (props) => {
   const { address, network, onShowDetail } = props;

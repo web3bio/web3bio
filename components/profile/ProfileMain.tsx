@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { RenderWidgetItem } from "../profile/WidgetItem";
-import { LinksItem } from "../../utils/api";
 import { PoapWidget } from "../profile/PoapsWidget";
-import { NFTDialog, NFTDialogType } from "../panel/components/NFTDialog";
 import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import { Error } from "../shared/Error";
 import Avatar from "boring-avatars";
 import { formatText } from "../../utils/utils";
 import { NFTCollectionWidget } from "../profile/NFTCollectionWidget";
+import { NFTDialog, NFTDialogType } from "./NFTDialog";
 
 export default function ProfileMain(props) {
   const { data, pageTitle = "", platform } = props;

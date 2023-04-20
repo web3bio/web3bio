@@ -3,10 +3,10 @@ import SVG from "react-inlinesvg";
 import {
   DomainSearchSuffix,
   fuzzyDomainSuffix,
-} from "../../../utils/constants";
-import { PlatformType, SocialPlatformMapping } from "../../../utils/platform";
-import { matchQuery } from "../../../utils/queries";
-import { handleSearchPlatform } from "../../../utils/utils";
+} from "../../utils/constants";
+import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import { matchQuery } from "../../utils/queries";
+import { handleSearchPlatform } from "../../utils/utils";
 import { useRouter } from "next/router";
 
 const isQuerySplit = (query: string) => {
