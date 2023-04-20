@@ -38,7 +38,7 @@ export default function ProfileModal(props) {
         <ProfileMain
           data={{
             ...data,
-            linksData: Object.entries(data.links).map(([key, value]) => {
+            linksData: Object.entries(data?.links || {}).map(([key, value]) => {
               return {
                 platform: key,
                 ...(value as LinksItem),

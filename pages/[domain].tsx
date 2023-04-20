@@ -71,7 +71,7 @@ export async function getServerSideProps({ params, res }) {
       props: {
         data: {
           ...data,
-          linksData: Object.entries(data.links).map(([key, value]) => {
+          linksData: Object.entries(data?.links || {}).map(([key, value]) => {
             return {
               platform: key,
               ...(value as LinksItem),
