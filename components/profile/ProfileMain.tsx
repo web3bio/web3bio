@@ -12,7 +12,7 @@ import { formatText } from "../../utils/utils";
 import { NFTCollectionWidget } from "../profile/NFTCollectionWidget";
 
 export default function ProfileMain(props) {
-  const { data, pageTitle = "default", platform } = props;
+  const { data, pageTitle = "", platform } = props;
   const [copied, setCopied] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [curAsset, setCurAsset] = useState(null);
@@ -77,6 +77,7 @@ export default function ProfileMain(props) {
             {data.identity == data.displayName ? (
               <div className="profile-identity">
                 {formatText(data.owner)}
+                <h3 className="text-assistive">{`${pageTitle} wallet address is ${data.owner}`}</h3>
                 <Clipboard
                   component="div"
                   className="action"
@@ -128,10 +129,7 @@ export default function ProfileMain(props) {
               );
             })}
           </div>
-          <div
-            className="web3-section-widgets"
-            style={{ flexDirection: "column" }}
-          >
+          <div className="web3-section-widgets">
             <NFTCollectionWidget
               onShowDetail={(v) => {
                 setDialogType(NFTDialogType.NFT);
