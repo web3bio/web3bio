@@ -52,17 +52,20 @@ const RenderNFTCollections = (props) => {
         localStorage.removeItem("nft_anchor");
       }
 
-      if (anchorName) {
+      if (anchorName && scrollContainer) {
         const anchorElement = document.getElementById(anchorName);
-        if (anchorElement) {
-          const parentNode = anchorElement.parentElement;
-          const top = anchorElement.offsetTop;
-          scrollContainer.current.scrollTo({
-            top: top - parentNode.offsetTop,
-            behavior: "smooth",
-          });
-          setAnchorName(null);
-        }
+        const top = anchorElement.offsetTop;
+        const parentOffset = anchorElement.parentElement.offsetTop;
+        scrollContainer.current.scrollTo({
+          top: top - parentOffset,
+          behavior: "smooth",
+        });
+        setTimeout(() => {
+          // to ensure the scroll end then clear the anchorName
+          if (anchorName) {
+            setAnchorName(null);
+          }
+        }, 2000);
       }
       const judgeActiveCollection = () => {
         const nav_contentRect = container.getBoundingClientRect();

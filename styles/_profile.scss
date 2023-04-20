@@ -538,7 +538,7 @@
       line-height: 1rem;
     }
 
-    
+
   }
 }
 
@@ -709,6 +709,7 @@
 }
 
 .nft-collection {
+  position: relative;
   flex: 1 1;
   height: 100%;
   overflow: hidden auto;
