@@ -55,7 +55,13 @@ const RenderNFTCollections = (props) => {
       if (anchorName) {
         const anchorElement = document.getElementById(anchorName);
         if (anchorElement) {
-          anchorElement.scrollIntoView({ block: "start", behavior: "smooth" });
+          const parentNode = anchorElement.parentElement;
+          const top = anchorElement.offsetTop;
+          scrollContainer.current.scrollTo({
+            top: top - parentNode.offsetTop,
+            behavior: "smooth",
+          });
+          setAnchorName(null);
         }
       }
       const judgeActiveCollection = () => {
@@ -73,7 +79,7 @@ const RenderNFTCollections = (props) => {
             }
           });
         }
-        // todo: to improve
+
         const swticherContainer = document.getElementById(
           "collection-switcher-box"
         );
@@ -168,7 +174,9 @@ const RenderNFTCollections = (props) => {
                           <div className="collection-name">
                             {x.contract_name}
                           </div>
-                          <div className="nft-name">{y.name || `${x.contract_name} #${y.token_id}`}</div>
+                          <div className="nft-name">
+                            {y.name || `${x.contract_name} #${y.token_id}`}
+                          </div>
                         </div>
                       </div>
                     );
