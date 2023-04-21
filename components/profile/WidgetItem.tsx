@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { memo, useState } from "react";
 import Clipboard from "react-clipboard.js";

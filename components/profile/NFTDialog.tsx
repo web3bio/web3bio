@@ -102,7 +102,10 @@ const NFTDialogRender = (props) => {
   const metadata = isValidJson(_asset.metadata_json)
     ? JSON.parse(_asset.metadata_json)
     : null;
-
+  const attributes =
+    _asset.attributes && _asset.attributes.length > 0
+      ? _asset.attributes
+      : metadata.attributes;
   return (
     <>
       <div id="nft-dialog" className="nft-preview">
@@ -146,16 +149,25 @@ const NFTDialogRender = (props) => {
                   </div>
                 </div>
               )}
-              {metadata?.attributes && metadata?.attributes.length > 0 && (
+              {attributes && (
                 <div className="panel-widget">
                   <div className="panel-widget-title">Attributes</div>
                   <div className="panel-widget-content">
                     <div className="traits-cards">
-                      {metadata.attributes.map((x, idx) => {
+                      {attributes.map((x, idx) => {
                         return (
                           <div key={idx} className="traits-card">
-                            <div className="trait-type">{x.trait_type}</div>
-                            <div className="trait-value">{x.value}</div>
+                            <div className="trait-type">
+                              {x.attribute_name || x.trait_type}
+                            </div>
+                            <div className="trait-value">
+                              {x.attribute_value || x.value}
+                            </div>
+                            {/* {x.percentage && (
+                              <div className="trait-trait_percentage">
+                                {x.percentage}
+                              </div>
+                            )} */}
                           </div>
                         );
                       })}

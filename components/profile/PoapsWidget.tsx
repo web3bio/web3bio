@@ -29,6 +29,7 @@ const RenderPoapWidget = (props) => {
     if (isError) return <Error />;
     return null;
   }, [isLoading, isError]);
+  
   if (!data || !data.length) return null;
   return (
     <div className="profile-widget profile-widget-poap">
@@ -60,7 +61,6 @@ const RenderPoapWidget = (props) => {
                     src={resolveIPFS_URL(x.event.image_url)}
                     alt={x.event.name}
                   />
-                  {/* <div className="nft-name">{x.event.name}</div> */}
                 </div>
               </div>
             );
