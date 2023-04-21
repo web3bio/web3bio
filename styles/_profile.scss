@@ -515,7 +515,8 @@
           font-size: .6rem;
           line-height: 1.5;
         }
-        .trait_percentage{
+
+        .trait_percentage {
           font-weight: 500;
           font-size: .3rem;
           line-height: 1;
@@ -771,6 +772,10 @@
       border-radius: .75rem;
       padding: .5rem;
       transition: all .25s ease-in-out;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
 
       &:focus,
       &:hover {
@@ -792,11 +797,13 @@
       .collection-name {
         color: $gray-color-dark;
         font-size: .5rem;
+
       }
 
       .nft-name {
         font-size: .65rem;
         font-weight: 700;
+
       }
     }
   }

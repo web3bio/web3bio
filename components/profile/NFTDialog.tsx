@@ -105,7 +105,8 @@ const NFTDialogRender = (props) => {
   const attributes =
     _asset.attributes && _asset.attributes.length > 0
       ? _asset.attributes
-      : metadata.attributes;
+      : metadata?.attributes;
+
   return (
     <>
       <div id="nft-dialog" className="nft-preview">
@@ -117,11 +118,11 @@ const NFTDialogRender = (props) => {
           <div className="col-6 col-md-12">
             <div className="preview-image">
               <NFTAssetPlayer
-                className={"img-container"}
+                className="img-container"
                 type={asset.asset.content_type}
                 src={asset.mediaURL}
                 contentUrl={asset.contentURL}
-                alt={asset.asset.name}
+                alt={asset.collection?.name + _asset.name}
               />
             </div>
           </div>

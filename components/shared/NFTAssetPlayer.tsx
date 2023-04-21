@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { ImageLoader } from "./ImageLoader";
+import ImagePlaceholder from "./ImgPlaceholder";
 
 const IsImage = (type) => {
   return [
@@ -45,13 +46,7 @@ const RenderNFTAssetPlayer = (props: AssetPlayerProps) => {
   } = props;
 
   const renderContent = () => {
-    if (!src)
-      return (
-        <div
-          className="img-placeholder img-responsive bg-pride"
-          data-initial={alt?.substring(0, 2)}
-        ></div>
-      );
+    if (!src) return <ImagePlaceholder alt={alt} />;
     return IsImage(type) ? (
       <ImageLoader
         width={width}
