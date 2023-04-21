@@ -1,52 +1,15 @@
 import { memo } from "react";
 import SVG from "react-inlinesvg";
-import useSWR from "swr";
 import { isValidJson } from "../../utils/utils";
-import {
-  NFTSCANFetcher,
-  NFTSCAN_BASE_API_ENDPOINT,
-  NFTSCAN_POLYGON_BASE_API,
-} from "../apis/nftscan";
-import { Error } from "../shared/Error";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { PlatformType } from "../../utils/platform";
 
 export const enum NFTDialogType {
   NFT = "nft",
   POAP = "poap",
 }
 
-function useAsset(
-  address: string,
-  tokenId: string | number,
-  network: PlatformType
-) {
-  const baseURL =
-    network === PlatformType.lens
-      ? NFTSCAN_POLYGON_BASE_API
-      : NFTSCAN_BASE_API_ENDPOINT;
-  const { data, error } = useSWR<any>(
-    baseURL + `assets/${address}/${tokenId}`,
-    NFTSCANFetcher
-  );
-  return {
-    data: data,
-    isLoading: !error && !data,
-    isError: error,
-  };
-}
 const NFTDialogRender = (props) => {
-  const {
-    onClose,
-    asset,
-    network,
-    address,
-    tokenId,
-    type = NFTDialogType.NFT,
-    poap,
-  } = props;
-  const { data, isError } = useAsset(address, tokenId, network);
-  if (isError) return <Error text={isError} />;
+  const { onClose, asset, type = NFTDialogType.NFT } = props;
   if (type === "poap")
     return (
       <>
@@ -61,13 +24,13 @@ const NFTDialogRender = (props) => {
                 <NFTAssetPlayer
                   className={"img-container"}
                   type={"image/png"}
-                  src={poap.mediaURL}
-                  contentUrl={poap.contentURL}
-                  alt={poap.asset.event.name}
+                  src={asset.mediaURL}
+                  contentUrl={asset.contentURL}
+                  alt={asset.asset.event.name}
                 />
                 <div
                   className="preview-image-bg"
-                  style={{ backgroundImage: "url(" + poap.mediaURL + ")" }}
+                  style={{ backgroundImage: "url(" + asset.mediaURL + ")" }}
                 ></div>
               </div>
             </div>
@@ -76,13 +39,13 @@ const NFTDialogRender = (props) => {
                 <div className="nft-header-collection collection-title">
                   <div className="collection-name text-ellipsis">POAP</div>
                 </div>
-                <div className="nft-header-name">{poap.asset.event.name}</div>
+                <div className="nft-header-name">{asset.asset.event.name}</div>
 
-                {poap.asset.event.event_url && (
+                {asset.asset.event.event_url && (
                   <div className="panel-widget">
                     <div className="panel-widget-content">
                       <a
-                        href={poap.asset.event.event_url}
+                        href={asset.asset.event.event_url}
                         target="_blank"
                         className="btn btn-sm"
                       >
@@ -92,10 +55,10 @@ const NFTDialogRender = (props) => {
                   </div>
                 )}
 
-                {poap.asset.event.description && (
+                {asset.asset.event.description && (
                   <div className="panel-widget">
                     <div className="panel-widget-content">
-                      {poap.asset.event.description}
+                      {asset.asset.event.description}
                     </div>
                   </div>
                 )}
@@ -107,21 +70,22 @@ const NFTDialogRender = (props) => {
                       <div className="traits-card">
                         <div className="trait-type">Event Start</div>
                         <div className="trait-value">
-                          {poap.asset.event.start_date}
+                          {asset.asset.event.start_date}
                         </div>
                       </div>
-                      {(poap.asset.event.city || poap.asset.event.country) && (
+                      {(asset.asset.event.city ||
+                        asset.asset.event.country) && (
                         <div className="traits-card">
                           <div className="trait-type">Event Location</div>
                           <div className="trait-value">
-                            {poap.asset.event.city} {poap.asset.event.country}
+                            {asset.asset.event.city} {asset.asset.event.country}
                           </div>
                         </div>
                       )}
                       <div className="traits-card">
                         <div className="trait-type">POAP Supply</div>
                         <div className="trait-value">
-                          {poap.asset.event.supply}
+                          {asset.asset.event.supply}
                         </div>
                       </div>
                     </div>
@@ -133,8 +97,8 @@ const NFTDialogRender = (props) => {
         </div>
       </>
     );
-  if (!data || !data.data) return null;
-  const _asset = data.data;
+  if (!asset) return null;
+  const _asset = asset.asset;
   const metadata = isValidJson(_asset.metadata_json)
     ? JSON.parse(_asset.metadata_json)
     : null;

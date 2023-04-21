@@ -1,37 +1,13 @@
 import { memo, useEffect, useRef, useState } from "react";
-import useSWR from "swr";
 import { resolveMediaURL } from "../../utils/utils";
-import {
-  NFTSCANFetcher,
-  NFTSCAN_BASE_API_ENDPOINT,
-  NFTSCAN_POLYGON_BASE_API,
-} from "../apis/nftscan";
 import { Empty } from "../shared/Empty";
-import { Error } from "../shared/Error";
-import { Loading } from "../shared/Loading";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { CollectionSwitcher } from "./CollectionSwitcher";
-import { PlatformType } from "../../utils/platform";
-
-function useCollections(address: string, network: string) {
-  const baseURL =
-    network === PlatformType.lens
-      ? NFTSCAN_POLYGON_BASE_API
-      : NFTSCAN_BASE_API_ENDPOINT;
-  const url = baseURL + `account/own/all/${address}?erc_type=erc721`;
-  const { data, error } = useSWR<any>(url, NFTSCANFetcher);
-  return {
-    data: data,
-    isLoading: !error && !data,
-    isError: error,
-  };
-}
 
 const RenderNFTCollections = (props) => {
-  const { onShowDetail, network, address } = props;
+  const { onShowDetail, data } = props;
   const [collections, setCollections] = useState([]);
   const [anchorName, setAnchorName] = useState("");
-  const { data, isLoading, isError } = useCollections(address, network);
 
   const [activeCollection, setActiveCollection] = useState(null);
   const scrollContainer = useRef(null);
@@ -111,8 +87,6 @@ const RenderNFTCollections = (props) => {
     }
   }, [anchorName, activeCollection, data]);
 
-  if (isLoading) return <Loading />;
-  if (isError) return <Error text={isError} />;
   if (data && !data.data) return <Empty />;
   return (
     <>

@@ -130,11 +130,12 @@ export default function ProfileMain(props) {
           </div>
           <div className="web3-section-widgets">
             <NFTCollectionWidget
-              onShowDetail={(v) => {
+              onShowDetail={(e, v) => {
                 setDialogType(NFTDialogType.NFT);
                 setCurAsset(v);
                 setDialogOpen(true);
               }}
+              network={platform}
               identity={data}
             />
           </div>
@@ -152,25 +153,12 @@ export default function ProfileMain(props) {
       </div>
       {dialogOpen && curAsset && (
         <NFTDialog
-          address={
-            dialogType === NFTDialogType.NFT
-              ? curAsset.asset.contract_address
-              : curAsset.address
-          }
-          tokenId={
-            dialogType === NFTDialogType.NFT
-              ? curAsset.asset.token_id
-              : curAsset.tokenId
-          }
           asset={curAsset}
-          open={dialogOpen}
           onClose={(e) => {
             e.stopPropagation();
             e.preventDefault();
             setDialogOpen(false);
           }}
-          network={PlatformType.ens}
-          poap={curAsset}
           type={dialogType}
         />
       )}

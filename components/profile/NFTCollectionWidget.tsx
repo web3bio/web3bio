@@ -2,18 +2,26 @@ import { memo, useCallback, useState } from "react";
 import SVG from "react-inlinesvg";
 import { PlatformType } from "../../utils/platform";
 import { SocialPlatformMapping } from "../../utils/platform";
-import { NFTSCANFetcher, NFTSCAN_BASE_API_ENDPOINT } from "../apis/nftscan";
+import {
+  NFTSCANFetcher,
+  NFTSCAN_BASE_API_ENDPOINT,
+  NFTSCAN_POLYGON_BASE_API,
+} from "../apis/nftscan";
 import useSWR from "swr";
 import { Loading } from "../shared/Loading";
 import { Error } from "../shared/Error";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { resolveIPFS_URL } from "../../utils/ipfs";
-import { NFTPanel } from "./NFTPanel";
 import { ExpandController } from "./ExpandController";
+import { NFTCollections } from "./NFTCollections";
 
-function useCollections(address: string) {
+function useCollections(address: string, network: PlatformType) {
+  const baseURL =
+    network === PlatformType.lens
+      ? NFTSCAN_POLYGON_BASE_API
+      : NFTSCAN_BASE_API_ENDPOINT;
   const { data, error } = useSWR<any>(
-    NFTSCAN_BASE_API_ENDPOINT + `account/own/all/${address}?erc_type=erc721`,
+    baseURL + `account/own/all/${address}?show_attribute=true`,
     NFTSCANFetcher
   );
   return {
@@ -24,9 +32,10 @@ function useCollections(address: string) {
 }
 
 const RenderNFTCollectionWidget = (props) => {
-  const { identity, onShowDetail } = props;
+  const { identity, onShowDetail, network } = props;
   const { data, isLoading, isError } = useCollections(
-    identity.addresses?.eth ?? identity.owner
+    identity.addresses?.eth ?? identity.owner,
+    network
   );
   const [detailMode, setDetailMode] = useState(false);
   const toCertainNFT = (address: string) => {
@@ -59,11 +68,7 @@ const RenderNFTCollectionWidget = (props) => {
         </div>
         <div className="platform-title">🖼 NFT Collections</div>
         {(detailMode && (
-          <NFTPanel
-            onShowDetail={onShowDetail}
-            address={identity.owner}
-            network={PlatformType.ens}
-          />
+          <NFTCollections data={data} onShowDetail={onShowDetail} />
         )) || (
           <div className="widgets-collection-list">
             {getBoundaryRender() ||
