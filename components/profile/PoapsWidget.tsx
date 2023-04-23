@@ -33,42 +33,44 @@ const RenderPoapWidget = (props) => {
   
   if (!data || !data.length) return null;
   return (
-    <div className="profile-widget profile-widget-poap">
-      <div className="profile-widget-title">
-        <SVG src="../icons/icon-poap.svg" width={32} height={32} />
-        POAP
-      </div>
-      <div className="widgets-collection-list noscrollbar">
-        {getBoundaryRender() ||
-          data.map((x, idx) => {
-            return (
-              <div
-                key={idx}
-                className="poap-item c-hand"
-                onClick={(e) => {
-                  onShowDetail({
-                    collection: {
-                      url: "",
-                      name: "",
-                    },
-                    address: x.owner,
-                    tokenId: x.tokenId,
-                    asset: x,
-                    mediaURL: resolveIPFS_URL(x.event.image_url),
-                    contentURL: resolveIPFS_URL(x.event.image_url),
-                  });
-                }}
-              >
-                <NFTAssetPlayer
-                  className="img-container"
-                  src={`${resolveIPFS_URL(x.event.image_url)}?size=small`}
-                  alt={x.event.name}
-                  height={80}
-                  width={80}
-                />
-              </div>
-            );
-          })}
+    <div className="profile-widget-item profile-widget-full" id="poap">
+      <div className="profile-widget profile-widget-poap">
+        <div className="profile-widget-title">
+          <SVG src="../icons/icon-poap.svg" width={32} height={32} />
+          POAP
+        </div>
+        <div className="widgets-collection-list noscrollbar">
+          {getBoundaryRender() ||
+            data.map((x, idx) => {
+              return (
+                <div
+                  key={idx}
+                  className="poap-item c-hand"
+                  onClick={(e) => {
+                    onShowDetail({
+                      collection: {
+                        url: "",
+                        name: "",
+                      },
+                      address: x.owner,
+                      tokenId: x.tokenId,
+                      asset: x,
+                      mediaURL: resolveIPFS_URL(x.event.image_url),
+                      contentURL: resolveIPFS_URL(x.event.image_url),
+                    });
+                  }}
+                >
+                  <NFTAssetPlayer
+                    className="img-container"
+                    src={`${resolveIPFS_URL(x.event.image_url)}?size=small`}
+                    alt={x.event.name}
+                    height={80}
+                    width={80}
+                  />
+                </div>
+              );
+            })}
+        </div>
       </div>
     </div>
   );

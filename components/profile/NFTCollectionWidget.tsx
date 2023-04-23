@@ -52,8 +52,8 @@ const RenderNFTCollectionWidget = (props) => {
   if (!data || !data.data || !data.data.length) return null;
 
   return (
-    <>
-      <div className="profile-widget profile-widget-nft" id="nft">
+    <div className="profile-widget-item profile-widget-full" id="nft">
+      <div className="profile-widget profile-widget-nft">
         <ExpandController
           expand={detailMode}
           onToggle={() => setDetailMode(!detailMode)}
@@ -90,7 +90,7 @@ const RenderNFTCollectionWidget = (props) => {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

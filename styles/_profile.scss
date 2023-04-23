@@ -118,6 +118,28 @@
 .web3-section-widgets {
   display: flex;
   flex-wrap: wrap;
+  margin: 0;
+
+  .profile-widget-item {
+    aspect-ratio: 1 / 1;
+    padding: .5rem;
+    width: 25%;
+
+    @media screen and (max-width: $size-md) {
+      width: 33.333%;
+    }
+
+    @media screen and (max-width: $size-sm) {
+      width: 50%;
+    }
+
+    &.profile-widget-full {
+      aspect-ratio: auto;
+      flex: 1 1;
+      height: auto;
+      max-height: 80vh;
+    }
+  }
 
   .profile-widget {
     background: $light-color;
@@ -127,13 +149,14 @@
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    height: 9rem;
-    margin: .5rem;
+    height: 100%;
     padding: 1rem;
     text-decoration: none;
     transition: all .25s ease-in-out;
-    width: 9rem;
+    width: 100%;
     will-change: transform;
+
+    
 
     &:focus,
     &:hover {
@@ -160,6 +183,7 @@
 
       &.website {
         img {
+          border-radius: .2rem;
           height: 1.2rem;
           position: absolute;
           width: 1.2rem;
@@ -205,9 +229,6 @@
   .profile-widget-nft {
     background: lighten($bg-color, 6%);
     border-color: darken($bg-color, 3%);
-    flex: 1 1;
-    height: auto;
-    max-height: 80vh;
     position: relative;
 
     .emoji-large {
@@ -348,11 +369,10 @@
   }
 
   .profile-widget-poap {
+    aspect-ratio: auto;
     background: #F5F4FE;
     border-color: darken(#F5F4FE, 10%);
     color: #463E68;
-    flex: 1 1;
-    height: auto;
 
     .widgets-collection-list {
       display: flex;
@@ -412,6 +432,7 @@
     position: absolute;
     right: 1rem;
     top: 1rem;
+    z-index: 999;
   }
 
   .preview-container {
@@ -421,6 +442,17 @@
     max-width: $size-lg;
     position: relative;
     width: 100%;
+
+    @media screen and (max-width: $size-md) {
+      height: 100vh;
+      overflow-y: auto;
+
+      .preview-image,
+      .preview-content {
+        border-radius: 0;
+        max-width: none;
+      }
+    }
   }
 
   .preview-image {
