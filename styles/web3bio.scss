@@ -535,3 +535,9 @@ body {
   transform: translate(-50%, 0);
   z-index: $zindex-3;
 }
+
+.noscrollbar {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

@@ -53,24 +53,19 @@ const RenderNFTCollectionWidget = (props) => {
 
   return (
     <>
-      <div className="profile-widget profile-widget-nft">
+      <div className="profile-widget profile-widget-nft" id="nft">
         <ExpandController
           expand={detailMode}
           onToggle={() => setDetailMode(!detailMode)}
         />
-        <div
-          className="platform-icon"
-          style={{
-            background: SocialPlatformMapping(PlatformType.twitter)?.color,
-          }}
-        >
-          <SVG src="/icons/icon-view.svg" width={24} height={24} />
+        <div className="profile-widget-title">
+          <span className="emoji-large mr-2">🖼</span>
+          NFT Collections
         </div>
-        <div className="platform-title">🖼 NFT Collections</div>
         {(detailMode && (
           <NFTCollections data={data} onShowDetail={onShowDetail} />
         )) || (
-          <div className="widgets-collection-list">
+          <div className="widgets-collection-list noscrollbar">
             {getBoundaryRender() ||
               data.data.map((x, idx) => (
                 <div

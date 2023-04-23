@@ -1,4 +1,4 @@
-import { ImgHTMLAttributes, SyntheticEvent, useState } from "react";
+import { ImgHTMLAttributes, useState } from "react";
 import ImagePlaceholder from "./ImgPlaceholder";
 
 export function ImageLoader(props: ImgHTMLAttributes<HTMLImageElement>) {

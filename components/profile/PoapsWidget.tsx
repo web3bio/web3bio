@@ -38,7 +38,7 @@ const RenderPoapWidget = (props) => {
         <SVG src="../icons/icon-poap.svg" width={32} height={32} />
         POAP
       </div>
-      <div className="widgets-collection-list">
+      <div className="widgets-collection-list noscrollbar">
         {getBoundaryRender() ||
           data.map((x, idx) => {
             return (

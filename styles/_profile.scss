@@ -198,15 +198,21 @@
   .profile-widget-title {
     align-items: center;
     display: flex;
+    font-weight: 500;
     margin-bottom: 1rem;
   }
 
   .profile-widget-nft {
-    position: relative;
+    background: lighten($bg-color, 6%);
+    border-color: darken($bg-color, 3%);
+    flex: 1 1;
     height: auto;
-    max-height: 30rem;
-    max-width: 40rem;
-    width: 100%;
+    max-height: 80vh;
+    position: relative;
+
+    .emoji-large {
+      font-size: 1.2rem;
+    }
 
     .expand-icon {
       position: absolute;
@@ -219,19 +225,18 @@
     .widgets-collection-list {
       display: flex;
       flex-flow: column wrap;
-      height: 10rem;
+      height: 9rem;
       width: 100%;
       overflow-x: scroll;
-      align-items: center;
       justify-content: center;
 
       .collection-item {
         background: #fff;
         border-radius: .6rem;
-        height: 4.5rem;
+        height: 4rem;
         padding: .25rem;
         transition: all .25s ease-in-out;
-        width: 4.5rem;
+        width: 4rem;
 
         &::after {
           bottom: auto;
@@ -273,8 +278,7 @@
       }
 
       .collection-switcher {
-        background: #fff;
-        box-shadow: 0 .1rem 1rem rgba($dark-color, .1);
+        background: lighten($bg-color, 6%);
         user-select: none;
         height: 3.5rem;
         box-sizing: border-box;
@@ -347,9 +351,8 @@
     background: #F5F4FE;
     border-color: darken(#F5F4FE, 10%);
     color: #463E68;
+    flex: 1 1;
     height: auto;
-    margin: .5rem;
-    width: 100%;
 
     .widgets-collection-list {
       display: flex;
@@ -565,115 +568,15 @@
       font-size: .6rem;
       line-height: 1rem;
     }
-
-
   }
 }
 
-// Old Profile
-.profile-container {
-  display: flex;
-  flex: 1 1;
-  flex-direction: column;
-  height: 100%;
-  overflow: hidden auto;
-  padding: 0 1.5rem;
-
-  .profile-basic {
-    position: relative;
-    padding: 1rem 0;
-  }
-
-  .profile-basic-loading-placeholder {
-    min-height: 2rem;
-    margin: 1rem 0;
-    place-self: flex-start;
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-  }
-
-  .records {
-    position: relative;
-    margin: 1rem 0;
-    display: flex;
-    gap: .5rem;
-
-    .action-btn {
-      position: relative;
-      width: 1.8rem;
-      height: 1.8rem;
-      box-shadow: 0px .2rem 1rem rgba(0, 0, 0, 0.05);
-      border-radius: .4rem;
-      cursor: pointer;
-      transition: box-shadow .2s ease-in-out;
-    }
-  }
-
-  .profile-widget {
-    margin-bottom: 1rem;
-
-    .profile-widget-title {
-      color: $dark-color;
-      font-size: .7rem;
-      font-weight: 900;
-      line-height: 1rem;
-      text-transform: uppercase;
-    }
-  }
-
-  // Custom Widget
-  .widget-nft {
-    .collection-switcher {
-      box-shadow: none;
-      margin-left: -1.5rem;
-      margin-right: -1.5rem;
-
-      .collection-list {
-        padding: .25rem 1.5rem;
-      }
-    }
-  }
-
-  .widget-poap {
-    .nft-collection-list {
-      padding-top: 1rem;
-
-      .nft-list {
-        .nft-item {
-          .img-responsive {
-            box-shadow: none;
-          }
-        }
-      }
-    }
-  }
-}
-
-.profile-main {
-  align-items: center;
-  display: flex;
-  height: 100vh;
-  justify-content: center;
-  left: 50%;
-  max-width: 25rem;
-  position: fixed;
-  top: 0;
-  transform: translateX(-50%);
-  width: 100%;
-
-  @media screen and (max-width: $size-xl) {
-    width: calc(100% - 4rem);
-  }
-}
-
-// NFT Collections
+// NFT Collection Switcher
 .collection-switcher {
-  background: #fff;
-  box-shadow: 0 .1rem 1rem rgba($dark-color, .1);
+  background: lighten($bg-color, 6%);
+  box-shadow: 0 .4rem .4rem -.2rem rgba($dark-color, .05);
   user-select: none;
-  padding: 0 0.5rem;
-  box-sizing: border-box;
+  margin: 0 -1rem;
 
   .collection-list {
     display: flex;
@@ -733,7 +636,6 @@
       }
     }
   }
-
 }
 
 .nft-collection {
@@ -741,7 +643,7 @@
   flex: 1 1;
   height: 100%;
   overflow: hidden auto;
-  padding: 0 1.5rem;
+  padding: 0 1rem;
 }
 
 .nft-collection-list {
@@ -807,12 +709,14 @@
       .img-container {
         margin-bottom: .5rem;
 
-        .img-responsive {
+        .img-responsive,
+        .video-responsive {
+          aspect-ratio: 1 / 1;
           border-radius: .5rem;
           box-shadow: 0 .2rem 1rem rgba($dark-color, .15), 0 .05rem .2rem rgba($dark-color, .05);
-          font-size: 2rem;
-          min-height: 7rem;
+          font-size: 4rem;
           object-fit: cover;
+          width: 100%;
         }
       }
 
