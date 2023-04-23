@@ -61,8 +61,10 @@ const RenderPoapWidget = (props) => {
               >
                 <NFTAssetPlayer
                   className="img-container"
-                  src={resolveIPFS_URL(x.event.image_url)}
+                  src={`${resolveIPFS_URL(x.event.image_url)}?size=small`}
                   alt={x.event.name}
+                  height={80}
+                  width={80}
                 />
               </div>
             );
