@@ -1,27 +1,32 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { NextSeo } from 'next-seo';
+import { NextSeo } from "next-seo";
 import { useEffect, useState } from "react";
 import SVG from "react-inlinesvg";
-import { SearchInput } from "../components/panel/components/SearchInput";
-import { TabsMap } from "../components/panel/IdentityPanel";
-import { SearchResultDomain } from "../components/search/SearchResultDomain";
-import { SearchResultQuery } from "../components/search/SearchResultQuery";
 import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
-import ProfilePage from "./[...domain]";
-import { PlatformType } from "../utils/platform";
+import dynamic from "next/dynamic";
+import SearchInput from "../components/profile/SearchInput";
+
+const DynamicProfileModal = dynamic(
+  () => import("../components/profile/ProfileModal")
+);
+const DynamicResultDomain = dynamic(
+  () => import("../components/search/SearchResultDomain")
+);
+const DynamicResultQuery = dynamic(
+  () => import("../components/search/SearchResultQuery")
+);
 
 export default function Home() {
   const [searchFocus, setSearchFocus] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [searchPlatform, setsearchPlatform] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [profileIdentity, setProfileIdentity] = useState(null);
   const [profilePlatform, setProfilePlatform] = useState(null);
-  const [searchPlatform, setsearchPlatform] = useState("");
-  const [panelTab, setPanelTab] = useState(TabsMap.profile.key);
-  const [domain, setDomain] = useState([]);
   const router = useRouter();
+
   const handleSubmit = (value, platform?) => {
     setSearchTerm(value);
     router.push({
@@ -38,16 +43,13 @@ export default function Home() {
     setSearchFocus(true);
   };
 
-  const openProfile = (identity, platform) => {
+  const handleOpenProfileModal = (identity, platform) => {
     setProfileIdentity(identity);
     setProfilePlatform(platform);
-    if (platform === PlatformType.lens) {
-      setDomain([identity.identity]);
-    } else {
-      setDomain([identity.displayName || identity.identity]);
-    }
+    window.history.pushState({}, "", `/${identity}`);
     setModalOpen(true);
   };
+
   useEffect(() => {
     if (!router.isReady) return;
     if (router.query.s) {
@@ -68,53 +70,16 @@ export default function Home() {
     }
   }, [router.isReady, router.query.s, router.query.platform]);
   useEffect(() => {
-    if (!router.isReady) return;
-    if (modalOpen) {
-      if (!profileIdentity) return;
-      window.history.pushState(
-        {},
-        "",
-        `/${
-          profileIdentity.platform === PlatformType.lens
-            ? profileIdentity.identity
-            : profileIdentity.displayName || profileIdentity.identity
-        }${panelTab === TabsMap.profile.key ? "" : `/${panelTab}`}`
-      );
-    } else {
-      router.push({
-        pathname: "",
-        query: router.query,
-      });
-    }
-    window.addEventListener(
-      "popstate",
-      function (e) {
-        const url = window.location.href;
-        if (url.includes("?s=")) {
-          setModalOpen(false);
-        } else if (
-          !window.location.search &&
-          window.location.pathname.length > 1
-        ) {
-          setModalOpen(true);
-        }
-      },
-      false
-    );
-  }, [modalOpen, router.query.s, router.isReady, panelTab]);
-
+    const handlePopStateChange = () => {
+      if (window.location.search.includes("?s=")) setModalOpen(false);
+    };
+    window.addEventListener("popstate", handlePopStateChange);
+    return () => window.removeEventListener("popstate", handlePopStateChange);
+  });
   return (
     <div>
-      <Head>
-        {searchTerm ? (
-          <title>{searchTerm} - Web3.bio</title>
-        ) : (
-          <title>Web3.bio</title>
-        )}
-
-      </Head>
-      <NextSeo
-        title={searchTerm ? `${searchTerm} - Web3.bio` : "Web3.bio"}
+      <NextSeo 
+        title={searchTerm ? `${searchTerm} - Web3.bio` : "Web3.bio"} 
       />
       <main className="web3bio-container">
         <div className="web3bio-cover flare"></div>
@@ -154,14 +119,14 @@ export default function Home() {
             </div>
             {searchPlatform ? (
               isDomainSearch(searchPlatform) ? (
-                <SearchResultDomain
-                  openProfile={openProfile}
+                <DynamicResultDomain
+                  onItemClick={handleOpenProfileModal}
                   searchTerm={searchTerm}
                   searchPlatform={searchPlatform}
                 />
               ) : (
-                <SearchResultQuery
-                  openProfile={openProfile}
+                <DynamicResultQuery
+                  onItemClick={handleOpenProfileModal}
                   searchTerm={searchTerm}
                   searchPlatform={searchPlatform}
                 />
@@ -372,23 +337,14 @@ export default function Home() {
           </div>
         </div>
       </div>
-
       {modalOpen && (
-        <ProfilePage
-          toNFT={() => {
-            setPanelTab(TabsMap.nfts.key);
-          }}
-          asComponent
+        <DynamicProfileModal
           onClose={() => {
+            window.history.go(-1);
             setModalOpen(false);
-            setPanelTab(TabsMap.profile.key);
           }}
-          overridePanelTab={panelTab}
-          onTabChange={(v) => {
-            setPanelTab(v);
-          }}
-          domainProp={domain}
-          overridePlatform={profilePlatform}
+          identity={profileIdentity}
+          platform={profilePlatform}
         />
       )}
     </div>

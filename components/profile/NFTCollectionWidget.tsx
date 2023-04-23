@@ -2,19 +2,26 @@ import { memo, useCallback, useState } from "react";
 import SVG from "react-inlinesvg";
 import { PlatformType } from "../../utils/platform";
 import { SocialPlatformMapping } from "../../utils/platform";
-import { NFTSCANFetcher, NFTSCAN_BASE_API_ENDPOINT } from "../apis/nftscan";
+import {
+  NFTSCANFetcher,
+  NFTSCAN_BASE_API_ENDPOINT,
+  NFTSCAN_POLYGON_BASE_API,
+} from "../apis/nftscan";
 import useSWR from "swr";
 import { Loading } from "../shared/Loading";
 import { Error } from "../shared/Error";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { resolveIPFS_URL } from "../../utils/ipfs";
-import { NFTPanel } from "./NFTPanel";
-import { Empty } from "../shared/Empty";
 import { ExpandController } from "./ExpandController";
+import { NFTCollections } from "./NFTCollections";
 
-function useCollections(address: string) {
+function useCollections(address: string, network: PlatformType) {
+  const baseURL =
+    network === PlatformType.lens
+      ? NFTSCAN_POLYGON_BASE_API
+      : NFTSCAN_BASE_API_ENDPOINT;
   const { data, error } = useSWR<any>(
-    NFTSCAN_BASE_API_ENDPOINT + `account/own/all/${address}?erc_type=erc721`,
+    baseURL + `account/own/all/${address}?show_attribute=true`,
     NFTSCANFetcher
   );
   return {
@@ -25,9 +32,10 @@ function useCollections(address: string) {
 }
 
 const RenderNFTCollectionWidget = (props) => {
-  const { identity, onShowDetail } = props;
+  const { identity, onShowDetail, network } = props;
   const { data, isLoading, isError } = useCollections(
-    identity.addresses?.eth ?? identity.owner
+    identity.addresses?.eth ?? identity.owner,
+    network
   );
   const [detailMode, setDetailMode] = useState(false);
   const toCertainNFT = (address: string) => {
@@ -41,32 +49,23 @@ const RenderNFTCollectionWidget = (props) => {
 
     return null;
   }, [isLoading, isError]);
-  if (!data || !data.data) return null;
+  if (!data || !data.data || !data.data.length) return null;
+
   return (
-    <>
-      
+    <div className="profile-widget-item profile-widget-full" id="nft">
       <div className="profile-widget profile-widget-nft">
         <ExpandController
           expand={detailMode}
           onToggle={() => setDetailMode(!detailMode)}
         />
-        <div
-          className="platform-icon"
-          style={{
-            background: SocialPlatformMapping(PlatformType.twitter)?.color,
-          }}
-        >
-          <SVG src="/icons/icon-view.svg" width={24} height={24} />
+        <div className="profile-widget-title">
+          <span className="emoji-large mr-2">🖼</span>
+          NFT Collections
         </div>
-        <div className="platform-title">🖼 NFT Collections</div>
         {(detailMode && (
-          <NFTPanel
-            onShowDetail={onShowDetail}
-            address={identity.owner}
-            network={PlatformType.ens}
-          />
+          <NFTCollections data={data} onShowDetail={onShowDetail} />
         )) || (
-          <div className="widgets-collection-list">
+          <div className="widgets-collection-list noscrollbar">
             {getBoundaryRender() ||
               data.data.map((x, idx) => (
                 <div
@@ -91,7 +90,7 @@ const RenderNFTCollectionWidget = (props) => {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

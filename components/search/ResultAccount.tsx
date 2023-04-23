@@ -2,15 +2,14 @@ import { memo, useEffect, useState } from "react";
 import SVG from "react-inlinesvg";
 import { ResultAccountItem } from "./ResultAccountItem";
 import { PlatformType } from "../../utils/platform";
-import { fetchProfile } from "../../api/fetchProfile";
+import { fetchProfile } from "../../hooks/api/fetchProfile";
 import { ResultGraph } from "../graph/ResultGraph";
 import _ from "lodash";
 
 const RenderAccount = (props) => {
-  const { graphData, resultNeighbor, openProfile, graphTitle } = props;
+  const { graphData, resultNeighbor, graphTitle, onItemClick } = props;
   const [open, setOpen] = useState(false);
   const [profileLoading, setProfileLoading] = useState(true);
-
   useEffect(() => {
     if (!resultNeighbor || !resultNeighbor.length) return;
     const enhanceResultNeighbor = async () => {
@@ -20,7 +19,7 @@ const RenderAccount = (props) => {
           if (
             [
               PlatformType.twitter,
-              // PlatformType.ethereum,
+              PlatformType.ethereum,
               PlatformType.farcaster,
               // PlatformType.dotbit,
               PlatformType.lens,
@@ -77,8 +76,8 @@ const RenderAccount = (props) => {
           {resultNeighbor &&
             resultNeighbor.map((avatar) => (
               <ResultAccountItem
+                onItemClick={onItemClick}
                 profileLoading={profileLoading}
-                onItemClick={openProfile}
                 identity={avatar.identity}
                 sources={avatar.sources}
                 profile={avatar.identity.profile}

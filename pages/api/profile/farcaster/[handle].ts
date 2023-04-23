@@ -6,7 +6,6 @@ import {
   errorHandle,
 } from "../../../../utils/api";
 import {
-  firstParam,
   getSocialMediaLink,
   resolveHandle,
 } from "../../../../utils/utils";

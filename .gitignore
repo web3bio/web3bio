@@ -18,6 +18,7 @@ components/panel/dist
 components/search/dist
 components/shared/dist
 **/dist/
+analyze/
 
 
 # production
