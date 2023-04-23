@@ -78,14 +78,9 @@ export default function Home() {
   });
   return (
     <div>
-      <Head>
-        {searchTerm ? (
-          <title>{searchTerm} - Web3.bio</title>
-        ) : (
-          <title>Web3.bio</title>
-        )}
-      </Head>
-      <NextSeo title={searchTerm ? `${searchTerm} - Web3.bio` : "Web3.bio"} />
+      <NextSeo 
+        title={searchTerm ? `${searchTerm} - Web3.bio` : "Web3.bio"} 
+      />
       <main className="web3bio-container">
         <div className="web3bio-cover flare"></div>
 

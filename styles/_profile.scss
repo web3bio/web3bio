@@ -195,6 +195,12 @@
     }
   }
 
+  .profile-widget-title {
+    align-items: center;
+    display: flex;
+    margin-bottom: 1rem;
+  }
+
   .profile-widget-nft {
     position: relative;
     height: auto;
@@ -310,7 +316,8 @@
             &.active {
               background: $bg-color;
 
-              .img-responsive {
+              .img-responsive,
+              .video-responsive {
                 box-shadow: 0 .1rem .4rem rgba($dark-color, .25);
               }
             }
@@ -320,7 +327,8 @@
               height: 2.6rem;
               width: 2.6rem;
 
-              .img-responsive {
+              .img-responsive,
+              .video-responsive {
                 border-radius: .5rem;
                 box-shadow: 0 .1rem .4rem rgba($dark-color, .1);
                 font-size: 1.6rem;
@@ -336,6 +344,9 @@
   }
 
   .profile-widget-poap {
+    background: #F5F4FE;
+    border-color: darken(#F5F4FE, 10%);
+    color: #463E68;
     height: auto;
     max-height: 30rem;
     max-width: 40rem;
@@ -343,18 +354,30 @@
 
     .widgets-collection-list {
       display: flex;
-      flex-flow: column wrap;
-      height: 10rem;
-      width: 100%;
-      gap: 1rem;
-      overflow-x: scroll;
+      flex-flow: nowrap;
+      height: 5rem;
+      margin: 0 -1rem;
+      overflow-x: auto;
+      padding: 0 1rem;
 
-      .nft-container {
+      .poap-item {
+        flex: 0 0 4rem;
+        height: 4rem;
         width: 4rem;
-        min-width: 4rem;
 
-        @media screen and (max-width: $size-md) {
-          flex: 0 0 50%;
+        &:not(:first-child) {
+          margin-left: -.5rem;
+        }
+
+        .img-responsive,
+        .video-responsive {
+          background: $light-color;
+          border: .05rem solid #2f2a47;
+          border-radius: 50%;
+          box-shadow: -.1rem .1rem 0 .1rem #E4E2FD;
+          height: 4rem;
+          padding: .25rem;
+          width: 4rem;
         }
       }
     }

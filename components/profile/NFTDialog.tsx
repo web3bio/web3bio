@@ -37,6 +37,7 @@ const NFTDialogRender = (props) => {
             <div className="col-6 col-md-12">
               <div className="preview-content">
                 <div className="nft-header-collection collection-title">
+                  <SVG className="collection-logo" src="../icons/icon-poap.svg" width={24} height={24} />
                   <div className="collection-name text-ellipsis">POAP</div>
                 </div>
                 <div className="nft-header-name">{asset.asset.event.name}</div>
@@ -47,7 +48,7 @@ const NFTDialogRender = (props) => {
                       <a
                         href={asset.asset.event.event_url}
                         target="_blank"
-                        className="btn btn-sm"
+                        className="btn btn-primary btn-sm"
                       >
                         Website
                       </a>

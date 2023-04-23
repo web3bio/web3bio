@@ -21,7 +21,7 @@ function useCollections(address: string, network: PlatformType) {
       ? NFTSCAN_POLYGON_BASE_API
       : NFTSCAN_BASE_API_ENDPOINT;
   const { data, error } = useSWR<any>(
-    baseURL + `account/own/all/${address}?show_attribute=true`,
+    baseURL + `account/own/all/${address}?show_attribute=false`,
     NFTSCANFetcher
   );
   return {
