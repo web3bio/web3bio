@@ -6,11 +6,11 @@ import { Error } from "../shared/Error";
 import { Loading } from "../shared/Loading";
 import { ResultAccount } from "./ResultAccount";
 
-export const SearchResultQuery = ({
+export default function SearchResultQuery({
   searchTerm,
   searchPlatform,
   onItemClick,
-}) => {
+}) {
   const [getQuery, { loading, error, data }] = useLazyQuery(
     GET_PROFILES_QUERY,
     {
@@ -84,4 +84,4 @@ export const SearchResultQuery = ({
       graphData={graphData}
     />
   );
-};
+}

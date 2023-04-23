@@ -1,4 +1,4 @@
-"use clinet";
+"use client";
 import _ from "lodash";
 import React, { memo, useEffect, useState } from "react";
 import SVG from "react-inlinesvg";

@@ -1,11 +1,15 @@
 import { useLazyQuery } from "@apollo/client";
-import { memo, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { GET_PROFILES_DOMAIN } from "../../utils/queries";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
 import { Loading } from "../shared/Loading";
 import { ResultAccount } from "./ResultAccount";
-const RenderResultDomain = ({ searchTerm, searchPlatform, onItemClick }) => {
+export default function RenderResultDomain({
+  searchTerm,
+  searchPlatform,
+  onItemClick,
+}) {
   const [getQuery, { loading, error, data }] = useLazyQuery(
     GET_PROFILES_DOMAIN,
     {
@@ -83,6 +87,4 @@ const RenderResultDomain = ({ searchTerm, searchPlatform, onItemClick }) => {
       graphTitle={searchTerm}
     />
   );
-};
-
-export const SearchResultDomain = memo(RenderResultDomain);
+}

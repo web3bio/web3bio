@@ -3,7 +3,6 @@ import isNumber from "@antv/util/lib/is-number";
 import { PlatformType, SocialPlatformMapping } from "../../../utils/platform";
 
 export const register = (G6) => {
-  console.log(G6,'register')
   if (G6) {
     // Custom identity node
     G6.registerNode(

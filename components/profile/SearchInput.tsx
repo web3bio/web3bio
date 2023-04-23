@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import SVG from "react-inlinesvg";
-import {
-  DomainSearchSuffix,
-  fuzzyDomainSuffix,
-} from "../../utils/constants";
+import { DomainSearchSuffix, fuzzyDomainSuffix } from "../../utils/constants";
 import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import { matchQuery } from "../../utils/queries";
 import { handleSearchPlatform } from "../../utils/utils";
@@ -13,7 +10,7 @@ const isQuerySplit = (query: string) => {
   return query.includes(".") || query.includes("。");
 };
 
-export const SearchInput = (props) => {
+export default function SearchInput(props) {
   const { defaultValue, handleSubmit } = props;
   const [query, setQuery] = useState(defaultValue);
   const [searchList, setSearchList] = useState([]);
@@ -167,4 +164,4 @@ export const SearchInput = (props) => {
       )}
     </>
   );
-};
+}

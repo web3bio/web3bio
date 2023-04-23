@@ -4,11 +4,19 @@ import { useRouter } from "next/router";
 import { NextSeo } from "next-seo";
 import { useEffect, useState } from "react";
 import SVG from "react-inlinesvg";
-import { SearchResultDomain } from "../components/search/SearchResultDomain";
-import { SearchResultQuery } from "../components/search/SearchResultQuery";
 import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
-import ProfileModal from "../components/profile/ProfileModal";
-import { SearchInput } from "../components/profile/SearchInput";
+import dynamic from "next/dynamic";
+import SearchInput from "../components/profile/SearchInput";
+
+const DynamicProfileModal = dynamic(
+  () => import("../components/profile/ProfileModal")
+);
+const DynamicResultDomain = dynamic(
+  () => import("../components/search/SearchResultDomain")
+);
+const DynamicResultQuery = dynamic(
+  () => import("../components/search/SearchResultQuery")
+);
 
 export default function Home() {
   const [searchFocus, setSearchFocus] = useState(false);
@@ -17,8 +25,8 @@ export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
   const [profileIdentity, setProfileIdentity] = useState(null);
   const [profilePlatform, setProfilePlatform] = useState(null);
-
   const router = useRouter();
+
   const handleSubmit = (value, platform?) => {
     setSearchTerm(value);
     router.push({
@@ -116,13 +124,13 @@ export default function Home() {
             </div>
             {searchPlatform ? (
               isDomainSearch(searchPlatform) ? (
-                <SearchResultDomain
+                <DynamicResultDomain
                   onItemClick={handleOpenProfileModal}
                   searchTerm={searchTerm}
                   searchPlatform={searchPlatform}
                 />
               ) : (
-                <SearchResultQuery
+                <DynamicResultQuery
                   onItemClick={handleOpenProfileModal}
                   searchTerm={searchTerm}
                   searchPlatform={searchPlatform}
@@ -335,7 +343,7 @@ export default function Home() {
         </div>
       </div>
       {modalOpen && (
-        <ProfileModal
+        <DynamicProfileModal
           onClose={() => {
             window.history.go(-1);
             setModalOpen(false);
