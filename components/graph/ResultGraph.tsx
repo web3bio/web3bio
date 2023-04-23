@@ -7,7 +7,6 @@ import { formatText } from "../../utils/utils";
 import { Loading } from "../shared/Loading";
 import { register } from "./GraphUtils/LargeRegister";
 import insertCss from "insert-css";
-const isBrowser = typeof window !== "undefined";
 
 let graph = null;
 let shiftKeydown = false;
@@ -223,7 +222,7 @@ const RenderResultGraph = (props) => {
     if (!G6) dynamicImportG6();
     if (graph || !data || !G6) return;
     register(G6);
-
+    registerCss();
     if (container && container.current) {
       CANVAS_WIDTH = container.current.offsetWidth;
       CANVAS_HEIGHT = container.current.offsetHeight;
