@@ -1,3 +1,4 @@
+"use clinet";
 import _ from "lodash";
 import React, { memo, useEffect, useState } from "react";
 import SVG from "react-inlinesvg";
@@ -5,13 +6,13 @@ import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import { formatText } from "../../utils/utils";
 import { Loading } from "../shared/Loading";
 import { register } from "./GraphUtils/LargeRegister";
+import insertCss from "insert-css";
 const isBrowser = typeof window !== "undefined";
-const G6 = isBrowser ? require("@antv/g6") : null;
+
 let graph = null;
 let shiftKeydown = false;
-const insertCss = isBrowser ? require("insert-css") : null;
 
-if (isBrowser) {
+const registerCss = () => {
   insertCss(`
   .web5bio-tooltip {
     background: #fcfcfc;
@@ -38,16 +39,12 @@ if (isBrowser) {
     overflow-wrap: break-word;
     word-break: break-all; 
     margin: 0;
-	}
+  }
   .web5bio-tooltip li span {
     font-size: .5rem;
-	}
-	`);
-}
-
-if (G6) {
-  register();
-}
+  }
+  `);
+};
 
 let CANVAS_WIDTH = 800,
   CANVAS_HEIGHT = 800;
@@ -214,11 +211,19 @@ const processNodesEdges = (nodes, edges) => {
 // eslint-disable-next-line react/display-name
 const RenderResultGraph = (props) => {
   const { data, onClose, title } = props;
+  const [G6, setG6] = useState(null);
   const container = React.useRef<HTMLDivElement>(null);
   const tooltipContainer = React.useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    if (graph || !data) return;
+    const dynamicImportG6 = async () => {
+      setG6(await import("@antv/g6"));
+    };
+    if (!G6) dynamicImportG6();
+    if (graph || !data || !G6) return;
+    register(G6);
+
     if (container && container.current) {
       CANVAS_WIDTH = container.current.offsetWidth;
       CANVAS_HEIGHT = container.current.offsetHeight;
@@ -430,7 +435,7 @@ const RenderResultGraph = (props) => {
       graph.destroy();
       graph = null;
     };
-  }, [data, onClose, title]);
+  }, [data, onClose, title, G6]);
 
   return (
     <div
