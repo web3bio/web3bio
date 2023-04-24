@@ -63,6 +63,7 @@ const RenderNFTAssetPlayer = (props: AssetPlayerProps) => {
           muted
           autoPlay
           loop
+          playsInline
           poster={src as string}
         >
           <source src={contentUrl as string} type={type}></source>
