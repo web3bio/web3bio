@@ -1,9 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { StaticJsonRpcProvider } from "@ethersproject/providers";
 import { getAddress, isAddress } from "@ethersproject/address";
-import { CoinType, HandleResponseData } from "../../../../utils/api";
 import {
-  firstParam,
+  CoinType,
+  HandleNotFoundResponseData,
+  HandleResponseData,
+  errorHandle,
+} from "../../../../utils/api";
+import {
   getSocialMediaLink,
   resolveEipAssetURL,
   resolveHandle,
@@ -12,6 +16,7 @@ import { gql } from "@apollo/client";
 import client from "../../../../utils/apollo";
 import _ from "lodash";
 import { PlatformType, platfomData } from "../../../../utils/platform";
+import { regexEns } from "../../../../utils/regexp";
 
 const ensRecordsDefaultOrShouldSkipText = [
   "name",
@@ -57,7 +62,7 @@ const resolve = (from: string, to: string) => {
 
 const resolveHandleFromURL = async (
   handle: string,
-  res: NextApiResponse<HandleResponseData>
+  res: NextApiResponse<HandleResponseData | HandleNotFoundResponseData>
 ) => {
   try {
     let address = "";
@@ -68,6 +73,7 @@ const resolveHandleFromURL = async (
       ensDomain = (await provider.lookupAddress(address)) || null;
       avatar = (await provider.getAvatar(ensDomain)) || null;
     } else {
+      if (!regexEns.test(handle)) return errorHandle(handle, res);
       [address, avatar] = await Promise.all([
         provider.resolveName(handle),
         provider.getAvatar(handle),
@@ -77,6 +83,10 @@ const resolveHandleFromURL = async (
 
     const gtext = await getENSTexts(ensDomain);
     const resolver = await provider.getResolver(ensDomain);
+    if (!resolver) {
+      errorHandle(handle, res);
+      return;
+    }
     let LINKRES = {};
     let CRYPTORES = {
       eth: address,
@@ -160,21 +170,14 @@ const resolveHandleFromURL = async (
       .status(200)
       .setHeader(
         "Cache-Control",
-        `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${60 * 30}`
+        `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${
+          60 * 30
+        }`
       )
       .json(resJSON);
-  } catch (error: any) {
+  } catch (error) {
     res.status(500).json({
-      owner: isAddress(handle) ? handle : null,
       identity: isAddress(handle) ? handle : null,
-      displayName: null,
-      avatar: null,
-      email: null,
-      description: null,
-      location: null,
-      header: null,
-      links: {},
-      addresses: {},
       error: error.message,
     });
   }
@@ -196,14 +199,8 @@ export const getENSTexts = async (name: string) => {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<HandleResponseData>
+  res: NextApiResponse<HandleResponseData | HandleNotFoundResponseData>
 ) {
-  const inputAddress = firstParam(req.query.handle);
-  const lowercaseAddress = inputAddress.toLowerCase();
-
-  if (inputAddress !== lowercaseAddress) {
-    return res.redirect(307, resolve(req.url!, lowercaseAddress));
-  }
-
-  return resolveHandleFromURL(lowercaseAddress, res);
+  const inputAddress = req.query.handle as string;
+  return resolveHandleFromURL(inputAddress.toLowerCase(), res);
 }

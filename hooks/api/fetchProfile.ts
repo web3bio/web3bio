@@ -1,4 +1,4 @@
-import { PlatformType } from "../utils/platform";
+import { PlatformType } from "../../utils/platform";
 
 const resolveSearchHandle = (identity) => {
   return {

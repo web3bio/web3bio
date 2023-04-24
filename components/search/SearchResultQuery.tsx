@@ -1,17 +1,16 @@
 import { useLazyQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { GET_PROFILES_QUERY } from "../../utils/queries";
-import { ResultGraph } from "../graph/ResultGraph";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
 import { Loading } from "../shared/Loading";
 import { ResultAccount } from "./ResultAccount";
 
-export const SearchResultQuery = ({
+export default function SearchResultQuery({
   searchTerm,
   searchPlatform,
-  openProfile,
-}) => {
+  onItemClick,
+}) {
   const [getQuery, { loading, error, data }] = useLazyQuery(
     GET_PROFILES_QUERY,
     {
@@ -67,16 +66,22 @@ export const SearchResultQuery = ({
     }
   }, [data, searchPlatform, searchTerm, getQuery]);
 
-  if (loading) return <Loading placeholder="Fetching information..." retry={() => window.location.reload()} />;
+  if (loading)
+    return (
+      <Loading
+        placeholder="Fetching information..."
+        retry={() => window.location.reload()}
+      />
+    );
   if (error) return <Error retry={getQuery} text={error} />;
   if (!data?.identity) return <Empty />;
 
   return (
     <ResultAccount
-      openProfile={openProfile}
+      onItemClick={onItemClick}
       graphTitle={searchTerm}
       resultNeighbor={resultNeighbor}
       graphData={graphData}
     />
   );
-};
+}

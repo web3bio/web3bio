@@ -1,4 +1,3 @@
-// Profile
 // New Profile
 .web3-profile {
   padding: 2rem;
@@ -14,7 +13,7 @@
     filter: blur(4rem);
     height: 100vh;
     left: 0;
-    opacity: .05;
+    opacity: .04;
     position: fixed;
     top: 0;
     width: 100vw;
@@ -24,6 +23,7 @@
 
 .web3-profile-base {
   margin: .5rem;
+  padding-bottom: 1rem;
   position: sticky;
   top: 2.5rem;
 
@@ -49,6 +49,7 @@
     color: $dark-color;
     font-size: 1.8rem;
     font-weight: 800;
+    line-height: 1.25;
     margin-bottom: .5rem;
     margin-top: 1rem;
     max-width: 600px;
@@ -117,21 +118,44 @@
 .web3-section-widgets {
   display: flex;
   flex-wrap: wrap;
+  margin: 0;
+
+  .profile-widget-item {
+    aspect-ratio: 1 / 1;
+    padding: .5rem;
+    width: 25%;
+
+    @media screen and (max-width: $size-md) {
+      width: 33.333%;
+    }
+
+    @media screen and (max-width: $size-sm) {
+      width: 50%;
+    }
+
+    &.profile-widget-full {
+      aspect-ratio: auto;
+      flex: 1 1;
+      height: auto;
+      max-height: 90vh;
+      width: 100%;
+    }
+  }
 
   .profile-widget {
-    background: $light-color;
+    background: var(--widget-text-color, $light-color);
     border: .05rem solid rgba($dark-color, .075);
     border-radius: .8rem;
     box-shadow: 0 .1rem .2rem rgba($dark-color, .04);
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    height: 9rem;
-    margin: .5rem;
+    height: 100%;
+    overflow: hidden;
     padding: 1rem;
     text-decoration: none;
     transition: all .25s ease-in-out;
-    width: 9rem;
+    width: 100%;
     will-change: transform;
 
     &:focus,
@@ -148,8 +172,9 @@
 
     .platform-icon {
       align-items: center;
+      background: var(--widget-primary-color, $light-color);
       border-radius: .6rem;
-      box-shadow: inset 0 0 0 .075rem rgba($dark-color, .1), 0 .2rem .4rem rgba($dark-color, .2);
+      box-shadow: inset 0 0 0 .075rem rgba($dark-color, .1), 0 .2rem .4rem rgba($dark-color, .2), 2rem 0 6rem 4rem var(--widget-bg-color);
       color: $light-color;
       display: flex;
       flex: 0 0 2rem;
@@ -158,11 +183,13 @@
       width: 2rem;
 
       &.website {
+        background: $light-color;
+
         img {
-          border-radius: .6rem;
-          height: 2rem;
+          border-radius: .2rem;
+          height: 1.2rem;
           position: absolute;
-          width: 2rem;
+          width: 1.2rem;
         }
       }
     }
@@ -189,17 +216,36 @@
       }
 
       .btn {
+        background: var(--widget-primary-color, lighten($bg-color, 2%));
+        border: .05rem solid rgba($dark-color, .075);
+        color: $light-color;
         display: none;
         position: relative;
       }
     }
+
+    .profile-widget-title {
+      align-items: center;
+      display: flex;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
   }
 
   .profile-widget-nft {
+    background: $light-color;
+    border-color: $bg-color;
     position: relative;
-    height: auto;
-    max-height: 30rem;
-    width: 100%;
+
+    &.active {
+      .collection-switcher {
+        box-shadow: 0 .4rem .4rem -.2rem rgba($dark-color, .05);
+      }
+    }
+
+    .emoji-large {
+      font-size: 1.2rem;
+    }
 
     .expand-icon {
       position: absolute;
@@ -211,20 +257,18 @@
 
     .widgets-collection-list {
       display: flex;
-      flex-flow: column wrap;
-      height: 10rem;
-      width: 100%;
-      overflow-x: scroll;
-      align-items: center;
-      justify-content: center;
+      flex-wrap: nowrap;
+      height: 4rem;
+      margin: 0 -1rem;
+      overflow-x: auto;
+      padding: 0 1rem;
 
       .collection-item {
-        background: #fff;
         border-radius: .6rem;
-        height: 4.5rem;
+        height: 3.5rem;
         padding: .25rem;
         transition: all .25s ease-in-out;
-        width: 4.5rem;
+        width: 3.5rem;
 
         &::after {
           bottom: auto;
@@ -251,8 +295,8 @@
 
         .collection-img {
           border-radius: .5rem;
-          height: 100%;
-          width: 100%;
+          height: 3rem;
+          width: 3rem;
 
           .img-responsive {
             border-radius: .5rem;
@@ -266,11 +310,9 @@
       }
 
       .collection-switcher {
-        background: #fff;
-        box-shadow: 0 .1rem 1rem rgba($dark-color, .1);
+        background: $light-color;
         user-select: none;
         height: 3.5rem;
-        box-sizing: border-box;
 
         .collection-list {
           display: flex;
@@ -309,7 +351,8 @@
             &.active {
               background: $bg-color;
 
-              .img-responsive {
+              .img-responsive,
+              .video-responsive {
                 box-shadow: 0 .1rem .4rem rgba($dark-color, .25);
               }
             }
@@ -319,7 +362,8 @@
               height: 2.6rem;
               width: 2.6rem;
 
-              .img-responsive {
+              .img-responsive,
+              .video-responsive {
                 border-radius: .5rem;
                 box-shadow: 0 .1rem .4rem rgba($dark-color, .1);
                 font-size: 1.6rem;
@@ -335,25 +379,37 @@
   }
 
   .profile-widget-poap {
-    min-width: 50%;
-    height: auto;
-    max-height: 30rem;
-    width: 100%;
+    aspect-ratio: auto;
+    background: #F5F4FE;
+    border-color: darken(#F5F4FE, 10%);
+    color: #463E68;
 
     .widgets-collection-list {
       display: flex;
-      flex-flow: column wrap;
-      height: 10rem;
-      width: 100%;
-      gap: 1rem;
-      overflow-x: scroll;
+      flex-wrap: nowrap;
+      height: 5rem;
+      margin: 0 -1rem;
+      overflow-x: auto;
+      padding: 0 1rem;
 
-      .nft-container {
-        width: 9rem;
-        min-width: 8rem;
+      .poap-item {
+        flex: 0 0 4rem;
+        height: 4rem;
+        width: 4rem;
 
-        @media screen and (max-width: $size-md) {
-          flex: 0 0 50%;
+        &:not(:first-child) {
+          margin-left: -.5rem;
+        }
+
+        .img-responsive,
+        .video-responsive {
+          background: $light-color;
+          border: .05rem solid #2f2a47;
+          border-radius: 50%;
+          box-shadow: -.1rem .1rem 0 .1rem #E4E2FD;
+          height: 4rem;
+          padding: .25rem;
+          width: 4rem;
         }
       }
     }
@@ -382,25 +438,42 @@
     z-index: -9;
   }
 
-  .btn-close {
-    position: absolute;
-    right: 1rem;
-    top: 1rem;
-  }
-
   .preview-container {
     background: $light-color;
     border-radius: .8rem;
-    height: auto;
-    max-height: 24rem;
+    height: 24rem;
     max-width: $size-lg;
     position: relative;
     width: 100%;
+
+    .btn-close {
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
+      z-index: 999;
+    }
+
+    @media screen and (max-width: $size-md) {
+      height: 98vh;
+      overflow-y: auto;
+      width: 96vw;
+
+      .preview-image,
+      .preview-content {
+        border-radius: 0;
+        max-width: none;
+      }
+
+      .btn-close {
+        position: fixed;
+      }
+    }
   }
 
   .preview-image {
     align-items: center;
-    border-radius: .8rem;
+    border-bottom-left-radius: .8rem;
+    border-top-left-radius: .8rem;
     display: flex;
     height: 100%;
     justify-content: center;
@@ -430,7 +503,7 @@
       display: block;
       filter: blur(4rem);
       height: 100%;
-      opacity: .75;
+      opacity: .5;
       position: absolute;
       width: 100%;
     }
@@ -514,6 +587,12 @@
           font-size: .6rem;
           line-height: 1.5;
         }
+
+        .trait_percentage {
+          font-weight: 500;
+          font-size: .3rem;
+          line-height: 1;
+        }
       }
     }
   }
@@ -536,115 +615,14 @@
       font-size: .6rem;
       line-height: 1rem;
     }
-
-    
   }
 }
 
-// Old Profile
-.profile-container {
-  display: flex;
-  flex: 1 1;
-  flex-direction: column;
-  height: 100%;
-  overflow: hidden auto;
-  padding: 0 1.5rem;
-
-  .profile-basic {
-    position: relative;
-    padding: 1rem 0;
-  }
-
-  .profile-basic-loading-placeholder {
-    min-height: 2rem;
-    margin: 1rem 0;
-    place-self: flex-start;
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-  }
-
-  .records {
-    position: relative;
-    margin: 1rem 0;
-    display: flex;
-    gap: .5rem;
-
-    .action-btn {
-      position: relative;
-      width: 1.8rem;
-      height: 1.8rem;
-      box-shadow: 0px .2rem 1rem rgba(0, 0, 0, 0.05);
-      border-radius: .4rem;
-      cursor: pointer;
-      transition: box-shadow .2s ease-in-out;
-    }
-  }
-
-  .profile-widget {
-    margin-bottom: 1rem;
-
-    .profile-widget-title {
-      color: $dark-color;
-      font-size: .7rem;
-      font-weight: 900;
-      line-height: 1rem;
-      text-transform: uppercase;
-    }
-  }
-
-  // Custom Widget
-  .widget-nft {
-    .collection-switcher {
-      box-shadow: none;
-      margin-left: -1.5rem;
-      margin-right: -1.5rem;
-
-      .collection-list {
-        padding: .25rem 1.5rem;
-      }
-    }
-  }
-
-  .widget-poap {
-    .nft-collection-list {
-      padding-top: 1rem;
-
-      .nft-list {
-        .nft-item {
-          .img-responsive {
-            box-shadow: none;
-          }
-        }
-      }
-    }
-  }
-}
-
-.profile-main {
-  align-items: center;
-  display: flex;
-  height: 100vh;
-  justify-content: center;
-  left: 50%;
-  max-width: 25rem;
-  position: fixed;
-  top: 0;
-  transform: translateX(-50%);
-  width: 100%;
-
-  @media screen and (max-width: $size-xl) {
-    width: calc(100% - 4rem);
-  }
-}
-
-// NFT Collections
+// NFT Collection Switcher
 .collection-switcher {
-  background: #fff;
-  box-shadow: 0 .1rem 1rem rgba($dark-color, .1);
+  background: $light-color;
   user-select: none;
-  padding: 0 0.5rem;
-  box-sizing: border-box;
+  margin: 0 -1rem;
 
   .collection-list {
     display: flex;
@@ -704,213 +682,113 @@
       }
     }
   }
-
 }
 
 .nft-collection {
-  flex: 1 1;
-  height: 100%;
-  overflow: hidden auto;
-  padding: 0 1.5rem;
-}
-
-.nft-collection-list {
-  .nft-collection-item {
-    margin-top: .5rem;
-  }
-
-  .collection-title {
-    align-items: center;
-    display: flex;
-    padding: 1rem 0 .5rem 0;
-
-    .collection-logo {
-      flex: 0 0 1.2rem;
-      margin-right: .25rem;
-
-      .img-responsive {
-        border-radius: .4rem;
-        box-shadow: 0 .2rem .8rem rgba($dark-color, .2);
-        font-size: 1rem;
-        height: 1.2rem;
-        object-fit: cover;
-        width: 1.2rem;
-      }
-    }
-
-    .collection-name {
-      font-size: .8rem;
-      font-weight: 700;
-    }
-  }
-
-  .nft-list {
-    position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0 -.5rem 1rem -.5rem;
-
-    .nft-container {
-      flex: 0 0 33.3333%;
-      width: 33.3333%;
-      min-width: 8rem;
-
-      @media screen and (max-width: $size-md) {
-        flex: 0 0 50%;
-      }
-    }
-
-    .nft-item {
-      border-radius: .75rem;
-      padding: .5rem;
-      transition: all .25s ease-in-out;
-
-      &:focus,
-      &:hover {
-        background: lighten($bg-color, 2%);
-      }
-
-      .img-container {
-        margin-bottom: .5rem;
-
-        .img-responsive {
-          border-radius: .5rem;
-          box-shadow: 0 .2rem 1rem rgba($dark-color, .15), 0 .05rem .2rem rgba($dark-color, .05);
-          font-size: 2rem;
-          min-height: 7rem;
-          object-fit: cover;
-        }
-      }
-
-      .collection-name {
-        color: $gray-color-dark;
-        font-size: .5rem;
-      }
-
-      .nft-name {
-        font-size: .65rem;
-        font-weight: 700;
-      }
-    }
-  }
-}
-
-// Social Feeds
-.feeds-container {
+  position: relative;
   flex: 1 1;
   height: 100%;
   overflow-y: auto;
-  padding: 0 1.5rem;
+  padding: 0 .5rem;
 
-  .social-feeds-title {
-    font-size: .7rem;
-    font-weight: 700;
-    padding: 1rem 0;
+  .nft-collection-list {
+    .nft-collection-item {
+      margin-top: .5rem;
+    }
+  
+    .collection-title {
+      align-items: center;
+      display: flex;
+      padding: 1rem 0 .5rem 0;
+  
+      .collection-logo {
+        flex: 0 0 1.2rem;
+        margin-right: .25rem;
+  
+        .img-responsive {
+          border-radius: .4rem;
+          box-shadow: 0 .2rem .8rem rgba($dark-color, .2);
+          font-size: 1rem;
+          height: 1.2rem;
+          object-fit: cover;
+          width: 1.2rem;
+        }
+      }
+  
+      .collection-name {
+        font-size: .8rem;
+        font-weight: 700;
+      }
+    }
+  
+    .nft-list {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 -.5rem 1rem -.5rem;
+  
+      .nft-container {
+        flex: 0 0 33.3333%;
+        width: 33.3333%;
+        min-width: 8rem;
+  
+        @media screen and (max-width: $size-md) {
+          flex: 0 0 50%;
+        }
+      }
+  
+      .nft-item {
+        border-radius: .75rem;
+        padding: .5rem;
+        transition: all .25s ease-in-out;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+  
+        &:focus,
+        &:hover {
+          background: lighten($bg-color, 2%);
+        }
+  
+        .img-container {
+          margin-bottom: .5rem;
+  
+          .img-responsive,
+          .video-responsive {
+            aspect-ratio: 1 / 1;
+            border-radius: .5rem;
+            box-shadow: 0 .2rem 1rem rgba($dark-color, .15), 0 .05rem .2rem rgba($dark-color, .05);
+            font-size: 4rem;
+            object-fit: cover;
+            width: 100%;
+          }
+        }
+  
+        .collection-name {
+          color: $gray-color-dark;
+          font-size: .5rem;
+  
+        }
+  
+        .nft-name {
+          font-size: .65rem;
+          font-weight: 700;
+        }
+      }
+    }
   }
 }
 
-.social-feeds-list {
-  .social-feeds-item {}
+// Footer
+.web3bio-badge {
+  align-items: center;
+  bottom: .5rem;
+  display: flex;
+  height: 2rem;
+  position: fixed;
 
-  .feed-item-box {
-    display: flex;
-    width: 100%;
-    margin-top: 1rem;
-    align-items: flex-start;
-    gap: 10px;
-
-    .feed-type-badge {
-      width: 24px;
-      height: 24px;
-      background: rgba(18, 18, 18, 0.08);
-      box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.05);
-      border-radius: 8px;
-    }
-
-    .feed-item {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      max-width: 90%;
-
-      .feed-item-header {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-
-        .feed-type-intro {
-          display: flex;
-          align-items: center;
-          font-weight: 400;
-          font-size: 14px;
-          line-height: 22px;
-
-          .strong {
-            font-weight: 900;
-            margin: 0 4px;
-          }
-        }
-      }
-
-      .feed-item-main {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-
-        .feed-nft-img {
-          position: relative;
-          width: 40px;
-          height: 40px;
-          min-width: 40px;
-          min-height: 40px;
-          box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.15);
-          border-radius: 12px;
-
-          img {
-            box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.15);
-            border-radius: 12px;
-          }
-        }
-
-        .feed-swap-img {
-          width: 24px;
-          box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.15);
-          border-radius: 12px;
-          background: transparent;
-        }
-
-        .feed-nft-info {
-          display: flex;
-          flex-direction: column;
-
-          .nft-title {
-            font-weight: 700;
-            font-size: 14px;
-            line-height: 22px;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 1;
-            overflow: hidden;
-          }
-
-          .nft-subtitle {
-            font-weight: 400;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
-            overflow: hidden;
-          }
-
-          .nft-collection-title {
-            font-weight: 400;
-            font-size: 12px;
-            line-height: 1rem;
-            color: #121212;
-            opacity: 0.5;
-          }
-        }
-      }
-    }
+  .footer-badge {
+    
   }
 }

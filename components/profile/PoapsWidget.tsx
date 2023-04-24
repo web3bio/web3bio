@@ -1,6 +1,7 @@
 import { memo, useCallback } from "react";
 import useSWR from "swr";
 import { Loading } from "../shared/Loading";
+import SVG from "react-inlinesvg";
 import { Error } from "../shared/Error";
 import { POAPFetcher, POAP_END_POINT } from "../apis/poap";
 import { resolveIPFS_URL } from "../../utils/ipfs";
@@ -29,42 +30,47 @@ const RenderPoapWidget = (props) => {
     if (isError) return <Error />;
     return null;
   }, [isLoading, isError]);
+  
   if (!data || !data.length) return null;
   return (
-    <div className="profile-widget profile-widget-poap">
-      <div className="platform-title">🖼 POAP</div>
-      <div className="widgets-collection-list">
-        {getBoundaryRender() ||
-          data.map((x, idx) => {
-            return (
-              <div
-                key={idx}
-                className="nft-container c-hand"
-                onClick={(e) => {
-                  onShowDetail({
-                    collection: {
-                      url: "",
-                      name: "",
-                    },
-                    address: x.owner,
-                    tokenId: x.tokenId,
-                    asset: x,
-                    mediaURL: resolveIPFS_URL(x.event.image_url),
-                    contentURL: resolveIPFS_URL(x.event.image_url),
-                  });
-                }}
-              >
-                <div className="nft-item">
+    <div className="profile-widget-item profile-widget-full" id="poap">
+      <div className="profile-widget profile-widget-poap">
+        <div className="profile-widget-title">
+          <SVG src="../icons/icon-poap.svg" width={32} height={32} />
+          POAP
+        </div>
+        <div className="widgets-collection-list noscrollbar">
+          {getBoundaryRender() ||
+            data.map((x, idx) => {
+              return (
+                <div
+                  key={idx}
+                  className="poap-item c-hand"
+                  onClick={(e) => {
+                    onShowDetail({
+                      collection: {
+                        url: "",
+                        name: "",
+                      },
+                      address: x.owner,
+                      tokenId: x.tokenId,
+                      asset: x,
+                      mediaURL: resolveIPFS_URL(x.event.image_url),
+                      contentURL: resolveIPFS_URL(x.event.image_url),
+                    });
+                  }}
+                >
                   <NFTAssetPlayer
                     className="img-container"
-                    src={resolveIPFS_URL(x.event.image_url)}
+                    src={`${resolveIPFS_URL(x.event.image_url)}?size=small`}
                     alt={x.event.name}
+                    height={80}
+                    width={80}
                   />
-                  {/* <div className="nft-name">{x.event.name}</div> */}
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+        </div>
       </div>
     </div>
   );

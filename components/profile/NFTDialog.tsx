@@ -1,52 +1,15 @@
 import { memo } from "react";
 import SVG from "react-inlinesvg";
-import useSWR from "swr";
-import { isValidJson } from "../../../utils/utils";
-import {
-  NFTSCANFetcher,
-  NFTSCAN_BASE_API_ENDPOINT,
-  NFTSCAN_POLYGON_BASE_API
-} from "../../apis/nftscan";
-import { Error } from "../../shared/Error";
-import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
-import { PlatformType } from "../../../utils/platform";
+import { isValidJson } from "../../utils/utils";
+import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
 export const enum NFTDialogType {
   NFT = "nft",
   POAP = "poap",
 }
 
-function useAsset(
-  address: string,
-  tokenId: string | number,
-  network: PlatformType
-) {
-  const baseURL =
-    network === PlatformType.lens
-      ? NFTSCAN_POLYGON_BASE_API
-      : NFTSCAN_BASE_API_ENDPOINT;
-  const { data, error } = useSWR<any>(
-    baseURL + `assets/${address}/${tokenId}`,
-    NFTSCANFetcher
-  );
-  return {
-    data: data,
-    isLoading: !error && !data,
-    isError: error,
-  };
-}
 const NFTDialogRender = (props) => {
-  const {
-    onClose,
-    asset,
-    network,
-    address,
-    tokenId,
-    type = NFTDialogType.NFT,
-    poap,
-  } = props;
-  const { data, isError } = useAsset(address, tokenId, network);
-  if (isError) return <Error text={isError} />;
+  const { onClose, asset, type = NFTDialogType.NFT } = props;
   if (type === "poap")
     return (
       <>
@@ -61,57 +24,70 @@ const NFTDialogRender = (props) => {
                 <NFTAssetPlayer
                   className={"img-container"}
                   type={"image/png"}
-                  src={poap.mediaURL}
-                  contentUrl={poap.contentURL}
-                  alt={poap.asset.event.name}
+                  src={asset.mediaURL}
+                  contentUrl={asset.contentURL}
+                  alt={asset.asset.event.name}
                 />
-                <div className="preview-image-bg" style={{ backgroundImage: "url(" + poap.mediaURL + ")" }}></div>
+                <div
+                  className="preview-image-bg"
+                  style={{ backgroundImage: "url(" + asset.mediaURL + ")" }}
+                ></div>
               </div>
             </div>
             <div className="col-6 col-md-12">
               <div className="preview-content">
                 <div className="nft-header-collection collection-title">
-                  <div className="collection-name text-ellipsis">
-                    POAP
-                  </div>
+                  <SVG className="collection-logo" src="../icons/icon-poap.svg" width={24} height={24} />
+                  <div className="collection-name text-ellipsis">POAP</div>
                 </div>
-                <div className="nft-header-name">
-                  {poap.asset.event.name}
-                </div>
+                <div className="nft-header-name">{asset.asset.event.name}</div>
 
-                {poap.asset.event.event_url && (
+                {asset.asset.event.event_url && (
                   <div className="panel-widget">
                     <div className="panel-widget-content">
-                      <a href={poap.asset.event.event_url} target="_blank" className="btn btn-sm">
+                      <a
+                        href={asset.asset.event.event_url}
+                        target="_blank"
+                        className="btn btn-sm"
+                      >
                         Website
                       </a>
                     </div>
                   </div>
                 )}
 
-                {poap.asset.event.description && (
+                {asset.asset.event.description && (
                   <div className="panel-widget">
                     <div className="panel-widget-content">
-                      {poap.asset.event.description}
+                      {asset.asset.event.description}
                     </div>
                   </div>
                 )}
-                
+
                 <div className="panel-widget">
                   <div className="panel-widget-title">Attributes</div>
                   <div className="panel-widget-content">
                     <div className="traits-cards">
                       <div className="traits-card">
                         <div className="trait-type">Event Start</div>
-                        <div className="trait-value">{poap.asset.event.start_date}</div>
+                        <div className="trait-value">
+                          {asset.asset.event.start_date}
+                        </div>
                       </div>
-                      {(poap.asset.event.city || poap.asset.event.country) && <div className="traits-card">
-                        <div className="trait-type">Event Location</div>
-                        <div className="trait-value">{poap.asset.event.city} {poap.asset.event.country}</div>
-                      </div>}
+                      {(asset.asset.event.city ||
+                        asset.asset.event.country) && (
+                        <div className="traits-card">
+                          <div className="trait-type">Event Location</div>
+                          <div className="trait-value">
+                            {asset.asset.event.city} {asset.asset.event.country}
+                          </div>
+                        </div>
+                      )}
                       <div className="traits-card">
                         <div className="trait-type">POAP Supply</div>
-                        <div className="trait-value">{poap.asset.event.supply}</div>
+                        <div className="trait-value">
+                          {asset.asset.event.supply}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -122,11 +98,15 @@ const NFTDialogRender = (props) => {
         </div>
       </>
     );
-  if (!data || !data.data) return null;
-  const _asset = data.data;
+  if (!asset) return null;
+  const _asset = asset.asset;
   const metadata = isValidJson(_asset.metadata_json)
     ? JSON.parse(_asset.metadata_json)
     : null;
+  const attributes =
+    _asset.attributes && _asset.attributes.length > 0
+      ? _asset.attributes
+      : metadata?.attributes;
 
   return (
     <>
@@ -139,11 +119,11 @@ const NFTDialogRender = (props) => {
           <div className="col-6 col-md-12">
             <div className="preview-image">
               <NFTAssetPlayer
-                className={"img-container"}
+                className="img-container"
                 type={asset.asset.content_type}
                 src={asset.mediaURL}
                 contentUrl={asset.contentURL}
-                alt={asset.asset.name}
+                alt={asset.collection?.name + _asset.name}
               />
             </div>
           </div>
@@ -161,7 +141,8 @@ const NFTDialogRender = (props) => {
                 </div>
               </div>
               <div className="nft-header-name">
-                {asset.asset.name || `${asset.collection.name} #${asset.asset.token_id}`}
+                {asset.asset.name ||
+                  `${asset.collection.name} #${asset.asset.token_id}`}
               </div>
               {metadata?.description && (
                 <div className="panel-widget">
@@ -170,16 +151,25 @@ const NFTDialogRender = (props) => {
                   </div>
                 </div>
               )}
-              {metadata?.attributes && metadata?.attributes.length > 0 && (
+              {attributes && (
                 <div className="panel-widget">
                   <div className="panel-widget-title">Attributes</div>
                   <div className="panel-widget-content">
                     <div className="traits-cards">
-                      {metadata.attributes.map((x, idx) => {
+                      {attributes.map((x, idx) => {
                         return (
                           <div key={idx} className="traits-card">
-                            <div className="trait-type">{x.trait_type}</div>
-                            <div className="trait-value">{x.value}</div>
+                            <div className="trait-type">
+                              {x.attribute_name || x.trait_type}
+                            </div>
+                            <div className="trait-value">
+                              {x.attribute_value || x.value}
+                            </div>
+                            {/* {x.percentage && (
+                              <div className="trait-trait_percentage">
+                                {x.percentage}
+                              </div>
+                            )} */}
                           </div>
                         );
                       })}

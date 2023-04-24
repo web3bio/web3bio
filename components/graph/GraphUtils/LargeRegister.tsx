@@ -2,10 +2,7 @@ import isArray from "@antv/util/lib/is-array";
 import isNumber from "@antv/util/lib/is-number";
 import { PlatformType, SocialPlatformMapping } from "../../../utils/platform";
 
-const isBrowser = typeof window !== "undefined";
-const G6 = isBrowser ? require("@antv/g6") : null;
-
-export const register = () => {
+export const register = (G6) => {
   if (G6) {
     // Custom identity node
     G6.registerNode(

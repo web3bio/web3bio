@@ -77,8 +77,3 @@ export const GET_PROFILE_LENS = gql`
     }
   }
 `;
-
-export const globalLensAttributesKeys = [
-  'website',
-  'twitter',
-]
