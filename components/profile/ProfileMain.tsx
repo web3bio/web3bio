@@ -120,11 +120,12 @@ export default function ProfileMain(props) {
           <div className="web3-section-widgets">
             {data?.linksData?.map((item, idx) => {
               return (
-                <RenderWidgetItem
-                  key={idx}
-                  displayName={pageTitle}
-                  item={item}
-                />
+                <div key={idx} className="profile-widget-item">
+                  <RenderWidgetItem
+                    displayName={pageTitle}
+                    item={item}
+                  />
+                </div>
               );
             })}
           </div>

@@ -42,7 +42,7 @@ const RenderNFTCollectionWidget = (props) => {
       className="profile-widget-item profile-widget-full"
       id="nft"
     >
-      <div className="profile-widget profile-widget-nft">
+      <div className={`profile-widget profile-widget-nft${expand? ' active': ''}`}>
         <ExpandController
           expand={expand}
           onToggle={() => {
@@ -66,7 +66,7 @@ const RenderNFTCollectionWidget = (props) => {
                   behavior: "smooth",
                 });
               }
-            }, 500);
+            }, 100);
           }}
           parentScrollRef={scrollContainer}
           expand={expand}
