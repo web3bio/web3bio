@@ -7,8 +7,9 @@ import { CollectionSwitcher } from "./CollectionSwitcher";
 const RenderNFTCollections = (props) => {
   const { onShowDetail, data, anchorAddress } = props;
   const [collections, setCollections] = useState([]);
+  const [anchorName, setAnchorName] = useState(null);
 
-  const [activeCollection, setActiveCollection] = useState(anchorAddress);
+  const [activeCollection, setActiveCollection] = useState(null);
   const scrollContainer = useRef(null);
   useEffect(() => {
     const container = scrollContainer.current;
@@ -20,16 +21,28 @@ const RenderNFTCollections = (props) => {
           url: x.logo_url,
         }))
       );
+      
       const _anchor = anchorAddress;
 
-      if (anchorAddress && scrollContainer) {
-        const anchorElement = document.getElementById(anchorAddress);
+      if (_anchor) {
+        setAnchorName(_anchor);
+        setActiveCollection(_anchor);
+      }
+
+      if (anchorName && scrollContainer) {
+        const anchorElement = document.getElementById(anchorName);
         const top = anchorElement.offsetTop;
         const parentOffset = anchorElement.parentElement.offsetTop;
         scrollContainer.current.scrollTo({
           top: top - parentOffset,
           behavior: "smooth",
         });
+        setTimeout(() => {
+          // to ensure the scroll end then clear the anchorName
+          if (anchorName) {
+            setAnchorName(null);
+          }
+        }, 2000);
       }
       const judgeActiveCollection = () => {
         const nav_contentRect = container.getBoundingClientRect();
@@ -73,7 +86,7 @@ const RenderNFTCollections = (props) => {
           passive: true,
         });
     }
-  }, [anchorAddress, activeCollection, data]);
+  }, [anchorName, activeCollection, data, anchorAddress]);
 
   if (data && !data.data) return <Empty />;
   return (
@@ -84,6 +97,7 @@ const RenderNFTCollections = (props) => {
           currentSelect={activeCollection ?? collections[0].key}
           onSelect={(v) => {
             setActiveCollection(v);
+            setAnchorName(v);
           }}
         />
       )}

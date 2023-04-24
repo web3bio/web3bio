@@ -1,4 +1,4 @@
-import { memo, useCallback, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { PlatformType } from "../../utils/platform";
 import {
   NFTSCANFetcher,
@@ -43,20 +43,36 @@ const RenderNFTCollectionWidget = (props) => {
     setAnchorAddress(address);
   };
 
+  useEffect(() => {
+    if (detailMode) {
+      nftContainer.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+        inline: "nearest",
+      });
+    }
+  }, [detailMode]);
   const getBoundaryRender = useCallback(() => {
     if (isLoading) return <Loading />;
     if (isError) return <Error />;
 
     return null;
   }, [isLoading, isError]);
+
   if (!data || !data.data || !data.data.length) return null;
 
   return (
-    <div ref={nftContainer} className="profile-widget-item profile-widget-full" id="nft">
+    <div
+      ref={nftContainer}
+      className="profile-widget-item profile-widget-full"
+      id="nft"
+    >
       <div className="profile-widget profile-widget-nft">
         <ExpandController
           expand={detailMode}
-          onToggle={() => setDetailMode(!detailMode)}
+          onToggle={() => {
+            setDetailMode(!detailMode);
+          }}
         />
         <div className="profile-widget-title">
           <span className="emoji-large mr-2">🖼</span>
