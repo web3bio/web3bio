@@ -9,9 +9,6 @@ const nextConfig = {
     locales: ["en"],
     defaultLocale: "en",
   },
-  compiler: {
-    removeConsole: true,
-  },
 };
 
 module.exports = nextConfig;

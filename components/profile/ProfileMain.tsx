@@ -3,7 +3,7 @@ import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { RenderWidgetItem } from "../profile/WidgetItem";
 import { PoapWidget } from "../profile/PoapsWidget";
-import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import { SocialPlatformMapping } from "../../utils/platform";
 import { Error } from "../shared/Error";
 import Avatar from "boring-avatars";
 import { formatText } from "../../utils/utils";
@@ -120,11 +120,12 @@ export default function ProfileMain(props) {
           <div className="web3-section-widgets">
             {data?.linksData?.map((item, idx) => {
               return (
-                <RenderWidgetItem
-                  key={idx}
-                  displayName={pageTitle}
-                  item={item}
-                />
+                <div key={idx} className="profile-widget-item">
+                  <RenderWidgetItem
+                    displayName={pageTitle}
+                    item={item}
+                  />
+                </div>
               );
             })}
           </div>
@@ -138,6 +139,8 @@ export default function ProfileMain(props) {
               network={platform}
               identity={data}
             />
+          </div>
+          <div className="web3-section-widgets">
             <PoapWidget
               onShowDetail={(v) => {
                 setDialogType(NFTDialogType.POAP);

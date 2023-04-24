@@ -16,8 +16,11 @@ import {
   regexUnstoppableDomains,
   regexSpaceid,
 } from "./regexp";
+
+const ArweaveAssetPrefix = "https://arweave.net/";
+
 export const formatText = (string, length?) => {
-  if(!string) return ''
+  if (!string) return "";
   const len = length ?? 12;
   if (string.length <= len) {
     return string;
@@ -184,9 +187,13 @@ export function isValidAddress(address?: string) {
   return EthereumAddress.isValid(address);
 }
 
-export const resolveMediaURL = (asset) => {
-  if (!asset) return null;
-  return asset.startsWith("data:", "https:") ? asset : resolveIPFS_URL(asset);
+export const resolveMediaURL = (url) => {
+  if (!url) return null;
+  return url.startsWith("data:", "https:")
+    ? url
+    : url.startsWith("ar://")
+    ? url.replaceAll("ar://", ArweaveAssetPrefix)
+    : resolveIPFS_URL(url);
 };
 
 export const resolveEipAssetURL = async (asset) => {

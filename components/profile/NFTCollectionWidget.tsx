@@ -1,17 +1,11 @@
-import { memo, useCallback, useState } from "react";
-import SVG from "react-inlinesvg";
+import { memo, useRef, useState } from "react";
 import { PlatformType } from "../../utils/platform";
-import { SocialPlatformMapping } from "../../utils/platform";
 import {
   NFTSCANFetcher,
   NFTSCAN_BASE_API_ENDPOINT,
   NFTSCAN_POLYGON_BASE_API,
 } from "../apis/nftscan";
 import useSWR from "swr";
-import { Loading } from "../shared/Loading";
-import { Error } from "../shared/Error";
-import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { resolveIPFS_URL } from "../../utils/ipfs";
 import { ExpandController } from "./ExpandController";
 import { NFTCollections } from "./NFTCollections";
 
@@ -33,62 +27,52 @@ function useCollections(address: string, network: PlatformType) {
 
 const RenderNFTCollectionWidget = (props) => {
   const { identity, onShowDetail, network } = props;
-  const { data, isLoading, isError } = useCollections(
+  const { data } = useCollections(
     identity.addresses?.eth ?? identity.owner,
     network
   );
-  const [detailMode, setDetailMode] = useState(false);
-  const toCertainNFT = (address: string) => {
-    localStorage.setItem("nft_anchor", address);
-    setDetailMode(true);
-  };
+  const [expand, setExpand] = useState(false);
+  const scrollContainer = useRef(null);
 
-  const getBoundaryRender = useCallback(() => {
-    if (isLoading) return <Loading />;
-    if (isError) return <Error />;
-
-    return null;
-  }, [isLoading, isError]);
   if (!data || !data.data || !data.data.length) return null;
 
   return (
-    <div className="profile-widget-item profile-widget-full" id="nft">
-      <div className="profile-widget profile-widget-nft">
+    <div
+      ref={scrollContainer}
+      className="profile-widget-item profile-widget-full"
+      id="nft"
+    >
+      <div className={`profile-widget profile-widget-nft${expand? ' active': ''}`}>
         <ExpandController
-          expand={detailMode}
-          onToggle={() => setDetailMode(!detailMode)}
+          expand={expand}
+          onToggle={() => {
+            setExpand(!expand);
+          }}
         />
         <div className="profile-widget-title">
           <span className="emoji-large mr-2">🖼</span>
           NFT Collections
         </div>
-        {(detailMode && (
-          <NFTCollections data={data} onShowDetail={onShowDetail} />
-        )) || (
-          <div className="widgets-collection-list noscrollbar">
-            {getBoundaryRender() ||
-              data.data.map((x, idx) => (
-                <div
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    toCertainNFT(x.contract_address);
-                  }}
-                  className="collection-item"
-                  key={idx}
-                >
-                  <NFTAssetPlayer
-                    className="collection-img"
-                    src={resolveIPFS_URL(x.logo_url)}
-                    alt={x.contract_name}
-                  />
-                  <div className="collection-name text-assistive">
-                    {x.contract_name}
-                  </div>
-                </div>
-              ))}
-          </div>
-        )}
+        <NFTCollections
+          handleScrollToAsset={(ref, v) => {
+            setExpand(true);
+            setTimeout(() => {
+              if (ref) {
+                const anchorElement = document.getElementById(v);
+                if (!anchorElement) return;
+                const top = anchorElement.offsetTop;
+                ref.current.scrollTo({
+                  top: top,
+                  behavior: "smooth",
+                });
+              }
+            }, 100);
+          }}
+          parentScrollRef={scrollContainer}
+          expand={expand}
+          data={data}
+          onShowDetail={onShowDetail}
+        />
       </div>
     </div>
   );
