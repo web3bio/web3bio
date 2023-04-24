@@ -5,11 +5,10 @@ import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { CollectionSwitcher } from "./CollectionSwitcher";
 
 const RenderNFTCollections = (props) => {
-  const { onShowDetail, data } = props;
+  const { onShowDetail, data, anchorAddress } = props;
   const [collections, setCollections] = useState([]);
-  const [anchorName, setAnchorName] = useState("");
 
-  const [activeCollection, setActiveCollection] = useState(null);
+  const [activeCollection, setActiveCollection] = useState(anchorAddress);
   const scrollContainer = useRef(null);
   useEffect(() => {
     const container = scrollContainer.current;
@@ -21,27 +20,16 @@ const RenderNFTCollections = (props) => {
           url: x.logo_url,
         }))
       );
-      const _anchor = localStorage.getItem("nft_anchor");
-      if (_anchor) {
-        setAnchorName(_anchor);
-        setActiveCollection(_anchor);
-        localStorage.removeItem("nft_anchor");
-      }
+      const _anchor = anchorAddress;
 
-      if (anchorName && scrollContainer) {
-        const anchorElement = document.getElementById(anchorName);
+      if (anchorAddress && scrollContainer) {
+        const anchorElement = document.getElementById(anchorAddress);
         const top = anchorElement.offsetTop;
         const parentOffset = anchorElement.parentElement.offsetTop;
         scrollContainer.current.scrollTo({
           top: top - parentOffset,
           behavior: "smooth",
         });
-        setTimeout(() => {
-          // to ensure the scroll end then clear the anchorName
-          if (anchorName) {
-            setAnchorName(null);
-          }
-        }, 2000);
       }
       const judgeActiveCollection = () => {
         const nav_contentRect = container.getBoundingClientRect();
@@ -85,7 +73,7 @@ const RenderNFTCollections = (props) => {
           passive: true,
         });
     }
-  }, [anchorName, activeCollection, data]);
+  }, [anchorAddress, activeCollection, data]);
 
   if (data && !data.data) return <Empty />;
   return (
@@ -96,7 +84,6 @@ const RenderNFTCollections = (props) => {
           currentSelect={activeCollection ?? collections[0].key}
           onSelect={(v) => {
             setActiveCollection(v);
-            setAnchorName(v);
           }}
         />
       )}

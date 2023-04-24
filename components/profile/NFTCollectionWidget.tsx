@@ -1,7 +1,5 @@
-import { memo, useCallback, useState } from "react";
-import SVG from "react-inlinesvg";
+import { memo, useCallback, useRef, useState } from "react";
 import { PlatformType } from "../../utils/platform";
-import { SocialPlatformMapping } from "../../utils/platform";
 import {
   NFTSCANFetcher,
   NFTSCAN_BASE_API_ENDPOINT,
@@ -38,9 +36,11 @@ const RenderNFTCollectionWidget = (props) => {
     network
   );
   const [detailMode, setDetailMode] = useState(false);
+  const [anchorAddress, setAnchorAddress] = useState(null);
+  const nftContainer = useRef(null);
   const toCertainNFT = (address: string) => {
-    localStorage.setItem("nft_anchor", address);
     setDetailMode(true);
+    setAnchorAddress(address);
   };
 
   const getBoundaryRender = useCallback(() => {
@@ -52,7 +52,7 @@ const RenderNFTCollectionWidget = (props) => {
   if (!data || !data.data || !data.data.length) return null;
 
   return (
-    <div className="profile-widget-item profile-widget-full" id="nft">
+    <div ref={nftContainer} className="profile-widget-item profile-widget-full" id="nft">
       <div className="profile-widget profile-widget-nft">
         <ExpandController
           expand={detailMode}
@@ -63,7 +63,11 @@ const RenderNFTCollectionWidget = (props) => {
           NFT Collections
         </div>
         {(detailMode && (
-          <NFTCollections data={data} onShowDetail={onShowDetail} />
+          <NFTCollections
+            anchorAddress={anchorAddress}
+            data={data}
+            onShowDetail={onShowDetail}
+          />
         )) || (
           <div className="widgets-collection-list noscrollbar">
             {getBoundaryRender() ||
