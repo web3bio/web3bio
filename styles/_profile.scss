@@ -1,6 +1,5 @@
 // New Profile
 .web3-profile {
-  overflow: hidden;
   padding: 2rem;
 
   @media screen and (max-width: $size-md) {
@@ -152,6 +151,7 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    overflow: hidden;
     padding: 1rem;
     text-decoration: none;
     transition: all .25s ease-in-out;

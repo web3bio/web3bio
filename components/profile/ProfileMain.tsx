@@ -138,8 +138,6 @@ export default function ProfileMain(props) {
               network={platform}
               identity={data}
             />
-          </div>
-          <div className="web3-section-widgets">
             <PoapWidget
               onShowDetail={(v) => {
                 setDialogType(NFTDialogType.POAP);
