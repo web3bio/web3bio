@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Link from "next/link";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { RenderWidgetItem } from "../profile/WidgetItem";
@@ -151,6 +152,11 @@ export default function ProfileMain(props) {
             />
           </div>
         </div>
+      </div>
+      <div className="web3bio-badge">
+        <Link href="/" className="footer-badge" title="Web3.bio">
+          A <strong>Web3.bio</strong> project crafted with <span className="text-pride">♥</span>
+        </Link>
       </div>
       {dialogOpen && curAsset && (
         <NFTDialog

@@ -780,9 +780,15 @@
   }
 }
 
-
-
 // Footer
-.footer {
-  
+.web3bio-badge {
+  align-items: center;
+  bottom: .5rem;
+  display: flex;
+  height: 2rem;
+  position: fixed;
+
+  .footer-badge {
+    
+  }
 }
