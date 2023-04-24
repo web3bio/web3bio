@@ -245,19 +245,19 @@
 
     .widgets-collection-list {
       display: flex;
-      flex-flow: column wrap;
-      height: 9rem;
-      width: 100%;
+      flex-wrap: nowrap;
+      height: 4rem;
+      margin: 0 -1rem;
       overflow-x: auto;
-      justify-content: center;
+      padding: 0 1rem;
 
       .collection-item {
         background: #fff;
         border-radius: .6rem;
-        height: 4rem;
+        height: 3.5rem;
         padding: .25rem;
         transition: all .25s ease-in-out;
-        width: 4rem;
+        width: 3.5rem;
 
         &::after {
           bottom: auto;
@@ -284,8 +284,8 @@
 
         .collection-img {
           border-radius: .5rem;
-          height: 100%;
-          width: 100%;
+          height: 3rem;
+          width: 3rem;
 
           .img-responsive {
             border-radius: .5rem;
@@ -376,7 +376,7 @@
 
     .widgets-collection-list {
       display: flex;
-      flex-flow: nowrap;
+      flex-wrap: nowrap;
       height: 5rem;
       margin: 0 -1rem;
       overflow-x: auto;
