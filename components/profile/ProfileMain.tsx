@@ -3,7 +3,7 @@ import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { RenderWidgetItem } from "../profile/WidgetItem";
 import { PoapWidget } from "../profile/PoapsWidget";
-import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import { SocialPlatformMapping } from "../../utils/platform";
 import { Error } from "../shared/Error";
 import Avatar from "boring-avatars";
 import { formatText } from "../../utils/utils";
