@@ -1,6 +1,6 @@
-// Profile
 // New Profile
 .web3-profile {
+  overflow: hidden;
   padding: 2rem;
 
   @media screen and (max-width: $size-md) {
@@ -138,8 +138,7 @@
       aspect-ratio: auto;
       flex: 1 1;
       height: auto;
-      max-height: 80vh;
-      overflow: hidden;
+      max-height: 90vh;
       width: 100%;
     }
   }
@@ -429,13 +428,6 @@
     z-index: -9;
   }
 
-  .btn-close {
-    position: absolute;
-    right: 1rem;
-    top: 1rem;
-    z-index: 999;
-  }
-
   .preview-container {
     background: $light-color;
     border-radius: .8rem;
@@ -444,14 +436,26 @@
     position: relative;
     width: 100%;
 
+    .btn-close {
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
+      z-index: 999;
+    }
+
     @media screen and (max-width: $size-md) {
-      height: 100vh;
+      height: 98vh;
       overflow-y: auto;
+      width: 96vw;
 
       .preview-image,
       .preview-content {
         border-radius: 0;
         max-width: none;
+      }
+
+      .btn-close {
+        position: fixed;
       }
     }
   }
@@ -677,96 +681,97 @@
   height: 100%;
   overflow: hidden auto;
   padding: 0 .5rem;
-}
 
-.nft-collection-list {
-  .nft-collection-item {
-    margin-top: .5rem;
-  }
-
-  .collection-title {
-    align-items: center;
-    display: flex;
-    padding: 1rem 0 .5rem 0;
-
-    .collection-logo {
-      flex: 0 0 1.2rem;
-      margin-right: .25rem;
-
-      .img-responsive {
-        border-radius: .4rem;
-        box-shadow: 0 .2rem .8rem rgba($dark-color, .2);
-        font-size: 1rem;
-        height: 1.2rem;
-        object-fit: cover;
-        width: 1.2rem;
-      }
+  .nft-collection-list {
+    .nft-collection-item {
+      margin-top: .5rem;
     }
-
-    .collection-name {
-      font-size: .8rem;
-      font-weight: 700;
-    }
-  }
-
-  .nft-list {
-    position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0 -.5rem 1rem -.5rem;
-
-    .nft-container {
-      flex: 0 0 33.3333%;
-      width: 33.3333%;
-      min-width: 8rem;
-
-      @media screen and (max-width: $size-md) {
-        flex: 0 0 50%;
-      }
-    }
-
-    .nft-item {
-      border-radius: .75rem;
-      padding: .5rem;
-      transition: all .25s ease-in-out;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-
-      &:focus,
-      &:hover {
-        background: lighten($bg-color, 2%);
-      }
-
-      .img-container {
-        margin-bottom: .5rem;
-
-        .img-responsive,
-        .video-responsive {
-          aspect-ratio: 1 / 1;
-          border-radius: .5rem;
-          box-shadow: 0 .2rem 1rem rgba($dark-color, .15), 0 .05rem .2rem rgba($dark-color, .05);
-          font-size: 4rem;
+  
+    .collection-title {
+      align-items: center;
+      display: flex;
+      padding: 1rem 0 .5rem 0;
+  
+      .collection-logo {
+        flex: 0 0 1.2rem;
+        margin-right: .25rem;
+  
+        .img-responsive {
+          border-radius: .4rem;
+          box-shadow: 0 .2rem .8rem rgba($dark-color, .2);
+          font-size: 1rem;
+          height: 1.2rem;
           object-fit: cover;
-          width: 100%;
+          width: 1.2rem;
         }
       }
-
+  
       .collection-name {
-        color: $gray-color-dark;
-        font-size: .5rem;
-
-      }
-
-      .nft-name {
-        font-size: .65rem;
+        font-size: .8rem;
         font-weight: 700;
-
+      }
+    }
+  
+    .nft-list {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 -.5rem 1rem -.5rem;
+  
+      .nft-container {
+        flex: 0 0 33.3333%;
+        width: 33.3333%;
+        min-width: 8rem;
+  
+        @media screen and (max-width: $size-md) {
+          flex: 0 0 50%;
+        }
+      }
+  
+      .nft-item {
+        border-radius: .75rem;
+        padding: .5rem;
+        transition: all .25s ease-in-out;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+  
+        &:focus,
+        &:hover {
+          background: lighten($bg-color, 2%);
+        }
+  
+        .img-container {
+          margin-bottom: .5rem;
+  
+          .img-responsive,
+          .video-responsive {
+            aspect-ratio: 1 / 1;
+            border-radius: .5rem;
+            box-shadow: 0 .2rem 1rem rgba($dark-color, .15), 0 .05rem .2rem rgba($dark-color, .05);
+            font-size: 4rem;
+            object-fit: cover;
+            width: 100%;
+          }
+        }
+  
+        .collection-name {
+          color: $gray-color-dark;
+          font-size: .5rem;
+  
+        }
+  
+        .nft-name {
+          font-size: .65rem;
+          font-weight: 700;
+        }
       }
     }
   }
 }
+
+
 
 // Footer
 .footer {

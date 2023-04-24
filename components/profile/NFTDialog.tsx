@@ -48,7 +48,7 @@ const NFTDialogRender = (props) => {
                       <a
                         href={asset.asset.event.event_url}
                         target="_blank"
-                        className="btn btn-primary btn-sm"
+                        className="btn btn-sm"
                       >
                         Website
                       </a>
