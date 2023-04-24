@@ -88,8 +88,6 @@ const RenderNFTCollections = (props) => {
           currentSelect={activeCollection ?? collections[0].key}
           onSelect={(v) => {
             setActiveCollection(v);
-           
-
             handleScrollToAsset(insideScrollContainer,v);
           }}
         />
