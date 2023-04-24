@@ -139,6 +139,8 @@
       flex: 1 1;
       height: auto;
       max-height: 80vh;
+      overflow: hidden;
+      width: 100%;
     }
   }
 
@@ -247,7 +249,7 @@
       flex-flow: column wrap;
       height: 9rem;
       width: 100%;
-      overflow-x: scroll;
+      overflow-x: auto;
       justify-content: center;
 
       .collection-item {
