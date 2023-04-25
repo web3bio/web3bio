@@ -24,6 +24,8 @@ const RenderCollectionSwitcher = (props) => {
             <NFTAssetPlayer
               className="collection-img"
               src={item.url}
+              height={52}
+              width={52}
               alt={item.name}
             />
             <div className="collection-name text-assistive">{item.name}</div>
