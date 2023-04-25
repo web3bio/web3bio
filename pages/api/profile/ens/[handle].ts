@@ -51,15 +51,6 @@ const provider = new StaticJsonRpcProvider(
   process.env.NEXT_PUBLIC_ETHEREUM_RPC_URL
 );
 
-const resolve = (from: string, to: string) => {
-  const resolvedUrl = new URL(to, new URL(from, "resolve://"));
-  if (resolvedUrl.protocol === "resolve:") {
-    const { pathname, search, hash } = resolvedUrl;
-    return `${pathname}${search}${hash}`;
-  }
-  return resolvedUrl.toString();
-};
-
 const resolveHandleFromURL = async (
   handle: string,
   res: NextApiResponse<HandleResponseData | HandleNotFoundResponseData>
@@ -71,6 +62,9 @@ const resolveHandleFromURL = async (
     if (isAddress(handle)) {
       address = getAddress(handle);
       ensDomain = (await provider.lookupAddress(address)) || null;
+      if (!ensDomain) {
+        return errorHandle(handle, res);
+      }
       avatar = (await provider.getAvatar(ensDomain)) || null;
     } else {
       if (!regexEns.test(handle)) return errorHandle(handle, res);
@@ -78,14 +72,14 @@ const resolveHandleFromURL = async (
         provider.resolveName(handle),
         provider.getAvatar(handle),
       ]);
+      if (!address) return errorHandle(handle, res);
       ensDomain = handle;
     }
 
     const gtext = await getENSTexts(ensDomain);
     const resolver = await provider.getResolver(ensDomain);
     if (!resolver) {
-      errorHandle(handle, res);
-      return;
+      return errorHandle(handle, res);
     }
     let LINKRES = {};
     let CRYPTORES = {

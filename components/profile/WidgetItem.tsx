@@ -59,7 +59,7 @@ const WidgetItem = (props) => {
           rel="noopener noreferrer"
           style={{
             ["--widget-primary-color" as string]: SocialPlatformMapping(item.platform)?.color,
-            ["--widget-bg-color" as string]: colorMod(SocialPlatformMapping(item.platform)?.color, 5)
+            ["--widget-bg-color" as string]: colorMod(SocialPlatformMapping(item.platform)?.color, 10)
           }}
         >
           <div 
@@ -69,6 +69,8 @@ const WidgetItem = (props) => {
               src={`https://icon.horse/icon/${item.handle}`} 
               alt={`${item.handle} Website Favicon`} 
               loading="lazy"
+              height={24}
+              width={24}
             />
           </div>
           <div className="platform-title">{SocialPlatformMapping(item.platform)?.label}</div>
@@ -88,7 +90,7 @@ const WidgetItem = (props) => {
           className={`profile-widget ${item.platform}`}
           style={{
             ["--widget-primary-color" as string]: SocialPlatformMapping(item.platform)?.color,
-            ["--widget-bg-color" as string]: colorMod(SocialPlatformMapping(item.platform)?.color, 5)
+            ["--widget-bg-color" as string]: colorMod(SocialPlatformMapping(item.platform)?.color, 10)
           }}
         >
           <div 
