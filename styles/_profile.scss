@@ -799,12 +799,20 @@
 // Footer
 .web3bio-badge {
   align-items: center;
+  background: lighten($bg-color, 1%);
+  border: .05rem solid $border-color;
+  border-radius: .6rem;
   display: flex;
   height: 2rem;
   padding: .5rem;
   
   @media screen and (min-width: $size-lg) {
-    bottom: .5rem;
+    bottom: 1rem;
     position: fixed;
+  }
+
+  .footer-badge {
+    
+    text-decoration: none;
   }
 }

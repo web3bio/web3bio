@@ -26,7 +26,7 @@ export const Loading = (props: LoadingProps) => {
     <>
       <div className="loading-container" style={styles}>
         <div className="loading"></div>
-        {placeholder && <div className="loading-subtitle mt-2">{placeholder}</div>}
+        {placeholder && <div className="loading-subtitle mt-4">{placeholder}</div>}
       </div>
       {retry && second >= TIMEOUT_SECOND && (
         <>
