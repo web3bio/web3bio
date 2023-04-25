@@ -2,7 +2,7 @@ import { PlatformType } from "../../utils/platform";
 
 const resolveSearchHandle = (identity) => {
   return {
-    [PlatformType.ethereum]: identity.displayName,
+    [PlatformType.ethereum]: identity.displayName || identity.identity,
     [PlatformType.twitter]: identity.identity,
     [PlatformType.farcaster]: identity.identity,
     [PlatformType.dotbit]: identity.identity,
@@ -11,7 +11,7 @@ const resolveSearchHandle = (identity) => {
 };
 export const fetchProfile = async (identity) => {
   try {
-    const handle = resolveSearchHandle(identity);
+    const handle = resolveSearchHandle(identity)
     const platform =
       identity.platform === PlatformType.ethereum
         ? PlatformType.ens

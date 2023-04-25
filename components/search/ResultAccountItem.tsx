@@ -86,7 +86,7 @@ const RenderAccountItem = (props) => {
           <div
             onClick={() => {
               onItemClick(
-                identity.displayName || identity.identity,
+                profile?.identity || identity.displayName || identity.identity,
                 PlatformType.ens
               );
             }}

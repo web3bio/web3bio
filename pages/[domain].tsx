@@ -52,13 +52,16 @@ export async function getServerSideProps({ params, res }) {
         PlatformType.farcaster,
         PlatformType.twitter,
         PlatformType.lens,
+        PlatformType.ethereum,
       ].includes(platform)
     )
       return {
         notFound: true,
       };
     const res = await fetch(
-      `https://web3.bio/api/profile/${platform}/${params.domain}`
+      `https://web3.bio/api/profile/${
+        platform === PlatformType.ethereum ? PlatformType.ens : platform
+      }/${params.domain}`
     );
     if (res.status == 404) return { notFound: true };
     const data = await res.json();

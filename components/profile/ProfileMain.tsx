@@ -51,6 +51,8 @@ export default function ProfileMain(props) {
                   className="avatar"
                   loading="lazy"
                   alt={`${pageTitle} Avatar / Profile Photo`}
+                  height={180}
+                  width={180}
                 />
               ) : (
                 <Avatar

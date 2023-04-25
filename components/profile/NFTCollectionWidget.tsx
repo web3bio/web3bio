@@ -39,7 +39,7 @@ const RenderNFTCollectionWidget = (props) => {
   return (
     <div
       ref={scrollContainer}
-      className="profile-widget-item profile-widget-full"
+      className="profile-widget-full"
       id="nft"
     >
       <div className={`profile-widget profile-widget-nft${expand? ' active': ''}`}>
