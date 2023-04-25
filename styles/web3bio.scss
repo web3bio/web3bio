@@ -284,25 +284,6 @@ body {
   padding: .5rem;
   position: sticky;
   top: 90vh;
-
-  .footer-feedback {
-    @media screen and (min-width: $size-md) {
-      bottom: 1rem;
-      position: fixed;
-      right: 1rem;
-    }
-
-    span {
-      transition: transform .15s ease-in-out;
-    }
-
-    &:focus,
-    &:hover {
-      span {
-        transform: scale(1.5) rotate(-10deg);
-      }
-    }
-  }
 }
 
 .card-feature {
@@ -355,7 +336,7 @@ body {
           justify-content: center;
 
           &.avatar-1 {
-            background: rgba(#EC79F6, .25);
+            
           }
 
           &.avatar-2 {

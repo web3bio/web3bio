@@ -88,12 +88,15 @@
   }
 
   .profile-location {
+    align-items: center;
+    display: flex;
     margin-bottom: .5rem;
   }
 
   .profile-email {
+    align-items: center;
+    display: flex;
     margin-bottom: 1rem;
-    vertical-align: middle;
 
     a {
       border-bottom: .05rem dashed;
@@ -796,23 +799,37 @@
   }
 }
 
+// Share
+.share {
+  display: flex;
+  height: 6rem;
+  width: 16rem;
+}
+
 // Footer
 .web3bio-badge {
   align-items: center;
-  background: lighten($bg-color, 1%);
-  border: .05rem solid $border-color;
   border-radius: .6rem;
   display: flex;
-  height: 2rem;
+  opacity: .85;
   padding: .5rem;
+  transition: opacity .25s ease-in-out;
   
   @media screen and (min-width: $size-lg) {
     bottom: 1rem;
     position: fixed;
   }
 
-  .footer-badge {
-    
-    text-decoration: none;
+  span {
+    transition: transform .15s ease-in-out;
+  }
+
+  &:focus,
+  &:hover {
+    opacity: 1;
+
+    span {
+      transform: scale(1.5) rotate(-10deg);
+    }
   }
 }

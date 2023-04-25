@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { RenderWidgetItem } from "../profile/WidgetItem";
@@ -17,6 +18,7 @@ export default function ProfileMain(props) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [curAsset, setCurAsset] = useState(null);
   const [dialogType, setDialogType] = useState(NFTDialogType.NFT);
+  const { asPath } = useRouter();
 
   const onCopySuccess = () => {
     setCopied(true);
@@ -27,12 +29,10 @@ export default function ProfileMain(props) {
 
   if (!data || data.error) {
     return (
-      <div className="web3-profile container">
-        <Error
-          retry={() => window.location.reload()}
-          msg={data.error || "Error"}
-        />
-      </div>
+      <Error
+        retry={() => window.location.reload()}
+        msg={data.error || "Error"}
+      />
     );
   }
   return (
@@ -76,45 +76,51 @@ export default function ProfileMain(props) {
             } Web3 Profile`}</h1>
             <h2 className="text-assistive">{`${pageTitle} Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`}</h2>
             <div className="profile-name">{data.displayName}</div>
-            {data.identity == data.displayName ? (
-              <div className="profile-identity">
-                {formatText(data.owner)}
-                <h3 className="text-assistive">{`${pageTitle} wallet address is ${data.owner}`}</h3>
-                <Clipboard
-                  component="div"
-                  className="action"
-                  data-clipboard-text={data.owner}
-                  onSuccess={onCopySuccess}
-                >
-                  <SVG src="../icons/icon-copy.svg" width={20} height={20} />
-                  {copied && <div className="tooltip-copy">COPIED</div>}
-                </Clipboard>
-              </div>
-            ) : (
-              <div className="profile-identity" title={data.owner}>
-                {data.identity}
-                {" · "}
-                {formatText(data.owner)}
-                <Clipboard
-                  component="div"
-                  className="action"
-                  data-clipboard-text={data.owner}
-                  onSuccess={onCopySuccess}
-                >
-                  <SVG src="../icons/icon-copy.svg" width={20} height={20} />
-                  {copied && <div className="tooltip-copy">COPIED</div>}
-                </Clipboard>
-              </div>
-            )}
+            <div className="profile-identity">
+              {data.identity == data.displayName ? (
+                <>
+                  <span className="profile-label">{formatText(data.owner)}</span>
+                  <h3 className="text-assistive">{`${pageTitle} wallet address is ${data.owner}`}</h3>
+                  <Clipboard
+                    component="div"
+                    className="action"
+                    data-clipboard-text={data.owner}
+                    onSuccess={onCopySuccess}
+                  >
+                    <SVG src="../icons/icon-copy.svg" width={20} height={20} />
+                    {copied && <div className="tooltip-copy">COPIED</div>}
+                  </Clipboard>
+                </>
+              ) : (
+                <>
+                  <span className="profile-label mr-2">{data.identity}</span>
+                  {" · "}
+                  <span className="profile-label ml-2">
+                  {formatText(data.owner)}
+                  </span>
+                  <Clipboard
+                    component="div"
+                    className="action"
+                    data-clipboard-text={data.owner}
+                    onSuccess={onCopySuccess}
+                  >
+                    <SVG src="../icons/icon-copy.svg" width={20} height={20} />
+                    {copied && <div className="tooltip-copy">COPIED</div>}
+                  </Clipboard>
+                </>
+              )}
+            </div>
+
             {data.description && (
               <h2 className="profile-description">{data.description}</h2>
             )}
             {data.location && (
-              <div className="profile-location">📍 {data.location}</div>
+              <div className="profile-location"><span style={{"fontSize": "20px", "marginRight": "5px"}}>📍</span> {data.location}</div>
             )}
             {data.email && (
               <div className="profile-email">
-                ✉️ <a href={`mailto:${data.email}`}>{data.email}</a>
+                <span style={{"fontSize": "20px", "marginRight": "5px"}}>✉️</span>
+                <a href={`mailto:${data.email}`}>{data.email}</a>
               </div>
             )}
           </div>
@@ -156,8 +162,12 @@ export default function ProfileMain(props) {
         </div>
       </div>
       <div className="web3bio-badge">
-        <Link href="/" className="footer-badge" title="Web3.bio">
-          A <strong>Web3.bio</strong> project crafted with <span className="text-pride">♥</span>
+        <Link href="/" className="btn btn-sm btn-primary" title="Web3.bio Web3 Identity Graph search and link in bio profile platform">
+          <span className="mr-2">👋</span>Made with <strong className="text-pride ml-1 mr-1">Web3.bio</strong>
+        </Link>
+        <Link href="/" className="btn btn-sm d-none" title="Web3.bio">
+          <SVG src="../icons/icon-share.svg" width={20} height={20} />
+          Share
         </Link>
       </div>
       {dialogOpen && curAsset && (
