@@ -22,8 +22,7 @@
 }
 
 .web3-profile-base {
-  margin: .5rem;
-  padding-bottom: 1rem;
+  padding: .5rem .5rem 1rem .5rem;
   position: sticky;
   top: 2.5rem;
 
@@ -123,14 +122,14 @@
   .profile-widget-item {
     aspect-ratio: 1 / 1;
     padding: .5rem;
-    width: 25%;
+    width: 50%;
 
-    @media screen and (max-width: $size-md) {
+    @media screen and (min-width: $size-sm) {
       width: 33.333%;
     }
 
-    @media screen and (max-width: $size-sm) {
-      width: 50%;
+    @media screen and (min-width: $size-xl) {
+      width: 25%;
     }
 
     &.profile-widget-full {
@@ -163,9 +162,11 @@
       box-shadow: 0 .4rem 1.6rem -.4rem rgba($dark-color, .15), 0 .1rem .2rem rgba($dark-color, .01);
       z-index: 99;
 
-      .platform-action {
-        .btn {
-          display: inline-flex;
+      @media screen and (min-width: $size-md) {
+        .platform-action {
+          .btn {
+            display: inline-flex;
+          }
         }
       }
     }
@@ -381,7 +382,7 @@
   .profile-widget-poap {
     aspect-ratio: auto;
     background: #F5F4FE;
-    border-color: darken(#F5F4FE, 10%);
+    border-color: darken(#F5F4FE, 3%);
     color: #463E68;
 
     .widgets-collection-list {
@@ -515,6 +516,12 @@
       max-height: 23rem;
       max-width: 23rem;
       width: 100%;
+    }
+
+    .img-placeholder {
+      font-size: 6rem;
+      height: 12rem;
+      width: 12rem;
     }
   }
 
@@ -783,12 +790,12 @@
 // Footer
 .web3bio-badge {
   align-items: center;
-  bottom: .5rem;
   display: flex;
   height: 2rem;
-  position: fixed;
-
-  .footer-badge {
-    
+  padding: .5rem;
+  
+  @media screen and (min-width: $size-lg) {
+    bottom: .5rem;
+    position: fixed;
   }
 }

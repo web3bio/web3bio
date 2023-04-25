@@ -69,6 +69,8 @@ const WidgetItem = (props) => {
               src={`https://icon.horse/icon/${item.handle}`} 
               alt={`${item.handle} Website Favicon`} 
               loading="lazy"
+              height={24}
+              width={24}
             />
           </div>
           <div className="platform-title">{SocialPlatformMapping(item.platform)?.label}</div>
