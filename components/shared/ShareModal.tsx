@@ -3,6 +3,7 @@ import SVG from "react-inlinesvg";
 import Clipboard from "react-clipboard.js";
 import QRCode from "qrcode";
 import Image from "next/image";
+import { Loading } from "./Loading";
 const shareMap = [
   {
     icon: "icons/icon-twitter.svg",
@@ -41,7 +42,7 @@ export default function ShareModal(props) {
   useEffect(() => {
     if (canvasContainer && canvasContainer.current) {
       QRCode.toDataURL(window.location.href, (err, url) => {
-        if (err) console.log(err);
+        if (err) console.error(err);
         setQrcode(url);
       });
     }
@@ -58,7 +59,7 @@ export default function ShareModal(props) {
       >
         <h5>Share link to Web3.bio</h5>
         <div ref={canvasContainer} className="qrcode-container">
-          <Image fill src={qrcode} alt="" />
+          {(qrcode && <Image fill src={qrcode} alt="" />) || <Loading />}
         </div>
         <div className="share-item-box">
           {shareMap.map((x) => {
