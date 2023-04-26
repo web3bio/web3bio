@@ -1,4 +1,3 @@
-import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { NextSeo } from "next-seo";
@@ -7,6 +6,7 @@ import SVG from "react-inlinesvg";
 import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
 import dynamic from "next/dynamic";
 import SearchInput from "../components/profile/SearchInput";
+import ShareButton from "../components/shared/ShareButton";
 
 const DynamicProfileModal = dynamic(
   () => import("../components/profile/ProfileModal")
@@ -78,9 +78,7 @@ export default function Home() {
   });
   return (
     <div>
-      <NextSeo 
-        title={searchTerm ? `${searchTerm} - Web3.bio` : "Web3.bio"} 
-      />
+      <NextSeo title={searchTerm ? `${searchTerm} - Web3.bio` : "Web3.bio"} />
       <main className="web3bio-container">
         <div className="web3bio-cover flare"></div>
 
@@ -332,6 +330,7 @@ export default function Home() {
                 >
                   Next.ID
                 </a>
+                <ShareButton />
               </div>
             </div>
           </div>

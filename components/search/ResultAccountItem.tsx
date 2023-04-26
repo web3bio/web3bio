@@ -6,7 +6,6 @@ import SVG from "react-inlinesvg";
 import { formatText } from "../../utils/utils";
 import { RenderSourceFooter } from "./SourcesFooter";
 import { PlatformType } from "../../utils/platform";
-import { Avatar } from "../shared/Avatar";
 
 const RenderAccountItem = (props) => {
   const onCopySuccess = () => {
