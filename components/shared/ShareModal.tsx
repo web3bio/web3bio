@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SVG from "react-inlinesvg";
 import Clipboard from "react-clipboard.js";
-
+import QRCode from "qrcode";
+import Image from "next/image";
 const shareMap = [
   {
     icon: "icons/icon-twitter.svg",
@@ -27,6 +28,8 @@ export default function ShareModal(props) {
   const handleShareItemClick = (item) => {
     window.open(item.shareURL(window.location.href, item.text));
   };
+  const [qrcode, setQrcode] = useState("");
+  const canvasContainer = useRef(null);
   const [copied, setCopied] = useState(null);
   const onCopySuccess = () => {
     setCopied(true);
@@ -34,6 +37,16 @@ export default function ShareModal(props) {
       setCopied(false);
     }, 1500);
   };
+
+  useEffect(() => {
+    if (canvasContainer && canvasContainer.current) {
+      QRCode.toDataURL(window.location.href, (err, url) => {
+        if (err) console.log(err);
+        setQrcode(url);
+      });
+    }
+  }, [canvasContainer]);
+
   return (
     <div className="web3bio-mask-cover" onClick={onClose}>
       <div
@@ -44,6 +57,9 @@ export default function ShareModal(props) {
         }}
       >
         <h5>Share link to Web3.bio</h5>
+        <div ref={canvasContainer} className="qrcode-container">
+          <Image fill src={qrcode} alt="" />
+        </div>
         <div className="share-item-box">
           {shareMap.map((x) => {
             return x.key === "copy" ? (

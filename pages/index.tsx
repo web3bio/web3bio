@@ -312,7 +312,7 @@ export default function Home() {
                   />
                 </a>
               </div>
-              <div className="mt-2">
+              <div className="mt-2 web3bio-share-container">
                 A{" "}
                 <a
                   href="https://web3.bio"

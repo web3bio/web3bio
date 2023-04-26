@@ -284,6 +284,7 @@ body {
   font-weight: 500;
   padding: .5rem;
   position: sticky;
+  z-index: 99;
   top: 90vh;
 
   .footer-feedback {
@@ -541,4 +542,11 @@ body {
   &::-webkit-scrollbar {
     display: none;
   }
+}
+
+.web3bio-share-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
 }

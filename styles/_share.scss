@@ -18,7 +18,12 @@
     flex-direction: column;
     align-items: center;
     justify-items: center;
-
+    .qrcode-container{
+        position: relative;
+        width: 8rem;
+        height: 8rem;
+        border-radius: .5rem;
+    }
     .share-item-box {
         display: flex;
         gap: 1rem;
