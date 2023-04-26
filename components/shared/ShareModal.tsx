@@ -6,21 +6,11 @@ const shareMap = [
   {
     icon: "icons/icon-twitter.svg",
     shareURL: (url, text) =>
-      `https://twitter.com/share?url=${encodeURIComponent(
+      `https://twitter.com/intent/tweet?url=${encodeURIComponent(
         url
-      )}&text=${encodeURIComponent(text)}`,
+      )}&text=${encodeURIComponent(text)}&via=web3bio`,
     text: "Twitter",
   },
-  //   {
-  //     icon: "icons/icon-instagram.svg",
-  //     url: "",
-  //     text: "Instagram",
-  //   },
-  //   {
-  //     icon: "icons/icon-email.svg",
-  //     url: "",
-  //     text: "E-mail",
-  //   },
   {
     icon: "icons/icon-telegram.svg",
     shareURL: (url, text) =>
