@@ -59,7 +59,7 @@ export async function getServerSideProps({ params, res }) {
         notFound: true,
       };
     const res = await fetch(
-      `https://web3.bio/api/profile/${
+      `https://api.web3.bio/profile/${
         platform === PlatformType.ethereum ? PlatformType.ens : platform
       }/${params.domain}`
     );
