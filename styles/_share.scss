@@ -12,7 +12,7 @@
     box-sizing: border-box;
     padding: 1rem;
     color: $dark-color;
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(1rem);
     background: $light-color;
     display: flex;
     flex-direction: column;
@@ -38,8 +38,8 @@
             align-items: center;
             justify-content: center;
             gap: .2rem;
-            height: 40px;
-            width: 40px;
+            height: 2.25rem;
+            width: 2.25rem;
             border-color: rgba($dark-color, 0.05);
             transition: all 0.15s ease-in-out 0s;
             transform-origin: center center;
