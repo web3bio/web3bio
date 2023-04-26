@@ -33,10 +33,19 @@ const RenderPoapWidget = (props) => {
   
   if (!data || !data.length) return null;
   return (
-    <div className="profile-widget-full" id="poap">
-      <div className="profile-widget profile-widget-poap">
+    <div 
+      className={`${data.length > 8 ? "profile-widget-full" : "profile-widget-half"}`}
+      id="poap"
+    >
+      <div 
+        className="profile-widget profile-widget-poap"
+      >
         <div className="profile-widget-title">
-          <SVG src="../icons/icon-poap.svg" width={32} height={32} />
+          <div 
+            className="platform-icon mr-2"
+          >
+            <SVG src={`../icons/icon-poap.svg`} width={32} height={32} />
+          </div>
           POAP
         </div>
         <div className="widgets-collection-list noscrollbar">

@@ -44,6 +44,7 @@ export enum PlatformType {
   jike = "jike",
   dribbble = "dribbble",
   nostr = "nostr",
+  poap = "poap",
 }
 
 export const platfomData: { [key in PlatformType]: SocialPlatform } = {
@@ -165,7 +166,6 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     key: PlatformType.instagram,
     color: "#EA3377",
     icon: "icons/icon-instagram.svg",
-    iconW: "icons/icon-instagram-w.svg",
     label: "Instagram",
     ensText: ["com.instagram"],
     dotbitText: ["profile.instagram"],
@@ -174,9 +174,7 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.weibo]: {
     key: PlatformType.instagram,
     icon: "",
-    iconW: "",
     label: "Weibo",
-    ensText: [],
     dotbitText: ["profile.weibo"],
     urlPrefix: "https://m.weibo.cn/",
   },
@@ -186,7 +184,6 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     icon: "icons/icon-dotbit.svg",
     iconW: "icons/icon-dotbit-w.svg",
     label: ".bit",
-    ensText: [],
     urlPrefix: "https://data.did.id/",
   },
   [PlatformType.rss3]: {
@@ -199,9 +196,7 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.cyberconnect]: {
     key: PlatformType.cyberconnect,
     color: "#000000",
-    // TODO: icons to add
     icon: "icons/icon-cyberconnect.svg",
-    iconW: "icons/icon-cyberconnect-w.svg",
     label: "CyberConnect",
     ensText: [],
   },
@@ -209,7 +204,6 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     key: PlatformType.opensea,
     color: "#407FDB",
     icon: "icons/icon-opensea.svg",
-    iconW: "icons/icon-opensea.svg",
     label: "OpenSea",
     ensText: [],
     urlPrefix: "https://opensea.io/",
@@ -217,9 +211,7 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.sybil]: {
     key: PlatformType.sybil,
     color: "#4125E1",
-    // TODO: icons to add
     icon: "icons/icon-sybil.svg",
-    iconW: "icons/icon-sybil-w.svg",
     label: "Sybil",
     ensText: [],
     urlPrefix: "https://sybil.org/",
@@ -228,7 +220,6 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     key: PlatformType.discord,
     color: "#5865f2",
     icon: "icons/icon-discord.svg",
-    iconW: "icons/icon-discord-w.svg",
     label: "Discord",
     ensText: ["com.discord"],
     dotbitText: ["profile.discord"],
@@ -281,7 +272,6 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.youtube]: {
     key: PlatformType.youtube,
     icon: "",
-    iconW: "",
     label: "Youtube",
     urlPrefix: "https://www.youtube.com/",
     dotbitText: ["profile.youtube"],
@@ -289,7 +279,6 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.tiktok]: {
     key: PlatformType.tiktok,
     icon: "",
-    iconW: "",
     label: "TikTok",
     urlPrefix: "https://www.tiktok.com/",
     dotbitText: ["profile.tiktok"],
@@ -297,7 +286,6 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.bilibili]: {
     key: PlatformType.bilibili,
     icon: "",
-    iconW: "",
     label: "Bilibili",
     urlPrefix: "https://www.bilibili.com/",
     dotbitText: ["profile.bilibili"],
@@ -305,7 +293,6 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.medium]: {
     key: PlatformType.medium,
     icon: "icons/social-medium.svg",
-    iconW: "",
     label: "Medium",
     urlPrefix: "https://medium.com/",
     dotbitText: ["profile.medium"],
@@ -313,7 +300,6 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.mirror]: {
     key: PlatformType.mirror,
     icon: "",
-    iconW: "",
     label: "Mirror",
     urlPrefix: "https://mirror.xyz/",
     dotbitText: ["profile.mirror"],
@@ -321,7 +307,6 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.jike]: {
     key: PlatformType.jike,
     icon: "",
-    iconW: "",
     label: "Jike",
     urlPrefix: "https://web.okjike.com/",
     dotbitText: ["profile.jike"],
@@ -329,7 +314,6 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.dribbble]: {
     key: PlatformType.dribbble,
     icon: "",
-    iconW: "",
     label: "Dribbble",
     urlPrefix: "https://dribbble.com/search/",
     dotbitText: ["profile.dribbble"],
@@ -337,10 +321,16 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.nostr]: {
     key: PlatformType.nostr,
     icon: "",
-    iconW: "",
     label: "Nostr",
     urlPrefix: "https://app.coracle.social/",
     dotbitText: ["profile.nostr"],
+  },
+  [PlatformType.poap]: {
+    key: PlatformType.poap,
+    icon: "icons/icon-poap.svg",
+    color: "#463E68",
+    label: "POAP",
+    urlPrefix: "https://app.poap.xyz/scan/",
   },
 };
 
