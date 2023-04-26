@@ -29,7 +29,7 @@ const WidgetItem = (props) => {
       return (
         <Link
           href={item.link}
-          className={`profile-widget ${item.platform}`}
+          className={`profile-widget profile-widget-link ${item.platform}`}
           title={`Open ${displayName} ${SocialPlatformMapping(item.platform)?.label}`}
           target="_blank"
           rel="noopener noreferrer"
@@ -53,7 +53,7 @@ const WidgetItem = (props) => {
       return (
         <Link
           href={item.link}
-          className={`profile-widget ${item.platform}`}
+          className={`profile-widget profile-widget-link ${item.platform}`}
           title={`Open ${displayName} ${SocialPlatformMapping(item.platform)?.label}`}
           target="_blank"
           rel="noopener noreferrer"
@@ -87,7 +87,7 @@ const WidgetItem = (props) => {
           component="div"
           data-clipboard-text={item.handle}
           onSuccess={onCopySuccess}
-          className={`profile-widget ${item.platform}`}
+          className={`profile-widget profile-widget-link ${item.platform}`}
           style={{
             ["--widget-primary-color" as string]: SocialPlatformMapping(item.platform)?.color,
             ["--widget-bg-color" as string]: colorMod(SocialPlatformMapping(item.platform)?.color, 10)
@@ -114,7 +114,7 @@ const WidgetItem = (props) => {
       return (
         <Link
           href={item.link}
-          className={`profile-widget ${item.platform}`}
+          className={`profile-widget profile-widget-link ${item.platform}`}
           title={`Open ${displayName} ${SocialPlatformMapping(item.platform)?.label}`}
           target="_blank"
           rel="noopener noreferrer"

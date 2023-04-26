@@ -162,12 +162,8 @@ export default function ProfileMain(props) {
         </div>
       </div>
       <div className="web3bio-badge">
-        <Link href="/" className="btn btn-sm btn-primary" title="Web3.bio Web3 Identity Graph search and link in bio profile platform">
+        <Link href="/" target="_blank" className="btn btn-sm btn-primary" title="Web3.bio Web3 Identity Graph search and link in bio profile platform">
           <span className="mr-2">👋</span>Made with <strong className="text-pride ml-1 mr-1">Web3.bio</strong>
-        </Link>
-        <Link href="/" className="btn btn-sm d-none" title="Web3.bio">
-          <SVG src="../icons/icon-share.svg" width={20} height={20} />
-          Share
         </Link>
       </div>
       {dialogOpen && curAsset && (
