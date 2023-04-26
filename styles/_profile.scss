@@ -88,12 +88,15 @@
   }
 
   .profile-location {
+    align-items: center;
+    display: flex;
     margin-bottom: .5rem;
   }
 
   .profile-email {
+    align-items: center;
+    display: flex;
     margin-bottom: 1rem;
-    vertical-align: middle;
 
     a {
       border-bottom: .05rem dashed;
@@ -147,6 +150,14 @@
     width: 100%;
   }
 
+  .profile-widget-half {
+    aspect-ratio: auto;
+    height: auto;
+    max-height: 90vh;
+    padding: .5rem;
+    width: 50%;
+  }
+
   .profile-widget {
     background: $light-color;
     border: .05rem solid rgba($dark-color, .075);
@@ -163,18 +174,16 @@
     width: 100%;
     will-change: transform;
 
-    &:focus,
-    &:hover {
-      box-shadow: 0 .4rem 1.6rem -.4rem rgba($dark-color, .15), 0 .1rem .2rem rgba($dark-color, .01);
-      z-index: 99;
-
-      .platform-icon {
-        box-shadow: inset 0 0 0 .05rem rgba($dark-color, .1), 0 .2rem .4rem rgba($dark-color, .2), 1rem 0 10rem 2rem var(--widget-bg-color);
-      }
-
-      .platform-action {
-        .btn {
-          display: inline-flex;
+    &.profile-widget-link {
+      &:focus,
+      &:hover {
+        box-shadow: 0 .4rem 1.6rem -.4rem rgba($dark-color, .15), 0 .1rem .2rem rgba($dark-color, .01);
+        z-index: 99;
+  
+        .platform-action {
+          .btn {
+            opacity: 1;
+          }
         }
       }
     }
@@ -183,7 +192,7 @@
       align-items: center;
       background: var(--widget-primary-color, $light-color);
       border-radius: .6rem;
-      box-shadow: inset 0 0 0 .05rem rgba($dark-color, .1), 0 .2rem .4rem rgba($dark-color, .2), 1rem 0 6rem 3rem var(--widget-bg-color);
+      box-shadow: inset 0 0 0 .05rem rgba($dark-color, .1), 0 .2rem .4rem rgba($dark-color, .15), 1rem 0 6rem 3rem var(--widget-bg-color);
       color: $light-color;
       display: flex;
       flex: 0 0 2rem;
@@ -194,6 +203,7 @@
 
       &.website {
         background: $light-color;
+        box-shadow: inset 0 0 0 .05rem rgba($dark-color, .1), 0 .2rem .4rem rgba($dark-color, .05), 1rem 0 6rem 3rem var(--widget-bg-color);
 
         img {
           border-radius: .2rem;
@@ -221,7 +231,7 @@
 
       &.active {
         .btn {
-          display: inline-flex;
+          opacity: 1;
         }
       }
 
@@ -229,7 +239,8 @@
         background: var(--widget-primary-color, lighten($bg-color, 2%));
         border: .05rem solid rgba($dark-color, .075);
         color: $light-color;
-        display: none;
+        opacity: 0;
+        transition: opacity .2s ease-in-out;
         position: relative;
       }
     }
@@ -242,6 +253,7 @@
     }
   }
 
+  // NFT Widget
   .profile-widget-nft {
     background: $light-color;
     border-color: lighten($bg-color, 3%);
@@ -249,7 +261,7 @@
 
     &.active {
       .collection-switcher {
-        box-shadow: 0 .4rem .4rem -.2rem rgba($dark-color, .05);
+        box-shadow: 0 .4rem .4rem -.2rem rgba($dark-color, .1);
       }
     }
 
@@ -318,81 +330,18 @@
           }
         }
       }
-
-      .collection-switcher {
-        background: $light-color;
-        user-select: none;
-        height: 3.5rem;
-
-        .collection-list {
-          display: flex;
-          gap: .1rem;
-          height: 100%;
-          overflow: auto hidden;
-
-          &::-webkit-scrollbar {
-            display: none;
-          }
-
-          .collection-item {
-            background: #fff;
-            border-radius: .6rem;
-            flex: 0 0;
-            height: 3.1rem;
-            padding: .25rem;
-            transition: all .25s ease-in-out;
-            width: 3.1rem;
-
-            &::after {
-              bottom: auto;
-              top: 100%;
-              transform: translate(-50%, -$unit-2);
-            }
-
-            &:focus,
-            &:hover {
-              background: lighten($bg-color, 2%);
-
-              &::after {
-                transform: translate(-50%, $unit-1);
-              }
-            }
-
-            &.active {
-              background: $bg-color;
-
-              .img-responsive,
-              .video-responsive {
-                box-shadow: 0 .1rem .4rem rgba($dark-color, .25);
-              }
-            }
-
-            .collection-img {
-              border-radius: .5rem;
-              height: 2.6rem;
-              width: 2.6rem;
-
-              .img-responsive,
-              .video-responsive {
-                border-radius: .5rem;
-                box-shadow: 0 .1rem .4rem rgba($dark-color, .1);
-                font-size: 1.6rem;
-                height: 2.6rem;
-                object-fit: cover;
-                width: 2.6rem;
-              }
-            }
-          }
-        }
-      }
     }
   }
 
+  // POAP Widget
   .profile-widget-poap {
     aspect-ratio: auto;
-    background: #F5F4FE;
-    border-color: darken(#F5F4FE, 3%);
     color: #463E68;
+    --widget-bg-color: #F5F4FE;
+
+    .platform-icon {
+      box-shadow: inset 0 0 0 .05rem rgba($dark-color, .05), 0 .2rem .4rem rgba($dark-color, .01), 2rem -4rem 6rem 10rem var(--widget-bg-color);
+    }
 
     .widgets-collection-list {
       display: flex;
@@ -796,15 +745,37 @@
   }
 }
 
+// Share
+.share {
+  display: flex;
+  height: 6rem;
+  width: 16rem;
+}
+
 // Footer
 .web3bio-badge {
   align-items: center;
+  border-radius: .6rem;
   display: flex;
-  height: 2rem;
+  opacity: .95;
   padding: .5rem;
+  transition: opacity .25s ease-in-out;
   
   @media screen and (min-width: $size-lg) {
-    bottom: .5rem;
+    bottom: 1rem;
     position: fixed;
+  }
+
+  span {
+    transition: transform .15s ease-in-out;
+  }
+
+  &:focus,
+  &:hover {
+    opacity: 1;
+
+    span {
+      transform: scale(1.5) rotate(-10deg);
+    }
   }
 }

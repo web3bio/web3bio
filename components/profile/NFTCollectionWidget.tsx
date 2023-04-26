@@ -39,7 +39,7 @@ const RenderNFTCollectionWidget = (props) => {
   return (
     <div
       ref={scrollContainer}
-      className="profile-widget-full"
+      className={`${data.data.length > 8 ? "profile-widget-full" : "profile-widget-half"}`}
       id="nft"
     >
       <div className={`profile-widget profile-widget-nft${expand? ' active': ''}`}>
@@ -65,8 +65,10 @@ const RenderNFTCollectionWidget = (props) => {
                   top: top,
                   behavior: "smooth",
                 });
+                
               }
-            }, 100);
+            }, 200);
+            
           }}
           parentScrollRef={scrollContainer}
           expand={expand}

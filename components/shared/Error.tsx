@@ -9,7 +9,7 @@ export const Error = (props: ErrorProps) => {
   const { text, retry, msg } = props;
   return (
     <div className="empty">
-      <div className="empty-icon h1">😵</div>
+      <div className="empty-icon h1" style={{"fontSize": "72px"}}>😵</div>
       <p className="empty-title h4">Something went wrong! </p>
       {text || msg ? (
         <p className="empty-subtitle">{text?.message || msg}</p>
