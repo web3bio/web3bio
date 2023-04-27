@@ -4,11 +4,12 @@ import Modal from "../shared/Modal";
 import ProfileMain from "./ProfileMain";
 import useSWR from "swr";
 import { _fetcher } from "../apis/ens";
-import { LinksItem } from "../../utils/api";
+import { LinksItem, Web3bioProfileAPIEndpoint } from "../../utils/api";
 
 export function useProfile(identity: string, platform: string) {
-  const host = window.location.origin || "https://staging.web5.bio";
-  const url = host + `/api/profile/${platform.toLowerCase()}/${identity}`;
+  const url =
+    Web3bioProfileAPIEndpoint +
+    `/profile/${platform.toLowerCase()}/${identity}`;
   const { data, error } = useSWR<any>(url, _fetcher);
   return {
     data: data,

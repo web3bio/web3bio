@@ -3,7 +3,7 @@ import { NextSeo } from "next-seo";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { handleSearchPlatform } from "../utils/utils";
 import ProfileMain from "../components/profile/ProfileMain";
-import { LinksItem } from "../utils/api";
+import { LinksItem, Web3bioProfileAPIEndpoint } from "../utils/api";
 
 const NewProfile = ({ data, platform, pageTitle }) => {
   return (
@@ -59,9 +59,11 @@ export async function getServerSideProps({ params, res }) {
         notFound: true,
       };
     const res = await fetch(
-      `https://web3.bio/api/profile/${
-        platform === PlatformType.ethereum ? PlatformType.ens : platform
-      }/${params.domain}`
+      `${Web3bioProfileAPIEndpoint}/profile/${(platform ===
+      PlatformType.ethereum
+        ? PlatformType.ens
+        : platform
+      ).toLowerCase()}/${params.domain}`
     );
     if (res.status == 404) return { notFound: true };
     const data = await res.json();
