@@ -1,5 +1,8 @@
 import { NextApiResponse } from "next";
 
+
+export const Web3bioProfileAPIEndpoint = 'https://api.web3.bio'
+
 export type LinksItem = {
   link: string | null;
   handle: string | null;
