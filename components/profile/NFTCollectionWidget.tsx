@@ -1,23 +1,29 @@
-import { memo, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { PlatformType } from "../../utils/platform";
-import {
-  NFTSCANFetcher,
-  NFTSCAN_BASE_API_ENDPOINT,
-  NFTSCAN_POLYGON_BASE_API,
-} from "../apis/nftscan";
 import useSWR from "swr";
 import { ExpandController } from "./ExpandController";
 import { NFTCollections } from "./NFTCollections";
+import { _fetcher } from "../apis/ens";
+import { SIMPLE_HASH_URL } from "../apis/simplehash";
 
 function useCollections(address: string, network: PlatformType) {
-  const baseURL =
+  const queryURL =
     network === PlatformType.lens
-      ? NFTSCAN_POLYGON_BASE_API
-      : NFTSCAN_BASE_API_ENDPOINT;
-  const { data, error } = useSWR<any>(
-    baseURL + `account/own/all/${address}?show_attribute=true`,
-    NFTSCANFetcher
-  );
+      ? `/api/v0/nfts/collections_by_wallets?chains=polygon&wallet_addresses=${address}`
+      : `/api/v0/nfts/collections_by_wallets?chains=ethereum&wallet_addresses=${address}`;
+  const { data, error } = useSWR<any>(SIMPLE_HASH_URL + queryURL, _fetcher);
+  return {
+    data: data,
+    isLoading: !error && !data,
+    isError: error,
+  };
+}
+function useNFTs(address: string, network: PlatformType) {
+  const queryURL =
+    network === PlatformType.lens
+      ? `/api/v0/nfts/owners?chains=polygon&wallet_addresses=${address}`
+      : `/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${address}`;
+  const { data, error } = useSWR<any>(SIMPLE_HASH_URL + queryURL, _fetcher);
   return {
     data: data,
     isLoading: !error && !data,
@@ -27,22 +33,63 @@ function useCollections(address: string, network: PlatformType) {
 
 const RenderNFTCollectionWidget = (props) => {
   const { identity, onShowDetail, network } = props;
-  const { data } = useCollections(
+  const { data: collectionsData } = useCollections(
     identity.addresses?.eth ?? identity.owner,
     network
   );
+  const { data: nftsData } = useNFTs(
+    identity.addresses?.eth ?? identity.owner,
+    network
+  );
+  const [renderData, setRenderData] = useState([]);
   const [expand, setExpand] = useState(false);
   const scrollContainer = useRef(null);
 
-  if (!data || !data.data || !data.data.length) return null;
+  useEffect(() => {
+    if (collectionsData && collectionsData.collections.length > 0) {
+      setRenderData(
+        collectionsData.collections.reduce((pre, x) => {
+          if (x.spam_score <= 60) {
+            pre.push({
+              ...x,
+              assets: [],
+            });
+          }
+          return pre;
+        }, [])
+      );
+    }
+    if (nftsData && nftsData.nfts.length > 0) {
+      const _data = JSON.parse(JSON.stringify(renderData));
+      nftsData.nfts.forEach((x) => {
+        const index = _data.findIndex(
+          (i) => i.id.toLowerCase() === x.collection.collection_id
+        );
+        if (index !== -1 ) {
+          if(_data[index].assets.findIndex(y=>y.token_id === x.token_id) !== -1) return
+          _data[index].assets.push(x);
+        }
+      });
+      setRenderData(_data);
+    }
+  }, [collectionsData, nftsData]);
 
+  if (!renderData.length) return null;
   return (
     <div
       ref={scrollContainer}
-      className={`${data.data.length > 8 ? "profile-widget-full" : "profile-widget-half"}`}
+      className={`${
+        collectionsData.collections.length > 8
+          ? "profile-widget-full"
+          : "profile-widget-half"
+      }`}
       id="nft"
     >
-      <div className={`profile-widget profile-widget-nft${expand? ' active': ''}`}>
+      <div
+        className={`profile-widget profile-widget-nft${
+          expand ? " active" : ""
+        }`}
+      >
         <ExpandController
           expand={expand}
           onToggle={() => {
@@ -65,14 +112,12 @@ const RenderNFTCollectionWidget = (props) => {
                   top: top,
                   behavior: "smooth",
                 });
-                
               }
             }, 200);
-            
           }}
           parentScrollRef={scrollContainer}
           expand={expand}
-          data={data}
+          data={renderData}
           onShowDetail={onShowDetail}
         />
       </div>
