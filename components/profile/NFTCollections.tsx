@@ -129,7 +129,11 @@ const RenderNFTCollections = (props) => {
                           <div className="nft-item">
                             <NFTAssetPlayer
                               className={"img-container"}
-                              type={y.video_url ? "video/mp4" : "image/png"}
+                              type={
+                                y.video_url
+                                  ? y.video_properties.mime_type || "video/mp4"
+                                  : "image/png"
+                              }
                               src={mediaURL}
                               contentUrl={contentURL}
                               alt={x.name + " - " + y.name}

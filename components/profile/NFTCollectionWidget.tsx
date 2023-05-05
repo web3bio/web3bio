@@ -5,6 +5,7 @@ import { ExpandController } from "./ExpandController";
 import { NFTCollections } from "./NFTCollections";
 import { _fetcher } from "../apis/ens";
 import { SIMPLE_HASH_URL } from "../apis/simplehash";
+import _ from "lodash";
 
 function useCollections(address: string, network: PlatformType) {
   const queryURL =
@@ -60,7 +61,7 @@ const RenderNFTCollectionWidget = (props) => {
       );
     }
     if (nftsData && nftsData.nfts.length > 0) {
-      const _data = JSON.parse(JSON.stringify(renderData));
+      const _data = _.cloneDeep(renderData);
       nftsData.nfts.forEach((x) => {
         const index = _data.findIndex(
           (i) => i.id.toLowerCase() === x.collection.collection_id

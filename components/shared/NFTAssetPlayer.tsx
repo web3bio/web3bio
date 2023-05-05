@@ -18,7 +18,9 @@ const IsImage = (type) => {
 };
 
 const isVideo = (type) => {
-  return ["video/mp4", "audio/mpeg", "audio/wav"].includes(type);
+  return ["video/mp4", "audio/mpeg", "audio/wav", "video/quicktime"].includes(
+    type
+  );
 };
 
 export interface AssetPlayerProps {

@@ -1,6 +1,5 @@
 import { memo } from "react";
 import SVG from "react-inlinesvg";
-import { isValidJson } from "../../utils/utils";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
 export const enum NFTDialogType {
@@ -37,7 +36,12 @@ const NFTDialogRender = (props) => {
             <div className="col-6 col-md-12">
               <div className="preview-content">
                 <div className="nft-header-collection collection-title">
-                  <SVG className="collection-logo" src="../icons/icon-poap.svg" width={24} height={24} />
+                  <SVG
+                    className="collection-logo"
+                    src="../icons/icon-poap.svg"
+                    width={24}
+                    height={24}
+                  />
                   <div className="collection-name text-ellipsis">POAP</div>
                 </div>
                 <div className="nft-header-name">{asset.asset.event.name}</div>
@@ -100,14 +104,7 @@ const NFTDialogRender = (props) => {
     );
   if (!asset) return null;
   const _asset = asset.asset;
-  const metadata = isValidJson(_asset.metadata_json)
-    ? JSON.parse(_asset.metadata_json)
-    : null;
-  const attributes =
-    _asset.attributes && _asset.attributes.length > 0
-      ? _asset.attributes
-      : metadata?.attributes;
-
+  const attributes = _asset.extra_metadata?.attributes || [];
   return (
     <>
       <div id="nft-dialog" className="nft-preview">
@@ -120,7 +117,11 @@ const NFTDialogRender = (props) => {
             <div className="preview-image">
               <NFTAssetPlayer
                 className="img-container"
-                type={asset.asset.content_type}
+                type={
+                  _asset.video_url
+                    ? _asset.video_properties.mime_type || "video/mp4"
+                    : "image/png"
+                }
                 src={asset.mediaURL}
                 contentUrl={asset.contentURL}
                 alt={asset.collection?.name + _asset.name}
@@ -141,17 +142,16 @@ const NFTDialogRender = (props) => {
                 </div>
               </div>
               <div className="nft-header-name">
-                {asset.asset.name ||
-                  `${asset.collection.name} #${asset.asset.token_id}`}
+                {_asset.name || `${asset.collection.name} #${_asset.token_id}`}
               </div>
-              {metadata?.description && (
+              {_asset?.description && (
                 <div className="panel-widget">
                   <div className="panel-widget-content">
-                    {metadata?.description}
+                    {_asset?.description}
                   </div>
                 </div>
               )}
-              {attributes && (
+              {attributes.length > 0 && (
                 <div className="panel-widget">
                   <div className="panel-widget-title">Attributes</div>
                   <div className="panel-widget-content">
