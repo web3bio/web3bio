@@ -70,12 +70,13 @@ const RenderNFTCollections = (props) => {
     }
   }, [expand, parentScrollRef, data, activeCollection]);
 
-  if (!data) return <Empty />;
+  if (!data || !data.length) return <Empty />;
+
   return (
     <>
       {data && data.length > 0 && (
         <CollectionSwitcher
-          collections={data.filter((x) => x.assets.length > 0)}
+          collections={data}
           currentSelect={activeCollection ?? data[0].id}
           onSelect={(v) => {
             setActiveCollection(v);

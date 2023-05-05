@@ -65,12 +65,16 @@ const RenderNFTCollectionWidget = (props) => {
         const index = _data.findIndex(
           (i) => i.id.toLowerCase() === x.collection.collection_id
         );
-        if (index !== -1 ) {
-          if(_data[index].assets.findIndex(y=>y.token_id === x.token_id) !== -1) return
+        if (index !== -1) {
+          if (
+            _data[index].assets.findIndex((y) => y.token_id === x.token_id) !==
+            -1
+          )
+            return;
           _data[index].assets.push(x);
         }
       });
-      setRenderData(_data);
+      setRenderData(_data.filter((x) => x.assets.length > 0));
     }
   }, [collectionsData, nftsData]);
 
@@ -113,7 +117,7 @@ const RenderNFTCollectionWidget = (props) => {
                   behavior: "smooth",
                 });
               }
-            }, 200);
+            }, 400);
           }}
           parentScrollRef={scrollContainer}
           expand={expand}
