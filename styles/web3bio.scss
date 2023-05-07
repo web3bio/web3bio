@@ -38,6 +38,7 @@
 @import "graph";
 @import "profile";
 @import "search";
+@import "share";
 
 // Variables
 $pride-color-1: #FBF4EC !default;
@@ -69,8 +70,8 @@ body {
   left: 0;
   top: 0;
   background: rgba($color: #000000, $alpha: .3);
-  width: 100vw;
-  height: 100vh;
+  right: 0;
+  bottom: 0;
   z-index: 100;
 
   .web3bio-modal-container {
@@ -285,6 +286,7 @@ body {
   font-weight: 500;
   padding: .5rem;
   position: sticky;
+  z-index: 99;
   top: 90vh;
 }
 
@@ -523,4 +525,11 @@ body {
   &::-webkit-scrollbar {
     display: none;
   }
+}
+
+.web3bio-share-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
 }
