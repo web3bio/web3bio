@@ -143,7 +143,6 @@
 
   .profile-widget-full {
     aspect-ratio: auto;
-    flex: 1 1;
     height: auto;
     max-height: 90vh;
     padding: .5rem;
@@ -156,6 +155,10 @@
     max-height: 90vh;
     padding: .5rem;
     width: 50%;
+
+    @media screen and (max-width: $size-sm) {
+      width: 100%;
+    }
   }
 
   .profile-widget {
@@ -762,7 +765,7 @@
   transition: opacity .25s ease-in-out;
   
   @media screen and (min-width: $size-lg) {
-    bottom: 1rem;
+    bottom: .5rem;
     position: fixed;
   }
 
