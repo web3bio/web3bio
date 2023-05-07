@@ -11,6 +11,7 @@ import Avatar from "boring-avatars";
 import { formatText } from "../../utils/utils";
 import { NFTCollectionWidget } from "../profile/NFTCollectionWidget";
 import { NFTDialog, NFTDialogType } from "./NFTDialog";
+// import ShareButton from "../shared/ShareButton";
 
 export default function ProfileMain(props) {
   const { data, pageTitle = "", platform } = props;
@@ -74,7 +75,7 @@ export default function ProfileMain(props) {
             <h1 className="text-assistive">{`${pageTitle} ${
               SocialPlatformMapping(platform).label
             } Web3 Profile`}</h1>
-            <h2 className="text-assistive">{`${pageTitle} Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`}</h2>
+            <h2 className="text-assistive">{`Explore ${pageTitle} Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`}</h2>
             <div className="profile-name">{data.displayName}</div>
             <div className="profile-identity">
               {data.identity == data.displayName ? (
@@ -90,6 +91,7 @@ export default function ProfileMain(props) {
                     <SVG src="../icons/icon-copy.svg" width={20} height={20} />
                     {copied && <div className="tooltip-copy">COPIED</div>}
                   </Clipboard>
+                  {/* <ShareButton /> */}
                 </>
               ) : (
                 <>
@@ -107,6 +109,7 @@ export default function ProfileMain(props) {
                     <SVG src="../icons/icon-copy.svg" width={20} height={20} />
                     {copied && <div className="tooltip-copy">COPIED</div>}
                   </Clipboard>
+                  {/* <ShareButton /> */}
                 </>
               )}
             </div>

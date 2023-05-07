@@ -7,7 +7,6 @@ import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
 import dynamic from "next/dynamic";
 import SearchInput from "../components/profile/SearchInput";
 import { Footer } from "../components/shared/Footer";
-import ShareButton from "../components/shared/ShareButton";
 
 const DynamicProfileModal = dynamic(
   () => import("../components/profile/ProfileModal")

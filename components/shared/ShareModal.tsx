@@ -4,6 +4,7 @@ import Clipboard from "react-clipboard.js";
 import QRCode from "qrcode";
 import Image from "next/image";
 import { Loading } from "./Loading";
+
 const shareMap = [
   {
     icon: "icons/icon-twitter.svg",
@@ -21,7 +22,7 @@ const shareMap = [
       )}&text=${encodeURIComponent(text)}`,
     text: "Telegram",
   },
-  { key: "copy", icon: "icons/icon-share.svg", url: "", text: "Copy" },
+  { key: "copy", icon: "icons/icon-copy.svg", url: "", text: "Copy" },
 ];
 
 export default function ShareModal(props) {
@@ -57,7 +58,7 @@ export default function ShareModal(props) {
           e.stopPropagation();
         }}
       >
-        <h5>Share link to Web3.bio</h5>
+        <h5>Share link to this page</h5>
         <div ref={canvasContainer} className="qrcode-container">
           {(qrcode && <Image fill src={qrcode} alt="" />) || <Loading />}
         </div>
