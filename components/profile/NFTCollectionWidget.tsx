@@ -1,5 +1,4 @@
-import { memo, useCallback, useEffect, useRef, useState } from "react";
-import { PlatformType } from "../../utils/platform";
+import { memo, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { ExpandController } from "./ExpandController";
 import { NFTCollections } from "./NFTCollections";
@@ -7,7 +6,7 @@ import { _fetcher } from "../apis/ens";
 import { SIMPLE_HASH_URL } from "../apis/simplehash";
 import _ from "lodash";
 
-function useNFTs(address: string, network: PlatformType) {
+function useNFTs(address: string) {
   const { data, error } = useSWR<any>(
     SIMPLE_HASH_URL +
       `/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${address}`,
@@ -21,12 +20,9 @@ function useNFTs(address: string, network: PlatformType) {
 }
 
 const RenderNFTCollectionWidget = (props) => {
-  const { identity, onShowDetail, network } = props;
+  const { identity, onShowDetail } = props;
   const [collections, setCollections] = useState([]);
-  const { data: nftsData } = useNFTs(
-    identity.addresses?.eth ?? identity.owner,
-    network
-  );
+  const { data: nftsData } = useNFTs(identity.addresses?.eth ?? identity.owner);
   const [expand, setExpand] = useState(false);
   const scrollContainer = useRef(null);
 
@@ -57,7 +53,7 @@ const RenderNFTCollectionWidget = (props) => {
         collections[idx].assets.push(i);
       });
     }
-  },[collections]);
+  }, [collections]);
 
   if (!collections.length) return null;
   return (
