@@ -12,10 +12,10 @@ const NewProfile = ({ data, platform, pageTitle }) => {
         title={`${pageTitle} - Web3.bio`}
         description={
           data.description
-            ? `${data.description} - View ${pageTitle} ${
+            ? `${data.description} - Explore ${pageTitle} ${
                 SocialPlatformMapping(platform).label
               } Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`
-            : `View ${pageTitle} ${
+            : `Explore ${pageTitle} ${
                 SocialPlatformMapping(platform).label
               } Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`
         }

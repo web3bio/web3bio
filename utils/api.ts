@@ -1,6 +1,5 @@
 import { NextApiResponse } from "next";
 
-
 export const Web3bioProfileAPIEndpoint = 'https://api.web3.bio'
 
 export type LinksItem = {
@@ -56,7 +55,7 @@ export const CoinType = {
   // xem: 43,
   // trx: 195,
   // xdai: 700,
-  matic: 2147483785,
+  // matic: 2147483785,
 };
 
 export const errorHandle = (
