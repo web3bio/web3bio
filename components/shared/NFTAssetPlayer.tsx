@@ -18,7 +18,7 @@ const IsImage = (type) => {
 };
 
 const isVideo = (type) => {
-  return ["video/mp4", "audio/mpeg", "audio/wav",'video/quicktime'].includes(
+  return ["video/mp4", "audio/mpeg", "audio/wav", "video/quicktime"].includes(
     type
   );
 };
@@ -33,7 +33,7 @@ export interface AssetPlayerProps {
   onClick?: () => void;
   alt?: string;
   style?: any;
-  poster?: string
+  poster?: string;
 }
 const RenderNFTAssetPlayer = (props: AssetPlayerProps) => {
   const {
@@ -48,7 +48,7 @@ const RenderNFTAssetPlayer = (props: AssetPlayerProps) => {
     style,
     poster,
   } = props;
-  
+
   const renderContent = () => {
     if (!src) return <ImagePlaceholder alt={alt} />;
     return IsImage(type) ? (
@@ -70,7 +70,10 @@ const RenderNFTAssetPlayer = (props: AssetPlayerProps) => {
           playsInline
           poster={poster as string}
         >
-          <source src={contentUrl as string} type={type.replaceAll('quicktime','mp4')}></source>
+          <source
+            src={contentUrl as string}
+            type={type.replaceAll("quicktime", "mp4")}
+          ></source>
         </video>
       )
     );
