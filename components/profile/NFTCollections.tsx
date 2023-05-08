@@ -14,7 +14,7 @@ const RenderNFTCollections = (props) => {
     if (expand) {
       parentScrollRef.current.scrollIntoView({
         behavior: "smooth",
-        block: "start",
+        block: "center",
         inline: "nearest",
       });
 

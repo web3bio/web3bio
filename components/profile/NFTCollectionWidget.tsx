@@ -50,7 +50,7 @@ const RenderNFTCollectionWidget = (props) => {
     if (collectionsData && collectionsData.collections.length > 0) {
       setRenderData(
         collectionsData.collections.reduce((pre, x) => {
-          if (x.spam_score <= 60) {
+          if (x.spam_score <= 75) {
             pre.push({
               ...x,
               assets: [],
