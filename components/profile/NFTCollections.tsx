@@ -137,6 +137,7 @@ const RenderNFTCollections = (props) => {
                               src={mediaURL}
                               contentUrl={contentURL}
                               alt={x.name + " - " + y.name}
+                              poster={y.previews.image_medium_url}
                             />
                             <div className="collection-name">{x.name}</div>
                             <div className="nft-name">

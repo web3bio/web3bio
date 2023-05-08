@@ -33,6 +33,7 @@ export interface AssetPlayerProps {
   onClick?: () => void;
   alt?: string;
   style?: any;
+  poster?: string
 }
 const RenderNFTAssetPlayer = (props: AssetPlayerProps) => {
   const {
@@ -45,6 +46,7 @@ const RenderNFTAssetPlayer = (props: AssetPlayerProps) => {
     alt,
     onClick,
     style,
+    poster,
   } = props;
 
   const renderContent = () => {
@@ -66,7 +68,7 @@ const RenderNFTAssetPlayer = (props: AssetPlayerProps) => {
           autoPlay
           loop
           playsInline
-          poster={src as string}
+          poster={poster as string}
         >
           <source src={contentUrl as string} type={type}></source>
         </video>
