@@ -105,7 +105,7 @@ const RenderNFTCollections = (props) => {
                   <div className="nft-list">
                     {x.assets.map((y, ydx) => {
                       const mediaURL = resolveMediaURL(
-                        y.video_url || y.image_url
+                        y.video_url || y.previews.image_medium_url || y.previews.image_url
                       );
                       const contentURL = resolveMediaURL(
                         y.video_url || y.audio_url
@@ -137,7 +137,7 @@ const RenderNFTCollections = (props) => {
                               src={mediaURL}
                               contentUrl={contentURL}
                               alt={x.name + " - " + y.name}
-                              poster={y.previews.image_medium_url}
+                              poster={y.previews.image_large_url}
                             />
                             <div className="collection-name">{x.name}</div>
                             <div className="nft-name">
