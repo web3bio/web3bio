@@ -49,6 +49,10 @@ export const fuzzyDomainSuffix = [
     label: "blockchain",
   },
   {
+    key: PlatformType.space_id,
+    label: "bnb",
+  },
+  {
     key: PlatformType.dotbit,
     label: "bit",
   },
@@ -89,8 +93,16 @@ export const fuzzyDomainSuffix = [
     label: "polygon",
   },
   {
-    key: PlatformType.space_id,
-    label: "bnb",
+    key: PlatformType.unstoppableDomains,
+    label: "anime",
+  },
+  {
+    key: PlatformType.unstoppableDomains,
+    label: "manga",
+  },
+  {
+    key: PlatformType.unstoppableDomains,
+    label: "binanceus",
   },
   // {
   //   key: "space_id",
