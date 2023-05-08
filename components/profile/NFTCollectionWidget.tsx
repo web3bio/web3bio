@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { PlatformType } from "../../utils/platform";
 import useSWR from "swr";
 import { ExpandController } from "./ExpandController";
@@ -7,24 +7,12 @@ import { _fetcher } from "../apis/ens";
 import { SIMPLE_HASH_URL } from "../apis/simplehash";
 import _ from "lodash";
 
-function useCollections(address: string, network: PlatformType) {
-  const queryURL =
-    network === PlatformType.lens
-      ? `/api/v0/nfts/collections_by_wallets?chains=polygon&wallet_addresses=${address}`
-      : `/api/v0/nfts/collections_by_wallets?chains=ethereum&wallet_addresses=${address}`;
-  const { data, error } = useSWR<any>(SIMPLE_HASH_URL + queryURL, _fetcher);
-  return {
-    data: data,
-    isLoading: !error && !data,
-    isError: error,
-  };
-}
 function useNFTs(address: string, network: PlatformType) {
-  const queryURL =
-    network === PlatformType.lens
-      ? `/api/v0/nfts/owners?chains=polygon&wallet_addresses=${address}`
-      : `/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${address}`;
-  const { data, error } = useSWR<any>(SIMPLE_HASH_URL + queryURL, _fetcher);
+  const { data, error } = useSWR<any>(
+    SIMPLE_HASH_URL +
+      `/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${address}`,
+    _fetcher
+  );
   return {
     data: data,
     isLoading: !error && !data,
@@ -34,59 +22,49 @@ function useNFTs(address: string, network: PlatformType) {
 
 const RenderNFTCollectionWidget = (props) => {
   const { identity, onShowDetail, network } = props;
-  const { data: collectionsData } = useCollections(
-    identity.addresses?.eth ?? identity.owner,
-    network
-  );
+  const [collections, setCollections] = useState([]);
   const { data: nftsData } = useNFTs(
     identity.addresses?.eth ?? identity.owner,
     network
   );
-  const [renderData, setRenderData] = useState([]);
   const [expand, setExpand] = useState(false);
   const scrollContainer = useRef(null);
 
   useEffect(() => {
-    if (collectionsData && collectionsData.collections.length > 0) {
-      setRenderData(
-        collectionsData.collections.reduce((pre, x) => {
-          if (x.spam_score <= 75) {
-            pre.push({
-              ...x,
-              assets: [],
-            });
-          }
-          return pre;
-        }, [])
-      );
-    }
     if (nftsData && nftsData.nfts.length > 0) {
-      const _data = _.cloneDeep(renderData);
-      nftsData.nfts.forEach((x) => {
-        const index = _data.findIndex(
-          (i) => i.id.toLowerCase() === x.collection.collection_id
-        );
-        if (index !== -1) {
-          if (
-            _data[index].assets.findIndex((y) => y.token_id === x.token_id) !==
-            -1
-          )
-            return;
-          _data[index].assets.push(x);
+      const unionCollections = nftsData.nfts.reduce((pre, x) => {
+        if (x.collection.spam_score <= 75) {
+          pre.push({
+            ...x.collection,
+            id: x.collection.collection_id,
+            assets: [],
+          });
         }
-      });
-      setRenderData(_data.filter((x) => x.assets.length > 0));
+        return pre;
+      }, []);
+      setCollections(_.uniqBy(unionCollections, "collection_id"));
     }
-  }, [collectionsData, nftsData]);
+  }, [nftsData]);
 
-  if (!renderData.length) return null;
+  useEffect(() => {
+    if (collections.length > 0) {
+      nftsData.nfts.forEach((i) => {
+        const idx = collections.findIndex(
+          (x) => x.id.toLowerCase() === i.collection.collection_id.toLowerCase()
+        );
+        if (idx === -1) return;
+        if (_.some(collections[idx].assets, i)) return;
+        collections[idx].assets.push(i);
+      });
+    }
+  },[collections]);
+
+  if (!collections.length) return null;
   return (
     <div
       ref={scrollContainer}
       className={`${
-        collectionsData.collections.length > 8
-          ? "profile-widget-full"
-          : "profile-widget-half"
+        collections.length > 8 ? "profile-widget-full" : "profile-widget-half"
       }`}
       id="nft"
     >
@@ -122,7 +100,7 @@ const RenderNFTCollectionWidget = (props) => {
           }}
           parentScrollRef={scrollContainer}
           expand={expand}
-          data={renderData}
+          data={collections}
           onShowDetail={onShowDetail}
         />
       </div>

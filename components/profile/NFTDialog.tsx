@@ -24,7 +24,6 @@ const NFTDialogRender = (props) => {
                   className={"img-container"}
                   type={"image/png"}
                   src={asset.mediaURL}
-                  contentUrl={asset.contentURL}
                   alt={asset.asset.event.name}
                 />
                 <div
@@ -123,7 +122,6 @@ const NFTDialogRender = (props) => {
                     : "image/png"
                 }
                 src={asset.mediaURL}
-                contentUrl={asset.contentURL}
                 alt={asset.collection?.name + _asset.name}
                 poster={_asset.previews.image_large_url}
               />

@@ -65,7 +65,6 @@ const RenderPoapWidget = (props) => {
                       tokenId: x.tokenId,
                       asset: x,
                       mediaURL: resolveIPFS_URL(x.event.image_url),
-                      contentURL: resolveIPFS_URL(x.event.image_url),
                     });
                   }}
                 >
