@@ -78,10 +78,10 @@ const RenderNFTCollectionWidget = (props) => {
       const res = _.uniqBy(unionCollections, "collection_id");
       if (res.length > 0) {
         issues.forEach((i) => {
-          const idx = res.findIndex(
-            (x) =>
-              x.id.toLowerCase() === i.collection.collection_id.toLowerCase()
-          );
+          if (!i.collection || !i.collection.collection_id) return;
+          const idx = res.findIndex((x) => {
+            return x.id && x.id === i.collection.collection_id;
+          });
           if (idx === -1) return;
           if (_.some(res[idx].assets, i)) return;
           res[idx].assets.push(i);
