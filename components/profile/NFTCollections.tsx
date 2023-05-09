@@ -1,15 +1,31 @@
 import { memo, useEffect, useRef, useState } from "react";
+import useInfiniteScroll from "react-infinite-scroll-hook";
 import { resolveMediaURL } from "../../utils/utils";
 import { Empty } from "../shared/Empty";
+import { Loading } from "../shared/Loading";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { CollectionSwitcher } from "./CollectionSwitcher";
 
 const RenderNFTCollections = (props) => {
-  const { onShowDetail, data, expand, parentScrollRef, handleScrollToAsset } =
-    props;
+  const {
+    onShowDetail,
+    data,
+    expand,
+    parentScrollRef,
+    handleScrollToAsset,
+    isLoadingMore,
+    isReachingEnd,
+    getNext,
+    isError,
+  } = props;
   const [activeCollection, setActiveCollection] = useState(null);
   const insideScrollContainer = useRef(null);
-
+  const [albumRef] = useInfiniteScroll({
+    loading: isLoadingMore,
+    disabled: !!isError,
+    onLoadMore: getNext,
+    hasNextPage: !isReachingEnd,
+  });
   useEffect(() => {
     if (expand) {
       parentScrollRef.current.scrollIntoView({
@@ -151,6 +167,20 @@ const RenderNFTCollections = (props) => {
               );
             })}
           </div>
+          {(isLoadingMore || !isReachingEnd) && (
+            <div
+              ref={albumRef}
+              style={{
+                position: "relative",
+                width: "100%",
+                display: "flex",
+                margin: "1.5rem 0",
+                justifyContent: "center",
+              }}
+            >
+              <Loading />
+            </div>
+          )}
         </div>
       )}
     </>

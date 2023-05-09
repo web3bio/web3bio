@@ -1,34 +1,71 @@
-import { memo, useEffect, useRef, useState } from "react";
-import useSWR from "swr";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
+import useSWRInfinite from "swr/infinite";
 import { ExpandController } from "./ExpandController";
 import { NFTCollections } from "./NFTCollections";
 import { _fetcher } from "../apis/ens";
 import { SIMPLE_HASH_URL } from "../apis/simplehash";
 import _ from "lodash";
 
-function useNFTs(address: string) {
-  const { data, error } = useSWR<any>(
+const PAGE_SIZE = 30;
+
+const getURL = (index, address, previous) => {
+  if (
+    index !== 0 &&
+    previous &&
+    (!previous.nfts.length || !previous?.next_cursor)
+  )
+    return null;
+  const cursor = previous?.next_cursor || "";
+  return (
     SIMPLE_HASH_URL +
-      `/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${address}`,
+    `/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${address}${
+      cursor ? "&cursor=" + cursor : ""
+    }&limit=${PAGE_SIZE}`
+  );
+};
+
+function useNFTs(address: string) {
+  const { data, error, size, isValidating, setSize } = useSWRInfinite(
+    (index, previous) => getURL(index, address, previous),
     _fetcher
   );
   return {
-    data: data,
+    data,
     isLoading: !error && !data,
     isError: error,
+    size,
+    isValidating,
+    setSize,
   };
 }
 
 const RenderNFTCollectionWidget = (props) => {
   const { identity, onShowDetail } = props;
   const [collections, setCollections] = useState([]);
-  const { data: nftsData } = useNFTs(identity.addresses?.eth ?? identity.owner);
+  const { data, size, setSize, isValidating, isLoading, isError } = useNFTs(
+    identity.addresses?.eth ?? identity.owner
+  );
   const [expand, setExpand] = useState(false);
   const scrollContainer = useRef(null);
 
+  const issues = useMemo(() => {
+    return data
+      ? data.reduce((pre, cur) => {
+          if (cur.nfts) {
+            cur.nfts.map((x) => {
+              if (!_.includes(pre, x)) pre.push(x);
+            });
+          }
+          return pre;
+        }, [])
+      : [];
+  }, [data]);
+
+  const isReachingEnd = data && !data[data.length - 1].next;
+
   useEffect(() => {
-    if (nftsData && nftsData.nfts.length > 0) {
-      const unionCollections = nftsData.nfts.reduce((pre, x) => {
+    if (issues && issues.length > 0) {
+      const unionCollections = issues.reduce((pre, x) => {
         if (x.collection.spam_score <= 75) {
           pre.push({
             ...x.collection,
@@ -38,24 +75,24 @@ const RenderNFTCollectionWidget = (props) => {
         }
         return pre;
       }, []);
-      setCollections(_.uniqBy(unionCollections, "collection_id"));
+      const res = _.uniqBy(unionCollections, "collection_id");
+      if (res.length > 0) {
+        issues.forEach((i) => {
+          const idx = res.findIndex(
+            (x) =>
+              x.id.toLowerCase() === i.collection.collection_id.toLowerCase()
+          );
+          if (idx === -1) return;
+          if (_.some(res[idx].assets, i)) return;
+          res[idx].assets.push(i);
+        });
+      }
+      setCollections(res);
     }
-  }, [nftsData]);
+  }, [issues]);
 
-  useEffect(() => {
-    if (collections.length > 0) {
-      nftsData.nfts.forEach((i) => {
-        const idx = collections.findIndex(
-          (x) => x.id.toLowerCase() === i.collection.collection_id.toLowerCase()
-        );
-        if (idx === -1) return;
-        if (_.some(collections[idx].assets, i)) return;
-        collections[idx].assets.push(i);
-      });
-    }
-  }, [collections]);
+  if (!collections.length || isError) return null;
 
-  if (!collections.length) return null;
   return (
     <div
       ref={scrollContainer}
@@ -98,6 +135,13 @@ const RenderNFTCollectionWidget = (props) => {
           expand={expand}
           data={collections}
           onShowDetail={onShowDetail}
+          isLoadingMore={isValidating}
+          isReachingEnd={isReachingEnd}
+          isError={isError}
+          getNext={() => {
+            if (isValidating || isReachingEnd) return;
+            setSize(size + 1);
+          }}
         />
       </div>
     </div>

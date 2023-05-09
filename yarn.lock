@@ -4029,6 +4029,13 @@ react-from-dom@^0.6.2:
   resolved "https://registry.yarnpkg.com/react-from-dom/-/react-from-dom-0.6.2.tgz#9da903a508c91c013b55afcd59348b8b0a39bdb4"
   integrity sha512-qvWWTL/4xw4k/Dywd41RBpLQUSq97csuv15qrxN+izNeLYlD9wn5W8LspbfYe5CWbaSdkZ72BsaYBPQf2x4VbQ==
 
+react-infinite-scroll-hook@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/react-infinite-scroll-hook/-/react-infinite-scroll-hook-4.1.1.tgz#25c0c2cb9a41039019bd723823e21db1404c137d"
+  integrity sha512-1bu2572rF3DtjFMhIOzoasLMdYW0vMWxROtl99M5FYGSxm84Ro4aNBZW6ivgE45ofus4Ymo7jIS0Be3zcuLk8g==
+  dependencies:
+    react-intersection-observer-hook "^2.1.1"
+
 react-inlinesvg@^3.0.0:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/react-inlinesvg/-/react-inlinesvg-3.0.2.tgz#5c59799966ae7926057091b2ac230ddcee01bea0"
@@ -4036,6 +4043,11 @@ react-inlinesvg@^3.0.0:
   dependencies:
     exenv "^1.2.2"
     react-from-dom "^0.6.2"
+
+react-intersection-observer-hook@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/react-intersection-observer-hook/-/react-intersection-observer-hook-2.1.1.tgz#6222a82624d2a507aa5ad187c99d2d530e746e4f"
+  integrity sha512-MeFGpYtcfHB9v6oGqQuHAbSwaWBpd7yZ4wMIeVtboWRdGusAF4V+/8QQ0OKZ36Ez19grYnoDVhRUCjtwI2ZVaw==
 
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
