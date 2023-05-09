@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import SVG from "react-inlinesvg";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
@@ -9,6 +9,19 @@ export const enum NFTDialogType {
 
 const NFTDialogRender = (props) => {
   const { onClose, asset, type = NFTDialogType.NFT } = props;
+
+  useEffect(() => {
+    const keyDownHandler = (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", keyDownHandler);
+    return () => document.removeEventListener("keydown", keyDownHandler);
+  });
+
   if (type === "poap")
     return (
       <>

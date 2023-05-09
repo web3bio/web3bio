@@ -179,9 +179,7 @@ export default function ProfileMain(props) {
       {dialogOpen && curAsset && (
         <NFTDialog
           asset={curAsset}
-          onClose={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
+          onClose={() => {
             setDialogOpen(false);
           }}
           type={dialogType}
