@@ -52,6 +52,7 @@
     margin-bottom: .5rem;
     margin-top: 1rem;
     max-width: 600px;
+    word-break: break-word;
   }
 
   .profile-identity {
@@ -154,7 +155,7 @@
     height: auto;
     max-height: 90vh;
     padding: .5rem;
-    width: 50%;
+    width: 75%;
 
     @media screen and (max-width: $size-sm) {
       width: 100%;
@@ -251,6 +252,7 @@
     .profile-widget-title {
       align-items: center;
       display: flex;
+      font-size: .7rem;
       font-weight: 500;
       margin-bottom: 1rem;
     }

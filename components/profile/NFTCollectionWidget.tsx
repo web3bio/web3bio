@@ -112,10 +112,10 @@ const RenderNFTCollectionWidget = (props) => {
             setExpand(!expand);
           }}
         />
-        <div className="profile-widget-title">
+        <h2 className="profile-widget-title">
           <span className="emoji-large mr-2">🖼</span>
           NFT Collections
-        </div>
+        </h2>
         <NFTCollections
           handleScrollToAsset={(ref, v) => {
             setExpand(true);

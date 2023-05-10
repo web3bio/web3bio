@@ -83,7 +83,7 @@ export default function ProfileMain(props) {
                   <span className="profile-label">
                     {formatText(data.owner)}
                   </span>
-                  <h3 className="text-assistive">{`${pageTitle} wallet address is ${data.owner}`}</h3>
+                  <h3 className="text-assistive">{`${pageTitle}‘s wallet address is ${data.owner}`}</h3>
                   <Clipboard
                     component="div"
                     className="action"
