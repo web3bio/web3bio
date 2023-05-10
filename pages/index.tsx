@@ -78,7 +78,7 @@ export default function Home() {
   });
   return (
     <div>
-      <NextSeo title={searchTerm ? `${searchTerm} - Web3.bio` : "Web3.bio"} />
+      <NextSeo title={searchTerm ? `${searchTerm} - Web3.bio` : "Web3.bio - Web3 Identity Graph Search and Profile"} />
       <main className="web3bio-container">
         <div className="web3bio-cover flare"></div>
 
