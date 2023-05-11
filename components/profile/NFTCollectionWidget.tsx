@@ -1,58 +1,119 @@
-import { memo, useRef, useState } from "react";
-import { PlatformType } from "../../utils/platform";
-import {
-  NFTSCANFetcher,
-  NFTSCAN_BASE_API_ENDPOINT,
-  NFTSCAN_POLYGON_BASE_API,
-} from "../apis/nftscan";
-import useSWR from "swr";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
+import useSWRInfinite from "swr/infinite";
 import { ExpandController } from "./ExpandController";
 import { NFTCollections } from "./NFTCollections";
+import { _fetcher } from "../apis/ens";
+import { SIMPLE_HASH_URL } from "../apis/simplehash";
+import _ from "lodash";
 
-function useCollections(address: string, network: PlatformType) {
-  const baseURL =
-    network === PlatformType.lens
-      ? NFTSCAN_POLYGON_BASE_API
-      : NFTSCAN_BASE_API_ENDPOINT;
-  const { data, error } = useSWR<any>(
-    baseURL + `account/own/all/${address}?show_attribute=true`,
-    NFTSCANFetcher
+const PAGE_SIZE = 50;
+
+const getURL = (index, address, previous) => {
+  if (
+    index !== 0 &&
+    previous &&
+    (!previous.nfts.length || !previous?.next_cursor)
+  )
+    return null;
+  const cursor = previous?.next_cursor || "";
+  return (
+    SIMPLE_HASH_URL +
+    `/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${address}${
+      cursor ? "&cursor=" + cursor : ""
+    }&limit=${PAGE_SIZE}`
+  );
+};
+
+function useNFTs(address: string) {
+  const { data, error, size, isValidating, setSize } = useSWRInfinite(
+    (index, previous) => getURL(index, address, previous),
+    _fetcher
   );
   return {
-    data: data,
+    data,
     isLoading: !error && !data,
     isError: error,
+    size,
+    isValidating,
+    setSize,
   };
 }
 
 const RenderNFTCollectionWidget = (props) => {
-  const { identity, onShowDetail, network } = props;
-  const { data } = useCollections(
-    identity.addresses?.eth ?? identity.owner,
-    network
+  const { identity, onShowDetail } = props;
+  const [collections, setCollections] = useState([]);
+  const { data, size, setSize, isValidating, isLoading, isError } = useNFTs(
+    identity.addresses?.eth ?? identity.owner
   );
   const [expand, setExpand] = useState(false);
   const scrollContainer = useRef(null);
 
-  if (!data || !data.data || !data.data.length) return null;
+  const issues = useMemo(() => {
+    return data
+      ? data.reduce((pre, cur) => {
+          if (cur.nfts) {
+            cur.nfts.map((x) => {
+              if (!_.includes(pre, x)) pre.push(x);
+            });
+          }
+          return pre;
+        }, [])
+      : [];
+  }, [data]);
+
+  const isReachingEnd = data && !data[data.length - 1].next;
+
+  useEffect(() => {
+    if (issues && issues.length > 0) {
+      const unionCollections = issues.reduce((pre, x) => {
+        if (x.collection.spam_score <= 75) {
+          pre.push({
+            ...x.collection,
+            id: x.collection.collection_id,
+            assets: [],
+          });
+        }
+        return pre;
+      }, []);
+      const res = _.uniqBy(unionCollections, "collection_id");
+      if (res.length > 0) {
+        issues.forEach((i) => {
+          if (!i.collection || !i.collection.collection_id) return;
+          const idx = res.findIndex((x) => {
+            return x.id && x.id === i.collection.collection_id;
+          });
+          if (idx === -1) return;
+          if (_.some(res[idx].assets, i)) return;
+          res[idx].assets.push(i);
+        });
+      }
+      setCollections(res);
+    }
+  }, [issues]);
+
+  if (!collections.length || isError) return null;
 
   return (
     <div
       ref={scrollContainer}
-      className={`${data.data.length > 8 ? "profile-widget-full" : "profile-widget-half"}`}
+      className="profile-widget-full"
       id="nft"
     >
-      <div className={`profile-widget profile-widget-nft${expand? ' active': ''}`}>
+      <div
+        className={`profile-widget profile-widget-nft${
+          expand ? " active" : ""
+        }`}
+      >
         <ExpandController
           expand={expand}
           onToggle={() => {
             setExpand(!expand);
           }}
         />
-        <div className="profile-widget-title">
+        <h2 className="profile-widget-title">
           <span className="emoji-large mr-2">🖼</span>
           NFT Collections
-        </div>
+        </h2>
         <NFTCollections
           handleScrollToAsset={(ref, v) => {
             setExpand(true);
@@ -65,15 +126,20 @@ const RenderNFTCollectionWidget = (props) => {
                   top: top,
                   behavior: "smooth",
                 });
-                
               }
-            }, 200);
-            
+            }, 400);
           }}
           parentScrollRef={scrollContainer}
           expand={expand}
-          data={data}
+          data={collections}
           onShowDetail={onShowDetail}
+          isLoadingMore={isValidating}
+          isReachingEnd={isReachingEnd}
+          isError={isError}
+          getNext={() => {
+            if (isValidating || isReachingEnd) return;
+            setSize(size + 1);
+          }}
         />
       </div>
     </div>

@@ -10,14 +10,15 @@ import { Error } from "../shared/Error";
 import Avatar from "boring-avatars";
 import { formatText } from "../../utils/utils";
 import { NFTCollectionWidget } from "../profile/NFTCollectionWidget";
-import { NFTDialog, NFTDialogType } from "./NFTDialog";
+import { NFTModal, NFTModalType } from "./NFTModal";
+// import ShareButton from "../shared/ShareButton";
 
 export default function ProfileMain(props) {
   const { data, pageTitle = "", platform } = props;
   const [copied, setCopied] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [curAsset, setCurAsset] = useState(null);
-  const [dialogType, setDialogType] = useState(NFTDialogType.NFT);
+  const [dialogType, setDialogType] = useState(NFTModalType.NFT);
   const { asPath } = useRouter();
 
   const onCopySuccess = () => {
@@ -74,13 +75,15 @@ export default function ProfileMain(props) {
             <h1 className="text-assistive">{`${pageTitle} ${
               SocialPlatformMapping(platform).label
             } Web3 Profile`}</h1>
-            <h2 className="text-assistive">{`${pageTitle} Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`}</h2>
+            <h2 className="text-assistive">{`Explore ${pageTitle} Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`}</h2>
             <div className="profile-name">{data.displayName}</div>
             <div className="profile-identity">
               {data.identity == data.displayName ? (
                 <>
-                  <span className="profile-label">{formatText(data.owner)}</span>
-                  <h3 className="text-assistive">{`${pageTitle} wallet address is ${data.owner}`}</h3>
+                  <span className="profile-label">
+                    {formatText(data.owner)}
+                  </span>
+                  <h3 className="text-assistive">{`${pageTitle}‘s wallet address is ${data.owner}`}</h3>
                   <Clipboard
                     component="div"
                     className="action"
@@ -90,13 +93,14 @@ export default function ProfileMain(props) {
                     <SVG src="../icons/icon-copy.svg" width={20} height={20} />
                     {copied && <div className="tooltip-copy">COPIED</div>}
                   </Clipboard>
+                  {/* <ShareButton /> */}
                 </>
               ) : (
                 <>
                   <span className="profile-label mr-2">{data.identity}</span>
                   {" · "}
                   <span className="profile-label ml-2">
-                  {formatText(data.owner)}
+                    {formatText(data.owner)}
                   </span>
                   <Clipboard
                     component="div"
@@ -107,6 +111,7 @@ export default function ProfileMain(props) {
                     <SVG src="../icons/icon-copy.svg" width={20} height={20} />
                     {copied && <div className="tooltip-copy">COPIED</div>}
                   </Clipboard>
+                  {/* <ShareButton /> */}
                 </>
               )}
             </div>
@@ -115,11 +120,14 @@ export default function ProfileMain(props) {
               <h2 className="profile-description">{data.description}</h2>
             )}
             {data.location && (
-              <div className="profile-location"><span style={{"fontSize": "20px", "marginRight": "5px"}}>📍</span> {data.location}</div>
+              <div className="profile-location">
+                <span style={{ fontSize: "20px", marginRight: "5px" }}>📍</span>{" "}
+                {data.location}
+              </div>
             )}
             {data.email && (
               <div className="profile-email">
-                <span style={{"fontSize": "20px", "marginRight": "5px"}}>✉️</span>
+                <span style={{ fontSize: "20px", marginRight: "5px" }}>✉️</span>
                 <a href={`mailto:${data.email}`}>{data.email}</a>
               </div>
             )}
@@ -130,10 +138,7 @@ export default function ProfileMain(props) {
             {data?.linksData?.map((item, idx) => {
               return (
                 <div key={idx} className="profile-widget-item">
-                  <RenderWidgetItem
-                    displayName={pageTitle}
-                    item={item}
-                  />
+                  <RenderWidgetItem displayName={pageTitle} item={item} />
                 </div>
               );
             })}
@@ -141,18 +146,17 @@ export default function ProfileMain(props) {
           <div className="web3-section-widgets">
             <NFTCollectionWidget
               onShowDetail={(e, v) => {
-                setDialogType(NFTDialogType.NFT);
+                setDialogType(NFTModalType.NFT);
                 setCurAsset(v);
                 setDialogOpen(true);
               }}
-              network={platform}
               identity={data}
             />
           </div>
           <div className="web3-section-widgets">
             <PoapWidget
               onShowDetail={(v) => {
-                setDialogType(NFTDialogType.POAP);
+                setDialogType(NFTModalType.POAP);
                 setCurAsset(v);
                 setDialogOpen(true);
               }}
@@ -162,16 +166,20 @@ export default function ProfileMain(props) {
         </div>
       </div>
       <div className="web3bio-badge">
-        <Link href="/" target="_blank" className="btn btn-sm btn-primary" title="Web3.bio Web3 Identity Graph search and link in bio profile platform">
-          <span className="mr-2">👋</span>Made with <strong className="text-pride ml-1 mr-1">Web3.bio</strong>
+        <Link
+          href="/"
+          target="_blank"
+          className="btn btn-sm btn-primary"
+          title="Web3.bio Web3 Identity Graph search and link in bio profile platform"
+        >
+          <span className="mr-2">👋</span>Made with{" "}
+          <strong className="text-pride ml-1 mr-1">Web3.bio</strong>
         </Link>
       </div>
       {dialogOpen && curAsset && (
-        <NFTDialog
+        <NFTModal
           asset={curAsset}
-          onClose={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
+          onClose={() => {
             setDialogOpen(false);
           }}
           type={dialogType}

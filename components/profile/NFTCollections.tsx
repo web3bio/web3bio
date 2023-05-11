@@ -1,28 +1,36 @@
 import { memo, useEffect, useRef, useState } from "react";
+import useInfiniteScroll from "react-infinite-scroll-hook";
 import { resolveMediaURL } from "../../utils/utils";
 import { Empty } from "../shared/Empty";
+import { Loading } from "../shared/Loading";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { CollectionSwitcher } from "./CollectionSwitcher";
 
 const RenderNFTCollections = (props) => {
-  const { onShowDetail, data, expand, parentScrollRef, handleScrollToAsset } =
-    props;
-  const [collections, setCollections] = useState([]);
+  const {
+    onShowDetail,
+    data,
+    expand,
+    parentScrollRef,
+    handleScrollToAsset,
+    isLoadingMore,
+    isReachingEnd,
+    getNext,
+    isError,
+  } = props;
   const [activeCollection, setActiveCollection] = useState(null);
   const insideScrollContainer = useRef(null);
-
+  const [albumRef] = useInfiniteScroll({
+    loading: isLoadingMore,
+    disabled: !!isError,
+    onLoadMore: getNext,
+    hasNextPage: !isReachingEnd,
+  });
   useEffect(() => {
-    setCollections(
-      data?.data.map((x) => ({
-        key: x.contract_address,
-        name: x.contract_name,
-        url: x.logo_url,
-      }))
-    );
     if (expand) {
       parentScrollRef.current.scrollIntoView({
         behavior: "smooth",
-        block: "start",
+        block: "center",
         inline: "nearest",
       });
 
@@ -30,10 +38,11 @@ const RenderNFTCollections = (props) => {
         const nav_contentRect =
           insideScrollContainer.current.getBoundingClientRect();
         const groupList = Array.from(
-          data.data.map((x) => document.getElementById(x.contract_address))
+          data.map((x) => document.getElementById(x.id))
         );
         if (nav_contentRect) {
           groupList.map((item: any) => {
+            if (!item) return;
             const itemReact = item.getBoundingClientRect();
             if (itemReact.y <= 250 && itemReact.y + itemReact.height > 250) {
               if (activeCollection !== item.id) {
@@ -50,9 +59,7 @@ const RenderNFTCollections = (props) => {
           `collection_${activeCollection}`
         );
         if (!swticherContainer || !activeElement) return;
-        const activeIndex = collections.findIndex(
-          (x) => x.key === activeCollection
-        );
+        const activeIndex = data.findIndex((x) => x.id === activeCollection);
         swticherContainer.scrollTo({
           left: activeIndex * activeElement.getBoundingClientRect().width,
           behavior: "smooth",
@@ -79,44 +86,51 @@ const RenderNFTCollections = (props) => {
     }
   }, [expand, parentScrollRef, data, activeCollection]);
 
-  if (data && !data.data) return <Empty />;
+  if (!data || !data.length) return <Empty />;
+
   return (
     <>
-      {collections && collections.length > 0 && (
+      {data && data.length > 0 && (
         <CollectionSwitcher
-          collections={collections}
-          currentSelect={activeCollection ?? collections[0].key}
+          collections={data}
+          currentSelect={activeCollection ?? data[0].id}
           onSelect={(v) => {
             setActiveCollection(v);
-            handleScrollToAsset(insideScrollContainer,v);
+            handleScrollToAsset(insideScrollContainer, v);
           }}
         />
       )}
       {expand && (
         <div ref={insideScrollContainer} className="nft-collection">
           <div className="nft-collection-list">
-            {data.data.map((x, idx) => {
+            {data.map((x, idx) => {
+              if (!x.assets.length) return null;
               return (
-                <div
-                  className="nft-collection-item"
-                  key={idx}
-                  id={x.contract_address}
-                >
+                <div className="nft-collection-item" key={idx} id={x.id}>
                   <div className="collection-title">
                     <NFTAssetPlayer
                       type={"image/png"}
                       className="collection-logo"
-                      src={x.logo_url}
-                      alt={x.contract_name}
+                      src={x.image_url}
+                      alt={x.name}
                     />
                     <div className="collection-name text-ellipsis">
-                      {x.contract_name}
+                      {x.name}
                     </div>
                   </div>
                   <div className="nft-list">
                     {x.assets.map((y, ydx) => {
-                      const mediaURL = resolveMediaURL(y.image_uri);
-                      const contentURL = resolveMediaURL(y.content_uri);
+                      const mediaURL = resolveMediaURL(
+                        y.previews.image_medium_url ||
+                          y.video_url ||
+                          y.image_url
+                      );
+
+                      const type =
+                        y.video_url && !y.previews.image_medium_url
+                          ? y.video_properties.mime_type
+                          : "image/png";
+
                       return (
                         <div
                           key={ydx}
@@ -124,28 +138,25 @@ const RenderNFTCollections = (props) => {
                           onClick={(e) =>
                             onShowDetail(e, {
                               collection: {
-                                url: x.logo_url,
-                                name: x.contract_name,
+                                url: x.image_url,
+                                name: x.name,
                               },
                               asset: y,
-                              mediaURL: mediaURL,
-                              contentURL: contentURL,
+                              mediaURL: y.video_url || y.image_url,
                             })
                           }
                         >
                           <div className="nft-item">
                             <NFTAssetPlayer
                               className={"img-container"}
-                              type={y.content_type}
                               src={mediaURL}
-                              contentUrl={contentURL}
-                              alt={x.contract_name + " - " + y.name}
+                              type={type}
+                              alt={x.name + " - " + y.name}
+                              poster={y.previews.image_large_url}
                             />
-                            <div className="collection-name">
-                              {x.contract_name}
-                            </div>
+                            <div className="collection-name">{x.name}</div>
                             <div className="nft-name">
-                              {y.name || `${x.contract_name} #${y.token_id}`}
+                              {y.name || `${x.name} #${y.token_id}`}
                             </div>
                           </div>
                         </div>
@@ -156,6 +167,20 @@ const RenderNFTCollections = (props) => {
               );
             })}
           </div>
+          {(isLoadingMore || !isReachingEnd) && (
+            <div
+              ref={albumRef}
+              style={{
+                position: "relative",
+                width: "100%",
+                display: "flex",
+                margin: "1.5rem 0",
+                justifyContent: "center",
+              }}
+            >
+              <Loading />
+            </div>
+          )}
         </div>
       )}
     </>

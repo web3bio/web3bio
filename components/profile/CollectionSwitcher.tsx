@@ -4,7 +4,7 @@ import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 const RenderCollectionSwitcher = (props) => {
   const { collections, currentSelect, onSelect } = props;
   const hideDropdownMenu = (v) => {
-    onSelect(v.key);
+    onSelect(v.id);
   };
 
   return (
@@ -12,18 +12,18 @@ const RenderCollectionSwitcher = (props) => {
       <div id="collection-switcher-box" className="collection-list">
         {collections.map((item) => (
           <div
-            id={`collection_${item.key}`}
+            id={`collection_${item.id}`}
             onClick={() => hideDropdownMenu(item)}
             className={
-              item.key === currentSelect
+              item.id === currentSelect
                 ? "collection-item active"
                 : "collection-item"
             }
-            key={item.key}
+            key={item.id}
           >
             <NFTAssetPlayer
               className="collection-img"
-              src={item.url}
+              src={item.image_url}
               height={52}
               width={52}
               alt={item.name}

@@ -14,6 +14,8 @@
     "boring-avatars": "^1.7.0",
     "dotbit": "^0.4.17",
     "next-seo": "^6.0.0",
+    "qrcode": "^1.5.3",
+    "react-infinite-scroll-hook": "^4.1.1",
     "underscore": "^1.13.6",
     "wallet.ts": "^1.0.1"
   },
