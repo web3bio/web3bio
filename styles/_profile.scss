@@ -383,7 +383,7 @@
 // NFT Preview
 .nft-preview {
   align-items: center;
-  background-color: rgba($dark-color, .5);
+  background-color: rgba($dark-color, .9);
   display: flex;
   height: 100vh;
   justify-content: center;
@@ -481,7 +481,6 @@
   .preview-content {
     background: lighten($bg-color, 5%);
     border-radius: .8rem;
-    height: 100%;
     padding: 2rem;
     position: relative;
     width: 100%;
