@@ -1,15 +1,31 @@
 import { memo, useEffect, useRef, useState } from "react";
+import useInfiniteScroll from "react-infinite-scroll-hook";
 import { resolveMediaURL } from "../../utils/utils";
 import { Empty } from "../shared/Empty";
+import { Loading } from "../shared/Loading";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { CollectionSwitcher } from "./CollectionSwitcher";
 
 const RenderNFTCollections = (props) => {
-  const { onShowDetail, data, expand, parentScrollRef, handleScrollToAsset } =
-    props;
+  const {
+    onShowDetail,
+    data,
+    expand,
+    parentScrollRef,
+    handleScrollToAsset,
+    isLoadingMore,
+    isReachingEnd,
+    getNext,
+    isError,
+  } = props;
   const [activeCollection, setActiveCollection] = useState(null);
   const insideScrollContainer = useRef(null);
-
+  const [albumRef] = useInfiniteScroll({
+    loading: isLoadingMore,
+    disabled: !!isError,
+    onLoadMore: getNext,
+    hasNextPage: !isReachingEnd,
+  });
   useEffect(() => {
     if (expand) {
       parentScrollRef.current.scrollIntoView({
@@ -105,11 +121,16 @@ const RenderNFTCollections = (props) => {
                   <div className="nft-list">
                     {x.assets.map((y, ydx) => {
                       const mediaURL = resolveMediaURL(
-                        y.video_url || y.image_url
+                        y.previews.image_medium_url ||
+                          y.video_url ||
+                          y.image_url
                       );
-                      const contentURL = resolveMediaURL(
-                        y.video_url || y.audio_url
-                      );
+
+                      const type =
+                        y.video_url && !y.previews.image_medium_url
+                          ? y.video_properties.mime_type
+                          : "image/png";
+
                       return (
                         <div
                           key={ydx}
@@ -121,22 +142,17 @@ const RenderNFTCollections = (props) => {
                                 name: x.name,
                               },
                               asset: y,
-                              mediaURL: mediaURL,
-                              contentURL: contentURL,
+                              mediaURL: y.video_url || y.image_url,
                             })
                           }
                         >
                           <div className="nft-item">
                             <NFTAssetPlayer
                               className={"img-container"}
-                              type={
-                                y.video_url
-                                  ? y.video_properties.mime_type || "video/mp4"
-                                  : "image/png"
-                              }
                               src={mediaURL}
-                              contentUrl={contentURL}
+                              type={type}
                               alt={x.name + " - " + y.name}
+                              poster={y.previews.image_large_url}
                             />
                             <div className="collection-name">{x.name}</div>
                             <div className="nft-name">
@@ -151,6 +167,20 @@ const RenderNFTCollections = (props) => {
               );
             })}
           </div>
+          {(isLoadingMore || !isReachingEnd) && (
+            <div
+              ref={albumRef}
+              style={{
+                position: "relative",
+                width: "100%",
+                display: "flex",
+                margin: "1.5rem 0",
+                justifyContent: "center",
+              }}
+            >
+              <Loading />
+            </div>
+          )}
         </div>
       )}
     </>

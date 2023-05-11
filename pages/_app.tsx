@@ -26,14 +26,14 @@ export default function App({ Component, pageProps }) {
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       </Head>
       <DefaultSeo
-        title="Web3.bio"
+        title="Web3.bio - Web3 Identity Graph Search and Profile"
         description="Web3.bio (Previously Web5.bio) is a Web3 and Web 2.0 Identity Graph search and link in bio profile platform. Web3.bio will provide a list of relevant identities when you are searching any Twitter handle, Ethereum address, ENS domain, Lens profile or Unstoppable Domains, and other Web3 identities."
         canonical={pageLink}
         openGraph={{
           type: "website",
           url: pageLink,
           site_name: "Web3.bio",
-          title: "Web3.bio",
+          title: "Web3.bio - Web3 Identity Graph Search and Profile",
           description: "Web3.bio (Previously Web5.bio) is a Web3 and Web 2.0 Identity Graph search and link in bio profile platform. Web3.bio will provide a list of relevant identities when you are searching any Twitter handle, Ethereum address, ENS domain, Lens profile or Unstoppable Domains, and other Web3 identities.",
           images: [
             {

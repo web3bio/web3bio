@@ -189,7 +189,7 @@ export function isValidAddress(address?: string) {
 
 export const resolveMediaURL = (url) => {
   if (!url) return null;
-  return url.startsWith("data:", "https:")
+  return (url.startsWith("data:") || url.startsWith("https:"))
     ? url
     : url.startsWith("ar://")
     ? url.replaceAll("ar://", ArweaveAssetPrefix)
