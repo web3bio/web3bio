@@ -10,7 +10,7 @@ import { Error } from "../shared/Error";
 import Avatar from "boring-avatars";
 import { formatText } from "../../utils/utils";
 import { NFTCollectionWidget } from "../profile/NFTCollectionWidget";
-import { NFTDialog, NFTDialogType } from "./NFTDialog";
+import { NFTModal, NFTModalType } from "./NFTModal";
 // import ShareButton from "../shared/ShareButton";
 
 export default function ProfileMain(props) {
@@ -18,7 +18,7 @@ export default function ProfileMain(props) {
   const [copied, setCopied] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [curAsset, setCurAsset] = useState(null);
-  const [dialogType, setDialogType] = useState(NFTDialogType.NFT);
+  const [dialogType, setDialogType] = useState(NFTModalType.NFT);
   const { asPath } = useRouter();
 
   const onCopySuccess = () => {
@@ -146,7 +146,7 @@ export default function ProfileMain(props) {
           <div className="web3-section-widgets">
             <NFTCollectionWidget
               onShowDetail={(e, v) => {
-                setDialogType(NFTDialogType.NFT);
+                setDialogType(NFTModalType.NFT);
                 setCurAsset(v);
                 setDialogOpen(true);
               }}
@@ -156,7 +156,7 @@ export default function ProfileMain(props) {
           <div className="web3-section-widgets">
             <PoapWidget
               onShowDetail={(v) => {
-                setDialogType(NFTDialogType.POAP);
+                setDialogType(NFTModalType.POAP);
                 setCurAsset(v);
                 setDialogOpen(true);
               }}
@@ -177,7 +177,7 @@ export default function ProfileMain(props) {
         </Link>
       </div>
       {dialogOpen && curAsset && (
-        <NFTDialog
+        <NFTModal
           asset={curAsset}
           onClose={() => {
             setDialogOpen(false);
