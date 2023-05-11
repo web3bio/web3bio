@@ -6,7 +6,7 @@ import { _fetcher } from "../apis/ens";
 import { SIMPLE_HASH_URL } from "../apis/simplehash";
 import _ from "lodash";
 
-const PAGE_SIZE = 30;
+const PAGE_SIZE = 50;
 
 const getURL = (index, address, previous) => {
   if (
@@ -96,9 +96,7 @@ const RenderNFTCollectionWidget = (props) => {
   return (
     <div
       ref={scrollContainer}
-      className={`${
-        collections.length > 8 ? "profile-widget-full" : "profile-widget-half"
-      }`}
+      className="profile-widget-full"
       id="nft"
     >
       <div
