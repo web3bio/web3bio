@@ -109,3 +109,5 @@ export const fuzzyDomainSuffix = [
   //   label: "arb",
   // },
 ];
+
+export const Web3bioProfileAPIEndpoint = "https://api.web3.bio";

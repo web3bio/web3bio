@@ -1,9 +1,5 @@
 import { BigNumber } from "bignumber.js";
-import { EthereumAddress } from "wallet.ts";
-import {
-  NFTSCANFetcher,
-  NFTSCAN_BASE_API_ENDPOINT,
-} from "../components/apis/nftscan";
+import { _fetcher } from "../components/apis/ens";
 import { resolveIPFS_URL } from "./ipfs";
 import { pow10 } from "./number";
 import { PlatformType, SocialPlatformMapping } from "./platform";
@@ -38,15 +34,6 @@ export const formatText = (string, length?) => {
   }
   return string;
 };
-
-export function getEnumAsArray<T extends object>(enumObject: T) {
-  return (
-    Object.keys(enumObject)
-      // Leave only key of enum
-      .filter((x) => Number.isNaN(Number.parseInt(x)))
-      .map((key) => ({ key, value: enumObject[key as keyof T] }))
-  );
-}
 
 export const formatValue = (value?: {
   value: string;
@@ -99,30 +86,6 @@ export function isSameAddress(
   return address.toLowerCase() === otherAddress.toLowerCase();
 }
 
-export function resolveSocialMediaLink(name, type) {
-  if (!Object.keys(PlatformType).includes(type))
-    return `https://web5.bio/?s=${name}`;
-  switch (type) {
-    case PlatformType.url:
-      return `${name}`;
-    case PlatformType.website:
-      return `https://${name}`;
-    default:
-      return SocialPlatformMapping(type).urlPrefix
-        ? SocialPlatformMapping(type).urlPrefix + name
-        : null;
-  }
-}
-
-export function isValidJson(str) {
-  try {
-    JSON.parse(str);
-  } catch (e) {
-    return false;
-  }
-  return true;
-}
-
 export const handleSearchPlatform = (term: string) => {
   switch (true) {
     case regexEns.test(term):
@@ -153,25 +116,6 @@ export const isDomainSearch = (term) => {
   ].includes(term);
 };
 
-export const throttle = (fun, delay) => {
-  let last, deferTimer;
-  return function (args) {
-    let that = this;
-    let _args = arguments;
-    let now = +new Date();
-    if (last && now < last + delay) {
-      clearTimeout(deferTimer);
-      deferTimer = setTimeout(function () {
-        last = now;
-        fun.apply(that, _args);
-      }, delay);
-    } else {
-      last = now;
-      fun.apply(that, _args);
-    }
-  };
-};
-
 export function debounce(func, timeout = 300) {
   let timer;
   return (...args) => {
@@ -182,11 +126,6 @@ export function debounce(func, timeout = 300) {
   };
 }
 
-export function isValidAddress(address?: string) {
-  if (!address) return false;
-  return EthereumAddress.isValid(address);
-}
-
 export const resolveMediaURL = (url) => {
   if (!url) return null;
   return url.startsWith("data:", "https:")
@@ -194,49 +133,4 @@ export const resolveMediaURL = (url) => {
     : url.startsWith("ar://")
     ? url.replaceAll("ar://", ArweaveAssetPrefix)
     : resolveIPFS_URL(url);
-};
-
-export const resolveEipAssetURL = async (asset) => {
-  if (!asset) return null;
-  const eipPrefix = "eip155:1/erc721:";
-  if (asset.startsWith(eipPrefix)) {
-    const arr = asset.split(eipPrefix)[1].split("/");
-    const url =
-      NFTSCAN_BASE_API_ENDPOINT +
-      `assets/${arr[0]}/${arr[1]}?show_attribute=false`;
-    const res = await NFTSCANFetcher(url);
-    if (res && res.data) {
-      return resolveMediaURL(res.data.image_uri || res.data.content_uri);
-    }
-  }
-  return resolveMediaURL(asset);
-};
-
-export const resolveHandle = (handle: string) => {
-  const prefixHttps = "https://";
-  const prefixHttp = "http://";
-  const domainRegexp = /^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)/;
-  if (
-    handle &&
-    (handle.startsWith(prefixHttp) || handle.startsWith(prefixHttps))
-  ) {
-    return domainRegexp.exec(handle)[1].replaceAll("@", "");
-  }
-  return handle;
-};
-
-export const firstParam = (param: string | string[]) => {
-  return Array.isArray(param) ? param[0] : param;
-};
-
-export const getSocialMediaLink = (url: string, type: string) => {
-  let resolvedURL = "";
-  if (!url) return null;
-  if (url.startsWith("https")) {
-    resolvedURL = url;
-  } else {
-    resolvedURL = resolveSocialMediaLink(url, type);
-  }
-
-  return resolvedURL;
 };
