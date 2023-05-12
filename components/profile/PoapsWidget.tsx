@@ -34,7 +34,7 @@ const RenderPoapWidget = (props) => {
   if (!data || !data.length) return null;
   return (
     <div 
-      className={`${data.length > 8 ? "profile-widget-full" : "profile-widget-half"}`}
+      className={`${data.length > 8 ? "profile-widget-full" : "profile-widget-3-4"}`}
       id="poap"
     >
       <div 
