@@ -3,7 +3,7 @@ import { NextSeo } from "next-seo";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { handleSearchPlatform } from "../utils/utils";
 import ProfileMain from "../components/profile/ProfileMain";
-import { LinksItem, Web3bioProfileAPIEndpoint } from "../utils/api";
+import { Web3bioProfileAPIEndpoint } from "../utils/constants";
 
 const NewProfile = ({ data, platform, pageTitle }) => {
   return (
@@ -79,7 +79,7 @@ export async function getServerSideProps({ params, res }) {
           linksData: Object.entries(data?.links || {}).map(([key, value]) => {
             return {
               platform: key,
-              ...(value as LinksItem),
+              ...(value as any),
             };
           }),
         },
