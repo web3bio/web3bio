@@ -13,7 +13,7 @@
     filter: blur(4rem);
     height: 100vh;
     left: 0;
-    opacity: .04;
+    opacity: .05;
     position: fixed;
     top: 0;
     width: 100vw;
@@ -145,12 +145,24 @@
   .profile-widget-full {
     aspect-ratio: auto;
     height: auto;
-    max-height: 98vh;
+    max-height: calc(100vh - 1rem);
     padding: .5rem;
     width: 100%;
   }
 
   .profile-widget-half {
+    aspect-ratio: auto;
+    height: auto;
+    max-height: 90vh;
+    padding: .5rem;
+    width: 50%;
+
+    @media screen and (max-width: $size-sm) {
+      width: 100%;
+    }
+  }
+
+  .profile-widget-3-4 {
     aspect-ratio: auto;
     height: auto;
     max-height: 90vh;
