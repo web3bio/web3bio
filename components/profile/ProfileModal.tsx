@@ -4,7 +4,7 @@ import Modal from "../shared/Modal";
 import ProfileMain from "./ProfileMain";
 import useSWR from "swr";
 import { _fetcher } from "../apis/ens";
-import { LinksItem, Web3bioProfileAPIEndpoint } from "../../utils/api";
+import { Web3bioProfileAPIEndpoint } from "../../utils/constants";
 
 export function useProfile(identity: string, platform: string) {
   const url =
@@ -42,7 +42,7 @@ export default function ProfileModal(props) {
             linksData: Object.entries(data?.links || {}).map(([key, value]) => {
               return {
                 platform: key,
-                ...(value as LinksItem),
+                ...(value as any),
               };
             }),
           }}
