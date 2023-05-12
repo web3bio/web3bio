@@ -78,7 +78,7 @@ export default function Home() {
   });
   return (
     <div>
-      <NextSeo title={searchTerm ? `${searchTerm} - Web3.bio` : "Web3.bio"} />
+      <NextSeo title={searchTerm ? `${searchTerm} - Web3.bio` : "Web3.bio - Web3 Identity Graph Search and Profile"} />
       <main className="web3bio-container">
         <div className="web3bio-cover flare"></div>
 
@@ -139,14 +139,26 @@ export default function Home() {
             <div className="column col-4 col-sm-12 mt-2 mb-2">
               <div className="card-feature">
                 <div className="feature-header text-center">
-                  <h3>New Search Support</h3>
+                  <h3>Identity Search Support</h3>
                   <h4>
-                    Search for Web3 identities with these new{" "}
+                    Search for Web3 identities with these{" "}
                     <strong>domains and accounts</strong>.
                   </h4>
                 </div>
 
                 <div className="feature-body feature-body-first text-center">
+                  <div
+                    className="identity identity-ens"
+                    title="ENS domains (.eth)"
+                  >
+                    <SVG
+                      src="icons/icon-ens.svg"
+                      width={20}
+                      height={20}
+                      className="icon mr-1"
+                    />{" "}
+                    Ethereum Name Service
+                  </div>
                   <div
                     className="identity identity-farcaster"
                     title="Farcaster identities"
@@ -229,14 +241,19 @@ export default function Home() {
                 <div className="feature-header text-center">
                   <h3>
                     Your Web3 Profile{" "}
-                    <small className="text-small label label-primary">
+                    {/* <small className="text-small label label-primary">
                       Beta
-                    </small>
+                    </small> */}
                   </h3>
                   <h4>
-                    One page to show who you are and everything you make and
-                    own.
+                    One page to show who you are and everything you make and own.
                   </h4>
+                  <a className="text-small label mb-4" href="https://web3.bio/vitalik.eth" target="_blank">
+                    web3.bio/
+                    <span className="text-small label label-primary ml-1">
+                      vitalik.eth
+                    </span>
+                  </a>
                 </div>
                 <div className="feature-body feature-body-profile text-center">
                   <div className="demo-profile">

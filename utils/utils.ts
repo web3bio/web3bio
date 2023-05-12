@@ -2,7 +2,7 @@ import { BigNumber } from "bignumber.js";
 import { _fetcher } from "../components/apis/ens";
 import { resolveIPFS_URL } from "./ipfs";
 import { pow10 } from "./number";
-import { PlatformType, SocialPlatformMapping } from "./platform";
+import { PlatformType } from "./platform";
 import {
   regexDotbit,
   regexEns,
@@ -128,7 +128,7 @@ export function debounce(func, timeout = 300) {
 
 export const resolveMediaURL = (url) => {
   if (!url) return null;
-  return url.startsWith("data:", "https:")
+  return (url.startsWith("data:") || url.startsWith("https:"))
     ? url
     : url.startsWith("ar://")
     ? url.replaceAll("ar://", ArweaveAssetPrefix)

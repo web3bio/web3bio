@@ -34,20 +34,21 @@ const RenderPoapWidget = (props) => {
   if (!data || !data.length) return null;
   return (
     <div 
-      className={`${data.length > 8 ? "profile-widget-full" : "profile-widget-half"}`}
+      className={`${data.length > 8 ? "profile-widget-full" : "profile-widget-3-4"}`}
       id="poap"
     >
       <div 
         className="profile-widget profile-widget-poap"
       >
-        <div className="profile-widget-title">
+        <h2 className="profile-widget-title">
           <div 
             className="platform-icon mr-2"
           >
             <SVG src={`../icons/icon-poap.svg`} width={32} height={32} />
           </div>
           POAP
-        </div>
+        </h2>
+        <div className="text-assistive">POAP are the bookmarks for your life. Mint the most important memories of your life as digital collectibles (NFTs) forever on the blockchain.</div>
         <div className="widgets-collection-list noscrollbar">
           {getBoundaryRender() ||
             data.map((x, idx) => {
@@ -65,7 +66,6 @@ const RenderPoapWidget = (props) => {
                       tokenId: x.tokenId,
                       asset: x,
                       mediaURL: resolveIPFS_URL(x.event.image_url),
-                      contentURL: resolveIPFS_URL(x.event.image_url),
                     });
                   }}
                 >
