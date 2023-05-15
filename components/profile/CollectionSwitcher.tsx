@@ -2,7 +2,8 @@ import { memo } from "react";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
 const RenderCollectionSwitcher = (props) => {
-  const { collections, currentSelect, onSelect } = props;
+  const { collections, currentSelect, onSelect, scrollToEnd, hasNextPage } =
+    props;
   const hideDropdownMenu = (v) => {
     onSelect(v.id);
   };
@@ -31,6 +32,21 @@ const RenderCollectionSwitcher = (props) => {
             <div className="collection-name text-assistive">{item.name}</div>
           </div>
         ))}
+        {hasNextPage && (
+          <div
+            id={`collection_load_more`}
+            onClick={scrollToEnd}
+            className="collection-item"
+          >
+            <NFTAssetPlayer
+              className="collection-img"
+              src={"/icons/icon-more.svg"}
+              height={24}
+              width={24}
+              alt={"load"}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

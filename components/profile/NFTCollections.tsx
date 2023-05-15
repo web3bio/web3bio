@@ -17,6 +17,7 @@ const RenderNFTCollections = (props) => {
     isReachingEnd,
     getNext,
     isError,
+    setExpand,
   } = props;
   const [activeCollection, setActiveCollection] = useState(null);
   const insideScrollContainer = useRef(null);
@@ -85,7 +86,14 @@ const RenderNFTCollections = (props) => {
         );
     }
   }, [expand, parentScrollRef, data, activeCollection]);
-
+  const scrollToEnd = () => {
+    if (insideScrollContainer.current) {
+      insideScrollContainer.current.scrollTo({
+        top: insideScrollContainer.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  };
   if (!data || !data.length) return <Empty />;
 
   return (
@@ -97,6 +105,17 @@ const RenderNFTCollections = (props) => {
           onSelect={(v) => {
             setActiveCollection(v);
             handleScrollToAsset(insideScrollContainer, v);
+          }}
+          hasNextPage={!isReachingEnd}
+          scrollToEnd={() => {
+            if (!expand) {
+              setExpand(true);
+              setTimeout(() => {
+                scrollToEnd();
+              }, 400);
+            } else {
+              scrollToEnd();
+            }
           }}
         />
       )}

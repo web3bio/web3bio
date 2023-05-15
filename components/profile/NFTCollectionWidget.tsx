@@ -6,7 +6,7 @@ import { _fetcher } from "../apis/ens";
 import { SIMPLE_HASH_URL } from "../apis/simplehash";
 import _ from "lodash";
 
-const PAGE_SIZE = 50;
+const PAGE_SIZE = 20;
 
 const getURL = (index, address, previous) => {
   if (
@@ -131,6 +131,7 @@ const RenderNFTCollectionWidget = (props) => {
           }}
           parentScrollRef={scrollContainer}
           expand={expand}
+          setExpand={setExpand}
           data={collections}
           onShowDetail={onShowDetail}
           isLoadingMore={isValidating}
