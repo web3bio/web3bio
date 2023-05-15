@@ -48,7 +48,6 @@ export async function getServerSideProps({ params, res }) {
     const platform = handleSearchPlatform(params.domain);
     if (
       ![
-        PlatformType.dotbit,
         PlatformType.ens,
         PlatformType.farcaster,
         PlatformType.twitter,

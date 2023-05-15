@@ -150,7 +150,7 @@ export default function ProfileMain(props) {
                 setCurAsset(v);
                 setDialogOpen(true);
               }}
-              identity={data}
+              address={data.owner}
               initialData={data.nfts}
             />
           </div>
@@ -161,7 +161,7 @@ export default function ProfileMain(props) {
                 setCurAsset(v);
                 setDialogOpen(true);
               }}
-              identity={data}
+              address={data.owner}
             />
           </div>
         </div>
@@ -171,7 +171,7 @@ export default function ProfileMain(props) {
           href="/"
           target="_blank"
           className="btn btn-sm btn-primary"
-          title="Web3.bio Web3 Identity Graph search and link in bio profile platform"
+          title="Web3.bio Web3 Identity Graph Search and Link-in-bio Profile Service"
         >
           <span className="mr-2">👋</span>Made with{" "}
           <strong className="text-pride ml-1 mr-1">Web3.bio</strong>

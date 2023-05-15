@@ -39,12 +39,13 @@ const RenderCollectionSwitcher = (props) => {
             className="collection-item"
           >
             <NFTAssetPlayer
-              className="collection-img"
+              className="collection-img collection-img-more"
               src={"/icons/icon-more.svg"}
-              height={24}
-              width={24}
-              alt={"load more"}
+              height={20}
+              width={20}
+              alt={"Load more NFTs"}
             />
+            
           </div>
         )}
       </div>

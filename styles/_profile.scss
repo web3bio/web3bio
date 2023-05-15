@@ -642,6 +642,12 @@
         height: 2.6rem;
         width: 2.6rem;
 
+        &.collection-img-more {
+          .img-responsive {
+            padding: .5rem;
+          }
+        }
+
         .img-responsive {
           border-radius: .5rem;
           box-shadow: 0 .1rem .4rem rgba($dark-color, .1);
