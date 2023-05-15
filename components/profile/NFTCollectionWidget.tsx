@@ -6,7 +6,7 @@ import { _fetcher } from "../apis/ens";
 import { SIMPLE_HASH_URL } from "../apis/simplehash";
 import _ from "lodash";
 
-const PAGE_SIZE = 20;
+export const NFT_PAGE_SIZE = 40;
 
 const getURL = (index, address, previous) => {
   if (
@@ -20,7 +20,7 @@ const getURL = (index, address, previous) => {
     SIMPLE_HASH_URL +
     `/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${address}${
       cursor ? "&cursor=" + cursor : ""
-    }&limit=${PAGE_SIZE}`
+    }&limit=${NFT_PAGE_SIZE}`
   );
 };
 

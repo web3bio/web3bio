@@ -1,4 +1,5 @@
 import { SIMPLE_HASH_URL } from "../../components/apis/simplehash";
+import { NFT_PAGE_SIZE } from "../../components/profile/NFTCollectionWidget";
 import { Web3bioProfileAPIEndpoint } from "../../utils/constants";
 import { PlatformType } from "../../utils/platform";
 
@@ -32,7 +33,7 @@ export const fetchInitialNFTsData = async (address) => {
   try {
     const res = await fetch(
       SIMPLE_HASH_URL +
-        `/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${address}&limit=${20}`
+        `/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${address}&limit=${NFT_PAGE_SIZE}`
     );
     return res.json();
   } catch (e) {
