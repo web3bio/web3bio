@@ -23,7 +23,7 @@ export default function App({ Component, pageProps }) {
           name="google-site-verification"
           content="iaUpA0X2l6UNb8C38RvUe4i_DOMvo5Ciqvf6MtYjzPs"
         />
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/ico" />
       </Head>
       <DefaultSeo
         title="Web3.bio - Web3 Identity Graph Search and Link-in-bio Profile Service"
