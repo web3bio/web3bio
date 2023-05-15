@@ -1,3 +1,4 @@
+import { SIMPLE_HASH_URL } from "../../components/apis/simplehash";
 import { Web3bioProfileAPIEndpoint } from "../../utils/constants";
 import { PlatformType } from "../../utils/platform";
 
@@ -24,5 +25,17 @@ export const fetchProfile = async (identity) => {
     return await res.json();
   } catch (e) {
     return null;
+  }
+};
+
+export const fetchInitialNFTsData = async (address) => {
+  try {
+    const res = await fetch(
+      SIMPLE_HASH_URL +
+        `/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${address}&limit=${20}`
+    );
+    return res.json();
+  } catch (e) {
+    return [];
   }
 };

@@ -34,7 +34,7 @@ const RenderCollectionSwitcher = (props) => {
         ))}
         {hasNextPage && (
           <div
-            id={`collection_load_more`}
+            id="collection_load_more"
             onClick={scrollToEnd}
             className="collection-item"
           >
@@ -43,7 +43,7 @@ const RenderCollectionSwitcher = (props) => {
               src={"/icons/icon-more.svg"}
               height={24}
               width={24}
-              alt={"load"}
+              alt={"load more"}
             />
           </div>
         )}

@@ -24,10 +24,15 @@ const getURL = (index, address, previous) => {
   );
 };
 
-function useNFTs(address: string) {
+function useNFTs(address: string, initialData) {
   const { data, error, size, isValidating, setSize } = useSWRInfinite(
     (index, previous) => getURL(index, address, previous),
-    _fetcher
+    _fetcher,
+    {
+      initialSize: 0,
+      fallbackData: initialData ? [initialData] : [],
+      revalidateOnFocus: false,
+    }
   );
   return {
     data,
@@ -40,10 +45,11 @@ function useNFTs(address: string) {
 }
 
 const RenderNFTCollectionWidget = (props) => {
-  const { identity, onShowDetail } = props;
+  const { identity, onShowDetail, initialData } = props;
   const [collections, setCollections] = useState([]);
-  const { data, size, setSize, isValidating, isLoading, isError } = useNFTs(
-    identity.addresses?.eth ?? identity.owner
+  const { data, size, setSize, isValidating, isError } = useNFTs(
+    identity.addresses?.eth ?? identity.owner,
+    initialData
   );
   const [expand, setExpand] = useState(false);
   const scrollContainer = useRef(null);
@@ -60,8 +66,8 @@ const RenderNFTCollectionWidget = (props) => {
         }, [])
       : [];
   }, [data]);
-
-  const isReachingEnd = data && !data[data.length - 1].next;
+  const isReachingEnd =
+    data && data.length > 0 && !data[data.length - 1].next_cursor;
 
   useEffect(() => {
     if (issues && issues.length > 0) {
@@ -94,11 +100,7 @@ const RenderNFTCollectionWidget = (props) => {
   if (!collections.length || isError) return null;
 
   return (
-    <div
-      ref={scrollContainer}
-      className="profile-widget-full"
-      id="nft"
-    >
+    <div ref={scrollContainer} className="profile-widget-full" id="nft">
       <div
         className={`profile-widget profile-widget-nft${
           expand ? " active" : ""

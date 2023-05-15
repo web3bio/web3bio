@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { RenderWidgetItem } from "../profile/WidgetItem";
@@ -19,7 +19,7 @@ export default function ProfileMain(props) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [curAsset, setCurAsset] = useState(null);
   const [dialogType, setDialogType] = useState(NFTModalType.NFT);
-  const { asPath } = useRouter();
+  // const { asPath } = useRouter();
 
   const onCopySuccess = () => {
     setCopied(true);
@@ -151,6 +151,7 @@ export default function ProfileMain(props) {
                 setDialogOpen(true);
               }}
               identity={data}
+              initialData={data.nfts}
             />
           </div>
           <div className="web3-section-widgets">

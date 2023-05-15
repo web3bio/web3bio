@@ -4,6 +4,7 @@ import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { handleSearchPlatform } from "../utils/utils";
 import ProfileMain from "../components/profile/ProfileMain";
 import { Web3bioProfileAPIEndpoint } from "../utils/constants";
+import { fetchInitialNFTsData } from "../hooks/api/fetchProfile";
 
 const NewProfile = ({ data, platform, pageTitle }) => {
   return (
@@ -29,7 +30,11 @@ const NewProfile = ({ data, platform, pageTitle }) => {
           ],
         }}
       />
-      <ProfileMain data={data} pageTitle={pageTitle} platform={platform} />
+      <ProfileMain
+        data={data}
+        pageTitle={pageTitle}
+        platform={platform}
+      />
     </div>
   );
 };
@@ -63,6 +68,8 @@ export async function getServerSideProps({ params, res }) {
     );
     if (response.status == 404) return { notFound: true };
     const data = await response.json();
+
+    const nfts = await fetchInitialNFTsData(data.identity);
     const pageTitle =
       data.identity == data.displayName
         ? `${data.displayName}`
@@ -81,6 +88,7 @@ export async function getServerSideProps({ params, res }) {
               ...(value as any),
             };
           }),
+          nfts,
         },
         platform,
         pageTitle,
