@@ -28,9 +28,9 @@ function useNFTs(address: string, initialData) {
   const { data, error, size, isValidating, setSize } = useSWRInfinite(
     (index, previous) => getURL(index, address, previous),
     _fetcher,
-    {
+    initialData && {
       initialSize: 0,
-      fallbackData: initialData ? [initialData] : [],
+      fallbackData: [initialData],
       revalidateOnFocus: false,
     }
   );
@@ -51,6 +51,7 @@ const RenderNFTCollectionWidget = (props) => {
     identity.addresses?.eth ?? identity.owner,
     initialData
   );
+
   const [expand, setExpand] = useState(false);
   const scrollContainer = useRef(null);
 

@@ -6,11 +6,16 @@ import useSWR from "swr";
 import { _fetcher } from "../apis/ens";
 import { Web3bioProfileAPIEndpoint } from "../../utils/constants";
 
-export function useProfile(identity: string, platform: string) {
+export function useProfile(identity: string, platform: string, fallbackData) {
   const url =
     Web3bioProfileAPIEndpoint +
     `/profile/${platform.toLowerCase()}/${identity}`;
-  const { data, error } = useSWR<any>(url, _fetcher);
+  const { data, error } = useSWR<any>(url, _fetcher, {
+    fallbackData: fallbackData,
+    revalidateOnMount: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: true,
+  });
   return {
     data: data,
     isLoading: !error && !data,
@@ -19,8 +24,12 @@ export function useProfile(identity: string, platform: string) {
 }
 
 export default function ProfileModal(props) {
-  const { identity, platform, onClose } = props;
-  const { isLoading, isError, data } = useProfile(identity, platform);
+  const { profile, onClose } = props;
+  const { isLoading, isError, data } = useProfile(
+    profile?.identity,
+    profile?.platform,
+    profile?.profile
+  );
 
   return (
     <Modal onDismiss={onClose}>
@@ -46,7 +55,7 @@ export default function ProfileModal(props) {
               };
             }),
           }}
-          platform={platform}
+          platform={profile?.platform}
         />
       )}
     </Modal>

@@ -23,8 +23,7 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchPlatform, setsearchPlatform] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
-  const [profileIdentity, setProfileIdentity] = useState(null);
-  const [profilePlatform, setProfilePlatform] = useState(null);
+  const [profileData, setProfileData] = useState(null);
   const router = useRouter();
 
   const handleSubmit = (value, platform?) => {
@@ -43,9 +42,14 @@ export default function Home() {
     setSearchFocus(true);
   };
 
-  const handleOpenProfileModal = (identity, platform) => {
-    setProfileIdentity(identity);
-    setProfilePlatform(platform);
+  const handleOpenProfileModal = (identity, platform, profile) => {
+    setProfileData({
+      identity,
+      platform,
+      profile,
+    });
+
+
     window.history.pushState({}, "", `/${identity}`);
     setModalOpen(true);
   };
@@ -78,7 +82,13 @@ export default function Home() {
   });
   return (
     <div>
-      <NextSeo title={searchTerm ? `${searchTerm} - Web3.bio` : "Web3.bio - Web3 Identity Graph Search and Profile"} />
+      <NextSeo
+        title={
+          searchTerm
+            ? `${searchTerm} - Web3.bio`
+            : "Web3.bio - Web3 Identity Graph Search and Profile"
+        }
+      />
       <main className="web3bio-container">
         <div className="web3bio-cover flare"></div>
 
@@ -246,9 +256,14 @@ export default function Home() {
                     </small> */}
                   </h3>
                   <h4>
-                    One page to show who you are and everything you make and own.
+                    One page to show who you are and everything you make and
+                    own.
                   </h4>
-                  <a className="text-small label mb-4" href="https://web3.bio/vitalik.eth" target="_blank">
+                  <a
+                    className="text-small label mb-4"
+                    href="https://web3.bio/vitalik.eth"
+                    target="_blank"
+                  >
                     web3.bio/
                     <span className="text-small label label-primary ml-1">
                       vitalik.eth
@@ -296,8 +311,7 @@ export default function Home() {
             window.history.go(-1);
             setModalOpen(false);
           }}
-          identity={profileIdentity}
-          platform={profilePlatform}
+          profile={profileData}
         />
       )}
     </div>
