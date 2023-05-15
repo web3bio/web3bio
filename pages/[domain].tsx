@@ -39,10 +39,6 @@ export async function getServerSideProps({ params, res }) {
     return {
       notFound: true,
     };
-  res.setHeader(
-    "Cache-Control",
-    `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${60 * 30}`
-  );
   try {
     const platform = handleSearchPlatform(params.domain);
     if (
@@ -58,20 +54,23 @@ export async function getServerSideProps({ params, res }) {
       return {
         notFound: true,
       };
-    const res = await fetch(
+    const response = await fetch(
       `${Web3bioProfileAPIEndpoint}/profile/${(platform ===
       PlatformType.ethereum
         ? PlatformType.ens
         : platform
       ).toLowerCase()}/${params.domain}`
     );
-    if (res.status == 404) return { notFound: true };
-    const data = await res.json();
+    if (response.status == 404) return { notFound: true };
+    const data = await response.json();
     const pageTitle =
       data.identity == data.displayName
         ? `${data.displayName}`
         : `${data.displayName} (${data.identity})`;
-
+    res.setHeader(
+      "Cache-Control",
+      `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${60 * 30}`
+    );
     return {
       props: {
         data: {
@@ -88,6 +87,7 @@ export async function getServerSideProps({ params, res }) {
       },
     };
   } catch (e) {
+    res.setHeader("Cache-Control", "no-cache");
     return { props: { data: { error: e.message } } };
   }
 }
