@@ -40,7 +40,7 @@ export default function ProfileMain(props) {
     <>
       <div
         className="web3bio-custom"
-        style={{ backgroundImage: "url(" + data.header + ")" }}
+        style={{ backgroundImage: data.header? `url("${data.header}")` : null }}
       ></div>
       <div className="columns">
         <div className="column col-4 col-md-12">
