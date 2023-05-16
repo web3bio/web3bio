@@ -44,10 +44,10 @@ function useNFTs(address: string, initialData) {
 }
 
 const RenderNFTCollectionWidget = (props) => {
-  const { identity, onShowDetail, initialData } = props;
+  const { address, onShowDetail, initialData } = props;
   const [collections, setCollections] = useState([]);
   const { data, size, setSize, isValidating, isError } = useNFTs(
-    identity.addresses?.eth ?? identity.owner,
+    address,
     initialData
   );
 
