@@ -164,7 +164,10 @@ const RenderNFTCollections = (props) => {
                                 name: x.name,
                               },
                               asset: y,
-                              mediaURL: y.video_url || y.image_url,
+                              mediaURL:
+                                y.video_url ||
+                                y.previews.image_large_url ||
+                                y.image_url,
                             })
                           }
                         >

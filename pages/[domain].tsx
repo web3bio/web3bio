@@ -5,7 +5,6 @@ import { handleSearchPlatform } from "../utils/utils";
 import ProfileMain from "../components/profile/ProfileMain";
 import { Web3bioProfileAPIEndpoint } from "../utils/constants";
 import { fetchInitialNFTsData } from "../hooks/api/fetchProfile";
-import { processNFTsData } from "../components/profile/NFTCollectionWidget";
 
 const NewProfile = ({ data, platform }) => {
   const pageTitle = useMemo(() => {
@@ -89,7 +88,18 @@ export async function getServerSideProps({ params, res }) {
             nfts: remoteNFTs.nfts.map((x) => ({
               image_url: x.image_url,
               previews: x.previews,
-              collection: x.collection,
+              token_id: x.token_id,
+              collection: {
+                collection_id: x.collection.collection_id,
+                name: x.collection.name,
+                image_url: x.collection.image_url,
+                spam_score: x.collection.spam_score,
+              },
+              video_url: x.video_url,
+              audio_url: x.audio_url,
+              video_properties: x.video_properties,
+              image_properties: x.image_properties,
+              extra_metadata: x.extra_metadata,
             })),
           },
         },
