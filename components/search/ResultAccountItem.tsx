@@ -23,6 +23,7 @@ const RenderAccountItem = (props) => {
       : identity.displayName || identity.identity,
     30
   );
+
   switch (identity.platform) {
     case PlatformType.ethereum:
       return (
@@ -82,22 +83,27 @@ const RenderAccountItem = (props) => {
               </div>
             )}
           </div>
-          <div
-            onClick={() => {
-              onItemClick(
-                profile?.identity || identity.displayName || identity.identity,
-                PlatformType.ens
-              );
-            }}
-            className="social-actions"
-          >
-            <button
-              className="btn btn-sm btn-link action"
-              title="Open ENS Profile"
+          {profile && !profile?.error && (
+            <div
+              onClick={() => {
+                onItemClick(
+                  profile?.identity ||
+                    identity.displayName ||
+                    identity.identity,
+                  PlatformType.ens,
+                  profile
+                );
+              }}
+              className="social-actions"
             >
-              <SVG src="icons/icon-open.svg" width={20} height={20} />
-            </button>
-          </div>
+              <button
+                className="btn btn-sm btn-link action"
+                title="Open ENS Profile"
+              >
+                <SVG src="icons/icon-open.svg" width={20} height={20} />
+              </button>
+            </div>
+          )}
           <RenderSourceFooter sources={sources} />
         </div>
       );
@@ -111,7 +117,11 @@ const RenderAccountItem = (props) => {
                   <img src={profile?.avatar} className="avatar-img" />
                 )}
                 <div className="icon">
-                  <SVG src={SocialPlatformMapping(identity.platform)?.icon} width={20} height={20} />
+                  <SVG
+                    src={SocialPlatformMapping(identity.platform)?.icon}
+                    width={20}
+                    height={20}
+                  />
                 </div>
               </div>
               <div className="content">
@@ -133,7 +143,7 @@ const RenderAccountItem = (props) => {
           </div>
           <div
             onClick={() => {
-              onItemClick(identity.identity, PlatformType.lens);
+              onItemClick(identity.identity, PlatformType.lens, profile);
             }}
             className="social-actions"
           >
@@ -173,7 +183,9 @@ const RenderAccountItem = (props) => {
           <div className="social-actions actions">
             <a
               className="btn btn-sm btn-link action"
-              href={`${SocialPlatformMapping(identity.platform)?.urlPrefix}${identity.displayName}`}
+              href={`${SocialPlatformMapping(identity.platform)?.urlPrefix}${
+                identity.displayName
+              }`}
               title="Open Unstoppable Domains"
               target="_blank"
               rel="noopener noreferrer"
@@ -194,7 +206,11 @@ const RenderAccountItem = (props) => {
                   <img src={profile?.avatar} className="avatar-img" />
                 )}
                 <div className="icon">
-                  <SVG src={SocialPlatformMapping(identity.platform)?.icon} width={20} height={20} />
+                  <SVG
+                    src={SocialPlatformMapping(identity.platform)?.icon}
+                    width={20}
+                    height={20}
+                  />
                 </div>
               </div>
               <div className="content">
@@ -235,7 +251,11 @@ const RenderAccountItem = (props) => {
             <div className="social">
               <figure className="avatar">
                 <div className="icon">
-                  <SVG src={SocialPlatformMapping(identity.platform)?.icon} width={20} height={20} />
+                  <SVG
+                    src={SocialPlatformMapping(identity.platform)?.icon}
+                    width={20}
+                    height={20}
+                  />
                 </div>
               </figure>
               <div className="content">
@@ -268,7 +288,11 @@ const RenderAccountItem = (props) => {
                   <img src={profile?.avatar} className="avatar-img" />
                 )}
                 <div className="icon">
-                  <SVG src={SocialPlatformMapping(identity.platform)?.icon} width={20} height={20} />
+                  <SVG
+                    src={SocialPlatformMapping(identity.platform)?.icon}
+                    width={20}
+                    height={20}
+                  />
                 </div>
               </div>
               <div className="content">
@@ -291,7 +315,9 @@ const RenderAccountItem = (props) => {
           <div className="social-actions actions">
             <a
               className="btn btn-sm btn-link action"
-              href={`${SocialPlatformMapping(identity.platform)?.urlPrefix}${identity.displayName}`}
+              href={`${SocialPlatformMapping(identity.platform)?.urlPrefix}${
+                identity.displayName
+              }`}
               title="Open Twitter"
               target="_blank"
               rel="noopener noreferrer"
@@ -319,7 +345,11 @@ const RenderAccountItem = (props) => {
               className="social"
             >
               <div className="icon">
-                <SVG src={SocialPlatformMapping(identity.platform)?.icon} width={20} height={20} />
+                <SVG
+                  src={SocialPlatformMapping(identity.platform)?.icon}
+                  width={20}
+                  height={20}
+                />
               </div>
               <div className="title">{displayName}</div>
             </Link>
@@ -327,7 +357,9 @@ const RenderAccountItem = (props) => {
           <div className="social-actions actions">
             <a
               className="btn btn-sm btn-link action"
-              href={`${SocialPlatformMapping(identity.platform)?.urlPrefix}${identity.displayName}`}
+              href={`${SocialPlatformMapping(identity.platform)?.urlPrefix}${
+                identity.displayName
+              }`}
               title="Open"
               target="_blank"
               rel="noopener noreferrer"

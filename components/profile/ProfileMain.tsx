@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { RenderWidgetItem } from "../profile/WidgetItem";
@@ -19,7 +19,7 @@ export default function ProfileMain(props) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [curAsset, setCurAsset] = useState(null);
   const [dialogType, setDialogType] = useState(NFTModalType.NFT);
-  const { asPath } = useRouter();
+  // const { asPath } = useRouter();
 
   const onCopySuccess = () => {
     setCopied(true);
@@ -135,7 +135,7 @@ export default function ProfileMain(props) {
         </div>
         <div className="column col-8 col-md-12">
           <div className="web3-section-widgets">
-            {data?.linksData?.map((item, idx) => {
+            {data?.links?.map((item, idx) => {
               return (
                 <div key={idx} className="profile-widget-item">
                   <RenderWidgetItem displayName={pageTitle} item={item} />
@@ -150,7 +150,8 @@ export default function ProfileMain(props) {
                 setCurAsset(v);
                 setDialogOpen(true);
               }}
-              identity={data}
+              address={data.owner}
+              initialData={data.nfts}
             />
           </div>
           <div className="web3-section-widgets">
@@ -160,7 +161,7 @@ export default function ProfileMain(props) {
                 setCurAsset(v);
                 setDialogOpen(true);
               }}
-              identity={data}
+              address={data.owner}
             />
           </div>
         </div>
@@ -170,7 +171,7 @@ export default function ProfileMain(props) {
           href="/"
           target="_blank"
           className="btn btn-sm btn-primary"
-          title="Web3.bio Web3 Identity Graph search and link in bio profile platform"
+          title="Web3.bio Web3 Identity Graph Search and Link-in-bio Profile Service"
         >
           <span className="mr-2">👋</span>Made with{" "}
           <strong className="text-pride ml-1 mr-1">Web3.bio</strong>

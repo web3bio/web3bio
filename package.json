@@ -12,7 +12,6 @@
   "dependencies": {
     "@dotbit/plugin-avatar": "^0.0.1",
     "boring-avatars": "^1.7.0",
-    "dotbit": "^0.4.17",
     "next-seo": "^6.0.0",
     "qrcode": "^1.5.3",
     "react-infinite-scroll-hook": "^4.1.1",
@@ -22,7 +21,6 @@
   "devDependencies": {
     "@antv/g6": "^4.7.0",
     "@apollo/client": "^3.6.9",
-    "@ensdomains/ensjs": "^3.0.0-alpha.50",
     "@types/node": "^18.7.14",
     "@types/react": "^18.0.18",
     "bignumber.js": "^9.1.0",

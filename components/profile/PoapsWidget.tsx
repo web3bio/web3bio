@@ -20,10 +20,8 @@ function usePoaps(address: string) {
 }
 
 const RenderPoapWidget = (props) => {
-  const { identity, onShowDetail } = props;
-  const { data, isLoading, isError } = usePoaps(
-    identity.addresses?.eth ?? identity.owner
-  );
+  const { address, onShowDetail } = props;
+  const { data, isLoading, isError } = usePoaps(address);
 
   const getBoundaryRender = useCallback(() => {
     if (isLoading) return <Loading />;

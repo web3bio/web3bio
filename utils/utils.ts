@@ -134,3 +134,6 @@ export const resolveMediaURL = (url) => {
     ? url.replaceAll("ar://", ArweaveAssetPrefix)
     : resolveIPFS_URL(url);
 };
+
+
+export const fallbackEmoji = ["🤔", "😱", "😵‍💫", "😵", "🤦‍♀️", "💆‍♂️", "🤷‍♂️", "🙇‍♂️", "🤖"]
