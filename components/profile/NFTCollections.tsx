@@ -39,15 +39,15 @@ const RenderNFTCollections = (props) => {
         const nav_contentRect =
           insideScrollContainer.current.getBoundingClientRect();
         const groupList = Array.from(
-          data.map((x) => document.getElementById(x.id))
+          data.map((x) => document.getElementById(x.collection_id))
         );
         if (nav_contentRect) {
           groupList.map((item: any) => {
             if (!item) return;
             const itemReact = item.getBoundingClientRect();
             if (itemReact.y <= 250 && itemReact.y + itemReact.height > 250) {
-              if (activeCollection !== item.id) {
-                setActiveCollection(item.id);
+              if (activeCollection !== item.collection_id) {
+                setActiveCollection(item.collection_id);
               }
             }
           });
@@ -60,7 +60,9 @@ const RenderNFTCollections = (props) => {
           `collection_${activeCollection}`
         );
         if (!swticherContainer || !activeElement) return;
-        const activeIndex = data.findIndex((x) => x.id === activeCollection);
+        const activeIndex = data.findIndex(
+          (x) => x.collection_id === activeCollection
+        );
         swticherContainer.scrollTo({
           left: activeIndex * activeElement.getBoundingClientRect().width,
           behavior: "smooth",
@@ -101,7 +103,7 @@ const RenderNFTCollections = (props) => {
       {data && data.length > 0 && (
         <CollectionSwitcher
           collections={data}
-          currentSelect={activeCollection ?? data[0].id}
+          currentSelect={activeCollection ?? data[0].collection_id}
           onSelect={(v) => {
             setActiveCollection(v);
             handleScrollToAsset(insideScrollContainer, v);
@@ -125,7 +127,11 @@ const RenderNFTCollections = (props) => {
             {data.map((x, idx) => {
               if (!x.assets.length) return null;
               return (
-                <div className="nft-collection-item" key={idx} id={x.id}>
+                <div
+                  className="nft-collection-item"
+                  key={idx}
+                  id={x.collection_id}
+                >
                   <div className="collection-title">
                     <NFTAssetPlayer
                       type={"image/png"}

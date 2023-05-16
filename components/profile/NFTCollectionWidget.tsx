@@ -4,7 +4,6 @@ import { ExpandController } from "./ExpandController";
 import { NFTCollections } from "./NFTCollections";
 import { _fetcher } from "../apis/ens";
 import { SIMPLE_HASH_URL } from "../apis/simplehash";
-import _ from "lodash";
 
 export const NFT_PAGE_SIZE = 40;
 
@@ -56,46 +55,55 @@ const RenderNFTCollectionWidget = (props) => {
   const scrollContainer = useRef(null);
 
   const issues = useMemo(() => {
-    return data
-      ? data.reduce((pre, cur) => {
-          if (cur.nfts) {
-            cur.nfts.map((x) => {
-              if (!_.includes(pre, x)) pre.push(x);
-            });
-          }
-          return pre;
-        }, [])
-      : [];
+    if (!data) {
+      return [];
+    }
+
+    const uniqueValues = new Set();
+    const result = [];
+
+    for (const obj of data) {
+      const nfts = obj.nfts;
+      if (!nfts) {
+        continue;
+      }
+
+      for (const value of nfts) {
+        if (!uniqueValues.has(value)) {
+          uniqueValues.add(value);
+          result.push(value);
+        }
+      }
+    }
+
+    return result;
   }, [data]);
+
   const isReachingEnd =
     data && data.length > 0 && !data[data.length - 1].next_cursor;
 
   useEffect(() => {
-    if (issues && issues.length > 0) {
-      const unionCollections = issues.reduce((pre, x) => {
-        if (x.collection.spam_score <= 75) {
-          pre.push({
-            ...x.collection,
-            id: x.collection.collection_id,
-            assets: [],
-          });
-        }
-        return pre;
-      }, []);
-      const res = _.uniqBy(unionCollections, "collection_id");
-      if (res.length > 0) {
-        issues.forEach((i) => {
-          if (!i.collection || !i.collection.collection_id) return;
-          const idx = res.findIndex((x) => {
-            return x.id && x.id === i.collection.collection_id;
-          });
-          if (idx === -1) return;
-          if (_.some(res[idx].assets, i)) return;
-          res[idx].assets.push(i);
-        });
-      }
-      setCollections(res);
+    if (!issues || issues.length === 0) {
+      return;
     }
+
+    const collections = [];
+    const collectionById = new Map();
+    for (const issue of issues) {
+      const { collection } = issue;
+      if (!collection || collection.spam_score > 75) continue;
+
+      let collectionItem = collectionById.get(collection.collection_id);
+      if (!collectionItem) {
+        collectionItem = { ...collection, assets: [] };
+        collectionById.set(collection.collection_id, collectionItem);
+        collections.push(collectionItem);
+      }
+
+      collectionItem.assets.push(issue);
+    }
+
+    setCollections(collections);
   }, [issues]);
 
   if (!collections.length || isError) return null;
