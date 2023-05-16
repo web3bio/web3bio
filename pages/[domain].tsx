@@ -69,7 +69,7 @@ export async function getServerSideProps({ params, res }) {
     );
     if (response.status == 404) return { notFound: true };
     const data = await response.json();
-    const nfts = await fetchInitialNFTsData(data.identity);
+    const remoteNFTs = await fetchInitialNFTsData(data.identity);
     res.setHeader(
       "Cache-Control",
       `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${60 * 30}`
@@ -84,7 +84,18 @@ export async function getServerSideProps({ params, res }) {
               ...(value as any),
             };
           }),
-          nfts,
+          nfts: {
+            ...remoteNFTs,
+            nfts: remoteNFTs.nfts.map((x) => ({
+              image_url: x.image_url,
+              previews: x.previews,
+              collection: {
+                collection_id: x.collection.collection_id,
+                name: x.collection.name,
+                image_url: x.collection.image_url
+              },
+            })),
+          },
         },
         platform,
       },

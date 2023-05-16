@@ -1,4 +1,4 @@
-import { memo, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { ExpandController } from "./ExpandController";
 import { NFTCollections } from "./NFTCollections";
@@ -9,8 +9,7 @@ export const NFT_PAGE_SIZE = 40;
 
 export const processNFTsData = (data) => {
   const uniqueValues = new Set();
-  const result = [];
-
+  const issues = [];
   for (const obj of data) {
     const nfts = obj.nfts;
     if (!nfts) {
@@ -20,15 +19,9 @@ export const processNFTsData = (data) => {
     for (const value of nfts) {
       if (!uniqueValues.has(value)) {
         uniqueValues.add(value);
-        result.push(value);
+        issues.push(value);
       }
     }
-  }
-
-  const issues = result;
-
-  if (!issues || issues.length === 0) {
-    return [];
   }
 
   const collections = [];
@@ -96,6 +89,7 @@ const RenderNFTCollectionWidget = (props) => {
   );
   const [expand, setExpand] = useState(false);
   const scrollContainer = useRef(null);
+
   if (!data.length || isError) return null;
 
   return (
