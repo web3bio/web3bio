@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { NextSeo } from "next-seo";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { handleSearchPlatform } from "../utils/utils";
 import ProfileMain from "../components/profile/ProfileMain";
 import { Web3bioProfileAPIEndpoint } from "../utils/constants";
+import { fetchInitialNFTsData } from "../hooks/api/fetchProfile";
+import { processNFTsData } from "../components/profile/NFTCollectionWidget";
 
-const NewProfile = ({ data, platform, pageTitle }) => {
+const NewProfile = ({ data, platform }) => {
+  const pageTitle = useMemo(() => {
+    return data.identity == data.displayName
+      ? `${data.displayName}`
+      : `${data.displayName} (${data.identity})`;
+  }, [data]);
   return (
     <div className="web3-profile container grid-xl">
       <NextSeo
@@ -39,15 +46,10 @@ export async function getServerSideProps({ params, res }) {
     return {
       notFound: true,
     };
-  res.setHeader(
-    "Cache-Control",
-    `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${60 * 30}`
-  );
   try {
     const platform = handleSearchPlatform(params.domain);
     if (
       ![
-        PlatformType.dotbit,
         PlatformType.ens,
         PlatformType.farcaster,
         PlatformType.twitter,
@@ -58,36 +60,44 @@ export async function getServerSideProps({ params, res }) {
       return {
         notFound: true,
       };
-    const res = await fetch(
+    const response = await fetch(
       `${Web3bioProfileAPIEndpoint}/profile/${(platform ===
       PlatformType.ethereum
         ? PlatformType.ens
         : platform
       ).toLowerCase()}/${params.domain}`
     );
-    if (res.status == 404) return { notFound: true };
-    const data = await res.json();
-    const pageTitle =
-      data.identity == data.displayName
-        ? `${data.displayName}`
-        : `${data.displayName} (${data.identity})`;
-
+    if (response.status == 404) return { notFound: true };
+    const data = await response.json();
+    const remoteNFTs = await fetchInitialNFTsData(data.identity);
+    res.setHeader(
+      "Cache-Control",
+      `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${60 * 30}`
+    );
     return {
       props: {
         data: {
           ...data,
-          linksData: Object.entries(data?.links || {}).map(([key, value]) => {
+          links: Object.entries(data?.links || {}).map(([key, value]) => {
             return {
               platform: key,
               ...(value as any),
             };
           }),
+          nfts: {
+            ...remoteNFTs,
+            nfts: remoteNFTs.nfts.map((x) => ({
+              image_url: x.image_url,
+              previews: x.previews,
+              collection: x.collection,
+            })),
+          },
         },
         platform,
-        pageTitle,
       },
     };
   } catch (e) {
+    res.setHeader("Cache-Control", "no-cache");
     return { props: { data: { error: e.message } } };
   }
 }

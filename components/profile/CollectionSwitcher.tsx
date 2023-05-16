@@ -2,24 +2,24 @@ import { memo } from "react";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
 const RenderCollectionSwitcher = (props) => {
-  const { collections, currentSelect, onSelect } = props;
+  const { collections, currentSelect, onSelect, scrollToEnd, hasNextPage } =
+    props;
   const hideDropdownMenu = (v) => {
-    onSelect(v.id);
+    onSelect(v.collection_id);
   };
-
   return (
     <div className="collection-switcher">
       <div id="collection-switcher-box" className="collection-list">
         {collections.map((item) => (
           <div
-            id={`collection_${item.id}`}
+            id={`collection_${item.collection_id}`}
             onClick={() => hideDropdownMenu(item)}
             className={
-              item.id === currentSelect
+              item.collection_id === currentSelect
                 ? "collection-item active"
                 : "collection-item"
             }
-            key={item.id}
+            key={item.collection_id}
           >
             <NFTAssetPlayer
               className="collection-img"
@@ -31,6 +31,22 @@ const RenderCollectionSwitcher = (props) => {
             <div className="collection-name text-assistive">{item.name}</div>
           </div>
         ))}
+        {hasNextPage && (
+          <div
+            id="collection_load_more"
+            onClick={scrollToEnd}
+            className="collection-item"
+          >
+            <NFTAssetPlayer
+              className="collection-img collection-img-more"
+              src={"/icons/icon-more.svg"}
+              height={20}
+              width={20}
+              alt={"Load more NFTs"}
+            />
+            
+          </div>
+        )}
       </div>
     </div>
   );

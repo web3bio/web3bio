@@ -1,3 +1,5 @@
+import { SIMPLE_HASH_URL } from "../../components/apis/simplehash";
+import { NFT_PAGE_SIZE } from "../../components/profile/NFTCollectionWidget";
 import { Web3bioProfileAPIEndpoint } from "../../utils/constants";
 import { PlatformType } from "../../utils/platform";
 
@@ -6,7 +8,6 @@ const resolveSearchHandle = (identity) => {
     [PlatformType.ethereum]: identity.displayName || identity.identity,
     [PlatformType.twitter]: identity.identity,
     [PlatformType.farcaster]: identity.identity,
-    [PlatformType.dotbit]: identity.identity,
     [PlatformType.lens]: identity.identity,
   }[identity.platform];
 };
@@ -24,5 +25,17 @@ export const fetchProfile = async (identity) => {
     return await res.json();
   } catch (e) {
     return null;
+  }
+};
+
+export const fetchInitialNFTsData = async (address) => {
+  try {
+    const res = await fetch(
+      SIMPLE_HASH_URL +
+        `/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${address}&limit=${NFT_PAGE_SIZE}`
+    );
+    return res.json();
+  } catch (e) {
+    return [];
   }
 };

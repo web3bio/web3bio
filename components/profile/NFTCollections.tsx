@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import useInfiniteScroll from "react-infinite-scroll-hook";
 import { resolveMediaURL } from "../../utils/utils";
 import { Empty } from "../shared/Empty";
@@ -14,9 +14,10 @@ const RenderNFTCollections = (props) => {
     parentScrollRef,
     handleScrollToAsset,
     isLoadingMore,
-    isReachingEnd,
+    hasNextPage,
     getNext,
     isError,
+    setExpand,
   } = props;
   const [activeCollection, setActiveCollection] = useState(null);
   const insideScrollContainer = useRef(null);
@@ -24,8 +25,42 @@ const RenderNFTCollections = (props) => {
     loading: isLoadingMore,
     disabled: !!isError,
     onLoadMore: getNext,
-    hasNextPage: !isReachingEnd,
+    hasNextPage: hasNextPage,
   });
+  const judgeActiveCollection = useCallback(() => {
+    const nav_contentRect =
+      insideScrollContainer.current.getBoundingClientRect();
+    const groupList = Array.from(
+      data.map((x) => document.getElementById(x.collection_id))
+    );
+    if (nav_contentRect) {
+      groupList.map((item: any) => {
+        if (!item) return;
+        const itemReact = item.getBoundingClientRect();
+        if (itemReact.y <= 250 && itemReact.y + itemReact.height > 250) {
+          if (activeCollection !== item.collection_id) {
+            setActiveCollection(item.collection_id);
+          }
+        }
+      });
+    }
+
+    const swticherContainer = document.getElementById(
+      "collection-switcher-box"
+    );
+    const activeElement = document.getElementById(
+      `collection_${activeCollection}`
+    );
+    if (!swticherContainer || !activeElement) return;
+    const activeIndex = data.findIndex(
+      (x) => x.collection_id === activeCollection
+    );
+    swticherContainer.scrollTo({
+      left: activeIndex * activeElement.getBoundingClientRect().width,
+      behavior: "smooth",
+    });
+  }, [data, activeCollection]);
+
   useEffect(() => {
     if (expand) {
       parentScrollRef.current.scrollIntoView({
@@ -34,58 +69,30 @@ const RenderNFTCollections = (props) => {
         inline: "nearest",
       });
 
-      const judgeActiveCollection = () => {
-        const nav_contentRect =
-          insideScrollContainer.current.getBoundingClientRect();
-        const groupList = Array.from(
-          data.map((x) => document.getElementById(x.id))
-        );
-        if (nav_contentRect) {
-          groupList.map((item: any) => {
-            if (!item) return;
-            const itemReact = item.getBoundingClientRect();
-            if (itemReact.y <= 250 && itemReact.y + itemReact.height > 250) {
-              if (activeCollection !== item.id) {
-                setActiveCollection(item.id);
-              }
-            }
-          });
-        }
-
-        const swticherContainer = document.getElementById(
-          "collection-switcher-box"
-        );
-        const activeElement = document.getElementById(
-          `collection_${activeCollection}`
-        );
-        if (!swticherContainer || !activeElement) return;
-        const activeIndex = data.findIndex((x) => x.id === activeCollection);
-        swticherContainer.scrollTo({
-          left: activeIndex * activeElement.getBoundingClientRect().width,
-          behavior: "smooth",
-        });
-      };
-
       if (insideScrollContainer.current && data) {
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        const options = isIOS ? {} : { passive: true };
         insideScrollContainer.current.addEventListener(
           "wheel",
           judgeActiveCollection,
-          {
-            passive: true,
-          }
+          options
         );
       }
       return () =>
         insideScrollContainer.current?.removeEventListener(
           "wheel",
-          judgeActiveCollection,
-          {
-            passive: true,
-          }
+          judgeActiveCollection
         );
     }
-  }, [expand, parentScrollRef, data, activeCollection]);
-
+  }, [expand, parentScrollRef, judgeActiveCollection, data]);
+  const scrollToEnd = () => {
+    if (insideScrollContainer.current) {
+      insideScrollContainer.current.scrollTo({
+        top: insideScrollContainer.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  };
   if (!data || !data.length) return <Empty />;
 
   return (
@@ -93,10 +100,21 @@ const RenderNFTCollections = (props) => {
       {data && data.length > 0 && (
         <CollectionSwitcher
           collections={data}
-          currentSelect={activeCollection ?? data[0].id}
+          currentSelect={activeCollection ?? data[0].collection_id}
           onSelect={(v) => {
             setActiveCollection(v);
             handleScrollToAsset(insideScrollContainer, v);
+          }}
+          hasNextPage={hasNextPage}
+          scrollToEnd={() => {
+            if (!expand) {
+              setExpand(true);
+              setTimeout(() => {
+                scrollToEnd();
+              }, 500);
+            } else {
+              scrollToEnd();
+            }
           }}
         />
       )}
@@ -106,7 +124,11 @@ const RenderNFTCollections = (props) => {
             {data.map((x, idx) => {
               if (!x.assets.length) return null;
               return (
-                <div className="nft-collection-item" key={idx} id={x.id}>
+                <div
+                  className="nft-collection-item"
+                  key={idx}
+                  id={x.collection_id}
+                >
                   <div className="collection-title">
                     <NFTAssetPlayer
                       type={"image/png"}
@@ -167,7 +189,7 @@ const RenderNFTCollections = (props) => {
               );
             })}
           </div>
-          {(isLoadingMore || !isReachingEnd) && (
+          {(isLoadingMore || hasNextPage) && (
             <div
               ref={albumRef}
               style={{
