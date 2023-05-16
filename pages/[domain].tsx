@@ -5,7 +5,6 @@ import { handleSearchPlatform } from "../utils/utils";
 import ProfileMain from "../components/profile/ProfileMain";
 import { Web3bioProfileAPIEndpoint } from "../utils/constants";
 import { fetchInitialNFTsData } from "../hooks/api/fetchProfile";
-import { processNFTsData } from "../components/profile/NFTCollectionWidget";
 
 const NewProfile = ({ data, platform }) => {
   const pageTitle = useMemo(() => {

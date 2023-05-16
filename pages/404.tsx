@@ -1,15 +1,12 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { fallbackEmoji } from "../utils/utils";
 
 export default function Custom404() {
   const [emoji, setEmoji] = useState("🤔");
   const router = useRouter();
   useEffect(() => {
-    setEmoji(
-      ["🤔", "😱", "😵‍💫", "😵", "🤦‍♀️", "💆‍♂️", "🤷‍♂️", "🙇‍♂️"][
-        Math.floor(Math.random() * 8)
-      ]
-    );
+    setEmoji(fallbackEmoji[Math.floor(Math.random() * fallbackEmoji.length)]);
   }, []);
   return (
     <main className="web3-profile container grid-xl">
