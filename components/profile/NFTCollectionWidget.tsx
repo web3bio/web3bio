@@ -8,6 +8,7 @@ import { SIMPLE_HASH_URL } from "../apis/simplehash";
 export const NFT_PAGE_SIZE = 40;
 
 export const processNFTsData = (data) => {
+  if (!data?.length) return [];
   const uniqueValues = new Set();
   const issues = [];
   for (const obj of data) {
@@ -66,8 +67,8 @@ function useNFTs(address: string, initialData) {
     initialData && {
       initialSize: 1,
       fallbackData: [initialData],
-      revalidateOnFocus: false,
-      revalidateOnMount: false,
+      revalidateOnFocus: initialData ? false : true,
+      revalidateOnMount: initialData ? false : true,
     }
   );
   return {
@@ -91,7 +92,17 @@ const RenderNFTCollectionWidget = (props) => {
   const scrollContainer = useRef(null);
 
   if (!data.length || isError) return null;
-
+  const scrollToAsset = (ref, v) => {
+    if (ref) {
+      const anchorElement = document.getElementById(v);
+      if (!anchorElement) return;
+      const top = anchorElement.offsetTop;
+      ref.current.scrollTo({
+        top: top,
+        behavior: "smooth",
+      });
+    }
+  };
   return (
     <div ref={scrollContainer} className="profile-widget-full" id="nft">
       <div
@@ -112,17 +123,13 @@ const RenderNFTCollectionWidget = (props) => {
         <NFTCollections
           handleScrollToAsset={(ref, v) => {
             setExpand(true);
-            setTimeout(() => {
-              if (ref) {
-                const anchorElement = document.getElementById(v);
-                if (!anchorElement) return;
-                const top = anchorElement.offsetTop;
-                ref.current.scrollTo({
-                  top: top,
-                  behavior: "smooth",
-                });
-              }
-            }, 400);
+            if (expand) {
+              scrollToAsset(ref, v);
+            } else {
+              setTimeout(() => {
+                scrollToAsset(ref, v);
+              }, 500);
+            }
           }}
           parentScrollRef={scrollContainer}
           expand={expand}

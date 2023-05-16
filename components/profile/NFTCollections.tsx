@@ -111,7 +111,7 @@ const RenderNFTCollections = (props) => {
               setExpand(true);
               setTimeout(() => {
                 scrollToEnd();
-              }, 400);
+              }, 500);
             } else {
               scrollToEnd();
             }

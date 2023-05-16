@@ -89,11 +89,7 @@ export async function getServerSideProps({ params, res }) {
             nfts: remoteNFTs.nfts.map((x) => ({
               image_url: x.image_url,
               previews: x.previews,
-              collection: {
-                collection_id: x.collection.collection_id,
-                name: x.collection.name,
-                image_url: x.collection.image_url
-              },
+              collection: x.collection,
             })),
           },
         },
