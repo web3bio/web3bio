@@ -135,7 +135,7 @@ export default function ProfileMain(props) {
         </div>
         <div className="column col-8 col-md-12">
           <div className="web3-section-widgets">
-            {data?.linksData?.map((item, idx) => {
+            {data?.links?.map((item, idx) => {
               return (
                 <div key={idx} className="profile-widget-item">
                   <RenderWidgetItem displayName={pageTitle} item={item} />

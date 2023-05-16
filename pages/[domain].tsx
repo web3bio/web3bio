@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { NextSeo } from "next-seo";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { handleSearchPlatform } from "../utils/utils";
 import ProfileMain from "../components/profile/ProfileMain";
 import { Web3bioProfileAPIEndpoint } from "../utils/constants";
 import { fetchInitialNFTsData } from "../hooks/api/fetchProfile";
+import { processNFTsData } from "../components/profile/NFTCollectionWidget";
 
-const NewProfile = ({ data, platform, pageTitle }) => {
+const NewProfile = ({ data, platform }) => {
+  const pageTitle = useMemo(() => {
+    return data.identity == data.displayName
+      ? `${data.displayName}`
+      : `${data.displayName} (${data.identity})`;
+  }, [data]);
   return (
     <div className="web3-profile container grid-xl">
       <NextSeo
@@ -30,11 +36,7 @@ const NewProfile = ({ data, platform, pageTitle }) => {
           ],
         }}
       />
-      <ProfileMain
-        data={data}
-        pageTitle={pageTitle}
-        platform={platform}
-      />
+      <ProfileMain data={data} pageTitle={pageTitle} platform={platform} />
     </div>
   );
 };
@@ -67,12 +69,7 @@ export async function getServerSideProps({ params, res }) {
     );
     if (response.status == 404) return { notFound: true };
     const data = await response.json();
-
     const nfts = await fetchInitialNFTsData(data.identity);
-    const pageTitle =
-      data.identity == data.displayName
-        ? `${data.displayName}`
-        : `${data.displayName} (${data.identity})`;
     res.setHeader(
       "Cache-Control",
       `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${60 * 30}`
@@ -81,7 +78,7 @@ export async function getServerSideProps({ params, res }) {
       props: {
         data: {
           ...data,
-          linksData: Object.entries(data?.links || {}).map(([key, value]) => {
+          links: Object.entries(data?.links || {}).map(([key, value]) => {
             return {
               platform: key,
               ...(value as any),
@@ -90,7 +87,6 @@ export async function getServerSideProps({ params, res }) {
           nfts,
         },
         platform,
-        pageTitle,
       },
     };
   } catch (e) {

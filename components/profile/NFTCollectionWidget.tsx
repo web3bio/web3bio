@@ -7,6 +7,49 @@ import { SIMPLE_HASH_URL } from "../apis/simplehash";
 
 export const NFT_PAGE_SIZE = 40;
 
+export const processNFTsData = (data) => {
+  const uniqueValues = new Set();
+  const result = [];
+
+  for (const obj of data) {
+    const nfts = obj.nfts;
+    if (!nfts) {
+      continue;
+    }
+
+    for (const value of nfts) {
+      if (!uniqueValues.has(value)) {
+        uniqueValues.add(value);
+        result.push(value);
+      }
+    }
+  }
+
+  const issues = result;
+
+  if (!issues || issues.length === 0) {
+    return [];
+  }
+
+  const collections = [];
+  const collectionById = new Map();
+  for (const issue of issues) {
+    const { collection } = issue;
+    if (!collection || collection.spam_score > 75) continue;
+
+    let collectionItem = collectionById.get(collection.collection_id);
+    if (!collectionItem) {
+      collectionItem = { ...collection, assets: [] };
+      collectionById.set(collection.collection_id, collectionItem);
+      collections.push(collectionItem);
+    }
+
+    collectionItem.assets.push(issue);
+  }
+
+  return collections;
+};
+
 const getURL = (index, address, previous) => {
   if (
     index !== 0 &&
@@ -28,13 +71,15 @@ function useNFTs(address: string, initialData) {
     (index, previous) => getURL(index, address, previous),
     _fetcher,
     initialData && {
-      initialSize: 0,
+      initialSize: 1,
       fallbackData: [initialData],
       revalidateOnFocus: false,
+      revalidateOnMount: false,
     }
   );
   return {
-    data,
+    hasNextPage: !!data?.[data.length - 1]?.next,
+    data: processNFTsData(data),
     isLoading: !error && !data,
     isError: error,
     size,
@@ -45,68 +90,13 @@ function useNFTs(address: string, initialData) {
 
 const RenderNFTCollectionWidget = (props) => {
   const { address, onShowDetail, initialData } = props;
-  const [collections, setCollections] = useState([]);
-  const { data, size, setSize, isValidating, isError } = useNFTs(
+  const { data, size, setSize, isValidating, isError, hasNextPage } = useNFTs(
     address,
     initialData
   );
-
   const [expand, setExpand] = useState(false);
   const scrollContainer = useRef(null);
-
-  const issues = useMemo(() => {
-    if (!data) {
-      return [];
-    }
-
-    const uniqueValues = new Set();
-    const result = [];
-
-    for (const obj of data) {
-      const nfts = obj.nfts;
-      if (!nfts) {
-        continue;
-      }
-
-      for (const value of nfts) {
-        if (!uniqueValues.has(value)) {
-          uniqueValues.add(value);
-          result.push(value);
-        }
-      }
-    }
-
-    return result;
-  }, [data]);
-
-  const isReachingEnd =
-    data && data.length > 0 && !data[data.length - 1].next_cursor;
-
-  useEffect(() => {
-    if (!issues || issues.length === 0) {
-      return;
-    }
-
-    const collections = [];
-    const collectionById = new Map();
-    for (const issue of issues) {
-      const { collection } = issue;
-      if (!collection || collection.spam_score > 75) continue;
-
-      let collectionItem = collectionById.get(collection.collection_id);
-      if (!collectionItem) {
-        collectionItem = { ...collection, assets: [] };
-        collectionById.set(collection.collection_id, collectionItem);
-        collections.push(collectionItem);
-      }
-
-      collectionItem.assets.push(issue);
-    }
-
-    setCollections(collections);
-  }, [issues]);
-
-  if (!collections.length || isError) return null;
+  if (!data.length || isError) return null;
 
   return (
     <div ref={scrollContainer} className="profile-widget-full" id="nft">
@@ -143,13 +133,13 @@ const RenderNFTCollectionWidget = (props) => {
           parentScrollRef={scrollContainer}
           expand={expand}
           setExpand={setExpand}
-          data={collections}
+          data={data}
           onShowDetail={onShowDetail}
           isLoadingMore={isValidating}
-          isReachingEnd={isReachingEnd}
+          hasNextPage={hasNextPage}
           isError={isError}
           getNext={() => {
-            if (isValidating || isReachingEnd) return;
+            if (isValidating || !hasNextPage) return;
             setSize(size + 1);
           }}
         />
