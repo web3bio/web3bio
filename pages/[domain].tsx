@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useCallback, memo } from "react";
 import { NextSeo } from "next-seo";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { handleSearchPlatform } from "../utils/utils";
@@ -6,36 +6,37 @@ import ProfileMain from "../components/profile/ProfileMain";
 import { Web3bioProfileAPIEndpoint } from "../utils/constants";
 import { fetchInitialNFTsData } from "../hooks/api/fetchProfile";
 
-const NewProfile = ({ data, platform, nfts }) => {
-  console.log(data, "ssr data");
+const ProfilePage = ({ data, platform, nfts }) => {
   const pageTitle = useMemo(() => {
     return data.identity == data.displayName
       ? `${data.displayName}`
       : `${data.displayName} (${data.identity})`;
   }, [data]);
+
+  const renderMetatags = useCallback(
+    () => ({
+      title: `${pageTitle} - Web3.bio`,
+      description:
+        data.description ||
+        `Explore ${pageTitle} ${
+          SocialPlatformMapping(platform).label
+        } Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`,
+      openGraph: {
+        images: [
+          {
+            url:
+              data.avatar ||
+              `${process.env.NEXT_PUBLIC_BASE_URL}/img/web3bio-social.jpg`,
+          },
+        ],
+      },
+    }),
+    [data, platform, pageTitle]
+  );
+
   return (
     <div className="web3-profile container grid-xl">
-      <NextSeo
-        title={`${pageTitle} - Web3.bio`}
-        description={
-          data.description
-            ? `${data.description} - Explore ${pageTitle} ${
-                SocialPlatformMapping(platform).label
-              } Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`
-            : `Explore ${pageTitle} ${
-                SocialPlatformMapping(platform).label
-              } Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`
-        }
-        openGraph={{
-          images: [
-            {
-              url: data.avatar
-                ? data.avatar
-                : `${process.env.NEXT_PUBLIC_BASE_URL}/img/web3bio-social.jpg`,
-            },
-          ],
-        }}
-      />
+      <NextSeo {...renderMetatags()} />
       <ProfileMain
         nfts={nfts}
         data={data}
@@ -74,7 +75,7 @@ export async function getServerSideProps({ params, res }) {
     );
     if (response.status == 404) return { notFound: true };
     const data = await response.json();
-    const remoteNFTs = await fetchInitialNFTsData(data.identity);
+    const remoteNFTs = await fetchInitialNFTsData(data?.identity);
     res.setHeader(
       "Cache-Control",
       `public, s-maxage=${60 * 60 * 24 * 7}, stale-while-revalidate=${60 * 30}`
@@ -119,4 +120,4 @@ export async function getServerSideProps({ params, res }) {
   }
 }
 
-export default NewProfile;
+export default memo(ProfilePage);
