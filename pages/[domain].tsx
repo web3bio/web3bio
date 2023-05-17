@@ -6,7 +6,8 @@ import ProfileMain from "../components/profile/ProfileMain";
 import { Web3bioProfileAPIEndpoint } from "../utils/constants";
 import { fetchInitialNFTsData } from "../hooks/api/fetchProfile";
 
-const NewProfile = ({ data, platform }) => {
+const NewProfile = ({ data, platform, nfts }) => {
+  console.log(data, "ssr data");
   const pageTitle = useMemo(() => {
     return data.identity == data.displayName
       ? `${data.displayName}`
@@ -35,7 +36,12 @@ const NewProfile = ({ data, platform }) => {
           ],
         }}
       />
-      <ProfileMain data={data} pageTitle={pageTitle} platform={platform} />
+      <ProfileMain
+        nfts={nfts}
+        data={data}
+        pageTitle={pageTitle}
+        platform={platform}
+      />
     </div>
   );
 };
@@ -83,25 +89,26 @@ export async function getServerSideProps({ params, res }) {
               ...(value as any),
             };
           }),
-          nfts: {
-            ...remoteNFTs,
-            nfts: remoteNFTs.nfts.map((x) => ({
-              image_url: x.image_url,
-              previews: x.previews,
-              token_id: x.token_id,
-              collection: {
-                collection_id: x.collection.collection_id,
-                name: x.collection.name,
-                image_url: x.collection.image_url,
-                spam_score: x.collection.spam_score,
-              },
-              video_url: x.video_url,
-              audio_url: x.audio_url,
-              video_properties: x.video_properties,
-              image_properties: x.image_properties,
-              extra_metadata: x.extra_metadata,
-            })),
-          },
+        },
+
+        nfts: {
+          ...remoteNFTs,
+          nfts: remoteNFTs.nfts.map((x) => ({
+            image_url: x.image_url,
+            previews: x.previews,
+            token_id: x.token_id,
+            collection: {
+              collection_id: x.collection.collection_id,
+              name: x.collection.name,
+              image_url: x.collection.image_url,
+              spam_score: x.collection.spam_score,
+            },
+            video_url: x.video_url,
+            audio_url: x.audio_url,
+            video_properties: x.video_properties,
+            image_properties: x.image_properties,
+            extra_metadata: x.extra_metadata,
+          })),
         },
         platform,
       },
