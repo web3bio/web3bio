@@ -6,6 +6,32 @@ import ProfileMain from "../components/profile/ProfileMain";
 import { Web3bioProfileAPIEndpoint } from "../utils/constants";
 import { fetchInitialNFTsData } from "../hooks/api/fetchProfile";
 
+function mapLinks(links) {
+  return Object.entries(links || {}).map(([key, value]) => ({
+    platform: key,
+    ...(value as any),
+  }));
+}
+
+function mapNFTs(nfts) {
+  return nfts.map((x) => ({
+    image_url: x.image_url,
+    previews: x.previews,
+    token_id: x.token_id,
+    collection: {
+      collection_id: x.collection.collection_id,
+      name: x.collection.name,
+      image_url: x.collection.image_url,
+      spam_score: x.collection.spam_score,
+    },
+    video_url: x.video_url,
+    audio_url: x.audio_url,
+    video_properties: x.video_properties,
+    image_properties: x.image_properties,
+    extra_metadata: x.extra_metadata,
+  }));
+}
+
 const ProfilePage = ({ data, platform, nfts }) => {
   const pageTitle = useMemo(() => {
     return data.identity == data.displayName
@@ -82,35 +108,8 @@ export async function getServerSideProps({ params, res }) {
     );
     return {
       props: {
-        data: {
-          ...data,
-          links: Object.entries(data?.links || {}).map(([key, value]) => {
-            return {
-              platform: key,
-              ...(value as any),
-            };
-          }),
-        },
-
-        nfts: {
-          ...remoteNFTs,
-          nfts: remoteNFTs.nfts.map((x) => ({
-            image_url: x.image_url,
-            previews: x.previews,
-            token_id: x.token_id,
-            collection: {
-              collection_id: x.collection.collection_id,
-              name: x.collection.name,
-              image_url: x.collection.image_url,
-              spam_score: x.collection.spam_score,
-            },
-            video_url: x.video_url,
-            audio_url: x.audio_url,
-            video_properties: x.video_properties,
-            image_properties: x.image_properties,
-            extra_metadata: x.extra_metadata,
-          })),
-        },
+        data: { ...data, links: mapLinks(data?.links) },
+        nfts: { ...remoteNFTs, nfts: mapNFTs(remoteNFTs.nfts) },
         platform,
       },
     };
