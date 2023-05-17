@@ -80,17 +80,17 @@ export default function ProfileMain(props) {
             } Web3 Profile`}</h1>
             <h2 className="text-assistive">{`Explore ${pageTitle} Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`}</h2>
             <div className="profile-name">{data.displayName}</div>
-            <h3 className="text-assistive">{`${pageTitle}‘s Ethereum wallet address is ${data.owner}`}</h3>
+            <h3 className="text-assistive">{`${pageTitle}‘s Ethereum wallet address is ${data.address}`}</h3>
             <div className="profile-identity">
               {data.identity == data.displayName ? (
                 <>
                   <span className="profile-label">
-                    {formatText(data.owner)}
+                    {formatText(data.address)}
                   </span>
                   <Clipboard
                     component="div"
                     className="action"
-                    data-clipboard-text={data.owner}
+                    data-clipboard-text={data.address}
                     onSuccess={onCopySuccess}
                   >
                     <SVG src="../icons/icon-copy.svg" width={20} height={20} />
@@ -103,12 +103,12 @@ export default function ProfileMain(props) {
                   <span className="profile-label mr-2">{data.identity}</span>
                   {" · "}
                   <span className="profile-label ml-2">
-                    {formatText(data.owner)}
+                    {formatText(data.address)}
                   </span>
                   <Clipboard
                     component="div"
                     className="action"
-                    data-clipboard-text={data.owner}
+                    data-clipboard-text={data.address}
                     onSuccess={onCopySuccess}
                   >
                     <SVG src="../icons/icon-copy.svg" width={20} height={20} />
@@ -153,7 +153,7 @@ export default function ProfileMain(props) {
                 setCurAsset(v);
                 setDialogOpen(true);
               }}
-              address={data.owner}
+              address={data.address}
               initialData={nfts}
             />
           </div>
@@ -164,7 +164,7 @@ export default function ProfileMain(props) {
                 setCurAsset(v);
                 setDialogOpen(true);
               }}
-              address={data.owner}
+              address={data.address}
             />
           </div>
         </div>

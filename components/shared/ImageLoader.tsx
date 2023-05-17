@@ -19,7 +19,7 @@ export function ImageLoader(props: ImgHTMLAttributes<HTMLImageElement>) {
 
   return (
     <div
-      className={`img-container ${loaded ? "loaded" : ""}`}
+      className={`img-container ${!error && loaded ? "loaded" : ""}`}
       style={{ width: props.width, height: props.height }}
     >
       <img
