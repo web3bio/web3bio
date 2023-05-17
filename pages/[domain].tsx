@@ -114,7 +114,7 @@ export async function getServerSideProps({ params, res }) {
       },
     };
   } catch (e) {
-    res.setHeader("Cache-Control", "no-cache");
+    res.setHeader("Cache-Control", "max-age=0, must-revalidate");
     return { props: { data: { error: e.message } } };
   }
 }
