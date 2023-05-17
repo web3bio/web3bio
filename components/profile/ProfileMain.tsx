@@ -14,7 +14,7 @@ import { NFTModal, NFTModalType } from "./NFTModal";
 // import ShareButton from "../shared/ShareButton";
 
 export default function ProfileMain(props) {
-  const { data, pageTitle = "", platform } = props;
+  const { data, pageTitle = "", platform, nfts } = props;
   const [copied, setCopied] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [curAsset, setCurAsset] = useState(null);
@@ -36,11 +36,14 @@ export default function ProfileMain(props) {
       />
     );
   }
+  
   return (
     <>
       <div
         className="web3bio-custom"
-        style={{ backgroundImage: data.header? `url("${data.header}")` : null }}
+        style={{
+          backgroundImage: data.header ? `url("${data.header}")` : null,
+        }}
       ></div>
       <div className="columns">
         <div className="column col-4 col-md-12">
@@ -151,7 +154,7 @@ export default function ProfileMain(props) {
                 setDialogOpen(true);
               }}
               address={data.owner}
-              initialData={data.nfts}
+              initialData={nfts}
             />
           </div>
           <div className="web3-section-widgets">
