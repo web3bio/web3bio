@@ -57,7 +57,6 @@ const RenderAccount = (props) => {
     });
     return pre;
   }, []);
-
   return (
     <>
       <div className="search-result">

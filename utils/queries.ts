@@ -3,49 +3,46 @@ import { gql } from "@apollo/client";
 export const GET_PROFILES_DOMAIN = gql`
   query GET_PROFILES_DOMAIN($platform: String, $identity: String) {
     domain(domainSystem: $platform, name: $identity) {
-      owner {
-        uuid
-        platform
+      source
+      system
+      name
+      fetcher
+      resolved {
         identity
+        platform
         displayName
-        nft(category: ["ENS"]) {
-          uuid
-          category
-          chain
-          id
-        }
+      }
+      owner {
+        identity
+        platform
+        displayName
         neighborWithTraversal(depth: 5) {
-          source
-          from {
-            platform
-            identity
-            uuid
-            displayName
-            nft(category: ["ENS"]) {
-              category
-              chain
-              id
+          ... on ProofRecord {
+            __typename
+            source
+            from {
               uuid
+              platform
+              identity
+              displayName
             }
-            ownedBy {
+            to {
               uuid
               platform
               identity
               displayName
             }
           }
-          to {
-            platform
-            identity
-            uuid
-            displayName
-            nft(category: ["ENS"]) {
-              category
-              chain
-              id
+          ... on HoldRecord {
+            __typename
+            source
+            from {
               uuid
+              platform
+              identity
+              displayName
             }
-            ownedBy {
+            to {
               uuid
               platform
               identity
@@ -71,48 +68,42 @@ export const GET_PROFILES_QUERY = gql`
         identity
         displayName
       }
-      nft(category: ["ENS"]) {
+      nft(category: ["ENS"], limit: 100, offset: 0) {
         uuid
         category
         chain
+        address
         id
       }
       neighborWithTraversal(depth: 5) {
-        source
-        from {
-          uuid
-          platform
-          identity
-          displayName
-          ownedBy {
+        ... on ProofRecord {
+          source
+          from {
             uuid
             platform
             identity
             displayName
           }
-          nft(category: ["ENS"]) {
+          to {
             uuid
-            category
-            chain
-            id
+            platform
+            identity
+            displayName
           }
         }
-        to {
-          uuid
-          platform
-          identity
-          displayName
-          ownedBy {
+        ... on HoldRecord {
+          source
+          from {
             uuid
             platform
             identity
             displayName
           }
-          nft(category: ["ENS"]) {
+          to {
             uuid
-            category
-            chain
-            id
+            platform
+            identity
+            displayName
           }
         }
       }

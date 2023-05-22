@@ -3,7 +3,6 @@ import { NextSeo } from "next-seo";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { handleSearchPlatform } from "../utils/utils";
 import ProfileMain from "../components/profile/ProfileMain";
-import { Web3bioProfileAPIEndpoint } from "../utils/constants";
 import { fetchInitialNFTsData } from "../hooks/api/fetchProfile";
 
 function mapLinks(links) {
@@ -93,7 +92,7 @@ export async function getServerSideProps({ params, res }) {
         notFound: true,
       };
     const response = await fetch(
-      `${Web3bioProfileAPIEndpoint}/profile/${(platform ===
+      `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${(platform ===
       PlatformType.ethereum
         ? PlatformType.ens
         : platform

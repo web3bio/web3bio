@@ -1,6 +1,5 @@
 import { SIMPLE_HASH_URL } from "../../components/apis/simplehash";
 import { NFT_PAGE_SIZE } from "../../components/profile/NFTCollectionWidget";
-import { Web3bioProfileAPIEndpoint } from "../../utils/constants";
 import { PlatformType } from "../../utils/platform";
 
 const resolveSearchHandle = (identity) => {
@@ -19,7 +18,7 @@ export const fetchProfile = async (identity) => {
         ? PlatformType.ens
         : identity.platform;
     const url =
-      Web3bioProfileAPIEndpoint +
+      process.env.NEXT_PUBLIC_PROFILE_END_POINT +
       `/profile/${platform.toLowerCase()}/${handle}`;
     const res = await fetch(url, { next: { revalidate: 600 } });
     return await res.json();
