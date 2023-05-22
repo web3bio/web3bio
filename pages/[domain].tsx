@@ -98,7 +98,10 @@ export async function getServerSideProps({ params, res }) {
         : platform
       ).toLowerCase()}/${params.domain}`
     );
+
     if (response.status == 404) return { notFound: true };
+    if (response.status === 504)
+      return { props: { data: { error: "Timeout" } } };
     const data = await response.json();
     const remoteNFTs = await fetchInitialNFTsData(data?.identity);
     res.setHeader(
@@ -108,7 +111,7 @@ export async function getServerSideProps({ params, res }) {
     return {
       props: {
         data: { ...data, links: mapLinks(data?.links) },
-        nfts: { ...remoteNFTs, nfts: mapNFTs(remoteNFTs.nfts) },
+        nfts: { ...remoteNFTs, nfts: mapNFTs(remoteNFTs?.nfts) },
         platform,
       },
     };

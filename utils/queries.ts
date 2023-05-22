@@ -21,12 +21,24 @@ export const GET_PROFILES_DOMAIN = gql`
             __typename
             source
             from {
+              nft(category: ["ENS"], limit: 100, offset: 0) {
+                uuid
+                category
+                chain
+                id
+              }
               uuid
               platform
               identity
               displayName
             }
             to {
+              nft(category: ["ENS"], limit: 100, offset: 0) {
+                uuid
+                category
+                chain
+                id
+              }
               uuid
               platform
               identity
@@ -37,12 +49,24 @@ export const GET_PROFILES_DOMAIN = gql`
             __typename
             source
             from {
+              nft(category: ["ENS"], limit: 100, offset: 0) {
+                uuid
+                category
+                chain
+                id
+              }
               uuid
               platform
               identity
               displayName
             }
             to {
+              nft(category: ["ENS"], limit: 100, offset: 0) {
+                uuid
+                category
+                chain
+                id
+              }
               uuid
               platform
               identity
@@ -79,12 +103,24 @@ export const GET_PROFILES_QUERY = gql`
         ... on ProofRecord {
           source
           from {
+            nft(category: ["ENS"], limit: 100, offset: 0) {
+              uuid
+              category
+              chain
+              id
+            }
             uuid
             platform
             identity
             displayName
           }
           to {
+            nft(category: ["ENS"], limit: 100, offset: 0) {
+              uuid
+              category
+              chain
+              id
+            }
             uuid
             platform
             identity
@@ -94,12 +130,24 @@ export const GET_PROFILES_QUERY = gql`
         ... on HoldRecord {
           source
           from {
+            nft(category: ["ENS"], limit: 100, offset: 0) {
+              uuid
+              category
+              chain
+              id
+            }
             uuid
             platform
             identity
             displayName
           }
           to {
+            nft(category: ["ENS"], limit: 100, offset: 0) {
+              uuid
+              category
+              chain
+              id
+            }
             uuid
             platform
             identity

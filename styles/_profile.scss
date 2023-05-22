@@ -737,12 +737,12 @@
           transition: filter 0.3s ease-out;
           border-radius: .5rem;
 
-          .loaded .img-responsive,.video-responsive {
+          .loaded .img-responsive {
             filter: none;
           }
 
-          .img-responsive,
-          .video-responsive {
+
+          .img-responsive {
             aspect-ratio: 1 / 1;
             border-radius: .5rem;
             box-shadow: 0 .2rem 1rem rgba($dark-color, .15), 0 .05rem .2rem rgba($dark-color, .05);

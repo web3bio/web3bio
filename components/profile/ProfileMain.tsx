@@ -36,7 +36,7 @@ export default function ProfileMain(props) {
       />
     );
   }
-  
+
   return (
     <>
       <div
@@ -153,7 +153,7 @@ export default function ProfileMain(props) {
                 setCurAsset(v);
                 setDialogOpen(true);
               }}
-              address={data.address}
+              address={data.address || data.owner}
               initialData={nfts}
             />
           </div>
@@ -164,7 +164,7 @@ export default function ProfileMain(props) {
                 setCurAsset(v);
                 setDialogOpen(true);
               }}
-              address={data.address}
+              address={data.address || data.owner}
             />
           </div>
         </div>

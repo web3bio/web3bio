@@ -29,7 +29,6 @@ export default function ProfileModal(props) {
     profile?.platform,
     profile?.profile
   );
-
   return (
     <Modal onDismiss={onClose}>
       {isLoading ? (

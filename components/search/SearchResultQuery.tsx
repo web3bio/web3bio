@@ -52,8 +52,8 @@ export default function SearchResultQuery({
           __typename: "IdentityWithSource",
         });
         return pre;
-      }, []);
-      temp.unshift(resultOwner);
+      }, [resultOwner]);
+      
       setResultNeighbor(
         temp.filter(
           (ele, index) =>
