@@ -16,6 +16,7 @@ export const GET_PROFILES_DOMAIN = gql`
         identity
         platform
         displayName
+        uuid
         neighborWithTraversal(depth: 5) {
           ... on ProofRecord {
             __typename
@@ -82,7 +83,6 @@ export const GET_PROFILES_DOMAIN = gql`
 export const GET_PROFILES_QUERY = gql`
   query GET_PROFILES_QUERY($platform: String, $identity: String) {
     identity(platform: $platform, identity: $identity) {
-      uuid
       platform
       identity
       displayName
