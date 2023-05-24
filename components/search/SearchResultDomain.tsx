@@ -51,6 +51,18 @@ export default function RenderResultDomain({
         },
       ]
     );
+    if (searchTerm !== temp[0]?.identity?.displayName) {
+      // as sub domain
+      temp.unshift({
+        identity: {
+          uuid: undefined,
+          platform: results?.platform,
+          identity: results?.identity,
+          displayName: searchTerm,
+          nft: [],
+        },
+      });
+    }
     setResultNeighbor(
       temp.filter(
         (ele, index) =>
