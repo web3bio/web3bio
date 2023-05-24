@@ -24,30 +24,33 @@ export default function RenderResultDomain({
     if (searchTerm && searchPlatform) getQuery();
     if (!data || !data.domain) return;
     const results = data?.domain.owner;
-    const resultOwner = {
-      identity: {
-        uuid: results?.uuid,
-        platform: results?.platform,
-        identity: results?.identity,
-        displayName: results?.displayName,
-        nft: results?.nft,
-      },
-    };
 
-    const temp = results?.neighborWithTraversal.reduce((pre, cur) => {
-      pre.push({
-        identity: cur.from,
-        sources: [cur.source],
-        __typename: "IdentityWithSource",
-      });
-      pre.push({
-        identity: cur.to,
-        sources: [cur.source],
-        __typename: "IdentityWithSource",
-      });
-      return pre;
-    }, []);
-    temp.unshift(resultOwner);
+    const temp = results?.neighborWithTraversal.reduce(
+      (pre, cur) => {
+        pre.push({
+          identity: cur.from,
+          sources: [cur.source],
+          __typename: "IdentityWithSource",
+        });
+        pre.push({
+          identity: cur.to,
+          sources: [cur.source],
+          __typename: "IdentityWithSource",
+        });
+        return pre;
+      },
+      [
+        {
+          identity: {
+            uuid: results?.uuid,
+            platform: results?.platform,
+            identity: results?.identity,
+            displayName: results?.displayName,
+            nft: results?.nft,
+          },
+        },
+      ]
+    );
     setResultNeighbor(
       temp.filter(
         (ele, index) =>

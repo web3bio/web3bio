@@ -23,7 +23,6 @@ const RenderAccountItem = (props) => {
       : identity.displayName || identity.identity,
     30
   );
-
   switch (identity.platform) {
     case PlatformType.ethereum:
       return (
@@ -261,11 +260,11 @@ const RenderAccountItem = (props) => {
               <div className="content">
                 <div className="content-title text-bold">{displayName}</div>
                 <div className="content-subtitle text-gray">
-                  <div className="address">{identity.ownedBy.identity}</div>
+                  <div className="address">{identity.identity}</div>
                   <Clipboard
                     component="div"
                     className="action"
-                    data-clipboard-text={identity.ownedBy.identity}
+                    data-clipboard-text={identity.identity}
                     onSuccess={onCopySuccess}
                   >
                     <SVG src="icons/icon-copy.svg" width={20} height={20} />

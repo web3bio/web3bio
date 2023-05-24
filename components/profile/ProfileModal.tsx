@@ -4,11 +4,10 @@ import Modal from "../shared/Modal";
 import ProfileMain from "./ProfileMain";
 import useSWR from "swr";
 import { _fetcher } from "../apis/ens";
-import { Web3bioProfileAPIEndpoint } from "../../utils/constants";
 
 export function useProfile(identity: string, platform: string, fallbackData) {
   const url =
-    Web3bioProfileAPIEndpoint +
+    process.env.NEXT_PUBLIC_PROFILE_END_POINT +
     `/profile/${platform.toLowerCase()}/${identity}`;
   const { data, error } = useSWR<any>(url, _fetcher, {
     fallbackData: fallbackData,
@@ -30,7 +29,6 @@ export default function ProfileModal(props) {
     profile?.platform,
     profile?.profile
   );
-
   return (
     <Modal onDismiss={onClose}>
       {isLoading ? (

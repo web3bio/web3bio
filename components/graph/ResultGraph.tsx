@@ -61,7 +61,7 @@ const resolveGraphData = (source) => {
       platform: to.platform,
       source: x.source,
       displayName: to.profile?.displayName || to.displayName,
-      identity: to.profile?.owner || to.identity,
+      identity: to.profile?.address || to.identity,
       isIdentity: true,
     });
     nodes.push({
@@ -70,7 +70,7 @@ const resolveGraphData = (source) => {
       platform: from.platform,
       source: x.source,
       displayName: from.profile?.displayName || from.displayName,
-      identity: from.profile?.owner || from.identity,
+      identity: from.profile?.address || from.identity,
       isIdentity: true,
     });
     edges.push({
