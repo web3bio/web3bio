@@ -191,11 +191,12 @@
     will-change: transform;
 
     &.profile-widget-link {
+
       &:focus,
       &:hover {
         box-shadow: 0 .4rem 1.6rem -.4rem rgba($dark-color, .15), 0 .1rem .2rem rgba($dark-color, .01);
         z-index: 99;
-  
+
         .platform-action {
           .btn {
             opacity: 1;
@@ -441,9 +442,10 @@
       }
 
       .preview-image {
+
         .img-responsive,
         .video-responsive {
-          max-width: 98vw;  
+          max-width: 98vw;
         }
       }
     }
@@ -672,16 +674,16 @@
     .nft-collection-item {
       margin-top: .5rem;
     }
-  
+
     .collection-title {
       align-items: center;
       display: flex;
       padding: 1rem 0 .5rem 0;
-  
+
       .collection-logo {
         flex: 0 0 1.2rem;
         margin-right: .25rem;
-  
+
         .img-responsive {
           border-radius: .4rem;
           box-shadow: 0 .2rem .8rem rgba($dark-color, .2);
@@ -691,29 +693,29 @@
           width: 1.2rem;
         }
       }
-  
+
       .collection-name {
         font-size: .8rem;
         font-weight: 700;
       }
     }
-  
+
     .nft-list {
       position: relative;
       display: flex;
       flex-wrap: wrap;
       margin: 0 -.5rem 1rem -.5rem;
-  
+
       .nft-container {
         flex: 0 0 33.3333%;
         width: 33.3333%;
         min-width: 8rem;
-  
+
         @media screen and (max-width: $size-md) {
           flex: 0 0 50%;
         }
       }
-  
+
       .nft-item {
         border-radius: .75rem;
         padding: .5rem;
@@ -722,32 +724,42 @@
         overflow: hidden;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
-  
+
         &:focus,
         &:hover {
           background: lighten($bg-color, 2%);
         }
-  
+
         .img-container {
           margin-bottom: .5rem;
-  
-          .img-responsive,
-          .video-responsive {
+          position: relative;
+          overflow: hidden;
+          transition: filter 0.3s ease-out;
+          border-radius: .5rem;
+
+          .loaded .img-responsive {
+            filter: none;
+          }
+
+
+          .img-responsive {
             aspect-ratio: 1 / 1;
             border-radius: .5rem;
             box-shadow: 0 .2rem 1rem rgba($dark-color, .15), 0 .05rem .2rem rgba($dark-color, .05);
             font-size: 4rem;
             object-fit: cover;
             width: 100%;
+            filter: blur(8px);
+            transition: filter 0.3s ease-out;
           }
         }
-  
+
         .collection-name {
           color: $gray-color-dark;
           font-size: .5rem;
-  
+
         }
-  
+
         .nft-name {
           font-size: .65rem;
           font-weight: 700;
@@ -772,7 +784,7 @@
   opacity: .95;
   padding: .5rem;
   transition: opacity .25s ease-in-out;
-  
+
   @media screen and (min-width: $size-lg) {
     bottom: .5rem;
     position: fixed;

@@ -5,30 +5,32 @@ import { NFTCollections } from "./NFTCollections";
 import { _fetcher } from "../apis/ens";
 import { SIMPLE_HASH_URL } from "../apis/simplehash";
 
+const CHAIN_PARAM = "ethereum";
+const CURSOR_PARAM = "&cursor=";
 export const NFT_PAGE_SIZE = 40;
 
 export const processNFTsData = (data) => {
   if (!data?.length) return [];
   const uniqueValues = new Set();
-  const issues = [];
+  const assets = [];
   for (const obj of data) {
     const nfts = obj.nfts;
     if (!nfts) {
       continue;
     }
 
-    for (const value of nfts) {
-      if (!uniqueValues.has(value)) {
-        uniqueValues.add(value);
-        issues.push(value);
+    for (const asset of nfts) {
+      if (!uniqueValues.has(asset)) {
+        uniqueValues.add(asset);
+        assets.push(asset);
       }
     }
   }
 
   const collections = [];
   const collectionById = new Map();
-  for (const issue of issues) {
-    const { collection } = issue;
+  for (const asset of assets) {
+    const { collection } = asset;
     if (!collection || collection.spam_score > 75) continue;
 
     let collectionItem = collectionById.get(collection.collection_id);
@@ -38,7 +40,7 @@ export const processNFTsData = (data) => {
       collections.push(collectionItem);
     }
 
-    collectionItem.assets.push(issue);
+    collectionItem.assets.push(asset);
   }
 
   return collections;
@@ -54,13 +56,13 @@ const getURL = (index, address, previous) => {
   const cursor = previous?.next_cursor || "";
   return (
     SIMPLE_HASH_URL +
-    `/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${address}${
-      cursor ? "&cursor=" + cursor : ""
+    `/api/v0/nfts/owners?chains=${CHAIN_PARAM}&wallet_addresses=${address}${
+      cursor ? CURSOR_PARAM + cursor : ""
     }&limit=${NFT_PAGE_SIZE}`
   );
 };
 
-function useNFTs(address: string, initialData) {
+function useNFTs({ address, initialData }) {
   const { data, error, size, isValidating, setSize } = useSWRInfinite(
     (index, previous) => getURL(index, address, previous),
     _fetcher,
@@ -82,23 +84,22 @@ function useNFTs(address: string, initialData) {
   };
 }
 
-const RenderNFTCollectionWidget = (props) => {
-  const { address, onShowDetail, initialData } = props;
-  const { data, size, setSize, isValidating, isError, hasNextPage } = useNFTs(
+const RenderNFTCollectionWidget = ({ address, onShowDetail, initialData }) => {
+  const { data, size, setSize, isValidating, isError, hasNextPage } = useNFTs({
     address,
-    initialData
-  );
+    initialData,
+  });
   const [expand, setExpand] = useState(false);
   const scrollContainer = useRef(null);
 
   if (!data.length || isError) return null;
-  const scrollToAsset = (ref, v) => {
+  const scrollToAsset = (ref, assetId) => {
     if (ref) {
-      const anchorElement = document.getElementById(v);
+      const anchorElement = document.getElementById(assetId);
       if (!anchorElement) return;
       const top = anchorElement.offsetTop;
       ref.current.scrollTo({
-        top: top,
+        top,
         behavior: "smooth",
       });
     }
@@ -121,13 +122,13 @@ const RenderNFTCollectionWidget = (props) => {
           NFT Collections
         </h2>
         <NFTCollections
-          handleScrollToAsset={(ref, v) => {
+          handleScrollToAsset={(ref, assetId) => {
             setExpand(true);
             if (expand) {
-              scrollToAsset(ref, v);
+              scrollToAsset(ref, assetId);
             } else {
               setTimeout(() => {
-                scrollToAsset(ref, v);
+                scrollToAsset(ref, assetId);
               }, 500);
             }
           }}
