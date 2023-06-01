@@ -15,7 +15,7 @@ const RenderAccount = (props) => {
     if (
       !resultNeighbor?.length ||
       !resultNeighbor.some((x) => {
-        return [x.identity.displayName, x.identity.displayName].includes(
+        return [x.identity.displayName, x.identity.identity].includes(
           graphTitle
         );
       })

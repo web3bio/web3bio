@@ -1,6 +1,7 @@
 import { useLazyQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { GET_PROFILES_DOMAIN } from "../../utils/queries";
+import { regexEns } from "../../utils/regexp";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
 import { Loading } from "../shared/Loading";
@@ -51,7 +52,7 @@ export default function RenderResultDomain({
         },
       ]
     );
-    if (searchTerm !== temp[0]?.identity?.displayName) {
+    if (searchTerm !== temp[0]?.identity?.displayName && regexEns.test(searchTerm)) {
       // as sub domain
       temp.unshift({
         identity: {
