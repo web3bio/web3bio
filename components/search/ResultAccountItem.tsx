@@ -23,6 +23,10 @@ const RenderAccountItem = (props) => {
       : identity.displayName || identity.identity,
     30
   );
+  const resolvedIdentity =
+    identity.platform === PlatformType.ethereum
+      ? profile?.address || identity.identity
+      : identity.identity;
   switch (identity.platform) {
     case PlatformType.ethereum:
       return (
@@ -40,14 +44,14 @@ const RenderAccountItem = (props) => {
               <div className="content">
                 <div className="content-title text-bold">{displayName}</div>
                 <div className="content-subtitle text-gray">
-                  <div className="address hide-xs">{identity.identity}</div>
+                  <div className="address hide-xs">{resolvedIdentity}</div>
                   <div className="address show-xs">
-                    {formatText(identity.identity)}
+                    {formatText(resolvedIdentity)}
                   </div>
                   <Clipboard
                     component="div"
                     className="action"
-                    data-clipboard-text={identity.identity}
+                    data-clipboard-text={resolvedIdentity}
                     onSuccess={onCopySuccess}
                   >
                     <SVG src="icons/icon-copy.svg" width={20} height={20} />
@@ -88,7 +92,7 @@ const RenderAccountItem = (props) => {
                 onItemClick(
                   profile?.identity ||
                     identity.displayName ||
-                    identity.identity,
+                    resolvedIdentity,
                   PlatformType.ens,
                   profile
                 );
@@ -126,11 +130,11 @@ const RenderAccountItem = (props) => {
               <div className="content">
                 <div className="content-title text-bold">{displayName}</div>
                 <div className="content-subtitle text-gray">
-                  <div className="address">{identity.identity}</div>
+                  <div className="address">{resolvedIdentity}</div>
                   <Clipboard
                     component="div"
                     className="action"
-                    data-clipboard-text={identity.identity}
+                    data-clipboard-text={resolvedIdentity}
                     onSuccess={onCopySuccess}
                   >
                     <SVG src="icons/icon-copy.svg" width={20} height={20} />
@@ -142,7 +146,7 @@ const RenderAccountItem = (props) => {
           </div>
           <div
             onClick={() => {
-              onItemClick(identity.identity, PlatformType.lens, profile);
+              onItemClick(resolvedIdentity, PlatformType.lens, profile);
             }}
             className="social-actions"
           >
@@ -164,7 +168,7 @@ const RenderAccountItem = (props) => {
               href={{
                 pathname: "/",
                 query: {
-                  s: identity.identity,
+                  s: resolvedIdentity,
                 },
               }}
               className="social"
@@ -215,11 +219,11 @@ const RenderAccountItem = (props) => {
               <div className="content">
                 <div className="content-title text-bold">{displayName}</div>
                 <div className="content-subtitle text-gray">
-                  <div className="address">{identity.identity}</div>
+                  <div className="address">{resolvedIdentity}</div>
                   <Clipboard
                     component="div"
                     className="action"
-                    data-clipboard-text={identity.identity}
+                    data-clipboard-text={resolvedIdentity}
                     onSuccess={onCopySuccess}
                   >
                     <SVG src="icons/icon-copy.svg" width={20} height={20} />
@@ -232,7 +236,7 @@ const RenderAccountItem = (props) => {
           <div className="social-actions actions">
             <a
               className="btn btn-sm btn-link action"
-              href={`https://warpcast.com/${identity.identity}`}
+              href={`https://warpcast.com/${resolvedIdentity}`}
               title="Open Warpcast"
               target="_blank"
               rel="noopener noreferrer"
@@ -260,11 +264,11 @@ const RenderAccountItem = (props) => {
               <div className="content">
                 <div className="content-title text-bold">{displayName}</div>
                 <div className="content-subtitle text-gray">
-                  <div className="address">{identity.identity}</div>
+                  <div className="address">{resolvedIdentity}</div>
                   <Clipboard
                     component="div"
                     className="action"
-                    data-clipboard-text={identity.identity}
+                    data-clipboard-text={resolvedIdentity}
                     onSuccess={onCopySuccess}
                   >
                     <SVG src="icons/icon-copy.svg" width={20} height={20} />
@@ -297,11 +301,11 @@ const RenderAccountItem = (props) => {
               <div className="content">
                 <div className="content-title text-bold">{displayName}</div>
                 <div className="content-subtitle text-gray">
-                  <div className="address">{identity.identity}</div>
+                  <div className="address">{resolvedIdentity}</div>
                   <Clipboard
                     component="div"
                     className="action"
-                    data-clipboard-text={identity.identity}
+                    data-clipboard-text={resolvedIdentity}
                     onSuccess={onCopySuccess}
                   >
                     <SVG src="icons/icon-copy.svg" width={20} height={20} />
@@ -337,7 +341,7 @@ const RenderAccountItem = (props) => {
               href={{
                 pathname: "/",
                 query: {
-                  s: identity.identity,
+                  s: resolvedIdentity,
                   platform: identity.platform,
                 },
               }}
