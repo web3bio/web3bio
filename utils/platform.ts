@@ -45,6 +45,12 @@ export enum PlatformType {
   dribbble = "dribbble",
   nostr = "nostr",
   poap = "poap",
+  knn3 = "knn3",
+  ethLeaderboard = "ethLeaderboard",
+  the_graph = "the_graph",
+  rpc_server = "rpc_server",
+  twitter_hexagon = "twitter_hexagon",
+  uniswap = "uniswap",
 }
 
 export const platfomData: { [key in PlatformType]: SocialPlatform } = {
@@ -103,7 +109,7 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     iconW: "icons/icon-keybase-w.svg",
     label: "Keybase",
     urlPrefix: "https://keybase.io/",
-    ensText: ['io.keybase'],
+    ensText: ["io.keybase"],
   },
   [PlatformType.lens]: {
     key: PlatformType.lens,
@@ -331,6 +337,49 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     color: "#463E68",
     label: "POAP",
     urlPrefix: "https://app.poap.xyz/scan/",
+  },
+  [PlatformType.knn3]: {
+    key: PlatformType.knn3,
+    icon: "",
+    color: "",
+    label: "KNN3",
+    urlPrefix: "https://www.knn3.xyz/",
+  },
+  [PlatformType.ethLeaderboard]: {
+    key: PlatformType.ethLeaderboard,
+    icon: "",
+    color: "",
+    label: ".eth LeaderBoard",
+    urlPrefix: "https://ethleaderboard.xyz/",
+  },
+
+  [PlatformType.the_graph]: {
+    key: PlatformType.the_graph,
+    icon: "",
+    color: "",
+    label: "The Graph",
+    urlPrefix: "https://thegraph.com/",
+  },
+  [PlatformType.rpc_server]: {
+    key: PlatformType.rpc_server,
+    icon: "",
+    color: "",
+    label: "RPC Server",
+    urlPrefix: "",
+  },
+  [PlatformType.twitter_hexagon]: {
+    key: PlatformType.twitter_hexagon,
+    icon: "",
+    color: "",
+    label: "Twitter Hexagon",
+    urlPrefix: "https://twitter.com/",
+  },
+  [PlatformType.uniswap]: {
+    key: PlatformType.uniswap,
+    icon: "",
+    color: "",
+    label: "Uniswap",
+    urlPrefix: "https://uniswap.org/",
   },
 };
 
