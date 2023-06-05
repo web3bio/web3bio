@@ -4,6 +4,7 @@ import { ResultAccountItem } from "./ResultAccountItem";
 import { fetchProfile } from "../../hooks/api/fetchProfile";
 import { ResultGraph } from "../graph/ResultGraph";
 import _ from "lodash";
+import { regexEns } from "../../utils/regexp";
 
 const RenderAccount = (props) => {
   const { graphData, resultNeighbor, graphTitle, onItemClick } = props;
@@ -46,7 +47,6 @@ const RenderAccount = (props) => {
     fetchProfileData(resultNeighbor);
     return () => setProfiles([]);
   }, [graphTitle, resultNeighbor]);
-
   return (
     <>
       <div className="search-result">
@@ -64,6 +64,7 @@ const RenderAccount = (props) => {
         <div className="search-result-body">
           {resultNeighbor?.map((avatar) => (
             <ResultAccountItem
+              canSkipProfile={regexEns.test(avatar.identity.displayName)}
               onItemClick={onItemClick}
               profileLoading={profileLoading}
               identity={avatar.identity}
