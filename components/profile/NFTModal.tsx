@@ -1,6 +1,7 @@
 import { memo, useEffect } from "react";
 import SVG from "react-inlinesvg";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
+import { CollectionWidget } from "./CollectionWidget";
 
 export const enum NFTModalType {
   NFT = "nft",
@@ -27,13 +28,13 @@ const NFTModalRender = (props) => {
       <>
         <div id="nft-dialog" className="nft-preview">
           <div className="preview-container">
-            <div 
-              className="preview-overlay" 
+            <div
+              className="preview-overlay"
               style={{
-                backgroundImage: "url(" + asset.mediaURL + ")"
+                backgroundImage: "url(" + asset.mediaURL + ")",
               }}
-              onClick={onClose}>
-            </div>
+              onClick={onClose}
+            ></div>
             <div className="btn btn-close" onClick={onClose}>
               <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
             </div>
@@ -88,8 +89,7 @@ const NFTModalRender = (props) => {
                         {asset.asset.event.start_date}
                       </div>
                     </div>
-                    {(asset.asset.event.city ||
-                      asset.asset.event.country) && (
+                    {(asset.asset.event.city || asset.asset.event.country) && (
                       <div className="traits-card">
                         <div className="trait-type">Event Location</div>
                         <div className="trait-value">
@@ -116,19 +116,22 @@ const NFTModalRender = (props) => {
   const attributes = _asset.extra_metadata?.attributes || [];
   return (
     <>
-      <div id="nft-dialog" className="nft-preview"
+      <div
+        id="nft-dialog"
+        className="nft-preview"
         style={{
           ["--nft-primary-color" as string]: _asset.previews.predominant_color,
         }}
       >
         <div className="preview-container">
-          <div 
-            className="preview-overlay" 
+          <div
+            className="preview-overlay"
             style={{
-              backgroundImage: "url(" + _asset.previews.image_medium_url + ")"
+              backgroundImage: "url(" + _asset.previews.image_medium_url + ")",
             }}
-            onClick={onClose}>
-          </div>
+            onClick={onClose}
+          ></div>
+
           <div className="btn btn-close" onClick={onClose}>
             <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
           </div>
@@ -145,54 +148,58 @@ const NFTModalRender = (props) => {
               poster={_asset.previews.image_large_url}
             />
           </div>
-          <div className="preview-content">
-            <div className="nft-header-collection collection-title">
-              <NFTAssetPlayer
-                type={"image/png"}
-                className="collection-logo"
-                src={asset.collection.url}
-                alt={asset.collection.name}
-              />
-              <div className="collection-name text-ellipsis">
-                {asset.collection.name}
+          <div className="preview-main">
+            <CollectionWidget id={asset.collection.id} />
+
+            <div className="preview-content">
+              {/* <div className="nft-header-collection collection-title">
+    <NFTAssetPlayer
+      type={"image/png"}
+      className="collection-logo"
+      src={asset.collection.url}
+      alt={asset.collection.name}
+    />
+    <div className="collection-name text-ellipsis">
+      {asset.collection.name}
+    </div>
+  </div> */}
+              <div className="nft-header-name">
+                {_asset.name || `${asset.collection.name} #${_asset.token_id}`}
               </div>
-            </div>
-            <div className="nft-header-name">
-              {_asset.name || `${asset.collection.name} #${_asset.token_id}`}
-            </div>
-            {_asset?.description && (
-              <div className="panel-widget">
-                <div className="panel-widget-content">
-                  {_asset?.description}
-                </div>
-              </div>
-            )}
-            {attributes.length > 0 && (
-              <div className="panel-widget">
-                <div className="panel-widget-title">Attributes</div>
-                <div className="panel-widget-content">
-                  <div className="traits-cards">
-                    {attributes.map((x, idx) => {
-                      return (
-                        <div key={idx} className="traits-card">
-                          <div className="trait-type">
-                            {x.attribute_name || x.trait_type}
-                          </div>
-                          <div className="trait-value">
-                            {x.attribute_value || x.value}
-                          </div>
-                          {/* {x.percentage && (
-                            <div className="trait-trait_percentage">
-                              {x.percentage}
-                            </div>
-                          )} */}
-                        </div>
-                      );
-                    })}
+              {_asset?.description && (
+                <div className="panel-widget">
+                  <div className="panel-widget-content">
+                    {_asset?.description}
                   </div>
                 </div>
-              </div>
-            )}
+              )}
+              {attributes.length > 0 && (
+                <div className="panel-widget">
+                  <div className="panel-widget-title">Attributes</div>
+                  <div className="panel-widget-content">
+                    <div className="traits-cards">
+                      {attributes.map((x, idx) => {
+                        return (
+                          <div key={idx} className="traits-card">
+                            <div className="trait-type">
+                              {x.attribute_name || x.trait_type}
+                            </div>
+                            <div className="trait-value">
+                              {x.attribute_value || x.value}
+                            </div>
+                            {/* {x.percentage && (
+                <div className="trait-trait_percentage">
+                  {x.percentage}
+                </div>
+              )} */}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

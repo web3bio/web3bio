@@ -1,0 +1,106 @@
+import { memo } from "react";
+import useSWR from "swr";
+import { _fetcher } from "../apis/ens";
+import { SIMPLE_HASH_URL } from "../apis/simplehash";
+import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
+import { formatEther } from "ethers";
+import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import Link from "next/link";
+import { formatText } from "../../utils/utils";
+
+const useCollectionData = (id) => {
+  const { data, isValidating, error } = useSWR(
+    SIMPLE_HASH_URL + "/api/v0/nfts/collections/ids?collection_ids=" + id,
+    _fetcher
+  );
+  return {
+    data,
+    isLoading: isValidating,
+    isError: error,
+  };
+};
+const mediaRender = (_collection) => {
+  const renderArr = {
+    [PlatformType.twitter]: _collection.twitter_username,
+    [PlatformType.medium]: _collection.medium_username,
+    [PlatformType.telegram]: _collection.telegram_url,
+    [PlatformType.opensea]: _collection.marketplace_pages.find(
+      (x) => x.marketplace_id === PlatformType.opensea
+    ).collection_url,
+    [PlatformType.discord]: _collection.discord_url,
+    [PlatformType.instagram]: _collection.instagram_username,
+  };
+
+  return Object.keys(renderArr).map((x: PlatformType) => {
+    if (renderArr[x]) {
+      const item = renderArr[x];
+      return (
+        <div className="media-item" key={item.collection_id}>
+          <Link href={item}>
+            <NFTAssetPlayer
+              className="media-img"
+              src={SocialPlatformMapping(x).icon}
+              alt=""
+            />
+          </Link>
+        </div>
+      );
+    }
+  });
+};
+
+const INFO_CONFIG = [
+  { key: "distinct_nft_count", label: "Total Minted" },
+  { key: "total_quantity", label: "Max Supply" },
+  { key: "distinct_owner_count", label: "Unique Minters" },
+  { key: "top_contracts", label: "Top Holder" },
+];
+
+const CollectionWidgetRender = (props) => {
+  const { id } = props;
+  const { data, isLoading, isError } = useCollectionData(id);
+  if (!data || isLoading || isError) return null;
+  const _collection = data?.collections?.[0];
+
+  return (
+    <div className="preview-content">
+      <div className="collection-header">
+        <div className="collection-title">
+          <NFTAssetPlayer
+            type={"image/png"}
+            className="collection-logo"
+            src={_collection.image_url}
+            alt={_collection.name}
+          />
+          <div className="collection-name text-ellipsis">
+            {_collection.name}
+          </div>
+        </div>
+        <div className="collection-price collection-name">
+          Floor: {formatEther(_collection.floor_prices?.[0].value)}{" "}
+          {_collection.floor_prices?.[0].payment_token.symbol}
+        </div>
+      </div>
+      <div className="collection-description">
+        {_collection.description || "No Descriptions"}
+      </div>
+      <div className="collection-media">{mediaRender(_collection)}</div>
+      <div className="collection-info">
+        {INFO_CONFIG.map((x) => {
+          return (
+            <div className="info-item" key={x.key}>
+              <div className="info-name">{x.label}</div>
+              <div className="info-value">
+                {formatText(
+                  _collection[x.key].toString() || _collection[x.key]?.[0]
+                ).replace("ethereum.", "")}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+export const CollectionWidget = memo(CollectionWidgetRender);
