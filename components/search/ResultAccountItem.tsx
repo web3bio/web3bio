@@ -14,7 +14,7 @@ const RenderAccountItem = (props) => {
       setIsCopied(false);
     }, 1500);
   };
-  const { identity, sources, profile, onItemClick } = props;
+  const { identity, sources, profile, onItemClick, canSkipProfile } = props;
 
   const [isCopied, setIsCopied] = useState(false);
   const displayName = formatText(
@@ -27,6 +27,7 @@ const RenderAccountItem = (props) => {
     identity.platform === PlatformType.ethereum
       ? profile?.address || identity.identity
       : identity.identity;
+      
   switch (identity.platform) {
     case PlatformType.ethereum:
       return (
@@ -86,13 +87,11 @@ const RenderAccountItem = (props) => {
               </div>
             )}
           </div>
-          {profile && !profile?.error && (
+          {(canSkipProfile || (profile && !profile?.error)) && (
             <div
               onClick={() => {
                 onItemClick(
-                  profile?.identity ||
-                    identity.displayName ||
-                    resolvedIdentity,
+                  profile?.identity || identity.displayName || resolvedIdentity,
                   PlatformType.ens,
                   profile
                 );
