@@ -13,6 +13,8 @@ const resolveSearchHandle = (identity) => {
 export const fetchProfile = async (identity) => {
   try {
     const handle = resolveSearchHandle(identity);
+    if (!handle) return null;
+
     const platform =
       identity.platform === PlatformType.ethereum
         ? PlatformType.ens

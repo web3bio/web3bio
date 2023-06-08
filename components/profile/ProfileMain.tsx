@@ -18,6 +18,7 @@ export default function ProfileMain(props) {
   const [copied, setCopied] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [curAsset, setCurAsset] = useState(null);
+  const [errorAvatar, setErrorAvatar] = useState(false);
   const [dialogType, setDialogType] = useState(NFTModalType.NFT);
   // const { asPath } = useRouter();
 
@@ -49,12 +50,15 @@ export default function ProfileMain(props) {
         <div className="column col-4 col-md-12">
           <div className="web3-profile-base">
             <div className="profile-avatar">
-              {data.avatar ? (
+              {data.avatar && !errorAvatar ? (
                 <img
                   src={data.avatar}
                   className="avatar"
                   loading="lazy"
                   alt={`${pageTitle} Avatar / Profile Photo`}
+                  onError={() => {
+                    setErrorAvatar(true);
+                  }}
                   height={180}
                   width={180}
                 />
