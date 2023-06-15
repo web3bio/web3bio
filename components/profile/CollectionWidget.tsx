@@ -4,14 +4,21 @@ import { _fetcher } from "../apis/ens";
 import { SIMPLE_HASH_URL } from "../apis/simplehash";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { formatEther } from "ethers";
-import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import {
+  getSocialMediaLink,
+  PlatformType,
+  SocialPlatformMapping,
+} from "../../utils/platform";
 import Link from "next/link";
-import { formatText } from "../../utils/utils";
+import { formatText, getEtherScanLink } from "../../utils/utils";
 
 const useCollectionData = (id) => {
   const { data, isValidating, error } = useSWR(
     SIMPLE_HASH_URL + "/api/v0/nfts/collections/ids?collection_ids=" + id,
-    _fetcher
+    _fetcher,
+    {
+      revalidateOnFocus: false,
+    }
   );
   return {
     data,
@@ -36,7 +43,7 @@ const mediaRender = (_collection) => {
       const item = renderArr[x];
       return (
         <div className="media-item" key={item.collection_id}>
-          <Link href={item}>
+          <Link href={getSocialMediaLink(item, x)}>
             <NFTAssetPlayer
               className="media-img"
               src={SocialPlatformMapping(x).icon}
@@ -61,6 +68,9 @@ const CollectionWidgetRender = (props) => {
   const { data, isLoading, isError } = useCollectionData(id);
   if (!data || isLoading || isError) return null;
   const _collection = data?.collections?.[0];
+  const floorPriceItem = _collection.floor_prices?.sort(
+    (a, b) => a.value - b.value
+  )[0];
 
   return (
     <div className="preview-content">
@@ -76,25 +86,42 @@ const CollectionWidgetRender = (props) => {
             {_collection.name}
           </div>
         </div>
-        <div className="collection-price collection-name">
-          Floor: {formatEther(_collection.floor_prices?.[0].value)}{" "}
-          {_collection.floor_prices?.[0].payment_token.symbol}
-        </div>
+
+        {floorPriceItem && (
+          <div className="collection-price collection-name">
+            Floor: {formatEther(floorPriceItem.value.toString() ?? 0)}{" "}
+            {floorPriceItem.payment_token.symbol}
+          </div>
+        )}
       </div>
+
       <div className="collection-description">
         {_collection.description || "No Descriptions"}
       </div>
       <div className="collection-media">{mediaRender(_collection)}</div>
+
       <div className="collection-info">
         {INFO_CONFIG.map((x) => {
           return (
             <div className="info-item" key={x.key}>
               <div className="info-name">{x.label}</div>
-              <div className="info-value">
-                {formatText(
-                  _collection[x.key].toString() || _collection[x.key]?.[0]
-                ).replace("ethereum.", "")}
-              </div>
+              {x.key === "top_contracts" ? (
+                <Link
+                  href={getEtherScanLink(
+                    _collection[x.key]?.[0].replace("ethereum.", "")
+                  )}
+                  className="info-value"
+                >
+                  {formatText(_collection[x.key]?.[0], 16).replace(
+                    "ethereum.",
+                    ""
+                  )}
+                </Link>
+              ) : (
+                <div className="info-value">
+                  {_collection[x.key].toString()}
+                </div>
+              )}
             </div>
           );
         })}

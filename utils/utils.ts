@@ -128,12 +128,25 @@ export function debounce(func, timeout = 300) {
 
 export const resolveMediaURL = (url) => {
   if (!url) return null;
-  return (url.startsWith("data:") || url.startsWith("https:"))
+  return url.startsWith("data:") || url.startsWith("https:")
     ? url
     : url.startsWith("ar://")
     ? url.replaceAll("ar://", ArweaveAssetPrefix)
     : resolveIPFS_URL(url);
 };
 
+export const fallbackEmoji = [
+  "🤔",
+  "😱",
+  "😵‍💫",
+  "😵",
+  "🤦‍♀️",
+  "💆‍♂️",
+  "🤷‍♂️",
+  "🙇‍♂️",
+  "🤖",
+];
 
-export const fallbackEmoji = ["🤔", "😱", "😵‍💫", "😵", "🤦‍♀️", "💆‍♂️", "🤷‍♂️", "🙇‍♂️", "🤖"]
+export const getEtherScanLink = (address: string) => {
+  return "https://etherscan.io/address/" + address;
+};
