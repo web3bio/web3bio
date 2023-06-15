@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import useSWR from "swr";
 import { _fetcher } from "../apis/ens";
 import { SIMPLE_HASH_URL } from "../apis/simplehash";
@@ -66,12 +66,13 @@ const INFO_CONFIG = [
 const CollectionWidgetRender = (props) => {
   const { id } = props;
   const { data, isLoading, isError } = useCollectionData(id);
+  const [readMore, setReadMore] = useState(false);
   if (!data || isLoading || isError) return null;
+
   const _collection = data?.collections?.[0];
   const floorPriceItem = _collection.floor_prices?.sort(
     (a, b) => a.value - b.value
   )[0];
-
   return (
     <div className="preview-content">
       <div className="collection-header">
@@ -96,7 +97,18 @@ const CollectionWidgetRender = (props) => {
       </div>
 
       <div className="collection-description">
-        {_collection.description || "No Descriptions"}
+        <div
+          className={
+            readMore
+              ? "description-content display-ellipsis"
+              : "description-content"
+          }
+        >
+          {_collection.description || "No Descriptions"}{" "}
+        </div>
+        <div className="read-more" onClick={() => setReadMore(!readMore)}>
+          {readMore ? "Read less" : "Read more"}
+        </div>
       </div>
       <div className="collection-media">{mediaRender(_collection)}</div>
 
