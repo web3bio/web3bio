@@ -114,7 +114,7 @@ const NFTModalRender = (props) => {
   if (!asset) return null;
   const _asset = asset.asset;
   const attributes = _asset.extra_metadata?.attributes || [];
-
+                    
   return (
     <>
       <div

@@ -163,7 +163,8 @@ const RenderNFTCollections = (props) => {
                                 url: x.image_url,
                                 name: x.name,
                                 id: y.collection.collection_id,
-                                address: y.collection.address,
+                                address:
+                                  y.collection.address || y.contract_address,
                               },
                               asset: y,
                               mediaURL:

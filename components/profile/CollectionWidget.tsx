@@ -42,7 +42,7 @@ const mediaRender = (_collection) => {
     if (renderArr[x]) {
       const item = renderArr[x];
       return (
-        <div className="media-item" key={item.collection_id}>
+        <div className="media-item" key={item.collection_id + item}>
           <Link href={getSocialMediaLink(item, x)}>
             <NFTAssetPlayer
               className="media-img"
@@ -73,23 +73,22 @@ const CollectionWidgetRender = (props) => {
   const floorPriceItem = _collection.floor_prices?.sort(
     (a, b) => a.value - b.value
   )[0];
+
   return (
     <div className="preview-content">
       <div className="collection-header">
-        <div className="collection-title">
-          <NFTAssetPlayer
-            type={"image/png"}
-            className="collection-logo"
-            src={_collection.image_url}
-            alt={_collection.name}
-          />
-          <div className="collection-base-info">
-            <div className="collection-name">{_collection.name}</div>
-            <Link href={getScanLink(address)} className="collection-address">
-              {formatText(address)}
-            </Link>
-            <div className="collection-media">{mediaRender(_collection)}</div>
-          </div>
+        <NFTAssetPlayer
+          type={"image/png"}
+          className="collection-logo"
+          src={_collection.image_url}
+          alt={_collection.name}
+        />
+        <div className="collection-base-info">
+          <div className="collection-name">{_collection.name}</div>
+          <Link href={getScanLink(address)} className="collection-address">
+            {formatText(address)}
+          </Link>
+          <div className="collection-media">{mediaRender(_collection)}</div>
         </div>
       </div>
       {floorPriceItem && (
