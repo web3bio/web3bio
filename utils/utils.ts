@@ -148,6 +148,7 @@ export const fallbackEmoji = [
 ];
 
 export const getScanLink = (address: string) => {
+  if(!address) return ''
   const prefixArr = [
     {
       key: "ethereum.",
