@@ -147,6 +147,25 @@ export const fallbackEmoji = [
   "🤖",
 ];
 
-export const getEtherScanLink = (address: string) => {
-  return "https://etherscan.io/address/" + address;
+export const getScanLink = (address: string) => {
+  const prefixArr = [
+    {
+      key: "ethereum.",
+      url: "https://etherscan.io/address/",
+    },
+    {
+      key: "polygon.",
+      url: "https://polygonscan.com/address/",
+    },
+  ];
+  let resolvedAddress = address;
+  let url = prefixArr[0].url;
+  prefixArr.forEach((x) => {
+    if (address.includes(x.key)) {
+      if (x.key === "polygon.") url = prefixArr[1].url;
+      resolvedAddress = address.replaceAll(x.key, "");
+    }
+  });
+  const res = url + resolvedAddress;
+  return res;
 };

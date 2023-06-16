@@ -10,7 +10,7 @@ import {
   SocialPlatformMapping,
 } from "../../utils/platform";
 import Link from "next/link";
-import { formatText, getEtherScanLink } from "../../utils/utils";
+import { formatText, getScanLink } from "../../utils/utils";
 
 const useCollectionData = (id) => {
   const { data, isValidating, error } = useSWR(
@@ -85,10 +85,7 @@ const CollectionWidgetRender = (props) => {
           />
           <div className="collection-base-info">
             <div className="collection-name">{_collection.name}</div>
-            <Link
-              href={getEtherScanLink(address)}
-              className="collection-address"
-            >
+            <Link href={getScanLink(address)} className="collection-address">
               {formatText(address)}
             </Link>
             <div className="collection-media">{mediaRender(_collection)}</div>
@@ -125,9 +122,7 @@ const CollectionWidgetRender = (props) => {
               <div className="info-name">{x.label}</div>
               {x.key === "top_contracts" ? (
                 <Link
-                  href={getEtherScanLink(
-                    _collection[x.key]?.[0]
-                  )}
+                  href={getScanLink(_collection[x.key]?.[0])}
                   className="info-value"
                 >
                   {formatText(_collection[x.key]?.[0], 15)}
