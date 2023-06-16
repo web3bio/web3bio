@@ -505,7 +505,7 @@
   .preview-content {
     background: lighten($bg-color, 5%);
     border-radius: .8rem;
-    padding: 2rem;
+    padding: 1.5rem;
     position: relative;
     width: 100%;
     word-break: break-word;
@@ -577,63 +577,90 @@
       width: 100%;
       padding-bottom: .5rem;
 
-      .collection-name {
-        font-size: .65rem;
-        font-weight: 700;
-        max-width: 70%;
-        text-wrap: nowrap;
-      }
+
+
 
       .collection-title {
         align-items: center;
         display: flex;
+        width: 100%;
 
         .collection-logo {
-          flex: 0 0 1.2rem;
-          margin-right: .25rem;
+          width: 3rem;
+          height: 3rem;
+          margin-right: .5rem;
 
-          .img-responsive {
-            border-radius: .4rem;
-            box-shadow: 0 .2rem .8rem rgba($dark-color, .2);
-            font-size: 1rem;
-            height: 1.2rem;
-            object-fit: cover;
-            width: 1.2rem;
-          }
-        }
-
-
-      }
-    }
-
-    .collection-media {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      gap: .5rem;
-      margin-bottom: .5rem;
-
-      .media-item {
-        width: 1rem;
-        height: 1rem;
-
-        &:hover {
-          transition: all .5s ease;
-          scale: 1.1;
-        }
-
-        .media-img {
-          width: 100%;
-          height: 100%;
-
-          .img-placeholder {
+          .img-container {
+            width: 100%;
             height: 100%;
-            border-radius: 100%;
+
+            .img-responsive {
+              border-radius: 99%;
+              box-shadow: 0 .2rem .8rem rgba($dark-color, .2);
+              font-size: 1rem;
+              height: 100%;
+              object-fit: cover;
+              width: 100%;
+            }
+          }
+
+        }
+
+        .collection-base-info {
+          display: flex;
+          flex: 1;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: .2rem;
+
+          .collection-name {
+            font-size: 1rem;
+            font-weight: 900;
+            text-wrap: nowrap;
+          }
+
+          .collection-address {
+            display: flex;
+            font-size: .7rem;
+            font-weight: 700;
+            color: rgba($dark-color, .75)
+          }
+
+          .collection-media {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: .5rem;
+            .media-item {
+              width: 1rem;
+              height: 1rem;
+
+              &:hover {
+                transition: all .5s ease;
+                scale: 1.1;
+              }
+
+              .media-img {
+                width: 100%;
+                height: 100%;
+
+                .img-placeholder {
+                  height: 100%;
+                  border-radius: 100%;
+                }
+              }
+            }
           }
         }
       }
     }
 
+
+
+    .collection-price {
+      font-weight: 600;
+      margin-bottom: .8rem;
+    }
 
     .nft-header-name {
       font-size: 1.2rem;

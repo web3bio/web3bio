@@ -18,6 +18,7 @@ function mapNFTs(nfts) {
     previews: x.previews,
     token_id: x.token_id,
     collection: {
+      address: x.contract_address,
       collection_id: x.collection.collection_id,
       name: x.collection.name,
       image_url: x.collection.image_url,

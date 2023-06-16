@@ -33,7 +33,7 @@ const mediaRender = (_collection) => {
     [PlatformType.telegram]: _collection.telegram_url,
     [PlatformType.opensea]: _collection.marketplace_pages.find(
       (x) => x.marketplace_id === PlatformType.opensea
-    ).collection_url,
+    )?.collection_url,
     [PlatformType.discord]: _collection.discord_url,
     [PlatformType.instagram]: _collection.instagram_username,
   };
@@ -64,7 +64,7 @@ const INFO_CONFIG = [
 ];
 
 const CollectionWidgetRender = (props) => {
-  const { id } = props;
+  const { id, address } = props;
   const { data, isLoading, isError } = useCollectionData(id);
   const [readMore, setReadMore] = useState(false);
   if (!data || isLoading || isError) return null;
@@ -83,19 +83,24 @@ const CollectionWidgetRender = (props) => {
             src={_collection.image_url}
             alt={_collection.name}
           />
-          <div className="collection-name text-ellipsis">
-            {_collection.name}
+          <div className="collection-base-info">
+            <div className="collection-name">{_collection.name}</div>
+            <Link
+              href={getEtherScanLink(address)}
+              className="collection-address"
+            >
+              {formatText(address)}
+            </Link>
+            <div className="collection-media">{mediaRender(_collection)}</div>
           </div>
         </div>
-
-        {floorPriceItem && (
-          <div className="collection-price collection-name">
-            Floor: {formatEther(floorPriceItem.value.toString() ?? 0)}{" "}
-            {floorPriceItem.payment_token.symbol}
-          </div>
-        )}
       </div>
-
+      {floorPriceItem && (
+        <div className="collection-price">
+          Floor Price: {formatEther(floorPriceItem.value.toString() ?? 0)}{" "}
+          {floorPriceItem.payment_token.symbol}
+        </div>
+      )}
       <div className="collection-description">
         <div
           className={
@@ -106,11 +111,12 @@ const CollectionWidgetRender = (props) => {
         >
           {_collection.description || "No Descriptions"}{" "}
         </div>
-        <div className="read-more" onClick={() => setReadMore(!readMore)}>
-          {readMore ? "Read less" : "Read more"}
-        </div>
+        {_collection.description?.length > 20 && (
+          <div className="read-more" onClick={() => setReadMore(!readMore)}>
+            {readMore ? "Read less" : "Read more"}
+          </div>
+        )}
       </div>
-      <div className="collection-media">{mediaRender(_collection)}</div>
 
       <div className="collection-info">
         {INFO_CONFIG.map((x) => {
