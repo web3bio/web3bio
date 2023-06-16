@@ -126,14 +126,11 @@ const CollectionWidgetRender = (props) => {
               {x.key === "top_contracts" ? (
                 <Link
                   href={getEtherScanLink(
-                    _collection[x.key]?.[0].replace("ethereum.", "")
+                    _collection[x.key]?.[0]
                   )}
                   className="info-value"
                 >
-                  {formatText(_collection[x.key]?.[0], 16).replace(
-                    "ethereum.",
-                    ""
-                  )}
+                  {formatText(_collection[x.key]?.[0], 15)}
                 </Link>
               ) : (
                 <div className="info-value">
