@@ -26,7 +26,7 @@ const useCollectionData = (id) => {
     isError: error,
   };
 };
-const mediaRender = (_collection) => {
+const renderSocialMediaLinks = (_collection) => {
   const renderArr = {
     [PlatformType.twitter]: _collection.twitter_username,
     [PlatformType.medium]: _collection.medium_username,
@@ -38,22 +38,25 @@ const mediaRender = (_collection) => {
     [PlatformType.instagram]: _collection.instagram_username,
   };
 
-  return Object.keys(renderArr).map((x: PlatformType) => {
-    if (renderArr[x]) {
-      const item = renderArr[x];
-      return (
+  const links = [];
+  for (let key in renderArr) {
+    if (renderArr[key]) {
+      const item = renderArr[key];
+      links.push(
         <div className="media-item" key={item.collection_id + item}>
-          <Link href={getSocialMediaLink(item, x)}>
+          <Link href={getSocialMediaLink(item, key as PlatformType)}>
             <NFTAssetPlayer
               className="media-img"
-              src={SocialPlatformMapping(x).icon}
+              src={SocialPlatformMapping(key as PlatformType).icon}
               alt=""
             />
           </Link>
         </div>
       );
     }
-  });
+  }
+
+  return links;
 };
 
 const INFO_CONFIG = [
@@ -88,7 +91,9 @@ const CollectionWidgetRender = (props) => {
           <Link href={getScanLink(address)} className="collection-address">
             {formatText(address)}
           </Link>
-          <div className="collection-media">{mediaRender(_collection)}</div>
+          <div className="collection-media">
+            {renderSocialMediaLinks(_collection)}
+          </div>
         </div>
       </div>
       {floorPriceItem && (
