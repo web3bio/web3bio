@@ -11,6 +11,7 @@ import Avatar from "boring-avatars";
 import { formatText } from "../../utils/utils";
 import { NFTCollectionWidget } from "../profile/NFTCollectionWidget";
 import { NFTModal, NFTModalType } from "./NFTModal";
+import { MirrorWidget } from "./MirrorWidget";
 // import ShareButton from "../shared/ShareButton";
 
 export default function ProfileMain(props) {
@@ -157,7 +158,7 @@ export default function ProfileMain(props) {
                 setCurAsset(v);
                 setDialogOpen(true);
               }}
-              address={data.address || data.owner}
+              address={data.address}
               initialData={nfts}
             />
           </div>
@@ -168,9 +169,14 @@ export default function ProfileMain(props) {
                 setCurAsset(v);
                 setDialogOpen(true);
               }}
-              address={data.address || data.owner}
+              address={data.address}
             />
           </div>
+          {data.address && (
+            <div className="web3-section-widgets">
+              <MirrorWidget address={data.address} />
+            </div>
+          )}
         </div>
       </div>
       <div className="web3bio-badge">
