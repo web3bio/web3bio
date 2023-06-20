@@ -15,6 +15,7 @@
     "next-seo": "^6.0.0",
     "qrcode": "^1.5.3",
     "react-infinite-scroll-hook": "^4.1.1",
+    "react-markdown": "^8.0.7",
     "underscore": "^1.13.6",
     "wallet.ts": "^1.0.1"
   },
@@ -25,7 +26,7 @@
     "@types/react": "^18.0.18",
     "bignumber.js": "^9.1.0",
     "bn.js": "^5.2.1",
-    "date-fns": "^2.29.3",
+    "date-fns": "^2.30.0",
     "eslint": "8.19.0",
     "eslint-config-next": "^13.2.4",
     "ethers": "^5.7.2",

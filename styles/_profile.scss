@@ -269,6 +269,22 @@
       font-weight: 500;
       margin-bottom: 1rem;
     }
+
+    .article-title {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid $dark-color;
+
+      p {
+        margin-bottom: .5rem;
+      }
+    }
+
+    .markdown {
+      padding-top: .5rem;
+    }
   }
 
   // NFT Widget
