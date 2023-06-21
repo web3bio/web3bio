@@ -1,11 +1,11 @@
-'use client'
+"use client";
 import { useEffect, useRef, useState } from "react";
 import SVG from "react-inlinesvg";
 import { DomainSearchSuffix, fuzzyDomainSuffix } from "../../utils/constants";
 import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import { matchQuery } from "../../utils/queries";
 import { handleSearchPlatform } from "../../utils/utils";
-import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 const isQuerySplit = (query: string) => {
   return query.includes(".") || query.includes("。");
@@ -16,7 +16,7 @@ export default function SearchInput(props) {
   const [query, setQuery] = useState(defaultValue);
   const [searchList, setSearchList] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
-  const router = useRouter();
+  const searchParams = useSearchParams();
   const inputRef = useRef(null);
   const emitSubmit = (e, value?) => {
     const platfrom = (() => {
@@ -30,14 +30,14 @@ export default function SearchInput(props) {
       if (typeof value === "string") return value;
       return value.label;
     })();
-    if (_value && _value === router.query.s) {
+    if (_value && _value === searchParams.get("s")) {
       setQuery(_value);
       setSearchList([]);
       return;
     }
     handleSubmit(_value, platfrom);
     setSearchList([]);
-    setActiveIndex(null);
+    setActiveIndex(0);
   };
 
   const onKeyDown = (e) => {
@@ -69,7 +69,7 @@ export default function SearchInput(props) {
     }
   };
   useEffect(() => {
-    if (!query || query.length > 20 || query === router.query.s) {
+    if (!query || query.length > 20 || query === searchParams.get("s")) {
       setSearchList([]);
       return;
     }
@@ -88,7 +88,7 @@ export default function SearchInput(props) {
             });
           }
           return pre;
-        }, [])
+        }, [] as any)
       );
     } else {
       setSearchList(
@@ -105,10 +105,10 @@ export default function SearchInput(props) {
           }
 
           return pre;
-        }, [])
+        }, [] as any)
       );
     }
-  }, [query, activeIndex, router.query.s]);
+  }, [query, activeIndex, searchParams.get("s")]);
   return (
     <>
       <input
@@ -132,8 +132,7 @@ export default function SearchInput(props) {
         onClick={(e) => {
           const ipt = inputRef.current;
           if (!ipt) return;
-          const iptValue = ipt.value;
-          emitSubmit(e, iptValue);
+          emitSubmit(e, (ipt as any).value);
         }}
       >
         <SVG
@@ -145,7 +144,7 @@ export default function SearchInput(props) {
       </button>
       {searchList.length > 0 && (
         <div className="search-list">
-          {searchList.map((x, idx) => {
+          {searchList.map((x: any, idx) => {
             return (
               <div
                 className={

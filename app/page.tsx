@@ -74,14 +74,14 @@ export default function HomePage() {
                 Web3 <span>Identity Search</span>
               </div>
               <div className="form-input-group">
-                {/* <SearchInput
+                <SearchInput
                   // add key here to make defaultValue reactive
                   key={searchTerm}
                   defaultValue={searchTerm}
                   handleSubmit={(value, platform) => {
                     handleSubmit(value, platform);
                   }}
-                /> */}
+                />
               </div>
             </div>
             {/* {searchPlatform ? (
