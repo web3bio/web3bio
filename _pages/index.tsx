@@ -23,7 +23,7 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchPlatform, setsearchPlatform] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
-  const [profileData, setProfileData] = useState(null);
+  const [profileData, setProfileData] = useState({});
   const router = useRouter();
 
   const handleSubmit = (value, platform?) => {

@@ -1,10 +1,11 @@
+'use client'
 import { useEffect, useRef, useState } from "react";
 import SVG from "react-inlinesvg";
 import { DomainSearchSuffix, fuzzyDomainSuffix } from "../../utils/constants";
 import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import { matchQuery } from "../../utils/queries";
 import { handleSearchPlatform } from "../../utils/utils";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const isQuerySplit = (query: string) => {
   return query.includes(".") || query.includes("。");
@@ -14,7 +15,7 @@ export default function SearchInput(props) {
   const { defaultValue, handleSubmit } = props;
   const [query, setQuery] = useState(defaultValue);
   const [searchList, setSearchList] = useState([]);
-  const [activeIndex, setActiveIndex] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(0);
   const router = useRouter();
   const inputRef = useRef(null);
   const emitSubmit = (e, value?) => {
