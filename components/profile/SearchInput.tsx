@@ -6,6 +6,7 @@ import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import { matchQuery } from "../../utils/queries";
 import { handleSearchPlatform } from "../../utils/utils";
 import { useSearchParams } from "next/navigation";
+import Image from "next/image";
 
 const isQuerySplit = (query: string) => {
   return query.includes(".") || query.includes("。");
@@ -69,6 +70,7 @@ export default function SearchInput(props) {
     }
   };
   useEffect(() => {
+    console.log("query");
     if (!query || query.length > 20 || query === searchParams.get("s")) {
       setSearchList([]);
       return;
@@ -108,7 +110,7 @@ export default function SearchInput(props) {
         }, [] as any)
       );
     }
-  }, [query, activeIndex, searchParams.get("s")]);
+  }, [query, activeIndex, searchParams]);
   return (
     <>
       <input
@@ -117,6 +119,7 @@ export default function SearchInput(props) {
         placeholder="Search ENS, Lens, Twitter, UD or Ethereum"
         value={query}
         onChange={(e) => {
+          console.log(e.target.value,'kkkk')
           setQuery(e.target.value);
         }}
         onKeyDown={onKeyDown}
@@ -135,11 +138,12 @@ export default function SearchInput(props) {
           emitSubmit(e, (ipt as any).value);
         }}
       >
-        <SVG
+        <Image
           src="icons/icon-search.svg"
           width={24}
           height={24}
           className="icon"
+          alt="search"
         />
       </button>
       {searchList.length > 0 && (

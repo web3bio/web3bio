@@ -51,7 +51,7 @@ export default function RootLayout({ children }) {
           cardType: "summary",
         }}
       />
-      {children}
+      <main>{children}</main>
       <GoogleAnalytics strategy="lazyOnload" />
     </ApolloProvider>
   );
