@@ -32,7 +32,7 @@ function mapNFTs(nfts) {
   }));
 }
 async function getData(domain: string) {
-  if (!domain) notFound();
+  if (!domain) return null;
   try {
     const platform = handleSearchPlatform(domain);
     if (
@@ -44,7 +44,7 @@ async function getData(domain: string) {
         PlatformType.ethereum,
       ].includes(platform)
     )
-      notFound();
+      return null;
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${(platform ===
       PlatformType.ethereum
@@ -53,7 +53,7 @@ async function getData(domain: string) {
       ).toLowerCase()}/${domain}`
     );
 
-    if (response.status == 404) notFound();
+    if (response.status == 404) return null;
     if (response.status === 504)
       return { props: { data: { error: "Timeout" } } };
     const data = await response.json();
@@ -74,7 +74,9 @@ export default async function ProfilePage({
 }: {
   params: { domain: string };
 }) {
-  const { data, nfts, platform } = await getData(domain);
+  const severData = await getData(domain);
+  if (!severData) notFound();
+  const { data, nfts, platform } = severData;
   const pageTitle =
     data.identity == data.displayName
       ? `${data.displayName}`
