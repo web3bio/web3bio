@@ -12,7 +12,7 @@ const CURSOR_PARAM = "&cursor=";
 export const processNFTsData = (data) => {
   if (!data?.length) return [];
   const uniqueValues = new Set();
-  const assets = [];
+  const assets = new Array;
   for (const obj of data) {
     const nfts = obj.nfts;
     if (!nfts) {
@@ -27,7 +27,7 @@ export const processNFTsData = (data) => {
     }
   }
 
-  const collections = [];
+  const collections = new Array;
   const collectionById = new Map();
   for (const asset of assets) {
     const { collection } = asset;

@@ -20,7 +20,7 @@ const RenderNFTCollections = (props) => {
     setExpand,
   } = props;
   const [activeCollection, setActiveCollection] = useState(null);
-  const insideScrollContainer = useRef(null);
+  const insideScrollContainer = useRef<HTMLDivElement>(null);
   const [albumRef] = useInfiniteScroll({
     loading: isLoadingMore,
     disabled: !!isError,
@@ -28,6 +28,7 @@ const RenderNFTCollections = (props) => {
     hasNextPage: hasNextPage,
   });
   const judgeActiveCollection = useCallback(() => {
+    if (!insideScrollContainer.current) return;
     const nav_contentRect =
       insideScrollContainer.current.getBoundingClientRect();
     const groupList = Array.from(
@@ -63,13 +64,14 @@ const RenderNFTCollections = (props) => {
 
   useEffect(() => {
     if (expand) {
+      const scrollContainer = insideScrollContainer.current;
       parentScrollRef.current.scrollIntoView({
         behavior: "smooth",
         block: "center",
         inline: "nearest",
       });
 
-      if (insideScrollContainer.current && data) {
+      if (scrollContainer && data) {
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
         const options = isIOS ? {} : { passive: true };
         insideScrollContainer.current.addEventListener(
@@ -79,10 +81,7 @@ const RenderNFTCollections = (props) => {
         );
       }
       return () =>
-        insideScrollContainer.current?.removeEventListener(
-          "wheel",
-          judgeActiveCollection
-        );
+        scrollContainer?.removeEventListener("wheel", judgeActiveCollection);
     }
   }, [expand, parentScrollRef, judgeActiveCollection, data]);
   const scrollToEnd = () => {
@@ -135,6 +134,8 @@ const RenderNFTCollections = (props) => {
                       className="collection-logo"
                       src={x.image_url}
                       alt={x.name}
+                      width={"1.2rem"}
+                      height={"1.2rem"}
                     />
                     <div className="collection-name text-ellipsis">
                       {x.name}
@@ -173,11 +174,13 @@ const RenderNFTCollections = (props) => {
                         >
                           <div className="nft-item">
                             <NFTAssetPlayer
-                              className={"img-container"}
+                              className="img-container"
                               src={mediaURL}
                               type={type}
                               alt={x.name + " - " + y.name}
                               poster={y.previews.image_large_url}
+                              width={"100%"}
+                              height={"100%"}
                             />
                             <div className="collection-name">{x.name}</div>
                             <div className="nft-name">

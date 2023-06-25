@@ -34,8 +34,8 @@ export interface AssetPlayerProps {
   type?: string;
   className?: string;
   src: string;
-  width?: number;
-  height?: number;
+  width?: number | string;
+  height?: number | string;
   onClick?: () => void;
   alt?: string;
   style?: React.CSSProperties;
@@ -44,7 +44,14 @@ export interface AssetPlayerProps {
 
 function renderImage(props: AssetPlayerProps) {
   const { width, height, src, alt } = props;
-  return <ImageLoader width={width} height={height} src={src} alt={alt} />;
+  return (
+    <ImageLoader
+      width={width}
+      height={height}
+      src={src}
+      alt={alt}
+    />
+  );
 }
 
 function renderVideo(props: AssetPlayerProps) {

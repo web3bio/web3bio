@@ -6,6 +6,10 @@ import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
 import { Loading } from "../shared/Loading";
 import { ResultAccount } from "./ResultAccount";
+
+interface ResultNeighbor {
+  identity: string;
+}
 export default function RenderResultDomain({
   searchTerm,
   searchPlatform,
@@ -20,7 +24,9 @@ export default function RenderResultDomain({
       },
     }
   );
-  const [resultNeighbor, setResultNeighbor] = useState([]);
+  const [resultNeighbor, setResultNeighbor] = useState<Array<ResultNeighbor>>(
+    []
+  );
   useEffect(() => {
     if (searchTerm && searchPlatform) getQuery();
     if (!data || !data.domain) return;
@@ -52,7 +58,10 @@ export default function RenderResultDomain({
         },
       ]
     );
-    if (searchTerm !== temp[0]?.identity?.displayName && regexEns.test(searchTerm)) {
+    if (
+      searchTerm !== temp[0]?.identity?.displayName &&
+      regexEns.test(searchTerm)
+    ) {
       // as sub domain
       temp.unshift({
         identity: {

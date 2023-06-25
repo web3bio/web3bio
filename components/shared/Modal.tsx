@@ -4,8 +4,8 @@ import SVG from "react-inlinesvg";
 
 export default function Modal(props) {
   const { onDismiss, children } = props;
-  const overlay = useRef();
-  const wrapper = useRef();
+  const overlay = useRef<HTMLDivElement>(null);
+  const wrapper = useRef<HTMLDivElement>(null);
 
   const onClick = useCallback(
     (e) => {
