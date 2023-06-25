@@ -11,7 +11,7 @@ export default function RootLayout({ children }) {
   const asPath = usePathname();
   let pageLink = `${process.env.NEXT_PUBLIC_BASE_URL}${asPath}`;
   return (
-    <html lang="en">
+    <html>
       <ApolloProvider client={client}>
         <Head>
           <meta charSet="utf-8" />
