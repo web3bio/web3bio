@@ -1,9 +1,9 @@
 "use client";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { fallbackEmoji } from "../utils/utils";
 
-export default function Custom404() {
+export default function NotFound() {
   const [emoji, setEmoji] = useState("");
   const router = useRouter();
   useEffect(() => {

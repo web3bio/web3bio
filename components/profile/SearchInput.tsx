@@ -70,7 +70,6 @@ export default function SearchInput(props) {
     }
   };
   useEffect(() => {
-    console.log("query");
     if (!query || query.length > 20 || query === searchParams.get("s")) {
       setSearchList([]);
       return;
@@ -119,7 +118,6 @@ export default function SearchInput(props) {
         placeholder="Search ENS, Lens, Twitter, UD or Ethereum"
         value={query}
         onChange={(e) => {
-          console.log(e.target.value,'kkkk')
           setQuery(e.target.value);
         }}
         onKeyDown={onKeyDown}

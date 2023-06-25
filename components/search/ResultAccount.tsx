@@ -6,11 +6,15 @@ import { ResultGraph } from "../graph/ResultGraph";
 import _ from "lodash";
 import { regexEns } from "../../utils/regexp";
 
+interface Profile {
+  uuid: string;
+}
+
 const RenderAccount = (props) => {
   const { graphData, resultNeighbor, graphTitle, onItemClick } = props;
   const [open, setOpen] = useState(false);
   const [profileLoading, setProfileLoading] = useState(true);
-  const [profiles, setProfiles] = useState([]);
+  const [profiles, setProfiles] = useState<Profile[]>([]);
   useEffect(() => {
     setProfileLoading(true);
     if (

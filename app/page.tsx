@@ -1,33 +1,26 @@
 "use client";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import SearchInput from "../components/profile/SearchInput";
 import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
 import SearchResultDomain from "../components/search/SearchResultDomain";
 import SearchResultQuery from "../components/search/SearchResultQuery";
 import { Footer } from "../components/shared/Footer";
 import Image from "next/image";
+import ProfileModal from "../components/profile/ProfileModal";
 export default function HomePage() {
   const [searchFocus, setSearchFocus] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchPlatform, setsearchPlatform] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [profileData, setProfileData] = useState({});
+  const searchParams = useSearchParams();
   const router = useRouter();
   const handleSubmit = (value, platform?) => {
     setSearchTerm(value);
-    router.push("/", {
-      query: platform
-        ? {
-            s: value,
-            platform: platform,
-          }
-        : {
-            s: value,
-          },
-    });
+    router.push(`/?s=${value}${platform ? "&platform=" + platform : ""}`);
     setsearchPlatform(platform || handleSearchPlatform(value));
     setSearchFocus(true);
   };
@@ -41,6 +34,32 @@ export default function HomePage() {
     window.history.pushState({}, "", `/${identity}`);
     setModalOpen(true);
   };
+  useEffect(() => {
+    if (searchParams.get("s")) {
+      const query = searchParams.get("s");
+      setSearchFocus(true);
+      // todo: check the type of router querys
+      const searchkeyword = query!.toLowerCase();
+      setSearchTerm(searchkeyword);
+      if (!searchParams.get("platform")) {
+        let searchPlatform = handleSearchPlatform(searchkeyword);
+        setsearchPlatform(searchPlatform);
+      } else {
+        setsearchPlatform(searchParams.get("platform")!.toLowerCase());
+      }
+    } else {
+      setSearchFocus(false);
+      setSearchTerm("");
+      setsearchPlatform("");
+    }
+  }, [router, searchParams]);
+  useEffect(() => {
+    const handlePopStateChange = () => {
+      if (searchParams.get("s")) setModalOpen(false);
+    };
+    window.addEventListener("popstate", handlePopStateChange);
+    return () => window.removeEventListener("popstate", handlePopStateChange);
+  });
   return (
     <div>
       <NextSeo
@@ -86,7 +105,7 @@ export default function HomePage() {
                 />
               </div>
             </div>
-            {/* {searchPlatform ? (
+            {searchPlatform ? (
               isDomainSearch(searchPlatform) ? (
                 <SearchResultDomain
                   onItemClick={handleOpenProfileModal}
@@ -100,7 +119,7 @@ export default function HomePage() {
                   searchPlatform={searchPlatform}
                 />
               )
-            ) : null} */}
+            ) : null}
           </div>
         </div>
       </div>
@@ -267,15 +286,15 @@ export default function HomePage() {
           </div>
         </div>
       </div>
-      {/* {modalOpen && (
-        <DynamicProfileModal
+      {modalOpen && (
+        <ProfileModal
           onClose={() => {
             window.history.go(-1);
             setModalOpen(false);
           }}
           profile={profileData}
         />
-      )} */}
+      )}
     </div>
   );
 }
