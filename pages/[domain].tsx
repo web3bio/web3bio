@@ -20,6 +20,7 @@ function mapNFTs(nfts) {
     collection: {
       address: x.contract_address,
       collection_id: x.collection.collection_id,
+      description: x.collection.description,
       name: x.collection.name,
       image_url: x.collection.image_url,
       spam_score: x.collection.spam_score,

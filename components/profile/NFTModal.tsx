@@ -63,6 +63,7 @@ const NFTModalRender = (props) => {
                     <a
                       href={asset.asset.event.event_url}
                       target="_blank"
+                      rel="noopener noreferrer"
                       className="btn btn-sm"
                     >
                       Website
@@ -150,27 +151,25 @@ const NFTModalRender = (props) => {
             />
           </div>
           <div className="preview-main">
-            <CollectionWidget address={asset.collection.address} id={asset.collection.id} />
-
             <div className="preview-content">
-              {/* <div className="nft-header-collection collection-title">
-    <NFTAssetPlayer
-      type={"image/png"}
-      className="collection-logo"
-      src={asset.collection.url}
-      alt={asset.collection.name}
-    />
-    <div className="collection-name text-ellipsis">
-      {asset.collection.name}
-    </div>
-  </div> */}
+              <div className="nft-header-collection collection-title">
+                <NFTAssetPlayer
+                  type={"image/png"}
+                  className="collection-logo"
+                  src={asset.collection.url}
+                  alt={asset.collection.name}
+                />
+                <div className="collection-name text-ellipsis">
+                  {asset.collection.name}
+                </div>
+              </div>
               <div className="nft-header-name">
                 {_asset.name || `${asset.collection.name} #${_asset.token_id}`}
               </div>
-              {_asset?.description && (
+              {_asset?.description || asset.collection.description && (
                 <div className="panel-widget">
                   <div className="panel-widget-content">
-                    {_asset?.description}
+                    {_asset?.description || asset.collection.description}
                   </div>
                 </div>
               )}
@@ -189,10 +188,10 @@ const NFTModalRender = (props) => {
                               {x.attribute_value || x.value}
                             </div>
                             {/* {x.percentage && (
-                <div className="trait-trait_percentage">
-                  {x.percentage}
-                </div>
-              )} */}
+                              <div className="trait-trait_percentage">
+                                {x.percentage}
+                              </div>
+                            )} */}
                           </div>
                         );
                       })}
@@ -200,6 +199,23 @@ const NFTModalRender = (props) => {
                   </div>
                 </div>
               )}
+
+              <div className="panel-widget">
+                <div className="panel-widget-title collection-title mt-4">
+                  <NFTAssetPlayer
+                    type={"image/png"}
+                    className="collection-logo"
+                    src={asset.collection.url}
+                    alt={asset.collection.name}
+                  />
+                  About {asset.collection.name}
+                </div>
+                <div className="panel-widget-content">
+                  {asset.collection.description}
+                </div>
+
+                <CollectionWidget address={asset.collection.address} id={asset.collection.id} />
+              </div>
             </div>
           </div>
         </div>
