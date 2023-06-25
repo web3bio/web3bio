@@ -1,6 +1,6 @@
 import { SIMPLE_HASH_URL } from "../../components/apis/simplehash";
-import { NFT_PAGE_SIZE } from "../../components/profile/NFTCollectionWidget";
 import { PlatformType } from "../../utils/platform";
+import { NFT_PAGE_SIZE } from "../../utils/queries";
 
 const resolveSearchHandle = (identity) => {
   return {
