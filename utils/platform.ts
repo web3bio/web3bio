@@ -209,7 +209,7 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.opensea]: {
     key: PlatformType.opensea,
     color: "#407FDB",
-    icon: "icons/icon-opensea.svg",
+    icon: "icons/social-opensea.svg",
     label: "OpenSea",
     ensText: [],
     urlPrefix: "https://opensea.io/",
@@ -394,4 +394,31 @@ export const SocialPlatformMapping = (platform: PlatformType) => {
       ensText: [],
     }
   );
+};
+
+const resolveSocialMediaLink = (name: string, type: PlatformType) => {
+  if (!Object.keys(PlatformType).includes(type))
+    return `https://web5.bio/?s=${name}`;
+  switch (type) {
+    case PlatformType.url:
+      return `${name}`;
+    case PlatformType.website:
+      return `https://${name}`;
+    default:
+      return SocialPlatformMapping(type).urlPrefix
+        ? SocialPlatformMapping(type).urlPrefix + name
+        : "";
+  }
+};
+
+export const getSocialMediaLink = (url: string, type: PlatformType) => {
+  let resolvedURL = "";
+  if (!url) return null;
+  if (url.startsWith("https")) {
+    resolvedURL = url;
+  } else {
+    resolvedURL = resolveSocialMediaLink(url, type);
+  }
+
+  return resolvedURL;
 };
