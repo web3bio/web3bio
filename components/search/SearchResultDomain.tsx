@@ -13,7 +13,6 @@ interface ResultNeighbor {
 export default function RenderResultDomain({
   searchTerm,
   searchPlatform,
-  onItemClick,
 }) {
   const [getQuery, { loading, error, data }] = useLazyQuery(
     GET_PROFILES_DOMAIN,
@@ -106,7 +105,6 @@ export default function RenderResultDomain({
 
   return (
     <ResultAccount
-      onItemClick={onItemClick}
       resultNeighbor={resultNeighbor}
       graphData={graphData}
       graphTitle={searchTerm}

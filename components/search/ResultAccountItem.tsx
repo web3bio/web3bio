@@ -14,7 +14,7 @@ const RenderAccountItem = (props) => {
       setIsCopied(false);
     }, 1500);
   };
-  const { identity, sources, profile, onItemClick, canSkipProfile } = props;
+  const { identity, sources, profile, canSkipProfile } = props;
 
   const [isCopied, setIsCopied] = useState(false);
   const displayName = formatText(
@@ -94,14 +94,10 @@ const RenderAccountItem = (props) => {
             )}
           </div>
           {(canSkipProfile || (profile && !profile?.error)) && (
-            <div
-              onClick={() => {
-                onItemClick(
-                  profile?.identity || identity.displayName || resolvedIdentity,
-                  PlatformType.ens,
-                  profile
-                );
-              }}
+            <Link
+              href={`/profile/${
+                profile?.identity || identity.displayName || resolvedIdentity
+              }`}
               className="social-actions"
             >
               <button
@@ -110,7 +106,7 @@ const RenderAccountItem = (props) => {
               >
                 <SVG src="icons/icon-open.svg" width={20} height={20} />
               </button>
-            </div>
+            </Link>
           )}
           <RenderSourceFooter sources={sources} />
         </div>
@@ -155,10 +151,8 @@ const RenderAccountItem = (props) => {
               </div>
             </div>
           </div>
-          <div
-            onClick={() => {
-              onItemClick(resolvedIdentity, PlatformType.lens, profile);
-            }}
+          <Link
+            href={`/profile/${resolvedIdentity}`}
             className="social-actions"
           >
             <button
@@ -167,7 +161,7 @@ const RenderAccountItem = (props) => {
             >
               <SVG src="icons/icon-open.svg" width={20} height={20} />
             </button>
-          </div>
+          </Link>
           <RenderSourceFooter sources={sources} />
         </div>
       );

@@ -7,7 +7,11 @@ const nextConfig = {
   swcMinify: true,
   images: {
     unoptimized: true,
-  }
+  },
+  // rewrites: {
+  //   source: "/domain/:path*",
+  //   destination: "/:path*",
+  // },
 };
 
 module.exports = nextConfig;

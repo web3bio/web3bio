@@ -9,13 +9,10 @@ import SearchResultDomain from "../components/search/SearchResultDomain";
 import SearchResultQuery from "../components/search/SearchResultQuery";
 import { Footer } from "../components/shared/Footer";
 import Image from "next/image";
-import ProfileModal from "../components/profile/ProfileModal";
 export default function HomePage() {
   const [searchFocus, setSearchFocus] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchPlatform, setsearchPlatform] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
-  const [profileData, setProfileData] = useState({});
   const searchParams = useSearchParams();
   const router = useRouter();
   const handleSubmit = (value, platform?) => {
@@ -23,16 +20,6 @@ export default function HomePage() {
     router.push(`/?s=${value}${platform ? "&platform=" + platform : ""}`);
     setsearchPlatform(platform || handleSearchPlatform(value));
     setSearchFocus(true);
-  };
-  const handleOpenProfileModal = (identity, platform, profile) => {
-    setProfileData({
-      identity,
-      platform,
-      profile,
-    });
-
-    window.history.pushState({}, "", `/${identity}`);
-    setModalOpen(true);
   };
   useEffect(() => {
     if (searchParams.get("s")) {
@@ -53,13 +40,7 @@ export default function HomePage() {
       setsearchPlatform("");
     }
   }, [router, searchParams]);
-  useEffect(() => {
-    const handlePopStateChange = () => {
-      if (searchParams.get("s")) setModalOpen(false);
-    };
-    window.addEventListener("popstate", handlePopStateChange);
-    return () => window.removeEventListener("popstate", handlePopStateChange);
-  });
+
   return (
     <div>
       <NextSeo
@@ -108,13 +89,11 @@ export default function HomePage() {
             {searchPlatform ? (
               isDomainSearch(searchPlatform) ? (
                 <SearchResultDomain
-                  onItemClick={handleOpenProfileModal}
                   searchTerm={searchTerm}
                   searchPlatform={searchPlatform}
                 />
               ) : (
                 <SearchResultQuery
-                  onItemClick={handleOpenProfileModal}
                   searchTerm={searchTerm}
                   searchPlatform={searchPlatform}
                 />
@@ -286,15 +265,6 @@ export default function HomePage() {
           </div>
         </div>
       </div>
-      {modalOpen && (
-        <ProfileModal
-          onClose={() => {
-            window.history.go(-1);
-            setModalOpen(false);
-          }}
-          profile={profileData}
-        />
-      )}
     </div>
   );
 }

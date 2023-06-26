@@ -11,7 +11,7 @@ interface Profile {
 }
 
 const RenderAccount = (props) => {
-  const { graphData, resultNeighbor, graphTitle, onItemClick } = props;
+  const { graphData, resultNeighbor, graphTitle } = props;
   const [open, setOpen] = useState(false);
   const [profileLoading, setProfileLoading] = useState(true);
   const [profiles, setProfiles] = useState<Profile[]>([]);
@@ -69,7 +69,6 @@ const RenderAccount = (props) => {
           {resultNeighbor?.map((avatar) => (
             <ResultAccountItem
               canSkipProfile={regexEns.test(avatar.identity.displayName)}
-              onItemClick={onItemClick}
               profileLoading={profileLoading}
               identity={avatar.identity}
               sources={avatar.sources}

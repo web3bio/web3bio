@@ -7,7 +7,7 @@ import Head from "next/head";
 import client from "../utils/apollo";
 import "../styles/web3bio.scss";
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children, modal }) {
   const asPath = usePathname();
   let pageLink = `${process.env.NEXT_PUBLIC_BASE_URL}${asPath}`;
   return (
@@ -51,7 +51,10 @@ export default function RootLayout({ children }) {
             cardType: "summary",
           }}
         />
-        <body>{children}</body>
+        <body>
+          {children}
+          {modal}
+        </body>
         <GoogleAnalytics strategy="lazyOnload" />
       </ApolloProvider>
     </html>

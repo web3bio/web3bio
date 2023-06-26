@@ -1,19 +1,19 @@
-import { Loading } from "../shared/Loading";
-import { Error } from "../shared/Error";
-import Modal from "../shared/Modal";
-import ProfileMain from "./ProfileMain";
+"use client";
 import useSWR from "swr";
-import { _fetcher } from "../apis/ens";
+import { Loading } from "../../../../components/shared/Loading";
+import { Error } from "../../../../components/shared/Error";
+import Modal from "../../../../components/shared/Modal";
+import ProfileMain from "../../../../components/profile/ProfileMain";
+import { _fetcher } from "../../../../components/apis/ens";
+import { handleSearchPlatform } from "../../../../utils/utils";
+import { useRouter } from "next/navigation";
 
-export function useProfile(identity: string, platform: string, fallbackData) {
+function useProfile(identity: string, platform: string, fallbackData) {
   const url =
     process.env.NEXT_PUBLIC_PROFILE_END_POINT +
     `/profile/${platform.toLowerCase()}/${identity}`;
   const { data, error } = useSWR<any>(url, _fetcher, {
     fallbackData: fallbackData,
-    revalidateOnMount: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: true,
   });
   return {
     data: data,
@@ -22,15 +22,13 @@ export function useProfile(identity: string, platform: string, fallbackData) {
   };
 }
 
-export default function ProfileModal(props) {
-  const { profile, onClose } = props;
-  const { isLoading, isError, data } = useProfile(
-    profile?.identity,
-    profile?.platform,
-    profile?.profile
-  );
+export default function ProfileModal({ params, searchParams }) {
+  const { domain } = params;
+  const platform = handleSearchPlatform(domain);
+  const { isLoading, isError, data } = useProfile(domain, platform, null);
+  const router = useRouter();
   return (
-    <Modal onDismiss={onClose}>
+    <Modal onDismiss={() => router.back()}>
       {isLoading ? (
         <Loading
           styles={{
@@ -53,7 +51,7 @@ export default function ProfileModal(props) {
               };
             }),
           }}
-          platform={profile?.platform}
+          platform={platform}
         />
       )}
     </Modal>
