@@ -458,7 +458,6 @@
       }
 
       .preview-image {
-
         .img-responsive,
         .video-responsive {
           max-width: 98vw;
@@ -470,8 +469,8 @@
       align-items: center;
 
       .preview-content {
-        max-height: 24rem;
-        max-width: 20rem;
+        height: 24rem;
+        width: 20rem;
         overflow: hidden auto;
       }
     }
@@ -517,7 +516,7 @@
     word-break: break-word;
 
     .collection-title {
-      align-items: center;
+      align-items: flex-start;
       display: flex;
       padding-bottom: .5rem;
 
@@ -538,6 +537,7 @@
       .collection-name {
         font-size: .65rem;
         font-weight: 700;
+        line-height: 1.2rem;
       }
     }
 
@@ -558,10 +558,12 @@
       gap: .5rem;
 
       .traits-card {
-        border: .05rem solid rgba($dark-color, 0.05);
+        background: $bg-color;
+        border: .05rem solid rgba($dark-color, 0.01);
         box-shadow: 0 .2rem .8rem -.2rem rgba($dark-color, 0.1);
         border-radius: .4rem;
         color: $dark-color;
+        min-width: 3.5rem;
         text-transform: uppercase;
         padding: .2rem .4rem;
 
@@ -573,7 +575,7 @@
 
         .trait-value {
           font-weight: 700;
-          font-size: .6rem;
+          font-size: .7rem;
           line-height: 1.5;
         }
 
@@ -587,7 +589,7 @@
   }
 
   .panel-widget {
-    margin: 1rem 0;
+    margin: 2rem 0;
 
     &:last-child {
       margin-bottom: 0;
@@ -598,11 +600,6 @@
       font-weight: 900;
       margin-bottom: .5rem;
       text-transform: uppercase;
-    }
-
-    .panel-widget-content {
-      font-size: .6rem;
-      line-height: 1rem;
     }
   }
 }
