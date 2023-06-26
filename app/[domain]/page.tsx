@@ -1,10 +1,10 @@
 "use client";
-import { fetchInitialNFTsData } from "../../../hooks/api/fetchProfile";
-import { PlatformType, SocialPlatformMapping } from "../../../utils/platform";
-import { handleSearchPlatform } from "../../../utils/utils";
+import { fetchInitialNFTsData } from "../../hooks/api/fetchProfile";
+import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import { handleSearchPlatform } from "../../utils/utils";
 import { notFound } from "next/navigation";
 import { NextSeo } from "next-seo";
-import ProfileMain from "../../../components/profile/ProfileMain";
+import ProfileMain from "../../components/profile/ProfileMain";
 
 function mapLinks(links) {
   return Object.entries(links || {}).map(([key, value]) => ({
@@ -75,7 +75,7 @@ export default async function ProfilePage({
   params: { domain: string };
 }) {
   const severData = await getData(domain);
-  if (!severData) notFound();
+  if (!severData || severData?.data?.error) notFound();
   const { data, nfts, platform } = severData;
   const pageTitle =
     data.identity == data.displayName

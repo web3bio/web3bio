@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 // import { useRouter } from "next/router";
 import Clipboard from "react-clipboard.js";
@@ -13,6 +13,7 @@ import { formatText } from "../../utils/utils";
 import { NFTCollectionWidget } from "../profile/NFTCollectionWidget";
 import { NFTModal, NFTModalType } from "./NFTModal";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 // import ShareButton from "../shared/ShareButton";
 
 export default function ProfileMain(props) {
@@ -23,7 +24,11 @@ export default function ProfileMain(props) {
   const [errorAvatar, setErrorAvatar] = useState(false);
   const [dialogType, setDialogType] = useState(NFTModalType.NFT);
   // const { asPath } = useRouter();
-
+  const pathName = usePathname();
+  useEffect(() => {
+    const newPathName = pathName.replaceAll("/profile", "");
+    window.history.replaceState(null, "", newPathName);
+  }, []);
   const onCopySuccess = () => {
     setCopied(true);
     setTimeout(() => {
@@ -45,7 +50,7 @@ export default function ProfileMain(props) {
       <div
         className="web3bio-custom"
         style={{
-          backgroundImage: data.header ? `url("${data.header}")` : '',
+          backgroundImage: data.header ? `url("${data.header}")` : "",
         }}
       ></div>
       <div className="columns">
