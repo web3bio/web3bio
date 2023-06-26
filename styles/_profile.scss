@@ -442,7 +442,6 @@
       }
 
       .preview-image {
-
         .img-responsive,
         .video-responsive {
           max-width: 98vw;
@@ -454,8 +453,8 @@
       align-items: center;
 
       .preview-content {
-        max-height: 24rem;
-        max-width: 20rem;
+        height: 24rem;
+        width: 20rem;
         overflow: hidden auto;
       }
     }
@@ -573,7 +572,7 @@
   }
 
   .panel-widget {
-    margin: 1rem 0;
+    margin: 2rem 0;
 
     &:last-child {
       margin-bottom: 0;

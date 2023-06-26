@@ -10,7 +10,6 @@ import {
   SocialPlatformMapping,
 } from "../../utils/platform";
 import Link from "next/link";
-import { formatText, getScanLink } from "../../utils/utils";
 
 const useCollectionData = (id) => {
   const { data, isValidating, error } = useSWR(
@@ -43,15 +42,15 @@ const renderSocialMediaLinks = (_collection) => {
     if (renderArr[key]) {
       const item = renderArr[key];
       links.push(
-        <div className="media-item" key={item.collection_id + item}>
-          <Link href={getSocialMediaLink(item, key as PlatformType)} target="_blank" rel="noopener noreferrer">
-            <NFTAssetPlayer
-              className="media-img"
-              src={SocialPlatformMapping(key as PlatformType).icon}
-              alt=""
-            />
-          </Link>
-        </div>
+        <Link 
+          href={getSocialMediaLink(item, key as PlatformType)} 
+          className="btn btn-sm btn-primary mr-2 mb-2"
+          key={item.collection_id + item}
+          target="_blank" 
+          rel="noopener noreferrer"
+        >
+          {SocialPlatformMapping(key as PlatformType).label} ↗️
+        </Link>
       );
     }
   }
@@ -77,7 +76,7 @@ const CollectionWidgetRender = (props) => {
 
   return (
     <>
-      <div className="panel-widget-content">
+      <div className="panel-widget-content mt-4 mb-4">
         {renderSocialMediaLinks(_collection)}
       </div>
       <div className="panel-widget-content">

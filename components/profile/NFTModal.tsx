@@ -1,7 +1,7 @@
 import { memo, useEffect } from "react";
 import SVG from "react-inlinesvg";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { CollectionWidget } from "./CollectionWidget";
+import { CollectionWidget } from "./CollectionAbout";
 
 export const enum NFTModalType {
   NFT = "nft",
@@ -166,13 +166,10 @@ const NFTModalRender = (props) => {
               <div className="nft-header-name">
                 {_asset.name || `${asset.collection.name} #${_asset.token_id}`}
               </div>
-              {_asset?.description || asset.collection.description && (
-                <div className="panel-widget">
-                  <div className="panel-widget-content">
-                    {_asset?.description || asset.collection.description}
-                  </div>
-                </div>
-              )}
+              <div className="nft-header-description mt-4 mb-4">
+                {_asset?.description || asset.collection.description}
+              </div>
+
               {attributes.length > 0 && (
                 <div className="panel-widget">
                   <div className="panel-widget-title">Attributes</div>
@@ -201,7 +198,7 @@ const NFTModalRender = (props) => {
               )}
 
               <div className="panel-widget">
-                <div className="panel-widget-title collection-title mt-4">
+                <div className="panel-widget-title collection-title">
                   <NFTAssetPlayer
                     type={"image/png"}
                     className="collection-logo"
@@ -210,10 +207,11 @@ const NFTModalRender = (props) => {
                   />
                   About {asset.collection.name}
                 </div>
+
                 <div className="panel-widget-content">
                   {asset.collection.description}
                 </div>
-
+                
                 <CollectionWidget address={asset.collection.address} id={asset.collection.id} />
               </div>
             </div>
