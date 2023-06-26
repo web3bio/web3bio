@@ -57,26 +57,19 @@ const NFTModalRender = (props) => {
                 <div className="collection-name text-ellipsis">POAP</div>
               </div>
               <div className="nft-header-name">{asset.asset.event.name}</div>
+              <div className="nft-header-description mt-4 mb-4">
+                {asset.asset.event.description}
+              </div>
               {asset.asset.event.event_url && (
-                <div className="panel-widget">
-                  <div className="panel-widget-content">
-                    <a
-                      href={asset.asset.event.event_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn btn-sm"
-                    >
-                      Website
-                    </a>
-                  </div>
-                </div>
-              )}
-
-              {asset.asset.event.description && (
-                <div className="panel-widget">
-                  <div className="panel-widget-content">
-                    {asset.asset.event.description}
-                  </div>
+                <div className="panel-widget-content mt-4 mb-4">
+                  <a
+                    href={asset.asset.event.event_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-sm btn-primary"
+                  >
+                    Website ↗️
+                  </a>
                 </div>
               )}
 
