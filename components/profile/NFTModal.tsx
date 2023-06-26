@@ -164,8 +164,6 @@ const NFTModalRender = (props) => {
               </div>
 
               {attributes.length > 0 && (
-                <div className="panel-widget">
-                  <div className="panel-widget-title">Attributes</div>
                   <div className="panel-widget-content">
                     <div className="traits-cards">
                       {attributes.map((x, idx) => {
@@ -187,7 +185,6 @@ const NFTModalRender = (props) => {
                       })}
                     </div>
                   </div>
-                </div>
               )}
 
               <div className="panel-widget">

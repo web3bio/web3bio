@@ -500,7 +500,7 @@
     word-break: break-word;
 
     .collection-title {
-      align-items: center;
+      align-items: flex-start;
       display: flex;
       padding-bottom: .5rem;
 
@@ -521,6 +521,7 @@
       .collection-name {
         font-size: .65rem;
         font-weight: 700;
+        line-height: 1.2rem;
       }
     }
 
@@ -558,7 +559,7 @@
 
         .trait-value {
           font-weight: 700;
-          font-size: .6rem;
+          font-size: .7rem;
           line-height: 1.5;
         }
 
@@ -583,10 +584,6 @@
       font-weight: 900;
       margin-bottom: .5rem;
       text-transform: uppercase;
-    }
-
-    .panel-widget-content {
-      line-height: 1rem;
     }
   }
 }

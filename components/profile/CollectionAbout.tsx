@@ -44,7 +44,7 @@ const renderSocialMediaLinks = (_collection) => {
       links.push(
         <Link 
           href={getSocialMediaLink(item, key as PlatformType)} 
-          className="btn btn-sm btn-primary mr-2 mb-2"
+          className="btn btn-sm btn-primary"
           key={item.collection_id + item}
           target="_blank" 
           rel="noopener noreferrer"
@@ -77,7 +77,9 @@ const CollectionWidgetRender = (props) => {
   return (
     <>
       <div className="panel-widget-content mt-4 mb-4">
-        {renderSocialMediaLinks(_collection)}
+        <div className="traits-cards">
+          {renderSocialMediaLinks(_collection)}
+        </div>
       </div>
       <div className="panel-widget-content">
         <div className="traits-cards">
