@@ -22,7 +22,10 @@ export const fetchProfile = async (identity) => {
     const url =
       process.env.NEXT_PUBLIC_PROFILE_END_POINT +
       `/profile/${platform.toLowerCase()}/${handle}`;
-    const res = await fetch(url, { next: { revalidate: 600 } });
+    const res = await fetch(url, {
+      next: { revalidate: 600 },
+      cache: "default",
+    });
     return await res.json();
   } catch (e) {
     return null;

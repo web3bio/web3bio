@@ -9,6 +9,7 @@ import SearchResultDomain from "../components/search/SearchResultDomain";
 import SearchResultQuery from "../components/search/SearchResultQuery";
 import { Footer } from "../components/shared/Footer";
 import Image from "next/image";
+import SVG from "react-inlinesvg";
 export default function HomePage() {
   const [searchFocus, setSearchFocus] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -120,8 +121,7 @@ export default function HomePage() {
                     className="identity identity-ens"
                     title="ENS domains (.eth)"
                   >
-                    <Image
-                      alt="ens"
+                    <SVG
                       src="icons/icon-ens.svg"
                       width={20}
                       height={20}
@@ -133,8 +133,7 @@ export default function HomePage() {
                     className="identity identity-farcaster"
                     title="Farcaster identities"
                   >
-                    <Image
-                      alt="far"
+                    <SVG
                       src="icons/icon-farcaster.svg"
                       width={20}
                       height={20}
@@ -146,8 +145,7 @@ export default function HomePage() {
                     className="identity identity-lens"
                     title="Lens identities (.lens)"
                   >
-                    <Image
-                      alt="lens"
+                    <SVG
                       src="icons/icon-lens.svg"
                       width={20}
                       height={20}
@@ -159,8 +157,7 @@ export default function HomePage() {
                     className="identity identity-unstoppabledomains"
                     title="Unstoppable Domains"
                   >
-                    <Image
-                      alt="ud"
+                    <SVG
                       src="icons/icon-unstoppabledomains.svg"
                       width={20}
                       height={20}
@@ -172,8 +169,7 @@ export default function HomePage() {
                     className="identity identity-spaceid"
                     title="SPACE ID domains"
                   >
-                    <Image
-                      alt="spaceid"
+                    <SVG
                       src="icons/icon-spaceid.svg"
                       width={20}
                       height={20}
@@ -199,8 +195,7 @@ export default function HomePage() {
                   <div className="circle"></div>
                   <div className="circle"></div>
                   <div className="btn">
-                    <Image
-                      alt="view"
+                    <SVG
                       src={"/icons/icon-view.svg"}
                       width={24}
                       height={24}

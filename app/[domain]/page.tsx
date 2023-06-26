@@ -1,9 +1,7 @@
-"use client";
 import { fetchInitialNFTsData } from "../../hooks/api/fetchProfile";
-import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import { PlatformType } from "../../utils/platform";
 import { handleSearchPlatform } from "../../utils/utils";
 import { notFound } from "next/navigation";
-import { NextSeo } from "next-seo";
 import ProfileMain from "../../components/profile/ProfileMain";
 
 function mapLinks(links) {
@@ -44,7 +42,7 @@ async function getData(domain: string) {
         PlatformType.ethereum,
       ].includes(platform)
     )
-      return null;
+      notFound();
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${(platform ===
       PlatformType.ethereum
@@ -53,7 +51,7 @@ async function getData(domain: string) {
       ).toLowerCase()}/${domain}`
     );
 
-    if (response.status == 404) return null;
+    if (response.status == 404) notFound();
     if (response.status === 504)
       return { props: { data: { error: "Timeout" } } };
     const data = await response.json();
@@ -84,7 +82,7 @@ export default async function ProfilePage({
 
   return (
     <div className="web3-profile container grid-xl">
-      <NextSeo
+      {/* <NextSeo
         {...{
           title: `${pageTitle} - Web3.bio`,
           description:
@@ -102,7 +100,7 @@ export default async function ProfilePage({
             ],
           },
         }}
-      />
+      /> */}
       <ProfileMain
         nfts={nfts}
         data={data}

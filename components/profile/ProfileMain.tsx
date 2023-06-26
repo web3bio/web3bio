@@ -158,15 +158,15 @@ export default function ProfileMain(props) {
             })}
           </div>
           <div className="web3-section-widgets">
-            <NFTCollectionWidget
-              onShowDetail={(e, v) => {
-                setDialogType(NFTModalType.NFT);
-                setCurAsset(v);
-                setDialogOpen(true);
-              }}
-              address={data.address || data.owner}
-              initialData={nfts}
-            />
+              <NFTCollectionWidget
+                onShowDetail={(e, v) => {
+                  setDialogType(NFTModalType.NFT);
+                  setCurAsset(v);
+                  setDialogOpen(true);
+                }}
+                address={data.address || data.owner}
+                initialData={nfts}
+              />
           </div>
           <div className="web3-section-widgets">
             <PoapWidget
