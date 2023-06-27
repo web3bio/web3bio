@@ -69,7 +69,7 @@ function useNFTs({ address, initialData }) {
     initialData?.nfts?.length && {
       initialSize: 1,
       fallbackData: [initialData],
-      revalidateOnFocus: initialData?.nfts?.length ? false : true,
+      revalidateOnFocus: false,
       revalidateOnMount: initialData?.nfts?.length ? false : true,
     }
   );

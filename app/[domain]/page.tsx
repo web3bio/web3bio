@@ -4,8 +4,6 @@ import { handleSearchPlatform } from "../../utils/utils";
 import { notFound } from "next/navigation";
 import ProfileMain from "../../components/profile/ProfileMain";
 import { Metadata } from "next";
-import { Suspense } from "react";
-import LoadingPage from "./loading";
 
 function mapLinks(links) {
   return Object.entries(links || {}).map(([key, value]) => ({
@@ -74,34 +72,42 @@ export async function getData(domain: string) {
   }
 }
 
-export async function generateMetadata({
+export function generateMetadata({
   params: { domain },
 }: {
   params: { domain: string };
-}): Promise<Metadata> {
-  const serverData = await getData(domain);
-  if (!serverData) notFound();
-  const { data, platform } = serverData;
-  const pageTitle =
-    data?.identity == data?.displayName
-      ? `${data?.displayName}`
-      : `${data?.displayName} (${data?.identity})`;
-  return {
-    title: `${pageTitle} - Web3.bio`,
-    description:
-      data.description ||
-      `Explore ${pageTitle} ${
-        SocialPlatformMapping(platform!).label
-      } Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`,
-    openGraph: {
-      images: [
-        {
-          url:
-            data.avatar ||
-            `${process.env.NEXT_PUBLIC_BASE_URL}/img/web3bio-social.jpg`,
+}): Metadata {
+  getData(domain)
+    .then((res) => {
+      if (!res) notFound();
+      const { data, platform } = res;
+      const pageTitle =
+        data?.identity == data?.displayName
+          ? `${data?.displayName}`
+          : `${data?.displayName} (${data?.identity})`;
+      return {
+        title: `${pageTitle} - Web3.bio`,
+        description:
+          data.description ||
+          `Explore ${pageTitle} ${
+            SocialPlatformMapping(platform!).label
+          } Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`,
+        openGraph: {
+          images: [
+            {
+              url:
+                data.avatar ||
+                `${process.env.NEXT_PUBLIC_BASE_URL}/img/web3bio-social.jpg`,
+            },
+          ],
         },
-      ],
-    },
+      };
+    })
+    .catch(() => {
+      notFound();
+    });
+  return {
+    title: `${domain} - Web3.bio`,
   };
 }
 
@@ -112,7 +118,6 @@ export default async function ProfilePage({
 }) {
   const serverData = await getData(domain);
   const { data, nfts, platform } = serverData;
-
   const pageTitle =
     data.identity == data.displayName
       ? `${data.displayName}`
