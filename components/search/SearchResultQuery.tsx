@@ -9,7 +9,6 @@ import { ResultAccount } from "./ResultAccount";
 export default function SearchResultQuery({
   searchTerm,
   searchPlatform,
-  onItemClick,
 }) {
   const [getQuery, { loading, error, data }] = useLazyQuery(
     GET_PROFILES_QUERY,
@@ -78,7 +77,6 @@ export default function SearchResultQuery({
 
   return (
     <ResultAccount
-      onItemClick={onItemClick}
       graphTitle={searchTerm}
       resultNeighbor={resultNeighbor}
       graphData={graphData}

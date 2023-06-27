@@ -6,11 +6,15 @@ import { ResultGraph } from "../graph/ResultGraph";
 import _ from "lodash";
 import { regexEns } from "../../utils/regexp";
 
+interface Profile {
+  uuid: string;
+}
+
 const RenderAccount = (props) => {
-  const { graphData, resultNeighbor, graphTitle, onItemClick } = props;
+  const { graphData, resultNeighbor, graphTitle } = props;
   const [open, setOpen] = useState(false);
   const [profileLoading, setProfileLoading] = useState(true);
-  const [profiles, setProfiles] = useState([]);
+  const [profiles, setProfiles] = useState<Profile[]>([]);
   useEffect(() => {
     setProfileLoading(true);
     if (
@@ -62,15 +66,14 @@ const RenderAccount = (props) => {
           )}
         </div>
         <div className="search-result-body">
-          {resultNeighbor?.map((avatar) => (
+          {resultNeighbor?.map((avatar, idx) => (
             <ResultAccountItem
               canSkipProfile={regexEns.test(avatar.identity.displayName)}
-              onItemClick={onItemClick}
               profileLoading={profileLoading}
               identity={avatar.identity}
               sources={avatar.sources}
               profile={profiles.find((x) => x?.uuid === avatar.identity.uuid)}
-              key={avatar.identity.uuid}
+              key={avatar.identity.uuid + idx}
             />
           ))}
         </div>

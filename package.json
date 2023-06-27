@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "NODE_OPTIONS='--inspect' next dev",
-    "build": "next build",
+    "dev": "next dev",
+    "build": "rimraf .next && next build",
     "export": "next export",
     "start": "next start",
     "lint": "next lint"
@@ -12,7 +12,6 @@
   "dependencies": {
     "@dotbit/plugin-avatar": "^0.0.1",
     "boring-avatars": "^1.7.0",
-    "next-seo": "^6.0.0",
     "qrcode": "^1.5.3",
     "react-infinite-scroll-hook": "^4.1.1",
     "underscore": "^1.13.6",
@@ -27,11 +26,11 @@
     "bn.js": "^5.2.1",
     "date-fns": "^2.29.3",
     "eslint": "8.19.0",
-    "eslint-config-next": "^13.2.4",
+    "eslint-config-next": "^13.4.6",
     "ethers": "^6.5.1",
     "graphql": "^15.8.0",
     "lodash": "^4.17.21",
-    "next": "^13.2.4",
+    "next": "^13.4.6",
     "nextjs-google-analytics": "^2.0.0",
     "react": "^18.2.0",
     "react-clipboard.js": "^2.0.16",

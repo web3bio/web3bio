@@ -4,15 +4,15 @@ import { ExpandController } from "./ExpandController";
 import { NFTCollections } from "./NFTCollections";
 import { _fetcher } from "../apis/ens";
 import { SIMPLE_HASH_URL } from "../apis/simplehash";
+import { NFT_PAGE_SIZE } from "../../utils/queries";
 
 const CHAIN_PARAM = "ethereum";
 const CURSOR_PARAM = "&cursor=";
-export const NFT_PAGE_SIZE = 40;
 
 export const processNFTsData = (data) => {
   if (!data?.length) return [];
   const uniqueValues = new Set();
-  const assets = [];
+  const assets = new Array;
   for (const obj of data) {
     const nfts = obj.nfts;
     if (!nfts) {
@@ -27,7 +27,7 @@ export const processNFTsData = (data) => {
     }
   }
 
-  const collections = [];
+  const collections = new Array;
   const collectionById = new Map();
   for (const asset of assets) {
     const { collection } = asset;

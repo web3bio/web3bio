@@ -1,8 +1,7 @@
-import { memo, useState } from "react";
+import { memo } from "react";
 import useSWR from "swr";
 import { _fetcher } from "../apis/ens";
 import { SIMPLE_HASH_URL } from "../apis/simplehash";
-import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { formatEther } from "ethers";
 import {
   getSocialMediaLink,
@@ -37,16 +36,16 @@ const renderSocialMediaLinks = (_collection) => {
     [PlatformType.instagram]: _collection.instagram_username,
   };
 
-  const links = [];
+  const links = new Array();
   for (let key in renderArr) {
     if (renderArr[key]) {
       const item = renderArr[key];
       links.push(
-        <Link 
-          href={getSocialMediaLink(item, key as PlatformType)} 
+        <Link
+          href={getSocialMediaLink(item, key as PlatformType) || ""}
           className="btn btn-sm btn-primary"
           key={item.collection_id + item}
-          target="_blank" 
+          target="_blank"
           rel="noopener noreferrer"
         >
           {SocialPlatformMapping(key as PlatformType).label} ↗️
@@ -65,7 +64,7 @@ const INFO_CONFIG = [
 ];
 
 const CollectionWidgetRender = (props) => {
-  const { id, address } = props;
+  const { id } = props;
   const { data, isLoading, isError } = useCollectionData(id);
   if (!data || isLoading || isError) return null;
 
@@ -85,9 +84,7 @@ const CollectionWidgetRender = (props) => {
         <div className="traits-cards">
           {floorPriceItem && (
             <div key="floorPriceItem" className="traits-card">
-              <div className="trait-type">
-                Floor Price
-              </div>
+              <div className="trait-type">Floor Price</div>
               <div className="trait-value">
                 {formatEther(floorPriceItem.value.toString() ?? 0)}{" "}
                 {floorPriceItem.payment_token.symbol}

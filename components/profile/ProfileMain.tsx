@@ -1,6 +1,6 @@
+"use client";
 import React, { useState } from "react";
 import Link from "next/link";
-// import { useRouter } from "next/router";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { RenderWidgetItem } from "../profile/WidgetItem";
@@ -11,16 +11,17 @@ import Avatar from "boring-avatars";
 import { formatText } from "../../utils/utils";
 import { NFTCollectionWidget } from "../profile/NFTCollectionWidget";
 import { NFTModal, NFTModalType } from "./NFTModal";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 // import ShareButton from "../shared/ShareButton";
 
 export default function ProfileMain(props) {
   const { data, pageTitle = "", platform, nfts } = props;
-  const [copied, setCopied] = useState(null);
+  const [copied, setCopied] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [curAsset, setCurAsset] = useState(null);
   const [errorAvatar, setErrorAvatar] = useState(false);
   const [dialogType, setDialogType] = useState(NFTModalType.NFT);
-  // const { asPath } = useRouter();
 
   const onCopySuccess = () => {
     setCopied(true);
@@ -43,7 +44,7 @@ export default function ProfileMain(props) {
       <div
         className="web3bio-custom"
         style={{
-          backgroundImage: data.header ? `url("${data.header}")` : null,
+          backgroundImage: data.header ? `url("${data.header}")` : "",
         }}
       ></div>
       <div className="columns">
@@ -51,7 +52,7 @@ export default function ProfileMain(props) {
           <div className="web3-profile-base">
             <div className="profile-avatar">
               {data.avatar && !errorAvatar ? (
-                <img
+                <Image
                   src={data.avatar}
                   className="avatar"
                   loading="lazy"
