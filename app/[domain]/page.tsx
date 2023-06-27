@@ -1,8 +1,9 @@
 import { fetchInitialNFTsData } from "../../hooks/api/fetchProfile";
-import { PlatformType } from "../../utils/platform";
+import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import { handleSearchPlatform } from "../../utils/utils";
 import { notFound } from "next/navigation";
 import ProfileMain from "../../components/profile/ProfileMain";
+import { Metadata } from "next";
 
 function mapLinks(links) {
   return Object.entries(links || {}).map(([key, value]) => ({
@@ -67,14 +68,45 @@ async function getData(domain: string) {
   }
 }
 
+export async function generateMetadata({
+  params: { domain },
+}: {
+  params: { domain: string };
+}): Promise<Metadata> {
+  const serverData = await getData(domain);
+  if (!serverData) return {};
+  const { data, platform } = serverData;
+  const pageTitle =
+    data?.identity == data?.displayName
+      ? `${data?.displayName}`
+      : `${data?.displayName} (${data?.identity})`;
+  return {
+    title: `${pageTitle} - Web3.bio`,
+    description:
+      data.description ||
+      `Explore ${pageTitle} ${
+        SocialPlatformMapping(platform!).label
+      } Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`,
+    openGraph: {
+      images: [
+        {
+          url:
+            data.avatar ||
+            `${process.env.NEXT_PUBLIC_BASE_URL}/img/web3bio-social.jpg`,
+        },
+      ],
+    },
+  };
+}
+
 export default async function ProfilePage({
   params: { domain },
 }: {
   params: { domain: string };
 }) {
-  const severData = await getData(domain);
-  if (!severData || severData?.data?.error) notFound();
-  const { data, nfts, platform } = severData;
+  const serverData = await getData(domain);
+  if (!serverData || serverData?.data?.error) notFound();
+  const { data, nfts, platform } = serverData;
   const pageTitle =
     data.identity == data.displayName
       ? `${data.displayName}`
@@ -82,25 +114,6 @@ export default async function ProfilePage({
 
   return (
     <div className="web3-profile container grid-xl">
-      {/* <NextSeo
-        {...{
-          title: `${pageTitle} - Web3.bio`,
-          description:
-            data.description ||
-            `Explore ${pageTitle} ${
-              SocialPlatformMapping(platform!).label
-            } Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`,
-          openGraph: {
-            images: [
-              {
-                url:
-                  data.avatar ||
-                  `${process.env.NEXT_PUBLIC_BASE_URL}/img/web3bio-social.jpg`,
-              },
-            ],
-          },
-        }}
-      /> */}
       <ProfileMain
         nfts={nfts}
         data={data}

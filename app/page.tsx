@@ -9,6 +9,7 @@ import SearchResultDomain from "../components/search/SearchResultDomain";
 import SearchResultQuery from "../components/search/SearchResultQuery";
 import { Footer } from "../components/shared/Footer";
 import SVG from "react-inlinesvg";
+
 export default function HomePage() {
   const [searchFocus, setSearchFocus] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -43,13 +44,6 @@ export default function HomePage() {
 
   return (
     <div>
-      <NextSeo
-        title={
-          searchTerm
-            ? `${searchTerm} - Web3.bio`
-            : "Web3.bio - Web3 Identity Graph Search and Link-in-bio Profile Service"
-        }
-      />
       <div className="web3bio-container">
         <div className="web3bio-cover flare"></div>
 
