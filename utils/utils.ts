@@ -128,12 +128,45 @@ export function debounce(func, timeout = 300) {
 
 export const resolveMediaURL = (url) => {
   if (!url) return null;
-  return (url.startsWith("data:") || url.startsWith("https:"))
+  return url.startsWith("data:") || url.startsWith("https:")
     ? url
     : url.startsWith("ar://")
     ? url.replaceAll("ar://", ArweaveAssetPrefix)
     : resolveIPFS_URL(url);
 };
 
+export const fallbackEmoji = [
+  "🤔",
+  "😱",
+  "😵‍💫",
+  "😵",
+  "🤦‍♀️",
+  "💆‍♂️",
+  "🤷‍♂️",
+  "🙇‍♂️",
+  "🤖",
+];
 
-export const fallbackEmoji = ["🤔", "😱", "😵‍💫", "😵", "🤦‍♀️", "💆‍♂️", "🤷‍♂️", "🙇‍♂️", "🤖"]
+export const getScanLink = (address: string) => {
+  if(!address) return ''
+  const prefixArr = [
+    {
+      key: "ethereum.",
+      url: "https://etherscan.io/address/",
+    },
+    {
+      key: "polygon.",
+      url: "https://polygonscan.com/address/",
+    },
+  ];
+  let resolvedAddress = address;
+  let url = prefixArr[0].url;
+  prefixArr.forEach((x) => {
+    if (address.includes(x.key)) {
+      if (x.key === "polygon.") url = prefixArr[1].url;
+      resolvedAddress = address.replaceAll(x.key, "");
+    }
+  });
+  const res = url + resolvedAddress;
+  return res;
+};

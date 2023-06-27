@@ -162,7 +162,11 @@ const RenderNFTCollections = (props) => {
                             onShowDetail(e, {
                               collection: {
                                 url: x.image_url,
+                                description: y.collection.description,
                                 name: x.name,
+                                id: y.collection.collection_id,
+                                address:
+                                  y.collection.address || y.contract_address,
                               },
                               asset: y,
                               mediaURL:

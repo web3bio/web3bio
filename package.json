@@ -27,7 +27,7 @@
     "date-fns": "^2.29.3",
     "eslint": "8.19.0",
     "eslint-config-next": "^13.4.6",
-    "ethers": "^5.7.2",
+    "ethers": "^6.5.1",
     "graphql": "^15.8.0",
     "lodash": "^4.17.21",
     "next": "^13.4.6",
