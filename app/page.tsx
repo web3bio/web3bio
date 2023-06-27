@@ -8,7 +8,6 @@ import { handleSearchPlatform, isDomainSearch } from "../utils/utils";
 import SearchResultDomain from "../components/search/SearchResultDomain";
 import SearchResultQuery from "../components/search/SearchResultQuery";
 import { Footer } from "../components/shared/Footer";
-import Image from "next/image";
 import SVG from "react-inlinesvg";
 export default function HomePage() {
   const [searchFocus, setSearchFocus] = useState(false);
