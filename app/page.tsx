@@ -15,7 +15,7 @@ export default function HomePage({}) {
     <>
       <div className="web3bio-container">
         <div className="web3bio-cover flare"></div>
-        <IndexPageRender />;
+        <IndexPageRender />
       </div>
       <Footer />
     </>
