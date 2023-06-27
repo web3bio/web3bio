@@ -12,7 +12,7 @@ const CURSOR_PARAM = "&cursor=";
 export const processNFTsData = (data) => {
   if (!data?.length) return [];
   const uniqueValues = new Set();
-  const assets = new Array;
+  const assets = new Array();
   for (const obj of data) {
     const nfts = obj.nfts;
     if (!nfts) {
@@ -27,7 +27,7 @@ export const processNFTsData = (data) => {
     }
   }
 
-  const collections = new Array;
+  const collections = new Array();
   const collectionById = new Map();
   for (const asset of assets) {
     const { collection } = asset;
@@ -66,11 +66,11 @@ function useNFTs({ address, initialData }) {
   const { data, error, size, isValidating, setSize } = useSWRInfinite(
     (index, previous) => getURL(index, address, previous),
     _fetcher,
-    initialData && {
+    initialData?.nfts?.length && {
       initialSize: 1,
       fallbackData: [initialData],
-      revalidateOnFocus: initialData ? false : true,
-      revalidateOnMount: initialData ? false : true,
+      revalidateOnFocus: initialData?.nfts?.length ? false : true,
+      revalidateOnMount: initialData?.nfts?.length ? false : true,
     }
   );
   return {

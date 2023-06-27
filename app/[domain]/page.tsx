@@ -4,6 +4,8 @@ import { handleSearchPlatform } from "../../utils/utils";
 import { notFound } from "next/navigation";
 import ProfileMain from "../../components/profile/ProfileMain";
 import { Metadata } from "next";
+import { Suspense } from "react";
+import LoadingPage from "./loading";
 
 function mapLinks(links) {
   return Object.entries(links || {}).map(([key, value]) => ({
@@ -13,6 +15,7 @@ function mapLinks(links) {
 }
 
 function mapNFTs(nfts) {
+  if (!nfts) return [];
   return nfts.map((x) => ({
     image_url: x.image_url,
     previews: x.previews,
@@ -32,8 +35,9 @@ function mapNFTs(nfts) {
     extra_metadata: x.extra_metadata,
   }));
 }
-async function getData(domain: string) {
-  if (!domain) return null;
+
+export async function getData(domain: string) {
+  if (!domain) notFound();
   try {
     const platform = handleSearchPlatform(domain);
     if (
@@ -51,14 +55,14 @@ async function getData(domain: string) {
       PlatformType.ethereum
         ? PlatformType.ens
         : platform
-      ).toLowerCase()}/${domain}`
+      ).toLowerCase()}/${domain}`,
+      {
+        cache: "no-store",
+      }
     );
-
-    if (response.status == 404) notFound();
-    if (response.status === 504)
-      return { props: { data: { error: "Timeout" } } };
+    if (response.status !== 200) notFound();
     const data = await response.json();
-    const remoteNFTs = await fetchInitialNFTsData(data?.identity);
+    const remoteNFTs = await fetchInitialNFTsData(data?.address);
 
     return {
       data: { ...data, links: mapLinks(data?.links) },
@@ -66,7 +70,7 @@ async function getData(domain: string) {
       platform,
     };
   } catch (e) {
-    return { data: { error: e.message } };
+    notFound();
   }
 }
 
@@ -76,15 +80,12 @@ export async function generateMetadata({
   params: { domain: string };
 }): Promise<Metadata> {
   const serverData = await getData(domain);
-  if (!serverData || serverData?.data?.error)
-    return {
-      title: `${domain} - Web3.bio`,
-    };
+  if (!serverData) notFound();
   const { data, platform } = serverData;
   const pageTitle =
     data?.identity == data?.displayName
       ? `${data?.displayName}`
-      : `${data?.displayName} (${data?.identity})` || domain;
+      : `${data?.displayName} (${data?.identity})`;
   return {
     title: `${pageTitle} - Web3.bio`,
     description:
@@ -110,8 +111,8 @@ export default async function ProfilePage({
   params: { domain: string };
 }) {
   const serverData = await getData(domain);
-  if (!serverData || serverData?.data?.error) notFound();
   const { data, nfts, platform } = serverData;
+
   const pageTitle =
     data.identity == data.displayName
       ? `${data.displayName}`

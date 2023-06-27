@@ -12,7 +12,6 @@ import { formatText } from "../../utils/utils";
 import { NFTCollectionWidget } from "../profile/NFTCollectionWidget";
 import { NFTModal, NFTModalType } from "./NFTModal";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 // import ShareButton from "../shared/ShareButton";
 
 export default function ProfileMain(props) {
