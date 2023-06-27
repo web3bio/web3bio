@@ -12,7 +12,6 @@
   "dependencies": {
     "@dotbit/plugin-avatar": "^0.0.1",
     "boring-avatars": "^1.7.0",
-    "next-seo": "^6.0.0",
     "qrcode": "^1.5.3",
     "react-infinite-scroll-hook": "^4.1.1",
     "underscore": "^1.13.6",
