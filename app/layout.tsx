@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { Footer } from "../components/shared/Footer";
 import "../styles/web3bio.scss";
 import { headers } from "next/headers";
 
@@ -51,12 +50,8 @@ export default function RootLayout({ children, modal }) {
         <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
       <body>
-        <div className="web3bio-container">
-          <div className="web3bio-cover flare"></div>
-          {children}
-          {modal}
-        </div>
-        <Footer />
+        {children}
+        {modal}
       </body>
     </html>
   );

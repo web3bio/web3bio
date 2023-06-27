@@ -1,4 +1,5 @@
 import IndexPageRender from "../components/search/IndexPage";
+import { Footer } from "../components/shared/Footer";
 
 export async function generateMetadata({ params, searchParams }) {
   const searchTerm = searchParams?.s;
@@ -10,5 +11,13 @@ export async function generateMetadata({ params, searchParams }) {
 }
 
 export default function HomePage({}) {
-  return <IndexPageRender />;
+  return (
+    <>
+      <div className="web3bio-container">
+        <div className="web3bio-cover flare"></div>
+        <IndexPageRender />;
+      </div>
+      <Footer />
+    </>
+  );
 }

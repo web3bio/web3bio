@@ -1,3 +1,4 @@
+import { usePathname } from "next/navigation";
 import { useCallback, useRef, useEffect } from "react";
 
 import SVG from "react-inlinesvg";
@@ -6,7 +7,7 @@ export default function Modal(props) {
   const { onDismiss, children } = props;
   const overlay = useRef<HTMLDivElement>(null);
   const wrapper = useRef<HTMLDivElement>(null);
-
+  const pathName = usePathname()
   const onClick = useCallback(
     (e) => {
       if (e.target === overlay.current || e.target === wrapper.current) {
@@ -22,7 +23,10 @@ export default function Modal(props) {
     },
     [onDismiss]
   );
-
+  useEffect(() => {
+    const newPathName = pathName.replaceAll("/profile", "");
+    window.history.replaceState(null, "", newPathName);
+  }, []);
   useEffect(() => {
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
