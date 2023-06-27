@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
@@ -22,11 +22,7 @@ export default function ProfileMain(props) {
   const [curAsset, setCurAsset] = useState(null);
   const [errorAvatar, setErrorAvatar] = useState(false);
   const [dialogType, setDialogType] = useState(NFTModalType.NFT);
-  const pathName = usePathname();
-  useEffect(() => {
-    const newPathName = pathName.replaceAll("/profile", "");
-    window.history.replaceState(null, "", newPathName);
-  }, []);
+
   const onCopySuccess = () => {
     setCopied(true);
     setTimeout(() => {

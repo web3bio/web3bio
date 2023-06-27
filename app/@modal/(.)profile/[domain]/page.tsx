@@ -6,7 +6,8 @@ import Modal from "../../../../components/shared/Modal";
 import ProfileMain from "../../../../components/profile/ProfileMain";
 import { _fetcher } from "../../../../components/apis/ens";
 import { handleSearchPlatform } from "../../../../utils/utils";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 function useProfile(identity: string, platform: string, fallbackData) {
   const url =
@@ -27,6 +28,11 @@ export default function ProfileModal({ params, searchParams }) {
   const platform = handleSearchPlatform(domain);
   const { isLoading, isError, data } = useProfile(domain, platform, null);
   const router = useRouter();
+  const pathName = usePathname();
+  useEffect(() => {
+    const newPathName = pathName.replaceAll("/profile", "");
+    window.history.replaceState(null, "", newPathName);
+  }, []);
   return (
     <Modal onDismiss={() => router.back()}>
       {isLoading ? (
