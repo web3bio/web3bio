@@ -76,7 +76,10 @@ export async function generateMetadata({
   params: { domain: string };
 }): Promise<Metadata> {
   const serverData = await getData(domain);
-  if (!serverData) return {};
+  if (!serverData || serverData?.data?.error)
+    return {
+      title: `${domain} - Web3.bio`,
+    };
   const { data, platform } = serverData;
   const pageTitle =
     data?.identity == data?.displayName

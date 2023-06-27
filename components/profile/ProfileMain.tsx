@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-// import { useRouter } from "next/router";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { RenderWidgetItem } from "../profile/WidgetItem";
@@ -23,7 +22,6 @@ export default function ProfileMain(props) {
   const [curAsset, setCurAsset] = useState(null);
   const [errorAvatar, setErrorAvatar] = useState(false);
   const [dialogType, setDialogType] = useState(NFTModalType.NFT);
-  // const { asPath } = useRouter();
   const pathName = usePathname();
   useEffect(() => {
     const newPathName = pathName.replaceAll("/profile", "");
@@ -158,15 +156,15 @@ export default function ProfileMain(props) {
             })}
           </div>
           <div className="web3-section-widgets">
-              <NFTCollectionWidget
-                onShowDetail={(e, v) => {
-                  setDialogType(NFTModalType.NFT);
-                  setCurAsset(v);
-                  setDialogOpen(true);
-                }}
-                address={data.address || data.owner}
-                initialData={nfts}
-              />
+            <NFTCollectionWidget
+              onShowDetail={(e, v) => {
+                setDialogType(NFTModalType.NFT);
+                setCurAsset(v);
+                setDialogOpen(true);
+              }}
+              address={data.address || data.owner}
+              initialData={nfts}
+            />
           </div>
           <div className="web3-section-widgets">
             <PoapWidget

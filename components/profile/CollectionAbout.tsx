@@ -64,7 +64,7 @@ const INFO_CONFIG = [
 ];
 
 const CollectionWidgetRender = (props) => {
-  const { id, address } = props;
+  const { id } = props;
   const { data, isLoading, isError } = useCollectionData(id);
   if (!data || isLoading || isError) return null;
 
