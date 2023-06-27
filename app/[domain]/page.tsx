@@ -18,7 +18,9 @@ function mapNFTs(nfts) {
     previews: x.previews,
     token_id: x.token_id,
     collection: {
+      address: x.contract_address,
       collection_id: x.collection.collection_id,
+      description: x.collection.description,
       name: x.collection.name,
       image_url: x.collection.image_url,
       spam_score: x.collection.spam_score,
@@ -79,7 +81,7 @@ export async function generateMetadata({
   const pageTitle =
     data?.identity == data?.displayName
       ? `${data?.displayName}`
-      : `${data?.displayName} (${data?.identity})`;
+      : `${data?.displayName} (${data?.identity})` || domain;
   return {
     title: `${pageTitle} - Web3.bio`,
     description:
