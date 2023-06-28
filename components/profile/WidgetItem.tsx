@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { memo, useState } from "react";
 import Clipboard from "react-clipboard.js";
@@ -65,7 +66,7 @@ const WidgetItem = (props) => {
           <div 
             className="platform-icon website"
           >
-            <img 
+            <Image
               src={`https://icon.horse/icon/${item.handle}`} 
               alt={`${item.handle} Website Favicon`} 
               loading="lazy"

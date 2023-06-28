@@ -1,8 +1,9 @@
-import { useRouter } from "next/router";
+"use client";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { fallbackEmoji } from "../utils/utils";
 
-export default function Custom404() {
+export default function NotFound() {
   const [emoji, setEmoji] = useState("");
   const router = useRouter();
   useEffect(() => {
@@ -14,7 +15,7 @@ export default function Custom404() {
         <div className="empty-icon h1" style={{ fontSize: "72px" }}>
           {emoji}
         </div>
-        <p className="empty-title h4">Not found</p>
+        <p className="empty-title h4">Not Found</p>
         <p className="empty-subtitle">This page could not be found.</p>
         <button className="btn btn-primary mt-4" onClick={() => router.back()}>
           Go back

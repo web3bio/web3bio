@@ -32,7 +32,7 @@ export default function ShareModal(props) {
   };
   const [qrcode, setQrcode] = useState("");
   const canvasContainer = useRef(null);
-  const [copied, setCopied] = useState(null);
+  const [copied, setCopied] = useState(false);
   const onCopySuccess = () => {
     setCopied(true);
     setTimeout(() => {
