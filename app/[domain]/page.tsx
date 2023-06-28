@@ -34,7 +34,7 @@ function mapNFTs(nfts) {
   }));
 }
 
-export async function getData(domain: string) {
+async function fetchDataFromServer(domain: string) {
   if (!domain) notFound();
   try {
     const platform = handleSearchPlatform(domain);
@@ -77,7 +77,7 @@ export function generateMetadata({
 }: {
   params: { domain: string };
 }): Metadata {
-  getData(domain)
+  fetchDataFromServer(domain)
     .then((res) => {
       if (!res) notFound();
       const { data, platform } = res;
@@ -116,7 +116,7 @@ export default async function ProfilePage({
 }: {
   params: { domain: string };
 }) {
-  const serverData = await getData(domain);
+  const serverData = await fetchDataFromServer(domain);
   const { data, nfts, platform } = serverData;
   const pageTitle =
     data.identity == data.displayName
