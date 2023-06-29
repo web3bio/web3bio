@@ -7,5 +7,5 @@ export default function GlobalError({
   error: Error;
   reset: () => void;
 }) {
-  return <Error retry={reset} msg={error.message} />;
+  return <Error retry={()=>window.location.reload()} msg={error.message} />;
 }

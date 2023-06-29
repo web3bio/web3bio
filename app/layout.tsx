@@ -9,6 +9,9 @@ export async function generateMetadata() {
   const [, pathname] =
     fullUrl.match(new RegExp(`https?:\/\/${domain}(.*)`)) || [];
   return {
+    metadataBase: new URL(
+      process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio"
+    ),
     title:
       "Web3.bio - Web3 Identity Graph Search and Link-in-bio Profile Service",
     description:

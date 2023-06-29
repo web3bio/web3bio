@@ -36,9 +36,10 @@ export const fetchInitialNFTsData = async (address) => {
   try {
     const res = await fetch(
       SIMPLE_HASH_URL +
-        `/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${address}&limit=${NFT_PAGE_SIZE}`
+        `/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${address}&limit=${NFT_PAGE_SIZE}`,
+      { cache: "no-store" }
     );
-    return res.json();
+    return await res.json();
   } catch (e) {
     return [];
   }

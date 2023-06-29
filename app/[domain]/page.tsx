@@ -13,6 +13,7 @@ function mapLinks(links) {
 }
 
 function mapNFTs(nfts) {
+  if (!nfts) return [];
   return nfts.map((x) => ({
     image_url: x.image_url,
     previews: x.previews,
@@ -32,8 +33,9 @@ function mapNFTs(nfts) {
     extra_metadata: x.extra_metadata,
   }));
 }
-async function getData(domain: string) {
-  if (!domain) return null;
+
+async function fetchDataFromServer(domain: string) {
+  if (!domain) notFound();
   try {
     const platform = handleSearchPlatform(domain);
     if (
@@ -51,14 +53,14 @@ async function getData(domain: string) {
       PlatformType.ethereum
         ? PlatformType.ens
         : platform
-      ).toLowerCase()}/${domain}`
+      ).toLowerCase()}/${domain}`,
+      {
+        cache: "no-store",
+      }
     );
-
-    if (response.status == 404) notFound();
-    if (response.status === 504)
-      return { props: { data: { error: "Timeout" } } };
+    if (response.status !== 200) notFound();
     const data = await response.json();
-    const remoteNFTs = await fetchInitialNFTsData(data?.identity);
+    const remoteNFTs = await fetchInitialNFTsData(data?.address);
 
     return {
       data: { ...data, links: mapLinks(data?.links) },
@@ -66,41 +68,46 @@ async function getData(domain: string) {
       platform,
     };
   } catch (e) {
-    return { data: { error: e.message } };
+    notFound();
   }
 }
 
-export async function generateMetadata({
+export function generateMetadata({
   params: { domain },
 }: {
   params: { domain: string };
-}): Promise<Metadata> {
-  const serverData = await getData(domain);
-  if (!serverData || serverData?.data?.error)
-    return {
-      title: `${domain} - Web3.bio`,
-    };
-  const { data, platform } = serverData;
-  const pageTitle =
-    data?.identity == data?.displayName
-      ? `${data?.displayName}`
-      : `${data?.displayName} (${data?.identity})` || domain;
-  return {
-    title: `${pageTitle} - Web3.bio`,
-    description:
-      data.description ||
-      `Explore ${pageTitle} ${
-        SocialPlatformMapping(platform!).label
-      } Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`,
-    openGraph: {
-      images: [
-        {
-          url:
-            data.avatar ||
-            `${process.env.NEXT_PUBLIC_BASE_URL}/img/web3bio-social.jpg`,
+}): Metadata {
+  fetchDataFromServer(domain)
+    .then((res) => {
+      if (!res) notFound();
+      const { data, platform } = res;
+      const pageTitle =
+        data?.identity == data?.displayName
+          ? `${data?.displayName}`
+          : `${data?.displayName} (${data?.identity})`;
+      return {
+        title: `${pageTitle} - Web3.bio`,
+        description:
+          data.description ||
+          `Explore ${pageTitle} ${
+            SocialPlatformMapping(platform!).label
+          } Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`,
+        openGraph: {
+          images: [
+            {
+              url:
+                data.avatar ||
+                `${process.env.NEXT_PUBLIC_BASE_URL}/img/web3bio-social.jpg`,
+            },
+          ],
         },
-      ],
-    },
+      };
+    })
+    .catch(() => {
+      notFound();
+    });
+  return {
+    title: `${domain} - Web3.bio`,
   };
 }
 
@@ -109,8 +116,7 @@ export default async function ProfilePage({
 }: {
   params: { domain: string };
 }) {
-  const serverData = await getData(domain);
-  if (!serverData || serverData?.data?.error) notFound();
+  const serverData = await fetchDataFromServer(domain);
   const { data, nfts, platform } = serverData;
   const pageTitle =
     data.identity == data.displayName
