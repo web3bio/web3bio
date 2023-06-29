@@ -3,12 +3,9 @@ import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import { handleSearchPlatform } from "../../utils/utils";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import { lazy, Suspense } from "react";
-import ProfileLoading from "./loading";
-
-const DelayedProfileMain = lazy(
-  () => import("../../components/profile/ProfileMain")
-);
+// import { lazy, Suspense } from "react";
+// import ProfileLoading from "../../components/profile/ProfileLoading";
+import ProfileMain from "../../components/profile/ProfileMain";
 
 function mapLinks(links) {
   return Object.entries(links || {}).map(([key, value]) => ({
@@ -128,13 +125,11 @@ export default async function ProfilePage({
       ? `${data.displayName}`
       : `${data.displayName} (${data.identity})`;
   return (
-    <Suspense fallback={<ProfileLoading />}>
-      <DelayedProfileMain
-        nfts={nfts}
-        data={data}
-        pageTitle={pageTitle}
-        platform={platform}
-      />
-    </Suspense>
+    <ProfileMain
+      nfts={nfts}
+      data={data}
+      pageTitle={pageTitle}
+      platform={platform}
+    />
   );
 }
