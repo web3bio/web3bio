@@ -60,8 +60,9 @@ async function fetchDataFromServer(domain: string) {
         cache: "no-store",
       }
     );
-    if (response.status !== 200) notFound();
+    if (response.status === 404) notFound();
     const data = await response.json();
+    if (!data || data.error) throw new Error(data.error);
     const remoteNFTs = await fetchInitialNFTsData(data?.address);
 
     return {
