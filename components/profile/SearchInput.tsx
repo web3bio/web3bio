@@ -31,7 +31,7 @@ export default function SearchInput(props) {
       if (typeof value === "string") return value;
       return value.label;
     })();
-    if (_value && _value === searchParams.get("s")) {
+    if (_value && _value === searchParams?.get("s")) {
       setQuery(_value);
       setSearchList([]);
       return;
@@ -70,7 +70,7 @@ export default function SearchInput(props) {
     }
   };
   useEffect(() => {
-    if (!query || query.length > 20 || query === searchParams.get("s")) {
+    if (!query || query.length > 20 || query === searchParams?.get("s")) {
       setSearchList([]);
       return;
     }

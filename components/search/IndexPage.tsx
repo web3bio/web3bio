@@ -5,10 +5,10 @@ import client from "../../utils/apollo";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import SearchInput from "../../components/profile/SearchInput";
+import SearchInput from "../profile/SearchInput";
 import { handleSearchPlatform, isDomainSearch } from "../../utils/utils";
-import SearchResultDomain from "../../components/search/SearchResultDomain";
-import SearchResultQuery from "../../components/search/SearchResultQuery";
+import SearchResultDomain from "./SearchResultDomain";
+import SearchResultQuery from "./SearchResultQuery";
 
 export default function HomePage() {
   const [searchFocus, setSearchFocus] = useState(false);

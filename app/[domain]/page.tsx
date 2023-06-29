@@ -2,8 +2,13 @@ import { fetchInitialNFTsData } from "../../hooks/api/fetchProfile";
 import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import { handleSearchPlatform } from "../../utils/utils";
 import { notFound } from "next/navigation";
-import ProfileMain from "../../components/profile/ProfileMain";
 import { Metadata } from "next";
+import { lazy, Suspense } from "react";
+import ProfileLoading from "./loading";
+
+const DelayedProfileMain = lazy(
+  () => import("../../components/profile/ProfileMain")
+);
 
 function mapLinks(links) {
   return Object.entries(links || {}).map(([key, value]) => ({
@@ -122,15 +127,14 @@ export default async function ProfilePage({
     data.identity == data.displayName
       ? `${data.displayName}`
       : `${data.displayName} (${data.identity})`;
-
   return (
-    <div className="web3-profile container grid-xl">
-      <ProfileMain
+    <Suspense fallback={<ProfileLoading />}>
+      <DelayedProfileMain
         nfts={nfts}
         data={data}
         pageTitle={pageTitle}
         platform={platform}
       />
-    </div>
+    </Suspense>
   );
 }
