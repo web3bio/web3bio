@@ -53,8 +53,10 @@ export default function RootLayout({ children, modal }) {
         <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
       <body>
-        {children}
-        {modal}
+        <main>
+          {children}
+          {modal}
+        </main>
       </body>
     </html>
   );

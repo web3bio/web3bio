@@ -10,7 +10,7 @@ export default function NotFound() {
     setEmoji(fallbackEmoji[Math.floor(Math.random() * fallbackEmoji.length)]);
   }, []);
   return (
-    <main className="web3-profile container grid-xl">
+    <div className="web3-profile container grid-xl">
       <div className="empty error-404">
         <div className="empty-icon h1" style={{ fontSize: "72px" }}>
           {emoji}
@@ -21,6 +21,6 @@ export default function NotFound() {
           Go back
         </button>
       </div>
-    </main>
+    </div>
   );
 }
