@@ -39,8 +39,9 @@ const RenderNFTCollections = (props) => {
         if (!item) return;
         const itemReact = item.getBoundingClientRect();
         if (itemReact.y <= 250 && itemReact.y + itemReact.height > 250) {
-          if (activeCollection !== item.collection_id) {
-            setActiveCollection(item.collection_id);
+
+          if (activeCollection !== item?.id) {
+            setActiveCollection(item?.id);
           }
         }
       });
