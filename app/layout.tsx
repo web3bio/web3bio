@@ -46,6 +46,8 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function RootLayout({ children, modal }) {
   return (
     <html>
+      {/* custom meta tag add here */}
+      <meta httpEquiv="x-ua-compatible" content="ie=edge" />
       <body>
         <main>
           {children}
