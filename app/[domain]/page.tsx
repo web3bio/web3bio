@@ -103,7 +103,7 @@ export async function generateMetadata({
     },
     openGraph: {
       type: "website",
-      url: `/${pageTitle}`,
+      url: `/${domain}`,
       siteName: "Web3.bio",
       title: `${pageTitle} - Web3.bio`,
       description: profileDescription,
