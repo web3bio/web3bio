@@ -1,5 +1,5 @@
-import "../styles/web3bio.scss";
 import { Metadata } from "next";
+import "../styles/web3bio.scss";
 
 export async function generateMetadata(): Promise<Metadata> {
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio/";
@@ -9,11 +9,6 @@ export async function generateMetadata(): Promise<Metadata> {
     "Web3.bio - Web3 Identity Graph Search and Link-in-bio Profile Service";
   return {
     metadataBase: new URL(baseURL),
-    viewport: {
-      width: "device-width",
-      initialScale: 1,
-      viewportFit: "auto",
-    },
     robots: "index, follow",
     verification: {
       google: "iaUpA0X2l6UNb8C38RvUe4i_DOMvo5Ciqvf6MtYjzPs",
@@ -30,21 +25,31 @@ export async function generateMetadata(): Promise<Metadata> {
       type: "website",
       url: `/`,
       siteName: "Web3.bio",
-      title: defaultTitle,
+      title: {
+        default: defaultTitle,
+        template: "%s - Web3.bio",
+      },
       description,
       images: [
         {
-          url: `/img/web3bio-social.jpg`,
+          url: "/img/web3bio-social.jpg",
         },
       ],
+    },
+    twitter: {
+      site: "@web3bio",
+      creator: "@web3bio",
     },
   };
 }
 export default function RootLayout({ children, modal }) {
   return (
     <html lang="en">
-      {/* custom meta tag add here */}
-      <meta httpEquiv="x-ua-compatible" content="ie=edge" />
+      <head>
+        {/* custom meta tag add here */}
+        <meta httpEquiv="x-ua-compatible" content="ie=edge" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+      </head>
       <body>
         <main>
           {children}

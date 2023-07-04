@@ -3,8 +3,6 @@ import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import { handleSearchPlatform } from "../../utils/utils";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-// import { lazy, Suspense } from "react";
-// import ProfileLoading from "../../components/profile/ProfileLoading";
 import ProfileMain from "../../components/profile/ProfileMain";
 
 function mapLinks(links) {
@@ -105,7 +103,7 @@ export async function generateMetadata({
       type: "website",
       url: `/${domain}`,
       siteName: "Web3.bio",
-      title: `${pageTitle} - Web3.bio`,
+      title: pageTitle,
       description: profileDescription,
       images: [
         {
