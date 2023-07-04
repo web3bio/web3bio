@@ -1,9 +1,7 @@
 import "../styles/web3bio.scss";
 import { Metadata } from "next";
 
-export async function generateMetadata({
-  params: { domain },
-}): Promise<Metadata> {
+export async function generateMetadata(): Promise<Metadata> {
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio/";
   const description =
     "Web3.bio (Previously Web5.bio) is a Web3 and Web 2.0 Identity Graph search and link in bio profile platform. Web3.bio will provide a list of relevant identities when you are searching any Twitter handle, Ethereum address, ENS domain, Lens profile or Unstoppable Domains, and other Web3 identities.";
@@ -36,7 +34,7 @@ export async function generateMetadata({
       description,
       images: [
         {
-          url: `$/img/web3bio-social.jpg`,
+          url: `/img/web3bio-social.jpg`,
         },
       ],
     },
