@@ -75,42 +75,33 @@ async function fetchDataFromServer(domain: string) {
   }
 }
 
-export function generateMetadata({
+export async function generateMetadata({
   params: { domain },
 }: {
   params: { domain: string };
-}): Metadata {
-  fetchDataFromServer(domain)
-    .then((res) => {
-      if (!res) notFound();
-      const { data, platform } = res;
-      const pageTitle =
-        data?.identity == data?.displayName
-          ? `${data?.displayName}`
-          : `${data?.displayName} (${data?.identity})`;
-      return {
-        title: `${pageTitle} - Web3.bio`,
-        description:
-          data.description ||
-          `Explore ${pageTitle} ${
-            SocialPlatformMapping(platform!).label
-          } Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`,
-        openGraph: {
-          images: [
-            {
-              url:
-                data.avatar ||
-                `${process.env.NEXT_PUBLIC_BASE_URL}/img/web3bio-social.jpg`,
-            },
-          ],
-        },
-      };
-    })
-    .catch(() => {
-      notFound();
-    });
+}): Promise<Metadata> {
+  const res = await fetchDataFromServer(domain);
+  if (!res) notFound();
+  const { data, platform } = res;
+  const pageTitle =
+    data?.identity == data?.displayName
+      ? `${data?.displayName}`
+      : `${data?.displayName} (${data?.identity})`;
+  const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio/";
   return {
-    title: `${domain} - Web3.bio`,
+    title: `${pageTitle} - Web3.bio`,
+    description:
+      data.description ||
+      `Explore ${pageTitle} ${
+        SocialPlatformMapping(platform!).label
+      } Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`,
+    openGraph: {
+      images: [
+        {
+          url: data.avatar || `${baseURL}/img/web3bio-social.jpg`,
+        },
+      ],
+    },
   };
 }
 
