@@ -19,16 +19,15 @@ export function ImageLoader(props: ImgHTMLAttributes<HTMLImageElement>) {
 
   return (
     <div
-      className={`img-container ${!error && loaded ? "loaded" : ""}`}
+      className={`img-container${!error && loaded ? " loaded" : ""}`}
       style={{ width: props.width, height: props.height }}
     >
       <img
-        src={props.src}
-        alt={props.alt}
         onLoad={handleLoad}
         onError={handleError}
         className="img-responsive"
         loading="lazy"
+        {...props}
       />
     </div>
   );
