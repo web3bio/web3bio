@@ -88,17 +88,28 @@ export async function generateMetadata({
       ? `${data?.displayName}`
       : `${data?.displayName} (${data?.identity})`;
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio/";
+  const profileDescription =
+    data.description ||
+    `Explore ${pageTitle} ${
+      SocialPlatformMapping(platform!).label
+    } Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`;
   return {
-    title: `${pageTitle} - Web3.bio`,
-    description:
-      data.description ||
-      `Explore ${pageTitle} ${
-        SocialPlatformMapping(platform!).label
-      } Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`,
+    metadataBase: new URL(baseURL),
+    title: pageTitle,
+    description: profileDescription,
+
+    alternates: {
+      canonical: `/${domain}`,
+    },
     openGraph: {
+      type: "website",
+      url: `/${pageTitle}`,
+      siteName: "Web3.bio",
+      title: `${pageTitle} - Web3.bio`,
+      description: profileDescription,
       images: [
         {
-          url: data.avatar || `${baseURL}/img/web3bio-social.jpg`,
+          url: data.avatar || `/img/web3bio-social.jpg`,
         },
       ],
     },
