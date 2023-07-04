@@ -61,6 +61,7 @@ export default function HomePage() {
                   <br />
                   BIO
                 </h1>
+                <h2 className="text-assistive">Web3.bio (Previously Web5.bio) is a Web3 and Web 2.0 Identity Graph search and link in bio profile platform. Web3.bio will provide a list of relevant identities when you are searching any Twitter handle, Ethereum address, ENS domain, Lens profile or Unstoppable Domains, and other Web3 identities.</h2>
               </div>
             </Link>
             <div className="form-label">

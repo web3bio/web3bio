@@ -54,6 +54,7 @@ export default function ProfileMain(props) {
                 <Image
                   src={data.avatar}
                   className="avatar"
+                  priority={false}
                   loading="lazy"
                   alt={`${pageTitle} Avatar / Profile Photo`}
                   onError={() => {
@@ -96,6 +97,7 @@ export default function ProfileMain(props) {
                     className="action"
                     data-clipboard-text={data.address}
                     onSuccess={onCopySuccess}
+                    title="Copy the Ethereum wallet address"
                   >
                     <SVG src="../icons/icon-copy.svg" width={20} height={20} />
                     {copied && <div className="tooltip-copy">COPIED</div>}

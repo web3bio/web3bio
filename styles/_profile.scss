@@ -407,6 +407,7 @@
   z-index: 199;
 
   .preview-overlay {
+    background-position: center;
     background-size: cover;
     bottom: -2rem;
     filter: blur(4rem);
@@ -582,6 +583,7 @@
     .panel-widget-title {
       font-size: .7rem;
       font-weight: 900;
+      line-height: 1.2rem;
       margin-bottom: .5rem;
       text-transform: uppercase;
     }

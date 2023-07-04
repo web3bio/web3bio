@@ -199,7 +199,7 @@ const NFTModalRender = (props) => {
                 </div>
 
                 <div className="panel-widget-content">
-                  {asset.collection.description}
+                  {_asset?.description ? asset.collection.description : null}
                 </div>
                 
                 <CollectionWidget address={asset.collection.address} id={asset.collection.id} />
