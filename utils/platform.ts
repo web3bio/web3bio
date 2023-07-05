@@ -2,7 +2,6 @@ type SocialPlatform = {
   key: string;
   color?: string;
   icon?: string;
-  iconW?: string;
   label: string;
   urlPrefix?: string;
   ensText?: string[];
@@ -58,7 +57,6 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     key: PlatformType.twitter,
     color: "#4A99E9",
     icon: "icons/icon-twitter.svg",
-    iconW: "icons/icon-twitter-w.svg",
     label: "Twitter",
     urlPrefix: "https://twitter.com/",
     ensText: ["com.twitter", "vnd.twitter"],
@@ -69,7 +67,6 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     color: "#5298FF",
     // TODO: add ens search icon here
     icon: "icons/icon-ethereum.svg",
-    iconW: "icons/icon-ens-w.svg",
     label: "ENS",
     urlPrefix: "https://app.ens.domains/search/",
     ensText: [],
@@ -78,7 +75,6 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     key: PlatformType.ethereum,
     color: "#3c3c3d",
     icon: "icons/icon-ethereum.svg",
-    iconW: "icons/icon-ethereum-w.svg",
     label: "Ethereum",
     urlPrefix: "https://etherscan.io/address/",
     ensText: [],
@@ -87,7 +83,6 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     key: PlatformType.farcaster,
     color: "#8a63d2",
     icon: "icons/icon-farcaster.svg",
-    iconW: "icons/icon-farcaster-w.svg",
     label: "Farcaster",
     urlPrefix: "https://warpcast.com/",
     ensText: [],
@@ -96,7 +91,6 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     key: PlatformType.github,
     color: "#000000",
     icon: "icons/icon-github.svg",
-    iconW: "icons/icon-github-w.svg",
     label: "GitHub",
     urlPrefix: "https://github.com/",
     ensText: ["com.github", "vnd.github"],
@@ -106,7 +100,6 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     key: PlatformType.keybase,
     color: "#4162E2",
     icon: "icons/icon-keybase.svg",
-    iconW: "icons/icon-keybase-w.svg",
     label: "Keybase",
     urlPrefix: "https://keybase.io/",
     ensText: ["io.keybase"],
@@ -115,7 +108,6 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     key: PlatformType.lens,
     color: "#BDFC5A",
     icon: "icons/icon-lens.svg",
-    iconW: "icons/icon-lens-w.svg",
     label: "Lens",
     urlPrefix: "https://www.lensfrens.xyz/",
     ensText: [],
@@ -124,7 +116,6 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     key: PlatformType.nextid,
     color: "#121212",
     icon: "icons/icon-nextid.svg",
-    iconW: "icons/icon-nextid-w.svg",
     label: "Next.ID",
     urlPrefix: "https://web5.bio",
     ensText: [],
@@ -134,7 +125,6 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     key: PlatformType.reddit,
     color: "#ff4500",
     icon: "icons/icon-reddit.svg",
-    iconW: "icons/icon-reddit-w.svg",
     label: "Reddit",
     urlPrefix: "https://www.reddit.com/user/",
     ensText: ["com.reddit"],
@@ -144,7 +134,6 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     key: PlatformType.space_id,
     color: "#71EBAA",
     icon: "icons/icon-spaceid.svg",
-    iconW: "icons/icon-spaceid-w.svg",
     label: "SPACE ID",
     urlPrefix: "https://space.id/search?query=",
     ensText: [],
@@ -153,7 +142,6 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     key: PlatformType.unstoppableDomains,
     color: "#2E65F5",
     icon: "icons/icon-unstoppabledomains.svg",
-    iconW: "icons/icon-unstoppabledomains-w.svg",
     label: "Unstoppable Domains",
     ensText: [],
     urlPrefix: "https://unstoppabledomains.com/search?searchTerm=",
@@ -162,7 +150,6 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     key: PlatformType.telegram,
     color: "#0088cc",
     icon: "icons/icon-telegram.svg",
-    iconW: "icons/icon-telegram-w.svg",
     label: "Telegram",
     ensText: ["org.telegram", "vnd.telegram", "VND.TELEGRAM"],
     dotbitText: ["profile.telegram"],
@@ -188,7 +175,6 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     key: PlatformType.dotbit,
     color: "#0e7dff",
     icon: "icons/icon-dotbit.svg",
-    iconW: "icons/icon-dotbit-w.svg",
     label: ".bit",
     urlPrefix: "https://data.did.id/",
   },
@@ -257,7 +243,6 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.dns]: {
     key: PlatformType.dns,
     icon: "icons/icon-web.svg",
-    iconW: "icons/icon-web.svg",
     label: "DNS",
   },
   [PlatformType.lenster]: {
@@ -270,7 +255,6 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.facebook]: {
     key: PlatformType.facebook,
     icon: "icons/social-facebook.svg",
-    iconW: "icons/social-facebook.svg",
     label: "Facebook",
     urlPrefix: "https://www.facebook.com/",
     dotbitText: ["profile.facebook"],
@@ -389,7 +373,6 @@ export const SocialPlatformMapping = (platform: PlatformType) => {
       key: platform,
       color: "",
       icon: "",
-      iconW: "",
       label: platform,
       ensText: [],
     }
