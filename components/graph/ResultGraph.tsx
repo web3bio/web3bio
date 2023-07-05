@@ -7,7 +7,7 @@ import { formatText } from "../../utils/utils";
 import { Loading } from "../shared/Loading";
 import { register } from "./GraphUtils/LargeRegister";
 import insertCss from "insert-css";
-import G6, { Graph } from "@antv/g6";
+import G6 from "@antv/g6";
 
 interface Node {
   id: string;
@@ -65,6 +65,9 @@ const registerCss = () => {
   }
   .web5bio-tooltip li span {
     font-size: .5rem;
+  }
+  .canvas-invert {
+    filter: invert(1);
   }
   `);
 };
@@ -299,6 +302,7 @@ const RenderResultGraph = (props) => {
       width: CANVAS_WIDTH,
       height: CANVAS_HEIGHT,
       fitCenter: true,
+      renderer:'svg',
       defaultEdge: {
         labelCfg: {
           autoRotate: true,
