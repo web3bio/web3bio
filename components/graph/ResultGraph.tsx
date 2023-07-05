@@ -299,7 +299,6 @@ const RenderResultGraph = (props) => {
       width: CANVAS_WIDTH,
       height: CANVAS_HEIGHT,
       fitCenter: true,
-      renderer:'svg',
       defaultEdge: {
         labelCfg: {
           autoRotate: true,
