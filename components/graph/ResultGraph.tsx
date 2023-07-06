@@ -313,13 +313,6 @@ const RenderResultGraph = (props) => {
             fontSize: 10,
           },
         },
-        style: {
-          endArrow: {
-            path: "M 0,0 L 5,2.5 L 5,-2.5 Z",
-            fill: "#cecece",
-            stroke: "#cecece",
-          },
-        },
       },
       defaultNode: {
         stroke: "rgba(0, 0, 0, .25)",
