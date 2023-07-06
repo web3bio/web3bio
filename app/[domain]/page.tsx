@@ -42,7 +42,6 @@ async function fetchDataFromServer(domain: string) {
       ![
         PlatformType.ens,
         PlatformType.farcaster,
-        PlatformType.twitter,
         PlatformType.lens,
         PlatformType.ethereum,
       ].includes(platform)
