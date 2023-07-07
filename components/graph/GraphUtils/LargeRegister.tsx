@@ -87,7 +87,7 @@ export const register = (G6) => {
                   y: -r + 5,
                   width: 18,
                   height: 18,
-                  html: `<img width=18 height=18  src="${
+                  html: `<img width="18" height="18" src="${
                     SocialPlatformMapping(cfg.platform)?.icon
                   }" class="${
                     cfg.platform === PlatformType.lens
@@ -118,9 +118,9 @@ export const register = (G6) => {
                   y: -8,
                   width: 16,
                   height: 16,
-                  html: `<img width=16 height=16  src="${
+                  html: `<img width="16" height="16" src="${
                     SocialPlatformMapping(cfg.platform)?.icon
-                  }" class="canvas-invert" alt="ens" />`,
+                  }" class="canvas-invert" alt="ENS" />`,
                   zIndex: 9,
                   cursor: "pointer",
                 },
