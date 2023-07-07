@@ -30,6 +30,7 @@ export const register = (G6) => {
               lineWidth: 2,
               cursor: "pointer",
             },
+            draggable: true,
             name: "aggregated-node-keyShape",
           });
 
@@ -78,21 +79,25 @@ export const register = (G6) => {
                   fill: SocialPlatformMapping(cfg.platform)?.color,
                   zIndex: 9,
                 },
-                name: "image-shape",
+                name: "platform-badge",
               });
-              group.addShape("image", {
+              group.addShape("dom", {
                 attrs: {
                   x: r - 23,
                   y: -r + 5,
                   width: 18,
                   height: 18,
-                  img: SocialPlatformMapping(cfg.platform)?.iconW,
+                  html: `<img width="18" height="18" src="${
+                    SocialPlatformMapping(cfg.platform)?.icon
+                  }" class="${
+                    cfg.platform === PlatformType.lens
+                      ? "image-shape"
+                      : "canvas-invert"
+                  }" alt="badge-${cfg.platform}"  />`,
                   zIndex: 9,
-                  cursor: "pointer",
                 },
                 draggable: true,
-                name: "image-shape",
-                className: "image-shape",
+                name: "platform-shape",
               });
             } else {
               group.addShape("circle", {
@@ -102,30 +107,33 @@ export const register = (G6) => {
                   r: 12,
                   fill: SocialPlatformMapping(cfg.platform)?.color,
                   zIndex: 9,
+                  cursor: "pointer",
                 },
-                name: "image-shape",
+                draggable: true,
+                name: "ens-badge",
               });
-              group.addShape("image", {
+              group.addShape("dom", {
                 attrs: {
                   x: -8,
                   y: -8,
                   width: 16,
                   height: 16,
-                  img: SocialPlatformMapping(cfg.platform)?.iconW,
+                  html: `<img width="16" height="16" src="${
+                    SocialPlatformMapping(cfg.platform)?.icon
+                  }" class="canvas-invert" alt="ENS" />`,
                   zIndex: 9,
                   cursor: "pointer",
                 },
                 draggable: true,
-                name: "image-shape",
+                name: "ens-shape",
               });
             }
           }
           return keyShape;
         },
-        update: undefined,
       },
       "node"
-    ); // 这样可以继承 aggregated-node 的 setState
+    );
 
     // todo: config the line style
   }

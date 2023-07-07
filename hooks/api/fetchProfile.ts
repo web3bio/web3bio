@@ -5,7 +5,6 @@ import { NFT_PAGE_SIZE } from "../../utils/queries";
 const resolveSearchHandle = (identity) => {
   return {
     [PlatformType.ethereum]: identity.displayName || identity.identity,
-    [PlatformType.twitter]: identity.identity,
     [PlatformType.farcaster]: identity.identity,
     [PlatformType.lens]: identity.identity,
   }[identity.platform];

@@ -188,7 +188,7 @@
     "@antv/util" "^2.0.9"
     insert-css "^2.0.0"
 
-"@antv/g6@^4.7.0":
+"@antv/g6@^4.8.17":
   version "4.8.17"
   resolved "https://registry.yarnpkg.com/@antv/g6/-/g6-4.8.17.tgz#2682ecbc5d27cc51d004f6d8ea77794f0c1d1e16"
   integrity sha512-THpCDHjTyQWrFhM0xwahkpYUe+nHFtq33Ayrq0XA3nbnJw1AmJXnpPJE21rpkoluZhHKhFlXazl739Hb22e+5Q==
