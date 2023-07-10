@@ -28,7 +28,7 @@ The queries can be found here `utils/queries.js`. You can read [the Next.ID docs
 
 ## Can I remove my data?
 
-No yet. Next.ID is indexing identity data from public verifiable connections and on-chain records. Revalidating data support is on the roadmap.
+Not yet. Next.ID is indexing identity data from public verifiable connections and on-chain records. Revalidating data support is on the roadmap.
 
 ## Mobile App?
 
