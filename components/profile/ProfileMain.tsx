@@ -155,6 +155,7 @@ export default function ProfileMain(props) {
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading Nfts...</p>}>
                   <NFTCollectionWidget
+                    fromServer={fromServer}
                     onShowDetail={(e, v) => {
                       setDialogType(NFTModalType.NFT);
                       setCurAsset(v);

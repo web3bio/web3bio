@@ -63,13 +63,12 @@ const getURL = (index, address, previous) => {
   );
 };
 
-function useNFTs({ address, initialData }) {
-  console.log(initialData, "kkkk");
+function useNFTs({ address, initialData, fromServer }) {
   const { data, error, size, isValidating, setSize } = useSWRInfinite(
     (index, previous) => getURL(index, address, previous),
     _fetcher,
     {
-      suspense: true,
+      suspense: !fromServer,
       revalidateOnMount: true,
       ...(initialData?.nfts?.length && {
         initialSize: 1,
@@ -90,10 +89,16 @@ function useNFTs({ address, initialData }) {
   };
 }
 
-const RenderNFTCollectionWidget = ({ address, onShowDetail, initialData }) => {
+const RenderNFTCollectionWidget = ({
+  address,
+  onShowDetail,
+  initialData,
+  fromServer,
+}) => {
   const { data, size, setSize, isValidating, isError, hasNextPage } = useNFTs({
     address,
     initialData,
+    fromServer,
   });
   const [expand, setExpand] = useState(false);
   const scrollContainer = useRef(null);
