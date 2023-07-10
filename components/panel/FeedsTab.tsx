@@ -9,6 +9,10 @@ import { Loading } from "../shared/Loading";
 import { FeedItem, isSupportedFeed } from "./components/FeedItem";
 import { PlatformType } from "../../utils/platform";
 
+interface Issue {
+  timestamp: string;
+}
+
 const PAGE_SIZE = 30;
 const getFeedsURL = (
   address: string,
@@ -45,7 +49,7 @@ function useFeeds(address: string, startHash?: string, network?: string) {
 const RenderFeedsTab = (props) => {
   const { identity, network } = props;
   const [startHash, setStartHash] = useState("");
-  const [issues, setIssues] = useState([]);
+  const [issues, setIssues] = useState<Issue[]>([]);
   const [lastData, setLastData] = useState([]);
   const { data, error, size, setSize, isValidating, isLoading } = useFeeds(
     network === PlatformType.lens ? identity.ownedBy : identity.identity,
@@ -63,7 +67,7 @@ const RenderFeedsTab = (props) => {
   useEffect(() => {
     setLastData(
       localStorage.getItem("feeds")
-        ? JSON.parse(localStorage.getItem("feeds"))
+        ? JSON.parse(localStorage.getItem("feeds")!)
         : []
     );
     let rendering = false;
@@ -98,11 +102,17 @@ const RenderFeedsTab = (props) => {
 
     localStorage.setItem("feeds", JSON.stringify(issues));
     if (container) {
-      container.addEventListener("scroll", debounce(scrollLoad, 500));
+      (container as HTMLElement).addEventListener(
+        "scroll",
+        debounce(scrollLoad, 500)
+      );
     }
     return () => {
       if (container) {
-        container.removeEventListener("scroll", debounce(scrollLoad, 500));
+        (container as HTMLElement).removeEventListener(
+          "scroll",
+          debounce(scrollLoad, 500)
+        );
       }
     };
   }, [

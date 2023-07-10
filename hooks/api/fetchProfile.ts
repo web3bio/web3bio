@@ -1,11 +1,10 @@
 import { SIMPLE_HASH_URL } from "../../components/apis/simplehash";
-import { NFT_PAGE_SIZE } from "../../components/profile/NFTCollectionWidget";
 import { PlatformType } from "../../utils/platform";
+import { NFT_PAGE_SIZE } from "../../utils/queries";
 
 const resolveSearchHandle = (identity) => {
   return {
     [PlatformType.ethereum]: identity.displayName || identity.identity,
-    [PlatformType.twitter]: identity.identity,
     [PlatformType.farcaster]: identity.identity,
     [PlatformType.lens]: identity.identity,
   }[identity.platform];
@@ -22,7 +21,10 @@ export const fetchProfile = async (identity) => {
     const url =
       process.env.NEXT_PUBLIC_PROFILE_END_POINT +
       `/profile/${platform.toLowerCase()}/${handle}`;
-    const res = await fetch(url, { next: { revalidate: 600 } });
+    const res = await fetch(url, {
+      next: { revalidate: 600 },
+      cache: "default",
+    });
     return await res.json();
   } catch (e) {
     return null;
@@ -33,9 +35,10 @@ export const fetchInitialNFTsData = async (address) => {
   try {
     const res = await fetch(
       SIMPLE_HASH_URL +
-        `/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${address}&limit=${NFT_PAGE_SIZE}`
+        `/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${address}&limit=${NFT_PAGE_SIZE}`,
+      { cache: "no-store" }
     );
-    return res.json();
+    return await res.json();
   } catch (e) {
     return [];
   }

@@ -1,5 +1,5 @@
+'use client'
 import React, { useEffect, useState } from "react";
-
 interface LoadingProps {
   styles?: React.CSSProperties;
   retry?: () => void;

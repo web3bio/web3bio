@@ -14,7 +14,7 @@ const RenderAccountItem = (props) => {
       setIsCopied(false);
     }, 1500);
   };
-  const { identity, sources, profile, onItemClick, canSkipProfile } = props;
+  const { identity, sources, profile, canSkipProfile } = props;
 
   const [isCopied, setIsCopied] = useState(false);
   const displayName = formatText(
@@ -27,7 +27,7 @@ const RenderAccountItem = (props) => {
     identity.platform === PlatformType.ethereum
       ? profile?.address || identity.identity
       : identity.identity;
-      
+
   switch (identity.platform) {
     case PlatformType.ethereum:
       return (
@@ -36,10 +36,21 @@ const RenderAccountItem = (props) => {
             <div className="social">
               <div className="avatar">
                 {profile?.avatar && (
-                  <img src={profile?.avatar} className="avatar-img" />
+                  <Image
+                    width={18}
+                    height={18}
+                    alt="avatar"
+                    src={profile?.avatar}
+                    className="avatar-img"
+                  />
                 )}
                 <div className="icon bg-pride">
-                  <SVG src="icons/icon-ethereum-w.svg" width={20} height={20} />
+                  <SVG
+                    filter="invert(1)"
+                    src="icons/icon-ethereum.svg"
+                    width={20}
+                    height={20}
+                  />
                 </div>
               </div>
               <div className="content">
@@ -88,14 +99,10 @@ const RenderAccountItem = (props) => {
             )}
           </div>
           {(canSkipProfile || (profile && !profile?.error)) && (
-            <div
-              onClick={() => {
-                onItemClick(
-                  profile?.identity || identity.displayName || resolvedIdentity,
-                  PlatformType.ens,
-                  profile
-                );
-              }}
+            <Link
+              href={`/profile/${
+                profile?.identity || identity.displayName || resolvedIdentity
+              }`}
               className="social-actions"
             >
               <button
@@ -104,7 +111,7 @@ const RenderAccountItem = (props) => {
               >
                 <SVG src="icons/icon-open.svg" width={20} height={20} />
               </button>
-            </div>
+            </Link>
           )}
           <RenderSourceFooter sources={sources} />
         </div>
@@ -116,11 +123,17 @@ const RenderAccountItem = (props) => {
             <div className="social">
               <div className="avatar">
                 {profile?.avatar && (
-                  <img src={profile?.avatar} className="avatar-img" />
+                  <Image
+                    width={18}
+                    height={18}
+                    alt="avatar"
+                    src={profile?.avatar}
+                    className="avatar-img"
+                  />
                 )}
                 <div className="icon">
                   <SVG
-                    src={SocialPlatformMapping(identity.platform)?.icon}
+                    src={SocialPlatformMapping(identity.platform)?.icon || ""}
                     width={20}
                     height={20}
                   />
@@ -143,10 +156,8 @@ const RenderAccountItem = (props) => {
               </div>
             </div>
           </div>
-          <div
-            onClick={() => {
-              onItemClick(resolvedIdentity, PlatformType.lens, profile);
-            }}
+          <Link
+            href={`/profile/${resolvedIdentity}`}
             className="social-actions"
           >
             <button
@@ -155,7 +166,7 @@ const RenderAccountItem = (props) => {
             >
               <SVG src="icons/icon-open.svg" width={20} height={20} />
             </button>
-          </div>
+          </Link>
           <RenderSourceFooter sources={sources} />
         </div>
       );
@@ -174,7 +185,7 @@ const RenderAccountItem = (props) => {
             >
               <div className="icon">
                 <SVG
-                  src={SocialPlatformMapping(identity.platform)?.icon}
+                  src={SocialPlatformMapping(identity.platform)?.icon || ""}
                   width={20}
                   height={20}
                 />
@@ -205,11 +216,17 @@ const RenderAccountItem = (props) => {
             <div className="social">
               <div className="avatar">
                 {profile?.avatar && (
-                  <img src={profile?.avatar} className="avatar-img" />
+                  <Image
+                    width={18}
+                    height={18}
+                    alt="avatar"
+                    src={profile?.avatar}
+                    className="avatar-img"
+                  />
                 )}
                 <div className="icon">
                   <SVG
-                    src={SocialPlatformMapping(identity.platform)?.icon}
+                    src={SocialPlatformMapping(identity.platform)?.icon || ""}
                     width={20}
                     height={20}
                   />
@@ -254,7 +271,7 @@ const RenderAccountItem = (props) => {
               <figure className="avatar">
                 <div className="icon">
                   <SVG
-                    src={SocialPlatformMapping(identity.platform)?.icon}
+                    src={SocialPlatformMapping(identity.platform)?.icon || ""}
                     width={20}
                     height={20}
                   />
@@ -287,11 +304,17 @@ const RenderAccountItem = (props) => {
             <div className="social">
               <div className="avatar">
                 {profile?.avatar && (
-                  <img src={profile?.avatar} className="avatar-img" />
+                  <Image
+                    width={18}
+                    height={18}
+                    alt="avatar"
+                    src={profile?.avatar}
+                    className="avatar-img"
+                  />
                 )}
                 <div className="icon">
                   <SVG
-                    src={SocialPlatformMapping(identity.platform)?.icon}
+                    src={SocialPlatformMapping(identity.platform)?.icon || ""}
                     width={20}
                     height={20}
                   />
@@ -348,7 +371,7 @@ const RenderAccountItem = (props) => {
             >
               <div className="icon">
                 <SVG
-                  src={SocialPlatformMapping(identity.platform)?.icon}
+                  src={SocialPlatformMapping(identity.platform)?.icon || ""}
                   width={20}
                   height={20}
                 />

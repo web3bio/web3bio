@@ -1,26 +1,26 @@
+"use client";
 import React, { useState } from "react";
 import Link from "next/link";
-// import { useRouter } from "next/router";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
-import { RenderWidgetItem } from "../profile/WidgetItem";
-import { PoapWidget } from "../profile/PoapsWidget";
+import { RenderWidgetItem } from "./WidgetItem";
+import { PoapWidget } from "./PoapsWidget";
 import { SocialPlatformMapping } from "../../utils/platform";
 import { Error } from "../shared/Error";
 import Avatar from "boring-avatars";
 import { formatText } from "../../utils/utils";
-import { NFTCollectionWidget } from "../profile/NFTCollectionWidget";
+import { NFTCollectionWidget } from "./NFTCollectionWidget";
 import { NFTModal, NFTModalType } from "./NFTModal";
+import Image from "next/image";
 // import ShareButton from "../shared/ShareButton";
 
 export default function ProfileMain(props) {
   const { data, pageTitle = "", platform, nfts } = props;
-  const [copied, setCopied] = useState(null);
+  const [copied, setCopied] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [curAsset, setCurAsset] = useState(null);
   const [errorAvatar, setErrorAvatar] = useState(false);
   const [dialogType, setDialogType] = useState(NFTModalType.NFT);
-  // const { asPath } = useRouter();
 
   const onCopySuccess = () => {
     setCopied(true);
@@ -43,7 +43,7 @@ export default function ProfileMain(props) {
       <div
         className="web3bio-custom"
         style={{
-          backgroundImage: data.header ? `url("${data.header}")` : null,
+          backgroundImage: data.header ? `url("${data.header}")` : "",
         }}
       ></div>
       <div className="columns">
@@ -51,9 +51,10 @@ export default function ProfileMain(props) {
           <div className="web3-profile-base">
             <div className="profile-avatar">
               {data.avatar && !errorAvatar ? (
-                <img
+                <Image
                   src={data.avatar}
                   className="avatar"
+                  priority={false}
                   loading="lazy"
                   alt={`${pageTitle} Avatar / Profile Photo`}
                   onError={() => {
@@ -96,6 +97,7 @@ export default function ProfileMain(props) {
                     className="action"
                     data-clipboard-text={data.address}
                     onSuccess={onCopySuccess}
+                    title="Copy the Ethereum wallet address"
                   >
                     <SVG src="../icons/icon-copy.svg" width={20} height={20} />
                     {copied && <div className="tooltip-copy">COPIED</div>}

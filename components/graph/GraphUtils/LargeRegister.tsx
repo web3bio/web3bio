@@ -78,6 +78,7 @@ export const register = (G6) => {
                   fill: SocialPlatformMapping(cfg.platform)?.color,
                   zIndex: 9,
                 },
+                draggable: true,
                 name: "image-shape",
               });
               group.addShape("image", {
@@ -86,11 +87,11 @@ export const register = (G6) => {
                   y: -r + 5,
                   width: 18,
                   height: 18,
-                  img: SocialPlatformMapping(cfg.platform)?.iconW,
+                  img: SocialPlatformMapping(cfg.platform)?.icon,
                   zIndex: 9,
+                  filter: "invert(1)",
                   cursor: "pointer",
                 },
-                draggable: true,
                 name: "image-shape",
                 className: "image-shape",
               });
@@ -103,6 +104,7 @@ export const register = (G6) => {
                   fill: SocialPlatformMapping(cfg.platform)?.color,
                   zIndex: 9,
                 },
+                draggable: true,
                 name: "image-shape",
               });
               group.addShape("image", {
@@ -111,11 +113,11 @@ export const register = (G6) => {
                   y: -8,
                   width: 16,
                   height: 16,
-                  img: SocialPlatformMapping(cfg.platform)?.iconW,
+                  img: SocialPlatformMapping(cfg.platform)?.icon,
                   zIndex: 9,
+                  filter: "invert(1)",
                   cursor: "pointer",
                 },
-                draggable: true,
                 name: "image-shape",
               });
             }

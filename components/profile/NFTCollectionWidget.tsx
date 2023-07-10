@@ -4,15 +4,15 @@ import { ExpandController } from "./ExpandController";
 import { NFTCollections } from "./NFTCollections";
 import { _fetcher } from "../apis/ens";
 import { SIMPLE_HASH_URL } from "../apis/simplehash";
+import { NFT_PAGE_SIZE } from "../../utils/queries";
 
 const CHAIN_PARAM = "ethereum";
 const CURSOR_PARAM = "&cursor=";
-export const NFT_PAGE_SIZE = 40;
 
 export const processNFTsData = (data) => {
   if (!data?.length) return [];
   const uniqueValues = new Set();
-  const assets = [];
+  const assets = new Array();
   for (const obj of data) {
     const nfts = obj.nfts;
     if (!nfts) {
@@ -27,7 +27,7 @@ export const processNFTsData = (data) => {
     }
   }
 
-  const collections = [];
+  const collections = new Array();
   const collectionById = new Map();
   for (const asset of assets) {
     const { collection } = asset;
@@ -66,11 +66,11 @@ function useNFTs({ address, initialData }) {
   const { data, error, size, isValidating, setSize } = useSWRInfinite(
     (index, previous) => getURL(index, address, previous),
     _fetcher,
-    initialData && {
+    initialData?.nfts?.length && {
       initialSize: 1,
       fallbackData: [initialData],
-      revalidateOnFocus: initialData ? false : true,
-      revalidateOnMount: initialData ? false : true,
+      revalidateOnFocus: false,
+      revalidateOnMount: initialData?.nfts?.length ? false : true,
     }
   );
   return {

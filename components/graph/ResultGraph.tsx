@@ -7,8 +7,32 @@ import { formatText } from "../../utils/utils";
 import { Loading } from "../shared/Loading";
 import { register } from "./GraphUtils/LargeRegister";
 import insertCss from "insert-css";
+import G6 from "@antv/g6";
 
-let graph = null;
+interface Node {
+  id: string;
+  label: string;
+  platform: string;
+  identity: string;
+  source?: string;
+  displayName?: string;
+  isIdentity?: boolean;
+  category?: string;
+  chain?: string;
+  holder?: string;
+  isTransferred?: boolean;
+}
+
+interface Edge {
+  source: string;
+  target: string;
+  label?: string;
+  id: string;
+  isIdentity?: boolean;
+  isTransferred?: boolean;
+}
+
+let graph = null as any;
 let shiftKeydown = false;
 
 const registerCss = () => {
@@ -42,6 +66,9 @@ const registerCss = () => {
   .web5bio-tooltip li span {
     font-size: .5rem;
   }
+  .canvas-invert {
+    filter: invert(1);
+  }
   `);
 };
 
@@ -49,8 +76,8 @@ let CANVAS_WIDTH = 800,
   CANVAS_HEIGHT = 800;
 
 const resolveGraphData = (source) => {
-  const nodes = [];
-  const edges = [];
+  const nodes = new Array<Node>();
+  const edges = new Array<Edge>();
   source.forEach((x, idx) => {
     const from = x.from;
     const to = x.to;
@@ -210,16 +237,11 @@ const processNodesEdges = (nodes, edges) => {
 // eslint-disable-next-line react/display-name
 const RenderResultGraph = (props) => {
   const { data, onClose, title } = props;
-  const [G6, setG6] = useState(null);
   const container = React.useRef<HTMLDivElement>(null);
   const tooltipContainer = React.useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const dynamicImportG6 = async () => {
-      setG6(await import("@antv/g6"));
-    };
-    if (!G6) dynamicImportG6();
     if (graph || !data || !G6) return;
     register(G6);
     registerCss();
@@ -236,7 +258,7 @@ const RenderResultGraph = (props) => {
       container: tooltipContainer.current,
       getContent(e) {
         const outDiv = document.createElement("div");
-        if (e.item.getModel().isIdentity) {
+        if (e?.item?.getModel().isIdentity) {
           outDiv.innerHTML = `
           <ul>
             <li class="text-large text-bold">${
@@ -248,7 +270,8 @@ const RenderResultGraph = (props) => {
                 : ""
             }</li>
             <li><span class="text-gray">Platform: </span>${
-              SocialPlatformMapping(e.item.getModel().platform)?.label ||
+              SocialPlatformMapping(e.item.getModel().platform as PlatformType)
+                ?.label ||
               e.item.getModel().platform ||
               "Unknown"
             }</li>
@@ -257,13 +280,13 @@ const RenderResultGraph = (props) => {
           outDiv.innerHTML = `
           <ul>
             <li class="text-large text-bold mb-1">${
-              e.item.getModel().identity || ""
+              e?.item?.getModel().identity || ""
             }</li>
             <li><span class="text-gray">Platform: </span>${
-              e.item.getModel().platform || ""
+              e?.item?.getModel().platform || ""
             }</li>
             <li><span class="text-gray">Owner: </span>${
-              e.item.getModel().holder || ""
+              e?.item?.getModel().holder || ""
             }</li>
           </ul>`;
         }
@@ -275,7 +298,7 @@ const RenderResultGraph = (props) => {
     });
 
     graph = new G6.Graph({
-      container: container.current,
+      container: container.current!,
       width: CANVAS_WIDTH,
       height: CANVAS_HEIGHT,
       fitCenter: true,
@@ -434,7 +457,7 @@ const RenderResultGraph = (props) => {
       graph.destroy();
       graph = null;
     };
-  }, [data, onClose, title, G6]);
+  }, [data, onClose, title]);
 
   return (
     <div
