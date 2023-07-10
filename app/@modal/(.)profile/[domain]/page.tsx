@@ -26,40 +26,25 @@ function useProfile(identity: string, platform: string, fallbackData) {
 export default function ProfileModal({ params, searchParams }) {
   const { domain } = params;
   const platform = handleSearchPlatform(domain);
-  const { isLoading, isError, data } = useProfile(domain, platform, null);
-  const router = useRouter();
+  const { data } = useProfile(domain, platform, null);
+
   const pathName = usePathname();
   useEffect(() => {
     const newPathName = pathName.replaceAll("/profile", "");
     window.history.replaceState(null, "", newPathName);
   }, []);
   return (
-    <Modal onDismiss={() => router.back()}>
-      {isLoading ? (
-        <Loading
-          styles={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%,-50%)",
-          }}
-        />
-      ) : isError ? (
-        <Error />
-      ) : (
-        <ProfileMain
-          data={{
-            ...data,
-            links: Object.entries(data?.links || {}).map(([key, value]) => {
-              return {
-                platform: key,
-                ...(value as any),
-              };
-            }),
-          }}
-          platform={platform}
-        />
-      )}
-    </Modal>
+    <ProfileMain
+      data={{
+        ...data,
+        links: Object.entries(data?.links || {}).map(([key, value]) => {
+          return {
+            platform: key,
+            ...(value as any),
+          };
+        }),
+      }}
+      platform={platform}
+    />
   );
 }

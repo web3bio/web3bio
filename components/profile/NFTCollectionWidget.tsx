@@ -67,7 +67,6 @@ function useNFTs({ address, initialData }) {
     (index, previous) => getURL(index, address, previous),
     _fetcher,
     {
-      suspense: true,
       ...(initialData?.nfts?.length && {
         initialSize: 1,
         fallbackData: [initialData],
