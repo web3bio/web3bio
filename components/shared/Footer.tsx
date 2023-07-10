@@ -171,11 +171,11 @@ export const Footer = () => {
                   />
                 </a>
                 <a
-                  href="https://github.com/web3bio/web5bio"
+                  href="https://github.com/web3bio/web3bio"
                   className="btn-link ml-2 mr-2"
                   target="_blank"
                   rel="noopener noreferrer"
-                  title="Web5.bio GitHub"
+                  title="Web3.bio GitHub"
                 >
                   <SVG
                     src="icons/icon-github.svg"
@@ -185,11 +185,11 @@ export const Footer = () => {
                   />
                 </a>
                 <a
-                  href="https://t.me/web5bio"
+                  href="https://t.me/web3dotbio"
                   className="btn-link ml-2 mr-2"
                   target="_blank"
                   rel="noopener noreferrer"
-                  title="Web5.bio Telegram Group"
+                  title="Web3.bio Telegram Group"
                 >
                   <SVG
                     src="icons/icon-telegram.svg"

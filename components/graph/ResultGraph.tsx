@@ -302,7 +302,6 @@ const RenderResultGraph = (props) => {
       width: CANVAS_WIDTH,
       height: CANVAS_HEIGHT,
       fitCenter: true,
-      renderer:'svg',
       defaultEdge: {
         labelCfg: {
           autoRotate: true,
@@ -311,6 +310,13 @@ const RenderResultGraph = (props) => {
             linWidth: 4,
             fill: "#999",
             fontSize: 10,
+          },
+        },
+        style: {
+          endArrow: {
+            path: "M 0,0 L 5,2.5 L 5,-2.5 Z",
+            fill: "#cecece",
+            stroke: "#cecece",
           },
         },
       },

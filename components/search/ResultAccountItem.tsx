@@ -44,8 +44,13 @@ const RenderAccountItem = (props) => {
                     className="avatar-img"
                   />
                 )}
-                <div className="icon bg-pride text-light">
-                  <SVG src="icons/icon-ethereum.svg" width={20} height={20} />
+                <div className="icon bg-pride">
+                  <SVG
+                    filter="invert(1)"
+                    src="icons/icon-ethereum.svg"
+                    width={20}
+                    height={20}
+                  />
                 </div>
               </div>
               <div className="content">
