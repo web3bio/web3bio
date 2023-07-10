@@ -4,7 +4,7 @@ import Link from "next/link";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { RenderWidgetItem } from "./WidgetItem";
-import { PoapWidget } from "./PoapsWidget";
+import PoapWidget from "./PoapsWidget";
 import { SocialPlatformMapping } from "../../utils/platform";
 import { Error } from "../shared/Error";
 import Avatar from "boring-avatars";
@@ -13,7 +13,6 @@ import { NFTCollectionWidget } from "./NFTCollectionWidget";
 import { NFTModal, NFTModalType } from "./NFTModal";
 import Image from "next/image";
 // import ShareButton from "../shared/ShareButton";
-
 export default function ProfileMain(props) {
   const { data, pageTitle = "", platform, nfts } = props;
   const [copied, setCopied] = useState(false);

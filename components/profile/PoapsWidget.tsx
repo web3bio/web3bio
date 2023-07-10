@@ -1,3 +1,4 @@
+"use client";
 import { memo, useCallback } from "react";
 import useSWR from "swr";
 import { Loading } from "../shared/Loading";
@@ -12,7 +13,10 @@ function usePoaps(address: string) {
     `${POAP_END_POINT}${address}`,
     POAPFetcher,
     {
-      suspense: true,
+      // suspense: true,
+      // fallback: {
+      //   [`${POAP_END_POINT}${address}`]: [],
+      // },
     }
   );
   return {
@@ -22,7 +26,7 @@ function usePoaps(address: string) {
   };
 }
 
-const RenderPoapWidget = (props) => {
+export default function PoapWidget(props) {
   const { address, onShowDetail } = props;
   const { data, isLoading, isError } = usePoaps(address);
 
@@ -85,6 +89,4 @@ const RenderPoapWidget = (props) => {
       </div>
     </div>
   );
-};
-
-export const PoapWidget = memo(RenderPoapWidget);
+}
