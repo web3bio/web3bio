@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import Link from "next/link";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
@@ -153,25 +153,29 @@ export default function ProfileMain(props) {
             })}
           </div>
           <div className="web3-section-widgets">
-            <NFTCollectionWidget
-              onShowDetail={(e, v) => {
-                setDialogType(NFTModalType.NFT);
-                setCurAsset(v);
-                setDialogOpen(true);
-              }}
-              address={data.address || data.owner}
-              initialData={nfts}
-            />
+            <Suspense fallback={<p>Loading Nfts...</p>}>
+              <NFTCollectionWidget
+                onShowDetail={(e, v) => {
+                  setDialogType(NFTModalType.NFT);
+                  setCurAsset(v);
+                  setDialogOpen(true);
+                }}
+                address={data.address || data.owner}
+                initialData={nfts}
+              />
+            </Suspense>
           </div>
           <div className="web3-section-widgets">
-            <PoapWidget
-              onShowDetail={(v) => {
-                setDialogType(NFTModalType.POAP);
-                setCurAsset(v);
-                setDialogOpen(true);
-              }}
-              address={data.address || data.owner}
-            />
+            <Suspense fallback={<p>Loading Poaps...</p>}>
+              <PoapWidget
+                onShowDetail={(v) => {
+                  setDialogType(NFTModalType.POAP);
+                  setCurAsset(v);
+                  setDialogOpen(true);
+                }}
+                address={data.address || data.owner}
+              />
+            </Suspense>
           </div>
         </div>
       </div>

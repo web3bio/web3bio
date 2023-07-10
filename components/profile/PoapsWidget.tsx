@@ -10,7 +10,10 @@ import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 function usePoaps(address: string) {
   const { data, error } = useSWR<any>(
     `${POAP_END_POINT}${address}`,
-    POAPFetcher
+    POAPFetcher,
+    {
+      suspense: true,
+    }
   );
   return {
     data: data,
@@ -28,25 +31,26 @@ const RenderPoapWidget = (props) => {
     if (isError) return <Error />;
     return null;
   }, [isLoading, isError]);
-  
+
   if (!data || !data.length) return null;
   return (
-    <div 
-      className={`${data.length > 8 ? "profile-widget-full" : "profile-widget-3-4"}`}
+    <div
+      className={`${
+        data.length > 8 ? "profile-widget-full" : "profile-widget-3-4"
+      }`}
       id="poap"
     >
-      <div 
-        className="profile-widget profile-widget-poap"
-      >
+      <div className="profile-widget profile-widget-poap">
         <h2 className="profile-widget-title">
-          <div 
-            className="platform-icon mr-2"
-          >
+          <div className="platform-icon mr-2">
             <SVG src={`../icons/icon-poap.svg`} width={32} height={32} />
           </div>
           POAP
         </h2>
-        <div className="text-assistive">POAP are the bookmarks for your life. Mint the most important memories of your life as digital collectibles (NFTs) forever on the blockchain.</div>
+        <div className="text-assistive">
+          POAP are the bookmarks for your life. Mint the most important memories
+          of your life as digital collectibles (NFTs) forever on the blockchain.
+        </div>
         <div className="widgets-collection-list noscrollbar">
           {getBoundaryRender() ||
             data.map((x, idx) => {

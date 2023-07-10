@@ -66,11 +66,14 @@ function useNFTs({ address, initialData }) {
   const { data, error, size, isValidating, setSize } = useSWRInfinite(
     (index, previous) => getURL(index, address, previous),
     _fetcher,
-    initialData?.nfts?.length && {
-      initialSize: 1,
-      fallbackData: [initialData],
-      revalidateOnFocus: false,
-      revalidateOnMount: initialData?.nfts?.length ? false : true,
+    {
+      suspense: true,
+      ...(initialData?.nfts?.length && {
+        initialSize: 1,
+        fallbackData: [initialData],
+        revalidateOnFocus: false,
+        revalidateOnMount: initialData?.nfts?.length ? false : true,
+      }),
     }
   );
   return {
