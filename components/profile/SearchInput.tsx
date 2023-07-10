@@ -48,7 +48,7 @@ export default function SearchInput(props) {
       emitSubmit(e, _value);
     }
     if (e.keyCode === 229) {
-      // do noting
+      // do nothing 
     }
     if (e.key === "ArrowUp") {
       if (searchList && searchList.length === 1) {
