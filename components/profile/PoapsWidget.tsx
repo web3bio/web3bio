@@ -1,5 +1,5 @@
 "use client";
-import { memo, useCallback } from "react";
+import { useCallback } from "react";
 import useSWR from "swr";
 import { Loading } from "../shared/Loading";
 import SVG from "react-inlinesvg";
@@ -8,27 +8,24 @@ import { POAPFetcher, POAP_END_POINT } from "../apis/poap";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
-function usePoaps(address: string) {
+function usePoaps(address: string, fromServer: boolean) {
   const { data, error } = useSWR<any>(
     `${POAP_END_POINT}${address}`,
     POAPFetcher,
     {
-      // suspense: true,
-      // fallback: {
-      //   [`${POAP_END_POINT}${address}`]: [],
-      // },
+      suspense: !fromServer,
     }
   );
   return {
-    data: data,
+    data: data || [],
     isLoading: !error && !data,
     isError: error,
   };
 }
 
 export default function PoapWidget(props) {
-  const { address, onShowDetail } = props;
-  const { data, isLoading, isError } = usePoaps(address);
+  const { address, onShowDetail, fromServer } = props;
+  const { data, isLoading, isError } = usePoaps(address, fromServer);
 
   const getBoundaryRender = useCallback(() => {
     if (isLoading) return <Loading />;

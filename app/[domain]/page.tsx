@@ -126,6 +126,7 @@ export default async function ProfilePage({
       : `${data.displayName} (${data.identity})`;
   return (
     <ProfileMain
+      fromServer
       nfts={nfts}
       data={data}
       pageTitle={pageTitle}

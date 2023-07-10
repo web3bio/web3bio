@@ -14,7 +14,7 @@ import { NFTModal, NFTModalType } from "./NFTModal";
 import Image from "next/image";
 // import ShareButton from "../shared/ShareButton";
 export default function ProfileMain(props) {
-  const { data, pageTitle = "", platform, nfts } = props;
+  const { data, pageTitle = "", platform, nfts, fromServer } = props;
   const [copied, setCopied] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [curAsset, setCurAsset] = useState(null);
@@ -27,7 +27,6 @@ export default function ProfileMain(props) {
       setCopied(false);
     }, 1500);
   };
-
   if (!data || data.error) {
     return (
       <Error
@@ -151,31 +150,36 @@ export default function ProfileMain(props) {
               );
             })}
           </div>
-          <div className="web3-section-widgets">
-            <Suspense fallback={<p>Loading Nfts...</p>}>
-              <NFTCollectionWidget
-                onShowDetail={(e, v) => {
-                  setDialogType(NFTModalType.NFT);
-                  setCurAsset(v);
-                  setDialogOpen(true);
-                }}
-                address={data.address || data.owner}
-                initialData={nfts}
-              />
-            </Suspense>
-          </div>
-          <div className="web3-section-widgets">
-            <Suspense fallback={<p>Loading Poaps...</p>}>
-              <PoapWidget
-                onShowDetail={(v) => {
-                  setDialogType(NFTModalType.POAP);
-                  setCurAsset(v);
-                  setDialogOpen(true);
-                }}
-                address={data.address || data.owner}
-              />
-            </Suspense>
-          </div>
+          {data.address && (
+            <>
+              <div className="web3-section-widgets">
+                <Suspense fallback={<p>Loading Nfts...</p>}>
+                  <NFTCollectionWidget
+                    onShowDetail={(e, v) => {
+                      setDialogType(NFTModalType.NFT);
+                      setCurAsset(v);
+                      setDialogOpen(true);
+                    }}
+                    address={data.address}
+                    initialData={nfts}
+                  />
+                </Suspense>
+              </div>
+              <div className="web3-section-widgets">
+                <Suspense fallback={<p>Loading Poaps...</p>}>
+                  <PoapWidget
+                    fromServer={fromServer}
+                    onShowDetail={(v) => {
+                      setDialogType(NFTModalType.POAP);
+                      setCurAsset(v);
+                      setDialogOpen(true);
+                    }}
+                    address={data.address}
+                  />
+                </Suspense>
+              </div>
+            </>
+          )}
         </div>
       </div>
       <div className="web3bio-badge">

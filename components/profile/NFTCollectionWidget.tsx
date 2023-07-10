@@ -1,3 +1,4 @@
+"use client";
 import { memo, useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { ExpandController } from "./ExpandController";
@@ -63,15 +64,18 @@ const getURL = (index, address, previous) => {
 };
 
 function useNFTs({ address, initialData }) {
+  console.log(initialData, "kkkk");
   const { data, error, size, isValidating, setSize } = useSWRInfinite(
     (index, previous) => getURL(index, address, previous),
     _fetcher,
     {
+      suspense: true,
+      revalidateOnMount: true,
       ...(initialData?.nfts?.length && {
         initialSize: 1,
         fallbackData: [initialData],
         revalidateOnFocus: false,
-        revalidateOnMount: initialData?.nfts?.length ? false : true,
+        revalidateOnMount: false,
       }),
     }
   );
