@@ -117,7 +117,7 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     color: "#121212",
     icon: "icons/icon-nextid.svg",
     label: "Next.ID",
-    urlPrefix: "https://web5.bio",
+    urlPrefix: "https://web3.bio",
     ensText: [],
     dotbitText: ["profile.nextid"],
   },
@@ -381,7 +381,7 @@ export const SocialPlatformMapping = (platform: PlatformType) => {
 
 const resolveSocialMediaLink = (name: string, type: PlatformType) => {
   if (!Object.keys(PlatformType).includes(type))
-    return `https://web5.bio/?s=${name}`;
+    return `https://web3.bio/?s=${name}`;
   switch (type) {
     case PlatformType.url:
       return `${name}`;
