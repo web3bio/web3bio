@@ -249,17 +249,14 @@ const RenderAccountItem = (props) => {
               </div>
             </div>
           </div>
-          <div className="social-actions actions">
-            <a
-              className="btn btn-sm btn-link action"
-              href={`https://warpcast.com/${resolvedIdentity}`}
-              title="Open Warpcast"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+          <Link
+            href={`/profile/${resolvedIdentity}.farcaster`}
+            className="social-actions actions"
+          >
+            <div className="btn btn-sm btn-link action">
               <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
-            </a>
-          </div>
+            </div>
+          </Link>
           <RenderSourceFooter sources={sources} />
         </div>
       );

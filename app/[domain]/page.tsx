@@ -52,7 +52,11 @@ async function fetchDataFromServer(domain: string) {
       PlatformType.ethereum
         ? PlatformType.ens
         : platform
-      ).toLowerCase()}/${domain}`,
+      ).toLowerCase()}/${
+        platform === PlatformType.farcaster
+          ? domain.replaceAll(".farcaster", "")
+          : domain
+      }`,
       {
         cache: "no-store",
       }
