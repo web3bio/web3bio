@@ -165,7 +165,7 @@ const RenderAccountItem = (props) => {
           </div>
           <div
             onClick={() => {
-              router.push(`/${resolvedIdentity}`);
+              router.push(`/profile/${resolvedIdentity}`);
             }}
             className="social-actions"
           >
@@ -260,7 +260,7 @@ const RenderAccountItem = (props) => {
           </div>
           <div
             onClick={() => {
-              router.push(`/${resolvedIdentity}.farcaster`);
+              router.push(`/profile/${resolvedIdentity}.farcaster`);
             }}
             className="social-actions actions"
           >
