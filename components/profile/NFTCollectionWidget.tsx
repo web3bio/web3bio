@@ -101,6 +101,7 @@ const RenderNFTCollectionWidget = ({
     fromServer,
   });
   const [expand, setExpand] = useState(false);
+  const [firstRender, setFirstRender] = useState(true);
   const [[ref, assetId], setScrollRefAndAssetId] = useState<
     [{ current: HTMLElement | null }, string]
   >([{ current: null }, ""]);
@@ -120,11 +121,14 @@ const RenderNFTCollectionWidget = ({
     if (expand) {
       scrollToAsset(assetId);
     } else {
-      setExpand(true);
+      if (!firstRender) {
+        setExpand(true);
+      }
       setTimeout(() => {
         scrollToAsset(assetId);
       }, 500);
     }
+    setFirstRender(false);
   }, [assetId]);
   if (!data.length || isError) return null;
 
