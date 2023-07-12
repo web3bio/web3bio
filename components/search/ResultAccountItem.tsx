@@ -6,6 +6,7 @@ import SVG from "react-inlinesvg";
 import { formatText } from "../../utils/utils";
 import { RenderSourceFooter } from "./SourcesFooter";
 import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import { useRouter } from "next/navigation";
 
 const RenderAccountItem = (props) => {
   const onCopySuccess = () => {
@@ -14,6 +15,7 @@ const RenderAccountItem = (props) => {
       setIsCopied(false);
     }, 1500);
   };
+  const router = useRouter();
   const { identity, sources, profile, canSkipProfile } = props;
 
   const [isCopied, setIsCopied] = useState(false);
@@ -27,7 +29,6 @@ const RenderAccountItem = (props) => {
     identity.platform === PlatformType.ethereum
       ? profile?.address || identity.identity
       : identity.identity;
-
   switch (identity.platform) {
     case PlatformType.ethereum:
       return (
@@ -99,10 +100,16 @@ const RenderAccountItem = (props) => {
             )}
           </div>
           {(canSkipProfile || (profile && !profile?.error)) && (
-            <Link
-              href={`/${
-                profile?.identity || identity.displayName || resolvedIdentity
-              }`}
+            <div
+              onClick={() => {
+                router.push(
+                  `/profile/${
+                    profile?.identity ||
+                    identity.displayName ||
+                    resolvedIdentity
+                  }`
+                );
+              }}
               className="social-actions"
             >
               <button
@@ -111,7 +118,7 @@ const RenderAccountItem = (props) => {
               >
                 <SVG src="icons/icon-open.svg" width={20} height={20} />
               </button>
-            </Link>
+            </div>
           )}
           <RenderSourceFooter sources={sources} />
         </div>
@@ -156,8 +163,10 @@ const RenderAccountItem = (props) => {
               </div>
             </div>
           </div>
-          <Link
-            href={`/${resolvedIdentity}`}
+          <div
+            onClick={() => {
+              router.push(`/${resolvedIdentity}`);
+            }}
             className="social-actions"
           >
             <button
@@ -166,7 +175,7 @@ const RenderAccountItem = (props) => {
             >
               <SVG src="icons/icon-open.svg" width={20} height={20} />
             </button>
-          </Link>
+          </div>
           <RenderSourceFooter sources={sources} />
         </div>
       );
@@ -249,14 +258,16 @@ const RenderAccountItem = (props) => {
               </div>
             </div>
           </div>
-          <Link
-            href={`/${resolvedIdentity}.farcaster`}
+          <div
+            onClick={() => {
+              router.push(`/${resolvedIdentity}.farcaster`);
+            }}
             className="social-actions actions"
           >
             <div className="btn btn-sm btn-link action">
               <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
             </div>
-          </Link>
+          </div>
           <RenderSourceFooter sources={sources} />
         </div>
       );
