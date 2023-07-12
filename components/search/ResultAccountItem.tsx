@@ -100,7 +100,7 @@ const RenderAccountItem = (props) => {
           </div>
           {(canSkipProfile || (profile && !profile?.error)) && (
             <Link
-              href={`/profile/${
+              href={`/${
                 profile?.identity || identity.displayName || resolvedIdentity
               }`}
               className="social-actions"
@@ -157,7 +157,7 @@ const RenderAccountItem = (props) => {
             </div>
           </div>
           <Link
-            href={`/profile/${resolvedIdentity}`}
+            href={`/${resolvedIdentity}`}
             className="social-actions"
           >
             <button
@@ -250,7 +250,7 @@ const RenderAccountItem = (props) => {
             </div>
           </div>
           <Link
-            href={`/profile/${resolvedIdentity}.farcaster`}
+            href={`/${resolvedIdentity}.farcaster`}
             className="social-actions actions"
           >
             <div className="btn btn-sm btn-link action">

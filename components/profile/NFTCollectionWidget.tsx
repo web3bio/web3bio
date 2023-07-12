@@ -1,5 +1,5 @@
 "use client";
-import { memo, useRef, useState } from "react";
+import { memo, Ref, useEffect, useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { ExpandController } from "./ExpandController";
 import { NFTCollections } from "./NFTCollections";
@@ -101,20 +101,33 @@ const RenderNFTCollectionWidget = ({
     fromServer,
   });
   const [expand, setExpand] = useState(false);
+  const [[ref, assetId], setScrollRefAndAssetId] = useState<
+    [{ current: HTMLElement | null }, string]
+  >([{ current: null }, ""]);
   const scrollContainer = useRef(null);
-
-  if (!data.length || isError) return null;
-  const scrollToAsset = (ref, assetId) => {
-    if (ref) {
-      const anchorElement = document.getElementById(assetId);
-      if (!anchorElement) return;
-      const top = anchorElement.offsetTop;
-      ref.current.scrollTo({
-        top,
-        behavior: "smooth",
-      });
+  useEffect(() => {
+    const scrollToAsset = (assetId) => {
+      if (ref) {
+        const anchorElement = document.getElementById(assetId);
+        if (!anchorElement) return;
+        const top = anchorElement.offsetTop;
+        ref.current?.scrollTo({
+          top,
+          behavior: "smooth",
+        });
+      }
+    };
+    if (expand) {
+      scrollToAsset(assetId);
+    } else {
+      setExpand(true);
+      setTimeout(() => {
+        scrollToAsset(assetId);
+      }, 500);
     }
-  };
+  }, [assetId]);
+  if (!data.length || isError) return null;
+
   return (
     <div ref={scrollContainer} className="profile-widget-full" id="nft">
       <div
@@ -134,14 +147,7 @@ const RenderNFTCollectionWidget = ({
         </h2>
         <NFTCollections
           handleScrollToAsset={(ref, assetId) => {
-            setExpand(true);
-            if (expand) {
-              scrollToAsset(ref, assetId);
-            } else {
-              setTimeout(() => {
-                scrollToAsset(ref, assetId);
-              }, 500);
-            }
+            setScrollRefAndAssetId([ref, assetId]);
           }}
           parentScrollRef={scrollContainer}
           expand={expand}
