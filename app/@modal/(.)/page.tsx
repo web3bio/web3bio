@@ -11,7 +11,6 @@ import { PlatformType } from "../../../utils/platform";
 import Modal from "../../../components/shared/Modal";
 
 function useProfile(identity: string, platform: string, fallbackData) {
-  console.log('fetched')
   const resolvedIdentity =
     platform === PlatformType.farcaster
       ? identity.replaceAll(".farcaster", "")
