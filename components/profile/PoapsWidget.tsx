@@ -1,4 +1,5 @@
-import { memo, useCallback } from "react";
+"use client";
+import { useCallback } from "react";
 import useSWR from "swr";
 import { Loading } from "../shared/Loading";
 import SVG from "react-inlinesvg";
@@ -7,46 +8,50 @@ import { POAPFetcher, POAP_END_POINT } from "../apis/poap";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
-function usePoaps(address: string) {
+function usePoaps(address: string, fromServer: boolean) {
   const { data, error } = useSWR<any>(
     `${POAP_END_POINT}${address}`,
-    POAPFetcher
+    POAPFetcher,
+    {
+      suspense: !fromServer,
+    }
   );
   return {
-    data: data,
+    data: data || [],
     isLoading: !error && !data,
     isError: error,
   };
 }
 
-const RenderPoapWidget = (props) => {
-  const { address, onShowDetail } = props;
-  const { data, isLoading, isError } = usePoaps(address);
+export default function PoapWidget(props) {
+  const { address, onShowDetail, fromServer } = props;
+  const { data, isLoading, isError } = usePoaps(address, fromServer);
 
   const getBoundaryRender = useCallback(() => {
     if (isLoading) return <Loading />;
     if (isError) return <Error />;
     return null;
   }, [isLoading, isError]);
-  
+
   if (!data || !data.length) return null;
   return (
-    <div 
-      className={`${data.length > 8 ? "profile-widget-full" : "profile-widget-3-4"}`}
+    <div
+      className={`${
+        data.length > 8 ? "profile-widget-full" : "profile-widget-3-4"
+      }`}
       id="poap"
     >
-      <div 
-        className="profile-widget profile-widget-poap"
-      >
+      <div className="profile-widget profile-widget-poap">
         <h2 className="profile-widget-title">
-          <div 
-            className="platform-icon mr-2"
-          >
+          <div className="platform-icon mr-2">
             <SVG src={`../icons/icon-poap.svg`} width={32} height={32} />
           </div>
           POAP
         </h2>
-        <div className="text-assistive">POAP are the bookmarks for your life. Mint the most important memories of your life as digital collectibles (NFTs) forever on the blockchain.</div>
+        <div className="text-assistive">
+          POAP are the bookmarks for your life. Mint the most important memories
+          of your life as digital collectibles (NFTs) forever on the blockchain.
+        </div>
         <div className="widgets-collection-list noscrollbar">
           {getBoundaryRender() ||
             data.map((x, idx) => {
@@ -81,6 +86,4 @@ const RenderPoapWidget = (props) => {
       </div>
     </div>
   );
-};
-
-export const PoapWidget = memo(RenderPoapWidget);
+}

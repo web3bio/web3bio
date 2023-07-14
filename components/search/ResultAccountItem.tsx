@@ -6,6 +6,7 @@ import SVG from "react-inlinesvg";
 import { formatText } from "../../utils/utils";
 import { RenderSourceFooter } from "./SourcesFooter";
 import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import { useRouter } from "next/navigation";
 
 const RenderAccountItem = (props) => {
   const onCopySuccess = () => {
@@ -14,6 +15,7 @@ const RenderAccountItem = (props) => {
       setIsCopied(false);
     }, 1500);
   };
+  const router = useRouter();
   const { identity, sources, profile, canSkipProfile } = props;
 
   const [isCopied, setIsCopied] = useState(false);
@@ -27,7 +29,6 @@ const RenderAccountItem = (props) => {
     identity.platform === PlatformType.ethereum
       ? profile?.address || identity.identity
       : identity.identity;
-
   switch (identity.platform) {
     case PlatformType.ethereum:
       return (
@@ -100,15 +101,13 @@ const RenderAccountItem = (props) => {
           </div>
           {(canSkipProfile || (profile && !profile?.error)) && (
             <Link
-              href={`/profile/${
+              href={`/${
                 profile?.identity || identity.displayName || resolvedIdentity
               }`}
               className="social-actions"
+              title="Open ENS (Ethereum Name Service) Profile"
             >
-              <button
-                className="btn btn-sm btn-link action"
-                title="Open ENS Profile"
-              >
+              <button className="btn btn-sm btn-link action">
                 <SVG src="icons/icon-open.svg" width={20} height={20} />
               </button>
             </Link>
@@ -156,56 +155,15 @@ const RenderAccountItem = (props) => {
               </div>
             </div>
           </div>
-          <Link
-            href={`/profile/${resolvedIdentity}`}
-            className="social-actions"
+          <Link 
+            href={`/${resolvedIdentity}`} 
+            className="social-actions" 
+            title="Open Lens Profile"
           >
-            <button
-              className="btn btn-sm btn-link action"
-              title="Open Lens Profile"
-            >
-              <SVG src="icons/icon-open.svg" width={20} height={20} />
+            <button className="btn btn-sm btn-link action">
+              <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
             </button>
           </Link>
-          <RenderSourceFooter sources={sources} />
-        </div>
-      );
-    case PlatformType.unstoppableDomains:
-      return (
-        <div className="social-item unstoppabledomains">
-          <div className="social-main">
-            <Link
-              href={{
-                pathname: "/",
-                query: {
-                  s: resolvedIdentity,
-                },
-              }}
-              className="social"
-            >
-              <div className="icon">
-                <SVG
-                  src={SocialPlatformMapping(identity.platform)?.icon || ""}
-                  width={20}
-                  height={20}
-                />
-              </div>
-              <div className="title">{displayName}</div>
-            </Link>
-          </div>
-          <div className="social-actions actions">
-            <a
-              className="btn btn-sm btn-link action"
-              href={`${SocialPlatformMapping(identity.platform)?.urlPrefix}${
-                identity.displayName
-              }`}
-              title="Open Unstoppable Domains"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
-            </a>
-          </div>
           <RenderSourceFooter sources={sources} />
         </div>
       );
@@ -249,11 +207,49 @@ const RenderAccountItem = (props) => {
               </div>
             </div>
           </div>
+          
+          <Link
+            href={`/${resolvedIdentity}.farcaster`}
+            className="social-actions"
+            title="Open Farcaster Profile"
+          >
+            <button className="btn btn-sm btn-link action">
+              <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
+            </button>
+          </Link>
+          <RenderSourceFooter sources={sources} />
+        </div>
+      );
+    case PlatformType.unstoppableDomains:
+      return (
+        <div className="social-item unstoppabledomains">
+          <div className="social-main">
+            <Link
+              href={{
+                pathname: "/",
+                query: {
+                  s: resolvedIdentity,
+                },
+              }}
+              className="social"
+            >
+              <div className="icon">
+                <SVG
+                  src={SocialPlatformMapping(identity.platform)?.icon || ""}
+                  width={20}
+                  height={20}
+                />
+              </div>
+              <div className="title">{displayName}</div>
+            </Link>
+          </div>
           <div className="social-actions actions">
             <a
               className="btn btn-sm btn-link action"
-              href={`https://warpcast.com/${resolvedIdentity}`}
-              title="Open Warpcast"
+              href={`${SocialPlatformMapping(identity.platform)?.urlPrefix}${
+                identity.displayName
+              }`}
+              title="Open Unstoppable Domains"
               target="_blank"
               rel="noopener noreferrer"
             >
