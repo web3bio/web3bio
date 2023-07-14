@@ -100,16 +100,10 @@ const RenderAccountItem = (props) => {
             )}
           </div>
           {(canSkipProfile || (profile && !profile?.error)) && (
-            <div
-              onClick={() => {
-                router.push(
-                  `/profile/${
-                    profile?.identity ||
-                    identity.displayName ||
-                    resolvedIdentity
-                  }`
-                );
-              }}
+            <Link
+              href={`/${
+                profile?.identity || identity.displayName || resolvedIdentity
+              }`}
               className="social-actions"
             >
               <button
@@ -118,7 +112,7 @@ const RenderAccountItem = (props) => {
               >
                 <SVG src="icons/icon-open.svg" width={20} height={20} />
               </button>
-            </div>
+            </Link>
           )}
           <RenderSourceFooter sources={sources} />
         </div>
@@ -163,19 +157,14 @@ const RenderAccountItem = (props) => {
               </div>
             </div>
           </div>
-          <div
-            onClick={() => {
-              router.push(`/profile/${resolvedIdentity}`);
-            }}
-            className="social-actions"
-          >
+          <Link href={`/${resolvedIdentity}`} className="social-actions">
             <button
               className="btn btn-sm btn-link action"
               title="Open Lens Profile"
             >
               <SVG src="icons/icon-open.svg" width={20} height={20} />
             </button>
-          </div>
+          </Link>
           <RenderSourceFooter sources={sources} />
         </div>
       );
@@ -258,16 +247,14 @@ const RenderAccountItem = (props) => {
               </div>
             </div>
           </div>
-          <div
-            onClick={() => {
-              router.push(`/profile/${resolvedIdentity}.farcaster`);
-            }}
+          <Link
+            href={`/${resolvedIdentity}.farcaster`}
             className="social-actions actions"
           >
             <div className="btn btn-sm btn-link action">
               <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
             </div>
-          </div>
+          </Link>
           <RenderSourceFooter sources={sources} />
         </div>
       );

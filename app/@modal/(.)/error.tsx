@@ -1,5 +1,5 @@
 "use client";
-import { Error } from "../../../../components/shared/Error";
+import { Error } from "../../../components/shared/Error";
 export default function GlobalError({
   error,
   reset,
