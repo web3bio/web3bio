@@ -48,24 +48,17 @@ async function fetchDataFromServer(domain: string) {
     )
       notFound();
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${(platform ===
-      PlatformType.ethereum
-        ? PlatformType.ens
-        : platform
-      ).toLowerCase()}/${
-        platform === PlatformType.farcaster
-          ? domain.replaceAll(".farcaster", "")
-          : domain
-      }`,
+      `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${domain}`,
       {
         cache: "no-store",
       }
     );
     if (response.status === 404) notFound();
-    const data = await response.json();
+    const data =
+      (await response.json()).find((x) => x.platform === platform) ||
+      (await response.json())?.[0];
     if (!data || data.error) throw new Error(data.error);
     const remoteNFTs = await fetchInitialNFTsData(data?.address);
-
     return {
       data: { ...data, links: mapLinks(data?.links) },
       nfts: { ...remoteNFTs, nfts: mapNFTs(remoteNFTs?.nfts) },
