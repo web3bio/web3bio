@@ -17,12 +17,12 @@ function useProfile(identity: string, platform: string, fallbackData) {
       : identity;
   const url =
     process.env.NEXT_PUBLIC_PROFILE_END_POINT +
-    `/profile/${platform.toLowerCase()}/${resolvedIdentity}`;
+    `/profile/${resolvedIdentity}`;
   const { data, error, isValidating } = useSWR<any>(url, _fetcher, {
     fallbackData: fallbackData,
   });
   return {
-    data: data,
+    data: data?.find(x=>x.platform === platform) || data?.[0],
     isLoading: isValidating,
     isError: error,
   };
