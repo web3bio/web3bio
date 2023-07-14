@@ -153,7 +153,7 @@ export default function ProfileMain(props) {
           {data.address && (
             <>
               <div className="web3-section-widgets">
-                <Suspense fallback={<p>Loading Nfts...</p>}>
+                <Suspense fallback={<p>Loading NFTs...</p>}>
                   <NFTCollectionWidget
                     fromServer={fromServer}
                     onShowDetail={(e, v) => {
