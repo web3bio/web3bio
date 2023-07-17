@@ -42,13 +42,12 @@ export default function SearchInput(props) {
   };
 
   const onKeyDown = (e) => {
-  
     if (e.keyCode === 13) {
       const _value = searchList[activeIndex] ? searchList[activeIndex] : query;
       emitSubmit(e, _value);
     }
     if (e.keyCode === 229) {
-      // do nothing 
+      // do nothing
     }
     if (e.key === "ArrowUp") {
       if (searchList && searchList.length === 1) {
@@ -150,7 +149,7 @@ export default function SearchInput(props) {
       </button>
       {searchList.length > 0 && (
         <div className="search-list">
-          {searchList.map((x: any, idx) => {
+          {searchList.map((x: { label: string; icon: string }, idx) => {
             return (
               <div
                 className={

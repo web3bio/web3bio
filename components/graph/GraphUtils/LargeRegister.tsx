@@ -8,7 +8,7 @@ export const register = (G6) => {
     G6.registerNode(
       "identity-node",
       {
-        draw(cfg: any, group) {
+        draw(cfg, group) {
           let r = 20;
           if (isNumber(cfg.size)) {
             r = (cfg.size as number) / 2;
@@ -40,7 +40,7 @@ export const register = (G6) => {
 
           if (cfg.label) {
             const text = cfg.label;
-            let labelStyle: any = {};
+            let labelStyle: { fontSize: number } = { fontSize: 8 };
             let refY = 0;
             if (cfg.labelCfg) {
               labelStyle = Object.assign(labelStyle, cfg.labelCfg.style);

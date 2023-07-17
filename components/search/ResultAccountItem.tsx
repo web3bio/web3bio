@@ -83,6 +83,7 @@ const RenderAccountItem = (props) => {
                         pathname: "/",
                         query: { s: nft.id },
                       }}
+                      prefetch={false}
                     >
                       <div className="label-ens" title={nft.id}>
                         <Image
@@ -232,6 +233,7 @@ const RenderAccountItem = (props) => {
                 },
               }}
               className="social"
+              prefetch={false}
             >
               <div className="icon">
                 <SVG
@@ -364,6 +366,7 @@ const RenderAccountItem = (props) => {
                 },
               }}
               className="social"
+              prefetch={false}
             >
               <div className="icon">
                 <SVG
