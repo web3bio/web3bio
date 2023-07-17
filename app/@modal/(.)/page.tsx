@@ -40,7 +40,10 @@ export default function ProfileModal() {
   const platform = handleSearchPlatform(domain);
   const [showModal, setShowModal] = useState(false);
   const { data, isLoading, isError } = useProfile(
-    showModal,
+    showModal &&
+      [PlatformType.ens, PlatformType.lens, PlatformType.farcaster].includes(
+        platform
+      ),
     domain,
     platform,
     null
