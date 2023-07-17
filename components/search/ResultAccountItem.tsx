@@ -233,6 +233,7 @@ const RenderAccountItem = (props) => {
                 },
               }}
               className="social"
+              prefetch={false}
             >
               <div className="icon">
                 <SVG
@@ -365,6 +366,7 @@ const RenderAccountItem = (props) => {
                 },
               }}
               className="social"
+              prefetch={false}
             >
               <div className="icon">
                 <SVG
