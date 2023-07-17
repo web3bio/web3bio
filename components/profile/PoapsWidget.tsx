@@ -9,7 +9,7 @@ import { resolveIPFS_URL } from "../../utils/ipfs";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
 function usePoaps(address: string, fromServer: boolean) {
-  const { data, error } = useSWR<any>(
+  const { data, error } = useSWR(
     `${POAP_END_POINT}${address}`,
     POAPFetcher,
     {

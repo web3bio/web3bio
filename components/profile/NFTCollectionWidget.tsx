@@ -70,12 +70,14 @@ function useNFTs({ address, initialData, fromServer }) {
     {
       suspense: !fromServer,
       revalidateOnMount: true,
-      ...(initialData?.nfts?.length && {
-        initialSize: 1,
-        fallbackData: [initialData],
-        revalidateOnFocus: false,
-        revalidateOnMount: false,
-      }),
+      ...(initialData?.nfts?.length &&
+        fromServer && {
+          suspense: false,
+          initialSize: 1,
+          fallbackData: [initialData],
+          revalidateOnFocus: false,
+          revalidateOnMount: false,
+        }),
     }
   );
   return {
