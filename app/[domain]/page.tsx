@@ -55,6 +55,9 @@ async function fetchDataFromServer(domain: string) {
       data: { ..._data, links: mapLinks(raw) },
       nfts: { ...remoteNFTs, nfts: mapNFTs(remoteNFTs?.nfts) },
       platform,
+      relations: Array.from(
+        raw.map((x) => ({ platform: x.platform, identity: x.identity }))
+      ),
     };
   } catch (e) {
     notFound();
@@ -108,7 +111,7 @@ export default async function ProfilePage({
   params: { domain: string };
 }) {
   const serverData = await fetchDataFromServer(domain);
-  const { data, nfts, platform } = serverData;
+  const { data, nfts, platform, relations } = serverData;
   const pageTitle =
     data.identity == data.displayName
       ? `${data.displayName}`
@@ -116,6 +119,7 @@ export default async function ProfilePage({
   return (
     <ProfileMain
       fromServer
+      relations={relations}
       nfts={nfts}
       data={data}
       pageTitle={pageTitle}

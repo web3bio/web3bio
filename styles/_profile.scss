@@ -44,6 +44,31 @@
     }
   }
 
+  .related-platforms {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    margin: 1rem 0;
+
+    .platform-badge {
+      width: 1.8rem;
+      height: 1.8rem;
+      background: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all .2s ease;
+
+      &:hover {
+        transform: scale(1.2);
+        box-shadow: 0 .1rem .1rem rgba($dark-color, .1);
+      }
+    }
+  }
+
   .profile-name {
     color: $dark-color;
     font-size: 1.8rem;

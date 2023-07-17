@@ -5,7 +5,7 @@ import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { RenderWidgetItem } from "./WidgetItem";
 import PoapWidget from "./PoapsWidget";
-import { SocialPlatformMapping } from "../../utils/platform";
+import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import { Error } from "../shared/Error";
 import Avatar from "boring-avatars";
 import { formatText } from "../../utils/utils";
@@ -14,13 +14,12 @@ import { NFTModal, NFTModalType } from "./NFTModal";
 import Image from "next/image";
 // import ShareButton from "../shared/ShareButton";
 export default function ProfileMain(props) {
-  const { data, pageTitle = "", platform, nfts, fromServer } = props;
+  const { data, pageTitle = "", platform, nfts, fromServer, relations } = props;
   const [copied, setCopied] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [curAsset, setCurAsset] = useState(null);
   const [errorAvatar, setErrorAvatar] = useState(false);
   const [dialogType, setDialogType] = useState(NFTModalType.NFT);
-
   const onCopySuccess = () => {
     setCopied(true);
     setTimeout(() => {
@@ -77,6 +76,36 @@ export default function ProfileMain(props) {
                   ]}
                 />
               )}
+            </div>
+            <div className="related-platforms">
+              {relations?.map((x, idx) => {
+                const relatedPath = `${x.identity}${
+                  x.platform === PlatformType.farcaster ? ".farcaster" : ""
+                }`;
+                return (
+                  <Link
+                    href={`/${relatedPath}`}
+                    target="_blank"
+                    key={x.platform + idx}
+                    className="platform-badge"
+                    style={{
+                      background: SocialPlatformMapping(x.platform).profileBg,
+                    }}
+                  >
+                    <SVG
+                      color={
+                        x.platform === PlatformType.farcaster ? "#fff" : "unset"
+                      }
+                      width={20}
+                      src={
+                        SocialPlatformMapping(x.platform).profileIcon ||
+                        SocialPlatformMapping(x.platform).icon ||
+                        ""
+                      }
+                    />
+                  </Link>
+                );
+              })}
             </div>
             <h1 className="text-assistive">{`${pageTitle} ${
               SocialPlatformMapping(platform).label

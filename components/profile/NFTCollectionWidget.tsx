@@ -51,7 +51,7 @@ const getURL = (index, address, previous) => {
   if (
     index !== 0 &&
     previous &&
-    (!previous.nfts.length || !previous?.next_cursor)
+    (!previous?.nfts.length || !previous?.next_cursor)
   )
     return null;
   const cursor = previous?.next_cursor || "";
@@ -68,8 +68,8 @@ function useNFTs({ address, initialData, fromServer }) {
     (index, previous) => getURL(index, address, previous),
     _fetcher,
     {
-      suspense: !fromServer,
-      revalidateOnMount: true,
+      suspense: true,
+      revalidateOnMount: false,
       ...(initialData?.nfts?.length &&
         fromServer && {
           suspense: false,

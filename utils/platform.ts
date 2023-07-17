@@ -2,6 +2,8 @@ type SocialPlatform = {
   key: string;
   color?: string;
   icon?: string;
+  profileIcon?: string;
+  profileBg?: string;
   label: string;
   urlPrefix?: string;
   ensText?: string[];
@@ -67,6 +69,8 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     color: "#5298FF",
     // TODO: add ens search icon here
     icon: "icons/icon-ethereum.svg",
+    profileIcon: "icons/icon-ens.svg",
+    profileBg:'#fff',
     label: "ENS",
     urlPrefix: "https://app.ens.domains/search/",
     ensText: [],
@@ -83,6 +87,7 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
     key: PlatformType.farcaster,
     color: "#8a63d2",
     icon: "icons/icon-farcaster.svg",
+    profileBg:"#8a63d2",
     label: "Farcaster",
     urlPrefix: "https://warpcast.com/",
     ensText: [],
@@ -107,6 +112,7 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.lens]: {
     key: PlatformType.lens,
     color: "#BDFC5A",
+    profileBg: "#BDFC5A",
     icon: "icons/icon-lens.svg",
     label: "Lens",
     urlPrefix: "https://www.lensfrens.xyz/",
