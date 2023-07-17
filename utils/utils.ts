@@ -102,7 +102,7 @@ export const handleSearchPlatform = (term: string) => {
     case regexDotbit.test(term):
       return PlatformType.dotbit;
     case regexProfileFarcaster.test(term):
-      return PlatformType.farcaster
+      return PlatformType.farcaster;
     case regexTwitter.test(term):
       return PlatformType.twitter;
     default:
@@ -151,7 +151,7 @@ export const fallbackEmoji = [
 ];
 
 export const getScanLink = (address: string) => {
-  if(!address) return ''
+  if (!address) return "";
   const prefixArr = [
     {
       key: "ethereum.",
@@ -171,5 +171,33 @@ export const getScanLink = (address: string) => {
     }
   });
   const res = url + resolvedAddress;
+  return res;
+};
+
+export const getUniqueUniversalProfileLinks = (array) => {
+  return array.filter(
+    (obj, index, self) =>
+      index ===
+      self.findIndex(
+        (t) => t.handle === obj.handle && t.platform === obj.platform
+      )
+  );
+};
+
+export const mapLinks = (data) => {
+  const res = getUniqueUniversalProfileLinks(
+    data.reduce((pre, cur) => {
+      const linksArr = Object.entries(cur?.links || {});
+      if (linksArr) {
+        linksArr.map(([key, value]) => {
+          pre.push({
+            platform: key,
+            ...(value as { link: string; handle: string }),
+          });
+        });
+      }
+      return pre;
+    }, [])
+  );
   return res;
 };

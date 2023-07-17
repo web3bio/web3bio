@@ -1,16 +1,9 @@
 import { fetchInitialNFTsData } from "../../hooks/api/fetchProfile";
 import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
-import { handleSearchPlatform } from "../../utils/utils";
+import { handleSearchPlatform, mapLinks } from "../../utils/utils";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import ProfileMain from "../../components/profile/ProfileMain";
-
-function mapLinks(links) {
-  return Object.entries(links || {}).map(([key, value]) => ({
-    platform: key,
-    ...(value as any),
-  }));
-}
 
 function mapNFTs(nfts) {
   if (!nfts) return [];
@@ -54,13 +47,12 @@ async function fetchDataFromServer(domain: string) {
       }
     );
     if (response.status === 404) notFound();
-    const data =
-      (await response.json()).find((x) => x.platform === platform) ||
-      (await response.json())?.[0];
-    if (!data || data.error) throw new Error(data.error);
-    const remoteNFTs = await fetchInitialNFTsData(data?.address);
+    const raw = await response.json();
+    const _data = raw.find((x) => x.platform === platform) || raw?.[0];
+    if (!_data || _data.error) throw new Error(_data.error);
+    const remoteNFTs = await fetchInitialNFTsData(_data?.address);
     return {
-      data: { ...data, links: mapLinks(data?.links) },
+      data: { ..._data, links: mapLinks(raw) },
       nfts: { ...remoteNFTs, nfts: mapNFTs(remoteNFTs?.nfts) },
       platform,
     };

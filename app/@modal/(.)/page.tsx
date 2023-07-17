@@ -4,7 +4,7 @@ import { Loading } from "../../../components/shared/Loading";
 import { Error } from "../../../components/shared/Error";
 import ProfileMain from "../../../components/profile/ProfileMain";
 import { _fetcher } from "../../../components/apis/ens";
-import { handleSearchPlatform } from "../../../utils/utils";
+import { handleSearchPlatform, mapLinks } from "../../../utils/utils";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { PlatformType } from "../../../utils/platform";
@@ -21,14 +21,13 @@ function useProfile(
       ? identity.replaceAll(".farcaster", "")
       : identity;
   const url = shouldFetch
-    ? process.env.NEXT_PUBLIC_PROFILE_END_POINT +
-      `/profile/${platform.toLowerCase()}/${resolvedIdentity}`
+    ? process.env.NEXT_PUBLIC_PROFILE_END_POINT + `/profile/${resolvedIdentity}`
     : null;
   const { data, error, isValidating } = useSWR(url, _fetcher, {
     fallbackData: fallbackData,
   });
   return {
-    data: data?.find(x=>x.platform === platform) || data?.[0],
+    data: data,
     isLoading: isValidating,
     isError: error,
   };
@@ -56,7 +55,7 @@ export default function ProfileModal() {
     }
   }, [pathName]);
   return (
-    showModal && (
+    (showModal && data && (
       <Modal onDismiss={() => router.back()}>
         {isLoading ? (
           <div className="global-loading">
@@ -67,18 +66,14 @@ export default function ProfileModal() {
         ) : (
           <ProfileMain
             data={{
-              ...data,
-              links: Object.entries(data?.links || {}).map(([key, value]) => {
-                return {
-                  platform: key,
-                  ...(value as { handle: string; link: string }),
-                };
-              }),
+              ...(data?.find((x) => x.platform === platform) || data?.[0]),
+              links: mapLinks(data),
             }}
             platform={platform}
           />
         )}
       </Modal>
-    )
+    )) ||
+    null
   );
 }
