@@ -37,6 +37,7 @@ async function fetchDataFromServer(domain: string) {
         PlatformType.farcaster,
         PlatformType.lens,
         PlatformType.ethereum,
+        PlatformType.nextid
       ].includes(platform)
     )
       notFound();
