@@ -52,7 +52,11 @@ async function fetchDataFromServer(domain: string) {
       PlatformType.ethereum
         ? PlatformType.ens
         : platform
-      ).toLowerCase()}/${domain}`,
+      ).toLowerCase()}/${
+        platform === PlatformType.farcaster
+          ? domain.replaceAll(".farcaster", "")
+          : domain
+      }`,
       {
         cache: "no-store",
       }
@@ -126,6 +130,7 @@ export default async function ProfilePage({
       : `${data.displayName} (${data.identity})`;
   return (
     <ProfileMain
+      fromServer
       nfts={nfts}
       data={data}
       pageTitle={pageTitle}

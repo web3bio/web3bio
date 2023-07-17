@@ -1,4 +1,5 @@
-import { memo, useRef, useState } from "react";
+"use client";
+import { memo, Ref, useEffect, useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { ExpandController } from "./ExpandController";
 import { NFTCollections } from "./NFTCollections";
@@ -62,15 +63,19 @@ const getURL = (index, address, previous) => {
   );
 };
 
-function useNFTs({ address, initialData }) {
+function useNFTs({ address, initialData, fromServer }) {
   const { data, error, size, isValidating, setSize } = useSWRInfinite(
     (index, previous) => getURL(index, address, previous),
     _fetcher,
-    initialData?.nfts?.length && {
-      initialSize: 1,
-      fallbackData: [initialData],
-      revalidateOnFocus: false,
-      revalidateOnMount: initialData?.nfts?.length ? false : true,
+    {
+      suspense: !fromServer,
+      revalidateOnMount: true,
+      ...(initialData?.nfts?.length && {
+        initialSize: 1,
+        fallbackData: [initialData],
+        revalidateOnFocus: false,
+        revalidateOnMount: false,
+      }),
     }
   );
   return {
@@ -84,26 +89,49 @@ function useNFTs({ address, initialData }) {
   };
 }
 
-const RenderNFTCollectionWidget = ({ address, onShowDetail, initialData }) => {
+const RenderNFTCollectionWidget = ({
+  address,
+  onShowDetail,
+  initialData,
+  fromServer,
+}) => {
   const { data, size, setSize, isValidating, isError, hasNextPage } = useNFTs({
     address,
     initialData,
+    fromServer,
   });
   const [expand, setExpand] = useState(false);
+  const [firstRender, setFirstRender] = useState(true);
+  const [[ref, assetId], setScrollRefAndAssetId] = useState<
+    [{ current: HTMLElement | null }, string]
+  >([{ current: null }, ""]);
   const scrollContainer = useRef(null);
-
-  if (!data.length || isError) return null;
-  const scrollToAsset = (ref, assetId) => {
-    if (ref) {
-      const anchorElement = document.getElementById(assetId);
-      if (!anchorElement) return;
-      const top = anchorElement.offsetTop;
-      ref.current.scrollTo({
-        top,
-        behavior: "smooth",
-      });
+  useEffect(() => {
+    const scrollToAsset = (assetId) => {
+      if (ref) {
+        const anchorElement = document.getElementById(assetId);
+        if (!anchorElement) return;
+        const top = anchorElement.offsetTop;
+        ref.current?.scrollTo({
+          top,
+          behavior: "smooth",
+        });
+      }
+    };
+    if (expand) {
+      scrollToAsset(assetId);
+    } else {
+      if (!firstRender) {
+        setExpand(true);
+      }
+      setTimeout(() => {
+        scrollToAsset(assetId);
+      }, 500);
     }
-  };
+    setFirstRender(false);
+  }, [assetId]);
+  if (!data.length || isError) return null;
+
   return (
     <div ref={scrollContainer} className="profile-widget-full" id="nft">
       <div
@@ -123,14 +151,7 @@ const RenderNFTCollectionWidget = ({ address, onShowDetail, initialData }) => {
         </h2>
         <NFTCollections
           handleScrollToAsset={(ref, assetId) => {
-            setExpand(true);
-            if (expand) {
-              scrollToAsset(ref, assetId);
-            } else {
-              setTimeout(() => {
-                scrollToAsset(ref, assetId);
-              }, 500);
-            }
+            setScrollRefAndAssetId([ref, assetId]);
           }}
           parentScrollRef={scrollContainer}
           expand={expand}

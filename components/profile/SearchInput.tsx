@@ -42,9 +42,13 @@ export default function SearchInput(props) {
   };
 
   const onKeyDown = (e) => {
-    if (e.key === "Enter") {
+  
+    if (e.keyCode === 13) {
       const _value = searchList[activeIndex] ? searchList[activeIndex] : query;
       emitSubmit(e, _value);
+    }
+    if (e.keyCode === 229) {
+      // do nothing 
     }
     if (e.key === "ArrowUp") {
       if (searchList && searchList.length === 1) {
