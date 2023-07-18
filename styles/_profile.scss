@@ -50,10 +50,14 @@
     align-items: center;
     gap: 1rem;
     margin: 1rem 0;
-
-    .platform-badge {
+    .main-platform{
       width: 1.8rem;
       height: 1.8rem;
+      box-shadow: .1rem .1rem .1rem rgba($dark-color, .5);
+    }
+    .platform-badge {
+      width: 1.6rem;
+      height: 1.6rem;
       background: #fff;
       border-radius: 50%;
       display: flex;
@@ -61,10 +65,10 @@
       justify-content: center;
       cursor: pointer;
       transition: all .2s ease;
-
+     
       &:hover {
         transform: scale(1.2);
-        box-shadow: 0 .1rem .1rem rgba($dark-color, .1);
+        box-shadow: 0 .2rem .2rem rgba($dark-color, .1);
       }
     }
   }
