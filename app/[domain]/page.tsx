@@ -37,7 +37,7 @@ async function fetchDataFromServer(domain: string) {
         PlatformType.farcaster,
         PlatformType.lens,
         PlatformType.ethereum,
-        PlatformType.nextid
+        PlatformType.nextid,
       ].includes(platform)
     )
       notFound();
@@ -51,7 +51,9 @@ async function fetchDataFromServer(domain: string) {
     const raw = await response.json();
     const _data = raw.find((x) => x.platform === platform) || raw?.[0];
     if (!_data || _data.error) throw new Error(_data.error);
-    const remoteNFTs = await fetchInitialNFTsData(_data?.address);
+    const remoteNFTs = _data.address
+      ? await fetchInitialNFTsData(_data.address)
+      : {};
     return {
       data: { ..._data, links: mapLinks(raw) },
       nfts: { ...remoteNFTs, nfts: mapNFTs(remoteNFTs?.nfts) },
@@ -87,7 +89,6 @@ export async function generateMetadata({
     metadataBase: new URL(baseURL),
     title: pageTitle,
     description: profileDescription,
-
     alternates: {
       canonical: `/${domain}`,
     },

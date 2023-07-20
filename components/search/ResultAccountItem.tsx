@@ -15,7 +15,6 @@ const RenderAccountItem = (props) => {
       setIsCopied(false);
     }, 1500);
   };
-  const router = useRouter();
   const { identity, sources, profile, canSkipProfile } = props;
 
   const [isCopied, setIsCopied] = useState(false);
