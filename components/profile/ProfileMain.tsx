@@ -191,7 +191,7 @@ export default function ProfileMain(props) {
                       setDialogOpen(true);
                     }}
                     address={data.address}
-                    initialData={nfts}
+                    initialData={nfts || []}
                   />
                 </Suspense>
               </div>
