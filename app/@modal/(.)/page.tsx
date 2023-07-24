@@ -31,7 +31,7 @@ export default function ProfileModal() {
   const [profileData, setProfileData] = useState(null);
   const { data, isLoading, isError } = useProfile(
     !!domain &&
-      [PlatformType.ens, PlatformType.lens, PlatformType.farcaster].includes(
+      [PlatformType.ens, PlatformType.lens, PlatformType.farcaster,PlatformType.nextid].includes(
         platform
       ),
     domain,

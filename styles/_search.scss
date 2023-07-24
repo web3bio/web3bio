@@ -292,6 +292,12 @@
         color: #fff;
       }
     }
+    &.nextid {
+      .icon {
+        background: #121212;
+        color: #fff;
+      }
+    }
   }
 
   .nfts {
@@ -382,6 +388,7 @@
     display: flex;
     font-size: .55rem;
     line-height: 1rem;
+    max-width: 80%;
 
     .action {
       cursor: pointer;

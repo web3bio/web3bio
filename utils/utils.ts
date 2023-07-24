@@ -24,7 +24,7 @@ export const formatText = (string, length?) => {
   }
   if (string.startsWith("0x")) {
     const oriAddr = string,
-      chars = 4;
+      chars = length || 4;
     return `${oriAddr.substring(0, chars + 2)}...${oriAddr.substring(
       oriAddr.length - chars
     )}`;
