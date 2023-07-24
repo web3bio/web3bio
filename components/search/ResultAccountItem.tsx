@@ -6,6 +6,7 @@ import SVG from "react-inlinesvg";
 import { formatText } from "../../utils/utils";
 import { RenderSourceFooter } from "./SourcesFooter";
 import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import { isAddress } from "ethers";
 
 const RenderAccountItem = (props) => {
   const onCopySuccess = () => {
@@ -17,12 +18,12 @@ const RenderAccountItem = (props) => {
   const { identity, sources, profile, canSkipProfile } = props;
 
   const [isCopied, setIsCopied] = useState(false);
-  const displayName = formatText(
-    profile?.displayName
-      ? profile.displayName
-      : identity.displayName || identity.identity,
-    10
-  );
+  const resolvedDisplayName = profile?.displayName
+    ? profile.displayName
+    : identity.displayName || identity.identity;
+  const displayName = isAddress(resolvedDisplayName) || identity.platform === PlatformType.nextid
+    ? formatText(resolvedDisplayName)
+    : resolvedDisplayName;
   const resolvedIdentity =
     identity.platform === PlatformType.ethereum
       ? profile?.address || identity.identity
