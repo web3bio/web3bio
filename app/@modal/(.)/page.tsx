@@ -23,11 +23,7 @@ interface UseProfileProps {
   fallbackData?: ProfileData[];
 }
 
-function useProfile({
-  shouldFetch,
-  identity,
-  fallbackData,
-}: UseProfileProps) {
+function useProfile({ shouldFetch, identity, fallbackData }: UseProfileProps) {
   const url = shouldFetch
     ? `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${identity}`
     : null;
@@ -55,15 +51,16 @@ export default function ProfileModal() {
   const domain = pathName.replace("/", "");
   const platform = handleSearchPlatform(domain);
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
+  const shouldFetch =
+    !!domain &&
+    [
+      PlatformType.ens,
+      PlatformType.lens,
+      PlatformType.farcaster,
+      PlatformType.nextid,
+    ].includes(platform);
   const { data, isLoading, isError } = useProfile({
-    shouldFetch:
-      !!domain &&
-      [
-        PlatformType.ens,
-        PlatformType.lens,
-        PlatformType.farcaster,
-        PlatformType.nextid,
-      ].includes(platform),
+    shouldFetch,
     identity: domain,
   });
   const router = useRouter();
@@ -103,7 +100,7 @@ export default function ProfileModal() {
       />
     );
   };
-  return profileData ? (
+  return shouldFetch ? (
     <Modal onDismiss={() => router.back()}>{renderModalContent()}</Modal>
   ) : null;
 }
