@@ -42,13 +42,13 @@ async function fetchDataFromServer(domain: string) {
     )
       notFound();
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${domain}`,
-      {
-        cache: "no-store",
-      }
+      `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${domain}`
     );
     if (response.status === 404) notFound();
     const raw = await response.json();
+    const relations = Array.from(
+      raw?.map((x) => ({ platform: x.platform, identity: x.identity }))
+    );
     const _data = raw.find((x) => x.platform === platform) || raw?.[0];
     if (!_data || _data.error) throw new Error(_data.error);
     const remoteNFTs = _data.address
@@ -58,9 +58,7 @@ async function fetchDataFromServer(domain: string) {
       data: { ..._data, links: mapLinks(raw) },
       nfts: { ...remoteNFTs, nfts: mapNFTs(remoteNFTs?.nfts) },
       platform,
-      relations: Array.from(
-        raw.map((x) => ({ platform: x.platform, identity: x.identity }))
-      ),
+      relations,
     };
   } catch (e) {
     notFound();
