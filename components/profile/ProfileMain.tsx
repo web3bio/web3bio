@@ -87,7 +87,12 @@ export default function ProfileMain(props) {
                     href={`/${relatedPath}`}
                     target="_blank"
                     key={x.platform + idx}
-                    className={`platform-badge ${idx === 0?'main-platform':''}`}
+                    className={`platform-badge ${
+                      idx === 0 ? "main-platform" : ""
+                    }`}
+                    onClickCapture={(e) => {
+                      if (idx === 0) e.preventDefault();
+                    }}
                     style={{
                       background: SocialPlatformMapping(x.platform).profileBg,
                     }}
