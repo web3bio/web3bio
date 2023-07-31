@@ -28,7 +28,9 @@ function useProfile({ shouldFetch, identity, fallbackData }: UseProfileProps) {
     ? `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${identity}`
     : null;
 
-  const { data, error, isValidating } = useSWR(url, _fetcher);
+  const { data, error, isValidating } = useSWR(url, _fetcher, {
+    revalidateOnFocus: false,
+  });
   return {
     data,
     isLoading: isValidating || (!data && !error),
