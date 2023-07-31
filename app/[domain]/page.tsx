@@ -34,7 +34,7 @@ function mapNFTs(nfts) {
   }));
 }
 
-async function fetchDataFromServer(domain: string) {
+export async function fetchDataFromServer(domain: string) {
   if (!domain) notFound();
   try {
     const platform = handleSearchPlatform(domain);
@@ -108,11 +108,6 @@ export async function generateMetadata({
       siteName: "Web3.bio",
       title: pageTitle,
       description: profileDescription,
-      images: [
-        {
-          url: data.avatar || `/img/web3bio-social.jpg`,
-        },
-      ],
     },
   };
 }

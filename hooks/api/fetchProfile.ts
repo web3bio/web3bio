@@ -7,6 +7,8 @@ const resolveSearchHandle = (identity) => {
     [PlatformType.ethereum]: identity.displayName || identity.identity,
     [PlatformType.farcaster]: identity.identity,
     [PlatformType.lens]: identity.identity,
+    [PlatformType.ens]: identity.identity,
+    [PlatformType.nextid]: identity.identity,
   }[identity.platform];
 };
 export const fetchProfile = async (identity) => {
