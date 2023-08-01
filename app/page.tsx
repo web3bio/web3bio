@@ -17,7 +17,6 @@ export async function generateMetadata({ params, searchParams }, parent) {
       type: (await parent).openGraph?.type,
       siteName: (await parent).openGraph?.siteName,
       description: (await parent).openGraph?.description,
-      images: (await parent).openGraph?.images,
       url: pathName,
       title,
     },

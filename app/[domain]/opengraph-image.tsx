@@ -19,7 +19,7 @@ const fetchAvatar = async (domain: string) => {
   return await fetch(url).then((res) => res.json());
 };
 
-const host = "https://web3.bio/";
+
 
 export const contentType = "image/png";
 
@@ -29,34 +29,9 @@ export default async function Image({
 }: {
   params: { domain: string };
 }) {
-  let avatarURI;
   const { domain } = params;
   const data = await fetchAvatar(domain);
-  if (!data?.avatar) {
-    return new ImageResponse(
-      <img src={"https://web3.bio/img/web3bio-social.jpg"} alt={domain} />,
-      {
-        ...size,
-      }
-    );
-  }
-  try {
-    avatarURI = await fetch(data.avatar, {
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
-        Accept:
-          "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-      },
-    }).then((res) => res.arrayBuffer());
-  } catch (e) {
-    return new ImageResponse(
-      <img src={"https://web3.bio/img/web3bio-social.jpg"} alt={domain} />,
-      {
-        ...size,
-      }
-    );
-  }
+
   return new ImageResponse(
     (
       <div
@@ -113,7 +88,7 @@ export default async function Image({
           <img
             width={"200px"}
             height={"200px"}
-            src={avatarURI}
+            src={data?.avatar || "https://web3.bio/logo-web3bio.png"}
             style={{
               borderRadius: "50%",
               boxShadow: "inset 0 0 6px 6px rgba(255, 255, 255, .1)",
@@ -145,7 +120,7 @@ export default async function Image({
                     key={x}
                     width={36}
                     height={36}
-                    src={host + SocialPlatformMapping(x as PlatformType).icon}
+                    src={`https://web3.bio/${SocialPlatformMapping(x as PlatformType).icon}`}
                   />
                 );
               })}
