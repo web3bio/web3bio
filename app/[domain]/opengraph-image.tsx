@@ -32,12 +32,11 @@ export default async function Image({
   console.log(data.avatar);
   avatarURL = await fetch(data.avatar, {
     mode: "no-cors",
-    next: { revalidate: 60 },
+    cache: "no-cache",
   })
     .then((res) => res.arrayBuffer())
     .catch((e) => "https://web3.bio/logo-web3bio.png");
 
-  console.log(avatarURL, "avatar");
   return new ImageResponse(
     (
       <div
@@ -48,7 +47,7 @@ export default async function Image({
           alignItems: "center",
           justifyContent: "center",
           letterSpacing: "-.02em",
-          background: "linear-gradient(to left,#636fa4,#e8cbc0)",
+          background: "linear-gradient(to left,#eed0f9,#e8cbc0)",
         }}
       >
         <div
