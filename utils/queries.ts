@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client";
 
+
 export const GET_PROFILES_DOMAIN = gql`
   query GET_PROFILES_DOMAIN($platform: String, $identity: String) {
     domain(domainSystem: $platform, name: $identity) {
@@ -175,5 +176,5 @@ export function matchQuery(query) {
     : query;
 }
 
-
 export const NFT_PAGE_SIZE = 40;
+

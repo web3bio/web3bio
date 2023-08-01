@@ -1,7 +1,6 @@
 import { ImageResponse } from "next/server";
 import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import { handleSearchPlatform } from "../../utils/utils";
-import SVG from "react-inlinesvg";
 
 // Route segment config
 export const runtime = "edge";
@@ -30,8 +29,17 @@ export default async function Image({
 }: {
   params: { domain: string };
 }) {
+  let defaultImg;
   const { domain } = params;
   const data = await fetchAvatar(domain);
+  if (!data?.avatar) {
+    return new ImageResponse(
+      <img src={"https://web3.bio/img/web3bio-social.jpg"} alt={domain} />,
+      {
+        ...size,
+      }
+    );
+  }
   return new ImageResponse(
     (
       <div
@@ -72,64 +80,61 @@ export default async function Image({
             Web3.bio
           </span>
         </div>
-        {data.avatar ? (
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 80,
+            padding: "20px 50px",
+            margin: "0 42px",
+            fontSize: 48,
+            lineHeight: 1.4,
+            textAlign: "center",
+          }}
+        >
+          <img
+            width={"200px"}
+            height={"200px"}
+            src={data?.avatar || ""}
+            style={{
+              borderRadius: "50%",
+              boxShadow: "inset 0 0 6px 6px rgba(255, 255, 255, .1)",
+            }}
+            alt={domain}
+          />
           <div
             style={{
               display: "flex",
-              alignItems: "center",
-              gap: 80,
-              padding: "20px 50px",
-              margin: "0 42px",
-              fontSize: 48,
-              lineHeight: 1.4,
-              textAlign: "center",
+              flexDirection: "column",
+              gap: "18px",
             }}
           >
-            <img
-              width={"200px"}
-              height={"200px"}
-              src={data?.avatar || ""}
-              style={{
-                borderRadius: "50%",
-                boxShadow: "inset 0 0 6px 6px rgba(255, 255, 255, .1)",
-              }}
-              alt={domain}
-            />
+            <div>{data.displayName}</div>
+            <div>{data.identity}</div>
             <div
               style={{
                 display: "flex",
-                flexDirection: "column",
-                gap: "18px",
+                alignItems: "center",
+                gap: "12px",
               }}
             >
-              <div>{data.displayName}</div>
-              <div>{data.identity}</div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "12px",
-                }}
-              >
-                {Object.keys(data?.links).map((x) => {
-                  return (
-                    <img
-                      style={{
-                        color: "#fff",
-                      }}
-                      key={x}
-                      width={36}
-                      height={36}
-                      src={host + SocialPlatformMapping(x as PlatformType).icon}
-                    />
-                  );
-                })}
-              </div>
+              {Object.keys(data?.links).map((x) => {
+                return (
+                  <img
+                    style={{
+                      color: "#fff",
+                    }}
+                    key={x}
+                    width={36}
+                    height={36}
+                    src={host + SocialPlatformMapping(x as PlatformType).icon}
+                  />
+                );
+              })}
             </div>
           </div>
-        ) : (
-          <img src="https://web3.bio/img/web3bio-social.jpg" alt={domain} />
-        )}
+        </div>
       </div>
     ),
     {
