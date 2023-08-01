@@ -4,7 +4,6 @@ import { handleSearchPlatform } from "../../utils/utils";
 
 // Route segment config
 export const runtime = "edge";
-export const preferredRegion = "home";
 // Image metadata
 export const size = {
   width: 800,
@@ -19,8 +18,6 @@ const fetchAvatar = async (domain: string) => {
   return await fetch(url).then((res) => res.json());
 };
 
-
-
 export const contentType = "image/png";
 
 // Image generation
@@ -29,8 +26,20 @@ export default async function Image({
 }: {
   params: { domain: string };
 }) {
+  let avatarURL;
   const { domain } = params;
   const data = await fetchAvatar(domain);
+  try {
+    avatarURL = await fetch(new URL(data.avatar), {
+      mode: "cors",
+      cache: "no-cache",
+      credentials: "same-origin",
+      referrerPolicy: "no-referrer",
+    }).then((res) => res.arrayBuffer());
+  } catch (e) {
+    console.log(e, "error");
+    avatarURL = "https://web3.bio/logo-web3bio.png";
+  }
 
   return new ImageResponse(
     (
@@ -88,7 +97,7 @@ export default async function Image({
           <img
             width={"200px"}
             height={"200px"}
-            src={data?.avatar || "https://web3.bio/logo-web3bio.png"}
+            src={avatarURL}
             style={{
               borderRadius: "50%",
               boxShadow: "inset 0 0 6px 6px rgba(255, 255, 255, .1)",
@@ -120,7 +129,9 @@ export default async function Image({
                     key={x}
                     width={36}
                     height={36}
-                    src={`https://web3.bio/${SocialPlatformMapping(x as PlatformType).icon}`}
+                    src={`https://web3.bio/${
+                      SocialPlatformMapping(x as PlatformType).icon
+                    }`}
                   />
                 );
               })}
