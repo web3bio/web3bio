@@ -29,18 +29,15 @@ export default async function Image({
   let avatarURL;
   const { domain } = params;
   const data = await fetchAvatar(domain);
-  try {
-    avatarURL = await fetch(new URL(data.avatar), {
-      mode: "cors",
-      cache: "no-cache",
-      credentials: "same-origin",
-      referrerPolicy: "no-referrer",
-    }).then((res) => res.arrayBuffer());
-  } catch (e) {
-    console.log(e, "error");
-    avatarURL = "https://web3.bio/logo-web3bio.png";
-  }
+  console.log(data.avatar);
+  avatarURL = await fetch(data.avatar, {
+    mode: "no-cors",
+    next: { revalidate: 60 },
+  })
+    .then((res) => res.arrayBuffer())
+    .catch((e) => "https://web3.bio/logo-web3bio.png");
 
+  console.log(avatarURL, "avatar");
   return new ImageResponse(
     (
       <div
@@ -51,10 +48,7 @@ export default async function Image({
           alignItems: "center",
           justifyContent: "center",
           letterSpacing: "-.02em",
-          background: "#fff",
-          backgroundImage:
-            "radial-gradient(circle at 25px 25px, lightgray 2%, transparent 0%), radial-gradient(circle at 75px 75px, lightgray 2%, transparent 0%)",
-          backgroundSize: "100px 100px",
+          background: "linear-gradient(to left,#636fa4,#e8cbc0)",
         }}
       >
         <div
