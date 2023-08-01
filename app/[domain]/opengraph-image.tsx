@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { ImageResponse } from "next/server";
 import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import { handleSearchPlatform } from "../../utils/utils";
@@ -47,7 +48,10 @@ export default async function Image({
           alignItems: "center",
           justifyContent: "center",
           letterSpacing: "-.02em",
-          background: "linear-gradient(to left,#eed0f9,#e8cbc0)",
+          background: "#fff",
+          backgroundImage:
+            "radial-gradient(circle at 25px 25px, lightgray 2%, transparent 0%), radial-gradient(circle at 75px 75px, lightgray 2%, transparent 0%)",
+          backgroundSize: "100px 100px",
         }}
       >
         <div
@@ -125,6 +129,7 @@ export default async function Image({
                     src={`https://web3.bio/${
                       SocialPlatformMapping(x as PlatformType).icon
                     }`}
+                    alt="platform"
                   />
                 );
               })}
