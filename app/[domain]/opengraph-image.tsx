@@ -11,11 +11,11 @@ export const size = {
   height: 400,
 };
 
-const fetchAvatar = async (domain: string) => {
+const fetchProfile = async (domain: string) => {
   const platform = handleSearchPlatform(domain);
   const url =
     process.env.NEXT_PUBLIC_PROFILE_END_POINT +
-    `/profile/${platform.toLowerCase()}/${domain}`;
+    `/profile/${platform.toLowerCase()}/${domain.replaceAll('.farcaster','')}`;
   return await fetch(url).then((res) => res.json());
 };
 
@@ -27,17 +27,19 @@ export default async function Image({
 }: {
   params: { domain: string };
 }) {
-  let avatarURL;
   const { domain } = params;
-  const data = await fetchAvatar(domain);
-  console.log(data.avatar);
-  avatarURL = await fetch(data.avatar, {
-    mode: "no-cors",
-    cache: "no-cache",
-  })
-    .then((res) => res.arrayBuffer() || "")
-    .catch(() => "");
-
+  const data = await fetchProfile(domain);
+  const getImgContent = async () => {
+    let avatarURL = "" as any;
+    try {
+      avatarURL = await fetch(data.avatar).then((res) => res.arrayBuffer());
+    } catch (e) {
+      console.log("error", e);
+      avatarURL = "https://web3.bio/logo-web3bio.png";
+    }
+    return avatarURL;
+  };
+  const avatarURI = await getImgContent();
   return new ImageResponse(
     (
       <div
@@ -94,7 +96,7 @@ export default async function Image({
           <img
             width={"200px"}
             height={"200px"}
-            src={avatarURL || "https://web3.bio/logo-web3bio.png"}
+            src={avatarURI}
             style={{
               borderRadius: "50%",
               boxShadow: "inset 0 0 6px 6px rgba(255, 255, 255, .1)",
@@ -117,7 +119,7 @@ export default async function Image({
                 gap: "12px",
               }}
             >
-              {Object.keys(data?.links).map((x) => {
+              {Object.keys(data?.links || {}).map((x) => {
                 return (
                   <img
                     style={{
