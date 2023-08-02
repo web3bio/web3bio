@@ -35,8 +35,8 @@ export default async function Image({
     mode: "no-cors",
     cache: "no-cache",
   })
-    .then((res) => res.arrayBuffer())
-    .catch((e) => "https://web3.bio/logo-web3bio.png");
+    .then((res) => res.arrayBuffer() || "")
+    .catch(() => "");
 
   return new ImageResponse(
     (
@@ -94,7 +94,7 @@ export default async function Image({
           <img
             width={"200px"}
             height={"200px"}
-            src={avatarURL}
+            src={avatarURL || "https://web3.bio/logo-web3bio.png"}
             style={{
               borderRadius: "50%",
               boxShadow: "inset 0 0 6px 6px rgba(255, 255, 255, .1)",
