@@ -35,6 +35,11 @@ export async function generateMetadata({
       url: `/${domain}`,
       siteName: "Web3.bio",
       title: pageTitle,
+      images: [
+        {
+          url: `${baseURL}/og/${domain}` || `/img/web3bio-social.jpg`,
+        },
+      ],
       description: profileDescription,
     },
   };

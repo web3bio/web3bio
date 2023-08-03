@@ -1,45 +1,31 @@
 /* eslint-disable @next/next/no-img-element */
 import { ImageResponse } from "next/server";
-import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
-import { handleSearchPlatform } from "../../utils/utils";
+import { PlatformType, SocialPlatformMapping } from "../../../utils/platform";
+import { handleSearchPlatform } from "../../../utils/utils";
 
 // Route segment config
 export const runtime = "edge";
 // Image metadata
-export const size = {
-  width: 800,
-  height: 400,
+const size = {
+  width: 1200,
+  height: 630,
 };
 
 const fetchProfile = async (domain: string) => {
   const platform = handleSearchPlatform(domain);
   const url =
     process.env.NEXT_PUBLIC_PROFILE_END_POINT +
-    `/profile/${platform.toLowerCase()}/${domain.replaceAll('.farcaster','')}`;
+    `/profile/${platform.toLowerCase()}/${domain.replaceAll(".farcaster", "")}`;
   return await fetch(url).then((res) => res.json());
 };
 
-export const contentType = "image/png";
-
 // Image generation
-export default async function Image({
-  params,
-}: {
-  params: { domain: string };
-}) {
-  const { domain } = params;
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const domain = searchParams.get("domain");
+  if (!domain) return null;
   const data = await fetchProfile(domain);
-  const getImgContent = async () => {
-    let avatarURL = "" as any;
-    try {
-      avatarURL = await fetch(data.avatar).then((res) => res.arrayBuffer());
-    } catch (e) {
-      console.log("error", e);
-      avatarURL = "https://web3.bio/logo-web3bio.png";
-    }
-    return avatarURL;
-  };
-  const avatarURI = await getImgContent();
+
   return new ImageResponse(
     (
       <div
@@ -96,7 +82,7 @@ export default async function Image({
           <img
             width={"200px"}
             height={"200px"}
-            src={avatarURI}
+            src={data?.avatar || "https://web3.bio/logo-web3bio.png"}
             style={{
               borderRadius: "50%",
               boxShadow: "inset 0 0 6px 6px rgba(255, 255, 255, .1)",

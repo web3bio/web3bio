@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@vercel/og": "^0.5.10",
     "boring-avatars": "^1.7.0",
     "qrcode": "^1.5.3",
     "react-dom": "^18.2.0",
