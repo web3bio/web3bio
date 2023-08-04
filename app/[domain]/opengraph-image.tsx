@@ -7,8 +7,8 @@ import { handleSearchPlatform } from "../../utils/utils";
 export const runtime = "edge";
 // Image metadata
 export const size = {
-  width: 800,
-  height: 400,
+  width: 1200,
+  height: 630,
 };
 
 const fetchProfile = async (domain: string) => {
