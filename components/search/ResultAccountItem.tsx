@@ -85,12 +85,7 @@ const RenderAccountItem = (props) => {
                       prefetch={false}
                     >
                       <div className="label-ens" title={nft.id}>
-                        <Image
-                          src="/icons/icon-ens.svg"
-                          width={16}
-                          height={16}
-                          alt="ens"
-                        />
+                        <SVG src={"/icons/icon-ens.svg"} width="20" height="20" className="icon" />
                         <span>{nft.id}</span>
                       </div>
                     </Link>
