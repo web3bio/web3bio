@@ -5,7 +5,7 @@ import { ExpandController } from "./ExpandController";
 import { NFTCollections } from "./NFTCollections";
 import { _fetcher } from "../apis/ens";
 import { SIMPLE_HASH_URL } from "../apis/simplehash";
-import { NFT_PAGE_SIZE } from "../../utils/queries";
+import { NFT_PAGE_SIZE } from "../../hooks/api/fetchProfile";
 
 const CHAIN_PARAM = "ethereum";
 const CURSOR_PARAM = "&cursor=";

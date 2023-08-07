@@ -176,5 +176,4 @@ export function matchQuery(query) {
     : query;
 }
 
-export const NFT_PAGE_SIZE = 40;
 

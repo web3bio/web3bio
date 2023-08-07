@@ -4,6 +4,8 @@ import { Metadata } from "next";
 import ProfileMain from "../../components/profile/ProfileMain";
 import { fetchDataFromServer } from "../../utils/profile";
 
+export const runtime = "edge";
+
 export async function generateMetadata({
   params: { domain },
 }: {

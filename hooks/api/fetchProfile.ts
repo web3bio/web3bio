@@ -1,6 +1,6 @@
 import { SIMPLE_HASH_URL } from "../../components/apis/simplehash";
 import { PlatformType } from "../../utils/platform";
-import { NFT_PAGE_SIZE } from "../../utils/queries";
+export const NFT_PAGE_SIZE = 40;
 
 const resolveSearchHandle = (identity) => {
   return {
@@ -23,10 +23,7 @@ export const fetchProfile = async (identity) => {
     const url =
       process.env.NEXT_PUBLIC_PROFILE_END_POINT +
       `/profile/${platform.toLowerCase()}/${handle}`;
-    const res = await fetch(url, {
-      next: { revalidate: 600 },
-      cache: "default",
-    });
+    const res = await fetch(url);
     return await res.json();
   } catch (e) {
     return null;

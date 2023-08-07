@@ -15,7 +15,7 @@ const fetchProfile = async (domain: string) => {
   const platform = handleSearchPlatform(domain);
   const url =
     process.env.NEXT_PUBLIC_PROFILE_END_POINT +
-    `/profile/${platform.toLowerCase()}/${domain.replaceAll('.farcaster','')}`;
+    `/profile/${platform.toLowerCase()}/${domain.replaceAll(".farcaster", "")}`;
   return await fetch(url).then((res) => res.json());
 };
 
@@ -32,7 +32,9 @@ export default async function Image({
   const getImgContent = async () => {
     let avatarURL = "" as any;
     try {
-      avatarURL = await fetch(data.avatar).then((res) => res.arrayBuffer());
+      avatarURL = await fetch(data.avatar,{
+        cache:'no-store'
+      }).then((res) => res.arrayBuffer());
     } catch (e) {
       console.log("error", e);
       avatarURL = "https://web3.bio/logo-web3bio.png";
