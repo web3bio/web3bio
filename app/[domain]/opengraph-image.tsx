@@ -29,19 +29,6 @@ export default async function Image({
 }) {
   const { domain } = params;
   const data = await fetchProfile(domain);
-  const getImgContent = async () => {
-    let avatarURL = "" as any;
-    try {
-      avatarURL = await fetch(data.avatar,{
-        cache:'no-store'
-      }).then((res) => res.arrayBuffer());
-    } catch (e) {
-      console.log("error", e);
-      avatarURL = "https://web3.bio/logo-web3bio.png";
-    }
-    return avatarURL;
-  };
-  const avatarURI = await getImgContent();
   return new ImageResponse(
     (
       <div
@@ -95,16 +82,32 @@ export default async function Image({
             textAlign: "center",
           }}
         >
-          <img
-            width={"200px"}
-            height={"200px"}
-            src={avatarURI}
+          <div
             style={{
+              background: "url('https://web3.bio/logo-web3bio.png')",
+              backgroundSize: "100% 100%",
               borderRadius: "50%",
-              boxShadow: "inset 0 0 6px 6px rgba(255, 255, 255, .1)",
+              width: 200,
+              height: 200,
+              boxShadow: "2px 2px 48px 2px rgba(0, 0, 0, 0.2)",
+              display: "flex",
             }}
-            alt={domain}
-          />
+          >
+            <img
+              width={"202px"}
+              height={"202px"}
+              src={data.avatar || "https://web3.bio/logo-web3bio.png"}
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%,-50%)",
+                borderRadius: "50%",
+              }}
+              alt={domain}
+            />
+          </div>
+
           <div
             style={{
               display: "flex",
@@ -112,8 +115,8 @@ export default async function Image({
               gap: "18px",
             }}
           >
-            <div>{data.displayName}</div>
-            <div>{data.identity}</div>
+            <div>{data.displayName ?? domain}</div>
+            <div>{data.identity ?? domain}</div>
             <div
               style={{
                 display: "flex",
