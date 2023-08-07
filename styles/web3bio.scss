@@ -460,10 +460,10 @@ body {
       }
 
       &.identity-lens {
-        background: rgba(#BDFC5A, .25);
+        background: lighten(#6bc674, 35%);
 
         .icon {
-          color: #204F24;
+          color: #6bc674;
         }
       }
     }

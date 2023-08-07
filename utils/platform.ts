@@ -105,7 +105,7 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
   },
   [PlatformType.lens]: {
     key: PlatformType.lens,
-    color: "#BDFC5A",
+    color: "#6bc674",
     icon: "icons/icon-lens.svg",
     label: "Lens",
     urlPrefix: "https://www.lensfrens.xyz/",
