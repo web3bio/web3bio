@@ -51,8 +51,7 @@ export default function ProfileMain(props) {
                 <Image
                   src={data.avatar}
                   className="avatar"
-                  priority={false}
-                  loading="lazy"
+                  priority={true}
                   alt={`${pageTitle} Avatar / Profile Photo`}
                   onError={() => {
                     setErrorAvatar(true);
@@ -77,41 +76,6 @@ export default function ProfileMain(props) {
                 />
               )}
             </div>
-            <div className="related-platforms">
-              {relations?.map((x, idx) => {
-                const relatedPath = `${x.identity}${
-                  x.platform === PlatformType.farcaster ? ".farcaster" : ""
-                }`;
-                return (
-                  <Link
-                    href={`/${relatedPath}`}
-                    target="_blank"
-                    key={x.platform + idx}
-                    className={`platform-badge ${
-                      idx === 0 ? "main-platform" : ""
-                    }`}
-                    onClickCapture={(e) => {
-                      if (idx === 0) e.preventDefault();
-                    }}
-                    style={{
-                      background: SocialPlatformMapping(x.platform).profileBg,
-                    }}
-                  >
-                    <SVG
-                      color={
-                        x.platform === PlatformType.farcaster ? "#fff" : "unset"
-                      }
-                      width={20}
-                      src={
-                        SocialPlatformMapping(x.platform).profileIcon ||
-                        SocialPlatformMapping(x.platform).icon ||
-                        ""
-                      }
-                    />
-                  </Link>
-                );
-              })}
-            </div>
             <h1 className="text-assistive">{`${pageTitle} ${
               SocialPlatformMapping(platform).label
             } Web3 Profile`}</h1>
@@ -119,42 +83,61 @@ export default function ProfileMain(props) {
             <div className="profile-name">{data.displayName}</div>
             <h3 className="text-assistive">{`${pageTitle}‘s Ethereum wallet address is ${data.address}`}</h3>
             <div className="profile-identity">
-              {data.identity == data.displayName ? (
-                <>
-                  <span className="profile-label">
-                    {formatText(data.address)}
-                  </span>
-                  <Clipboard
-                    component="div"
-                    className="action"
-                    data-clipboard-text={data.address}
-                    onSuccess={onCopySuccess}
-                    title="Copy the Ethereum wallet address"
+              <>
+                <span className="profile-label" title={`${pageTitle}‘s Ethereum wallet address is ${data.address}`}>
+                  {formatText(data.address)}
+                </span>
+                <Clipboard
+                  component="div"
+                  className="action"
+                  data-clipboard-text={data.address}
+                  onSuccess={onCopySuccess}
+                  title="Copy the Ethereum wallet address"
+                >
+                  <SVG src="../icons/icon-copy.svg" width={20} height={20} />
+                  {copied && <div className="tooltip-copy">COPIED</div>}
+                </Clipboard>
+                {/* <ShareButton /> */}
+              </>
+            </div>
+
+            <div className="profile-identity">
+              {relations?.map((x, idx) => {
+                const relatedPath = `${x.identity}${
+                  x.platform === PlatformType.farcaster ? ".farcaster" : ""
+                }`;
+                return (
+                  <Link
+                    href={`/${relatedPath}`}
+                    key={x.platform + idx}
+                    className={`platform-badge ${x.platform} ${
+                      idx === 0 ? "active" : ""
+                    }`}
+                    onClickCapture={(e) => {
+                      if (idx === 0) e.preventDefault();
+                    }}
+                    style={{
+                      ["--platform-primary-color" as string]: SocialPlatformMapping(x.platform)?.color,
+                    }}
                   >
-                    <SVG src="../icons/icon-copy.svg" width={20} height={20} />
-                    {copied && <div className="tooltip-copy">COPIED</div>}
-                  </Clipboard>
-                  {/* <ShareButton /> */}
-                </>
-              ) : (
-                <>
-                  <span className="profile-label mr-2">{data.identity}</span>
-                  {" · "}
-                  <span className="profile-label ml-2">
-                    {formatText(data.address)}
-                  </span>
-                  <Clipboard
-                    component="div"
-                    className="action"
-                    data-clipboard-text={data.address}
-                    onSuccess={onCopySuccess}
-                  >
-                    <SVG src="../icons/icon-copy.svg" width={20} height={20} />
-                    {copied && <div className="tooltip-copy">COPIED</div>}
-                  </Clipboard>
-                  {/* <ShareButton /> */}
-                </>
-              )}
+                    <div 
+                      className="platform-badge-icon"
+                    >
+                      <SVG
+                        width={20}
+                        src={
+                          SocialPlatformMapping(x.platform).icon ||
+                          ""
+                        }
+                        className="text-pride"
+                      />
+                    </div>
+                    <span className="platform-badge-name">
+                      {x.identity}
+                    </span>
+                  </Link>
+                );
+              })}
             </div>
 
             {data.description && (

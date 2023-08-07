@@ -420,8 +420,8 @@ body {
     }
 
     .identity {
-      border: .05rem solid;
       border-radius: .6rem;
+      box-shadow: inset 0 0 .05rem rgba($dark-color, .25);
       color: rgba($dark-color, .75);
       display: inline-flex;
       margin: .1rem;
@@ -429,7 +429,6 @@ body {
 
       &.identity-ens {
         background: rgba(#5298FF, .1);
-        border-color: rgba(#5298FF, .15);
 
         .icon {
           color: #5298FF;
@@ -438,7 +437,6 @@ body {
 
       &.identity-spaceid {
         background: rgba(#71EBAA, .2);
-        border-color: rgba(#71EBAA, .5);
 
         .icon {
           color: #71EBAA;
@@ -447,7 +445,6 @@ body {
 
       &.identity-farcaster {
         background: rgba(#8465CB, .1);
-        border-color: rgba(#8465CB, .15);
 
         .icon {
           color: #8465CB;
@@ -456,7 +453,6 @@ body {
 
       &.identity-unstoppabledomains {
         background: rgba(#2E65F5, .05);
-        border-color: rgba(#2E65F5, .15);
 
         .icon {
           color: #2E65F5;
@@ -465,7 +461,6 @@ body {
 
       &.identity-lens {
         background: rgba(#BDFC5A, .25);
-        border-color: rgba(#BDFC5A, .75);
 
         .icon {
           color: #204F24;
