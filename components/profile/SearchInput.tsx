@@ -119,11 +119,21 @@ export default function SearchInput(props) {
             });
           }
           if (!isLastDot || cur.label.length > 0) {
-            pre.push({
-              key: cur.key,
-              icon: SocialPlatformMapping(cur.key).icon,
-              label: label,
-            });
+            if (cur.maxLength) {
+              if (label?.length < cur.maxLength) {
+                pre.push({
+                  key: cur.key,
+                  icon: SocialPlatformMapping(cur.key).icon,
+                  label: label,
+                });
+              }
+            } else {
+              pre.push({
+                key: cur.key,
+                icon: SocialPlatformMapping(cur.key).icon,
+                label: label,
+              });
+            }
           }
 
           return pre;
