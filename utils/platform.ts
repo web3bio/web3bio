@@ -52,7 +52,7 @@ export enum PlatformType {
   uniswap = "uniswap",
 }
 
-export const platfomData: { [key in PlatformType]: SocialPlatform } = {
+export const platformData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.twitter]: {
     key: PlatformType.twitter,
     color: "#4A99E9",
@@ -65,8 +65,7 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.ens]: {
     key: PlatformType.ens,
     color: "#5298FF",
-    // TODO: add ens search icon here
-    icon: "icons/icon-ethereum.svg",
+    icon: "icons/icon-ens.svg",
     label: "ENS",
     urlPrefix: "https://app.ens.domains/search/",
     ensText: [],
@@ -106,7 +105,7 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
   },
   [PlatformType.lens]: {
     key: PlatformType.lens,
-    color: "#BDFC5A",
+    color: "#6bc674",
     icon: "icons/icon-lens.svg",
     label: "Lens",
     urlPrefix: "https://www.lensfrens.xyz/",
@@ -369,7 +368,7 @@ export const platfomData: { [key in PlatformType]: SocialPlatform } = {
 
 export const SocialPlatformMapping = (platform: PlatformType) => {
   return (
-    platfomData[platform] ?? {
+    platformData[platform] ?? {
       key: platform,
       color: "",
       icon: "",

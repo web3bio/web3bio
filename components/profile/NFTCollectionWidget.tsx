@@ -1,5 +1,5 @@
 "use client";
-import { memo, Ref, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { ExpandController } from "./ExpandController";
 import { NFTCollections } from "./NFTCollections";
@@ -51,7 +51,7 @@ const getURL = (index, address, previous) => {
   if (
     index !== 0 &&
     previous &&
-    (!previous.nfts.length || !previous?.next_cursor)
+    (!previous?.nfts.length || !previous?.next_cursor)
   )
     return null;
   const cursor = previous?.next_cursor || "";
@@ -64,20 +64,21 @@ const getURL = (index, address, previous) => {
 };
 
 function useNFTs({ address, initialData, fromServer }) {
+  const options = fromServer
+    ? {
+        initialSize: 1,
+        fallbackData: [initialData],
+      }
+    : {};
   const { data, error, size, isValidating, setSize } = useSWRInfinite(
     (index, previous) => getURL(index, address, previous),
     _fetcher,
     {
+      ...options,
       suspense: !fromServer,
+      revalidateOnFocus: false,
       revalidateOnMount: true,
-      ...(initialData?.nfts?.length &&
-        fromServer && {
-          suspense: false,
-          initialSize: 1,
-          fallbackData: [initialData],
-          revalidateOnFocus: false,
-          revalidateOnMount: false,
-        }),
+      revalidateOnReconnect: true,
     }
   );
   return {

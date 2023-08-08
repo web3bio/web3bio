@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import SVG from "react-inlinesvg";
-import { DomainSearchSuffix, fuzzyDomainSuffix } from "../../utils/constants";
+import { DefaultSearchSuffix, fuzzyDomainSuffix } from "../../utils/constants";
 import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import { matchQuery } from "../../utils/queries";
 import { handleSearchPlatform } from "../../utils/utils";
@@ -12,10 +12,15 @@ const isQuerySplit = (query: string) => {
   return query.includes(".") || query.includes("。");
 };
 
+type SearchListItem = {
+  key: string;
+  label: string;
+  icon?: string;
+};
 export default function SearchInput(props) {
   const { defaultValue, handleSubmit } = props;
   const [query, setQuery] = useState(defaultValue);
-  const [searchList, setSearchList] = useState([]);
+  const [searchList, setSearchList] = useState<SearchListItem[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const searchParams = useSearchParams();
   const inputRef = useRef(null);
@@ -26,6 +31,7 @@ export default function SearchInput(props) {
       if (value.key && value.key === PlatformType.farcaster)
         return PlatformType.farcaster;
     })();
+
     const _value = (() => {
       if (!value) return "";
       if (typeof value === "string") return value;
@@ -33,8 +39,6 @@ export default function SearchInput(props) {
     })();
     if (_value && _value === searchParams?.get("s")) {
       setQuery(_value);
-      setSearchList([]);
-      return;
     }
     handleSubmit(_value, platfrom);
     setSearchList([]);
@@ -50,6 +54,7 @@ export default function SearchInput(props) {
       // do nothing
     }
     if (e.key === "ArrowUp") {
+      if (searchList?.length) e.preventDefault();
       if (searchList && searchList.length === 1) {
         setActiveIndex(0);
         return;
@@ -61,6 +66,7 @@ export default function SearchInput(props) {
       }
     }
     if (e.key === "ArrowDown") {
+      if (searchList?.length) e.preventDefault();
       if (searchList && searchList.length === 1) {
         setActiveIndex(0);
         return;
@@ -80,36 +86,58 @@ export default function SearchInput(props) {
     const isLastDot = [".", "。"].includes(query[query.length - 1]);
     if (isQuerySplit(query) && !isLastDot) {
       if (isLastDot) return;
-      const backupDomains = fuzzyDomainSuffix.map(
-        (x) => matchQuery(query) + `.${x.label}`
-      );
+      const backupDomains = fuzzyDomainSuffix.map((x) => ({
+        key: x.key,
+        text: matchQuery(query) + `.${x.label}`,
+        icon: x.icon,
+      }));
       setSearchList(
         backupDomains.reduce((pre, cur) => {
-          if (cur.includes(query.replace("。", "."))) {
+          if (cur.text.includes(query.replace("。", "."))) {
             pre.push({
-              icon: SocialPlatformMapping(handleSearchPlatform(cur)).icon || "",
-              label: cur,
+              key: cur.key,
+              icon:
+                cur?.icon ||
+                SocialPlatformMapping(handleSearchPlatform(cur.text)).icon ||
+                "",
+              label: cur.text,
             });
           }
           return pre;
-        }, [] as any)
+        }, [] as SearchListItem[])
       );
     } else {
       setSearchList(
-        DomainSearchSuffix.reduce((pre, cur) => {
+        DefaultSearchSuffix.reduce((pre, cur) => {
           const label =
-            matchQuery(query) +
-            (cur.label.length > 0 ? `.${cur.label}` : cur.label);
-          if (!isLastDot || cur.label.length > 0) {
+            matchQuery(query) + (cur.label.length > 0 ? `.${cur.label}` : "");
+          if (isLastDot && cur.key === PlatformType.farcaster) {
             pre.push({
               key: cur.key,
               icon: SocialPlatformMapping(cur.key).icon,
-              label: label,
+              label: label + "." + cur.optional,
             });
+          }
+          if (!isLastDot || cur.label.length > 0) {
+            if (cur.maxLength) {
+              if (label?.length < cur.maxLength) {
+                pre.push({
+                  key: cur.key,
+                  icon: SocialPlatformMapping(cur.key).icon,
+                  label: label,
+                });
+              }
+            } else {
+              pre.push({
+                key: cur.key,
+                icon: SocialPlatformMapping(cur.key).icon,
+                label: label,
+              });
+            }
           }
 
           return pre;
-        }, [] as any)
+        }, new Array<SearchListItem>())
       );
     }
   }, [query, activeIndex, searchParams]);
@@ -136,7 +164,7 @@ export default function SearchInput(props) {
         onClick={(e) => {
           const ipt = inputRef.current;
           if (!ipt) return;
-          emitSubmit(e, (ipt as any).value);
+          emitSubmit(e, (ipt as { value: string }).value);
         }}
       >
         <Image
@@ -149,7 +177,7 @@ export default function SearchInput(props) {
       </button>
       {searchList.length > 0 && (
         <div className="search-list">
-          {searchList.map((x: { label: string; icon: string }, idx) => {
+          {searchList.map((x: { label: string; icon?: string }, idx) => {
             return (
               <div
                 className={
@@ -160,7 +188,7 @@ export default function SearchInput(props) {
                 key={x.label + idx}
                 onClick={(e) => emitSubmit(e, x)}
               >
-                <SVG src={x.icon} width={20} height={20} />
+                <SVG src={x.icon || ""} width={20} height={20} />
                 {x.label}
               </div>
             );

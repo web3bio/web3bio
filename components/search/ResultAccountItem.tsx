@@ -6,7 +6,7 @@ import SVG from "react-inlinesvg";
 import { formatText } from "../../utils/utils";
 import { RenderSourceFooter } from "./SourcesFooter";
 import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
-import { useRouter } from "next/navigation";
+import { isAddress } from "ethers";
 
 const RenderAccountItem = (props) => {
   const onCopySuccess = () => {
@@ -15,16 +15,15 @@ const RenderAccountItem = (props) => {
       setIsCopied(false);
     }, 1500);
   };
-  const router = useRouter();
   const { identity, sources, profile, canSkipProfile } = props;
 
   const [isCopied, setIsCopied] = useState(false);
-  const displayName = formatText(
-    profile?.displayName
-      ? profile.displayName
-      : identity.displayName || identity.identity,
-    30
-  );
+  const resolvedDisplayName = profile?.displayName
+    ? profile.displayName
+    : identity.displayName || identity.identity;
+  const displayName = isAddress(resolvedDisplayName) || identity.platform === PlatformType.nextid
+    ? formatText(resolvedDisplayName)
+    : resolvedDisplayName;
   const resolvedIdentity =
     identity.platform === PlatformType.ethereum
       ? profile?.address || identity.identity
@@ -86,12 +85,7 @@ const RenderAccountItem = (props) => {
                       prefetch={false}
                     >
                       <div className="label-ens" title={nft.id}>
-                        <Image
-                          src="/icons/icon-ens.svg"
-                          width={16}
-                          height={16}
-                          alt="ens"
-                        />
+                        <SVG src={"/icons/icon-ens.svg"} width="20" height="20" className="icon" />
                         <span>{nft.id}</span>
                       </div>
                     </Link>
@@ -156,9 +150,9 @@ const RenderAccountItem = (props) => {
               </div>
             </div>
           </div>
-          <Link 
-            href={`/${resolvedIdentity}`} 
-            className="social-actions" 
+          <Link
+            href={`/${resolvedIdentity}`}
+            className="social-actions"
             title="Open Lens Profile"
           >
             <button className="btn btn-sm btn-link action">
@@ -208,7 +202,7 @@ const RenderAccountItem = (props) => {
               </div>
             </div>
           </div>
-          
+
           <Link
             href={`/${resolvedIdentity}.farcaster`}
             className="social-actions"
@@ -352,7 +346,60 @@ const RenderAccountItem = (props) => {
         </div>
       );
     case PlatformType.nextid:
-      return null;
+      return (
+        <div className="social-item nextid">
+          <div className="social-main">
+            <div className="social">
+              <div className="avatar">
+                {profile?.avatar && (
+                  <Image
+                    width={18}
+                    height={18}
+                    alt="avatar"
+                    src={profile?.avatar}
+                    className="avatar-img"
+                  />
+                )}
+                <div className="icon">
+                  <SVG
+                    src={SocialPlatformMapping(identity.platform)?.icon || ""}
+                    width={20}
+                    height={20}
+                  />
+                </div>
+              </div>
+              <div className="content">
+                <div className="content-title text-bold">{displayName}</div>
+                <div className="content-subtitle text-gray">
+                  <div className="address">
+                    {formatText(resolvedIdentity, 10)}
+                  </div>
+                  <Clipboard
+                    component="div"
+                    className="action"
+                    data-clipboard-text={resolvedIdentity}
+                    onSuccess={onCopySuccess}
+                  >
+                    <SVG src="icons/icon-copy.svg" width={20} height={20} />
+                    {isCopied && <div className="tooltip-copy">COPIED</div>}
+                  </Clipboard>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="social-actions">
+            <Link
+              className="btn btn-sm btn-link action"
+              href={`/${resolvedIdentity}`}
+              title="Open Next.ID Profile page"
+              rel="noopener noreferrer"
+            >
+              <SVG src="icons/icon-open.svg" width={20} height={20} />
+            </Link>
+          </div>
+          <RenderSourceFooter sources={sources} />
+        </div>
+      );
     default:
       return (
         <div className={`social-item ${identity.platform}`}>

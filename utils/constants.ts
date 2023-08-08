@@ -1,22 +1,24 @@
-import { PlatformType } from "./platform";
+import { PlatformType, SocialPlatformMapping } from "./platform";
 
 // empty for twitter and farcaster
-export const DomainSearchSuffix = [
+export const DefaultSearchSuffix = [
   {
     key: PlatformType.ens,
     label: "eth",
   },
   {
     key: PlatformType.lens,
-    label: PlatformType.lens,
+    label: "lens",
   },
   {
     key: PlatformType.twitter,
     label: "",
+    maxLength: 15,
   },
   {
     key: PlatformType.farcaster,
     label: "",
+    optional: "eth",
   },
   {
     key: PlatformType.unstoppableDomains,
@@ -27,6 +29,11 @@ export const fuzzyDomainSuffix = [
   {
     key: PlatformType.ens,
     label: "eth",
+  },
+  {
+    key: PlatformType.farcaster,
+    label: "eth",
+    icon: SocialPlatformMapping(PlatformType.farcaster).icon,
   },
   {
     key: PlatformType.lens,
@@ -109,4 +116,3 @@ export const fuzzyDomainSuffix = [
   //   label: "arb",
   // },
 ];
-
