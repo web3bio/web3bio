@@ -394,7 +394,7 @@ const RenderAccountItem = (props) => {
               title="Open Next.ID Profile page"
               rel="noopener noreferrer"
             >
-              <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
+              <SVG src="icons/icon-open.svg" width={20} height={20} />
             </Link>
           </div>
           <RenderSourceFooter sources={sources} />

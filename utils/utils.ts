@@ -11,7 +11,7 @@ import {
   regexTwitter,
   regexUnstoppableDomains,
   regexSpaceid,
-  regexProfileFarcaster,
+  regexFarcaster,
 } from "./regexp";
 
 const ArweaveAssetPrefix = "https://arweave.net/";
@@ -101,7 +101,7 @@ export const handleSearchPlatform = (term: string) => {
       return PlatformType.space_id;
     case regexDotbit.test(term):
       return PlatformType.dotbit;
-    case regexProfileFarcaster.test(term):
+    case regexFarcaster.test(term):
       return PlatformType.farcaster;
     case regexTwitter.test(term):
       return PlatformType.twitter;

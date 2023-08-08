@@ -102,6 +102,24 @@ export default function ProfileMain(props) {
             </div>
 
             <div className="profile-identity">
+              { platform == "nextid" ? (
+                  <div
+                    className={`platform-badge nextid active`}
+                    title={`${pageTitle} Next.ID`}
+                  >
+                    <div 
+                      className="platform-badge-icon"
+                    >
+                      <SVG
+                        width={20}
+                        src={"icons/icon-nextid.svg"}
+                        className="text-light"
+                      />
+                    </div>
+                  </div>
+                )
+                 : ""
+              }
               {relations?.map((x, idx) => {
                 const relatedPath = `${x.identity}${
                   x.platform === PlatformType.farcaster ? ".farcaster" : ""
@@ -113,12 +131,7 @@ export default function ProfileMain(props) {
                     className={`platform-badge ${x.platform} ${
                       idx === 0 ? "active" : ""
                     }`}
-                    onClickCapture={(e) => {
-                      if (idx === 0) e.preventDefault();
-                    }}
-                    style={{
-                      ["--platform-primary-color" as string]: SocialPlatformMapping(x.platform)?.color,
-                    }}
+                    title={`${pageTitle} ${SocialPlatformMapping(x.platform).label}`}
                   >
                     <div 
                       className="platform-badge-icon"
