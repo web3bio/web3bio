@@ -1,6 +1,6 @@
 import { fetchInitialNFTsData } from "../hooks/api/fetchProfile";
 import { PlatformType } from "./platform";
-import { handleSearchPlatform } from "./utils";
+import { handleSearchPlatform, mapLinks } from "./utils";
 
 export async function fetchDataFromServer(domain: string) {
   if (!domain) return null;
@@ -38,13 +38,6 @@ export async function fetchDataFromServer(domain: string) {
   } catch (e) {
     return null;
   }
-}
-
-function mapLinks(links) {
-  return Object.entries(links || {}).map(([key, value]) => ({
-    platform: key,
-    ...(value as any),
-  }));
 }
 
 function mapNFTs(nfts) {
