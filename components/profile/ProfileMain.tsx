@@ -5,7 +5,7 @@ import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { RenderWidgetItem } from "./WidgetItem";
 import PoapWidget from "./PoapsWidget";
-import { SocialPlatformMapping } from "../../utils/platform";
+import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import { Error } from "../shared/Error";
 import Avatar from "boring-avatars";
 import { formatText } from "../../utils/utils";
@@ -14,13 +14,12 @@ import { NFTModal, NFTModalType } from "./NFTModal";
 import Image from "next/image";
 // import ShareButton from "../shared/ShareButton";
 export default function ProfileMain(props) {
-  const { data, pageTitle = "", platform, nfts, fromServer } = props;
+  const { data, pageTitle = "", platform, nfts, fromServer, relations } = props;
   const [copied, setCopied] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [curAsset, setCurAsset] = useState(null);
   const [errorAvatar, setErrorAvatar] = useState(false);
   const [dialogType, setDialogType] = useState(NFTModalType.NFT);
-
   const onCopySuccess = () => {
     setCopied(true);
     setTimeout(() => {
@@ -52,8 +51,7 @@ export default function ProfileMain(props) {
                 <Image
                   src={data.avatar}
                   className="avatar"
-                  priority={false}
-                  loading="lazy"
+                  priority={true}
                   alt={`${pageTitle} Avatar / Profile Photo`}
                   onError={() => {
                     setErrorAvatar(true);
@@ -85,42 +83,74 @@ export default function ProfileMain(props) {
             <div className="profile-name">{data.displayName}</div>
             <h3 className="text-assistive">{`${pageTitle}‘s Ethereum wallet address is ${data.address}`}</h3>
             <div className="profile-identity">
-              {data.identity == data.displayName ? (
-                <>
-                  <span className="profile-label">
-                    {formatText(data.address)}
-                  </span>
-                  <Clipboard
-                    component="div"
-                    className="action"
-                    data-clipboard-text={data.address}
-                    onSuccess={onCopySuccess}
-                    title="Copy the Ethereum wallet address"
+              <>
+                <span className="profile-label" title={`${pageTitle}‘s Ethereum wallet address is ${data.address}`}>
+                  {formatText(data.address)}
+                </span>
+                <Clipboard
+                  component="div"
+                  className="action"
+                  data-clipboard-text={data.address}
+                  onSuccess={onCopySuccess}
+                  title="Copy the Ethereum wallet address"
+                >
+                  <SVG src="../icons/icon-copy.svg" width={20} height={20} />
+                  {copied && <div className="tooltip-copy">COPIED</div>}
+                </Clipboard>
+                {/* <ShareButton /> */}
+              </>
+            </div>
+
+            <div className="profile-identity">
+              { platform == "nextid" ? (
+                  <div
+                    className={`platform-badge nextid active`}
+                    title={`${pageTitle} Next.ID`}
                   >
-                    <SVG src="../icons/icon-copy.svg" width={20} height={20} />
-                    {copied && <div className="tooltip-copy">COPIED</div>}
-                  </Clipboard>
-                  {/* <ShareButton /> */}
-                </>
-              ) : (
-                <>
-                  <span className="profile-label mr-2">{data.identity}</span>
-                  {" · "}
-                  <span className="profile-label ml-2">
-                    {formatText(data.address)}
-                  </span>
-                  <Clipboard
-                    component="div"
-                    className="action"
-                    data-clipboard-text={data.address}
-                    onSuccess={onCopySuccess}
+                    <div 
+                      className="platform-badge-icon"
+                    >
+                      <SVG
+                        width={20}
+                        src={"icons/icon-nextid.svg"}
+                        className="text-light"
+                      />
+                    </div>
+                  </div>
+                )
+                 : ""
+              }
+              {relations?.map((x, idx) => {
+                const relatedPath = `${x.identity}${
+                  x.platform === PlatformType.farcaster ? ".farcaster" : ""
+                }`;
+                return (
+                  <Link
+                    href={`/${relatedPath}`}
+                    key={x.platform + idx}
+                    className={`platform-badge ${x.platform} ${
+                      idx === 0 ? "active" : ""
+                    }`}
+                    title={`${pageTitle} ${SocialPlatformMapping(x.platform).label}`}
                   >
-                    <SVG src="../icons/icon-copy.svg" width={20} height={20} />
-                    {copied && <div className="tooltip-copy">COPIED</div>}
-                  </Clipboard>
-                  {/* <ShareButton /> */}
-                </>
-              )}
+                    <div 
+                      className="platform-badge-icon"
+                    >
+                      <SVG
+                        width={20}
+                        src={
+                          SocialPlatformMapping(x.platform).icon ||
+                          ""
+                        }
+                        className="text-pride"
+                      />
+                    </div>
+                    <span className="platform-badge-name">
+                      {x.identity}
+                    </span>
+                  </Link>
+                );
+              })}
             </div>
 
             {data.description && (
@@ -162,7 +192,7 @@ export default function ProfileMain(props) {
                       setDialogOpen(true);
                     }}
                     address={data.address}
-                    initialData={nfts}
+                    initialData={nfts || []}
                   />
                 </Suspense>
               </div>
