@@ -12,32 +12,28 @@ export async function fetchDataFromServer(domain: string) {
         PlatformType.farcaster,
         PlatformType.lens,
         PlatformType.ethereum,
+        PlatformType.nextid,
       ].includes(platform)
     )
       return null;
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${(platform ===
-      PlatformType.ethereum
-        ? PlatformType.ens
-        : platform
-      ).toLowerCase()}/${
-        platform === PlatformType.farcaster
-          ? domain.replaceAll(".farcaster", "")
-          : domain
-      }`,
-      {
-        cache: "no-store",
-      }
+      `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${domain}`
     );
     if (response.status === 404) return null;
-    const data = await response.json();
-    if (!data || data.error) throw new Error(data.error);
-    const remoteNFTs = await fetchInitialNFTsData(data?.address);
-
+    const raw = await response.json();
+    const relations = Array.from(
+      raw?.map((x) => ({ platform: x.platform, identity: x.identity }))
+    );
+    const _data = raw.find((x) => x.platform === platform) || raw?.[0];
+    if (!_data || _data.error) throw new Error(_data.error);
+    const remoteNFTs = _data.address
+      ? await fetchInitialNFTsData(_data.address)
+      : {};
     return {
-      data: { ...data, links: mapLinks(data?.links) },
+      data: { ..._data, links: mapLinks(raw) },
       nfts: { ...remoteNFTs, nfts: mapNFTs(remoteNFTs?.nfts) },
       platform,
+      relations,
     };
   } catch (e) {
     return null;

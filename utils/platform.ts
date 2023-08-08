@@ -65,8 +65,7 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.ens]: {
     key: PlatformType.ens,
     color: "#5298FF",
-    // TODO: add ens search icon here
-    icon: "icons/icon-ethereum.svg",
+    icon: "icons/icon-ens.svg",
     label: "ENS",
     urlPrefix: "https://app.ens.domains/search/",
     ensText: [],
@@ -106,7 +105,7 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
   },
   [PlatformType.lens]: {
     key: PlatformType.lens,
-    color: "#BDFC5A",
+    color: "#6bc674",
     icon: "icons/icon-lens.svg",
     label: "Lens",
     urlPrefix: "https://www.lensfrens.xyz/",

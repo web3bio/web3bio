@@ -54,6 +54,7 @@ export default function SearchInput(props) {
       // do nothing
     }
     if (e.key === "ArrowUp") {
+      if (searchList?.length) e.preventDefault();
       if (searchList && searchList.length === 1) {
         setActiveIndex(0);
         return;
@@ -65,6 +66,7 @@ export default function SearchInput(props) {
       }
     }
     if (e.key === "ArrowDown") {
+      if (searchList?.length) e.preventDefault();
       if (searchList && searchList.length === 1) {
         setActiveIndex(0);
         return;
@@ -117,11 +119,21 @@ export default function SearchInput(props) {
             });
           }
           if (!isLastDot || cur.label.length > 0) {
-            pre.push({
-              key: cur.key,
-              icon: SocialPlatformMapping(cur.key).icon,
-              label: label,
-            });
+            if (cur.maxLength) {
+              if (label?.length < cur.maxLength) {
+                pre.push({
+                  key: cur.key,
+                  icon: SocialPlatformMapping(cur.key).icon,
+                  label: label,
+                });
+              }
+            } else {
+              pre.push({
+                key: cur.key,
+                icon: SocialPlatformMapping(cur.key).icon,
+                label: label,
+              });
+            }
           }
 
           return pre;

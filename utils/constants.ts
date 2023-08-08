@@ -13,11 +13,12 @@ export const DefaultSearchSuffix = [
   {
     key: PlatformType.twitter,
     label: "",
+    maxLength: 15,
   },
   {
     key: PlatformType.farcaster,
     label: "",
-    optional:'eth'
+    optional: "eth",
   },
   {
     key: PlatformType.unstoppableDomains,
@@ -32,7 +33,7 @@ export const fuzzyDomainSuffix = [
   {
     key: PlatformType.farcaster,
     label: "eth",
-    icon: SocialPlatformMapping(PlatformType.farcaster).icon
+    icon: SocialPlatformMapping(PlatformType.farcaster).icon,
   },
   {
     key: PlatformType.lens,
@@ -115,4 +116,3 @@ export const fuzzyDomainSuffix = [
   //   label: "arb",
   // },
 ];
-

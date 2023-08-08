@@ -28,7 +28,6 @@ export async function generateMetadata({
     metadataBase: new URL(baseURL),
     title: pageTitle,
     description: profileDescription,
-
     alternates: {
       canonical: `/${domain}`,
     },
@@ -49,7 +48,7 @@ export default async function ProfilePage({
 }) {
   const serverData = await fetchDataFromServer(domain);
   if (!serverData) notFound();
-  const { data, nfts, platform } = serverData;
+  const { data, nfts, platform, relations } = serverData;
   const pageTitle =
     data.identity == data.displayName
       ? `${data.displayName}`
@@ -57,6 +56,7 @@ export default async function ProfilePage({
   return (
     <ProfileMain
       fromServer
+      relations={relations}
       nfts={nfts}
       data={data}
       pageTitle={pageTitle}

@@ -4,10 +4,7 @@ import { Footer } from "../components/shared/Footer";
 export async function generateMetadata({ params, searchParams }, parent) {
   const searchTerm = searchParams?.s;
   const pathName = searchTerm ? `/?s=${searchTerm}` : "/";
-  const title =
-    searchTerm ||
-    "Web3.bio - Web3 Identity Graph Search and Link-in-bio Profile Service";
-
+  const title = searchTerm || (await parent).title;
   return {
     title,
     alternates: {

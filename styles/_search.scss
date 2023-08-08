@@ -267,8 +267,8 @@
 
     &.lens {
       .icon {
-        background: #BDFC5A;
-        color: #204F24;
+        background: #6bc674;
+        color: #ecf8ed;
       }
     }
 
@@ -292,6 +292,12 @@
         color: #fff;
       }
     }
+    &.nextid {
+      .icon {
+        background: #121212;
+        color: #fff;
+      }
+    }
   }
 
   .nfts {
@@ -302,13 +308,13 @@
   .label-ens {
     align-items: center;
     border-radius: .3rem;
-    color: lighten($dark-color, 20%);
+    color: lighten($dark-color, 25%);
     display: inline-flex;
     font-size: .6rem;
     line-height: .8rem;
-    margin: .2rem .2rem 0 0;
+    margin: .1rem .1rem 0 0;
     max-width: 12rem;
-    padding: .1rem .3rem .1rem .15rem;
+    padding: .1rem .15rem .1rem .15rem;
     text-decoration: none;
 
     span {
@@ -317,8 +323,9 @@
       white-space: nowrap;
     }
 
-    img {
-      flex: 0 0 .5rem;
+    .icon {
+      color: #5298FF;
+      flex: 0 0 .7rem;
       margin-right: .2rem;
     }
   }
@@ -382,6 +389,7 @@
     display: flex;
     font-size: .55rem;
     line-height: 1rem;
+    max-width: 80%;
 
     .action {
       cursor: pointer;
