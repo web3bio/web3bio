@@ -13,6 +13,7 @@ import {
   regexSpaceid,
   regexFarcaster,
 } from "./regexp";
+import _ from "lodash";
 
 const ArweaveAssetPrefix = "https://arweave.net/";
 
@@ -185,7 +186,7 @@ export const getUniqueUniversalProfileLinks = (array) => {
 };
 
 export const mapLinks = (data) => {
-  const res = getUniqueUniversalProfileLinks(
+  const arr = getUniqueUniversalProfileLinks(
     data.reduce((pre, cur) => {
       const linksArr = Object.entries(cur?.links || {});
       if (linksArr) {
@@ -199,5 +200,5 @@ export const mapLinks = (data) => {
       return pre;
     }, [])
   );
-  return res;
+  return _.uniqBy(arr, (x) => x.handle?.toLowerCase());
 };
