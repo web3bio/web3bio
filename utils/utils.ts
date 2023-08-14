@@ -200,5 +200,5 @@ export const mapLinks = (data) => {
       return pre;
     }, [])
   );
-  return _.uniqBy(arr, (x) => x.handle?.toLowerCase());
+  return _.uniqBy(arr, (x) => x.handle?.toLowerCase() && x.platform);
 };
