@@ -84,7 +84,10 @@ export default function ProfileMain(props) {
             <h3 className="text-assistive">{`${pageTitle}‘s Ethereum wallet address is ${data.address}`}</h3>
             <div className="profile-identity">
               <>
-                <span className="profile-label" title={`${pageTitle}‘s Ethereum wallet address is ${data.address}`}>
+                <span
+                  className="profile-label"
+                  title={`${pageTitle}‘s Ethereum wallet address is ${data.address}`}
+                >
                   {formatText(data.address)}
                 </span>
                 <Clipboard
@@ -102,24 +105,23 @@ export default function ProfileMain(props) {
             </div>
 
             <div className="profile-identity">
-              { platform == "nextid" ? (
-                  <div
-                    className={`platform-badge nextid active`}
-                    title={`${pageTitle} Next.ID`}
-                  >
-                    <div 
-                      className="platform-badge-icon"
-                    >
-                      <SVG
-                        width={20}
-                        src={"icons/icon-nextid.svg"}
-                        className="text-light"
-                      />
-                    </div>
+              {platform == "nextid" ? (
+                <div
+                  className={`platform-badge nextid active`}
+                  title={`${pageTitle} Next.ID`}
+                >
+                  <div className="platform-badge-icon">
+                    <SVG
+                      fill={SocialPlatformMapping(PlatformType.nextid).color}
+                      width={20}
+                      src={"icons/icon-nextid.svg"}
+                      className="text-light"
+                    />
                   </div>
-                )
-                 : ""
-              }
+                </div>
+              ) : (
+                ""
+              )}
               {relations?.map((x, idx) => {
                 const relatedPath = `${x.identity}${
                   x.platform === PlatformType.farcaster ? ".farcaster" : ""
@@ -131,23 +133,19 @@ export default function ProfileMain(props) {
                     className={`platform-badge ${x.platform} ${
                       idx === 0 ? "active" : ""
                     }`}
-                    title={`${pageTitle} ${SocialPlatformMapping(x.platform).label}`}
+                    title={`${pageTitle} ${
+                      SocialPlatformMapping(x.platform).label
+                    }`}
                   >
-                    <div 
-                      className="platform-badge-icon"
-                    >
+                    <div className="platform-badge-icon">
                       <SVG
+                        fill={SocialPlatformMapping(x.platform).color}
                         width={20}
-                        src={
-                          SocialPlatformMapping(x.platform).icon ||
-                          ""
-                        }
+                        src={SocialPlatformMapping(x.platform).icon || ""}
                         className="text-pride"
                       />
                     </div>
-                    <span className="platform-badge-name">
-                      {x.identity}
-                    </span>
+                    <span className="platform-badge-name">{x.identity}</span>
                   </Link>
                 );
               })}
