@@ -91,6 +91,7 @@ export const register = (G6) => {
                   zIndex: 9,
                   cursor: "pointer",
                 },
+                draggable: true,
                 name: "image-shape",
               });
             } else {
@@ -115,6 +116,7 @@ export const register = (G6) => {
                   zIndex: 9,
                   cursor: "pointer",
                 },
+                draggable: true,
                 name: "image-shape",
               });
             }
