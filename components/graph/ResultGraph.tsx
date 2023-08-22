@@ -66,9 +66,6 @@ const registerCss = () => {
   .web5bio-tooltip li span {
     font-size: .5rem;
   }
-  .canvas-invert {
-    filter: invert(1);
-  }
   `);
 };
 
