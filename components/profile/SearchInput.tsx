@@ -167,12 +167,11 @@ export default function SearchInput(props) {
           emitSubmit(e, (ipt as { value: string }).value);
         }}
       >
-        <Image
+        <SVG
           src="icons/icon-search.svg"
           width={24}
           height={24}
           className="icon"
-          alt="search"
         />
       </button>
       {searchList.length > 0 && (
@@ -188,7 +187,7 @@ export default function SearchInput(props) {
                 key={x.label + idx}
                 onClick={(e) => emitSubmit(e, x)}
               >
-                <SVG src={x.icon || ""} width={20} height={20} />
+                <SVG fill="#000" src={x.icon || ""} width={20} height={20} />
                 {x.label}
               </div>
             );

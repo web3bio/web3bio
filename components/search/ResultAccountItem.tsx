@@ -21,9 +21,10 @@ const RenderAccountItem = (props) => {
   const resolvedDisplayName = profile?.displayName
     ? profile.displayName
     : identity.displayName || identity.identity;
-  const displayName = isAddress(resolvedDisplayName) || identity.platform === PlatformType.nextid
-    ? formatText(resolvedDisplayName)
-    : resolvedDisplayName;
+  const displayName =
+    isAddress(resolvedDisplayName) || identity.platform === PlatformType.nextid
+      ? formatText(resolvedDisplayName)
+      : resolvedDisplayName;
   const resolvedIdentity =
     identity.platform === PlatformType.ethereum
       ? profile?.address || identity.identity
@@ -45,12 +46,7 @@ const RenderAccountItem = (props) => {
                   />
                 )}
                 <div className="icon bg-pride">
-                  <SVG
-                    filter="invert(1)"
-                    src="icons/icon-ethereum.svg"
-                    width={20}
-                    height={20}
-                  />
+                  <SVG src="icons/icon-ethereum.svg" width={20} height={20} />
                 </div>
               </div>
               <div className="content">
@@ -85,7 +81,13 @@ const RenderAccountItem = (props) => {
                       prefetch={false}
                     >
                       <div className="label-ens" title={nft.id}>
-                        <SVG src={"/icons/icon-ens.svg"} width="20" height="20" className="icon" />
+                        <SVG
+                          fill={SocialPlatformMapping(PlatformType.ens).color}
+                          src={"/icons/icon-ens.svg"}
+                          width="20"
+                          height="20"
+                          className="icon"
+                        />
                         <span>{nft.id}</span>
                       </div>
                     </Link>
@@ -417,6 +419,7 @@ const RenderAccountItem = (props) => {
             >
               <div className="icon">
                 <SVG
+                  fill="#000"
                   src={SocialPlatformMapping(identity.platform)?.icon || ""}
                   width={20}
                   height={20}

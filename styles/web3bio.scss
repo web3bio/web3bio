@@ -340,9 +340,7 @@ body {
           font-size: 2rem;
           justify-content: center;
 
-          &.avatar-1 {
-            
-          }
+          &.avatar-1 {}
 
           &.avatar-2 {
             background: rgba(#F78E4E, .25);
@@ -430,41 +428,31 @@ body {
       &.identity-ens {
         background: rgba(#5298FF, .1);
 
-        .icon {
-          color: #5298FF;
-        }
+
       }
 
       &.identity-spaceid {
         background: rgba(#71EBAA, .2);
 
-        .icon {
-          color: #71EBAA;
-        }
+
       }
 
       &.identity-farcaster {
         background: rgba(#8465CB, .1);
 
-        .icon {
-          color: #8465CB;
-        }
+
       }
 
       &.identity-unstoppabledomains {
         background: rgba(#2E65F5, .05);
 
-        .icon {
-          color: #2E65F5;
-        }
+
       }
 
       &.identity-lens {
         background: lighten(#6bc674, 35%);
 
-        .icon {
-          color: #6bc674;
-        }
+
       }
     }
   }
