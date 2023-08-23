@@ -9,7 +9,7 @@ import { NFT_PAGE_SIZE } from "../../utils/queries";
 
 const CHAIN_PARAM = "ethereum";
 const CURSOR_PARAM = "&cursor=";
-export const MAX_SPAM_SCORE = encodeURIComponent("spam_score_lte=90");
+export const MAX_SPAM_SCORE = encodeURIComponent("spam_score_lte=50");
 
 export const processNFTsData = (data) => {
   if (!data?.length) return [];
