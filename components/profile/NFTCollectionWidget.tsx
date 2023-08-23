@@ -9,7 +9,7 @@ import { NFT_PAGE_SIZE } from "../../utils/queries";
 
 const CHAIN_PARAM = "ethereum";
 const CURSOR_PARAM = "&cursor=";
-export const MAX_SPAM_SCORE = encodeURIComponent("spam_score_lte=50");
+export const MAX_SPAM_SCORE = encodeURIComponent("spam_score__lte=75");
 
 export const processNFTsData = (data) => {
   if (!data?.length) return [];
@@ -33,11 +33,6 @@ export const processNFTsData = (data) => {
   const collectionById = new Map();
   for (const asset of assets) {
     const { collection } = asset;
-    // todo: old
-    // if (!collection || collection.spam_score > 75) continue;
-    // todo: check spam_score here
-    if (collection.spam_score > 60)
-      console.log("spam_core:", collection.spam_score);
     let collectionItem = collectionById.get(collection.collection_id);
     if (!collectionItem) {
       collectionItem = { ...collection, assets: [] };

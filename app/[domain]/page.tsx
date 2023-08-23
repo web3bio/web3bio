@@ -17,7 +17,6 @@ function mapNFTs(nfts) {
       description: x.collection.description,
       name: x.collection.name,
       image_url: x.collection.image_url,
-      spam_score: x.collection.spam_score,
     },
     video_url: x.video_url,
     audio_url: x.audio_url,
