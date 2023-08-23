@@ -146,7 +146,7 @@ export default function SearchInput(props) {
       <input
         ref={inputRef}
         type="text"
-        placeholder="Search ENS, Lens, Twitter, UD or Ethereum"
+        placeholder="Search Ethereum (ENS), Lens, Farcaster, UD..."
         value={query}
         onChange={(e) => {
           setQuery(e.target.value);

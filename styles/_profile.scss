@@ -467,6 +467,22 @@
   }
 }
 
+// Share
+.profile-share {
+  position: relative;
+
+  .share-modal-container {
+    bottom: 100%;
+    position: absolute;
+    width: $size-xs;
+  }
+
+  .qrcode-container {
+    height: 4rem;
+    width: 4rem;
+  }
+}
+
 // NFT Preview
 .nft-preview {
   align-items: center;

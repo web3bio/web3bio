@@ -5,7 +5,7 @@ import ShareModal from "./ShareModal";
 export default function ShareButton() {
   const [open, setOpen] = useState(false);
   return (
-    <>
+    <div className="profile-share">
       <button
         className="btn btn-sm"
         title="Share this page"
@@ -15,6 +15,6 @@ export default function ShareButton() {
         Share
       </button>
       {open && <ShareModal onClose={() => setOpen(false)} />}
-    </>
+    </div>
   );
 }
