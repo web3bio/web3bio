@@ -1,4 +1,5 @@
 import { SIMPLE_HASH_URL } from "../../components/apis/simplehash";
+import { MAX_SPAM_SCORE } from "../../components/profile/NFTCollectionWidget";
 import { PlatformType } from "../../utils/platform";
 import { NFT_PAGE_SIZE } from "../../utils/queries";
 
@@ -35,7 +36,7 @@ export const fetchInitialNFTsData = async (address) => {
   try {
     const res = await fetch(
       SIMPLE_HASH_URL +
-        `/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${address}&limit=${NFT_PAGE_SIZE}`,
+        `/api/v0/nfts/owners_v2?chains=ethereum&wallet_addresses=${address}&limit=${NFT_PAGE_SIZE}&filters=${MAX_SPAM_SCORE}&order_by=transfer_time__desc`,
       { cache: "no-store" }
     );
     return await res.json();

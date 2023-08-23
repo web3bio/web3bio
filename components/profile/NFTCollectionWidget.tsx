@@ -9,6 +9,7 @@ import { NFT_PAGE_SIZE } from "../../utils/queries";
 
 const CHAIN_PARAM = "ethereum";
 const CURSOR_PARAM = "&cursor=";
+export const MAX_SPAM_SCORE = encodeURIComponent("spam_score_lte=90");
 
 export const processNFTsData = (data) => {
   if (!data?.length) return [];
@@ -32,8 +33,11 @@ export const processNFTsData = (data) => {
   const collectionById = new Map();
   for (const asset of assets) {
     const { collection } = asset;
-    if (!collection || collection.spam_score > 75) continue;
-
+    // todo: old
+    // if (!collection || collection.spam_score > 75) continue;
+    // todo: check spam_score here
+    if (collection.spam_score > 60)
+      console.log("spam_core:", collection.spam_score);
     let collectionItem = collectionById.get(collection.collection_id);
     if (!collectionItem) {
       collectionItem = { ...collection, assets: [] };
@@ -57,9 +61,9 @@ const getURL = (index, address, previous) => {
   const cursor = previous?.next_cursor || "";
   return (
     SIMPLE_HASH_URL +
-    `/api/v0/nfts/owners?chains=${CHAIN_PARAM}&wallet_addresses=${address}${
+    `/api/v0/nfts/owners_v2?chains=${CHAIN_PARAM}&wallet_addresses=${address}${
       cursor ? CURSOR_PARAM + cursor : ""
-    }&limit=${NFT_PAGE_SIZE}`
+    }&limit=${NFT_PAGE_SIZE}&filters=${MAX_SPAM_SCORE}&order_by=transfer_time__desc`
   );
 };
 
