@@ -27,7 +27,7 @@ const shareMap = [
 ];
 
 export default function ShareModal(props) {
-  const { profile, onClose } = props;
+  const { profile, url, onClose } = props;
   const [copied, setCopied] = useState(false);
   const onCopySuccess = () => {
     setCopied(true);
@@ -87,7 +87,7 @@ export default function ShareModal(props) {
               <a
                 key={x.platform}
                 className="btn btn-lg share-item"
-                href={x.shareURL(window.location.href)}
+                href={x.shareURL(url)}
                 target="_blank"
               >
                 <SVG fill="#000" src={x.icon} height={20} width={20} />
@@ -99,12 +99,12 @@ export default function ShareModal(props) {
 
         <div className="profile-share-footer">
           <div className="input-group">
-            <input type="text" className="form-input input-lg" value={window.location.href} readOnly onFocus={(e) => e.target.select()} />
+            <input type="text" className="form-input input-lg" value={url} readOnly onFocus={(e) => e.target.select()} />
             <Clipboard
               component="div"
               className="btn btn-primary btn-lg input-group-btn"
               key="share_copy"
-              data-clipboard-text={window.location.href}
+              data-clipboard-text={url}
               onSuccess={onCopySuccess}
             >
               <SVG src="icons/icon-copy.svg" height={24} width={24} /> COPY

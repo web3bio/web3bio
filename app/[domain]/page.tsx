@@ -84,7 +84,7 @@ export async function generateMetadata({
     data?.identity == data?.displayName
       ? `${data?.displayName}`
       : `${data?.displayName} (${data?.identity})`;
-  const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio/";
+  const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
   const profileDescription =
     data.description ||
     `Explore ${pageTitle} ${

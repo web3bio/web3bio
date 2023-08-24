@@ -12,6 +12,7 @@ import { formatText } from "../../utils/utils";
 import { NFTCollectionWidget } from "./NFTCollectionWidget";
 import { NFTModal, NFTModalType } from "./NFTModal";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import ShareModal from "../shared/ShareModal";
 
 export default function ProfileMain(props) {
@@ -22,6 +23,8 @@ export default function ProfileMain(props) {
   const [curAsset, setCurAsset] = useState(null);
   const [errorAvatar, setErrorAvatar] = useState(false);
   const [dialogType, setDialogType] = useState(NFTModalType.NFT);
+  const pathName = usePathname();
+  const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
   const onCopySuccess = () => {
     setCopied(true);
     setTimeout(() => {
@@ -215,16 +218,15 @@ export default function ProfileMain(props) {
       <div className="web3bio-badge">
         <Link
           href="/"
-          target="_blank"
-          className="btn btn-sm btn-primary"
-          title="Web3.bio Web3 Identity Graph Search and Link-in-bio Profile Service"
+          className="btn btn-primary"
+          title="Web3.bio - Web3 Identity Graph Search and Link in Bio Profile"
         >
           <span className="mr-2">👋</span>Made with{" "}
           <strong className="text-pride ml-1 mr-1">Web3.bio</strong>
         </Link>
 
         <button
-          className="profile-share btn btn-sm ml-2"
+          className="profile-share btn ml-2"
           title="Share this page"
           onClick={() => setOpenShare(true)}
         >
@@ -241,7 +243,7 @@ export default function ProfileMain(props) {
           type={dialogType}
         />
       )}
-      {openShare && <ShareModal profile={data} onClose={() => setOpenShare(false)} />}
+      {openShare && <ShareModal profile={data} url={`${baseURL}${pathName}`} onClose={() => setOpenShare(false)} />}
     </>
   );
 }
