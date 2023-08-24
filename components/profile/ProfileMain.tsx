@@ -12,6 +12,7 @@ import { formatText } from "../../utils/utils";
 import { NFTCollectionWidget } from "./NFTCollectionWidget";
 import { NFTModal, NFTModalType } from "./NFTModal";
 import Image from "next/image";
+import ModalLink from "./ModalLink";
 // import ShareButton from "../shared/ShareButton";
 export default function ProfileMain(props) {
   const { data, pageTitle = "", platform, nfts, fromServer, relations } = props;
@@ -127,7 +128,8 @@ export default function ProfileMain(props) {
                   x.platform === PlatformType.farcaster ? ".farcaster" : ""
                 }`;
                 return (
-                  <Link
+                  <ModalLink
+                    skip={fromServer}
                     href={`/${relatedPath}`}
                     key={x.platform + idx}
                     className={`platform-badge ${x.platform} ${
@@ -146,7 +148,7 @@ export default function ProfileMain(props) {
                       />
                     </div>
                     <span className="platform-badge-name">{x.identity}</span>
-                  </Link>
+                  </ModalLink>
                 );
               })}
             </div>
