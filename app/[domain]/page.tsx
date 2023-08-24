@@ -84,7 +84,7 @@ export async function generateMetadata({
     data?.identity == data?.displayName
       ? `${data?.displayName}`
       : `${data?.displayName} (${data?.identity})`;
-  const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio/";
+  const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
   const profileDescription =
     data.description ||
     `Explore ${pageTitle} ${
@@ -108,6 +108,17 @@ export async function generateMetadata({
           url: data.avatar || `/img/web3bio-social.jpg`,
         },
       ],
+    },
+    twitter: {
+      title: pageTitle,
+      description: profileDescription,
+      images: [
+        {
+          url: data.avatar || `/img/web3bio-social.jpg`,
+        },
+      ],
+      site: "@web3bio",
+      creator: "@web3bio",
     },
   };
 }

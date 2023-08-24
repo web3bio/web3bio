@@ -118,7 +118,7 @@ export const Footer = () => {
           <div className="column col-4 col-sm-12 mt-2 mb-2">
             <div className="card-feature">
               <div className="feature-header text-center">
-                <h3>Your Web3 Profile </h3>
+                <h3>Web3 Link in Bio Profile </h3>
                 <h4>
                   One page to show who you are and everything you make and own.
                 </h4>
@@ -181,7 +181,7 @@ export const Footer = () => {
                   />
                 </a>
                 <a
-                  href="https://github.com/web3bio/web3bio"
+                  href="https://github.com/web3bio"
                   className="btn-link ml-2 mr-2"
                   target="_blank"
                   rel="noopener noreferrer"
