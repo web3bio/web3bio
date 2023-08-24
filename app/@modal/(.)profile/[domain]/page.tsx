@@ -9,12 +9,14 @@ import { Loading } from "../../../../components/shared/Loading";
 import { Error } from "../../../../components/shared/Error";
 import ProfileMain from "../../../../components/profile/ProfileMain";
 import Modal from "../../../../components/shared/Modal";
+import { isArray } from "@apollo/client/utilities";
 
 interface ProfileData {
   platform: PlatformType;
   identity: string;
   name: string;
   bio: string;
+  error?: string;
 }
 interface UseProfileProps {
   identity: string;
@@ -40,7 +42,10 @@ function findProfileData(
   platform: PlatformType
 ) {
   if (!domain || !data) return null;
-  const profiles = data.filter((x) => x.platform === platform);
+  if (!isArray(data)) return data as any;
+  const profiles = (data as ProfileData[]).filter(
+    (x) => x.platform === platform
+  );
   return profiles.length > 0 ? profiles[0] : data[0];
 }
 
@@ -70,8 +75,8 @@ export default function ProfileModal({
       );
     }
 
-    if (isError) {
-      return <Error />;
+    if (isError || profileData.error) {
+      return <Error msg={profileData.error ?? ""} />;
     }
 
     return (
