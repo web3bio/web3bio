@@ -233,6 +233,7 @@ const RenderAccountItem = (props) => {
             >
               <div className="icon">
                 <SVG
+                  fill={"#000"}
                   src={SocialPlatformMapping(identity.platform)?.icon || ""}
                   width={20}
                   height={20}
@@ -265,6 +266,7 @@ const RenderAccountItem = (props) => {
               <figure className="avatar">
                 <div className="icon">
                   <SVG
+                    fill="#000"
                     src={SocialPlatformMapping(identity.platform)?.icon || ""}
                     width={20}
                     height={20}
@@ -364,6 +366,7 @@ const RenderAccountItem = (props) => {
                 )}
                 <div className="icon">
                   <SVG
+                    fill="#000"
                     src={SocialPlatformMapping(identity.platform)?.icon || ""}
                     width={20}
                     height={20}
