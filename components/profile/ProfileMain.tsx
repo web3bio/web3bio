@@ -102,16 +102,6 @@ export default function ProfileMain(props) {
                   <SVG src="../icons/icon-copy.svg" width={20} height={20} />
                   {copied && <div className="tooltip-copy">COPIED</div>}
                 </Clipboard>
-                <div className="profile-share">
-                  <button
-                    className="btn btn-sm"
-                    title="Share this page"
-                    onClick={() => setOpenShare(true)}
-                  >
-                    <SVG src="icons/icon-share.svg" width={20} height={20} />
-                    Share
-                  </button>
-                </div>
               </>
             </div>
 
@@ -232,6 +222,15 @@ export default function ProfileMain(props) {
           <span className="mr-2">👋</span>Made with{" "}
           <strong className="text-pride ml-1 mr-1">Web3.bio</strong>
         </Link>
+
+        <button
+          className="profile-share btn btn-sm ml-2"
+          title="Share this page"
+          onClick={() => setOpenShare(true)}
+        >
+          <SVG src="icons/icon-share.svg" width={20} height={20} />
+          Share
+        </button>
       </div>
       {dialogOpen && curAsset && (
         <NFTModal

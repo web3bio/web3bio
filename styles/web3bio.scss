@@ -97,9 +97,9 @@ body {
     }
 
     .modal-close-icon {
-      position: absolute;
-      right: 1rem;
-      top: 1rem;
+      position: fixed;
+      right: 2rem;
+      top: 2rem;
       z-index: 99;
     }
   }

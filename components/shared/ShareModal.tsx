@@ -7,30 +7,27 @@ import { formatText } from "../../utils/utils";
 
 const shareMap = [
   {
+    platform: "twitter",
     icon: "icons/icon-twitter.svg",
-    shareURL: (url, text) =>
+    shareURL: (url) =>
       `https://twitter.com/intent/tweet?url=${encodeURIComponent(
         url
-      )}&text=${encodeURIComponent(text)}&via=web3bio`,
-    text: "Twitter",
-    action: "Tweet",
+      )}&text=${encodeURIComponent("Hey! Check out and explore my Web3 profile. ")}&via=web3bio`,
+    action: "Share on Twitter",
   },
   {
+    platform: "telegram",
     icon: "icons/icon-telegram.svg",
-    shareURL: (url, text) =>
+    shareURL: (url) =>
       `https://t.me/share/url?url=${encodeURIComponent(
         url
-      )}&text=${encodeURIComponent(text)}`,
-    text: "Telegram",
-    action: "Telegram",
+      )}&text=${encodeURIComponent("Hey! Check out and explore my Web3 profile. ")}`,
+    action: "Share via Telegram",
   }
 ];
 
 export default function ShareModal(props) {
   const { profile, onClose } = props;
-  const handleShareItemClick = (item) => {
-    window.open(item.shareURL(window.location.href, item.text));
-  };
   const [copied, setCopied] = useState(false);
   const onCopySuccess = () => {
     setCopied(true);
@@ -44,7 +41,6 @@ export default function ShareModal(props) {
       <div
         className="web3bio-modal-container web3bio-share-container"
         onClick={(e) => {
-          e.preventDefault();
           e.stopPropagation();
         }}
       >
@@ -72,31 +68,31 @@ export default function ShareModal(props) {
             </div>
             <div className="card-content">
               <div className="card-name">{profile.displayName}</div>
-              <div className="card-identity">{formatText(profile.address)}</div>
+              <div className="card-identity">{profile.identity}</div>
             </div>
-          </div>
-
-          <div className="qrcode-container">
-            <QRCode 
-              value={window.location.href}
-              ecLevel="L"
-              size={220}
-              eyeRadius={50}
-              eyeColor="#000"
-              fgColor="#222"
-            />
+            <div className="qrcode-container">
+              <QRCode 
+                value={window.location.href}
+                ecLevel="L"
+                size={220}
+                eyeRadius={50}
+                eyeColor="#000"
+                fgColor="#222"
+              />
+            </div>
           </div>
 
           <div className="btn-group btn-group-block">
             {shareMap.map((x) => (
-              <div
-                key={`share_${x.text}`}
+              <a
+                key={x.platform}
                 className="btn btn-lg share-item"
-                onClick={() => handleShareItemClick(x)}
+                href={x.shareURL(window.location.href)}
+                target="_blank"
               >
                 <SVG fill="#000" src={x.icon} height={20} width={20} />
                 {x.action}
-              </div>
+              </a>
             ))}
           </div>
         </div>
