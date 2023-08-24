@@ -90,6 +90,12 @@ body {
       top: 0;
     }
 
+    &.web3bio-share-container {
+      height: auto;
+      max-height: calc(100vh - 4rem);
+      max-width: 24rem;
+    }
+
     .modal-close-icon {
       position: absolute;
       right: 1rem;
@@ -501,7 +507,7 @@ body {
 .tooltip-copy {
   background: rgba($dark-color, .85);
   border-radius: .3rem;
-  bottom: 100%;
+  bottom: 110%;
   color: $light-color;
   display: block;
   font-size: .6rem;
@@ -518,11 +524,4 @@ body {
   &::-webkit-scrollbar {
     display: none;
   }
-}
-
-.web3bio-share-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.2rem;
 }

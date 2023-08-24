@@ -37,6 +37,16 @@ export async function generateMetadata(): Promise<Metadata> {
       ],
     },
     twitter: {
+      title: {
+        default: defaultTitle,
+        template: "%s - Web3.bio",
+      },
+      description,
+      images: [
+        {
+          url: "/img/web3bio-social.jpg",
+        },
+      ],
       site: "@web3bio",
       creator: "@web3bio",
     },

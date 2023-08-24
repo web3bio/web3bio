@@ -109,6 +109,17 @@ export async function generateMetadata({
         },
       ],
     },
+    twitter: {
+      title: pageTitle,
+      description: profileDescription,
+      images: [
+        {
+          url: data.avatar || `/img/web3bio-social.jpg`,
+        },
+      ],
+      site: "@web3bio",
+      creator: "@web3bio",
+    },
   };
 }
 

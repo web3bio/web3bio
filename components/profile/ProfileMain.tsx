@@ -12,11 +12,13 @@ import { formatText } from "../../utils/utils";
 import { NFTCollectionWidget } from "./NFTCollectionWidget";
 import { NFTModal, NFTModalType } from "./NFTModal";
 import Image from "next/image";
-// import ShareButton from "../shared/ShareButton";
+import ShareModal from "../shared/ShareModal";
+
 export default function ProfileMain(props) {
   const { data, pageTitle = "", platform, nfts, fromServer, relations } = props;
   const [copied, setCopied] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [openShare, setOpenShare] = useState(false);
   const [curAsset, setCurAsset] = useState(null);
   const [errorAvatar, setErrorAvatar] = useState(false);
   const [dialogType, setDialogType] = useState(NFTModalType.NFT);
@@ -100,7 +102,16 @@ export default function ProfileMain(props) {
                   <SVG src="../icons/icon-copy.svg" width={20} height={20} />
                   {copied && <div className="tooltip-copy">COPIED</div>}
                 </Clipboard>
-                {/* <ShareButton /> */}
+                <div className="profile-share">
+                  <button
+                    className="btn btn-sm"
+                    title="Share this page"
+                    onClick={() => setOpenShare(true)}
+                  >
+                    <SVG src="icons/icon-share.svg" width={20} height={20} />
+                    Share
+                  </button>
+                </div>
               </>
             </div>
 
@@ -231,6 +242,7 @@ export default function ProfileMain(props) {
           type={dialogType}
         />
       )}
+      {openShare && <ShareModal profile={data} onClose={() => setOpenShare(false)} />}
     </>
   );
 }

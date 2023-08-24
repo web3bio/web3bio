@@ -153,6 +153,7 @@
 .btn-group {
   display: inline-flex;
   flex-wrap: wrap;
+  gap: .05rem;
 
   .btn {
     flex: 1 0 auto;
@@ -162,12 +163,10 @@
     }
     &:not(:first-child):not(:last-child) {
       border-radius: 0;
-      margin-left: -$border-width;
     }
     &:last-child:not(:first-child) {
       border-bottom-left-radius: 0;
       border-top-left-radius: 0;
-      margin-left: -$border-width;
     }
     &:focus,
     &:hover,

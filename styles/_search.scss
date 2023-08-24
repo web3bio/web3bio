@@ -15,11 +15,11 @@
   }
 
   .form-label {
-    font-size: 1.8rem;
+    font-size: 2.2rem;
     font-weight: 900;
     letter-spacing: -.05rem;
-    line-height: 1.15;
-    margin-bottom: 1rem;
+    line-height: 1;
+    margin: 1rem 0;
 
     @media screen and (max-width: $size-md) {
       font-size: 2rem;
@@ -226,6 +226,7 @@
       }
 
       .social {
+        text-decoration: none;
         width: 100%;
       }
 
