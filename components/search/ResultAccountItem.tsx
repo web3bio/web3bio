@@ -309,7 +309,7 @@ const RenderAccountItem = (props) => {
               rel="noopener noreferrer"
             >
               <SVG src="icons/icon-open.svg" width={20} height={20} /> <span className="hide-sm">Profile</span>
-            </Link>
+            </ModalLink>
           </div>
           <RenderSourceFooter sources={sources} />
         </div>
