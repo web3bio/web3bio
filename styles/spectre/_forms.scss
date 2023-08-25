@@ -519,7 +519,7 @@ textarea.form-input {
 
 .form-input {
   &[readonly] {
-    background-color: $bg-color;
+    background-color: lighten($bg-color, 3%);
 
     &:focus {
       border-color: $dark-color;
