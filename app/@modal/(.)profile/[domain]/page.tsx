@@ -57,15 +57,13 @@ export default function ProfileModal({
   const platform = handleSearchPlatform(domain);
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
   const pathname = usePathname();
-
   const { data, isLoading, isError } = useProfile({
     identity: domain,
   });
   const router = useRouter();
-
   useEffect(() => {
-    const newPathName = pathname.replaceAll("/profile", "");
-    window.history.replaceState(null, "", newPathName);
+    const newPathname = pathname.replaceAll("/profile", "");
+    window.history.replaceState(null, "", newPathname);
     setProfileData(findProfileData(domain, data, platform));
   }, [domain, data, platform]);
 

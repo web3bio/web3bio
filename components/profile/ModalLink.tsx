@@ -6,6 +6,7 @@ export default function ModalLink(props) {
   const router = useRouter();
   const pathname = usePathname();
   const params = pathname.split("/");
+  
   return (
     <Link
       {...props}
@@ -15,7 +16,7 @@ export default function ModalLink(props) {
         if (props.skip) return router.push(props.href);
         if (pathname.includes("/profile"))
           return router.replace("/profile" + props.href);
-        return router.push("/profile" + props.href);
+        return router.push("/profile" + props.href,{scroll:false});
       }}
     >
       {props.children}
