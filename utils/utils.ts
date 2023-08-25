@@ -102,10 +102,10 @@ export const handleSearchPlatform = (term: string) => {
       return PlatformType.space_id;
     case regexDotbit.test(term):
       return PlatformType.dotbit;
-    case regexFarcaster.test(term):
-      return PlatformType.farcaster;
     case regexTwitter.test(term):
       return PlatformType.twitter;
+    case regexFarcaster.test(term):
+      return PlatformType.farcaster;
     default:
       return PlatformType.nextid;
   }
