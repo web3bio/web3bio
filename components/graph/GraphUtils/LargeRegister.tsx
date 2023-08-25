@@ -79,7 +79,7 @@ export const register = (G6) => {
                   zIndex: 9,
                 },
                 draggable: true,
-                name: "image-shape",
+                name: "circle-shape",
               });
               group.addShape("image", {
                 attrs: {
@@ -89,11 +89,10 @@ export const register = (G6) => {
                   height: 18,
                   img: SocialPlatformMapping(cfg.platform)?.icon,
                   zIndex: 9,
-                  filter: "invert(1)",
                   cursor: "pointer",
                 },
+                draggable: true,
                 name: "image-shape",
-                className: "image-shape",
               });
             } else {
               group.addShape("circle", {
@@ -105,7 +104,7 @@ export const register = (G6) => {
                   zIndex: 9,
                 },
                 draggable: true,
-                name: "image-shape",
+                name: "circle-shape",
               });
               group.addShape("image", {
                 attrs: {
@@ -115,9 +114,9 @@ export const register = (G6) => {
                   height: 16,
                   img: SocialPlatformMapping(cfg.platform)?.icon,
                   zIndex: 9,
-                  filter: "invert(1)",
                   cursor: "pointer",
                 },
+                draggable: true,
                 name: "image-shape",
               });
             }

@@ -13,6 +13,7 @@ import {
   regexSpaceid,
   regexFarcaster,
 } from "./regexp";
+import _ from "lodash";
 
 const ArweaveAssetPrefix = "https://arweave.net/";
 
@@ -101,10 +102,10 @@ export const handleSearchPlatform = (term: string) => {
       return PlatformType.space_id;
     case regexDotbit.test(term):
       return PlatformType.dotbit;
-    case regexFarcaster.test(term):
-      return PlatformType.farcaster;
     case regexTwitter.test(term):
       return PlatformType.twitter;
+    case regexFarcaster.test(term):
+      return PlatformType.farcaster;
     default:
       return PlatformType.nextid;
   }
@@ -185,7 +186,7 @@ export const getUniqueUniversalProfileLinks = (array) => {
 };
 
 export const mapLinks = (data) => {
-  const res = getUniqueUniversalProfileLinks(
+  const arr = getUniqueUniversalProfileLinks(
     data.reduce((pre, cur) => {
       const linksArr = Object.entries(cur?.links || {});
       if (linksArr) {
@@ -199,5 +200,5 @@ export const mapLinks = (data) => {
       return pre;
     }, [])
   );
-  return res;
+  return _.uniqBy(arr, (x) => x.handle?.toLowerCase() && x.platform);
 };

@@ -36,9 +36,7 @@ export default function PoapWidget(props) {
   if (!data || !data.length) return null;
   return (
     <div
-      className={`${
-        data.length > 8 ? "profile-widget-full" : "profile-widget-3-4"
-      }`}
+      className="profile-widget-full"
       id="poap"
     >
       <div className="profile-widget profile-widget-poap">

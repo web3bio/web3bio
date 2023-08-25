@@ -1,5 +1,6 @@
-'use client'
+"use client";
 import SVG from "react-inlinesvg";
+import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 
 export const Footer = () => {
   return (
@@ -22,6 +23,7 @@ export const Footer = () => {
                   title="ENS domains (.eth)"
                 >
                   <SVG
+                    fill={SocialPlatformMapping(PlatformType.ens).color}
                     src="icons/icon-ens.svg"
                     width={20}
                     height={20}
@@ -34,6 +36,7 @@ export const Footer = () => {
                   title="Farcaster identities"
                 >
                   <SVG
+                    fill={SocialPlatformMapping(PlatformType.farcaster).color}
                     src="icons/icon-farcaster.svg"
                     width={20}
                     height={20}
@@ -46,6 +49,7 @@ export const Footer = () => {
                   title="Lens identities (.lens)"
                 >
                   <SVG
+                    fill={SocialPlatformMapping(PlatformType.lens).color}
                     src="icons/icon-lens.svg"
                     width={20}
                     height={20}
@@ -58,6 +62,10 @@ export const Footer = () => {
                   title="Unstoppable Domains"
                 >
                   <SVG
+                    fill={
+                      SocialPlatformMapping(PlatformType.unstoppableDomains)
+                        .color
+                    }
                     src="icons/icon-unstoppabledomains.svg"
                     width={20}
                     height={20}
@@ -70,6 +78,7 @@ export const Footer = () => {
                   title="SPACE ID domains"
                 >
                   <SVG
+                    fill={SocialPlatformMapping(PlatformType.space_id).color}
                     src="icons/icon-spaceid.svg"
                     width={20}
                     height={20}
@@ -109,7 +118,7 @@ export const Footer = () => {
           <div className="column col-4 col-sm-12 mt-2 mb-2">
             <div className="card-feature">
               <div className="feature-header text-center">
-                <h3>Your Web3 Profile </h3>
+                <h3>Web3 Link in Bio Profile </h3>
                 <h4>
                   One page to show who you are and everything you make and own.
                 </h4>
@@ -164,6 +173,7 @@ export const Footer = () => {
                   title="Web3.bio Twitter"
                 >
                   <SVG
+                    fill="#000"
                     src="icons/icon-twitter.svg"
                     width={20}
                     height={20}
@@ -171,13 +181,14 @@ export const Footer = () => {
                   />
                 </a>
                 <a
-                  href="https://github.com/web3bio/web3bio"
+                  href="https://github.com/web3bio"
                   className="btn-link ml-2 mr-2"
                   target="_blank"
                   rel="noopener noreferrer"
                   title="Web3.bio GitHub"
                 >
                   <SVG
+                    fill="#000"
                     src="icons/icon-github.svg"
                     width={20}
                     height={20}
@@ -192,6 +203,7 @@ export const Footer = () => {
                   title="Web3.bio Telegram Group"
                 >
                   <SVG
+                    fill="#000"
                     src="icons/icon-telegram.svg"
                     width={20}
                     height={20}

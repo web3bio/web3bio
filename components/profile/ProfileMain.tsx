@@ -12,14 +12,19 @@ import { formatText } from "../../utils/utils";
 import { NFTCollectionWidget } from "./NFTCollectionWidget";
 import { NFTModal, NFTModalType } from "./NFTModal";
 import Image from "next/image";
-// import ShareButton from "../shared/ShareButton";
+import { usePathname } from "next/navigation";
+import ShareModal from "../shared/ShareModal";
+
 export default function ProfileMain(props) {
   const { data, pageTitle = "", platform, nfts, fromServer, relations } = props;
   const [copied, setCopied] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [openShare, setOpenShare] = useState(false);
   const [curAsset, setCurAsset] = useState(null);
   const [errorAvatar, setErrorAvatar] = useState(false);
   const [dialogType, setDialogType] = useState(NFTModalType.NFT);
+  const pathName = usePathname();
+  const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
   const onCopySuccess = () => {
     setCopied(true);
     setTimeout(() => {
@@ -84,7 +89,10 @@ export default function ProfileMain(props) {
             <h3 className="text-assistive">{`${pageTitle}‘s Ethereum wallet address is ${data.address}`}</h3>
             <div className="profile-identity">
               <>
-                <span className="profile-label" title={`${pageTitle}‘s Ethereum wallet address is ${data.address}`}>
+                <span
+                  className="profile-label"
+                  title={`${pageTitle}‘s Ethereum wallet address is ${data.address}`}
+                >
                   {formatText(data.address)}
                 </span>
                 <Clipboard
@@ -97,29 +105,27 @@ export default function ProfileMain(props) {
                   <SVG src="../icons/icon-copy.svg" width={20} height={20} />
                   {copied && <div className="tooltip-copy">COPIED</div>}
                 </Clipboard>
-                {/* <ShareButton /> */}
               </>
             </div>
 
             <div className="profile-identity">
-              { platform == "nextid" ? (
-                  <div
-                    className={`platform-badge nextid active`}
-                    title={`${pageTitle} Next.ID`}
-                  >
-                    <div 
-                      className="platform-badge-icon"
-                    >
-                      <SVG
-                        width={20}
-                        src={"icons/icon-nextid.svg"}
-                        className="text-light"
-                      />
-                    </div>
+              {platform == "nextid" ? (
+                <div
+                  className={`platform-badge nextid active`}
+                  title={`${pageTitle} Next.ID`}
+                >
+                  <div className="platform-badge-icon">
+                    <SVG
+                      fill={SocialPlatformMapping(PlatformType.nextid).color}
+                      width={20}
+                      src={"icons/icon-nextid.svg"}
+                      className="text-light"
+                    />
                   </div>
-                )
-                 : ""
-              }
+                </div>
+              ) : (
+                ""
+              )}
               {relations?.map((x, idx) => {
                 const relatedPath = `${x.identity}${
                   x.platform === PlatformType.farcaster ? ".farcaster" : ""
@@ -131,23 +137,19 @@ export default function ProfileMain(props) {
                     className={`platform-badge ${x.platform} ${
                       idx === 0 ? "active" : ""
                     }`}
-                    title={`${pageTitle} ${SocialPlatformMapping(x.platform).label}`}
+                    title={`${pageTitle} ${
+                      SocialPlatformMapping(x.platform).label
+                    }`}
                   >
-                    <div 
-                      className="platform-badge-icon"
-                    >
+                    <div className="platform-badge-icon">
                       <SVG
+                        fill={SocialPlatformMapping(x.platform).color}
                         width={20}
-                        src={
-                          SocialPlatformMapping(x.platform).icon ||
-                          ""
-                        }
+                        src={SocialPlatformMapping(x.platform).icon || ""}
                         className="text-pride"
                       />
                     </div>
-                    <span className="platform-badge-name">
-                      {x.identity}
-                    </span>
+                    <span className="platform-badge-name">{x.identity}</span>
                   </Link>
                 );
               })}
@@ -216,13 +218,21 @@ export default function ProfileMain(props) {
       <div className="web3bio-badge">
         <Link
           href="/"
-          target="_blank"
-          className="btn btn-sm btn-primary"
-          title="Web3.bio Web3 Identity Graph Search and Link-in-bio Profile Service"
+          className="btn btn-primary"
+          title="Web3.bio - Web3 Identity Graph Search and Link in Bio Profile"
         >
           <span className="mr-2">👋</span>Made with{" "}
           <strong className="text-pride ml-1 mr-1">Web3.bio</strong>
         </Link>
+
+        <button
+          className="profile-share btn ml-2"
+          title="Share this page"
+          onClick={() => setOpenShare(true)}
+        >
+          <SVG src="icons/icon-share.svg" width={20} height={20} />
+          Share
+        </button>
       </div>
       {dialogOpen && curAsset && (
         <NFTModal
@@ -233,6 +243,7 @@ export default function ProfileMain(props) {
           type={dialogType}
         />
       )}
+      {openShare && <ShareModal profile={data} url={`${baseURL}${pathName}`} onClose={() => setOpenShare(false)} />}
     </>
   );
 }

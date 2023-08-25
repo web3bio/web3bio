@@ -1,9 +1,10 @@
 import { fetchInitialNFTsData } from "../../hooks/api/fetchProfile";
 import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import { handleSearchPlatform, mapLinks } from "../../utils/utils";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { Metadata } from "next";
 import ProfileMain from "../../components/profile/ProfileMain";
+import { regexAvatar } from "../../utils/regexp";
 
 function mapNFTs(nfts) {
   if (!nfts) return [];
@@ -28,7 +29,7 @@ function mapNFTs(nfts) {
 }
 
 async function fetchDataFromServer(domain: string) {
-  if (!domain) notFound();
+  if (!domain) return null;
   try {
     const platform = handleSearchPlatform(domain);
     if (
@@ -40,11 +41,11 @@ async function fetchDataFromServer(domain: string) {
         PlatformType.nextid,
       ].includes(platform)
     )
-      notFound();
+      return null;
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${domain}`
     );
-    if (response.status === 404) notFound();
+    if (response.status === 404) return null;
     const raw = await response.json();
     const relations = Array.from(
       raw?.map((x) => ({ platform: x.platform, identity: x.identity }))
@@ -61,7 +62,7 @@ async function fetchDataFromServer(domain: string) {
       relations,
     };
   } catch (e) {
-    notFound();
+    return null;
   }
 }
 
@@ -71,13 +72,19 @@ export async function generateMetadata({
   params: { domain: string };
 }): Promise<Metadata> {
   const res = await fetchDataFromServer(domain);
-  if (!res) notFound();
+  if (!res) {
+    if (regexAvatar.test(domain)) {
+      redirect(`/?s=${domain}`);
+    } else {
+      notFound();
+    }
+  }
   const { data, platform } = res;
   const pageTitle =
     data?.identity == data?.displayName
       ? `${data?.displayName}`
       : `${data?.displayName} (${data?.identity})`;
-  const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio/";
+  const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
   const profileDescription =
     data.description ||
     `Explore ${pageTitle} ${
@@ -102,6 +109,17 @@ export async function generateMetadata({
         },
       ],
     },
+    twitter: {
+      title: pageTitle,
+      description: profileDescription,
+      images: [
+        {
+          url: data.avatar || `/img/web3bio-social.jpg`,
+        },
+      ],
+      site: "@web3bio",
+      creator: "@web3bio",
+    },
   };
 }
 
@@ -111,6 +129,7 @@ export default async function ProfilePage({
   params: { domain: string };
 }) {
   const serverData = await fetchDataFromServer(domain);
+  if(!serverData) notFound()
   const { data, nfts, platform, relations } = serverData;
   const pageTitle =
     data.identity == data.displayName
