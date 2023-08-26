@@ -14,6 +14,7 @@ import { NFTModal, NFTModalType } from "./NFTModal";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import ShareModal from "../shared/ShareModal";
+import ModalLink from "./ModalLink";
 
 export default function ProfileMain(props) {
   const { data, pageTitle = "", platform, nfts, fromServer, relations } = props;
@@ -131,7 +132,8 @@ export default function ProfileMain(props) {
                   x.platform === PlatformType.farcaster ? ".farcaster" : ""
                 }`;
                 return (
-                  <Link
+                  <ModalLink
+                    skip={fromServer}
                     href={`/${relatedPath}`}
                     key={x.platform + idx}
                     className={`platform-badge ${x.platform} ${
@@ -150,7 +152,7 @@ export default function ProfileMain(props) {
                       />
                     </div>
                     <span className="platform-badge-name">{x.identity}</span>
-                  </Link>
+                  </ModalLink>
                 );
               })}
             </div>
@@ -243,7 +245,13 @@ export default function ProfileMain(props) {
           type={dialogType}
         />
       )}
-      {openShare && <ShareModal profile={data} url={`${baseURL}${pathName}`} onClose={() => setOpenShare(false)} />}
+      {openShare && (
+        <ShareModal
+          profile={data}
+          url={`${baseURL}${pathName}`}
+          onClose={() => setOpenShare(false)}
+        />
+      )}
     </>
   );
 }

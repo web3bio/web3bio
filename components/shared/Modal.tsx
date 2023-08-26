@@ -24,10 +24,6 @@ export default function Modal(props) {
     [onDismiss]
   );
   useEffect(() => {
-    const newPathName = pathName.replaceAll("/profile", "");
-    window.history.replaceState(null, "", newPathName);
-  }, []);
-  useEffect(() => {
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [onKeyDown]);
