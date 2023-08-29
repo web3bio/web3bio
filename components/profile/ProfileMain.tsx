@@ -133,7 +133,7 @@ export default function ProfileMain(props) {
                 }`;
                 return (
                   <ModalLink
-                    skip={fromServer}
+                    skip={fromServer ? 1 : 0}
                     href={`/${relatedPath}`}
                     key={x.platform + idx}
                     className={`platform-badge ${x.platform} ${
