@@ -7,7 +7,6 @@ export default function Modal(props) {
   const { onDismiss, children } = props;
   const overlay = useRef<HTMLDivElement>(null);
   const wrapper = useRef<HTMLDivElement>(null);
-  const pathName = usePathname()
   const onClick = useCallback(
     (e) => {
       if (e.target === overlay.current || e.target === wrapper.current) {
