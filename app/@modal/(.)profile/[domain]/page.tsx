@@ -82,6 +82,7 @@ export default function ProfileModal({
 
     return (
       <ProfileMain
+        domain={domain}
         data={{
           ...profileData,
           links: mapLinks(data || []),

@@ -138,6 +138,7 @@ export default async function ProfilePage({
   return (
     <ProfileMain
       fromServer
+      domain={domain}
       relations={relations}
       nfts={nfts}
       data={data}

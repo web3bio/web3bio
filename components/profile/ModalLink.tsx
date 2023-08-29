@@ -4,10 +4,11 @@ import { usePathname, useRouter } from "next/navigation";
 import { ReactNode } from "react";
 
 interface ModalLinkProps extends LinkProps {
-  skip?: number;
-  children?: ReactNode;
   className: string;
   title: string;
+  skip?: number;
+  children?: ReactNode;
+  rel?:string;
 }
 export default function ModalLink(props: ModalLinkProps) {
   const router = useRouter();

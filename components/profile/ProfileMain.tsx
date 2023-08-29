@@ -17,7 +17,15 @@ import ShareModal from "../shared/ShareModal";
 import ModalLink from "./ModalLink";
 
 export default function ProfileMain(props) {
-  const { data, pageTitle = "", platform, nfts, fromServer, relations } = props;
+  const {
+    data,
+    pageTitle = "",
+    platform,
+    nfts,
+    fromServer,
+    relations,
+    domain,
+  } = props;
   const [copied, setCopied] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [openShare, setOpenShare] = useState(false);
@@ -122,6 +130,9 @@ export default function ProfileMain(props) {
                       src={"icons/icon-nextid.svg"}
                       className="text-light"
                     />
+                    <span className="platform-badge-name">
+                      {formatText(domain)}
+                    </span>
                   </div>
                 </div>
               ) : (
