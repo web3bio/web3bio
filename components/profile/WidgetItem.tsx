@@ -43,7 +43,7 @@ const WidgetItem = (props) => {
             <SVG src={`../${SocialPlatformMapping(item.platform)?.icon}`} width={24} height={24} />
           </div>
           <div className="platform-title">{SocialPlatformMapping(item.platform)?.label}</div>
-          <div className="platform-handle">{item.handle}</div>
+          <div className="platform-handle text-ellipsis">{item.handle}</div>
           <h3 className="text-assistive">{`${displayName} ${SocialPlatformMapping(item.platform)?.label}`}</h3>
           <div className="platform-action">
             <div className="btn btn-sm">Follow</div>
@@ -75,7 +75,7 @@ const WidgetItem = (props) => {
             />
           </div>
           <div className="platform-title">{SocialPlatformMapping(item.platform)?.label}</div>
-          <div className="platform-handle">{item.handle}</div>
+          <div className="platform-handle text-ellipsis">{item.handle}</div>
           <h3 className="text-assistive">{`${displayName} ${SocialPlatformMapping(item.platform)?.label}`}</h3>
           <div className="platform-action">
             <div className="btn btn-sm">Open</div>
@@ -101,7 +101,7 @@ const WidgetItem = (props) => {
             <SVG src={`../${SocialPlatformMapping(item.platform)?.icon}`} width={24} height={24} />
           </div>
           <div className="platform-title">{SocialPlatformMapping(item.platform)?.label}</div>
-          <div className="platform-handle">{item.handle}</div>
+          <div className="platform-handle text-ellipsis">{item.handle}</div>
           <h3 className="text-assistive">{`${displayName} ${SocialPlatformMapping(item.platform)?.label}`}</h3>
           <div className="platform-action">
             <div className="btn btn-sm">
@@ -131,7 +131,7 @@ const WidgetItem = (props) => {
             <SVG src={`../${SocialPlatformMapping(item.platform)?.icon}`} width={24} height={24} />
           </div>
           <div className="platform-title">{SocialPlatformMapping(item.platform)?.label}</div>
-          <div className="platform-handle">{item.handle}</div>
+          <div className="platform-handle text-ellipsis">{item.handle}</div>
           <h3 className="text-assistive">{`${displayName} ${SocialPlatformMapping(item.platform)?.label}`}</h3>
           <div className="platform-action">
             <div className="btn btn-sm">Open</div>

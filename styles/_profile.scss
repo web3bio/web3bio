@@ -99,10 +99,6 @@
         box-shadow: inset 0 0 .1rem rgba($dark-color, .15), 0 0 2rem rgba($dark-color, .15);
       }
 
-      &.active {
-        box-shadow: inset 0 0 .05rem rgba($dark-color, .25);
-      }
-
       &.ENS {
         background: lighten(#5298FF, 30%);
         border-color: lighten(#5298FF, 20%);
@@ -132,10 +128,15 @@
 
       &.nextid {
         background: #121212;
+        position: relative;
 
         .platform-badge-icon {
           color: #fff;
           width: unset
+        }
+
+        .platform-badge-name {
+          color: $bg-color;
         }
       }
     }

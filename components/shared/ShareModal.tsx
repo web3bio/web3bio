@@ -54,17 +54,17 @@ export default function ShareModal(props) {
           <div className="profile-card">
             <div className="card-avatar">
               {profile.avatar ? (
-                  <Image
-                    src={profile.avatar}
-                    className="avatar"
-                    priority={true}
-                    alt="Profile Avatar"
-                    height={180}
-                    width={180}
-                  />
-                ) : (
-                  <div className="avatar bg-gray"></div>
-                )}
+                <Image
+                  src={profile.avatar}
+                  className="avatar"
+                  priority={true}
+                  alt="Profile Avatar"
+                  height={180}
+                  width={180}
+                />
+              ) : (
+                <div className="avatar bg-gray"></div>
+              )}
             </div>
             <div className="card-content">
               <div className="card-name">{profile.displayName}</div>

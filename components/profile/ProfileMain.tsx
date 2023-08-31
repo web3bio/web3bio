@@ -4,12 +4,12 @@ import Link from "next/link";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { RenderWidgetItem } from "./WidgetItem";
-import PoapWidget from "./PoapsWidget";
+import WidgetPoap from "./WidgetPoap";
 import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import { Error } from "../shared/Error";
 import Avatar from "boring-avatars";
 import { formatText } from "../../utils/utils";
-import { NFTCollectionWidget } from "./NFTCollectionWidget";
+import { WidgetNFTCollection } from "./WidgetNFTCollection";
 import { NFTModal, NFTModalType } from "./NFTModal";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -118,10 +118,13 @@ export default function ProfileMain(props) {
             </div>
 
             <div className="profile-identity">
-              {platform == "nextid" ? (
-                <div
+              {platform == "nextid" && (
+                <Clipboard
+                  component="div"
                   className={`platform-badge nextid active`}
-                  title={`${pageTitle} Next.ID`}
+                  data-clipboard-text={domain}
+                  onSuccess={onCopySuccess}
+                  title="Copy the Next.ID address"
                 >
                   <div className="platform-badge-icon">
                     <SVG
@@ -134,9 +137,8 @@ export default function ProfileMain(props) {
                       {formatText(domain)}
                     </span>
                   </div>
-                </div>
-              ) : (
-                ""
+                  {copied && <div className="tooltip-copy">COPIED</div>}
+                </Clipboard>
               )}
               {relations?.map((x, idx) => {
                 const relatedPath = `${x.identity}${
@@ -147,8 +149,8 @@ export default function ProfileMain(props) {
                     skip={fromServer ? 1 : 0}
                     href={`/${relatedPath}`}
                     key={x.platform + idx}
-                    className={`platform-badge ${x.platform} ${
-                      idx === 0 ? "active" : ""
+                    className={`platform-badge ${x.platform}${
+                      idx === 0 ? " active" : ""
                     }`}
                     title={`${pageTitle} ${
                       SocialPlatformMapping(x.platform).label
@@ -159,7 +161,6 @@ export default function ProfileMain(props) {
                         fill={SocialPlatformMapping(x.platform).color}
                         width={20}
                         src={SocialPlatformMapping(x.platform).icon || ""}
-                        className="text-pride"
                       />
                     </div>
                     <span className="platform-badge-name">{x.identity}</span>
@@ -199,7 +200,7 @@ export default function ProfileMain(props) {
             <>
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading NFTs...</p>}>
-                  <NFTCollectionWidget
+                  <WidgetNFTCollection
                     fromServer={fromServer}
                     onShowDetail={(e, v) => {
                       setDialogType(NFTModalType.NFT);
@@ -213,7 +214,7 @@ export default function ProfileMain(props) {
               </div>
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading Poaps...</p>}>
-                  <PoapWidget
+                  <WidgetPoap
                     fromServer={fromServer}
                     onShowDetail={(v) => {
                       setDialogType(NFTModalType.POAP);
