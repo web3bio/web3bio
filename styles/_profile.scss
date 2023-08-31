@@ -167,11 +167,16 @@
   }
 
   .profile-description {
+    display: -webkit-box;
     font-size: .9rem;
     font-weight: 400;
     line-height: 1.5;
     margin-bottom: 1rem;
     max-width: 20rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
   }
 
   .profile-location {

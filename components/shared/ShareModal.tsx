@@ -3,6 +3,7 @@ import SVG from "react-inlinesvg";
 import Clipboard from "react-clipboard.js";
 import { QRCode } from "react-qrcode-logo";
 import Image from "next/image";
+import Avatar from "boring-avatars";
 import { formatText } from "../../utils/utils";
 
 const shareMap = [
@@ -63,12 +64,23 @@ export default function ShareModal(props) {
                   width={180}
                 />
               ) : (
-                <div className="avatar bg-gray"></div>
+                <Avatar
+                  size={180}
+                  name={profile.identity}
+                  variant="bauhaus"
+                  colors={[
+                    "#264653",
+                    "#2a9d8f",
+                    "#e9c46a",
+                    "#f4a261",
+                    "#e76f51",
+                  ]}
+                />
               )}
             </div>
             <div className="card-content">
               <div className="card-name">{profile.displayName}</div>
-              <div className="card-identity">{profile.identity}</div>
+              <div className="card-identity">{profile.displayName == profile.identity ? formatText(profile.address) : profile.identity}</div>
             </div>
             <div className="qrcode-container">
               <QRCode 
@@ -111,7 +123,7 @@ export default function ShareModal(props) {
             </Clipboard>
           </div>
         </div>
-        
+
         {isCopied && (
           <div className="web3bio-toast">
             <div className="toast">

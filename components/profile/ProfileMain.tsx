@@ -77,15 +77,13 @@ export default function ProfileMain(props) {
                 <Avatar
                   size={180}
                   name={data.identity}
-                  variant="marble"
+                  variant="bauhaus"
                   colors={[
-                    "#FBF4EC",
-                    "#ECD7C8",
-                    "#EEA4BC",
-                    "#BE88C4",
-                    "#9186E7",
-                    "#92C9F9",
-                    "#92C9F9",
+                    "#264653",
+                    "#2a9d8f",
+                    "#e9c46a",
+                    "#f4a261",
+                    "#e76f51",
                   ]}
                 />
               )}
