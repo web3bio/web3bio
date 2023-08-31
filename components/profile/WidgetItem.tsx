@@ -84,32 +84,62 @@ const WidgetItem = (props) => {
       );
     case PlatformType.discord:
       return (
-        <Clipboard
-          component="div"
-          data-clipboard-text={item.handle}
-          onSuccess={onCopySuccess}
-          className={`profile-widget profile-widget-link ${item.platform}`}
-          style={{
-            ["--widget-primary-color" as string]: SocialPlatformMapping(item.platform)?.color,
-            ["--widget-bg-color" as string]: colorMod(SocialPlatformMapping(item.platform)?.color, 10)
-          }}
-        >
-          <div 
-            className="platform-icon"
-            style={{"background": SocialPlatformMapping(item.platform)?.color}}
-          >
-            <SVG src={`../${SocialPlatformMapping(item.platform)?.icon}`} width={24} height={24} />
-          </div>
-          <div className="platform-title">{SocialPlatformMapping(item.platform)?.label}</div>
-          <div className="platform-handle text-ellipsis">{item.handle}</div>
-          <h3 className="text-assistive">{`${displayName} ${SocialPlatformMapping(item.platform)?.label}`}</h3>
-          <div className="platform-action">
-            <div className="btn btn-sm">
-              Copy
-              {isCopied && <div className="tooltip-copy">COPIED</div>}
-            </div>
-          </div>
-        </Clipboard>
+        <>
+        { item.link ? (
+            <Link
+              href={item.link}
+              className={`profile-widget profile-widget-link ${item.platform}`}
+              title={`Open ${displayName} ${SocialPlatformMapping(item.platform)?.label}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                ["--widget-primary-color" as string]: SocialPlatformMapping(item.platform)?.color,
+                ["--widget-bg-color" as string]: colorMod(SocialPlatformMapping(item.platform)?.color, 10)
+              }}
+            >
+              <div 
+                className="platform-icon"
+                style={{"background": SocialPlatformMapping(item.platform)?.color}}
+              >
+                <SVG src={`../${SocialPlatformMapping(item.platform)?.icon}`} width={24} height={24} />
+              </div>
+              <div className="platform-title">{SocialPlatformMapping(item.platform)?.label}</div>
+              <div className="platform-handle text-ellipsis">{item.handle}</div>
+              <h3 className="text-assistive">{`${displayName} ${SocialPlatformMapping(item.platform)?.label}`}</h3>
+              <div className="platform-action">
+                <div className="btn btn-sm">Open</div>
+              </div>
+            </Link>
+          ) : (
+            <Clipboard
+              component="div"
+              data-clipboard-text={item.handle}
+              onSuccess={onCopySuccess}
+              className={`profile-widget profile-widget-link ${item.platform}`}
+              style={{
+                ["--widget-primary-color" as string]: SocialPlatformMapping(item.platform)?.color,
+                ["--widget-bg-color" as string]: colorMod(SocialPlatformMapping(item.platform)?.color, 10)
+              }}
+            >
+              <div 
+                className="platform-icon"
+                style={{"background": SocialPlatformMapping(item.platform)?.color}}
+              >
+                <SVG src={`../${SocialPlatformMapping(item.platform)?.icon}`} width={24} height={24} />
+              </div>
+              <div className="platform-title">{SocialPlatformMapping(item.platform)?.label}</div>
+              <div className="platform-handle text-ellipsis">{item.handle}</div>
+              <h3 className="text-assistive">{`${displayName} ${SocialPlatformMapping(item.platform)?.label}`}</h3>
+              <div className="platform-action">
+                <div className="btn btn-sm">
+                  Copy
+                  {isCopied && <div className="tooltip-copy">COPIED</div>}
+                </div>
+              </div>
+            </Clipboard>
+          )
+        }
+        </>
       );
     default:
       return (
