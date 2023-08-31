@@ -26,7 +26,7 @@ export default function ProfileMain(props) {
     relations,
     domain,
   } = props;
-  const [copied, setCopied] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [openShare, setOpenShare] = useState(false);
   const [curAsset, setCurAsset] = useState(null);
@@ -35,9 +35,9 @@ export default function ProfileMain(props) {
   const pathName = usePathname();
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
   const onCopySuccess = () => {
-    setCopied(true);
+    setIsCopied(true);
     setTimeout(() => {
-      setCopied(false);
+      setIsCopied(false);
     }, 1500);
   };
   if (!data || data.error) {
@@ -112,7 +112,6 @@ export default function ProfileMain(props) {
                   title="Copy the Ethereum wallet address"
                 >
                   <SVG src="../icons/icon-copy.svg" width={20} height={20} />
-                  {copied && <div className="tooltip-copy">COPIED</div>}
                 </Clipboard>
               </>
             </div>
@@ -121,7 +120,7 @@ export default function ProfileMain(props) {
               {platform == "nextid" && (
                 <Clipboard
                   component="div"
-                  className={`platform-badge nextid active`}
+                  className={`platform-badge nextid active c-hand`}
                   data-clipboard-text={domain}
                   onSuccess={onCopySuccess}
                   title="Copy the Next.ID address"
@@ -137,7 +136,6 @@ export default function ProfileMain(props) {
                       {formatText(domain)}
                     </span>
                   </div>
-                  {copied && <div className="tooltip-copy">COPIED</div>}
                 </Clipboard>
               )}
               {relations?.map((x, idx) => {
@@ -264,6 +262,13 @@ export default function ProfileMain(props) {
           url={`${baseURL}${pathName}`}
           onClose={() => setOpenShare(false)}
         />
+      )}
+      {isCopied && (
+        <div className="web3bio-toast">
+          <div className="toast">
+            Copied to clipboard
+          </div>
+        </div>
       )}
     </>
   );

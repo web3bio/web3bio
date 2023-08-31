@@ -28,11 +28,11 @@ const shareMap = [
 
 export default function ShareModal(props) {
   const { profile, url, onClose } = props;
-  const [copied, setCopied] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
   const onCopySuccess = () => {
-    setCopied(true);
+    setIsCopied(true);
     setTimeout(() => {
-      setCopied(false);
+      setIsCopied(false);
     }, 1500);
   };
 
@@ -108,10 +108,17 @@ export default function ShareModal(props) {
               onSuccess={onCopySuccess}
             >
               <SVG src="icons/icon-copy.svg" height={24} width={24} /> COPY
-              {copied && <div className="tooltip-copy">COPIED</div>}
             </Clipboard>
           </div>
         </div>
+        
+        {isCopied && (
+          <div className="web3bio-toast">
+            <div className="toast">
+              Copied to clipboard
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

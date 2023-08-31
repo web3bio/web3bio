@@ -275,7 +275,7 @@ const RenderAccountItem = (props) => {
                 )}
                 <div className="icon">
                   <SVG
-                    fill="#000"
+                    fill="#fff"
                     src={SocialPlatformMapping(identity.platform)?.icon || ""}
                     width={20}
                     height={20}
