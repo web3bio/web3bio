@@ -15,6 +15,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import ShareModal from "../shared/ShareModal";
 import ModalLink from "./ModalLink";
+import RSSWidget from "./RSSWidget";
 
 export default function ProfileMain(props) {
   const { data, pageTitle = "", platform, nfts, fromServer, relations } = props;
@@ -211,6 +212,11 @@ export default function ProfileMain(props) {
                     }}
                     address={data.address}
                   />
+                </Suspense>
+              </div>
+              <div className="web3-section-widgets">
+                <Suspense fallback={<p>Loading Articles...</p>}>
+                  <RSSWidget fromServer={false} domain={data.identity} />
                 </Suspense>
               </div>
             </>
