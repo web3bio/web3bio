@@ -69,11 +69,11 @@ export default function ShareModal(props) {
                   name={profile.identity}
                   variant="bauhaus"
                   colors={[
-                    "#264653",
-                    "#2a9d8f",
-                    "#e9c46a",
-                    "#f4a261",
-                    "#e76f51",
+                    "#ECD7C8",
+                    "#EEA4BC",
+                    "#BE88C4",
+                    "#9186E7",
+                    "#92C9F9",
                   ]}
                 />
               )}
