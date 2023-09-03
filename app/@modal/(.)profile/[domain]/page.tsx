@@ -1,32 +1,30 @@
 "use client";
 import useSWR from "swr";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { _fetcher } from "../../../components/apis/ens";
-import { handleSearchPlatform, mapLinks } from "../../../utils/utils";
-import { usePathname } from "next/navigation";
-import { PlatformType } from "../../../utils/platform";
-import { Loading } from "../../../components/shared/Loading";
-import { Error } from "../../../components/shared/Error";
-import ProfileMain from "../../../components/profile/ProfileMain";
-import Modal from "../../../components/shared/Modal";
+import { _fetcher } from "../../../../components/apis/ens";
+import { handleSearchPlatform, mapLinks } from "../../../../utils/utils";
+import { PlatformType } from "../../../../utils/platform";
+import { Loading } from "../../../../components/shared/Loading";
+import { Error } from "../../../../components/shared/Error";
+import ProfileMain from "../../../../components/profile/ProfileMain";
+import Modal from "../../../../components/shared/Modal";
+import { isArray } from "@apollo/client/utilities";
 
 interface ProfileData {
   platform: PlatformType;
   identity: string;
   name: string;
   bio: string;
+  error?: string;
 }
 interface UseProfileProps {
-  shouldFetch?: boolean;
   identity: string;
   fallbackData?: ProfileData[];
 }
 
-function useProfile({ shouldFetch, identity, fallbackData }: UseProfileProps) {
-  const url = shouldFetch
-    ? `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${identity}`
-    : null;
+function useProfile({ identity, fallbackData }: UseProfileProps) {
+  const url = `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${identity}`;
 
   const { data, error, isValidating } = useSWR(url, _fetcher, {
     revalidateOnFocus: false,
@@ -44,35 +42,33 @@ function findProfileData(
   platform: PlatformType
 ) {
   if (!domain || !data) return null;
-  const profiles = data.filter((x) => x.platform === platform);
+  if (!isArray(data)) return data as any;
+  const profiles = (data as ProfileData[]).filter(
+    (x) => x.platform === platform
+  );
   return profiles.length > 0 ? profiles[0] : data[0];
 }
 
-export default function ProfileModal() {
-  const pathName = usePathname();
-  const domain = pathName.replace("/", "");
+export default function ProfileModal({
+  params: { domain },
+}: {
+  params: { domain: string };
+}) {
   const platform = handleSearchPlatform(domain);
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
-  const shouldFetch =
-    !!domain &&
-    [
-      PlatformType.ens,
-      PlatformType.lens,
-      PlatformType.farcaster,
-      PlatformType.nextid,
-    ].includes(platform);
+  const pathname = usePathname();
   const { data, isLoading, isError } = useProfile({
-    shouldFetch,
     identity: domain,
   });
   const router = useRouter();
-
   useEffect(() => {
+    const newPathname = pathname.replaceAll("/profile", "");
+    window.history.replaceState(null, "", newPathname);
     setProfileData(findProfileData(domain, data, platform));
   }, [domain, data, platform]);
 
   const renderModalContent = () => {
-    if (isLoading) {
+    if (isLoading || !profileData) {
       return (
         <div className="global-loading">
           <Loading />
@@ -80,16 +76,13 @@ export default function ProfileModal() {
       );
     }
 
-    if (isError) {
-      return <Error />;
-    }
-
-    if (!profileData) {
-      return null;
+    if (isError || profileData.error) {
+      return <Error msg={profileData.error ?? ""} />;
     }
 
     return (
       <ProfileMain
+        domain={domain}
         data={{
           ...profileData,
           links: mapLinks(data || []),
@@ -102,7 +95,5 @@ export default function ProfileModal() {
       />
     );
   };
-  return shouldFetch ? (
-    <Modal onDismiss={() => router.back()}>{renderModalContent()}</Modal>
-  ) : null;
+  return <Modal onDismiss={() => router.back()}>{renderModalContent()}</Modal>;
 }

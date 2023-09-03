@@ -7,6 +7,7 @@ import { formatText } from "../../utils/utils";
 import { RenderSourceFooter } from "./SourcesFooter";
 import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import { isAddress } from "ethers";
+import ModalLink from "../profile/ModalLink";
 
 const RenderAccountItem = (props) => {
   const onCopySuccess = () => {
@@ -16,7 +17,6 @@ const RenderAccountItem = (props) => {
     }, 1500);
   };
   const { identity, sources, profile, canSkipProfile } = props;
-
   const [isCopied, setIsCopied] = useState(false);
   const resolvedDisplayName = profile?.displayName
     ? profile.displayName
@@ -97,7 +97,7 @@ const RenderAccountItem = (props) => {
             )}
           </div>
           {(canSkipProfile || (profile && !profile?.error)) && (
-            <Link
+            <ModalLink
               href={`/${
                 profile?.identity || identity.displayName || resolvedIdentity
               }`}
@@ -107,7 +107,7 @@ const RenderAccountItem = (props) => {
               <button className="btn btn-sm btn-link action">
                 <SVG src="icons/icon-open.svg" width={20} height={20} /> <span className="hide-sm">Profile</span>
               </button>
-            </Link>
+            </ModalLink>
           )}
           <RenderSourceFooter sources={sources} />
         </div>
@@ -152,7 +152,7 @@ const RenderAccountItem = (props) => {
               </div>
             </div>
           </div>
-          <Link
+          <ModalLink
             href={`/${resolvedIdentity}`}
             className="social-actions"
             title="Open Lens Profile"
@@ -160,7 +160,7 @@ const RenderAccountItem = (props) => {
             <button className="btn btn-sm btn-link action">
               <SVG src="icons/icon-open.svg" width={20} height={20} /> <span className="hide-sm">Profile</span>
             </button>
-          </Link>
+          </ModalLink>
           <RenderSourceFooter sources={sources} />
         </div>
       );
@@ -205,7 +205,7 @@ const RenderAccountItem = (props) => {
             </div>
           </div>
 
-          <Link
+          <ModalLink
             href={`/${resolvedIdentity}.farcaster`}
             className="social-actions"
             title="Open Farcaster Profile"
@@ -213,7 +213,7 @@ const RenderAccountItem = (props) => {
             <button className="btn btn-sm btn-link action">
               <SVG src="icons/icon-open.svg" width={20} height={20} /> <span className="hide-sm">Profile</span>
             </button>
-          </Link>
+          </ModalLink>
           <RenderSourceFooter sources={sources} />
         </div>
       );
@@ -275,6 +275,7 @@ const RenderAccountItem = (props) => {
                 )}
                 <div className="icon">
                   <SVG
+                    fill="#fff"
                     src={SocialPlatformMapping(identity.platform)?.icon || ""}
                     width={20}
                     height={20}
@@ -301,14 +302,14 @@ const RenderAccountItem = (props) => {
             </div>
           </div>
           <div className="social-actions">
-            <Link
+            <ModalLink
               className="btn btn-sm btn-link action"
               href={`/${resolvedIdentity}`}
               title="Open Next.ID Profile page"
               rel="noopener noreferrer"
             >
               <SVG src="icons/icon-open.svg" width={20} height={20} /> <span className="hide-sm">Profile</span>
-            </Link>
+            </ModalLink>
           </div>
           <RenderSourceFooter sources={sources} />
         </div>

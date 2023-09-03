@@ -188,6 +188,20 @@
       background: rgba($gray-color, .15);
     }
 
+    &:first-child {
+      order: -2;
+    }
+
+    &.ethereum,
+    &.lens,
+    &.farcaster {
+      order: -1;
+    }
+
+    &.nextid {
+      order: 9;
+    }
+
     .social-main {
       align-items: center;
       display: flex;

@@ -38,6 +38,7 @@ async function fetchDataFromServer(domain: string) {
         PlatformType.farcaster,
         PlatformType.lens,
         PlatformType.ethereum,
+        PlatformType.dotbit,
         PlatformType.nextid,
       ].includes(platform)
     )
@@ -138,6 +139,7 @@ export default async function ProfilePage({
   return (
     <ProfileMain
       fromServer
+      domain={domain}
       relations={relations}
       nfts={nfts}
       data={data}
