@@ -23,7 +23,7 @@ function usePoaps(address: string, fromServer: boolean) {
   };
 }
 
-export default function PoapWidget(props) {
+export default function WidgetPoap(props) {
   const { address, onShowDetail, fromServer } = props;
   const { data, isLoading, isError } = usePoaps(address, fromServer);
 

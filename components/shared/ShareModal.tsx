@@ -3,6 +3,7 @@ import SVG from "react-inlinesvg";
 import Clipboard from "react-clipboard.js";
 import { QRCode } from "react-qrcode-logo";
 import Image from "next/image";
+import Avatar from "boring-avatars";
 import { formatText } from "../../utils/utils";
 
 const shareMap = [
@@ -28,11 +29,11 @@ const shareMap = [
 
 export default function ShareModal(props) {
   const { profile, url, onClose } = props;
-  const [copied, setCopied] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
   const onCopySuccess = () => {
-    setCopied(true);
+    setIsCopied(true);
     setTimeout(() => {
-      setCopied(false);
+      setIsCopied(false);
     }, 1500);
   };
 
@@ -54,21 +55,32 @@ export default function ShareModal(props) {
           <div className="profile-card">
             <div className="card-avatar">
               {profile.avatar ? (
-                  <Image
-                    src={profile.avatar}
-                    className="avatar"
-                    priority={true}
-                    alt="Profile Avatar"
-                    height={180}
-                    width={180}
-                  />
-                ) : (
-                  <div className="avatar bg-gray"></div>
-                )}
+                <Image
+                  src={profile.avatar}
+                  className="avatar"
+                  priority={true}
+                  alt="Profile Avatar"
+                  height={180}
+                  width={180}
+                />
+              ) : (
+                <Avatar
+                  size={180}
+                  name={profile.identity}
+                  variant="bauhaus"
+                  colors={[
+                    "#ECD7C8",
+                    "#EEA4BC",
+                    "#BE88C4",
+                    "#9186E7",
+                    "#92C9F9",
+                  ]}
+                />
+              )}
             </div>
             <div className="card-content">
               <div className="card-name">{profile.displayName}</div>
-              <div className="card-identity">{profile.identity}</div>
+              <div className="card-identity">{profile.displayName == profile.identity ? formatText(profile.address) : profile.identity}</div>
             </div>
             <div className="qrcode-container">
               <QRCode 
@@ -108,10 +120,17 @@ export default function ShareModal(props) {
               onSuccess={onCopySuccess}
             >
               <SVG src="icons/icon-copy.svg" height={24} width={24} /> COPY
-              {copied && <div className="tooltip-copy">COPIED</div>}
             </Clipboard>
           </div>
         </div>
+
+        {isCopied && (
+          <div className="web3bio-toast">
+            <div className="toast">
+              Copied to clipboard
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

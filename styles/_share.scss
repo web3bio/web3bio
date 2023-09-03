@@ -44,11 +44,11 @@
     .card-avatar {
       flex: 0;
 
-      .avatar {
-        background: $gray-color;
+      .avatar,
+      svg {
         box-shadow: inset 0 0 0 .2rem rgba($light-color, .1);
-        height: 3.2rem;
-        width: 3.2rem;
+        height: 4rem;
+        width: 4rem;
       }
     }
 
