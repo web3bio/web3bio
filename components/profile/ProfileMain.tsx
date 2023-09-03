@@ -210,6 +210,11 @@ export default function ProfileMain(props) {
                 </Suspense>
               </div>
               <div className="web3-section-widgets">
+                <Suspense fallback={<p>Loading Articles...</p>}>
+                  <RSSWidget fromServer={false} domain={data.identity} />
+                </Suspense>
+              </div>
+              <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading Poaps...</p>}>
                   <WidgetPoap
                     fromServer={fromServer}
@@ -220,11 +225,6 @@ export default function ProfileMain(props) {
                     }}
                     address={data.address}
                   />
-                </Suspense>
-              </div>
-              <div className="web3-section-widgets">
-                <Suspense fallback={<p>Loading Articles...</p>}>
-                  <RSSWidget fromServer={false} domain={data.identity} />
                 </Suspense>
               </div>
             </>

@@ -4,6 +4,7 @@ import useSWR from "swr";
 import { Loading } from "../shared/Loading";
 import { Error } from "../shared/Error";
 import { RSSFetcher, RSS_END_POINT } from "../apis/rss";
+import SVG from "react-inlinesvg";
 import Link from "next/link";
 
 function useRSS(domain: string, fromServer: boolean) {
@@ -36,22 +37,28 @@ export default function RSSWidget(props) {
   return (
     <div className="profile-widget-full" id="rss">
       <div className="profile-widget profile-widget-rss">
-        <Link
-          href={data.link}
-          className="profile-widget-title"
-          target={"_blank"}
-        >
+        <h2 className="profile-widget-title">
           <div className="platform-icon mr-2">
-            <img
-              className="img-responsive"
-              src={data.image ?? ""}
-              alt="rss-image"
-            />
+            {data.image && (
+              <img
+                className="img-responsive"
+                src={data.image}
+                alt="rss-image"
+              />
+            )}
           </div>
           {data.title}
-        </Link>
+          <Link
+            className="action-icon"
+            href={data.link}
+            target={"_blank"}
+          >
+            <SVG src="icons/icon-open.svg" width={24} height={24} />
+          </Link>
+        </h2>
+        
         <div className="text-assistive">{data.description ?? ""}</div>
-        <div className="widgets-rss-list">
+        <div className="widgets-rss-list noscrollbar">
           {getBoundaryRender() ||
             data?.items.map((x, idx) => {
               return (
@@ -61,11 +68,13 @@ export default function RSSWidget(props) {
                   className="rss-item"
                   target={"_blank"}
                 >
-                  {new Date(x.published).toDateString()}
                   <div className="rss-item-title">
-                    {typeof x.title === "string" ? x.title : "Empty Title"}
+                    {typeof x.title === "string" ? x.title : "Untitled"}
                   </div>
-                  <div className="rss-item-content">
+                  <div className="rss-item-date">
+                    {new Date(x.published).toDateString()}
+                  </div>
+                  <div className="rss-item-content text-assistive">
                     {typeof x.description === "string" ? x.description : ""}
                   </div>
                 </Link>

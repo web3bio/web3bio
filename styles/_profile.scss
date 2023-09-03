@@ -282,7 +282,6 @@
     will-change: transform;
 
     &.profile-widget-link {
-
       &:focus,
       &:hover {
         box-shadow: 0 .4rem 1.6rem -.4rem rgba($dark-color, .15), 0 .1rem .2rem rgba($dark-color, .01);
@@ -456,15 +455,15 @@
     .widgets-collection-list {
       display: flex;
       flex-wrap: nowrap;
-      height: 5rem;
+      height: 3.4rem;
       margin: 0 -1rem;
       overflow-x: auto;
       padding: 0 1rem;
 
       .poap-item {
-        flex: 0 0 4rem;
-        height: 4rem;
-        width: 4rem;
+        flex: 0 0 3.2rem;
+        height: 3.2rem;
+        width: 3.2rem;
 
         &:not(:first-child) {
           margin-left: -.5rem;
@@ -476,43 +475,81 @@
           border: .05rem solid #2f2a47;
           border-radius: 50%;
           box-shadow: -.1rem .1rem 0 .1rem #E4E2FD;
-          height: 4rem;
+          height: 3.2rem;
           padding: .25rem;
-          width: 4rem;
+          width: 3.2rem;
         }
       }
     }
   }
 
+  //- RSS Widget
   .profile-widget-rss {
+    cursor: default;
     width: 100%;
 
-    .widgets-rss-list {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      overflow-y: auto;
-      .rss-item {
-        width: 100%;
-        padding: .4rem;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        color: $gray-color;
-        font-size: .6rem;
-        border-bottom: 1px solid $gray-color;
-        .rss-item-title {
-          color: $dark-color;
-          font-size: .8rem;
-          font-weight: 500;
-        }
-        .rss-item-content{
-          color: $dark-color;
-          font-size: .6rem;
-          font-weight: 400;
+    .profile-widget-title {
+      .platform-icon {
+        flex: 0 0 1.6rem;
+        height: 1.6rem;
+        width: 1.6rem;
+
+        img {
+          border-radius: .4rem;
         }
       }
     }
+
+    .action-icon {
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
+      color: #121212;
+      cursor: pointer;
+    }
+
+    .widgets-rss-list {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: .5rem;
+      margin: 0 -1rem;
+      overflow-x: auto;
+      padding: 0 1rem;
+
+      .rss-item {
+        background: lighten($bg-color, 5%);
+        border-radius: .4rem;
+        flex: 1 0 12rem;
+        padding: .75rem;
+        text-decoration: none;
+        transition: all .2s ease-in-out;
+        width: 12rem;
+
+        &:focus,
+        &:hover {
+          background: lighten($bg-color, 2%);
+        }
+
+        .rss-item-title {
+          font-weight: 700;
+          display: -webkit-box;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 3;
+        }
+
+        .rss-item-date {
+          color: $gray-color;
+          font-size: .6rem;
+          margin-top: .5rem;
+        }
+      }
+    }
+
+    
+
+    
   }
 }
 
