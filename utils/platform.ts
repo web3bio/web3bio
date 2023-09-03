@@ -135,14 +135,12 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
     icon: "icons/icon-spaceid.svg",
     label: "SPACE ID",
     urlPrefix: "https://space.id/search?query=",
-    ensText: [],
   },
   [PlatformType.unstoppableDomains]: {
     key: PlatformType.unstoppableDomains,
     color: "#2E65F5",
     icon: "icons/icon-unstoppabledomains.svg",
     label: "Unstoppable Domains",
-    ensText: [],
     urlPrefix: "https://unstoppabledomains.com/search?searchTerm=",
   },
   [PlatformType.telegram]: {
@@ -164,7 +162,8 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
     urlPrefix: "https://www.instagram.com/",
   },
   [PlatformType.weibo]: {
-    key: PlatformType.instagram,
+    key: PlatformType.weibo,
+    color: "#df2029",
     icon: "",
     label: "Weibo",
     dotbitText: ["profile.weibo"],
@@ -204,7 +203,6 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
     color: "#4125E1",
     icon: "icons/icon-sybil.svg",
     label: "Sybil",
-    ensText: [],
     urlPrefix: "https://sybil.org/",
   },
   [PlatformType.discord]: {
@@ -242,6 +240,7 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.dns]: {
     key: PlatformType.dns,
     icon: "icons/icon-web.svg",
+    color: "#000000",
     label: "DNS",
   },
   [PlatformType.lenster]: {
@@ -254,6 +253,7 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.facebook]: {
     key: PlatformType.facebook,
     icon: "icons/social-facebook.svg",
+    color: "#385898",
     label: "Facebook",
     urlPrefix: "https://www.facebook.com/",
     dotbitText: ["profile.facebook"],
@@ -261,6 +261,7 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.youtube]: {
     key: PlatformType.youtube,
     icon: "",
+    color: "#FF0000",
     label: "Youtube",
     urlPrefix: "https://www.youtube.com/",
     dotbitText: ["profile.youtube"],
@@ -268,6 +269,7 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.tiktok]: {
     key: PlatformType.tiktok,
     icon: "",
+    color: "#000000",
     label: "TikTok",
     urlPrefix: "https://www.tiktok.com/",
     dotbitText: ["profile.tiktok"],
@@ -275,6 +277,7 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.bilibili]: {
     key: PlatformType.bilibili,
     icon: "",
+    color: "#00aeec",
     label: "Bilibili",
     urlPrefix: "https://www.bilibili.com/",
     dotbitText: ["profile.bilibili"],
@@ -282,6 +285,7 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.medium]: {
     key: PlatformType.medium,
     icon: "icons/social-medium.svg",
+    color: "#000000",
     label: "Medium",
     urlPrefix: "https://medium.com/",
     dotbitText: ["profile.medium"],
@@ -289,6 +293,7 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.mirror]: {
     key: PlatformType.mirror,
     icon: "",
+    color: "#007aff",
     label: "Mirror",
     urlPrefix: "https://mirror.xyz/",
     dotbitText: ["profile.mirror"],
@@ -296,6 +301,7 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.jike]: {
     key: PlatformType.jike,
     icon: "",
+    color: "#ffe411",
     label: "Jike",
     urlPrefix: "https://web.okjike.com/",
     dotbitText: ["profile.jike"],
@@ -303,13 +309,15 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.dribbble]: {
     key: PlatformType.dribbble,
     icon: "",
+    color: "#000000",
     label: "Dribbble",
     urlPrefix: "https://dribbble.com/search/",
     dotbitText: ["profile.dribbble"],
   },
   [PlatformType.nostr]: {
     key: PlatformType.nostr,
-    icon: "",
+    icon: "icons/icon-nostr.svg",
+    color: "#0ea5e9",
     label: "Nostr",
     urlPrefix: "https://app.coracle.social/",
     dotbitText: ["profile.nostr"],
@@ -324,14 +332,14 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.knn3]: {
     key: PlatformType.knn3,
     icon: "",
-    color: "",
+    color: "#000000",
     label: "KNN3",
     urlPrefix: "https://www.knn3.xyz/",
   },
   [PlatformType.ethLeaderboard]: {
     key: PlatformType.ethLeaderboard,
     icon: "",
-    color: "",
+    color: "#000000",
     label: ".eth LeaderBoard",
     urlPrefix: "https://ethleaderboard.xyz/",
   },
@@ -339,28 +347,28 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.the_graph]: {
     key: PlatformType.the_graph,
     icon: "",
-    color: "",
+    color: "#000000",
     label: "The Graph",
     urlPrefix: "https://thegraph.com/",
   },
   [PlatformType.rpc_server]: {
     key: PlatformType.rpc_server,
     icon: "",
-    color: "",
+    color: "#000000",
     label: "RPC Server",
     urlPrefix: "",
   },
   [PlatformType.twitter_hexagon]: {
     key: PlatformType.twitter_hexagon,
     icon: "",
-    color: "",
+    color: "#000000",
     label: "Twitter Hexagon",
     urlPrefix: "https://twitter.com/",
   },
   [PlatformType.uniswap]: {
     key: PlatformType.uniswap,
     icon: "",
-    color: "",
+    color: "#000000",
     label: "Uniswap",
     urlPrefix: "https://uniswap.org/",
   },
@@ -370,7 +378,7 @@ export const SocialPlatformMapping = (platform: PlatformType) => {
   return (
     platformData[platform] ?? {
       key: platform,
-      color: "",
+      color: "#000000",
       icon: "",
       label: platform,
       ensText: [],

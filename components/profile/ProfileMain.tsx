@@ -4,12 +4,12 @@ import Link from "next/link";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { RenderWidgetItem } from "./WidgetItem";
-import PoapWidget from "./PoapsWidget";
+import WidgetPoap from "./WidgetPoap";
 import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import { Error } from "../shared/Error";
 import Avatar from "boring-avatars";
 import { formatText } from "../../utils/utils";
-import { NFTCollectionWidget } from "./NFTCollectionWidget";
+import { WidgetNFTCollection } from "./WidgetNFTCollection";
 import { NFTModal, NFTModalType } from "./NFTModal";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -18,8 +18,16 @@ import ModalLink from "./ModalLink";
 import RSSWidget from "./RSSWidget";
 
 export default function ProfileMain(props) {
-  const { data, pageTitle = "", platform, nfts, fromServer, relations } = props;
-  const [copied, setCopied] = useState(false);
+  const {
+    data,
+    pageTitle = "",
+    platform,
+    nfts,
+    fromServer,
+    relations,
+    domain,
+  } = props;
+  const [isCopied, setIsCopied] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [openShare, setOpenShare] = useState(false);
   const [curAsset, setCurAsset] = useState(null);
@@ -28,9 +36,9 @@ export default function ProfileMain(props) {
   const pathName = usePathname();
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
   const onCopySuccess = () => {
-    setCopied(true);
+    setIsCopied(true);
     setTimeout(() => {
-      setCopied(false);
+      setIsCopied(false);
     }, 1500);
   };
   if (!data || data.error) {
@@ -70,14 +78,12 @@ export default function ProfileMain(props) {
                 <Avatar
                   size={180}
                   name={data.identity}
-                  variant="marble"
+                  variant="bauhaus"
                   colors={[
-                    "#FBF4EC",
                     "#ECD7C8",
                     "#EEA4BC",
                     "#BE88C4",
                     "#9186E7",
-                    "#92C9F9",
                     "#92C9F9",
                   ]}
                 />
@@ -105,16 +111,18 @@ export default function ProfileMain(props) {
                   title="Copy the Ethereum wallet address"
                 >
                   <SVG src="../icons/icon-copy.svg" width={20} height={20} />
-                  {copied && <div className="tooltip-copy">COPIED</div>}
                 </Clipboard>
               </>
             </div>
 
             <div className="profile-identity">
-              {platform == "nextid" ? (
-                <div
-                  className={`platform-badge nextid active`}
-                  title={`${pageTitle} Next.ID`}
+              {platform == "nextid" && (
+                <Clipboard
+                  component="div"
+                  className={`platform-badge nextid active c-hand`}
+                  data-clipboard-text={domain}
+                  onSuccess={onCopySuccess}
+                  title="Copy the Next.ID address"
                 >
                   <div className="platform-badge-icon">
                     <SVG
@@ -123,10 +131,11 @@ export default function ProfileMain(props) {
                       src={"icons/icon-nextid.svg"}
                       className="text-light"
                     />
+                    <span className="platform-badge-name">
+                      {formatText(domain)}
+                    </span>
                   </div>
-                </div>
-              ) : (
-                ""
+                </Clipboard>
               )}
               {relations?.map((x, idx) => {
                 const relatedPath = `${x.identity}${
@@ -134,11 +143,11 @@ export default function ProfileMain(props) {
                 }`;
                 return (
                   <ModalLink
-                    skip={fromServer}
+                    skip={fromServer ? 1 : 0}
                     href={`/${relatedPath}`}
                     key={x.platform + idx}
-                    className={`platform-badge ${x.platform} ${
-                      idx === 0 ? "active" : ""
+                    className={`platform-badge ${x.platform}${
+                      idx === 0 ? " active" : ""
                     }`}
                     title={`${pageTitle} ${
                       SocialPlatformMapping(x.platform).label
@@ -149,7 +158,6 @@ export default function ProfileMain(props) {
                         fill={SocialPlatformMapping(x.platform).color}
                         width={20}
                         src={SocialPlatformMapping(x.platform).icon || ""}
-                        className="text-pride"
                       />
                     </div>
                     <span className="platform-badge-name">{x.identity}</span>
@@ -189,7 +197,7 @@ export default function ProfileMain(props) {
             <>
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading NFTs...</p>}>
-                  <NFTCollectionWidget
+                  <WidgetNFTCollection
                     fromServer={fromServer}
                     onShowDetail={(e, v) => {
                       setDialogType(NFTModalType.NFT);
@@ -203,7 +211,7 @@ export default function ProfileMain(props) {
               </div>
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading Poaps...</p>}>
-                  <PoapWidget
+                  <WidgetPoap
                     fromServer={fromServer}
                     onShowDetail={(v) => {
                       setDialogType(NFTModalType.POAP);
@@ -226,6 +234,7 @@ export default function ProfileMain(props) {
       <div className="web3bio-badge">
         <Link
           href="/"
+          target="_parent"
           className="btn btn-primary"
           title="Web3.bio - Web3 Identity Graph Search and Link in Bio Profile"
         >
@@ -257,6 +266,13 @@ export default function ProfileMain(props) {
           url={`${baseURL}${pathName}`}
           onClose={() => setOpenShare(false)}
         />
+      )}
+      {isCopied && (
+        <div className="web3bio-toast">
+          <div className="toast">
+            Copied to clipboard
+          </div>
+        </div>
       )}
     </>
   );
