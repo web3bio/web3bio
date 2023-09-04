@@ -198,6 +198,7 @@ export default function ProfileMain(props) {
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading NFTs...</p>}>
                   <WidgetNFTCollection
+                    initialExpand={!data?.links?.length}
                     fromServer={fromServer}
                     onShowDetail={(e, v) => {
                       setDialogType(NFTModalType.NFT);
@@ -269,9 +270,7 @@ export default function ProfileMain(props) {
       )}
       {isCopied && (
         <div className="web3bio-toast">
-          <div className="toast">
-            Copied to clipboard
-          </div>
+          <div className="toast">Copied to clipboard</div>
         </div>
       )}
     </>

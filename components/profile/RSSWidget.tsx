@@ -33,7 +33,6 @@ export default function RSSWidget(props) {
   }, [isLoading, isError]);
 
   if (!data || !data?.items?.length) return null;
-  console.log(data, "data");
   return (
     <div className="profile-widget-full" id="rss">
       <div className="profile-widget profile-widget-rss">
