@@ -15,6 +15,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import ShareModal from "../shared/ShareModal";
 import ModalLink from "./ModalLink";
+import WidgetDegen from "./WidgetDegen";
 
 export default function ProfileMain(props) {
   const {
@@ -181,6 +182,11 @@ export default function ProfileMain(props) {
               </div>
             )}
           </div>
+          <Suspense fallback={<p>Loading Beacon Score...</p>}>
+            <div className="web3-section-widgets">
+              <WidgetDegen address={data.address} />
+            </div>
+          </Suspense>
         </div>
         <div className="column col-8 col-md-12">
           <div className="web3-section-widgets">
@@ -263,9 +269,7 @@ export default function ProfileMain(props) {
       )}
       {isCopied && (
         <div className="web3bio-toast">
-          <div className="toast">
-            Copied to clipboard
-          </div>
+          <div className="toast">Copied to clipboard</div>
         </div>
       )}
     </>
