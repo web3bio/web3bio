@@ -1,10 +1,17 @@
 import IndexPageRender from "../components/search/IndexPage";
 import { Footer } from "../components/shared/Footer";
+import { platformData } from "../utils/platform";
+import { handleSearchPlatform } from "../utils/utils";
 
 export async function generateMetadata({ params, searchParams }, parent) {
   const searchTerm = searchParams?.s;
+  const platform = searchParams?.platform;
   const pathName = searchTerm ? `/?s=${searchTerm}` : "/";
-  const title = searchTerm || (await parent).title;
+  const title = searchTerm
+    ? `${searchTerm} - ${
+        platform || platformData[handleSearchPlatform(searchTerm)].label
+      }` || (await parent).title
+    : (await parent).title;
   return {
     title,
     alternates: {
