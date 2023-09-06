@@ -207,7 +207,7 @@ body {
   h1 {
     font-size: .8rem;
     font-weight: 900;
-    letter-spacing: -.05rem;
+    letter-spacing: -.02rem;
     line-height: .8rem;
     margin: 0;
   }
@@ -473,9 +473,22 @@ body {
 }
 
 .border-pride {
-  border: .05rem solid transparent;
-  background: linear-gradient(white, white) padding-box,
-    linear-gradient(70deg, $pride-color-1 -10%, $pride-color-2 5%, $pride-color-3 36%, $pride-color-4 50%, $pride-color-5 63%, $pride-color-6 95%, $pride-color-7 110%) border-box;
+  background-clip: padding-box !important;
+  border: .1rem solid transparent !important;
+  position: relative;
+
+  &:before {
+    background: linear-gradient(70deg, $pride-color-1 -10%, $pride-color-2 5%, $pride-color-3 36%, $pride-color-4 50%, $pride-color-5 63%, $pride-color-6 95%, $pride-color-7 110%);
+    border-radius: inherit;
+    bottom: 0;
+    content: '';
+    left: 0;
+    margin: -.1rem;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: -1;
+  }
 }
 
 .img-placeholder {

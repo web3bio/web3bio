@@ -38,12 +38,14 @@ export default function RSSWidget(props) {
       <div className="profile-widget profile-widget-rss">
         <h2 className="profile-widget-title">
           <div className="platform-icon mr-2">
-            {data.image && (
+            {data.image ? (
               <img
                 className="img-responsive"
                 src={data.image}
                 alt="rss-image"
               />
+            ) : (
+              <SVG src="icons/icon-web.svg" stroke={"#000"} width={24} height={24} />
             )}
           </div>
           {data.title}
@@ -55,8 +57,8 @@ export default function RSSWidget(props) {
             <SVG src="icons/icon-open.svg" width={24} height={24} />
           </Link>
         </h2>
+        {data.description && (<h3 className="text-assistive">{data.description}</h3>)}
         
-        <div className="text-assistive">{data.description ?? ""}</div>
         <div className="widgets-rss-list noscrollbar">
           {getBoundaryRender() ||
             data?.items.map((x, idx) => {
@@ -68,7 +70,7 @@ export default function RSSWidget(props) {
                   target={"_blank"}
                 >
                   <div className="rss-item-title">
-                    {typeof x.title === "string" ? x.title : "Untitled"}
+                    {x.title ? x.title : "Untitled"}
                   </div>
                   <div className="rss-item-date">
                     {new Date(x.published).toDateString()}
