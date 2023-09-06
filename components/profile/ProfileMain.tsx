@@ -15,7 +15,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import ShareModal from "../shared/ShareModal";
 import ModalLink from "./ModalLink";
-import RSSWidget from "./WidgetRSS";
+import WidgetRSS from "./WidgetRSS";
 import WidgetDegen from "./WidgetDegen";
 
 export default function ProfileMain(props) {
@@ -183,11 +183,6 @@ export default function ProfileMain(props) {
               </div>
             )}
           </div>
-          <Suspense fallback={<p>Loading Beacon Score...</p>}>
-            <div className="web3-section-widgets">
-              <WidgetDegen address={data.address} />
-            </div>
-          </Suspense>
         </div>
         <div className="column col-8 col-md-12">
           <div className="web3-section-widgets">
@@ -216,11 +211,19 @@ export default function ProfileMain(props) {
                   />
                 </Suspense>
               </div>
+
               <div className="web3-section-widgets">
-                <Suspense fallback={<p>Loading Articles...</p>}>
-                  <RSSWidget fromServer={false} domain={data.identity} />
+                <Suspense fallback={<p>Loading Beacon Score...</p>}>
+                  <WidgetDegen address={data.address} />
                 </Suspense>
               </div>
+            
+              <div className="web3-section-widgets">
+                <Suspense fallback={<p>Loading Articles...</p>}>
+                  <WidgetRSS fromServer={false} domain={data.identity} />
+                </Suspense>
+              </div>
+
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading Poaps...</p>}>
                   <WidgetPoap

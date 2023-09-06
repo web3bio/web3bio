@@ -18,7 +18,7 @@ function useDegenInfo(address: string) {
 export default function WidgetDegen(props) {
   const { address } = props;
   const { data } = useDegenInfo(address);
-  console.log(data,'degen Data')
+  // console.log(data,'degen Data')
   if (!data || !data.name) return null;
   return (
     <div className="profile-widget-full">

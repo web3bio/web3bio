@@ -23,7 +23,7 @@ function useRSS(domain: string, fromServer: boolean) {
   };
 }
 
-export default function RSSWidget(props) {
+export default function WidgetRSS(props) {
   const { domain, fromServer } = props;
   const { data, isLoading, isError } = useRSS(domain, fromServer);
   const getBoundaryRender = useCallback(() => {
