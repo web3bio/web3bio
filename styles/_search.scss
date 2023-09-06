@@ -17,7 +17,7 @@
   .form-label {
     font-size: 2.2rem;
     font-weight: 900;
-    letter-spacing: -.05rem;
+    letter-spacing: -.035em;
     line-height: 1;
     margin: 1rem 0;
 
@@ -26,8 +26,9 @@
     }
 
     small {
-      font-size: 1rem;
+      font-size: .9rem;
       font-weight: 400;
+      letter-spacing: -.025em;
     }
   }
 
@@ -339,7 +340,9 @@
     .icon {
       color: #5298FF;
       flex: 0 0 .7rem;
+      height: 1rem;
       margin-right: .2rem;
+      width: 1rem;
     }
   }
 

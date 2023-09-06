@@ -47,7 +47,7 @@ export default function HomePage() {
       <div
         className={searchFocus ? "web3bio-search focused" : "web3bio-search"}
       >
-        <div className="container grid-xs">
+        <div className="container grid-sm">
           <div className="search-form">
             <Link
               href={{
@@ -65,7 +65,7 @@ export default function HomePage() {
               </div>
             </Link>
             <div className="form-label">
-              Web3 Identity Search<br/><small>for Identity Graph and Link in Bio Profile</small>
+              Web3 Identity Search<br/><small>Discover Web3 Identity Graph and Profiles</small>
             </div>
             <div className="form-input-group">
               <SearchInput

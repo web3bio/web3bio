@@ -97,13 +97,14 @@ const RenderWidgetNFTCollection = ({
   onShowDetail,
   initialData,
   fromServer,
+  initialExpand,
 }) => {
   const { data, size, setSize, isValidating, isError, hasNextPage } = useNFTs({
     address,
     initialData,
     fromServer,
   });
-  const [expand, setExpand] = useState(false);
+  const [expand, setExpand] = useState(initialExpand);
   const [firstRender, setFirstRender] = useState(true);
   const [[ref, assetId], setScrollRefAndAssetId] = useState<
     [{ current: HTMLElement | null }, string]
