@@ -15,6 +15,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import ShareModal from "../shared/ShareModal";
 import ModalLink from "./ModalLink";
+import RSSWidget from "./WidgetRSS";
 
 export default function ProfileMain(props) {
   const {
@@ -91,7 +92,7 @@ export default function ProfileMain(props) {
             <h1 className="text-assistive">{`${pageTitle} ${
               SocialPlatformMapping(platform).label
             } Web3 Profile`}</h1>
-            <h2 className="text-assistive">{`Explore ${pageTitle} Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, Web3 social feeds, crypto assets etc on the Web3.bio Link in bio page.`}</h2>
+            <h2 className="text-assistive">{`Explore ${pageTitle} Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, crypto assets etc on the Web3.bio Link in bio page.`}</h2>
             <div className="profile-name">{data.displayName}</div>
             <h3 className="text-assistive">{`${pageTitle}‘s Ethereum wallet address is ${data.address}`}</h3>
             <div className="profile-identity">
@@ -197,6 +198,7 @@ export default function ProfileMain(props) {
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading NFTs...</p>}>
                   <WidgetNFTCollection
+                    initialExpand={!data?.links?.length}
                     fromServer={fromServer}
                     onShowDetail={(e, v) => {
                       setDialogType(NFTModalType.NFT);
@@ -206,6 +208,11 @@ export default function ProfileMain(props) {
                     address={data.address}
                     initialData={nfts || []}
                   />
+                </Suspense>
+              </div>
+              <div className="web3-section-widgets">
+                <Suspense fallback={<p>Loading Articles...</p>}>
+                  <RSSWidget fromServer={false} domain={data.identity} />
                 </Suspense>
               </div>
               <div className="web3-section-widgets">
@@ -263,9 +270,7 @@ export default function ProfileMain(props) {
       )}
       {isCopied && (
         <div className="web3bio-toast">
-          <div className="toast">
-            Copied to clipboard
-          </div>
+          <div className="toast">Copied to clipboard</div>
         </div>
       )}
     </>

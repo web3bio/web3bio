@@ -13,7 +13,7 @@
     filter: blur(4rem);
     height: 100vh;
     left: 0;
-    opacity: .05;
+    opacity: .01;
     position: fixed;
     top: 0;
     width: 100vw;
@@ -86,53 +86,41 @@
       align-items: center;
       background: rgba(#121212, .05);
       border: .05rem solid transparent;
-      box-shadow: inset 0 0 .1rem rgba($dark-color, .1);
       border-radius: .8rem;
+      box-shadow: 0 .05rem .1rem rgba($dark-color, .05);
       display: flex;
       height: 1.5rem;
-      padding: .15rem;
+      padding: .2rem;
       text-decoration: none;
       transition: all .2s ease;
-     
+
       &:focus,
       &:hover {
-        box-shadow: inset 0 0 .1rem rgba($dark-color, .15), 0 0 2rem rgba($dark-color, .15);
+        box-shadow: 0 .05rem .1rem rgba($dark-color, .05), 0 .05rem .8rem rgba($dark-color, .05);
       }
 
       &.ENS {
+        --badge-primary-color: #5298FF;
         background: lighten(#5298FF, 30%);
-        border-color: lighten(#5298FF, 20%);
-
-        .platform-badge-icon {
-          color: #5298FF;
-        }
+        border-color: lighten(#5298FF, 26%);
       }
 
       &.lens {
+        --badge-primary-color: #6bc674;
         background: lighten(#6bc674, 35%);
-        border-color: lighten(#6bc674, 25%);
-
-        .platform-badge-icon {
-          color: #6bc674;
-        }
+        border-color: lighten(#6bc674, 31%);
       }
 
       &.farcaster {
+        --badge-primary-color: #8465CB;
         background: lighten(#8465CB, 35%);
-        border-color: lighten(#8465CB, 25%);
-
-        .platform-badge-icon {
-          color: #8465CB;
-        }
+        border-color: lighten(#8465CB, 31%);
       }
 
       &.dotbit {
+        --badge-primary-color: #0e7dff;
         background: lighten(#0e7dff, 45%);
-        border-color: lighten(#0e7dff, 40%);
-
-        .platform-badge-icon {
-          color: #0e7dff;
-        }
+        border-color: lighten(#0e7dff, 41%);
       }
 
       &.nextid {
@@ -153,8 +141,9 @@
     .platform-badge-icon {
       align-items: center;
       border-radius: .7rem;
+      color: var(--badge-primary-color);
       display: flex;
-      flex: 0 0 1.2rem;
+      flex: 0 0 1.3rem;
       height: 1.3rem;
       justify-content: center;
       padding: .15rem;
@@ -215,13 +204,11 @@
   margin: 0;
 
   .profile-widget-item {
-    aspect-ratio: 1 / 1;
-    max-width: 50%;
     padding: .5rem;
     width: 25%;
 
     @media screen and (max-width: $size-xl) {
-      width: 33.333%;
+      width: 33.3333%;
     }
 
     @media screen and (min-width: $size-md) and (max-width: $size-lg) {
@@ -270,18 +257,19 @@
     border: .05rem solid rgba($dark-color, .075);
     border-radius: .8rem;
     box-shadow: 0 .1rem .2rem rgba($dark-color, .04);
-    cursor: pointer;
     display: flex;
     flex-direction: column;
     height: 100%;
+    gap: .5rem;
     overflow: hidden;
     padding: 1rem;
     text-decoration: none;
     transition: all .25s ease-in-out;
     width: 100%;
-    will-change: transform;
+    will-change: transition;
 
     &.profile-widget-link {
+      cursor: pointer;
 
       &:focus,
       &:hover {
@@ -324,7 +312,6 @@
 
     .platform-title {
       font-weight: 500;
-      margin-top: .5rem;
       width: 100%;
     }
 
@@ -335,7 +322,7 @@
     }
 
     .platform-action {
-      margin-top: auto;
+      margin-top: .5rem;
 
       &.active {
         .btn {
@@ -358,7 +345,8 @@
       display: flex;
       font-size: .7rem;
       font-weight: 500;
-      margin-bottom: 1rem;
+      margin-bottom: 0;
+      text-decoration: none;
     }
   }
 
@@ -446,7 +434,6 @@
   .profile-widget-poap {
     aspect-ratio: auto;
     color: #463E68;
-    --widget-bg-color: #F5F4FE;
 
     .platform-icon {
       box-shadow: inset 0 0 0 .05rem rgba($dark-color, .05), 0 .2rem .4rem rgba($dark-color, .01), 2rem -4rem 6rem 10rem var(--widget-bg-color);
@@ -455,15 +442,15 @@
     .widgets-collection-list {
       display: flex;
       flex-wrap: nowrap;
-      height: 5rem;
+      height: 3.4rem;
       margin: 0 -1rem;
       overflow-x: auto;
       padding: 0 1rem;
 
       .poap-item {
-        flex: 0 0 4rem;
-        height: 4rem;
-        width: 4rem;
+        flex: 0 0 3.2rem;
+        height: 3.2rem;
+        width: 3.2rem;
 
         &:not(:first-child) {
           margin-left: -.5rem;
@@ -475,12 +462,96 @@
           border: .05rem solid #2f2a47;
           border-radius: 50%;
           box-shadow: -.1rem .1rem 0 .1rem #E4E2FD;
-          height: 4rem;
+          height: 3.2rem;
           padding: .25rem;
-          width: 4rem;
+          width: 3.2rem;
         }
       }
     }
+  }
+
+  //- RSS Widget
+  .profile-widget-rss {
+    position: relative;
+    width: 100%;
+
+    .profile-widget-title {
+      margin-bottom: .5rem;
+
+      .platform-icon {
+        flex: 0 0 1.4rem;
+        height: 1.4rem;
+        width: 1.4rem;
+
+        img {
+          border-radius: .4rem;
+        }
+      }
+    }
+
+    .emoji-large {
+      font-size: 1.2rem;
+    }
+
+    .action-icon {
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
+      color: #121212;
+      cursor: pointer;
+    }
+
+    .widgets-rss-list {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: .5rem;
+      margin: 0 -1rem;
+      overflow-x: auto;
+      padding: 0 1rem;
+
+      .rss-item {
+        background: lighten($bg-color, 5%);
+        border-radius: .4rem;
+        flex: 1 0 12rem;
+        min-height: 5rem;
+        padding: .75rem;
+        text-decoration: none;
+        transition: all .2s ease-in-out;
+        width: 12rem;
+
+        &:focus,
+        &:hover {
+          background: lighten($bg-color, 2%);
+        }
+
+        .rss-item-title {
+          font-weight: 700;
+          display: -webkit-box;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 3;
+        }
+
+        .rss-item-date {
+          color: $gray-color;
+          font-size: .6rem;
+          margin-top: .5rem;
+        }
+
+        .rss-item-img {
+          border-radius: .4rem;
+          height: 4.8rem;
+          margin-bottom: .5rem;
+          object-fit: cover;
+          width: 100%;
+        }
+      }
+    }
+
+    
+
+    
   }
 }
 
@@ -700,6 +771,7 @@
     .collection-item {
       background: #fff;
       border-radius: .6rem;
+      cursor: pointer;
       flex: 0 0;
       height: 3.1rem;
       padding: .25rem;
