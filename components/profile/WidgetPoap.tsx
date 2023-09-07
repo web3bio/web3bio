@@ -1,5 +1,5 @@
 "use client";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import useSWR from "swr";
 import { Loading } from "../shared/Loading";
 import SVG from "react-inlinesvg";
@@ -9,22 +9,25 @@ import { resolveIPFS_URL } from "../../utils/ipfs";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
 function usePoaps(address: string, fromServer: boolean) {
-  const { data, error } = useSWR(
+  const { data, error, isValidating } = useSWR(
     `${POAP_END_POINT}${address}`,
     POAPFetcher,
     {
       suspense: !fromServer,
+      revalidateOnFocus: false,
+      revalidateOnMount: true,
+      revalidateOnReconnect: true,
     }
   );
   return {
     data: data || [],
-    isLoading: !error && !data,
+    isLoading: isValidating,
     isError: error,
   };
 }
 
 export default function WidgetPoap(props) {
-  const { address, onShowDetail, fromServer } = props;
+  const { address, onShowDetail, fromServer, setEmpty } = props;
   const { data, isLoading, isError } = usePoaps(address, fromServer);
 
   const getBoundaryRender = useCallback(() => {
@@ -32,13 +35,14 @@ export default function WidgetPoap(props) {
     if (isError) return <Error />;
     return null;
   }, [isLoading, isError]);
-
+  useEffect(() => {
+    if (!isLoading && !data.length) {
+      setEmpty(true);
+    }
+  }, [data, isLoading, setEmpty]);
   if (!data || !data.length) return null;
   return (
-    <div
-      className="profile-widget-full"
-      id="poap"
-    >
+    <div className="profile-widget-full" id="poap">
       <div className="profile-widget profile-widget-poap">
         <h2 className="profile-widget-title">
           <div className="platform-icon mr-2">

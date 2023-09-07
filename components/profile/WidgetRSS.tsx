@@ -1,5 +1,5 @@
 "use client";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import useSWR from "swr";
 import { Loading } from "../shared/Loading";
 import { Error } from "../shared/Error";
@@ -7,31 +7,39 @@ import { RSSFetcher, RSS_END_POINT } from "../apis/rss";
 import SVG from "react-inlinesvg";
 import Link from "next/link";
 
-function useRSS(domain: string, fromServer: boolean) {
-  const { data, error } = useSWR(
+function useRSS(domain: string) {
+  const { data, error, isValidating } = useSWR(
     `${RSS_END_POINT}rss?query=${domain}&mode=list`,
     RSSFetcher,
     {
       suspense: true,
       fallbackData: [],
+      revalidateOnFocus: false,
+      revalidateOnMount: true,
+      revalidateOnReconnect: true,
     }
   );
   return {
     data: data || [],
-    isLoading: !error && !data,
+    isLoading: isValidating,
     isError: error,
   };
 }
 
-export default function RSSWidget(props) {
-  const { domain, fromServer } = props;
-  const { data, isLoading, isError } = useRSS(domain, fromServer);
+export default function WidgetRss(props) {
+  const { domain, setEmpty } = props;
+  const { data, isLoading, isError } = useRSS(domain);
   const getBoundaryRender = useCallback(() => {
     if (isLoading) return <Loading />;
     if (isError) return <Error />;
     return null;
   }, [isLoading, isError]);
 
+  useEffect(() => {
+    if (!isLoading && data && !data?.items?.length) {
+      setEmpty(true);
+    }
+  }, [data, isLoading, setEmpty]);
   if (!data || !data?.items?.length) return null;
   return (
     <div className="profile-widget-full" id="rss">
@@ -49,16 +57,14 @@ export default function RSSWidget(props) {
             <span className="emoji-large mr-2">📰</span>
           )}
           {data.title}
-          <Link
-            className="action-icon"
-            href={data.link}
-            target={"_blank"}
-          >
+          <Link className="action-icon" href={data.link} target={"_blank"}>
             <SVG src="icons/icon-open.svg" width={24} height={24} />
           </Link>
         </h2>
-        {data.description && (<h3 className="text-assistive">{data.description}</h3>)}
-        
+        {data.description && (
+          <h3 className="text-assistive">{data.description}</h3>
+        )}
+
         <div className="widgets-rss-list noscrollbar">
           {getBoundaryRender() ||
             data?.items.map((x, idx) => {
