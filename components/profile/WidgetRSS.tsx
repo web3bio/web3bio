@@ -3,13 +3,13 @@ import { useCallback } from "react";
 import useSWR from "swr";
 import { Loading } from "../shared/Loading";
 import { Error } from "../shared/Error";
-import { RSSFetcher, RSS_END_POINT } from "../apis/rss";
+import { RSSFetcher, RSS_ENDPOINT } from "../apis/rss";
 import SVG from "react-inlinesvg";
 import Link from "next/link";
 
 function useRSS(domain: string, fromServer: boolean) {
   const { data, error } = useSWR(
-    `${RSS_END_POINT}rss?query=${domain}&mode=list`,
+    `${RSS_ENDPOINT}rss?query=${domain}&mode=list`,
     RSSFetcher,
     {
       suspense: true,

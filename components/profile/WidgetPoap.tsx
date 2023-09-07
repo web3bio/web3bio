@@ -4,13 +4,13 @@ import useSWR from "swr";
 import { Loading } from "../shared/Loading";
 import SVG from "react-inlinesvg";
 import { Error } from "../shared/Error";
-import { POAPFetcher, POAP_END_POINT } from "../apis/poap";
+import { POAPFetcher, POAP_ENDPOINT } from "../apis/poap";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
 function usePoaps(address: string, fromServer: boolean) {
   const { data, error } = useSWR(
-    `${POAP_END_POINT}${address}`,
+    `${POAP_ENDPOINT}${address}`,
     POAPFetcher,
     {
       suspense: !fromServer,

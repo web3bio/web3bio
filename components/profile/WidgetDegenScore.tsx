@@ -1,10 +1,10 @@
 "use client";
 import useSWR from "swr";
-import { DegenFetcher, DEGEN_END_POINT } from "../apis/degen";
+import { DegenFetcher, DEGENSCORE_ENDPOINT } from "../apis/degenscore";
 import Image from "next/image";
 
 function useDegenInfo(address: string) {
-  const { data, error } = useSWR(`${DEGEN_END_POINT}${address}`, DegenFetcher, {
+  const { data, error } = useSWR(`${DEGENSCORE_ENDPOINT}${address}`, DegenFetcher, {
     suspense: true,
     fallbackData: [],
   });
@@ -15,22 +15,20 @@ function useDegenInfo(address: string) {
   };
 }
 
-export default function WidgetDegen(props) {
+export default function WidgetDegenScore(props) {
   const { address } = props;
   const { data } = useDegenInfo(address);
-  // console.log(data,'degen Data')
+  
   if (!data || !data.name) return null;
   return (
     <div className="profile-widget-full">
-      <div className="profile-widget">
+      <div className="profile-widget profile-widget-degenscore">
         <h2 className="profile-widget-title">
-          <div className="platform-icon mr-2">
-            <Image width={24} height={24} src={data.image} alt="beacon" />
-          </div>
-          Beacon Score: {data.properties?.DegenScore}
+          <span className="emoji-large mr-2">🕹️</span>
+          DegenScore <span className="label label-success ml-1">{data.properties?.DegenScore}</span>
         </h2>
 
-        <div className="widgets-collection-list noscrollbar">
+        <div className="widgets-collection-list">
           {data.traits &&
             Object.keys(data.traits).map((x, idx) => {
               const item = data.traits[x];

@@ -16,7 +16,7 @@ import { usePathname } from "next/navigation";
 import ShareModal from "../shared/ShareModal";
 import ModalLink from "./ModalLink";
 import WidgetRSS from "./WidgetRSS";
-import WidgetDegen from "./WidgetDegen";
+import WidgetDegenScore from "./WidgetDegenScore";
 
 export default function ProfileMain(props) {
   const {
@@ -214,7 +214,7 @@ export default function ProfileMain(props) {
 
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading Beacon Score...</p>}>
-                  <WidgetDegen address={data.address} />
+                  <WidgetDegenScore address={data.address} />
                 </Suspense>
               </div>
             

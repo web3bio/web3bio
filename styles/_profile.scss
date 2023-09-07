@@ -268,6 +268,18 @@
     width: 100%;
     will-change: transition;
 
+    .emoji-large {
+      font-size: 1.2rem;
+    }
+
+    .action-icon {
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
+      color: #121212;
+      cursor: pointer;
+    }
+
     &.profile-widget-link {
       cursor: pointer;
 
@@ -360,18 +372,6 @@
       .collection-switcher {
         box-shadow: 0 .4rem .4rem -.2rem rgba($dark-color, .1);
       }
-    }
-
-    .emoji-large {
-      font-size: 1.2rem;
-    }
-
-    .expand-icon {
-      position: absolute;
-      right: 1rem;
-      top: 1rem;
-      color: #121212;
-      cursor: pointer;
     }
 
     .widgets-collection-list {
@@ -470,7 +470,7 @@
     }
   }
 
-  //- RSS Widget
+  // RSS Widget
   .profile-widget-rss {
     position: relative;
     width: 100%;
@@ -487,18 +487,6 @@
           border-radius: .4rem;
         }
       }
-    }
-
-    .emoji-large {
-      font-size: 1.2rem;
-    }
-
-    .action-icon {
-      position: absolute;
-      right: 1rem;
-      top: 1rem;
-      color: #121212;
-      cursor: pointer;
     }
 
     .widgets-rss-list {
@@ -548,10 +536,26 @@
         }
       }
     }
+  }
 
-    
+  // DegenScore
+  .profile-widget-rss {
+    position: relative;
+    width: 100%;
 
-    
+    .profile-widget-title {
+      margin-bottom: .5rem;
+
+      .platform-icon {
+        flex: 0 0 1.4rem;
+        height: 1.4rem;
+        width: 1.4rem;
+
+        img {
+          border-radius: .4rem;
+        }
+      }
+    }
   }
 }
 

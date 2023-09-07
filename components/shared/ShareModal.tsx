@@ -10,19 +10,19 @@ const shareMap = [
   {
     platform: "twitter",
     icon: "icons/icon-twitter.svg",
-    shareURL: (url) =>
+    shareURL: (url, name) =>
       `https://twitter.com/intent/tweet?url=${encodeURIComponent(
         url
-      )}&text=${encodeURIComponent("Hey! Check out and explore my Web3 profile. ")}&via=web3bio`,
+      )}&text=${encodeURIComponent(`Hey! Check out and explore ${name}'s Web3 profile. `)}&via=web3bio`,
     action: "Share on Twitter",
   },
   {
     platform: "telegram",
     icon: "icons/icon-telegram.svg",
-    shareURL: (url) =>
+    shareURL: (url, name) =>
       `https://t.me/share/url?url=${encodeURIComponent(
         url
-      )}&text=${encodeURIComponent("Hey! Check out and explore my Web3 profile. ")}`,
+      )}&text=${encodeURIComponent(`Hey! Check out and explore ${name}'s Web3 profile. `)}`,
     action: "Share via Telegram",
   }
 ];
@@ -46,7 +46,7 @@ export default function ShareModal(props) {
         }}
       >
         <div className="profile-share-header">
-          <div className="h5">Share link to your profile</div>
+          <div className="h5">Share this profile</div>
           <div className="btn btn-close" onClick={onClose}>
             <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
           </div>
@@ -99,7 +99,7 @@ export default function ShareModal(props) {
               <a
                 key={x.platform}
                 className="btn btn-lg share-item"
-                href={x.shareURL(url)}
+                href={x.shareURL(url, profile.displayName)}
                 target="_blank"
               >
                 <SVG fill="#000" src={x.icon} height={20} width={20} />

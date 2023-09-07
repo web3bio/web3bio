@@ -1,4 +1,4 @@
-export const RSS_END_POINT = "https://contenthash.web3.bio/api/";
+export const RSS_ENDPOINT = "https://contenthash.web3.bio/api/";
 export const RSSFetcher = async (url) => {
   try {
     const res = await fetch(url);
