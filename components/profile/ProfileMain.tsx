@@ -33,6 +33,8 @@ export default function ProfileMain(props) {
   const [curAsset, setCurAsset] = useState(null);
   const [errorAvatar, setErrorAvatar] = useState(false);
   const [dialogType, setDialogType] = useState(NFTModalType.NFT);
+  const [isPoapEmpty, setIsPoapEmpty] = useState(false);
+  const [isRssEmpty, setIsRssEmpty] = useState(false);
   const pathName = usePathname();
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
   const onCopySuccess = () => {
@@ -198,7 +200,9 @@ export default function ProfileMain(props) {
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading NFTs...</p>}>
                   <WidgetNFTCollection
-                    initialExpand={!data?.links?.length}
+                    initialExpand={
+                      isRssEmpty && isPoapEmpty && !data?.links?.length
+                    }
                     fromServer={fromServer}
                     onShowDetail={(e, v) => {
                       setDialogType(NFTModalType.NFT);
@@ -212,12 +216,17 @@ export default function ProfileMain(props) {
               </div>
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading Articles...</p>}>
-                  <RSSWidget fromServer={false} domain={data.identity} />
+                  <RSSWidget
+                    setEmpty={setIsRssEmpty}
+                    fromServer={false}
+                    domain={data.identity}
+                  />
                 </Suspense>
               </div>
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading Poaps...</p>}>
                   <WidgetPoap
+                    setEmpty={setIsPoapEmpty}
                     fromServer={fromServer}
                     onShowDetail={(v) => {
                       setDialogType(NFTModalType.POAP);

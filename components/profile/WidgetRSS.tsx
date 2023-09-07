@@ -24,7 +24,7 @@ function useRSS(domain: string, fromServer: boolean) {
 }
 
 export default function RSSWidget(props) {
-  const { domain, fromServer } = props;
+  const { domain, fromServer, setEmpty } = props;
   const { data, isLoading, isError } = useRSS(domain, fromServer);
   const getBoundaryRender = useCallback(() => {
     if (isLoading) return <Loading />;
@@ -32,7 +32,10 @@ export default function RSSWidget(props) {
     return null;
   }, [isLoading, isError]);
 
-  if (!data || !data?.items?.length) return null;
+  if (!data || !data?.items?.length) {
+    setEmpty(true);
+    return null;
+  }
   return (
     <div className="profile-widget-full" id="rss">
       <div className="profile-widget profile-widget-rss">
@@ -49,16 +52,14 @@ export default function RSSWidget(props) {
             <span className="emoji-large mr-2">📰</span>
           )}
           {data.title}
-          <Link
-            className="action-icon"
-            href={data.link}
-            target={"_blank"}
-          >
+          <Link className="action-icon" href={data.link} target={"_blank"}>
             <SVG src="icons/icon-open.svg" width={24} height={24} />
           </Link>
         </h2>
-        {data.description && (<h3 className="text-assistive">{data.description}</h3>)}
-        
+        {data.description && (
+          <h3 className="text-assistive">{data.description}</h3>
+        )}
+
         <div className="widgets-rss-list noscrollbar">
           {getBoundaryRender() ||
             data?.items.map((x, idx) => {
