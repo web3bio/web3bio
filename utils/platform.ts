@@ -50,6 +50,7 @@ export enum PlatformType {
   rpc_server = "rpc_server",
   twitter_hexagon = "twitter_hexagon",
   uniswap = "uniswap",
+  degenscore = "degenscore",
 }
 
 export const platformData: { [key in PlatformType]: SocialPlatform } = {
@@ -371,6 +372,13 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
     color: "#000000",
     label: "Uniswap",
     urlPrefix: "https://uniswap.org/",
+  },
+  [PlatformType.degenscore]: {
+    key: PlatformType.degenscore,
+    icon: "icons/icon-degenscore.svg",
+    color: "#c084fc",
+    label: "DegenScore",
+    urlPrefix: "https://degenscore.com/beacon/",
   },
 };
 
