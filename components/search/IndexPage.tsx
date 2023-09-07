@@ -1,5 +1,4 @@
 "use client";
-import { GoogleAnalytics } from "nextjs-google-analytics";
 import { ApolloProvider } from "@apollo/client";
 import client from "../../utils/apollo";
 import Link from "next/link";
@@ -47,7 +46,7 @@ export default function HomePage() {
       <div
         className={searchFocus ? "web3bio-search focused" : "web3bio-search"}
       >
-        <div className="container grid-xs">
+        <div className="container grid-sm">
           <div className="search-form">
             <Link
               href={{
@@ -65,7 +64,7 @@ export default function HomePage() {
               </div>
             </Link>
             <div className="form-label">
-              Web3 Identity Search<br/><small>for Identity Graph and Link in Bio Profile</small>
+              Web3 Identity Search<br/><small>Discover Web3 Identity Graph and Profiles</small>
             </div>
             <div className="form-input-group">
               <SearchInput
@@ -93,7 +92,6 @@ export default function HomePage() {
           ) : null}
         </div>
       </div>
-      <GoogleAnalytics strategy="lazyOnload" />
     </ApolloProvider>
   );
 }
