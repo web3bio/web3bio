@@ -15,7 +15,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import ShareModal from "../shared/ShareModal";
 import ModalLink from "./ModalLink";
-import RSSWidget from "./WidgetRSS";
+import WidgetRss from "./WidgetRSS";
 
 export default function ProfileMain(props) {
   const {
@@ -51,7 +51,6 @@ export default function ProfileMain(props) {
       />
     );
   }
-
   return (
     <>
       <div
@@ -216,7 +215,7 @@ export default function ProfileMain(props) {
               </div>
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading Articles...</p>}>
-                  <RSSWidget
+                  <WidgetRss
                     setEmpty={setIsRssEmpty}
                     fromServer={false}
                     domain={data.identity}

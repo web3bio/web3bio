@@ -1,5 +1,5 @@
 "use client";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import useSWR from "swr";
 import { Loading } from "../shared/Loading";
 import { Error } from "../shared/Error";
@@ -7,35 +7,40 @@ import { RSSFetcher, RSS_END_POINT } from "../apis/rss";
 import SVG from "react-inlinesvg";
 import Link from "next/link";
 
-function useRSS(domain: string, fromServer: boolean) {
-  const { data, error } = useSWR(
+function useRSS(domain: string) {
+  const { data, error, isValidating } = useSWR(
     `${RSS_END_POINT}rss?query=${domain}&mode=list`,
     RSSFetcher,
     {
       suspense: true,
       fallbackData: [],
+      revalidateOnFocus: false,
+      revalidateOnMount: true,
+      revalidateOnReconnect: true,
     }
   );
   return {
     data: data || [],
-    isLoading: !error && !data,
+    isLoading: isValidating,
     isError: error,
   };
 }
 
-export default function RSSWidget(props) {
-  const { domain, fromServer, setEmpty } = props;
-  const { data, isLoading, isError } = useRSS(domain, fromServer);
+export default function WidgetRss(props) {
+  const { domain, setEmpty } = props;
+  const { data, isLoading, isError } = useRSS(domain);
   const getBoundaryRender = useCallback(() => {
     if (isLoading) return <Loading />;
     if (isError) return <Error />;
     return null;
   }, [isLoading, isError]);
 
-  if (!data || !data?.items?.length) {
-    setEmpty(true);
-    return null;
-  }
+  useEffect(() => {
+    if (!isLoading && data && !data?.items?.length) {
+      setEmpty(true);
+    }
+  }, [data, isLoading, setEmpty]);
+  if (!data || !data?.items?.length) return null;
   return (
     <div className="profile-widget-full" id="rss">
       <div className="profile-widget profile-widget-rss">
