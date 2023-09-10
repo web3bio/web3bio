@@ -26,9 +26,9 @@ function useRSS(domain: string) {
   };
 }
 
-export default function RSSWidget(props) {
-  const { domain, fromServer } = props;
-  const { data, isLoading, isError } = useRSS(domain, fromServer);
+export default function WidgetRss(props) {
+  const { domain, setEmpty } = props;
+  const { data, isLoading, isError } = useRSS(domain);
   const getBoundaryRender = useCallback(() => {
     if (isLoading) return <Loading />;
     if (isError) return <Error />;
@@ -61,9 +61,11 @@ export default function RSSWidget(props) {
             <SVG src="icons/icon-open.svg" width={24} height={24} />
           </Link>
         </h2>
-        {data.description && (<h3 className="text-assistive">{data.description}</h3>)}
-        
-        <div className="widgets-rss-list noscrollbar">
+        {data.description && (
+          <h3 className="text-assistive">{data.description}</h3>
+        )}
+
+        <div className="widget-rss-list noscrollbar">
           {getBoundaryRender() ||
             data?.items.map((x, idx) => {
               return (

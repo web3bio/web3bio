@@ -214,19 +214,20 @@ export default function ProfileMain(props) {
                   />
                 </Suspense>
               </div>
-
               <div className="web3-section-widgets">
-                <Suspense fallback={<p>Loading Beacon Score...</p>}>
+                <Suspense fallback={<p>Loading Articles...</p>}>
+                  <WidgetRSS
+                    setEmpty={setIsRssEmpty}
+                    fromServer={false}
+                    domain={data.identity}
+                  />
+                </Suspense>
+              </div>
+              <div className="web3-section-widgets">
+                <Suspense fallback={<p>Loading DegenScore...</p>}>
                   <WidgetDegenScore address={data.address} />
                 </Suspense>
               </div>
-            
-              <div className="web3-section-widgets">
-                <Suspense fallback={<p>Loading Articles...</p>}>
-                  <WidgetRSS fromServer={false} domain={data.identity} />
-                </Suspense>
-              </div>
-
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading Poaps...</p>}>
                   <WidgetPoap
