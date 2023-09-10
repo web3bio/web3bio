@@ -50,7 +50,7 @@ export default function WidgetPoap(props) {
           POAP are the bookmarks for your life. Mint the most important memories
           of your life as digital collectibles (NFTs) forever on the blockchain.
         </div>
-        <div className="widgets-collection-list noscrollbar">
+        <div className="widget-collection-list noscrollbar">
           {getBoundaryRender() ||
             data.map((x, idx) => {
               return (

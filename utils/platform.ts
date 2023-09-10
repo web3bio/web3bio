@@ -376,7 +376,7 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.degenscore]: {
     key: PlatformType.degenscore,
     icon: "icons/icon-degenscore.svg",
-    color: "#c084fc",
+    color: "#a855f7",
     label: "DegenScore",
     urlPrefix: "https://degenscore.com/beacon/",
   },

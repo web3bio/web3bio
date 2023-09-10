@@ -374,7 +374,7 @@
       }
     }
 
-    .widgets-collection-list {
+    .widget-collection-list {
       display: flex;
       flex-wrap: nowrap;
       height: 4rem;
@@ -439,7 +439,7 @@
       box-shadow: inset 0 0 0 .05rem rgba($dark-color, .05), 0 .2rem .4rem rgba($dark-color, .01), 2rem -4rem 6rem 10rem var(--widget-bg-color);
     }
 
-    .widgets-collection-list {
+    .widget-collection-list {
       display: flex;
       flex-wrap: nowrap;
       height: 3.4rem;
@@ -489,7 +489,7 @@
       }
     }
 
-    .widgets-rss-list {
+    .widget-rss-list {
       display: flex;
       flex-wrap: nowrap;
       gap: .5rem;
@@ -539,7 +539,7 @@
   }
 
   // DegenScore
-  .profile-widget-rss {
+  .profile-widget-degenscore {
     position: relative;
     width: 100%;
 
@@ -553,6 +553,79 @@
 
         img {
           border-radius: .4rem;
+        }
+      }
+    }
+
+    .widget-trait-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      
+      .trait-item {
+        align-items: center;
+        background: linear-gradient(90.47deg,#efefef 2%,#fcfcfc 32%,#cdcdcd 98%);
+        border-radius: 1rem;
+        box-shadow: inset 0 0 0 .1rem rgba($light-color, .2), inset 0 0 .25rem rgba($dark-color, .15), 0 0 .4rem rgba($dark-color, .1);
+        display: flex;
+        height: 1.4rem;
+        padding: .05rem;
+
+        &.trait_rarity_legendary {
+          background: linear-gradient(124.2deg,#d6fdff 8%,#bad1ff 34%,#7cd4f0 74%,#b4fffa 95%);
+          order: -12;
+        }
+
+        &.trait_rarity_epic {
+          background: linear-gradient(113.06deg,#ffd6d6 19%,#ffbaf8 34%,#9593ff 85%);
+          order: -9;
+        }
+
+        &.trait_rarity_rare {
+          background: linear-gradient(117.25deg,#f1cc9c 20%,#f2a94e 42%,#f07c7c 65%,#fbade5 96%);
+          order: -6;
+        }
+
+        &.trait_rarity_uncommon {
+          background: linear-gradient(90.47deg,#e9f3ad 2%,#c6d390 32%,#7cbc55 98%);
+          order: -3;
+        }
+
+        &.trait_rarity_common {
+          display: none;
+        }
+
+        &.degen_score {
+          background: linear-gradient(113.06deg,#ffbaf8 1%,#ffbaf8 25%,#a855f7 85%);
+          display: none;
+          order: -15;
+
+          .trait-label {
+            border-radius: 1rem;
+            font-size: .55rem;
+            font-weight: 900;
+            line-height: .8rem;
+            height: .8rem;
+            text-shadow: rgba($dark-color, .95);
+          }
+        }
+
+        .trait-item-bg {
+          align-items: center;
+          background: rgba($light-color, .5);
+          border-radius: 1rem;
+          display: flex;
+          flex: 0 0 100%;
+          height: 100%;
+          padding: .2rem .4rem .2rem .4rem;
+        }
+
+        .trait-label {
+          margin-right: .2rem;
+        }
+
+        .trait-name {
+          font-size: .6rem;
         }
       }
     }
@@ -817,6 +890,7 @@
         }
 
         .img-responsive {
+          background: $light-color;
           border-radius: .5rem;
           box-shadow: 0 .1rem .4rem rgba($dark-color, .1);
           font-size: 1.6rem;

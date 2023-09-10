@@ -59,7 +59,7 @@ export default function WidgetRSS(props) {
         </h2>
         {data.description && (<h3 className="text-assistive">{data.description}</h3>)}
         
-        <div className="widgets-rss-list noscrollbar">
+        <div className="widget-rss-list noscrollbar">
           {getBoundaryRender() ||
             data?.items.map((x, idx) => {
               return (
