@@ -3,13 +3,13 @@ import { useCallback, useEffect } from "react";
 import useSWR from "swr";
 import { Loading } from "../shared/Loading";
 import { Error } from "../shared/Error";
-import { RSSFetcher, RSS_END_POINT } from "../apis/rss";
+import { RSSFetcher, RSS_ENDPOINT } from "../apis/rss";
 import SVG from "react-inlinesvg";
 import Link from "next/link";
 
 function useRSS(domain: string) {
   const { data, error, isValidating } = useSWR(
-    `${RSS_END_POINT}rss?query=${domain}&mode=list`,
+    `${RSS_ENDPOINT}rss?query=${domain}&mode=list`,
     RSSFetcher,
     {
       suspense: true,
@@ -65,7 +65,7 @@ export default function WidgetRss(props) {
           <h3 className="text-assistive">{data.description}</h3>
         )}
 
-        <div className="widgets-rss-list noscrollbar">
+        <div className="widget-rss-list noscrollbar">
           {getBoundaryRender() ||
             data?.items.map((x, idx) => {
               return (

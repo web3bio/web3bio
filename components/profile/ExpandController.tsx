@@ -8,7 +8,7 @@ const RenderExpandController = (props: ExpandControllerProps) => {
   const { onToggle, expand } = props;
   return (
     <div
-      className="expand-icon"
+      className="action-icon"
       onClick={() => {
         onToggle(!expand);
       }}

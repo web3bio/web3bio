@@ -15,7 +15,8 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import ShareModal from "../shared/ShareModal";
 import ModalLink from "./ModalLink";
-import WidgetRss from "./WidgetRSS";
+import WidgetRSS from "./WidgetRSS";
+import WidgetDegenScore from "./WidgetDegenScore";
 
 export default function ProfileMain(props) {
   const {
@@ -215,11 +216,16 @@ export default function ProfileMain(props) {
               </div>
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading Articles...</p>}>
-                  <WidgetRss
+                  <WidgetRSS
                     setEmpty={setIsRssEmpty}
                     fromServer={false}
                     domain={data.identity}
                   />
+                </Suspense>
+              </div>
+              <div className="web3-section-widgets">
+                <Suspense fallback={<p>Loading DegenScore...</p>}>
+                  <WidgetDegenScore address={data.address} />
                 </Suspense>
               </div>
               <div className="web3-section-widgets">

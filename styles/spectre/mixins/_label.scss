@@ -4,8 +4,8 @@
   border-radius: $border-radius;
   display: inline-flex;
   font-size: 85%;
-  line-height: 1.2;
-  padding: .15rem .4rem;
+  line-height: 1.25;
+  padding: .15rem .25rem;
 }
 
 @mixin label-variant($color: $light-color, $bg-color: $primary-color) {

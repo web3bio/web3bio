@@ -4,13 +4,13 @@ import useSWR from "swr";
 import { Loading } from "../shared/Loading";
 import SVG from "react-inlinesvg";
 import { Error } from "../shared/Error";
-import { POAPFetcher, POAP_END_POINT } from "../apis/poap";
+import { POAPFetcher, POAP_ENDPOINT } from "../apis/poap";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
 function usePoaps(address: string, fromServer: boolean) {
   const { data, error, isValidating } = useSWR(
-    `${POAP_END_POINT}${address}`,
+    `${POAP_ENDPOINT}${address}`,
     POAPFetcher,
     {
       suspense: !fromServer,
@@ -54,7 +54,7 @@ export default function WidgetPoap(props) {
           POAP are the bookmarks for your life. Mint the most important memories
           of your life as digital collectibles (NFTs) forever on the blockchain.
         </div>
-        <div className="widgets-collection-list noscrollbar">
+        <div className="widget-collection-list noscrollbar">
           {getBoundaryRender() ||
             data.map((x, idx) => {
               return (
