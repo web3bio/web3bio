@@ -133,7 +133,7 @@ const RenderWidgetNFTCollection = ({
       }, 500);
     }
     setFirstRender(false);
-  }, [assetId]);
+  }, [assetId, initialExpand]);
   if (!data.length || isError) return null;
 
   return (

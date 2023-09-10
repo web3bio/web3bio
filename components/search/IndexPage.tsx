@@ -1,5 +1,4 @@
 "use client";
-import { GoogleAnalytics } from "nextjs-google-analytics";
 import { ApolloProvider } from "@apollo/client";
 import client from "../../utils/apollo";
 import Link from "next/link";
@@ -93,7 +92,6 @@ export default function HomePage() {
           ) : null}
         </div>
       </div>
-      <GoogleAnalytics strategy="lazyOnload" />
     </ApolloProvider>
   );
 }
