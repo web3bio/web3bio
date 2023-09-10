@@ -1,5 +1,5 @@
-export const RSS_ENDPOINT = "https://contenthash.web3.bio/api/";
-export const RSSFetcher = async (url) => {
+export const DEGENSCORE_ENDPOINT = "https://beacon.degenscore.com/v1/beacon/";
+export const DegenFetcher = async (url) => {
   try {
     const res = await fetch(url);
     if (res.status != 200) return [];

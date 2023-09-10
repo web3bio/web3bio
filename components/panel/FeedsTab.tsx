@@ -2,7 +2,7 @@ import { memo, useEffect, useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { formatTimestamp } from "../../utils/date";
 import { debounce } from "../../utils/utils";
-import { RSS3Fetcher, RSS3_END_POINT } from "../apis/rss3";
+import { RSS3Fetcher, RSS3_ENDPOINT } from "../apis/rss3";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
 import { Loading } from "../shared/Loading";
@@ -22,7 +22,7 @@ const getFeedsURL = (
 ) => {
   if (previousPageData && !previousPageData.length) return null;
   return (
-    RSS3_END_POINT +
+    RSS3_ENDPOINT +
     `notes/${address}?limit=${PAGE_SIZE}${
       startHash ? `&cursor=${startHash}` : ""
     }&&include_poap=true&count_only=false&network=${
