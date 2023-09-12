@@ -1,9 +1,11 @@
 import { createReducer } from "@reduxjs/toolkit";
+import { PlatformType } from "../../utils/platform";
+import { ProfileInterface } from "../../utils/profile";
 import { updateUniversalBatchedProfile } from "./actions";
 
 interface UserState {
   profiles: {
-    [address: string]: any;
+    [address: string]: Record<PlatformType, ProfileInterface>;
   };
 }
 
