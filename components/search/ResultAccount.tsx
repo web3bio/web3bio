@@ -5,6 +5,10 @@ import { fetchProfile } from "../../hooks/api/fetchProfile";
 import { ResultGraph } from "../graph/ResultGraph";
 import _ from "lodash";
 import { regexEns } from "../../utils/regexp";
+import { useDispatch } from "react-redux";
+import { updateUniversalBatchedProfile } from "../../state/universal/actions";
+import { useSelector } from "react-redux";
+import { AppState } from "../../state";
 
 interface Profile {
   uuid: string;
@@ -15,6 +19,11 @@ const RenderAccount = (props) => {
   const [open, setOpen] = useState(false);
   const [profileLoading, setProfileLoading] = useState(true);
   const [profiles, setProfiles] = useState<Profile[]>([]);
+  const dispatch = useDispatch();
+  const cached = useSelector<AppState, any>(
+    (state) => state.universal.profiles
+  );
+  console.log(cached, "cached");
   useEffect(() => {
     setProfileLoading(true);
     if (
@@ -29,17 +38,24 @@ const RenderAccount = (props) => {
     const fetchProfileData = async (arr) => {
       const promises = arr.map((data) => {
         if (data.identity) {
-          return fetchProfile(data.identity).then((res) => {
-            return {
+          const res = fetchProfile(data.identity).then((res) => {
+            const profile = {
               uuid: data.identity.uuid,
               ...res,
             };
+            return profile;
           });
+          return res;
         }
       });
 
       try {
         const results = await Promise.all(promises);
+        await dispatch(
+          updateUniversalBatchedProfile({
+            profiles: results.filter((x) => x.platform && x.address),
+          })
+        );
         setProfiles(results);
       } catch (error) {
         // do nothing
@@ -50,7 +66,7 @@ const RenderAccount = (props) => {
 
     fetchProfileData(resultNeighbor);
     return () => setProfiles([]);
-  }, [graphTitle, resultNeighbor]);
+  }, [graphTitle, resultNeighbor, dispatch]);
   return (
     <>
       <div className="search-result">

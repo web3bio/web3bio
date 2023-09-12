@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import GoogleAnalytics from "../components/shared/GoogleAnalytics";
+import Provider from "../components/shared/Provider";
 import "../styles/web3bio.scss";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -62,8 +63,10 @@ export default function RootLayout({ children, modal }) {
       </head>
       <body>
         <main>
-          {children}
-          {modal}
+          <Provider>
+            {children}
+            {modal}
+          </Provider>
           <GoogleAnalytics />
         </main>
       </body>
