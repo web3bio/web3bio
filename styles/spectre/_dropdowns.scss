@@ -21,7 +21,7 @@
   }
 
   &.active .menu,
-  .dropdown-toggle:focus + .menu,
+  .dropdown-toggle:focus+.menu,
   .menu:hover {
     display: block;
   }

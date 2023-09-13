@@ -21,21 +21,23 @@
     text-decoration: none;
     user-select: none;
 
-    & > a {
+    &>a {
       border-radius: $border-radius;
       color: inherit;
       display: block;
       margin: 0 (-$unit-2);
       padding: $unit-1 $unit-2;
       text-decoration: none;
+
       &:focus,
       &:hover {
-        background: $secondary-color;
+        background: rgba($color: $dark-color, $alpha: 0.1);
         color: $primary-color;
       }
+
       &:active,
       &.active {
-        background: $secondary-color;
+        background: rgba($color: $dark-color, $alpha: 0.1);
         color: $primary-color;
       }
     }
@@ -46,7 +48,7 @@
       margin: $unit-h 0;
     }
 
-    & + .menu-item {
+    &+.menu-item {
       margin-top: $unit-1;
     }
   }

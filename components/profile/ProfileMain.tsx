@@ -17,6 +17,7 @@ import ShareModal from "../shared/ShareModal";
 import ModalLink from "./ModalLink";
 import WidgetRSS from "./WidgetRSS";
 import WidgetDegenScore from "./WidgetDegenScore";
+import AddressMenu from "./AddressMenu";
 
 export default function ProfileMain(props) {
   const {
@@ -114,6 +115,7 @@ export default function ProfileMain(props) {
                 >
                   <SVG src="../icons/icon-copy.svg" width={20} height={20} />
                 </Clipboard>
+                <AddressMenu address={data.address} />
               </>
             </div>
 
