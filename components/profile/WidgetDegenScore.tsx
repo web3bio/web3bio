@@ -38,11 +38,11 @@ export default function WidgetDegenScore(props) {
               return (
                 <div 
                   key={idx} 
-                  className={`trait-item ${x} ${item.rarity.toLowerCase()}`}
+                  className={`trait-item ${x} ${item.rarity?.toLowerCase()}`}
                   title={item.description}
                 >
                   <div className="trait-item-bg">
-                    <div className={`trait-label ${item.valueType.toLowerCase()}_${item.value}`}>
+                    <div className={`trait-label ${item.valueType?.toLowerCase()}_${item.value}`}>
                       {item.valueType == "TRAIT_VALUE_TYPE_SCORE" && (
                         <div className="value">{item.value}</div>
                       )}
