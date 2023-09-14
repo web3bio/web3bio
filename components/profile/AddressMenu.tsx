@@ -8,6 +8,7 @@ export default function AddressMenu({ address }) {
           src="../icons/icon-more.svg"
           width={20}
           height={20}
+          className="action"
         />
       </div>
       <ul className="menu">

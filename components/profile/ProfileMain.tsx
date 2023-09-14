@@ -107,21 +107,14 @@ export default function ProfileMain(props) {
                   onSuccess={onCopySuccess}
                   title="Copy the Ethereum wallet address"
                 >
-                  <span className="profile-label ml-1 mr-1">{formatText(data.address)}</span>
-                  <SVG src="../icons/icon-copy.svg" width={20} height={20} />
+                  <span className="profile-label mr-1">{formatText(data.address)}</span>
+                  <SVG src="../icons/icon-copy.svg" width={20} height={20} className="action" />
                 </Clipboard>
-                <button
-                  className="profile-share btn btn-sm"
-                  title="Share this page"
-                  onClick={() => setOpenShare(true)}
-                >
-                  <SVG src="icons/icon-share.svg" width={20} height={20} />
-                </button>
                 <AddressMenu address={data.address} />
               </div>
             </div>
 
-            <div className="profile-identity">
+            <div className="profile-badges">
               {platform == "nextid" && (
                 <Clipboard
                   component="div"
@@ -252,7 +245,7 @@ export default function ProfileMain(props) {
       </div>
       <div className="web3bio-badge">
         <Link
-          href="/"
+          href="/?utm_source=profile"
           target="_parent"
           className="btn btn-primary"
           title="Web3.bio - Web3 Identity Graph Search and Link in Bio Profile"
@@ -263,7 +256,7 @@ export default function ProfileMain(props) {
 
         <button
           className="profile-share btn ml-2"
-          title="Share this page"
+          title="Share this profile"
           onClick={() => setOpenShare(true)}
         >
           <SVG src="icons/icon-share.svg" width={20} height={20} />

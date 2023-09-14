@@ -67,25 +67,33 @@
     line-height: 1rem;
     gap: .2rem;
 
-    .profile-label {
-      font-size: .6rem;
-    }
-
-    .action {
-      color: $gray-color;
-      cursor: pointer;
-      flex: 0 1;
-      height: 1rem;
-      margin-left: .2rem;
-      position: relative;
-      transition: all .2s ease-in-out;
-      width: 1rem;
+    .btn {
+      background: lighten($bg-color, 5%);
+      border: .05rem solid lighten($bg-color, 4%);
+      box-shadow: 0 .1rem .25rem rgba($dark-color, .02);
+      color: $gray-color-dark;
 
       &:focus,
       &:hover {
+        background: lighten($bg-color, 2%);
         color: $dark-color;
       }
     }
+
+    .menu {
+      width: 10rem;
+    }
+  }
+
+  .profile-badges {
+    align-items: center;
+    color: $gray-color-dark;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    font-size: .6rem;
+    line-height: 1rem;
+    gap: .2rem;
 
     .platform-badge {
       align-items: center;
@@ -129,6 +137,7 @@
       }
 
       &.nextid {
+        --badge-primary-color: #121212;
         background: #121212;
         position: relative;
 

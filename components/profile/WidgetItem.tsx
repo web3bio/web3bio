@@ -47,7 +47,7 @@ const WidgetItem = (props) => {
             <div className="platform-title">{SocialPlatformMapping(item.platform)?.label}</div>
             <div className="platform-handle text-ellipsis">{item.handle}</div>
           </div>
-          <div className="platform-action">
+          <div className="platform-action active">
             <div className="btn btn-sm">Follow</div>
           </div>
         </Link>
