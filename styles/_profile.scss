@@ -67,6 +67,10 @@
     line-height: 1rem;
     gap: .2rem;
 
+    .profile-label {
+      font-size: .6rem;
+    }
+
     .action {
       color: $gray-color;
       cursor: pointer;

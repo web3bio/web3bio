@@ -99,24 +99,26 @@ export default function ProfileMain(props) {
             <div className="profile-name">{data.displayName}</div>
             <h3 className="text-assistive">{`${pageTitle}‘s Ethereum wallet address is ${data.address}`}</h3>
             <div className="profile-identity">
-              <>
-                <span
-                  className="profile-label"
-                  title={`${pageTitle}‘s Ethereum wallet address is ${data.address}`}
-                >
-                  {formatText(data.address)}
-                </span>
+              <div className="btn-group dropdown dropdown-right">
                 <Clipboard
                   component="div"
-                  className="action"
+                  className="btn btn-sm"
                   data-clipboard-text={data.address}
                   onSuccess={onCopySuccess}
                   title="Copy the Ethereum wallet address"
                 >
+                  <span className="profile-label ml-1 mr-1">{formatText(data.address)}</span>
                   <SVG src="../icons/icon-copy.svg" width={20} height={20} />
                 </Clipboard>
+                <button
+                  className="profile-share btn btn-sm"
+                  title="Share this page"
+                  onClick={() => setOpenShare(true)}
+                >
+                  <SVG src="icons/icon-share.svg" width={20} height={20} />
+                </button>
                 <AddressMenu address={data.address} />
-              </>
+              </div>
             </div>
 
             <div className="profile-identity">
