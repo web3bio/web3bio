@@ -1,6 +1,7 @@
 "use client";
 import useSWR from "swr";
 import { DegenFetcher, DEGENSCORE_ENDPOINT } from "../apis/degenscore";
+import Link from "next/link";
 import SVG from "react-inlinesvg";
 
 function useDegenInfo(address: string) {
@@ -27,29 +28,30 @@ export default function WidgetDegenScore(props) {
           <div className="platform-icon mr-2">
             <SVG src={`../icons/icon-degenscore.svg`} fill={"#a855f7"} width={32} height={32} />
           </div>
-          DegenScore <span className="label ml-1" style={{"background": "#a855f7", "color": "#fff"}}>{data.properties?.DegenScore}</span>
+          DegenScore <span className="label ml-2">{data.properties?.DegenScore}</span>
+          <Link className="action-icon" href={`https://degenscore.com/beacon/${address}`} target={"_blank"}>
+            <SVG src="icons/icon-open.svg" width={24} height={24} />
+          </Link>
         </h2>
+        <div className="text-assistive">
+        The DegenScore Beacon is an Ethereum soulbound token that highlights your on-chain skills & traits across one or more wallets.\nUse it to leverage your on-chain reputation in the DegenScore Cafe and across web3.
+        </div>
 
-        <div className="widget-trait-list noscrollbar">
-          {data.traits &&
-            Object.keys(data.traits).map((x, idx) => {
-              const item = data.traits[x];
-          
+        {data.traits.actions?.metadata.actions.actions && (
+          <div className="widget-trait-list">
+            {(data.traits.actions?.metadata.actions.actions).map((item, idx) => {
               return (
                 <div 
                   key={idx} 
-                  className={`trait-item ${x} ${item.rarity.toLowerCase()}`}
+                  className={`trait-item ${item.actionTier?.toLowerCase()}`}
                   title={item.description}
                 >
                   <div className="trait-item-bg">
-                    <div className={`trait-label ${item.valueType.toLowerCase()}_${item.value}`}>
-                      {item.valueType == "TRAIT_VALUE_TYPE_SCORE" && (
-                        <div className="value">{item.value}</div>
-                      )}
-                      {item.rarity == "TRAIT_RARITY_LEGENDARY" && (
+                    <div className="trait-label">
+                      {item.actionTier == "ACTION_TIER_LEGENDARY" && (
                         <div className="value">💎</div>
                       )}
-                      {item.rarity == "TRAIT_RARITY_EPIC" && (
+                      {item.actionTier == "ACTION_TIER_EPIC" && (
                         <div className="value">&#127942;</div>
                       )}
                     </div>
@@ -59,6 +61,7 @@ export default function WidgetDegenScore(props) {
               );
             })}
         </div>
+        )}
       </div>
     </div>
   );

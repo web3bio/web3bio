@@ -17,7 +17,7 @@
   .form-label {
     font-size: 2.2rem;
     font-weight: 900;
-    letter-spacing: -.035em;
+    letter-spacing: -.05em;
     line-height: 1;
     margin: 1rem 0;
 
@@ -28,7 +28,7 @@
     small {
       font-size: .9rem;
       font-weight: 400;
-      letter-spacing: -.025em;
+      letter-spacing: -.015em;
     }
   }
 
@@ -39,6 +39,7 @@
     .form-input {
       border: transparent;
       box-shadow: 0 .05rem .2rem rgba($dark-color, .1);
+      font-size: .8rem;
       padding-right: 2.4rem;
 
       &:focus {
@@ -317,6 +318,8 @@
   .nfts {
     display: flex;
     flex-wrap: wrap;
+    gap: .1rem;
+    margin-top: .4rem;
   }
 
   .label-ens {
@@ -326,7 +329,6 @@
     display: inline-flex;
     font-size: .6rem;
     line-height: .8rem;
-    margin: .1rem .1rem 0 0;
     max-width: 12rem;
     padding: .1rem .15rem .1rem .15rem;
     text-decoration: none;
@@ -339,7 +341,7 @@
 
     .icon {
       color: #5298FF;
-      flex: 0 0 .7rem;
+      flex: 0 0 .8rem;
       height: 1rem;
       margin-right: .2rem;
       width: 1rem;
@@ -403,7 +405,7 @@
   .content-subtitle {
     align-items: center;
     display: flex;
-    font-size: .55rem;
+    font-size: .6rem;
     line-height: 1rem;
     max-width: 80%;
 
