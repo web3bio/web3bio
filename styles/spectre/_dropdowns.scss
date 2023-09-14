@@ -1,6 +1,6 @@
 // Dropdown
 .dropdown {
-  display: inline-block;
+  display: inline-flex;
   position: relative;
 
   .menu {
@@ -21,13 +21,13 @@
   }
 
   &.active .menu,
-  .dropdown-toggle:focus + .menu,
+  .dropdown-toggle:focus+.menu,
   .menu:hover {
     display: block;
   }
 
   // Fix dropdown-toggle border radius in button groups
-  .btn-group {
+  &.btn-group {
     .dropdown-toggle:nth-last-child(2) {
       border-bottom-right-radius: $border-radius;
       border-top-right-radius: $border-radius;

@@ -75,6 +75,9 @@ export default function WidgetRss(props) {
                   className="rss-item"
                   target={"_blank"}
                 >
+                  {x.itunes_image && (
+                    <img src={x.itunes_image} className="rss-item-img" alt={x.title} />
+                  )}
                   <div className="rss-item-title">
                     {x.title ? x.title : "Untitled"}
                   </div>

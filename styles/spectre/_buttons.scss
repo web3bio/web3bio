@@ -151,6 +151,7 @@
 
 // Button groups
 .btn-group {
+  border-radius: $border-radius;
   display: inline-flex;
   flex-wrap: wrap;
   gap: .05rem;

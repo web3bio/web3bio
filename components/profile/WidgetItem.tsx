@@ -69,7 +69,7 @@ const WidgetItem = (props) => {
             className="platform-icon website"
           >
             <Image
-              src={`https://icon.horse/icon/${item.handle}`} 
+              src={`https://icon.horse/icon/${item.handle.split('/')[0]}`} 
               alt={`${item.handle} Website Favicon`} 
               loading="lazy"
               height={24}
