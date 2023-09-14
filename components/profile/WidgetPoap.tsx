@@ -7,10 +7,12 @@ import { Error } from "../shared/Error";
 import { POAPFetcher, POAP_ENDPOINT } from "../apis/poap";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
+import { useSelector } from "react-redux";
+import { AppState } from "../../state";
 
-function usePoaps(address: string, fromServer: boolean) {
+function usePoaps(address: string, fromServer: boolean, shouldSkip: boolean) {
   const { data, error, isValidating } = useSWR(
-    `${POAP_ENDPOINT}${address}`,
+    shouldSkip ? null : `${POAP_ENDPOINT}${address}`,
     POAPFetcher,
     {
       suspense: !fromServer,
@@ -28,7 +30,15 @@ function usePoaps(address: string, fromServer: boolean) {
 
 export default function WidgetPoap(props) {
   const { address, onShowDetail, fromServer, setEmpty } = props;
-  const { data, isLoading, isError } = usePoaps(address, fromServer);
+  const cached = useSelector<AppState, any>(
+    (state) => state.widgets.data[address]?.poaps.data
+  );
+  const { data, isLoading, isError } = usePoaps(
+    address,
+    fromServer,
+    cached?.length > 0
+  );
+
 
   const getBoundaryRender = useCallback(() => {
     if (isLoading) return <Loading />;
@@ -41,6 +51,7 @@ export default function WidgetPoap(props) {
     }
   }, [data, isLoading, setEmpty]);
   if (!data || !data.length) return null;
+
   return (
     <div className="profile-widget-full" id="poap">
       <div className="profile-widget profile-widget-poap">
