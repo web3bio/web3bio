@@ -68,8 +68,8 @@
     gap: .2rem;
 
     .btn {
-      background: lighten($bg-color, 5%);
-      border: .05rem solid lighten($bg-color, 4%);
+      background: lighten($bg-color, 4%);
+      border: .05rem solid lighten($bg-color, 2%);
       box-shadow: 0 .1rem .25rem rgba($dark-color, .02);
       color: $gray-color-dark;
 
@@ -490,8 +490,6 @@
     width: 100%;
 
     .profile-widget-title {
-      margin-bottom: .5rem;
-
       .platform-icon {
         flex: 0 0 1.4rem;
         height: 1.4rem;
@@ -507,7 +505,7 @@
       display: flex;
       flex-wrap: nowrap;
       gap: .5rem;
-      margin: 0 -1rem;
+      margin: .5rem -1rem 0 -1rem;
       overflow-x: auto;
       padding: 0 1rem;
 
@@ -558,8 +556,6 @@
     width: 100%;
 
     .profile-widget-title {
-      margin-bottom: .5rem;
-
       .platform-icon {
         flex: 0 0 1.4rem;
         height: 1.4rem;
@@ -569,12 +565,19 @@
           border-radius: .4rem;
         }
       }
+
+      .label {
+        background: #a855f7;
+        box-shadow: inset 0 0 .25rem rgba($dark-color, .15), 0 .1rem .4rem rgba(#a855f7, .5);
+        color: #fff;
+      }
     }
 
     .widget-trait-list {
       display: flex;
       flex-wrap: wrap;
       gap: .5rem;
+      margin-top: .5rem;
       
       .trait-item {
         align-items: center;
@@ -585,27 +588,27 @@
         height: 1.4rem;
         padding: .05rem;
 
-        &.trait_rarity_legendary {
+        &.action_tier_legendary {
           background: linear-gradient(124.2deg,#d6fdff 8%,#bad1ff 34%,#7cd4f0 74%,#b4fffa 95%);
           order: -12;
         }
 
-        &.trait_rarity_epic {
+        &.action_tier_epic {
           background: linear-gradient(113.06deg,#ffd6d6 19%,#ffbaf8 34%,#9593ff 85%);
           order: -9;
         }
 
-        &.trait_rarity_rare {
+        &.action_tier_rare {
           background: linear-gradient(117.25deg,#f1cc9c 20%,#f2a94e 42%,#f07c7c 65%,#fbade5 96%);
           order: -6;
         }
 
-        &.trait_rarity_uncommon {
+        &.action_tier_uncommon {
           background: linear-gradient(90.47deg,#e9f3ad 2%,#c6d390 32%,#7cbc55 98%);
           order: -3;
         }
 
-        &.trait_rarity_common {
+        &.action_tier_common {
           display: none;
         }
 

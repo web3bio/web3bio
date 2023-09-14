@@ -107,7 +107,7 @@ export default function ProfileMain(props) {
                   onSuccess={onCopySuccess}
                   title="Copy the Ethereum wallet address"
                 >
-                  <span className="profile-label mr-1">{formatText(data.address)}</span>
+                  <span className="profile-label ml-1 mr-1">{formatText(data.address)}</span>
                   <SVG src="../icons/icon-copy.svg" width={20} height={20} className="action" />
                 </Clipboard>
                 <AddressMenu address={data.address} />
