@@ -78,8 +78,8 @@ export default function WidgetPoap(props) {
                     className="img-container"
                     src={`${resolveIPFS_URL(x.event.image_url)}?size=small`}
                     alt={x.event.name}
-                    height={80}
-                    width={80}
+                    height={64}
+                    width={64}
                   />
                 </div>
               );

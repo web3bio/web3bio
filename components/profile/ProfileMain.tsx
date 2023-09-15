@@ -99,7 +99,7 @@ export default function ProfileMain(props) {
             <div className="profile-name">{data.displayName}</div>
             <h3 className="text-assistive">{`${pageTitle}‘s Ethereum wallet address is ${data.address}`}</h3>
             <div className="profile-identity">
-              <div className="btn-group dropdown dropdown-right">
+              <div className="btn-group dropdown">
                 <Clipboard
                   component="div"
                   className="btn btn-sm"
