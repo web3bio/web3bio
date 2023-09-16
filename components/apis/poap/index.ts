@@ -8,7 +8,6 @@ export const POAPFetcher = async (url) => {
         "x-api-key": AUTHENTICATION || "",
       },
       next: { revalidate: 86400 },
-      cache: "force-cache",
     });
     if (res.status != 200) return [];
     return res.json();

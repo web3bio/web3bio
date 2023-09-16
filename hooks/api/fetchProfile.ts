@@ -23,7 +23,6 @@ export const fetchProfile = async (identity) => {
       `/profile/${platform.toLowerCase()}/${handle}`;
     const res = await fetch(url, {
       next: { revalidate: 86400 },
-      cache: "force-cache",
     });
     return await res.json();
   } catch (e) {
@@ -38,7 +37,6 @@ export const fetchInitialNFTsData = async (address) => {
         `/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${address}&limit=${NFT_PAGE_SIZE}`,
       {
         next: { revalidate: 86400 },
-        cache: "force-cache",
       }
     );
     return await res.json();
