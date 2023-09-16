@@ -13,7 +13,7 @@
     filter: blur(4rem);
     height: 100vh;
     left: 0;
-    opacity: .01;
+    opacity: .05;
     position: fixed;
     top: 0;
     width: 100vw;
@@ -72,13 +72,11 @@
     }
 
     .btn {
-      background: rgba($bg-color, .5);
-      color: $gray-color-dark;
+      background: rgba($gray-color, .15);
 
       &:focus,
       &:hover {
-        background: rgba($bg-color, .75);
-        color: $dark-color;
+        background: rgba($gray-color, .25);
       }
     }
 
