@@ -13,7 +13,7 @@
     filter: blur(4rem);
     height: 100vh;
     left: 0;
-    opacity: .01;
+    opacity: .05;
     position: fixed;
     top: 0;
     width: 100vw;
@@ -72,13 +72,11 @@
     }
 
     .btn {
-      background: rgba($bg-color, .5);
-      color: $gray-color-dark;
+      background: rgba($gray-color, .15);
 
       &:focus,
       &:hover {
-        background: rgba($bg-color, .75);
-        color: $dark-color;
+        background: rgba($gray-color, .25);
       }
     }
 
@@ -292,8 +290,22 @@
       position: absolute;
       right: 1rem;
       top: 1rem;
-      color: #121212;
       cursor: pointer;
+
+      svg {
+        flex: 0 0 1rem;
+      }
+
+      .action-icon-label {
+        display: none;
+      }
+
+      &:focus,
+      &:hover {
+        .action-icon-label {
+          display: inline-flex;
+        }
+      }
     }
 
     &.profile-widget-link {
@@ -450,6 +462,7 @@
   .profile-widget-poap {
     aspect-ratio: auto;
     color: #463E68;
+    position: relative;
 
     .platform-icon {
       box-shadow: inset 0 0 0 .05rem rgba($dark-color, .05), 0 .2rem .4rem rgba($dark-color, .01), 2rem -4rem 6rem 10rem var(--widget-bg-color);
@@ -458,10 +471,9 @@
     .widget-collection-list {
       display: flex;
       flex-wrap: nowrap;
-      height: 3.4rem;
       margin: 0 -1rem;
       overflow-x: auto;
-      padding: 0 1rem;
+      padding: 0 1rem .2rem 1rem;
 
       .poap-item {
         flex: 0 0 3.2rem;
@@ -514,7 +526,7 @@
       .rss-item {
         background: lighten($bg-color, 5%);
         border-radius: .4rem;
-        flex: 1 0 12rem;
+        flex: 0 0 12rem;
         min-height: 5rem;
         padding: .75rem;
         text-decoration: none;

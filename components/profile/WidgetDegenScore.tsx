@@ -29,8 +29,9 @@ export default function WidgetDegenScore(props) {
             <SVG src={`../icons/icon-degenscore.svg`} fill={"#a855f7"} width={32} height={32} />
           </div>
           DegenScore <span className="label ml-2">{data.properties?.DegenScore}</span>
-          <Link className="action-icon" href={`https://degenscore.com/beacon/${address}`} target={"_blank"}>
-            <SVG src="icons/icon-open.svg" width={24} height={24} />
+          <Link className="action-icon btn btn-sm" href={`https://degenscore.com/beacon/${address}`} target={"_blank"}>
+            <span className="action-icon-label">More</span>
+            <SVG src="icons/icon-open.svg" width={20} height={20} />
           </Link>
         </h2>
         <div className="text-assistive">

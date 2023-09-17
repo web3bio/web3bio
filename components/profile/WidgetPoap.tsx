@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useEffect } from "react";
+import Link from "next/link";
 import useSWR from "swr";
 import { Loading } from "../shared/Loading";
 import SVG from "react-inlinesvg";
@@ -49,6 +50,10 @@ export default function WidgetPoap(props) {
             <SVG src={`../icons/icon-poap.svg`} width={32} height={32} />
           </div>
           POAP
+          <Link className="action-icon btn btn-sm" href={`https://app.poap.xyz/scan/${address}`} target={"_blank"}>
+            <span className="action-icon-label">More</span>
+            <SVG src="icons/icon-open.svg" width={20} height={20} />
+          </Link>
         </h2>
         <div className="text-assistive">
           POAP are the bookmarks for your life. Mint the most important memories
@@ -78,8 +83,8 @@ export default function WidgetPoap(props) {
                     className="img-container"
                     src={`${resolveIPFS_URL(x.event.image_url)}?size=small`}
                     alt={x.event.name}
-                    height={80}
-                    width={80}
+                    height={64}
+                    width={64}
                   />
                 </div>
               );

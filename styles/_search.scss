@@ -164,13 +164,10 @@
     background: rgba($gray-color, .05);
     border-radius: $border-radius;
     display: flex;
+    margin-bottom: .2rem;
     position: relative;
     transition: all .2s ease-in;
     width: 100%;
-
-    &:not(:last-child) {
-      margin-bottom: .2rem;
-    }
 
     &:focus,
     &:hover {
