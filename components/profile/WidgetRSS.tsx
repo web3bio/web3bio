@@ -57,8 +57,9 @@ export default function WidgetRss(props) {
             <span className="emoji-large mr-2">📰</span>
           )}
           {data.title}
-          <Link className="action-icon" href={data.link} target={"_blank"}>
-            <SVG src="icons/icon-open.svg" width={24} height={24} />
+          <Link className="action-icon btn btn-sm" href={data.link} target={"_blank"}>
+            <span className="action-icon-label">More</span>
+            <SVG src="icons/icon-open.svg" width={20} height={20} />
           </Link>
         </h2>
         {data.description && (
