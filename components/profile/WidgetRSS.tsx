@@ -45,23 +45,13 @@ export default function WidgetRss(props) {
     <div className="profile-widget-full" id="rss">
       <div className="profile-widget profile-widget-rss">
         <h2 className="profile-widget-title">
-          {data.image ? (
-            <div className="platform-icon mr-2">
-              <img
-                className="img-responsive"
-                src={data.image}
-                alt="rss-image"
-              />
-            </div>
-          ) : (
-            <span className="emoji-large mr-2">📰</span>
-          )}
+          <span className="emoji-large mr-2">📰{" "}</span>
           {data.title}
-          <Link className="action-icon btn btn-sm" href={data.link} target={"_blank"}>
-            <span className="action-icon-label">More</span>
-            <SVG src="icons/icon-open.svg" width={20} height={20} />
-          </Link>
         </h2>
+        <Link className="action-icon btn btn-sm" href={data.link} target={"_blank"}>
+          <span className="action-icon-label">More</span>
+          <SVG src="icons/icon-open.svg" width={20} height={20} />
+        </Link>
         {data.description && (
           <h3 className="text-assistive">{data.description}</h3>
         )}

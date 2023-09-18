@@ -143,16 +143,16 @@ const RenderWidgetNFTCollection = ({
           expand ? " active" : ""
         }`}
       >
+        <h2 className="profile-widget-title">
+          <span className="emoji-large mr-2">🖼{" "}</span>
+          NFT Collections
+        </h2>
         <ExpandController
           expand={expand}
           onToggle={() => {
             setExpand(!expand);
           }}
         />
-        <h2 className="profile-widget-title">
-          <span className="emoji-large mr-2">🖼</span>
-          NFT Collections
-        </h2>
         <NFTCollections
           handleScrollToAsset={(ref, assetId) => {
             setScrollRefAndAssetId([ref, assetId]);

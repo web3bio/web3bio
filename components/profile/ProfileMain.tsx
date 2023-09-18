@@ -112,6 +112,14 @@ export default function ProfileMain(props) {
                 </Clipboard>
                 <AddressMenu address={data.address} />
               </div>
+              <button
+                className="profile-share btn btn-sm ml-2"
+                title="Share this profile"
+                onClick={() => setOpenShare(true)}
+              >
+                <SVG src="icons/icon-share.svg" width={20} height={20} />
+                Share
+              </button>
             </div>
 
             <div className="profile-badges">
@@ -250,18 +258,9 @@ export default function ProfileMain(props) {
           className="btn btn-primary"
           title="Web3.bio - Web3 Identity Graph Search and Link in Bio Profile"
         >
-          <span className="mr-2">👋</span>Made with{" "}
+          <div className="badge-emoji mr-2">👋</div>Made with{" "}
           <strong className="text-pride ml-1 mr-1">Web3.bio</strong>
         </Link>
-
-        <button
-          className="profile-share btn ml-2"
-          title="Share this profile"
-          onClick={() => setOpenShare(true)}
-        >
-          <SVG src="icons/icon-share.svg" width={20} height={20} />
-          Share
-        </button>
       </div>
       {dialogOpen && curAsset && (
         <NFTModal
