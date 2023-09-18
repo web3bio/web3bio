@@ -6,6 +6,8 @@ import { Error } from "../shared/Error";
 import { RSSFetcher, RSS_ENDPOINT } from "../apis/rss";
 import SVG from "react-inlinesvg";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { updateRssWidget } from "../../state/widgets/action";
 
 function useRSS(domain: string) {
   const { data, error, isValidating } = useSWR(
@@ -27,8 +29,9 @@ function useRSS(domain: string) {
 }
 
 export default function WidgetRss(props) {
-  const { domain, setEmpty } = props;
+  const { domain } = props;
   const { data, isLoading, isError } = useRSS(domain);
+  const dispatch = useDispatch();
   const getBoundaryRender = useCallback(() => {
     if (isLoading) return <Loading />;
     if (isError) return <Error />;
@@ -36,10 +39,10 @@ export default function WidgetRss(props) {
   }, [isLoading, isError]);
 
   useEffect(() => {
-    if (!isLoading && data && !data?.items?.length) {
-      setEmpty(true);
+    if (!isLoading && data && data?.items?.length) {
+      dispatch(updateRssWidget({ isEmpty: false }));
     }
-  }, [data, isLoading, setEmpty]);
+  }, [data, isLoading, dispatch]);
   if (!data || !data?.items?.length) return null;
   return (
     <div className="profile-widget-full" id="rss">

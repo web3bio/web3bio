@@ -7,12 +7,12 @@ import { Error } from "../shared/Error";
 import { POAPFetcher, POAP_ENDPOINT } from "../apis/poap";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { useSelector } from "react-redux";
-import { AppState } from "../../state";
+import { useDispatch } from "react-redux";
+import { updatePoapsWidget } from "../../state/widgets/action";
 
-function usePoaps(address: string, fromServer: boolean, shouldSkip: boolean) {
+function usePoaps(address: string, fromServer: boolean) {
   const { data, error, isValidating } = useSWR(
-    shouldSkip ? null : `${POAP_ENDPOINT}${address}`,
+    `${POAP_ENDPOINT}${address}`,
     POAPFetcher,
     {
       suspense: !fromServer,
@@ -29,27 +29,19 @@ function usePoaps(address: string, fromServer: boolean, shouldSkip: boolean) {
 }
 
 export default function WidgetPoap(props) {
-  const { address, onShowDetail, fromServer, setEmpty } = props;
-  const cached = useSelector<AppState, any>(
-    (state) => state.widgets.data[address]?.poaps.data
-  );
-  const { data, isLoading, isError } = usePoaps(
-    address,
-    fromServer,
-    cached?.length > 0
-  );
-
-
+  const { address, onShowDetail, fromServer } = props;
+  const { data, isLoading, isError } = usePoaps(address, fromServer);
+  const dispatch = useDispatch();
   const getBoundaryRender = useCallback(() => {
     if (isLoading) return <Loading />;
     if (isError) return <Error />;
     return null;
   }, [isLoading, isError]);
   useEffect(() => {
-    if (!isLoading && !data.length) {
-      setEmpty(true);
+    if (!isLoading && data.length) {
+      dispatch(updatePoapsWidget({ isEmpty: false }));
     }
-  }, [data, isLoading, setEmpty]);
+  }, [data, isLoading, dispatch]);
   if (!data || !data.length) return null;
 
   return (

@@ -6,41 +6,76 @@ import {
   updateRssWidget,
 } from "./action";
 
-interface WidgetState {
-  data: {
-    [address: string]: {
-      nfts: {
-        data: any;
-      };
-      poaps: {
-        data: any;
-      };
-      degens: {
-        data: any;
-      };
-      rss: {
-        data: any;
-      };
+export interface WidgetState {
+  widgetState: {
+    nft: {
+      isEmpty?: boolean;
+      position?: string;
+    };
+    poaps?: {
+      isEmpty: boolean;
+      position?: string;
+    };
+    degen?: {
+      isEmpty: boolean;
+      position?: string;
+    };
+    rss?: {
+      isEmpty: boolean;
+      position?: string;
     };
   };
 }
 
 export const initialState: WidgetState = {
-  data: {},
+  widgetState: {
+    nft: {
+      isEmpty: true,
+    },
+    poaps: {
+      isEmpty: true,
+    },
+    rss: {
+      isEmpty: true,
+    },
+    degen: {
+      isEmpty: true,
+    },
+  },
 };
 
 export default createReducer(initialState, (builder) =>
   builder
-    .addCase(updateNFTWidget, (state, { payload: { nfts, address } }) => {
-      state.data[address].nfts.data = nfts;
+    .addCase(updateNFTWidget, (state, { payload: { isEmpty } }) => {
+      state.widgetState = {
+        ...state.widgetState,
+        nft: {
+          isEmpty,
+        },
+      };
     })
-    .addCase(updatePoapsWidget, (state, { payload: { poaps, address } }) => {
-      state.data[address].poaps.data = poaps;
+    .addCase(updatePoapsWidget, (state, { payload: { isEmpty } }) => {
+      state.widgetState = {
+        ...state.widgetState,
+        poaps: {
+          isEmpty,
+        },
+      };
     })
-    .addCase(updateRssWidget, (state, { payload: { rss, address } }) => {
-      state.data[address].rss.data = rss;
+    .addCase(updateRssWidget, (state, { payload: { isEmpty } }) => {
+      state.widgetState = {
+        ...state.widgetState,
+        rss: {
+          isEmpty,
+        },
+      };
     })
-    .addCase(updateDegenWidget, (state, { payload: { degens, address } }) => {
-      state.data[address].degens.data = degens;
+    .addCase(updateDegenWidget, (state, { payload: { isEmpty } }) => {
+      state.widgetState = {
+        ...state.widgetState,
+        degen: {
+          isEmpty,
+        },
+      };
     })
 );
