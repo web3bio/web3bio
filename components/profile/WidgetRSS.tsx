@@ -6,10 +6,29 @@ import { Error } from "../shared/Error";
 import { RSSFetcher, RSS_ENDPOINT } from "../apis/rss";
 import SVG from "react-inlinesvg";
 import Link from "next/link";
+import { handleSearchPlatform } from "../../utils/utils";
+import { PlatformType } from "../../utils/platform";
 
-function useRSS(domain: string) {
+function getQueryDomain(
+  domain: string,
+  relations: Array<{ platform: PlatformType; identity: string }>
+) {
+  const pureDomain = domain.endsWith(".farcaster")
+    ? domain.replace(".farcaster", "")
+    : domain;
+  const platform = handleSearchPlatform(pureDomain);
+  if ([PlatformType.ens, PlatformType.dotbit].includes(platform))
+    return pureDomain;
+  return (
+    relations.find((x) => x.platform === PlatformType.ens)?.identity ||
+    relations.find((x) => x.platform === PlatformType.dotbit)?.identity
+  );
+}
+
+function useRSS(domain: string, relations) {
+  const queryDomain = getQueryDomain(domain, relations);
   const { data, error, isValidating } = useSWR(
-    `${RSS_ENDPOINT}rss?query=${domain}&mode=list`,
+    queryDomain ? `${RSS_ENDPOINT}rss?query=${queryDomain}&mode=list` : null,
     RSSFetcher,
     {
       suspense: true,
@@ -27,8 +46,8 @@ function useRSS(domain: string) {
 }
 
 export default function WidgetRss(props) {
-  const { domain, setEmpty } = props;
-  const { data, isLoading, isError } = useRSS(domain);
+  const { domain, setEmpty, relations } = props;
+  const { data, isLoading, isError } = useRSS(domain, relations);
   const getBoundaryRender = useCallback(() => {
     if (isLoading) return <Loading />;
     if (isError) return <Error />;
@@ -57,7 +76,11 @@ export default function WidgetRss(props) {
             <span className="emoji-large mr-2">📰</span>
           )}
           {data.title}
-          <Link className="action-icon btn btn-sm" href={data.link} target={"_blank"}>
+          <Link
+            className="action-icon btn btn-sm"
+            href={data.link}
+            target={"_blank"}
+          >
             <span className="action-icon-label">More</span>
             <SVG src="icons/icon-open.svg" width={20} height={20} />
           </Link>
@@ -77,7 +100,11 @@ export default function WidgetRss(props) {
                   target={"_blank"}
                 >
                   {x.itunes_image && (
-                    <img src={x.itunes_image} className="rss-item-img" alt={x.title} />
+                    <img
+                      src={x.itunes_image}
+                      className="rss-item-img"
+                      alt={x.title}
+                    />
                   )}
                   <div className="rss-item-title">
                     {x.title ? x.title : "Untitled"}

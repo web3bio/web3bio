@@ -214,6 +214,7 @@ export default function ProfileMain(props) {
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading Articles...</p>}>
                   <WidgetRSS
+                    relations={relations}
                     setEmpty={setIsRssEmpty}
                     fromServer={false}
                     domain={data.identity}
