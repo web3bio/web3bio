@@ -1,22 +1,22 @@
 "use client";
 import React, { Suspense, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
-import { RenderWidgetItem } from "./WidgetItem";
-import WidgetPoap from "./WidgetPoap";
 import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import { Error } from "../shared/Error";
 import Avatar from "boring-avatars";
 import { formatText } from "../../utils/utils";
+import { RenderWidgetItem } from "./WidgetItem";
 import { WidgetNFTCollection } from "./WidgetNFTCollection";
+import WidgetRSS from "./WidgetRSS";
+import WidgetPoap from "./WidgetPoap";
+import WidgetDegenScore from "./WidgetDegenScore";
 import { NFTModal, NFTModalType } from "./NFTModal";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
 import ShareModal from "../shared/ShareModal";
 import ModalLink from "./ModalLink";
-import WidgetRSS from "./WidgetRSS";
-import WidgetDegenScore from "./WidgetDegenScore";
 import AddressMenu from "./AddressMenu";
 
 export default function ProfileMain(props) {
@@ -112,6 +112,14 @@ export default function ProfileMain(props) {
                 </Clipboard>
                 <AddressMenu address={data.address} />
               </div>
+              <button
+                className="profile-share btn btn-sm ml-2"
+                title="Share this profile"
+                onClick={() => setOpenShare(true)}
+              >
+                <SVG src="icons/icon-share.svg" width={20} height={20} />
+                Share
+              </button>
             </div>
 
             <div className="profile-badges">
@@ -214,6 +222,7 @@ export default function ProfileMain(props) {
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading Articles...</p>}>
                   <WidgetRSS
+                    relations={relations}
                     setEmpty={setIsRssEmpty}
                     fromServer={false}
                     domain={data.identity}
@@ -250,18 +259,9 @@ export default function ProfileMain(props) {
           className="btn btn-primary"
           title="Web3.bio - Web3 Identity Graph Search and Link in Bio Profile"
         >
-          <span className="mr-2">👋</span>Made with{" "}
+          <div className="badge-emoji mr-2">👋</div>Made with{" "}
           <strong className="text-pride ml-1 mr-1">Web3.bio</strong>
         </Link>
-
-        <button
-          className="profile-share btn ml-2"
-          title="Share this profile"
-          onClick={() => setOpenShare(true)}
-        >
-          <SVG src="icons/icon-share.svg" width={20} height={20} />
-          Share
-        </button>
       </div>
       {dialogOpen && curAsset && (
         <NFTModal

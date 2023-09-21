@@ -1,12 +1,11 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import SVG from "react-inlinesvg";
+import { useSearchParams } from "next/navigation";
 import { DefaultSearchSuffix, fuzzyDomainSuffix } from "../../utils/constants";
 import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import { matchQuery } from "../../utils/queries";
 import { handleSearchPlatform } from "../../utils/utils";
-import { useSearchParams } from "next/navigation";
-import Image from "next/image";
 
 const isQuerySplit = (query: string) => {
   return query.includes(".") || query.includes("。");

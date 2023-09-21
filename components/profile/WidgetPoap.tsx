@@ -47,14 +47,14 @@ export default function WidgetPoap(props) {
       <div className="profile-widget profile-widget-poap">
         <h2 className="profile-widget-title">
           <div className="platform-icon mr-2">
-            <SVG src={`../icons/icon-poap.svg`} width={32} height={32} />
+            <SVG src={`../icons/icon-poap.svg`} color={"#5E58A5"} width={24} height={24} />
           </div>
           POAP
-          <Link className="action-icon btn btn-sm" href={`https://app.poap.xyz/scan/${address}`} target={"_blank"}>
-            <span className="action-icon-label">More</span>
-            <SVG src="icons/icon-open.svg" width={20} height={20} />
-          </Link>
         </h2>
+        <Link className="action-icon btn btn-sm" href={`https://app.poap.xyz/scan/${address}`} target={"_blank"}>
+          <span className="action-icon-label">More</span>
+          <SVG src="icons/icon-open.svg" width={20} height={20} />
+        </Link>
         <div className="text-assistive">
           POAP are the bookmarks for your life. Mint the most important memories
           of your life as digital collectibles (NFTs) forever on the blockchain.
