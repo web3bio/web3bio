@@ -13,7 +13,7 @@
     filter: blur(4rem);
     height: 100vh;
     left: 0;
-    opacity: .01;
+    opacity: .05;
     position: fixed;
     top: 0;
     width: 100vw;
@@ -49,6 +49,7 @@
     color: $dark-color;
     font-size: 1.8rem;
     font-weight: 800;
+    letter-spacing: -.05em;
     line-height: 1.25;
     margin-bottom: .5rem;
     margin-top: 1rem;
@@ -66,21 +67,33 @@
     line-height: 1rem;
     gap: .2rem;
 
-    .action {
-      color: $gray-color;
-      cursor: pointer;
-      flex: 0 1;
-      height: 1rem;
-      margin-left: .2rem;
-      position: relative;
-      transition: all .2s ease-in-out;
-      width: 1rem;
+    .btn-group {
+      gap: .1rem;
+    }
+
+    .btn {
+      background: rgba($gray-color, .15);
 
       &:focus,
       &:hover {
-        color: $dark-color;
+        background: rgba($gray-color, .25);
       }
     }
+
+    .menu {
+      width: 10rem;
+    }
+  }
+
+  .profile-badges {
+    align-items: center;
+    color: $gray-color-dark;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    font-size: .6rem;
+    line-height: 1rem;
+    gap: .2rem;
 
     .platform-badge {
       align-items: center;
@@ -124,6 +137,7 @@
       }
 
       &.nextid {
+        --badge-primary-color: #121212;
         background: #121212;
         position: relative;
 
@@ -276,8 +290,22 @@
       position: absolute;
       right: 1rem;
       top: 1rem;
-      color: #121212;
       cursor: pointer;
+
+      svg {
+        flex: 0 0 1rem;
+      }
+
+      .action-icon-label {
+        display: none;
+      }
+
+      &:focus,
+      &:hover {
+        .action-icon-label {
+          display: inline-flex;
+        }
+      }
     }
 
     &.profile-widget-link {
@@ -314,10 +342,10 @@
         box-shadow: inset 0 0 0 .05rem rgba($dark-color, .1), 0 .2rem .4rem rgba($dark-color, .05), 1rem 0 6rem 3rem var(--widget-bg-color);
 
         img {
-          border-radius: .2rem;
-          height: 1.2rem;
+          border-radius: .3rem;
+          height: 1.4rem;
           position: absolute;
-          width: 1.2rem;
+          width: 1.4rem;
         }
       }
     }
@@ -434,6 +462,7 @@
   .profile-widget-poap {
     aspect-ratio: auto;
     color: #463E68;
+    position: relative;
 
     .platform-icon {
       box-shadow: inset 0 0 0 .05rem rgba($dark-color, .05), 0 .2rem .4rem rgba($dark-color, .01), 2rem -4rem 6rem 10rem var(--widget-bg-color);
@@ -442,10 +471,9 @@
     .widget-collection-list {
       display: flex;
       flex-wrap: nowrap;
-      height: 3.4rem;
       margin: 0 -1rem;
       overflow-x: auto;
-      padding: 0 1rem;
+      padding: 0 1rem .2rem 1rem;
 
       .poap-item {
         flex: 0 0 3.2rem;
@@ -476,8 +504,6 @@
     width: 100%;
 
     .profile-widget-title {
-      margin-bottom: .5rem;
-
       .platform-icon {
         flex: 0 0 1.4rem;
         height: 1.4rem;
@@ -493,14 +519,14 @@
       display: flex;
       flex-wrap: nowrap;
       gap: .5rem;
-      margin: 0 -1rem;
+      margin: .5rem -1rem 0 -1rem;
       overflow-x: auto;
       padding: 0 1rem;
 
       .rss-item {
         background: lighten($bg-color, 5%);
         border-radius: .4rem;
-        flex: 1 0 12rem;
+        flex: 0 0 12rem;
         min-height: 5rem;
         padding: .75rem;
         text-decoration: none;
@@ -513,8 +539,10 @@
         }
 
         .rss-item-title {
-          font-weight: 700;
           display: -webkit-box;
+          font-size: .8rem;
+          font-weight: 700;
+          line-height: 1.35;
           text-overflow: ellipsis;
           overflow: hidden;
           -webkit-box-orient: vertical;
@@ -524,15 +552,19 @@
         .rss-item-date {
           color: $gray-color;
           font-size: .6rem;
-          margin-top: .5rem;
+          margin-top: .25rem;
         }
 
         .rss-item-img {
           border-radius: .4rem;
           height: 4.8rem;
           margin-bottom: .5rem;
-          object-fit: cover;
+          object-fit: contain;
           width: 100%;
+
+          & + .rss-item-title {
+            font-size: .7rem;
+          }           
         }
       }
     }
@@ -544,8 +576,6 @@
     width: 100%;
 
     .profile-widget-title {
-      margin-bottom: .5rem;
-
       .platform-icon {
         flex: 0 0 1.4rem;
         height: 1.4rem;
@@ -555,12 +585,19 @@
           border-radius: .4rem;
         }
       }
+
+      .label {
+        background: #a855f7;
+        box-shadow: inset 0 0 .25rem rgba($dark-color, .15), 0 .1rem .4rem rgba(#a855f7, .5);
+        color: #fff;
+      }
     }
 
     .widget-trait-list {
       display: flex;
       flex-wrap: wrap;
       gap: .5rem;
+      margin-top: .5rem;
       
       .trait-item {
         align-items: center;
@@ -571,27 +608,27 @@
         height: 1.4rem;
         padding: .05rem;
 
-        &.trait_rarity_legendary {
+        &.action_tier_legendary {
           background: linear-gradient(124.2deg,#d6fdff 8%,#bad1ff 34%,#7cd4f0 74%,#b4fffa 95%);
           order: -12;
         }
 
-        &.trait_rarity_epic {
+        &.action_tier_epic {
           background: linear-gradient(113.06deg,#ffd6d6 19%,#ffbaf8 34%,#9593ff 85%);
           order: -9;
         }
 
-        &.trait_rarity_rare {
+        &.action_tier_rare {
           background: linear-gradient(117.25deg,#f1cc9c 20%,#f2a94e 42%,#f07c7c 65%,#fbade5 96%);
           order: -6;
         }
 
-        &.trait_rarity_uncommon {
+        &.action_tier_uncommon {
           background: linear-gradient(90.47deg,#e9f3ad 2%,#c6d390 32%,#7cbc55 98%);
           order: -3;
         }
 
-        &.trait_rarity_common {
+        &.action_tier_common {
           display: none;
         }
 

@@ -1,8 +1,9 @@
 // Menus
 .menu {
-  @include shadow-variant(.05rem);
+  @include shadow-variant(.1rem);
   background: $bg-color-light;
   border-radius: $border-radius;
+  font-size: .7rem;
   list-style: none;
   margin: 0;
   min-width: $control-width-xs;
@@ -17,25 +18,27 @@
 
   .menu-item {
     margin-top: 0;
-    padding: 0 $unit-2;
+    padding: 0 $unit-4;
     text-decoration: none;
     user-select: none;
 
-    & > a {
+    &>a {
       border-radius: $border-radius;
       color: inherit;
       display: block;
-      margin: 0 (-$unit-2);
-      padding: $unit-1 $unit-2;
+      margin: 0 (-$unit-4);
+      padding: $unit-2 $unit-2;
       text-decoration: none;
+
       &:focus,
       &:hover {
-        background: $secondary-color;
+        background: rgba($color: $dark-color, $alpha: 0.05);
         color: $primary-color;
       }
+
       &:active,
       &.active {
-        background: $secondary-color;
+        background: rgba($color: $dark-color, $alpha: 0.075);
         color: $primary-color;
       }
     }
@@ -46,7 +49,7 @@
       margin: $unit-h 0;
     }
 
-    & + .menu-item {
+    &+.menu-item {
       margin-top: $unit-1;
     }
   }

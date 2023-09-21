@@ -110,10 +110,10 @@ body {
   background-image:
     radial-gradient(at 40% 33%, $pride-color-1 0px, transparent 50%),
     radial-gradient(at 82% 10%, $pride-color-2 0px, transparent 50%),
-    radial-gradient(at 17% 11%, $pride-color-3 0px, transparent 50%),
+    radial-gradient(at 17% -11%, $pride-color-3 0px, transparent 30%),
     radial-gradient(at 48% 2%, $pride-color-4 0px, transparent 50%),
-    radial-gradient(at 39% 67%, $pride-color-5 0px, transparent 50%),
-    radial-gradient(at 86% 58%, $pride-color-6 0px, transparent 50%),
+    radial-gradient(at 39% 67%, $pride-color-2 0px, transparent 50%),
+    radial-gradient(at 96% 158%, $pride-color-6 0px, transparent 50%),
     radial-gradient(at 61% 57%, $pride-color-7 0px, transparent 50%);
   display: block;
   height: 100vh;
@@ -146,8 +146,8 @@ body {
   &::after {
     animation: bg-animation 24s ease infinite;
     animation-delay: 0;
-    background: linear-gradient(-45deg, $pride-color-5 5%, $pride-color-6 50%, $pride-color-7 95%);
-    top: 0;
+    background: linear-gradient(-45deg, $pride-color-7 5%, $pride-color-6 50%, $pride-color-5 95%);
+    top: 20vh;
     right: 10vh;
   }
 }

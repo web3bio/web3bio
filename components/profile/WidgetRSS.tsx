@@ -60,8 +60,9 @@ export default function WidgetRss(props) {
             <span className="emoji-large mr-2">📰</span>
           )}
           {data.title}
-          <Link className="action-icon" href={data.link} target={"_blank"}>
-            <SVG src="icons/icon-open.svg" width={24} height={24} />
+          <Link className="action-icon btn btn-sm" href={data.link} target={"_blank"}>
+            <span className="action-icon-label">More</span>
+            <SVG src="icons/icon-open.svg" width={20} height={20} />
           </Link>
         </h2>
         {data.description && (
@@ -78,6 +79,9 @@ export default function WidgetRss(props) {
                   className="rss-item"
                   target={"_blank"}
                 >
+                  {x.itunes_image && (
+                    <img src={x.itunes_image} className="rss-item-img" alt={x.title} />
+                  )}
                   <div className="rss-item-title">
                     {x.title ? x.title : "Untitled"}
                   </div>

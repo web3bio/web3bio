@@ -20,6 +20,7 @@ import WidgetDegenScore from "./WidgetDegenScore";
 import { useSelector } from "react-redux";
 import { AppState } from "../../state";
 import { WidgetState } from "../../state/widgets/reducer";
+import AddressMenu from "./AddressMenu";
 
 export default function ProfileMain(props) {
   const {
@@ -62,7 +63,7 @@ export default function ProfileMain(props) {
       <div
         className="web3bio-custom"
         style={{
-          backgroundImage: data.header ? `url("${data.header}")` : "",
+          backgroundImage: data.header ? `url(${data.header})` : "",
         }}
       ></div>
       <div className="columns">
@@ -103,26 +104,22 @@ export default function ProfileMain(props) {
             <div className="profile-name">{data.displayName}</div>
             <h3 className="text-assistive">{`${pageTitle}‘s Ethereum wallet address is ${data.address}`}</h3>
             <div className="profile-identity">
-              <>
-                <span
-                  className="profile-label"
-                  title={`${pageTitle}‘s Ethereum wallet address is ${data.address}`}
-                >
-                  {formatText(data.address)}
-                </span>
+              <div className="btn-group dropdown">
                 <Clipboard
                   component="div"
-                  className="action"
+                  className="btn btn-sm"
                   data-clipboard-text={data.address}
                   onSuccess={onCopySuccess}
                   title="Copy the Ethereum wallet address"
                 >
-                  <SVG src="../icons/icon-copy.svg" width={20} height={20} />
+                  <span className="profile-label ml-1 mr-1">{formatText(data.address)}</span>
+                  <SVG src="../icons/icon-copy.svg" width={20} height={20} className="action" />
                 </Clipboard>
-              </>
+                <AddressMenu address={data.address} />
+              </div>
             </div>
 
-            <div className="profile-identity">
+            <div className="profile-badges">
               {platform == "nextid" && (
                 <Clipboard
                   component="div"
@@ -251,7 +248,7 @@ export default function ProfileMain(props) {
       </div>
       <div className="web3bio-badge">
         <Link
-          href="/"
+          href="/?utm_source=profile"
           target="_parent"
           className="btn btn-primary"
           title="Web3.bio - Web3 Identity Graph Search and Link in Bio Profile"
@@ -262,7 +259,7 @@ export default function ProfileMain(props) {
 
         <button
           className="profile-share btn ml-2"
-          title="Share this page"
+          title="Share this profile"
           onClick={() => setOpenShare(true)}
         >
           <SVG src="icons/icon-share.svg" width={20} height={20} />

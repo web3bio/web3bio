@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { DM_Sans } from "next/font/google";
 import GoogleAnalytics from "../components/shared/GoogleAnalytics";
 import Provider from "../components/shared/Provider";
 import "../styles/web3bio.scss";
@@ -54,6 +55,12 @@ export async function generateMetadata(): Promise<Metadata> {
     },
   };
 }
+
+const sans = DM_Sans({
+  subsets: ["latin"],
+  fallback: ["Inter", "ui-sans-serif", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica Neue"]
+})
+
 export default function RootLayout({ children, modal }) {
   return (
     <html lang="en">
@@ -61,7 +68,7 @@ export default function RootLayout({ children, modal }) {
         <meta httpEquiv="x-ua-compatible" content="ie=edge" />
         <link rel="shortcut icon" href="/favicon.ico" />
       </head>
-      <body>
+      <body className={sans.className}>
         <main>
           <Provider>
             {children}

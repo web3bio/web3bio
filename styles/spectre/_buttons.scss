@@ -2,11 +2,11 @@
 .btn {
   align-items: center;
   appearance: none;
-  background: $bg-color;
+  background: rgba($gray-color, .15);
   border: $border-width solid transparent;
   border-radius: $border-radius;
   box-shadow: none;
-  color: lighten($dark-color, 10%);
+  color: $gray-color-dark;
   cursor: pointer;
   display: inline-flex;
   font-size: $font-size;
@@ -22,12 +22,14 @@
   white-space: nowrap;
   &:focus,
   &:hover {
-    background: darken($bg-color, 2%);
+    background: rgba($gray-color, .25);
+    color: $dark-color;
     text-decoration: none;
   }
   &:active,
   &.active {
-    background: darken($bg-color, 4%);
+    background: rgba($gray-color, .25);
+    color: $dark-color;
     text-decoration: none;
     &.loading {
       &::after {
@@ -151,6 +153,7 @@
 
 // Button groups
 .btn-group {
+  border-radius: $border-radius;
   display: inline-flex;
   flex-wrap: wrap;
   gap: .05rem;
