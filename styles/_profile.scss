@@ -62,10 +62,10 @@
     color: $gray-color-dark;
     display: flex;
     flex-wrap: wrap;
-    margin-bottom: 1rem;
     font-size: .6rem;
-    line-height: 1rem;
     gap: .2rem;
+    line-height: 1rem;
+    margin-bottom: 1rem;
 
     .btn-group {
       gap: .1rem;
@@ -90,10 +90,11 @@
     color: $gray-color-dark;
     display: flex;
     flex-wrap: wrap;
-    margin-bottom: 1rem;
     font-size: .6rem;
-    line-height: 1rem;
     gap: .2rem;
+    line-height: 1rem;
+    margin-bottom: 1rem;
+    
 
     .platform-badge {
       align-items: center;
@@ -397,6 +398,8 @@
     position: relative;
 
     &.active {
+      box-shadow: 0 .4rem 1.6rem -.4rem rgba($dark-color, .15), 0 .1rem .2rem rgba($dark-color, .01);
+      
       .collection-switcher {
         box-shadow: 0 .4rem .4rem -.2rem rgba($dark-color, .1);
       }
@@ -461,11 +464,14 @@
   // POAP Widget
   .profile-widget-poap {
     aspect-ratio: auto;
-    color: #463E68;
+    color: #5E58A5;
     position: relative;
 
     .platform-icon {
       box-shadow: inset 0 0 0 .05rem rgba($dark-color, .05), 0 .2rem .4rem rgba($dark-color, .01), 2rem -4rem 6rem 10rem var(--widget-bg-color);
+      flex: 0 0 1.4rem;
+      height: 1.4rem;
+      width: 1.4rem;
     }
 
     .widget-collection-list {
@@ -570,7 +576,7 @@
     }
   }
 
-  // DegenScore
+  // DegenScore Widget
   .profile-widget-degenscore {
     position: relative;
     width: 100%;
@@ -1067,7 +1073,11 @@
     position: fixed;
   }
 
-  span {
+  .btn {
+    font-size: .7rem;
+  }
+
+  .badge-emoji {
     transition: transform .15s ease-in-out;
   }
 
@@ -1075,7 +1085,7 @@
   &:hover {
     opacity: 1;
 
-    span {
+    .badge-emoji {
       transform: scale(1.5) rotate(-10deg);
     }
   }

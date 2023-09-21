@@ -326,7 +326,7 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.poap]: {
     key: PlatformType.poap,
     icon: "icons/icon-poap.svg",
-    color: "#463E68",
+    color: "#5E58A5",
     label: "POAP",
     urlPrefix: "https://app.poap.xyz/scan/",
   },
