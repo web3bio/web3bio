@@ -1,22 +1,22 @@
 "use client";
 import React, { Suspense, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
-import { RenderWidgetItem } from "./WidgetItem";
-import WidgetPoap from "./WidgetPoap";
 import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import { Error } from "../shared/Error";
 import Avatar from "boring-avatars";
 import { formatText } from "../../utils/utils";
+import { RenderWidgetItem } from "./WidgetItem";
 import { WidgetNFTCollection } from "./WidgetNFTCollection";
+import WidgetRSS from "./WidgetRSS";
+import WidgetPoap from "./WidgetPoap";
+import WidgetDegenScore from "./WidgetDegenScore";
 import { NFTModal, NFTModalType } from "./NFTModal";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
 import ShareModal from "../shared/ShareModal";
 import ModalLink from "./ModalLink";
-import WidgetRSS from "./WidgetRSS";
-import WidgetDegenScore from "./WidgetDegenScore";
 import AddressMenu from "./AddressMenu";
 
 export default function ProfileMain(props) {

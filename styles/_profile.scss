@@ -10,14 +10,25 @@
     background-color: $light-color;
     background-size: cover;
     display: block;
-    filter: blur(4rem);
     height: 100vh;
     left: 0;
-    opacity: .05;
+    opacity: .25;
     position: fixed;
     top: 0;
     width: 100vw;
     z-index: -1;
+
+    &::after {
+      background: linear-gradient(to bottom, $light-color 50%, rgba($light-color, .15) 100%);
+      backdrop-filter: blur(1rem);
+      content: "";
+      display: block;
+      height: 100vh;
+      left: 0;
+      position: fixed;
+      top: 0;
+      width: 100vw;
+    }
   }
 }
 
@@ -72,11 +83,11 @@
     }
 
     .btn {
-      background: rgba($gray-color, .15);
+      background: rgba($gray-color, .1);
 
       &:focus,
       &:hover {
-        background: rgba($gray-color, .25);
+        background: rgba($gray-color, .2);
       }
     }
 
@@ -94,7 +105,7 @@
     gap: .2rem;
     line-height: 1rem;
     margin-bottom: 1rem;
-    
+    margin-top: 1rem;
 
     .platform-badge {
       align-items: center;

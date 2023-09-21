@@ -2,7 +2,7 @@
 .btn {
   align-items: center;
   appearance: none;
-  background: $bg-color;
+  background: lighten($bg-color, 3%);
   border: $border-width solid transparent;
   border-radius: $border-radius;
   box-shadow: none;
@@ -22,7 +22,7 @@
   white-space: nowrap;
   &:focus,
   &:hover {
-    background: $bg-color-dark;
+    background: $bg-color;
     color: $dark-color;
     text-decoration: none;
   }
