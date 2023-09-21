@@ -114,7 +114,7 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
   },
   [PlatformType.nextid]: {
     key: PlatformType.nextid,
-    color: "#121212",
+    color: "#fff",
     icon: "icons/icon-nextid.svg",
     label: "Next.ID",
     urlPrefix: "https://web3.bio",
