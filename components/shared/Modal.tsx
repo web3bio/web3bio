@@ -1,4 +1,3 @@
-import { usePathname } from "next/navigation";
 import { useCallback, useRef, useEffect } from "react";
 
 import SVG from "react-inlinesvg";
