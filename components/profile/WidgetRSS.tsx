@@ -6,6 +6,8 @@ import { Error } from "../shared/Error";
 import { RSSFetcher, RSS_ENDPOINT } from "../apis/rss";
 import SVG from "react-inlinesvg";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { updateRssWidget } from "../../state/widgets/action";
 import { handleSearchPlatform } from "../../utils/utils";
 import { PlatformType } from "../../utils/platform";
 
@@ -48,6 +50,7 @@ function useRSS(domain: string, relations) {
 export default function WidgetRss(props) {
   const { domain, setEmpty, relations } = props;
   const { data, isLoading, isError } = useRSS(domain, relations);
+  const dispatch = useDispatch();
   const getBoundaryRender = useCallback(() => {
     if (isLoading) return <Loading />;
     if (isError) return <Error />;
@@ -55,19 +58,23 @@ export default function WidgetRss(props) {
   }, [isLoading, isError]);
 
   useEffect(() => {
-    if (!isLoading && data && !data?.items?.length) {
-      setEmpty(true);
+    if (!isLoading && data && data?.items?.length) {
+      dispatch(updateRssWidget({ isEmpty: false }));
     }
-  }, [data, isLoading, setEmpty]);
+  }, [data, isLoading, dispatch]);
   if (!data || !data?.items?.length) return null;
   return (
     <div className="profile-widget-full" id="rss">
       <div className="profile-widget profile-widget-rss">
         <h2 className="profile-widget-title">
-          <span className="emoji-large mr-2">📰{" "}</span>
+          <span className="emoji-large mr-2">📰 </span>
           {data.title}
         </h2>
-        <Link className="action-icon btn btn-sm" href={data.link} target={"_blank"}>
+        <Link
+          className="action-icon btn btn-sm"
+          href={data.link}
+          target={"_blank"}
+        >
           <span className="action-icon-label">More</span>
           <SVG src="icons/icon-open.svg" width={20} height={20} />
         </Link>

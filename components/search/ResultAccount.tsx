@@ -5,16 +5,25 @@ import { fetchProfile } from "../../hooks/api/fetchProfile";
 import { ResultGraph } from "../graph/ResultGraph";
 import _ from "lodash";
 import { regexEns } from "../../utils/regexp";
-
-interface Profile {
-  uuid: string;
-}
+import { useDispatch } from "react-redux";
+import { updateUniversalBatchedProfile } from "../../state/universal/actions";
+import { useSelector } from "react-redux";
+import { AppState } from "../../state";
+import { ProfileInterface } from "../../utils/profile";
+import { PlatformType } from "../../utils/platform";
 
 const RenderAccount = (props) => {
   const { graphData, resultNeighbor, graphTitle } = props;
   const [open, setOpen] = useState(false);
   const [profileLoading, setProfileLoading] = useState(true);
-  const [profiles, setProfiles] = useState<Profile[]>([]);
+  const dispatch = useDispatch();
+  const cached = useSelector<
+    AppState,
+    { [address: string]: Record<PlatformType, ProfileInterface> }
+  >((state) => state.universal.profiles);
+  const profiles = _.flatten(
+    Object.values(cached).map((x) => Object.values(x))
+  );
   useEffect(() => {
     setProfileLoading(true);
     if (
@@ -28,19 +37,28 @@ const RenderAccount = (props) => {
       return;
     const fetchProfileData = async (arr) => {
       const promises = arr.map((data) => {
-        if (data.identity) {
-          return fetchProfile(data.identity).then((res) => {
+        if (
+          data.identity &&
+          !profiles.some((x) =>
+            [x.identity, x.address].includes(data.identity.identity)
+          )
+        ) {
+          const res = fetchProfile(data.identity).then((res) => {
             return {
               uuid: data.identity.uuid,
               ...res,
             };
           });
+          return res;
         }
       });
-
       try {
         const results = await Promise.all(promises);
-        setProfiles(results);
+        await dispatch(
+          updateUniversalBatchedProfile({
+            profiles: results.filter((x) => !!x.address),
+          })
+        );
       } catch (error) {
         // do nothing
       } finally {
@@ -49,8 +67,7 @@ const RenderAccount = (props) => {
     };
 
     fetchProfileData(resultNeighbor);
-    return () => setProfiles([]);
-  }, [graphTitle, resultNeighbor]);
+  }, [graphTitle, resultNeighbor, dispatch, profiles]);
   return (
     <>
       <div className="search-result">

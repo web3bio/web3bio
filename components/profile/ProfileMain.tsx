@@ -17,6 +17,9 @@ import WidgetDegenScore from "./WidgetDegenScore";
 import { NFTModal, NFTModalType } from "./NFTModal";
 import ShareModal from "../shared/ShareModal";
 import ModalLink from "./ModalLink";
+import { useSelector } from "react-redux";
+import { AppState } from "../../state";
+import { WidgetState } from "../../state/widgets/reducer";
 import AddressMenu from "./AddressMenu";
 
 export default function ProfileMain(props) {
@@ -35,8 +38,6 @@ export default function ProfileMain(props) {
   const [curAsset, setCurAsset] = useState(null);
   const [errorAvatar, setErrorAvatar] = useState(false);
   const [dialogType, setDialogType] = useState(NFTModalType.NFT);
-  const [isPoapEmpty, setIsPoapEmpty] = useState(false);
-  const [isRssEmpty, setIsRssEmpty] = useState(false);
   const pathName = usePathname();
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
   const onCopySuccess = () => {
@@ -45,6 +46,10 @@ export default function ProfileMain(props) {
       setIsCopied(false);
     }, 1500);
   };
+  const widgetState = useSelector<AppState, WidgetState>(
+    (state) => state.widgets
+  );
+
   if (!data || data.error) {
     return (
       <Error
@@ -206,7 +211,10 @@ export default function ProfileMain(props) {
                 <Suspense fallback={<p>Loading NFTs...</p>}>
                   <WidgetNFTCollection
                     initialExpand={
-                      isRssEmpty && isPoapEmpty && !data?.links?.length
+                      Boolean(
+                        widgetState.widgetState.poaps?.isEmpty &&
+                          widgetState.widgetState.rss?.isEmpty
+                      ) && !data?.links?.length
                     }
                     fromServer={fromServer}
                     onShowDetail={(e, v) => {
@@ -223,7 +231,6 @@ export default function ProfileMain(props) {
                 <Suspense fallback={<p>Loading Articles...</p>}>
                   <WidgetRSS
                     relations={relations}
-                    setEmpty={setIsRssEmpty}
                     fromServer={false}
                     domain={data.identity}
                   />
@@ -237,7 +244,6 @@ export default function ProfileMain(props) {
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading Poaps...</p>}>
                   <WidgetPoap
-                    setEmpty={setIsPoapEmpty}
                     fromServer={fromServer}
                     onShowDetail={(v) => {
                       setDialogType(NFTModalType.POAP);
