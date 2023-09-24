@@ -9,7 +9,6 @@ import { Loading } from "../../../../components/shared/Loading";
 import { Error } from "../../../../components/shared/Error";
 import ProfileMain from "../../../../components/profile/ProfileMain";
 import Modal from "../../../../components/shared/Modal";
-import { isArray } from "@apollo/client/utilities";
 
 interface ProfileData {
   platform: PlatformType;
@@ -42,7 +41,7 @@ function findProfileData(
   platform: PlatformType
 ) {
   if (!domain || !data) return null;
-  if (!isArray(data)) return data as any;
+  if (!data?.length) return data as any;
   const profiles = (data as ProfileData[]).filter(
     (x) => x.platform === platform
   );

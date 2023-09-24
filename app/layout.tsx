@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import GoogleAnalytics from "../components/shared/GoogleAnalytics";
+import Provider from "../components/shared/Provider";
 import "../styles/web3bio.scss";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -69,8 +70,10 @@ export default function RootLayout({ children, modal }) {
       </head>
       <body className={sans.className}>
         <main>
-          {children}
-          {modal}
+          <Provider>
+            {children}
+            {modal}
+          </Provider>
           <GoogleAnalytics />
         </main>
       </body>

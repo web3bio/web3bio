@@ -428,32 +428,22 @@ body {
 
       &.identity-ens {
         background: rgba(#5298FF, .1);
-
-
       }
 
       &.identity-spaceid {
         background: rgba(#71EBAA, .2);
-
-
       }
 
       &.identity-farcaster {
         background: rgba(#8465CB, .1);
-
-
       }
 
       &.identity-unstoppabledomains {
         background: rgba(#2E65F5, .05);
-
-
       }
 
       &.identity-lens {
         background: lighten(#6bc674, 35%);
-
-
       }
     }
   }
@@ -470,6 +460,19 @@ body {
 
 .bg-pride {
   background: linear-gradient(70deg, $pride-color-1 -10%, $pride-color-2 5%, $pride-color-3 36%, $pride-color-4 50%, $pride-color-5 63%, $pride-color-6 95%, $pride-color-7 110%);
+}
+
+.animated-pride {
+  animation: pride-animation 60s ease-in-out infinite forwards;
+}
+
+@keyframes pride-animation {
+  0% {
+    background-position-x: 0em;
+  }
+  100% {
+    background-position-x: 25em;
+  }
 }
 
 .border-pride {

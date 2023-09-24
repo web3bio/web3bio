@@ -8,6 +8,8 @@ function useDegenInfo(address: string) {
   const { data, error } = useSWR(`${DEGENSCORE_ENDPOINT}${address}`, DegenFetcher, {
     suspense: true,
     fallbackData: [],
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
   });
   return {
     data: data,
@@ -22,18 +24,16 @@ export default function WidgetDegenScore(props) {
   
   if (!data || !data.name) return null;
   return (
-    <div className="profile-widget-full">
+    <div className="profile-widget-full" id="degenscore">
       <div className="profile-widget profile-widget-degenscore">
         <h2 className="profile-widget-title">
-          <div className="platform-icon mr-2">
-            <SVG src={`../icons/icon-degenscore.svg`} fill={"#a855f7"} width={32} height={32} />
-          </div>
+          <span className="emoji-large mr-2">👾{" "}</span>
           DegenScore <span className="label ml-2">{data.properties?.DegenScore}</span>
-          <Link className="action-icon btn btn-sm" href={`https://degenscore.com/beacon/${address}`} target={"_blank"}>
-            <span className="action-icon-label">More</span>
-            <SVG src="icons/icon-open.svg" width={20} height={20} />
-          </Link>
         </h2>
+        <Link className="action-icon btn btn-sm" href={`https://degenscore.com/beacon/${address}`} target={"_blank"}>
+          <span className="action-icon-label">More</span>
+          <SVG src="icons/icon-open.svg" width={20} height={20} />
+        </Link>
         <div className="text-assistive">
         The DegenScore Beacon is an Ethereum soulbound token that highlights your on-chain skills & traits across one or more wallets.\nUse it to leverage your on-chain reputation in the DegenScore Cafe and across web3.
         </div>

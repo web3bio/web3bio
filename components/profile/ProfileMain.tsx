@@ -1,22 +1,25 @@
 "use client";
 import React, { Suspense, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
-import { RenderWidgetItem } from "./WidgetItem";
-import WidgetPoap from "./WidgetPoap";
 import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import { Error } from "../shared/Error";
 import Avatar from "boring-avatars";
 import { formatText } from "../../utils/utils";
+import { RenderWidgetItem } from "./WidgetItem";
 import { WidgetNFTCollection } from "./WidgetNFTCollection";
+import WidgetRSS from "./WidgetRSS";
+import WidgetPoap from "./WidgetPoap";
+import WidgetDegenScore from "./WidgetDegenScore";
 import { NFTModal, NFTModalType } from "./NFTModal";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
 import ShareModal from "../shared/ShareModal";
 import ModalLink from "./ModalLink";
-import WidgetRSS from "./WidgetRSS";
-import WidgetDegenScore from "./WidgetDegenScore";
+import { useSelector } from "react-redux";
+import { AppState } from "../../state";
+import { WidgetState } from "../../state/widgets/reducer";
 import AddressMenu from "./AddressMenu";
 
 export default function ProfileMain(props) {
@@ -35,8 +38,6 @@ export default function ProfileMain(props) {
   const [curAsset, setCurAsset] = useState(null);
   const [errorAvatar, setErrorAvatar] = useState(false);
   const [dialogType, setDialogType] = useState(NFTModalType.NFT);
-  const [isPoapEmpty, setIsPoapEmpty] = useState(false);
-  const [isRssEmpty, setIsRssEmpty] = useState(false);
   const pathName = usePathname();
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
   const onCopySuccess = () => {
@@ -45,6 +46,10 @@ export default function ProfileMain(props) {
       setIsCopied(false);
     }, 1500);
   };
+  const widgetState = useSelector<AppState, WidgetState>(
+    (state) => state.widgets
+  );
+
   if (!data || data.error) {
     return (
       <Error
@@ -58,7 +63,7 @@ export default function ProfileMain(props) {
       <div
         className="web3bio-custom"
         style={{
-          backgroundImage: data.header ? `url(${data.header})` : "",
+          backgroundImage: (data.header || data.avatar) ? `url(${data.header || data.avatar})` : `none`,
         }}
       ></div>
       <div className="columns">
@@ -112,6 +117,14 @@ export default function ProfileMain(props) {
                 </Clipboard>
                 <AddressMenu address={data.address} />
               </div>
+              <button
+                className="profile-share btn btn-sm ml-2"
+                title="Share this profile"
+                onClick={() => setOpenShare(true)}
+              >
+                <SVG src="icons/icon-share.svg" width={20} height={20} />
+                Share
+              </button>
             </div>
 
             <div className="profile-badges">
@@ -198,7 +211,10 @@ export default function ProfileMain(props) {
                 <Suspense fallback={<p>Loading NFTs...</p>}>
                   <WidgetNFTCollection
                     initialExpand={
-                      isRssEmpty && isPoapEmpty && !data?.links?.length
+                      Boolean(
+                        widgetState.widgetState.poaps?.isEmpty &&
+                          widgetState.widgetState.rss?.isEmpty
+                      ) && !data?.links?.length
                     }
                     fromServer={fromServer}
                     onShowDetail={(e, v) => {
@@ -214,7 +230,7 @@ export default function ProfileMain(props) {
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading Articles...</p>}>
                   <WidgetRSS
-                    setEmpty={setIsRssEmpty}
+                    relations={relations}
                     fromServer={false}
                     domain={data.identity}
                   />
@@ -228,7 +244,6 @@ export default function ProfileMain(props) {
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading Poaps...</p>}>
                   <WidgetPoap
-                    setEmpty={setIsPoapEmpty}
                     fromServer={fromServer}
                     onShowDetail={(v) => {
                       setDialogType(NFTModalType.POAP);
@@ -250,18 +265,9 @@ export default function ProfileMain(props) {
           className="btn btn-primary"
           title="Web3.bio - Web3 Identity Graph Search and Link in Bio Profile"
         >
-          <span className="mr-2">👋</span>Made with{" "}
-          <strong className="text-pride ml-1 mr-1">Web3.bio</strong>
+          <div className="badge-emoji mr-2">👋</div>Made with{" "}
+          <strong className="text-pride animated-pride ml-1">Web3.bio</strong>
         </Link>
-
-        <button
-          className="profile-share btn ml-2"
-          title="Share this profile"
-          onClick={() => setOpenShare(true)}
-        >
-          <SVG src="icons/icon-share.svg" width={20} height={20} />
-          Share
-        </button>
       </div>
       {dialogOpen && curAsset && (
         <NFTModal
