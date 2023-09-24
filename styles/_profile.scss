@@ -3,7 +3,7 @@
   padding: 2rem;
 
   @media screen and (max-width: $size-md) {
-    padding: 1rem;
+    padding: .5rem;
   }
 
   .web3bio-custom {
@@ -12,14 +12,14 @@
     display: block;
     height: 100vh;
     left: 0;
-    opacity: .25;
+    opacity: .15;
     position: fixed;
     top: 0;
     width: 100vw;
     z-index: -1;
 
     &::after {
-      background: linear-gradient(to bottom, $light-color 50%, rgba($light-color, .15) 100%);
+      background: linear-gradient(to bottom, rgba($light-color, .15) 0, $light-color 20rem);
       backdrop-filter: blur(1rem);
       content: "";
       display: block;
@@ -545,7 +545,7 @@
         border-radius: .4rem;
         flex: 0 0 12rem;
         min-height: 5rem;
-        padding: .75rem;
+        padding: 1rem;
         text-decoration: none;
         transition: all .2s ease-in-out;
         width: 12rem;

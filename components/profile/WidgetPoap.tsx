@@ -48,8 +48,8 @@ export default function WidgetPoap(props) {
   return (
     <div className="profile-widget-full" id="poap">
       <div className="profile-widget profile-widget-poap">
-        <h2 className="profile-widget-title">
-          <div className="platform-icon mr-2">
+        <h2 className="profile-widget-title" title="Proof of Attendance Protocol (POAP)">
+          <div className="platform-icon mr-1">
             <SVG src={`../icons/icon-poap.svg`} color={"#5E58A5"} width={24} height={24} />
           </div>
           POAP

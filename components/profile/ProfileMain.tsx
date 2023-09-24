@@ -63,7 +63,7 @@ export default function ProfileMain(props) {
       <div
         className="web3bio-custom"
         style={{
-          backgroundImage: data.header ? `url(${data.header})` : "",
+          backgroundImage: (data.header || data.avatar) ? `url(${data.header || data.avatar})` : `none`,
         }}
       ></div>
       <div className="columns">
@@ -266,7 +266,7 @@ export default function ProfileMain(props) {
           title="Web3.bio - Web3 Identity Graph Search and Link in Bio Profile"
         >
           <div className="badge-emoji mr-2">👋</div>Made with{" "}
-          <strong className="text-pride ml-1 mr-1">Web3.bio</strong>
+          <strong className="text-pride animated-pride ml-1">Web3.bio</strong>
         </Link>
       </div>
       {dialogOpen && curAsset && (

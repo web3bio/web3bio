@@ -8,6 +8,8 @@ function useDegenInfo(address: string) {
   const { data, error } = useSWR(`${DEGENSCORE_ENDPOINT}${address}`, DegenFetcher, {
     suspense: true,
     fallbackData: [],
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
   });
   return {
     data: data,
