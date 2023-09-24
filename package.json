@@ -36,7 +36,7 @@
     "nextjs-google-analytics": "^2.0.0",
     "react": "^18.2.0",
     "react-clipboard.js": "^2.0.16",
-    "react-inlinesvg": "^3.0.0",
+    "react-inlinesvg": "^4.0.4",
     "react-redux": "^8.0.5",
     "react-use": "^17.4.0",
     "sass": "^1.53.0",
