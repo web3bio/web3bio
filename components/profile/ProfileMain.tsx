@@ -74,7 +74,6 @@ export default function ProfileMain(props) {
                 <Image
                   src={data.avatar}
                   className="avatar"
-                  priority={true}
                   alt={`${pageTitle} Avatar / Profile Photo`}
                   onError={() => {
                     setErrorAvatar(true);

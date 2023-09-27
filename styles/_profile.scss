@@ -40,18 +40,16 @@
   .profile-avatar {
     align-items: center;
     border-radius: 50%;
-    box-shadow: inset 0 0 0 .2rem rgba($light-color, .1);
     display: flex;
     height: 9rem;
     justify-content: center;
     width: 9rem;
 
     .avatar {
-      box-shadow: 0 .4rem 1rem rgba(0, 0, 0, .1);
+      box-shadow: inset 0 0 0 .2rem rgba($light-color, .1), 0 .4rem 1rem rgba(0, 0, 0, .1);
       height: 9rem;
       position: relative;
       width: 9rem;
-      z-index: -1;
       object-fit: cover;
     }
   }
@@ -822,6 +820,7 @@
     .nft-header-name {
       font-size: 1.2rem;
       font-weight: 900;
+      letter-spacing: -.05em;
       line-height: 1.25;
       word-break: break-all;
     }
