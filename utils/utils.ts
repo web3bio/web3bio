@@ -202,3 +202,5 @@ export const mapLinks = (data) => {
   );
   return _.uniqBy(arr, (x) => x.handle?.toLowerCase() && x.platform);
 };
+
+export const WEB3_BIO_OG_ENDPOINT = "https://og-drab.vercel.app/";
