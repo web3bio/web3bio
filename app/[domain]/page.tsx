@@ -113,7 +113,7 @@ export async function generateMetadata({
       description: profileDescription,
       images: [
         {
-          url: WEB3_BIO_OG_ENDPOINT + `api/${data?.identity}`,
+          url: WEB3_BIO_OG_ENDPOINT + `api/${data?.identity ?? ""}`,
         },
       ],
     },
@@ -122,7 +122,7 @@ export async function generateMetadata({
       description: profileDescription,
       images: [
         {
-          url: WEB3_BIO_OG_ENDPOINT + `api/${data?.identity}`,
+          url: WEB3_BIO_OG_ENDPOINT + `api/${data?.identity ?? ""}`,
         },
       ],
       site: "@web3bio",
