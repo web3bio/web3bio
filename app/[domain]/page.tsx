@@ -3,7 +3,7 @@ import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import {
   handleSearchPlatform,
   mapLinks,
-  WEB3_BIO_OG_ENDPOINT,
+  WEB3BIO_OG_ENDPOINT,
 } from "../../utils/utils";
 import { notFound, redirect } from "next/navigation";
 import { Metadata } from "next";
@@ -113,7 +113,7 @@ export async function generateMetadata({
       description: profileDescription,
       images: [
         {
-          url: WEB3_BIO_OG_ENDPOINT + `api/${data?.identity ?? ""}`,
+          url: WEB3BIO_OG_ENDPOINT + `api/${data?.identity ?? ""}`,
         },
       ],
     },
@@ -122,7 +122,7 @@ export async function generateMetadata({
       description: profileDescription,
       images: [
         {
-          url: WEB3_BIO_OG_ENDPOINT + `api/${data?.identity ?? ""}`,
+          url: WEB3BIO_OG_ENDPOINT + `api/${data?.identity ?? ""}`,
         },
       ],
       site: "@web3bio",

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import SVG from "react-inlinesvg";
 import Clipboard from "react-clipboard.js";
-import { WEB3_BIO_OG_ENDPOINT } from "../../utils/utils";
-import { NFTAssetPlayer } from "./NFTAssetPlayer";
+import { WEB3BIO_OG_ENDPOINT } from "../../utils/utils";
+import Image from "next/image";
 
 const shareMap = [
   {
@@ -55,11 +55,12 @@ export default function ShareModal(props) {
         </div>
         <div className="profile-share-body">
           <div className="profile-card">
-            <NFTAssetPlayer
-              className="img-container"
-              type="image/png"
-              src={WEB3_BIO_OG_ENDPOINT + `api/${profile.identity}`}
+            <Image
+              className="img-responsive"
+              src={WEB3BIO_OG_ENDPOINT + `api/${profile.identity}`}
               alt={profile.identity}
+              height={630}
+              width={1200}
             />
           </div>
 
