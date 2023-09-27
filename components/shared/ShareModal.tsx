@@ -1,9 +1,7 @@
 import { useState } from "react";
 import SVG from "react-inlinesvg";
 import Clipboard from "react-clipboard.js";
-import Image from "next/image";
 import { WEB3_BIO_OG_ENDPOINT } from "../../utils/utils";
-import { ImageLoader } from "./ImageLoader";
 import { NFTAssetPlayer } from "./NFTAssetPlayer";
 
 const shareMap = [
