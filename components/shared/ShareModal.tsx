@@ -1,10 +1,8 @@
 import { useState } from "react";
 import SVG from "react-inlinesvg";
 import Clipboard from "react-clipboard.js";
-import { QRCode } from "react-qrcode-logo";
+import { WEB3BIO_OG_ENDPOINT } from "../../utils/utils";
 import Image from "next/image";
-import Avatar from "boring-avatars";
-import { formatText } from "../../utils/utils";
 
 const shareMap = [
   {
@@ -13,7 +11,9 @@ const shareMap = [
     shareURL: (url, name) =>
       `https://twitter.com/intent/tweet?url=${encodeURIComponent(
         url
-      )}&text=${encodeURIComponent(`Hey! Check out and explore ${name}'s Web3 profile. `)}&via=web3bio`,
+      )}&text=${encodeURIComponent(
+        `Hey! Check out and explore ${name}'s Web3 profile. `
+      )}&via=web3bio`,
     action: "Share on Twitter",
   },
   {
@@ -22,9 +22,11 @@ const shareMap = [
     shareURL: (url, name) =>
       `https://t.me/share/url?url=${encodeURIComponent(
         url
-      )}&text=${encodeURIComponent(`Hey! Check out and explore ${name}'s Web3 profile. `)}`,
+      )}&text=${encodeURIComponent(
+        `Hey! Check out and explore ${name}'s Web3 profile. `
+      )}`,
     action: "Share via Telegram",
-  }
+  },
 ];
 
 export default function ShareModal(props) {
@@ -53,45 +55,13 @@ export default function ShareModal(props) {
         </div>
         <div className="profile-share-body">
           <div className="profile-card">
-            <div className="card-avatar">
-              {profile.avatar ? (
-                <Image
-                  src={profile.avatar}
-                  className="avatar"
-                  priority={true}
-                  alt="Profile Avatar"
-                  height={180}
-                  width={180}
-                />
-              ) : (
-                <Avatar
-                  size={180}
-                  name={profile.identity}
-                  variant="bauhaus"
-                  colors={[
-                    "#ECD7C8",
-                    "#EEA4BC",
-                    "#BE88C4",
-                    "#9186E7",
-                    "#92C9F9",
-                  ]}
-                />
-              )}
-            </div>
-            <div className="card-content">
-              <div className="card-name">{profile.displayName}</div>
-              <div className="card-identity">{profile.displayName == profile.identity ? formatText(profile.address) : profile.identity}</div>
-            </div>
-            <div className="qrcode-container">
-              <QRCode 
-                value={window.location.href}
-                ecLevel="L"
-                size={220}
-                eyeRadius={50}
-                eyeColor="#000"
-                fgColor="#222"
-              />
-            </div>
+            <Image
+              className="img-responsive"
+              src={WEB3BIO_OG_ENDPOINT + `api/${profile.identity}`}
+              alt={profile.identity}
+              height={630}
+              width={1200}
+            />
           </div>
 
           <div className="btn-group btn-group-block">
@@ -111,7 +81,13 @@ export default function ShareModal(props) {
 
         <div className="profile-share-footer">
           <div className="input-group">
-            <input type="text" className="form-input input-lg" value={url} readOnly onFocus={(e) => e.target.select()} />
+            <input
+              type="text"
+              className="form-input input-lg"
+              value={url}
+              readOnly
+              onFocus={(e) => e.target.select()}
+            />
             <Clipboard
               component="div"
               className="btn btn-primary btn-lg input-group-btn"
@@ -126,9 +102,7 @@ export default function ShareModal(props) {
 
         {isCopied && (
           <div className="web3bio-toast">
-            <div className="toast">
-              Copied to clipboard
-            </div>
+            <div className="toast">Copied to clipboard</div>
           </div>
         )}
       </div>

@@ -8,9 +8,6 @@ const nextConfig = {
     });
     return config;
   },
-  experimental: {
-    esmExternals: "loose",
-  },
   swcMinify: true,
   images: {
     unoptimized: true,

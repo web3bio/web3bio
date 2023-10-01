@@ -1,6 +1,10 @@
 import { fetchInitialNFTsData } from "../../hooks/api/fetchProfile";
 import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
-import { handleSearchPlatform, mapLinks } from "../../utils/utils";
+import {
+  handleSearchPlatform,
+  mapLinks,
+  WEB3BIO_OG_ENDPOINT,
+} from "../../utils/utils";
 import { notFound, redirect } from "next/navigation";
 import { Metadata } from "next";
 import ProfileMain from "../../components/profile/ProfileMain";
@@ -44,7 +48,8 @@ async function fetchDataFromServer(domain: string) {
     )
       return null;
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${domain}`, {
+      `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${domain}`,
+      {
         next: { revalidate: 86400 },
       }
     );
@@ -108,7 +113,7 @@ export async function generateMetadata({
       description: profileDescription,
       images: [
         {
-          url: data.avatar || `/img/web3bio-social.jpg`,
+          url: WEB3BIO_OG_ENDPOINT + `api/${data?.identity ?? ""}`,
         },
       ],
     },
@@ -117,7 +122,7 @@ export async function generateMetadata({
       description: profileDescription,
       images: [
         {
-          url: data.avatar || `/img/web3bio-social.jpg`,
+          url: WEB3BIO_OG_ENDPOINT + `api/${data?.identity ?? ""}`,
         },
       ],
       site: "@web3bio",
@@ -132,7 +137,7 @@ export default async function ProfilePage({
   params: { domain: string };
 }) {
   const serverData = await fetchDataFromServer(domain);
-  if(!serverData) notFound()
+  if (!serverData) notFound();
   const { data, nfts, platform, relations } = serverData;
   const pageTitle =
     data.identity == data.displayName
@@ -150,3 +155,10 @@ export default async function ProfilePage({
     />
   );
 }
+
+// Force static pages
+export const dynamic = "force-static";
+// CDN cache currently only works on nodejs runtime
+export const runtime = "nodejs";
+// Revalidate in seconds
+export const revalidate = 604800;
