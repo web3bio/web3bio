@@ -63,7 +63,10 @@ export default function ProfileMain(props) {
       <div
         className="web3bio-custom"
         style={{
-          backgroundImage: (data.header || data.avatar) ? `url(${data.header || data.avatar})` : `none`,
+          backgroundImage:
+            data.header || data.avatar
+              ? `url(${data.header || data.avatar})`
+              : `none`,
         }}
       ></div>
       <div className="columns">
@@ -111,8 +114,15 @@ export default function ProfileMain(props) {
                   onSuccess={onCopySuccess}
                   title="Copy the Ethereum wallet address"
                 >
-                  <span className="profile-label ml-1 mr-1">{formatText(data.address)}</span>
-                  <SVG src="../icons/icon-copy.svg" width={20} height={20} className="action" />
+                  <span className="profile-label ml-1 mr-1">
+                    {formatText(data.address)}
+                  </span>
+                  <SVG
+                    src="../icons/icon-copy.svg"
+                    width={20}
+                    height={20}
+                    className="action"
+                  />
                 </Clipboard>
                 <AddressMenu address={data.address} />
               </div>
@@ -280,7 +290,7 @@ export default function ProfileMain(props) {
       {openShare && (
         <ShareModal
           profile={data}
-          url={`${baseURL}${pathName}`}
+          url={`${baseURL}${pathName?.replace("profile/", "")}`}
           onClose={() => setOpenShare(false)}
         />
       )}
