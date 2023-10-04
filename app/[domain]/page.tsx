@@ -97,7 +97,7 @@ export async function generateMetadata({
     data.description ||
     `Explore ${pageTitle} ${
       SocialPlatformMapping(platform!).label
-    } Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, crypto assets etc on the Web3.bio Link in bio page.`;
+    } Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, etc on the Web3.bio Link in bio page.`;
   return {
     metadataBase: new URL(baseURL),
     title: pageTitle,
