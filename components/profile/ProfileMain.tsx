@@ -36,7 +36,6 @@ export default function ProfileMain(props) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [openShare, setOpenShare] = useState(false);
   const [curAsset, setCurAsset] = useState(null);
-  const [errorAvatar, setErrorAvatar] = useState(false);
   const [dialogType, setDialogType] = useState(NFTModalType.NFT);
   const pathName = usePathname();
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
@@ -73,14 +72,11 @@ export default function ProfileMain(props) {
         <div className="column col-4 col-md-12">
           <div className="web3-profile-base">
             <div className="profile-avatar">
-              {data.avatar && !errorAvatar ? (
+              {data.avatar ? (
                 <Image
                   src={data.avatar}
                   className="avatar"
-                  alt={`${pageTitle} Avatar / Profile Photo`}
-                  onError={() => {
-                    setErrorAvatar(true);
-                  }}
+                  alt={`${pageTitle} profile avatar`}
                   height={180}
                   width={180}
                 />
@@ -102,7 +98,7 @@ export default function ProfileMain(props) {
             <h1 className="text-assistive">{`${pageTitle} ${
               SocialPlatformMapping(platform).label
             } Web3 Profile`}</h1>
-            <h2 className="text-assistive">{`Explore ${pageTitle} Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, crypto assets etc on the Web3.bio Link in bio page.`}</h2>
+            <h2 className="text-assistive">{`Explore ${pageTitle} Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, etc on the Web3.bio Link in bio page.`}</h2>
             <div className="profile-name">{data.displayName}</div>
             <h3 className="text-assistive">{`${pageTitle}‘s Ethereum wallet address is ${data.address}`}</h3>
             <div className="profile-identity">
