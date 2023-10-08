@@ -12,7 +12,7 @@ export const Avatar = (props: Avatar) => {
   const { src, width, height, fallbackImg, fallbackClassName, useBoring, alt } =
     props;
   const [showFallback, setShowFallback] = useState(!src);
-  console.log(src,'kkkk')
+  
   return showFallback ? (
     !useBoring && fallbackImg ? (
       <div className={fallbackClassName}>
