@@ -6,7 +6,6 @@ import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import { Error } from "../shared/Error";
-import Avatar from "boring-avatars";
 import { formatText } from "../../utils/utils";
 import { RenderWidgetItem } from "./WidgetItem";
 import { WidgetNFTCollection } from "./WidgetNFTCollection";
@@ -20,6 +19,7 @@ import { useSelector } from "react-redux";
 import { AppState } from "../../state";
 import { WidgetState } from "../../state/widgets/reducer";
 import AddressMenu from "./AddressMenu";
+import { Avatar } from "../shared/Avatar";
 
 export default function ProfileMain(props) {
   const {
@@ -35,7 +35,6 @@ export default function ProfileMain(props) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [openShare, setOpenShare] = useState(false);
   const [curAsset, setCurAsset] = useState(null);
-  const [errorAvatar, setErrorAvatar] = useState(false);
   const [dialogType, setDialogType] = useState(NFTModalType.NFT);
   const pathName = usePathname();
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
@@ -72,31 +71,14 @@ export default function ProfileMain(props) {
         <div className="column col-4 col-md-12">
           <div className="web3-profile-base">
             <div className="profile-avatar">
-              {data.avatar && !errorAvatar ? (
-                <img
-                  src={data.avatar}
-                  className="avatar"
-                  alt={`${pageTitle} Avatar / Profile Photo`}
-                  onError={() => {
-                    setErrorAvatar(true);
-                  }}
-                  height={180}
-                  width={180}
-                />
-              ) : (
-                <Avatar
-                  size={180}
-                  name={data.identity}
-                  variant="bauhaus"
-                  colors={[
-                    "#ECD7C8",
-                    "#EEA4BC",
-                    "#BE88C4",
-                    "#9186E7",
-                    "#92C9F9",
-                  ]}
-                />
-              )}
+              <Avatar
+                useBoring
+                src={data?.avatar}
+                className="avatar"
+                alt={`${pageTitle} Avatar / Profile Photo`}
+                height={180}
+                width={180}
+              />
             </div>
             <h1 className="text-assistive">{`${pageTitle} ${
               SocialPlatformMapping(platform).label
