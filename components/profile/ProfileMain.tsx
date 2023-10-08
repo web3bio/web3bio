@@ -1,7 +1,6 @@
 "use client";
 import React, { Suspense, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
@@ -74,7 +73,7 @@ export default function ProfileMain(props) {
           <div className="web3-profile-base">
             <div className="profile-avatar">
               {data.avatar && !errorAvatar ? (
-                <Image
+                <img
                   src={data.avatar}
                   className="avatar"
                   alt={`${pageTitle} Avatar / Profile Photo`}
