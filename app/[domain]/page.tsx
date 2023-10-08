@@ -50,6 +50,7 @@ async function fetchDataFromServer(domain: string) {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${domain}`,
       {
+        cache: "no-store",
         next: { revalidate: 86400 },
       }
     );
