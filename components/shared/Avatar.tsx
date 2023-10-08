@@ -12,7 +12,7 @@ export const Avatar = (props: Avatar) => {
   const { src, width, height, fallbackImg, fallbackClassName, useBoring, alt } =
     props;
   const [showFallback, setShowFallback] = useState(!src);
-  
+
   return showFallback ? (
     !useBoring && fallbackImg ? (
       <div className={fallbackClassName}>
@@ -28,6 +28,7 @@ export const Avatar = (props: Avatar) => {
     )
   ) : (
     <NFTAssetPlayer
+      type="image/png"
       onErrorHandle={() => setShowFallback(true)}
       className="avatar"
       src={src}

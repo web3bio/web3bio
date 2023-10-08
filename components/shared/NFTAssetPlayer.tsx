@@ -37,14 +37,14 @@ export interface AssetPlayerProps {
   width?: number | string;
   height?: number | string;
   onClick?: () => void;
-  onErrorHandle?:()=>void;
+  onErrorHandle?: () => void;
   alt?: string;
   style?: React.CSSProperties;
   poster?: string;
 }
 
 function renderImage(props: AssetPlayerProps) {
-  const { width, height, src, alt,onErrorHandle } = props;
+  const { width, height, src, alt, onErrorHandle } = props;
   return (
     <ImageLoader
       onError={onErrorHandle}
