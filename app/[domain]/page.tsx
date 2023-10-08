@@ -49,8 +49,8 @@ async function fetchDataFromServer(domain: string) {
       return null;
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${domain}`,
-      { 
-        next: { revalidate: 86400 },
+      {
+        cache: "no-cache",
       }
     );
     if (response.status === 404) return null;
@@ -156,9 +156,9 @@ export default async function ProfilePage({
   );
 }
 
-// Force static pages
-export const dynamic = "force-static";
-// CDN cache currently only works on nodejs runtime
-export const runtime = "nodejs";
-// Revalidate in seconds
-export const revalidate = 604800;
+// // Force static pages
+// export const dynamic = "force-static";
+// // CDN cache currently only works on nodejs runtime
+// export const runtime = "nodejs";
+// // Revalidate in seconds
+// export const revalidate = 604800;
