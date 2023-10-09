@@ -23,7 +23,7 @@ interface UseProfileProps {
 }
 
 function useProfile({ identity, fallbackData }: UseProfileProps) {
-  const url = `${"https://web3bio-profile-nmubfoo0c-web3bio.vercel.app"}/profile/${identity}`;
+  const url = `${"https://web3bio-profile-l00p0lsua-web3bio.vercel.app"}/profile/${identity}`;
 
   const { data, error, isValidating } = useSWR(url, _fetcher, {
     revalidateOnFocus: false,

@@ -48,7 +48,7 @@ async function fetchDataFromServer(domain: string) {
     )
       return null;
     const response = await fetch(
-      `${"https://web3bio-profile-nmubfoo0c-web3bio.vercel.app"}/profile/${domain}`
+      `${"https://web3bio-profile-l00p0lsua-web3bio.vercel.app"}/profile/${domain}`
     );
     if (response.status === 404) return null;
     const raw = await response.json();
