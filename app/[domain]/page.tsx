@@ -159,6 +159,6 @@ export default async function ProfilePage({
   );
 }
 
-export const dynamic = "auto";
+export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
-export const revalidate = 604800;
+export const revalidate = 0;
