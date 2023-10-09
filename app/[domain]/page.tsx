@@ -48,16 +48,14 @@ async function fetchDataFromServer(domain: string) {
     )
       return null;
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${domain}`,
-      {
-        cache: "no-cache",
-      }
+      `${"https://web3bio-profile-ex11pi35w-web3bio.vercel.app"}/profile/${domain}`
     );
     if (response.status === 404) return null;
     const raw = await response.json();
     const relations = Array.from(
       raw?.map((x) => ({ platform: x.platform, identity: x.identity }))
     );
+
     const _data = raw.find((x) => x.platform === platform) || raw?.[0];
     if (!_data || _data.error) throw new Error(_data.error);
     const remoteNFTs = _data.address
