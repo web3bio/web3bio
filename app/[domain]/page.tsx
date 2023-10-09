@@ -48,7 +48,7 @@ async function fetchDataFromServer(domain: string) {
     )
       return null;
     const response = await fetch(
-      `${"https://web3bio-profile-ex11pi35w-web3bio.vercel.app"}/profile/${domain}`
+      `${"https://web3bio-profile-nmubfoo0c-web3bio.vercel.app"}/profile/${domain}`
     );
     if (response.status === 404) return null;
     const raw = await response.json();
@@ -154,9 +154,6 @@ export default async function ProfilePage({
   );
 }
 
-// Force static pages
 export const dynamic = "force-static";
-// CDN cache currently only works on nodejs runtime
 export const runtime = "nodejs";
-// Revalidate in seconds
 export const revalidate = 604800;
