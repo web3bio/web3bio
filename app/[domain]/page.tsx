@@ -132,10 +132,11 @@ export default async function ProfilePage({
   const serverData = await fetchDataFromServer(domain);
   if (!serverData) notFound();
   const { data, nfts, platform } = serverData;
+  const profile = data[0]
   const pageTitle =
-    data.identity == data.displayName
-      ? `${data.displayName}`
-      : `${data.displayName} (${data.identity})`;
+  profile.identity == profile.displayName
+      ? `${profile.displayName}`
+      : `${profile.displayName} (${profile.identity})`;
   return (
     <ProfileMain
       fromServer
