@@ -128,7 +128,7 @@ export default function ProfileMain(props) {
                 >
                   <div className="platform-badge-icon">
                     <SVG
-                      fill={SocialPlatformMapping(PlatformType.nextid).color}
+                      fill={"#ffffff"}
                       width={20}
                       src={"icons/icon-nextid.svg"}
                       className="text-light"

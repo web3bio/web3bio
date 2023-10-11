@@ -105,16 +105,16 @@ const RenderAccount = (props) => {
               to: {
                 ...cur.to,
                 profile: _.find(
-                  resultNeighbor,
-                  (i) => i.identity.uuid == cur.to.uuid
-                )?.identity.profile,
+                  profiles,
+                  (i) => i.uuid == cur.to.uuid
+                ),
               },
               from: {
                 ...cur.from,
                 profile: _.find(
-                  resultNeighbor,
-                  (i) => i.identity.uuid == cur.from.uuid
-                )?.identity.profile,
+                  profiles,
+                  (i) => i.uuid == cur.from.uuid
+                ),
               },
             });
             return pre;
