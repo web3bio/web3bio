@@ -131,8 +131,6 @@ export default async function ProfilePage({
 }) {
   const serverData = await fetchDataFromServer(domain);
   if (!serverData) notFound();
-  console.log(serverData.data.length)
-
   const { data, nfts, platform } = serverData;
   const pageTitle =
     data.identity == data.displayName
@@ -159,6 +157,6 @@ export default async function ProfilePage({
   );
 }
 
-export const dynamic = "force-dynamic";
+export const dynamic = "auto";
 export const runtime = "nodejs";
 export const revalidate = 0;
