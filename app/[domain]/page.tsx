@@ -48,28 +48,20 @@ async function fetchDataFromServer(domain: string) {
     )
       return null;
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${domain}`,
-      {
-        next: { revalidate: 86400 },
-      }
+      `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${domain}`
     );
     if (response.status === 404) return null;
-    const raw = await response.json();
-    const relations = Array.from(
-      raw?.map((x) => ({ platform: x.platform, identity: x.identity }))
-    );
-    const _data = raw.find((x) => x.platform === platform) || raw?.[0];
-    if (!_data || _data.error) throw new Error(_data.error);
-    const remoteNFTs = _data.address
-      ? await fetchInitialNFTsData(_data.address)
+    const data = await response.json();
+    const remoteNFTs = data[0].address
+      ? await fetchInitialNFTsData(data[0].address)
       : {};
     return {
-      data: { ..._data, links: mapLinks(raw) },
-      nfts: { ...remoteNFTs, nfts: mapNFTs(remoteNFTs?.nfts) },
+      data,
       platform,
-      relations,
+      nfts: remoteNFTs,
     };
   } catch (e) {
+    console.log(e, "error");
     return null;
   }
 }
@@ -88,13 +80,14 @@ export async function generateMetadata({
     }
   }
   const { data, platform } = res;
+  const profile = data[0];
   const pageTitle =
-    data?.identity == data?.displayName
-      ? `${data?.displayName}`
-      : `${data?.displayName} (${data?.identity})`;
+    profile?.identity == data?.displayName
+      ? `${profile?.displayName}`
+      : `${profile?.displayName} (${profile?.identity})`;
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
   const profileDescription =
-    data.description ||
+    profile.description ||
     `Explore ${pageTitle} ${
       SocialPlatformMapping(platform!).label
     } Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, crypto assets etc on the Web3.bio Link in bio page.`;
@@ -113,7 +106,7 @@ export async function generateMetadata({
       description: profileDescription,
       images: [
         {
-          url: WEB3BIO_OG_ENDPOINT + `api/${data?.identity ?? ""}`,
+          url: WEB3BIO_OG_ENDPOINT + `api/${profile?.identity ?? ""}`,
         },
       ],
     },
@@ -122,7 +115,7 @@ export async function generateMetadata({
       description: profileDescription,
       images: [
         {
-          url: WEB3BIO_OG_ENDPOINT + `api/${data?.identity ?? ""}`,
+          url: WEB3BIO_OG_ENDPOINT + `api/${profile?.identity ?? ""}`,
         },
       ],
       site: "@web3bio",
@@ -138,27 +131,33 @@ export default async function ProfilePage({
 }) {
   const serverData = await fetchDataFromServer(domain);
   if (!serverData) notFound();
-  const { data, nfts, platform, relations } = serverData;
+  const { data, nfts, platform } = serverData;
+  const profile = data[0];
   const pageTitle =
-    data.identity == data.displayName
-      ? `${data.displayName}`
-      : `${data.displayName} (${data.identity})`;
+    profile.identity == profile.displayName
+      ? `${profile.displayName}`
+      : `${profile.displayName} (${profile.identity})`;
   return (
     <ProfileMain
       fromServer
       domain={domain}
-      relations={relations}
-      nfts={nfts}
-      data={data}
+      relations={
+        data?.map((x) => ({ platform: x.platform, identity: x.identity })) || []
+      }
+      nfts={{
+        ...nfts,
+        nfts: mapNFTs(nfts.nfts),
+      }}
+      data={{
+        ...data[0],
+        links: mapLinks(data),
+      }}
       pageTitle={pageTitle}
       platform={platform}
     />
   );
 }
 
-// Force static pages
 export const dynamic = "force-static";
-// CDN cache currently only works on nodejs runtime
 export const runtime = "nodejs";
-// Revalidate in seconds
 export const revalidate = 604800;
