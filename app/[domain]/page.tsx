@@ -160,5 +160,4 @@ export default async function ProfilePage({
 
 export const dynamic = "force-static";
 export const runtime = "nodejs";
-export const fetchCache = 'force-no-store';
 export const revalidate = 604800;
