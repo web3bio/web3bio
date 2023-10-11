@@ -7,7 +7,7 @@ import SVG from "react-inlinesvg";
 import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import { Error } from "../shared/Error";
 import { formatText } from "../../utils/utils";
-import { RenderWidgetItem } from "./WidgetItem";
+import { RenderWidgetItem } from "./WidgetLinkItem";
 import { WidgetNFTCollection } from "./WidgetNFTCollection";
 import WidgetRSS from "./WidgetRSS";
 import WidgetPoap from "./WidgetPoap";
@@ -24,7 +24,7 @@ import { Avatar } from "../shared/Avatar";
 export default function ProfileMain(props) {
   const {
     data,
-    pageTitle = "",
+    pageTitle,
     platform,
     nfts,
     fromServer,
@@ -75,7 +75,7 @@ export default function ProfileMain(props) {
                 useBoring
                 src={data?.avatar}
                 className="avatar"
-                alt={`${pageTitle} Avatar / Profile Photo`}
+                alt={`${pageTitle} Profile Photo`}
                 height={180}
                 width={180}
               />
