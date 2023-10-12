@@ -8,6 +8,14 @@ const nextConfig = {
     });
     return config;
   },
+  headers: async () => [
+    {
+      source: "/:path*",
+      headers: [
+        { key: "Cache-Control", value: "public, s-maxage=86400, stale-while-revalidate=3600" },
+      ],
+    },
+  ],
   swcMinify: true,
   images: {
     unoptimized: true,
