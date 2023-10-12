@@ -48,11 +48,11 @@ function useRSS(domain: string, relations) {
 }
 
 export default function WidgetRss(props) {
-  const { domain, setEmpty, relations } = props;
+  const { domain, relations } = props;
   const { data, isLoading, isError } = useRSS(domain, relations);
   const dispatch = useDispatch();
   const getBoundaryRender = useCallback(() => {
-    if (isLoading) return <Loading />;
+    if (isLoading) return <div className="widget-loading"><Loading /></div>;
     if (isError) return <Error />;
     return null;
   }, [isLoading, isError]);

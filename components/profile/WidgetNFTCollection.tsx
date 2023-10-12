@@ -4,10 +4,8 @@ import useSWRInfinite from "swr/infinite";
 import { ExpandController } from "./ExpandController";
 import { NFTCollections } from "./NFTCollections";
 import { _fetcher } from "../apis/ens";
-import { SIMPLE_HASH_URL } from "../apis/simplehash";
-import { NFT_PAGE_SIZE } from "../../utils/queries";
+import { SIMPLEHASH_URL, SIMPLEHASH_CHAINS, SIMPLEHASH_PAGE_SIZE } from "../apis/simplehash";
 
-const CHAIN_PARAM = "ethereum";
 const CURSOR_PARAM = "&cursor=";
 
 export const processNFTsData = (data) => {
@@ -56,10 +54,10 @@ const getURL = (index, address, previous) => {
     return null;
   const cursor = previous?.next_cursor || "";
   return (
-    SIMPLE_HASH_URL +
-    `/api/v0/nfts/owners?chains=${CHAIN_PARAM}&wallet_addresses=${address}${
+    SIMPLEHASH_URL +
+    `/api/v0/nfts/owners?chains=${SIMPLEHASH_CHAINS}&wallet_addresses=${address}${
       cursor ? CURSOR_PARAM + cursor : ""
-    }&limit=${NFT_PAGE_SIZE}`
+    }&limit=${SIMPLEHASH_PAGE_SIZE}`
   );
 };
 

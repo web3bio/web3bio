@@ -34,7 +34,7 @@ export default function WidgetPoap(props) {
   const { data, isLoading, isError } = usePoaps(address, fromServer);
   const dispatch = useDispatch();
   const getBoundaryRender = useCallback(() => {
-    if (isLoading) return <Loading />;
+    if (isLoading) return <div className="widget-loading"><Loading /></div>;
     if (isError) return <Error />;
     return null;
   }, [isLoading, isError]);

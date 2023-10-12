@@ -296,6 +296,16 @@
       font-size: 1.2rem;
     }
 
+    .widget-loading {
+      align-items: center;
+      background: lighten($bg-color, 3%);
+      border-radius: .5rem;
+      display: flex;
+      height: 2.6rem;
+      justify-content: center;
+      width: 2.6rem;
+    }
+
     .action-icon {
       position: absolute;
       right: 1rem;
@@ -946,6 +956,7 @@
           background: $light-color;
           border-radius: .5rem;
           box-shadow: 0 .1rem .4rem rgba($dark-color, .1);
+          color: $dark-color;
           font-size: 1.6rem;
           height: 2.6rem;
           object-fit: cover;

@@ -496,15 +496,16 @@ body {
 
 .img-placeholder {
   align-items: center;
+  color: $light-color;
   display: flex;
   flex: 0 0;
   justify-content: center;
   opacity: .75;
-  padding: .25rem;
+  padding: .05rem;
   position: relative;
 
   &[data-initial]::before {
-    color: $light-color;
+    color: inherit;
     content: attr(data-initial);
     font-size: .5em;
     font-weight: 700;
