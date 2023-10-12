@@ -189,13 +189,7 @@ const NFTModalRender = (props) => {
 
               <div className="panel-widget">
                 <div className="panel-widget-title collection-title">
-                  <NFTAssetPlayer
-                    type={"image/png"}
-                    className="collection-logo"
-                    src={asset.collection.url}
-                    alt={asset.collection.name}
-                  />
-                  About {asset.collection.name}
+                  About Collection
                 </div>
 
                 <div className="panel-widget-content">

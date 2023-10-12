@@ -174,6 +174,3 @@ export function matchQuery(query) {
     ? query.split("。")[0]
     : query;
 }
-
-
-export const NFT_PAGE_SIZE = 40;

@@ -20,6 +20,7 @@ interface Node {
   category?: string;
   chain?: string;
   holder?: string;
+  address?: string;
   isTransferred?: boolean;
 }
 
@@ -85,7 +86,8 @@ const resolveGraphData = (source) => {
       platform: to.platform,
       source: x.source,
       displayName: to.profile?.displayName || to.displayName,
-      identity: to.profile?.address || to.identity,
+      identity: to.identity,
+      address: to.profile?.address,
       isIdentity: true,
     });
     nodes.push({
@@ -94,7 +96,8 @@ const resolveGraphData = (source) => {
       platform: from.platform,
       source: x.source,
       displayName: from.profile?.displayName || from.displayName,
-      identity: from.profile?.address || from.identity,
+      identity: from.identity,
+      address: from.profile?.address,
       isIdentity: true,
     });
     edges.push({
@@ -108,7 +111,7 @@ const resolveGraphData = (source) => {
       if (k.category === PlatformType.ens) {
         nodes.push({
           id: k.uuid,
-          label: k.id,
+          label: formatText(k.id, 15),
           category: k.category,
           chain: k.chain,
           holder: from.identity,
@@ -127,7 +130,7 @@ const resolveGraphData = (source) => {
       if (k.category === PlatformType.ens) {
         nodes.push({
           id: k.uuid,
-          label: k.id,
+          label: formatText(k.id, 15),
           category: k.category,
           chain: k.chain,
           holder: to.identity,
@@ -237,7 +240,6 @@ const RenderResultGraph = (props) => {
   const container = React.useRef<HTMLDivElement>(null);
   const tooltipContainer = React.useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     if (graph || !data || !G6) return;
     register(G6);
@@ -255,21 +257,32 @@ const RenderResultGraph = (props) => {
       container: tooltipContainer.current,
       getContent(e) {
         const outDiv = document.createElement("div");
-        if (e?.item?.getModel().isIdentity) {
+        const currentNode = e?.item?.getModel();
+        if (!currentNode) return "";
+        if (currentNode.isIdentity) {
           outDiv.innerHTML = `
           <ul>
             <li class="text-large text-bold">${
-              e.item.getModel().displayName || "-"
+              currentNode.displayName || "-"
             }</li>
             <li class="mb-1">${
-              e.item.getModel().identity != e.item.getModel().displayName
-                ? e.item.getModel().identity
+              currentNode.identity != currentNode.displayName
+                ? currentNode.identity
                 : ""
             }</li>
+            ${
+              ([PlatformType.lens, PlatformType.farcaster].includes(
+                currentNode.platform as PlatformType
+              ) &&
+                ` <li><span class="text-gray">Address: </span>${
+                  currentNode.address || "Unknown"
+                }</li>`) ||
+              ""
+            }
             <li><span class="text-gray">Platform: </span>${
-              SocialPlatformMapping(e.item.getModel().platform as PlatformType)
+              SocialPlatformMapping(currentNode.platform as PlatformType)
                 ?.label ||
-              e.item.getModel().platform ||
+              currentNode.platform ||
               "Unknown"
             }</li>
           </ul>`;

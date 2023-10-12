@@ -1,15 +1,13 @@
 "use client";
 import React, { Suspense, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import { Error } from "../shared/Error";
-import Avatar from "boring-avatars";
 import { formatText } from "../../utils/utils";
-import { RenderWidgetItem } from "./WidgetItem";
+import { RenderWidgetItem } from "./WidgetLinkItem";
 import { WidgetNFTCollection } from "./WidgetNFTCollection";
 import WidgetRSS from "./WidgetRSS";
 import WidgetPoap from "./WidgetPoap";
@@ -21,11 +19,12 @@ import { useSelector } from "react-redux";
 import { AppState } from "../../state";
 import { WidgetState } from "../../state/widgets/reducer";
 import AddressMenu from "./AddressMenu";
+import { Avatar } from "../shared/Avatar";
 
 export default function ProfileMain(props) {
   const {
     data,
-    pageTitle = "",
+    pageTitle,
     platform,
     nfts,
     fromServer,
@@ -72,28 +71,14 @@ export default function ProfileMain(props) {
         <div className="column col-4 col-md-12">
           <div className="web3-profile-base">
             <div className="profile-avatar">
-              {data.avatar ? (
-                <Image
-                  src={data.avatar}
-                  className="avatar"
-                  alt={`${pageTitle} profile avatar`}
-                  height={180}
-                  width={180}
-                />
-              ) : (
-                <Avatar
-                  size={180}
-                  name={data.identity}
-                  variant="bauhaus"
-                  colors={[
-                    "#ECD7C8",
-                    "#EEA4BC",
-                    "#BE88C4",
-                    "#9186E7",
-                    "#92C9F9",
-                  ]}
-                />
-              )}
+              <Avatar
+                useBoring
+                src={data?.avatar}
+                className="avatar"
+                alt={`${pageTitle} Profile Photo`}
+                height={180}
+                width={180}
+              />
             </div>
             <h1 className="text-assistive">{`${pageTitle} ${
               SocialPlatformMapping(platform).label
@@ -143,7 +128,7 @@ export default function ProfileMain(props) {
                 >
                   <div className="platform-badge-icon">
                     <SVG
-                      fill={SocialPlatformMapping(PlatformType.nextid).color}
+                      fill={"#ffffff"}
                       width={20}
                       src={"icons/icon-nextid.svg"}
                       className="text-light"

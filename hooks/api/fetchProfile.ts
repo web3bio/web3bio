@@ -1,6 +1,5 @@
-import { SIMPLE_HASH_URL } from "../../components/apis/simplehash";
+import { SIMPLEHASH_URL, SIMPLEHASH_CHAINS, SIMPLEHASH_PAGE_SIZE } from "../../components/apis/simplehash";
 import { PlatformType } from "../../utils/platform";
-import { NFT_PAGE_SIZE } from "../../utils/queries";
 
 const resolveSearchHandle = (identity) => {
   return {
@@ -33,8 +32,8 @@ export const fetchProfile = async (identity) => {
 export const fetchInitialNFTsData = async (address) => {
   try {
     const res = await fetch(
-      SIMPLE_HASH_URL +
-        `/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${address}&limit=${NFT_PAGE_SIZE}`,
+      SIMPLEHASH_URL +
+        `/api/v0/nfts/owners?chains=${SIMPLEHASH_CHAINS}&wallet_addresses=${address}&limit=${SIMPLEHASH_PAGE_SIZE}`,
       {
         next: { revalidate: 86400 },
       }
