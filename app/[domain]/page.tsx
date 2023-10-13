@@ -48,7 +48,9 @@ async function fetchDataFromServer(domain: string) {
     )
       return null;
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${domain}`
+      `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${domain}`, {
+        next: { revalidate: 86400 },
+      }
     );
     if (response.status === 404) return null;
     const data = await response.json();
@@ -82,7 +84,7 @@ export async function generateMetadata({
   const { data, platform } = res;
   const profile = data[0];
   const pageTitle =
-    profile?.identity == data?.displayName
+    profile?.identity == profile?.displayName
       ? `${profile?.displayName}`
       : `${profile?.displayName} (${profile?.identity})`;
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
@@ -158,6 +160,5 @@ export default async function ProfilePage({
   );
 }
 
-export const dynamic = "force-static";
-export const runtime = "nodejs";
-export const revalidate = 604800;
+export const runtime = "edge";
+export const revalidate = 432000;
