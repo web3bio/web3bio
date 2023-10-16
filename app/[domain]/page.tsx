@@ -12,7 +12,6 @@ import { regexAvatar } from "../../utils/regexp";
 import { fetchHasDegen } from "../../components/apis/degenscore";
 import { fetchHasRss } from "../../components/apis/rss";
 import { fetchHasPoaps } from "../../components/apis/poap";
-import { revalidatePath } from "next/cache";
 
 function mapNFTs(nfts) {
   if (!nfts) return [];
@@ -75,7 +74,6 @@ async function fetchDataFromServer(domain: string) {
     };
   } catch (e) {
     console.log(e, "error");
-    revalidatePath("/[domain]", "page");
     return null;
   }
 }
