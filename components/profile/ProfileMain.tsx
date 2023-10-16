@@ -30,6 +30,9 @@ export default function ProfileMain(props) {
     fromServer,
     relations,
     domain,
+    hasDegen,
+    hasPoaps,
+    hasRss,
   } = props;
   const [isCopied, setIsCopied] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -44,9 +47,6 @@ export default function ProfileMain(props) {
       setIsCopied(false);
     }, 1500);
   };
-  const widgetState = useSelector<AppState, WidgetState>(
-    (state) => state.widgets
-  );
 
   if (!data || data.error) {
     return (
@@ -201,10 +201,8 @@ export default function ProfileMain(props) {
                 <Suspense fallback={<p>Loading NFTs...</p>}>
                   <WidgetNFTCollection
                     initialExpand={
-                      Boolean(
-                        widgetState.widgetState.poaps?.isEmpty &&
-                          widgetState.widgetState.rss?.isEmpty
-                      ) && !data?.links?.length
+                      Boolean(!hasDegen && !hasPoaps && !hasRss) &&
+                      !data?.links?.length
                     }
                     fromServer={fromServer}
                     onShowDetail={(e, v) => {
@@ -220,6 +218,7 @@ export default function ProfileMain(props) {
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading Articles...</p>}>
                   <WidgetRSS
+                    shouldFetch={hasRss}
                     relations={relations}
                     fromServer={false}
                     domain={data.identity}
@@ -228,12 +227,16 @@ export default function ProfileMain(props) {
               </div>
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading DegenScore...</p>}>
-                  <WidgetDegenScore address={data.address} />
+                  <WidgetDegenScore
+                    shouldFetch={hasDegen}
+                    address={data.address}
+                  />
                 </Suspense>
               </div>
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading Poaps...</p>}>
                   <WidgetPoap
+                    shouldFetch={hasPoaps}
                     fromServer={fromServer}
                     onShowDetail={(v) => {
                       setDialogType(NFTModalType.POAP);
