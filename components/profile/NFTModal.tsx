@@ -160,10 +160,15 @@ const NFTModalRender = (props) => {
                 {_asset.name || `${asset.collection.name} #${_asset.token_id}`}
               </div>
               <div className="nft-header-description mt-4 mb-4">
-                {_asset?.description || asset.collection.description}
+                {_asset.description || asset.collection.description}
               </div>
+              
 
               {attributes.length > 0 && (
+                <div className="panel-widget">
+                  <div className="panel-widget-title collection-title">
+                    Attributes
+                  </div>
                   <div className="panel-widget-content">
                     <div className="traits-cards">
                       {attributes.map((x, idx) => {
@@ -175,16 +180,12 @@ const NFTModalRender = (props) => {
                             <div className="trait-value">
                               {x.attribute_value || x.value}
                             </div>
-                            {/* {x.percentage && (
-                              <div className="trait-trait_percentage">
-                                {x.percentage}
-                              </div>
-                            )} */}
                           </div>
                         );
                       })}
                     </div>
                   </div>
+                </div>
               )}
 
               <div className="panel-widget">

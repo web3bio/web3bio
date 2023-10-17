@@ -26,6 +26,7 @@ const useCollectionData = (id) => {
 };
 const renderSocialMediaLinks = (_collection) => {
   const renderArr = {
+    [PlatformType.website]: _collection.external_url,
     [PlatformType.twitter]: _collection.twitter_username,
     [PlatformType.medium]: _collection.medium_username,
     [PlatformType.telegram]: _collection.telegram_url,
@@ -61,6 +62,7 @@ const INFO_CONFIG = [
   { key: "distinct_nft_count", label: "Total Minted" },
   { key: "total_quantity", label: "Max Supply" },
   { key: "distinct_owner_count", label: "Unique Minters" },
+  { key: "category", label: "Category" },
 ];
 
 const CollectionWidgetRender = (props) => {
@@ -83,7 +85,7 @@ const CollectionWidgetRender = (props) => {
       <div className="panel-widget-content">
         <div className="traits-cards">
           {floorPriceItem && (
-            <div key="floorPriceItem" className="traits-card">
+            <div key="floorPriceItem" className="traits-card traits-card-full">
               <div className="trait-type">Floor Price</div>
               <div className="trait-value">
                 {formatEther(floorPriceItem.value.toString() ?? 0)}{" "}
@@ -93,12 +95,16 @@ const CollectionWidgetRender = (props) => {
           )}
           {INFO_CONFIG.map((x) => {
             return (
-              <div className="traits-card" key={x.key}>
-                <div className="trait-type">{x.label}</div>
-                <div className="trait-value">
-                  {_collection[x.key]?.toString()}
-                </div>
-              </div>
+              <>
+                {_collection[x.key] && (
+                  <div className="traits-card" key={x.key}>
+                    <div className="trait-type">{x.label}</div>
+                    <div className="trait-value">
+                      {_collection[x.key]?.toString()}
+                    </div>
+                  </div>
+                )}
+              </>
             );
           })}
         </div>

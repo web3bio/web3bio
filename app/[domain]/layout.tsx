@@ -9,3 +9,6 @@ export default function DomainLayout({ children }) {
     </Suspense>
   );
 }
+
+export const runtime = "edge";
+export const revalidate = 432000;
