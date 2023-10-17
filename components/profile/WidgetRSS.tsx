@@ -27,10 +27,12 @@ function getQueryDomain(
   );
 }
 
-function useRSS(domain: string, relations) {
+function useRSS(domain: string, relations, shouldFetch: boolean) {
   const queryDomain = getQueryDomain(domain, relations);
   const { data, error, isValidating } = useSWR(
-    queryDomain ? `${RSS_ENDPOINT}rss?query=${queryDomain}&mode=list` : null,
+    queryDomain && shouldFetch
+      ? `${RSS_ENDPOINT}rss?query=${queryDomain}&mode=list`
+      : null,
     RSSFetcher,
     {
       suspense: true,
@@ -48,11 +50,16 @@ function useRSS(domain: string, relations) {
 }
 
 export default function WidgetRss(props) {
-  const { domain, relations } = props;
-  const { data, isLoading, isError } = useRSS(domain, relations);
+  const { domain, relations, shouldFetch } = props;
+  const { data, isLoading, isError } = useRSS(domain, relations, shouldFetch);
   const dispatch = useDispatch();
   const getBoundaryRender = useCallback(() => {
-    if (isLoading) return <div className="widget-loading"><Loading /></div>;
+    if (isLoading)
+      return (
+        <div className="widget-loading">
+          <Loading />
+        </div>
+      );
     if (isError) return <Error />;
     return null;
   }, [isLoading, isError]);
@@ -67,7 +74,7 @@ export default function WidgetRss(props) {
     <div className="profile-widget-full" id="rss">
       <div className="profile-widget profile-widget-rss">
         <h2 className="profile-widget-title">
-          <span className="emoji-large mr-2">📰{" "}</span>
+          <span className="emoji-large mr-2">📰 </span>
           {data.title}
         </h2>
         <Link

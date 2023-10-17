@@ -11,9 +11,9 @@ import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { useDispatch } from "react-redux";
 import { updatePoapsWidget } from "../../state/widgets/action";
 
-function usePoaps(address: string, fromServer: boolean) {
+function usePoaps(address: string, fromServer: boolean, shouldFetch: boolean) {
   const { data, error, isValidating } = useSWR(
-    `${POAP_ENDPOINT}${address}`,
+    shouldFetch ? `${POAP_ENDPOINT}${address}` : null,
     POAPFetcher,
     {
       suspense: !fromServer,
@@ -30,11 +30,21 @@ function usePoaps(address: string, fromServer: boolean) {
 }
 
 export default function WidgetPoap(props) {
-  const { address, onShowDetail, fromServer } = props;
-  const { data, isLoading, isError } = usePoaps(address, fromServer);
+  const { address, onShowDetail, fromServer, shouldFetch } = props;
+
+  const { data, isLoading, isError } = usePoaps(
+    address,
+    fromServer,
+    shouldFetch
+  );
   const dispatch = useDispatch();
   const getBoundaryRender = useCallback(() => {
-    if (isLoading) return <div className="widget-loading"><Loading /></div>;
+    if (isLoading)
+      return (
+        <div className="widget-loading">
+          <Loading />
+        </div>
+      );
     if (isError) return <Error />;
     return null;
   }, [isLoading, isError]);
@@ -48,13 +58,25 @@ export default function WidgetPoap(props) {
   return (
     <div className="profile-widget-full" id="poap">
       <div className="profile-widget profile-widget-poap">
-        <h2 className="profile-widget-title" title="Proof of Attendance Protocol (POAP)">
+        <h2
+          className="profile-widget-title"
+          title="Proof of Attendance Protocol (POAP)"
+        >
           <div className="platform-icon mr-1">
-            <SVG src={`../icons/icon-poap.svg`} color={"#5E58A5"} width={24} height={24} />
+            <SVG
+              src={`../icons/icon-poap.svg`}
+              color={"#5E58A5"}
+              width={24}
+              height={24}
+            />
           </div>
           POAP
         </h2>
-        <Link className="action-icon btn btn-sm" href={`https://app.poap.xyz/scan/${address}`} target={"_blank"}>
+        <Link
+          className="action-icon btn btn-sm"
+          href={`https://app.poap.xyz/scan/${address}`}
+          target={"_blank"}
+        >
           <span className="action-icon-label">More</span>
           <SVG src="icons/icon-open.svg" width={20} height={20} />
         </Link>
