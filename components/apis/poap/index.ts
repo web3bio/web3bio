@@ -19,6 +19,7 @@ export const POAPFetcher = async (url) => {
 export const fetchHasPoaps = async (address) => {
   try {
     const res = await fetch(`${POAP_ENDPOINT}${address}`, {
+      method: "HEAD",
       headers: {
         "X-Api-Key": AUTHENTICATION || "",
       },
