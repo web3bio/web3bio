@@ -201,7 +201,7 @@ export default function ProfileMain(props) {
                 <Suspense fallback={<p>Loading NFTs...</p>}>
                   <WidgetNFTCollection
                     initialExpand={
-                      Boolean(!hasDegen && !hasPoaps && !rss?.length) &&
+                      Boolean(!hasDegen && !hasPoaps && !rss?.items) &&
                       !data?.links?.length
                     }
                     fromServer={fromServer}
