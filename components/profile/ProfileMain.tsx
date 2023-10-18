@@ -32,7 +32,7 @@ export default function ProfileMain(props) {
     domain,
     hasDegen,
     hasPoaps,
-    hasRss,
+    rss,
   } = props;
   const [isCopied, setIsCopied] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -201,7 +201,7 @@ export default function ProfileMain(props) {
                 <Suspense fallback={<p>Loading NFTs...</p>}>
                   <WidgetNFTCollection
                     initialExpand={
-                      Boolean(!hasDegen && !hasPoaps && !hasRss) &&
+                      Boolean(!hasDegen && !hasPoaps && !rss?.length) &&
                       !data?.links?.length
                     }
                     fromServer={fromServer}
@@ -218,9 +218,9 @@ export default function ProfileMain(props) {
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading Articles...</p>}>
                   <WidgetRSS
-                    shouldFetch={hasRss}
+                    initialData={rss}
                     relations={relations}
-                    fromServer={false}
+                    fromServer={fromServer}
                     domain={data.identity}
                   />
                 </Suspense>
