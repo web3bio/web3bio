@@ -31,10 +31,11 @@ export const fetchProfile = async (identity) => {
 
 export const fetchInitialNFTsData = async (address) => {
   try {
-    const res = await fetch(
+    const url =
       SIMPLEHASH_URL +
-        `/api/v0/nfts/owners?chains=${SIMPLEHASH_CHAINS}&wallet_addresses=${address}&limit=${SIMPLEHASH_PAGE_SIZE}`,
-      {
+      `/api/v0/nfts/owners_v2?chains=${SIMPLEHASH_CHAINS}&wallet_addresses=${address}&filters=spam_score__lte=1&limit=${SIMPLEHASH_PAGE_SIZE}`;
+    const res = await fetch(
+      url, {
         next: { revalidate: 86400 },
       }
     );

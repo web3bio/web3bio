@@ -1,7 +1,7 @@
 import { memo, useEffect } from "react";
 import SVG from "react-inlinesvg";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { CollectionWidget } from "./CollectionAbout";
+import { CollectionAbout } from "./CollectionAbout";
 
 export const enum NFTModalType {
   NFT = "nft",
@@ -197,7 +197,7 @@ const NFTModalRender = (props) => {
                   {_asset?.description ? asset.collection.description : null}
                 </div>
                 
-                <CollectionWidget address={asset.collection.address} id={asset.collection.id} />
+                <CollectionAbout address={asset.collection.address} id={asset.collection.id} />
               </div>
             </div>
           </div>

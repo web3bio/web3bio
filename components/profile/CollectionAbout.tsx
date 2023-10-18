@@ -65,7 +65,7 @@ const INFO_CONFIG = [
   { key: "category", label: "Category" },
 ];
 
-const CollectionWidgetRender = (props) => {
+const CollectionAboutRender = (props) => {
   const { id } = props;
   const { data, isLoading, isError } = useCollectionData(id);
   if (!data || isLoading || isError) return null;
@@ -88,7 +88,7 @@ const CollectionWidgetRender = (props) => {
             <div key="floorPriceItem" className="traits-card traits-card-full">
               <div className="trait-type">Floor Price</div>
               <div className="trait-value">
-                {formatEther(floorPriceItem.value.toString() ?? 0)}{" "}
+                {formatEther(BigInt(floorPriceItem?.value))}{" "}
                 {floorPriceItem.payment_token.symbol}
               </div>
             </div>
@@ -113,4 +113,4 @@ const CollectionWidgetRender = (props) => {
   );
 };
 
-export const CollectionWidget = memo(CollectionWidgetRender);
+export const CollectionAbout = memo(CollectionAboutRender);

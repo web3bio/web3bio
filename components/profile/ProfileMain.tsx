@@ -15,9 +15,9 @@ import WidgetDegenScore from "./WidgetDegenScore";
 import { NFTModal, NFTModalType } from "./NFTModal";
 import ShareModal from "../shared/ShareModal";
 import ModalLink from "./ModalLink";
-import { useSelector } from "react-redux";
-import { AppState } from "../../state";
-import { WidgetState } from "../../state/widgets/reducer";
+// import { useSelector } from "react-redux";
+// import { AppState } from "../../state";
+// import { WidgetState } from "../../state/widgets/reducer";
 import AddressMenu from "./AddressMenu";
 import { Avatar } from "../shared/Avatar";
 
@@ -76,8 +76,6 @@ export default function ProfileMain(props) {
                 src={data?.avatar}
                 className="avatar"
                 alt={`${pageTitle} Profile Photo`}
-                height={180}
-                width={180}
               />
             </div>
             <h1 className="text-assistive">{`${pageTitle} ${
@@ -234,7 +232,7 @@ export default function ProfileMain(props) {
                 </Suspense>
               </div>
               <div className="web3-section-widgets">
-                <Suspense fallback={<p>Loading Poaps...</p>}>
+                <Suspense fallback={<p>Loading POAPs...</p>}>
                   <WidgetPoap
                     shouldFetch={hasPoaps}
                     fromServer={fromServer}
