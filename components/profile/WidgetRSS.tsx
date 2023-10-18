@@ -27,21 +27,25 @@ function getQueryDomain(
   );
 }
 
-function useRSS(domain: string, relations, shouldFetch: boolean) {
+function useRSS(domain: string, relations, initialData, fromServer) {
   const queryDomain = getQueryDomain(domain, relations);
-  const { data, error, isValidating } = useSWR(
-    queryDomain && shouldFetch
-      ? `${RSS_ENDPOINT}rss?query=${queryDomain}&mode=list`
-      : null,
-    RSSFetcher,
-    {
-      suspense: true,
-      fallbackData: [],
-      revalidateOnFocus: false,
-      revalidateOnMount: true,
-      revalidateOnReconnect: true,
-    }
-  );
+  const fetchUrl = (() => {
+    if (fromServer && !initialData?.items) return null;
+    if (!queryDomain) return null;
+    return `${RSS_ENDPOINT}rss?query=${queryDomain}&mode=list`;
+  })();
+  const options = fromServer
+    ? {
+        fallbackData: initialData,
+      }
+    : {};
+  const { data, error, isValidating } = useSWR(fetchUrl, RSSFetcher, {
+    ...options,
+    suspense: !fromServer,
+    revalidateOnFocus: false,
+    revalidateOnMount: true,
+    revalidateOnReconnect: true,
+  });
   return {
     data: data || [],
     isLoading: isValidating,
@@ -50,8 +54,13 @@ function useRSS(domain: string, relations, shouldFetch: boolean) {
 }
 
 export default function WidgetRss(props) {
-  const { domain, relations, shouldFetch } = props;
-  const { data, isLoading, isError } = useRSS(domain, relations, shouldFetch);
+  const { domain, relations, initialData, fromServer } = props;
+  const { data, isLoading, isError } = useRSS(
+    domain,
+    relations,
+    initialData,
+    fromServer
+  );
   const dispatch = useDispatch();
   const getBoundaryRender = useCallback(() => {
     if (isLoading)

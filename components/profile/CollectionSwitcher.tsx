@@ -28,7 +28,7 @@ const RenderCollectionSwitcher = (props) => {
               width={52}
               alt={item.name}
             />
-            <div className="collection-name text-assistive">{item.name}</div>
+            <div className="collection-name text-assistive">NFT Collection: {item.name}</div>
           </div>
         ))}
         {hasNextPage && (

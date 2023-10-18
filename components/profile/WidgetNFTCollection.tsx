@@ -30,7 +30,7 @@ export const processNFTsData = (data) => {
   const collectionById = new Map();
   for (const asset of assets) {
     const { collection } = asset;
-    if (!collection || collection.spam_score > 75) continue;
+    if (!collection || collection.spam_score === null) continue;
 
     let collectionItem = collectionById.get(collection.collection_id);
     if (!collectionItem) {
@@ -55,7 +55,7 @@ const getURL = (index, address, previous) => {
   const cursor = previous?.next_cursor || "";
   return (
     SIMPLEHASH_URL +
-    `/api/v0/nfts/owners?chains=${SIMPLEHASH_CHAINS}&wallet_addresses=${address}${
+    `/api/v0/nfts/owners_v2?chains=${SIMPLEHASH_CHAINS}&wallet_addresses=${address}&filters=spam_score__lte%3D1${
       cursor ? CURSOR_PARAM + cursor : ""
     }&limit=${SIMPLEHASH_PAGE_SIZE}`
   );
