@@ -60,7 +60,7 @@ async function fetchDataFromServer(domain: string) {
     const remoteNFTs = data[0].address
       ? await fetchInitialNFTsData(data[0].address)
       : {};
-    const hasDegen = await fetchHasDegen(data[0].address);
+    // const hasDegen = await fetchHasDegen(data[0].address);
     console.time('Rss head')
     const hasRss = await fetchHasRss(data[0].identity);
     console.timeEnd('Rss head')
@@ -68,7 +68,7 @@ async function fetchDataFromServer(domain: string) {
       data,
       platform,
       nfts: remoteNFTs,
-      hasDegen,
+      hasDegen: false,
       hasRss,
     };
   } catch (e) {
