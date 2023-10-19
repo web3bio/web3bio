@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { useState } from "react";
 import SVG from "react-inlinesvg";
 export default function AddressMenu({ address }) {
+  const [vCardHref,setVCardHref] = useState('')
   return (
     <>
       <div className="btn btn-sm dropdown-toggle" tabIndex={0}>
@@ -35,6 +37,14 @@ export default function AddressMenu({ address }) {
             target="_blank"
           >
             View assets on DeBank
+          </Link>
+        </li>
+        <li className="menu-item dropdown-menu-item">
+          <Link
+            href={`https://debank.com/profile/${address}`}
+            target="_blank"
+          >
+            Export Profile vCard
           </Link>
         </li>
       </ul>
