@@ -22,9 +22,14 @@ export default function RssItem(props) {
       <div className="rss-item-title">
         {data.title ? data.title : "Untitled"}
       </div>
-      <div className="rss-item-date">
-        {fromServer ? new Date(data.published).toDateString() : clientDate}
-      </div>
+      <time
+        dateTime={data.published}
+        suppressHydrationWarning
+        className="rss-item-date"
+      >
+        {new Date(data.published).toDateString()}
+      </time>
+
       <div className="rss-item-content text-assistive">
         {typeof data.description === "string" ? data.description : ""}
       </div>
