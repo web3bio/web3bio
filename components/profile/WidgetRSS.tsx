@@ -27,21 +27,15 @@ function getQueryDomain(
   );
 }
 
-function useRSS(domain: string, relations, initialData, fromServer) {
+function useRSS(domain: string, relations, shouldFetch) {
   const queryDomain = getQueryDomain(domain, relations);
   const fetchUrl = (() => {
-    if (fromServer && !initialData?.items) return null;
-    if (!queryDomain) return null;
+    if (!shouldFetch || !queryDomain) return null;
     return `${RSS_ENDPOINT}rss?query=${queryDomain}&mode=list`;
   })();
-  const options = fromServer
-    ? {
-        fallbackData: initialData,
-      }
-    : {};
+
   const { data, error, isValidating } = useSWR(fetchUrl, RSSFetcher, {
-    ...options,
-    suspense: !fromServer,
+    suspense: true,
     revalidateOnFocus: false,
     revalidateOnMount: true,
     revalidateOnReconnect: true,
@@ -54,13 +48,8 @@ function useRSS(domain: string, relations, initialData, fromServer) {
 }
 
 export default function WidgetRss(props) {
-  const { domain, relations, initialData, fromServer } = props;
-  const { data, isLoading, isError } = useRSS(
-    domain,
-    relations,
-    initialData,
-    fromServer
-  );
+  const { domain, relations, hasRss } = props;
+  const { data, isLoading, isError } = useRSS(domain, relations, hasRss);
   const dispatch = useDispatch();
   const getBoundaryRender = useCallback(() => {
     if (isLoading)

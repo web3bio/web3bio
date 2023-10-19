@@ -10,12 +10,15 @@ export const RSSFetcher = async (url) => {
     return [];
   }
 };
-export const fetchRSS = async (domain) => {
+export const fetchHasRss = async (domain) => {
   try {
-    return fetch(`${RSS_ENDPOINT}rss?query=${domain}&mode=list`, {
+    const res = await fetch(`${RSS_ENDPOINT}rss?query=${domain}&mode=list`, {
+      method: "HEAD",
       next: { revalidate: 86400 },
-    }).then((res) => res.json());
+    });
+    if (res?.ok) return true;
+    return false
   } catch (e) {
-    return null;
+    return false;
   }
 };

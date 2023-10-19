@@ -10,8 +10,7 @@ import { Metadata } from "next";
 import ProfileMain from "../../components/profile/ProfileMain";
 import { regexAvatar } from "../../utils/regexp";
 import { fetchHasDegen } from "../../components/apis/degenscore";
-import { fetchRSS } from "../../components/apis/rss";
-import { fetchHasPoaps } from "../../components/apis/poap";
+import { fetchHasRss } from "../../components/apis/rss";
 
 function mapNFTs(nfts) {
   if (!nfts) return [];
@@ -62,15 +61,13 @@ async function fetchDataFromServer(domain: string) {
       ? await fetchInitialNFTsData(data[0].address)
       : {};
     const hasDegen = await fetchHasDegen(data[0].address);
-    const rss = await fetchRSS(data[0].identity);
-    const hasPoaps = await fetchHasPoaps(data[0].address);
+    const hasRss = await fetchHasRss(data[0].identity);
     return {
       data,
       platform,
       nfts: remoteNFTs,
       hasDegen,
-      rss,
-      hasPoaps,
+      hasRss,
     };
   } catch (e) {
     console.log(e, "error");
@@ -143,7 +140,7 @@ export default async function ProfilePage({
 }) {
   const serverData = await fetchDataFromServer(domain);
   if (!serverData) notFound();
-  const { data, nfts, platform, hasDegen, hasPoaps, rss } = serverData;
+  const { data, nfts, platform, hasDegen, hasRss } = serverData;
   const profile = data[0];
   const pageTitle =
     profile.identity == profile.displayName
@@ -167,8 +164,7 @@ export default async function ProfilePage({
       pageTitle={pageTitle}
       platform={platform}
       hasDegen={hasDegen}
-      hasPoaps={hasPoaps}
-      rss={rss}
+      hasRss={hasRss}
     />
   );
 }

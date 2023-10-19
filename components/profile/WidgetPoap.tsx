@@ -11,9 +11,9 @@ import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { useDispatch } from "react-redux";
 import { updatePoapsWidget } from "../../state/widgets/action";
 
-function usePoaps(address: string, fromServer: boolean, shouldFetch: boolean) {
+function usePoaps(address: string, fromServer: boolean) {
   const { data, error, isValidating } = useSWR(
-    shouldFetch ? `${POAP_ENDPOINT}${address}` : null,
+    `${POAP_ENDPOINT}${address}`,
     POAPFetcher,
     {
       suspense: !fromServer,
@@ -30,13 +30,9 @@ function usePoaps(address: string, fromServer: boolean, shouldFetch: boolean) {
 }
 
 export default function WidgetPoap(props) {
-  const { address, onShowDetail, fromServer, shouldFetch } = props;
+  const { address, onShowDetail, fromServer } = props;
 
-  const { data, isLoading, isError } = usePoaps(
-    address,
-    fromServer,
-    shouldFetch
-  );
+  const { data, isLoading, isError } = usePoaps(address, fromServer);
   const dispatch = useDispatch();
   const getBoundaryRender = useCallback(() => {
     if (isLoading)
