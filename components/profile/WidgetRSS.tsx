@@ -91,7 +91,7 @@ export default function WidgetRss(props) {
 
         <div className="widget-rss-list noscrollbar">
           {data?.items.map((x, idx) => {
-            return <RssItem fromServer={fromServer} data={x} key={idx} />;
+            return <RssItem data={x} key={idx} />;
           })}
         </div>
       </div>
