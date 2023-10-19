@@ -202,7 +202,7 @@ export default function ProfileMain(props) {
                   <WidgetNFTCollection
                     initialExpand={
                       Boolean(
-                        !rss?.item &&
+                        !rss?.items &&
                           widgets.widgetState.degen?.isEmpty &&
                           widgets.widgetState.poaps?.isEmpty
                       ) && !data?.links?.length
@@ -230,9 +230,7 @@ export default function ProfileMain(props) {
               </div>
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading DegenScore...</p>}>
-                  <WidgetDegenScore
-                    address={data.address}
-                  />
+                  <WidgetDegenScore address={data.address} />
                 </Suspense>
               </div>
               <div className="web3-section-widgets">

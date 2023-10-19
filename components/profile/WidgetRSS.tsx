@@ -33,10 +33,14 @@ function useRSS(domain: string, relations, initialData, fromServer) {
     if (!queryDomain) return null;
     return `${RSS_ENDPOINT}rss?query=${queryDomain}&mode=list`;
   })();
-
+  const options = fromServer
+    ? {
+        fallbackData: initialData?.items,
+      }
+    : {};
   const { data, error, isValidating } = useSWR(fetchUrl, RSSFetcher, {
+    ...options,
     suspense: !fromServer,
-    fallbackData: initialData?.items || [],
     revalidateOnFocus: false,
     revalidateOnMount: true,
     revalidateOnReconnect: true,

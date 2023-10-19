@@ -50,11 +50,10 @@ export default function WidgetPoap(props) {
       dispatch(updatePoapsWidget({ isEmpty: false }));
     }
   }, [data, isLoading, dispatch]);
-  
+
   if (!data || !data.length) {
     return null;
   }
-
 
   return (
     <div className="profile-widget-full" id="poap">

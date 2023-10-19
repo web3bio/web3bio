@@ -30,7 +30,7 @@ export default function WidgetDegenScore(props) {
   const { data, isLoading } = useDegenInfo(address);
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!isLoading && data.length) {
+    if (!isLoading && data?.name) {
       dispatch(updateDegenWidget({ isEmpty: false }));
     }
   }, [data, isLoading, dispatch]);
