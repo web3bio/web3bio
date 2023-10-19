@@ -79,8 +79,8 @@ function useNFTs({ address, initialData, fromServer }) {
       ...options,
       suspense: !fromServer,
       revalidateOnFocus: false,
-      revalidateOnMount: true,
-      revalidateOnReconnect: true,
+      revalidateOnMount: false,
+      revalidateOnReconnect: false,
     }
   );
   return {

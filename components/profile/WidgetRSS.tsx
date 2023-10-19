@@ -1,8 +1,6 @@
 "use client";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import useSWR from "swr";
-import { Loading } from "../shared/Loading";
-import { Error } from "../shared/Error";
 import { RSSFetcher, RSS_ENDPOINT } from "../apis/rss";
 import SVG from "react-inlinesvg";
 import Link from "next/link";
@@ -43,8 +41,8 @@ function useRSS(domain: string, relations, initialData, fromServer) {
     ...options,
     suspense: !fromServer,
     revalidateOnFocus: false,
-    revalidateOnMount: true,
-    revalidateOnReconnect: true,
+    revalidateOnMount: false,
+    revalidateOnReconnect: false,
   });
   return {
     data: data || [],
