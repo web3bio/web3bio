@@ -3,7 +3,13 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function RssItem(props) {
-  const { data } = props;
+  const { data, fromServer } = props;
+  const [clientDate, setClientDate] = useState("");
+  useEffect(() => {
+    if (!fromServer) {
+      setClientDate(new Date(data.published).toDateString());
+    }
+  }, [fromServer, data]);
   return (
     <Link href={data.link} className="rss-item" target={"_blank"}>
       {data.itunes_image && (
@@ -16,7 +22,9 @@ export default function RssItem(props) {
       <div className="rss-item-title">
         {data.title ? data.title : "Untitled"}
       </div>
-      {/* <div className="rss-item-date">{dateString}</div> */}
+      <div className="rss-item-date">
+        {fromServer ? new Date(data.published).toDateString() : clientDate}
+      </div>
       <div className="rss-item-content text-assistive">
         {typeof data.description === "string" ? data.description : ""}
       </div>
