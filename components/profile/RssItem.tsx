@@ -1,9 +1,15 @@
 "use client";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function RssItem(props) {
   const { data } = props;
-  const dateString = new Date(data.published).toDateString();
+  const [dateString, setDateString] = useState(
+    new Date(data.published).toDateString()
+  );
+  useEffect(() => {
+    setDateString(new Date(data.published).toDateString());
+  }, [data]);
   return (
     <Link href={data.link} className="rss-item" target={"_blank"}>
       {data.itunes_image && (
