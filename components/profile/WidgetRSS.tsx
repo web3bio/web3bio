@@ -35,7 +35,7 @@ function useRSS(domain: string, relations, initialData, fromServer) {
   })();
   const options = fromServer
     ? {
-        fallbackData: initialData?.items,
+        fallbackData: initialData,
       }
     : {};
   const { data, error, isValidating } = useSWR(fetchUrl, RSSFetcher, {
@@ -61,16 +61,6 @@ export default function WidgetRss(props) {
     fromServer
   );
   const dispatch = useDispatch();
-  const getBoundaryRender = useCallback(() => {
-    if (isLoading)
-      return (
-        <div className="widget-loading">
-          <Loading />
-        </div>
-      );
-    if (isError) return <Error />;
-    return null;
-  }, [isLoading, isError]);
 
   useEffect(() => {
     if (!isLoading && data && data?.items?.length) {
@@ -99,34 +89,33 @@ export default function WidgetRss(props) {
         )}
 
         <div className="widget-rss-list noscrollbar">
-          {getBoundaryRender() ||
-            data?.items.map((x, idx) => {
-              return (
-                <Link
-                  href={x.link}
-                  key={idx}
-                  className="rss-item"
-                  target={"_blank"}
-                >
-                  {x.itunes_image && (
-                    <img
-                      src={x.itunes_image}
-                      className="rss-item-img"
-                      alt={x.title}
-                    />
-                  )}
-                  <div className="rss-item-title">
-                    {x.title ? x.title : "Untitled"}
-                  </div>
-                  <div className="rss-item-date">
-                    {new Date(x.published).toDateString()}
-                  </div>
-                  <div className="rss-item-content text-assistive">
-                    {typeof x.description === "string" ? x.description : ""}
-                  </div>
-                </Link>
-              );
-            })}
+          {data?.items.map((x, idx) => {
+            return (
+              <Link
+                href={x.link}
+                key={idx}
+                className="rss-item"
+                target={"_blank"}
+              >
+                {x.itunes_image && (
+                  <img
+                    src={x.itunes_image}
+                    className="rss-item-img"
+                    alt={x.title}
+                  />
+                )}
+                <div className="rss-item-title">
+                  {x.title ? x.title : "Untitled"}
+                </div>
+                <div className="rss-item-date">
+                  {new Date(x.published).toDateString()}
+                </div>
+                <div className="rss-item-content text-assistive">
+                  {typeof x.description === "string" ? x.description : ""}
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </div>
