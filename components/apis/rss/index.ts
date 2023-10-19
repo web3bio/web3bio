@@ -1,4 +1,5 @@
 export const RSS_ENDPOINT = "https://contenthash.web3.bio/api/";
+const RSS_MAX_DURATION = 2000;
 export const RSSFetcher = async (url) => {
   console.time("Rss api call");
   try {
@@ -14,9 +15,13 @@ export const RSSFetcher = async (url) => {
 };
 export const fetchRss = async (domain) => {
   try {
-    return fetch(`${RSS_ENDPOINT}rss?query=${domain}&mode=list`, {
+    const fetchPromise = fetch(`${RSS_ENDPOINT}rss?query=${domain}&mode=list`, {
       next: { revalidate: 86400 },
     }).then((res) => res.json());
+    const timeoutPromise = new Promise((resolve) => {
+      setTimeout(() => resolve(null), RSS_MAX_DURATION);
+    });
+    return Promise.race([timeoutPromise, fetchPromise]);
   } catch (e) {
     return null;
   }
