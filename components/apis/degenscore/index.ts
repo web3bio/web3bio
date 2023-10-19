@@ -12,15 +12,3 @@ export const DegenFetcher = async (url) => {
     return [];
   }
 };
-
-export const fetchHasDegen = async (address) => {
-  try {
-    const res = await fetch(`${DEGENSCORE_ENDPOINT}${address}`, {
-      next: { revalidate: 86400 },
-    });
-    if (res?.ok) return true;
-    return false;
-  } catch (e) {
-    return false;
-  }
-};

@@ -20,6 +20,9 @@ import ModalLink from "./ModalLink";
 // import { WidgetState } from "../../state/widgets/reducer";
 import AddressMenu from "./AddressMenu";
 import { Avatar } from "../shared/Avatar";
+import { useSelector } from "react-redux";
+import { AppState } from "../../state";
+import { WidgetState } from "../../state/widgets/reducer";
 
 export default function ProfileMain(props) {
   const {
@@ -30,14 +33,14 @@ export default function ProfileMain(props) {
     fromServer,
     relations,
     domain,
-    hasDegen,
-    hasRss,
+    rss,
   } = props;
   const [isCopied, setIsCopied] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [openShare, setOpenShare] = useState(false);
   const [curAsset, setCurAsset] = useState(null);
   const [dialogType, setDialogType] = useState(NFTModalType.NFT);
+  const widgets = useSelector<AppState, WidgetState>((state) => state.widgets);
   const pathName = usePathname();
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
   const onCopySuccess = () => {
@@ -198,8 +201,11 @@ export default function ProfileMain(props) {
                 <Suspense fallback={<p>Loading NFTs...</p>}>
                   <WidgetNFTCollection
                     initialExpand={
-                      Boolean(!hasDegen && !hasRss) &&
-                      !data?.links?.length
+                      Boolean(
+                        !rss?.item &&
+                          widgets.widgetState.degen?.isEmpty &&
+                          widgets.widgetState.poaps?.isEmpty
+                      ) && !data?.links?.length
                     }
                     fromServer={fromServer}
                     onShowDetail={(e, v) => {
@@ -215,7 +221,7 @@ export default function ProfileMain(props) {
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading Articles...</p>}>
                   <WidgetRSS
-                    hasRss={hasRss}
+                    rss={rss}
                     relations={relations}
                     fromServer={fromServer}
                     domain={data.identity}
@@ -225,7 +231,6 @@ export default function ProfileMain(props) {
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading DegenScore...</p>}>
                   <WidgetDegenScore
-                    shouldFetch={hasDegen}
                     address={data.address}
                   />
                 </Suspense>

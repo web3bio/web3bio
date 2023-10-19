@@ -27,15 +27,16 @@ function getQueryDomain(
   );
 }
 
-function useRSS(domain: string, relations, shouldFetch, fromServer) {
+function useRSS(domain: string, relations, initialData, fromServer) {
   const queryDomain = getQueryDomain(domain, relations);
   const fetchUrl = (() => {
-    if (!shouldFetch || !queryDomain) return null;
+    if (!queryDomain) return null;
     return `${RSS_ENDPOINT}rss?query=${queryDomain}&mode=list`;
   })();
 
   const { data, error, isValidating } = useSWR(fetchUrl, RSSFetcher, {
     suspense: !fromServer,
+    fallbackData: initialData?.items || [],
     revalidateOnFocus: false,
     revalidateOnMount: true,
     revalidateOnReconnect: true,
@@ -48,11 +49,11 @@ function useRSS(domain: string, relations, shouldFetch, fromServer) {
 }
 
 export default function WidgetRss(props) {
-  const { domain, relations, hasRss, fromServer } = props;
+  const { domain, relations, fromServer, rss } = props;
   const { data, isLoading, isError } = useRSS(
     domain,
     relations,
-    hasRss,
+    rss,
     fromServer
   );
   const dispatch = useDispatch();
