@@ -27,7 +27,7 @@ function getQueryDomain(
   );
 }
 
-function useRSS(domain: string, relations, shouldFetch) {
+function useRSS(domain: string, relations, shouldFetch, fromServer) {
   const queryDomain = getQueryDomain(domain, relations);
   const fetchUrl = (() => {
     if (!shouldFetch || !queryDomain) return null;
@@ -35,7 +35,7 @@ function useRSS(domain: string, relations, shouldFetch) {
   })();
 
   const { data, error, isValidating } = useSWR(fetchUrl, RSSFetcher, {
-    suspense: true,
+    suspense: !fromServer,
     revalidateOnFocus: false,
     revalidateOnMount: true,
     revalidateOnReconnect: true,
@@ -48,8 +48,13 @@ function useRSS(domain: string, relations, shouldFetch) {
 }
 
 export default function WidgetRss(props) {
-  const { domain, relations, hasRss } = props;
-  const { data, isLoading, isError } = useRSS(domain, relations, hasRss);
+  const { domain, relations, hasRss, fromServer } = props;
+  const { data, isLoading, isError } = useRSS(
+    domain,
+    relations,
+    hasRss,
+    fromServer
+  );
   const dispatch = useDispatch();
   const getBoundaryRender = useCallback(() => {
     if (isLoading)

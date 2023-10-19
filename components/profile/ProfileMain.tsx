@@ -217,6 +217,7 @@ export default function ProfileMain(props) {
                   <WidgetRSS
                     hasRss={hasRss}
                     relations={relations}
+                    fromServer={fromServer}
                     domain={data.identity}
                   />
                 </Suspense>

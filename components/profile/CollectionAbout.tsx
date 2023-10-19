@@ -92,18 +92,18 @@ const CollectionAboutRender = (props) => {
               </div>
             </div>
           )}
-          {INFO_CONFIG.map((x) => {
+          {INFO_CONFIG.map((x, idx) => {
             return (
-              <>
+              <div key={`${x.key}-${idx}`}>
                 {_collection[x.key] && (
-                  <div className="traits-card" key={x.key}>
+                  <div className="traits-card">
                     <div className="trait-type">{x.label}</div>
                     <div className="trait-value">
                       {_collection[x.key]?.toString()}
                     </div>
                   </div>
                 )}
-              </>
+              </div>
             );
           })}
         </div>

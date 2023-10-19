@@ -61,7 +61,9 @@ async function fetchDataFromServer(domain: string) {
       ? await fetchInitialNFTsData(data[0].address)
       : {};
     const hasDegen = await fetchHasDegen(data[0].address);
+    console.time('Rss head')
     const hasRss = await fetchHasRss(data[0].identity);
+    console.timeEnd('Rss head')
     return {
       data,
       platform,
