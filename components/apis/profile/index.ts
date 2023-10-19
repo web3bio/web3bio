@@ -1,4 +1,4 @@
-export const profileFetcher = async (url: string, options?) => {
+export const ProfileFetcher = async (url: string, options?) => {
   try {
     console.time("Profile api call");
     const res = await fetch(url, options).then((res) => res.json());

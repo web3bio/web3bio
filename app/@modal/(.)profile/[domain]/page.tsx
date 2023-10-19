@@ -2,7 +2,7 @@
 import useSWR from "swr";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { profileFetcher } from "../../../../components/apis/profile";
+import { ProfileFetcher } from "../../../../components/apis/profile";
 import { handleSearchPlatform, mapLinks } from "../../../../utils/utils";
 import { PlatformType } from "../../../../utils/platform";
 import { Loading } from "../../../../components/shared/Loading";
@@ -25,7 +25,7 @@ interface UseProfileProps {
 function useProfile({ identity, fallbackData }: UseProfileProps) {
   const url = `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${identity}`;
 
-  const { data, error, isValidating } = useSWR(url, profileFetcher, {
+  const { data, error, isValidating } = useSWR(url, ProfileFetcher, {
     revalidateOnFocus: false,
   });
   return {

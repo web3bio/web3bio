@@ -3,7 +3,7 @@ import { memo, useEffect, useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { ExpandController } from "./ExpandController";
 import { NFTCollections } from "./NFTCollections";
-import { simplehashFetcher } from "../apis/simplehash";
+import { SimplehashFetcher } from "../apis/simplehash";
 import {
   SIMPLEHASH_URL,
   SIMPLEHASH_CHAINS,
@@ -74,7 +74,7 @@ function useNFTs({ address, initialData, fromServer }) {
     : {};
   const { data, error, size, isValidating, setSize } = useSWRInfinite(
     (index, previous) => getURL(index, address, previous),
-    simplehashFetcher,
+    SimplehashFetcher,
     {
       ...options,
       suspense: !fromServer,

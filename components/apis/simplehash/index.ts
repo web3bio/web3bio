@@ -3,7 +3,7 @@ export const SIMPLEHASH_CHAINS =
   "ethereum,solana,base,gnosis,linea,optimism,zora,flow";
 export const SIMPLEHASH_PAGE_SIZE = 40;
 
-export const simplehashFetcher = async (url: string, options?) => {
+export const SimplehashFetcher = async (url: string, options?) => {
   try {
     console.time("simplehash api call");
     const res = await fetch(url, options).then((res) => res.json());

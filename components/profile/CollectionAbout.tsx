@@ -1,6 +1,6 @@
 import { memo } from "react";
 import useSWR from "swr";
-import { simplehashFetcher, SIMPLEHASH_URL } from "../apis/simplehash";
+import { SimplehashFetcher, SIMPLEHASH_URL } from "../apis/simplehash";
 import { formatEther } from "ethers";
 import {
   getSocialMediaLink,
@@ -12,7 +12,7 @@ import Link from "next/link";
 const useCollectionData = (id) => {
   const { data, isValidating, error } = useSWR(
     SIMPLEHASH_URL + "/api/v0/nfts/collections/ids?collection_ids=" + id,
-    simplehashFetcher,
+    SimplehashFetcher,
     {
       revalidateOnFocus: false,
     }
