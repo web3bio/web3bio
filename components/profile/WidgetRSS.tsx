@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { updateRssWidget } from "../../state/widgets/action";
 import { handleSearchPlatform } from "../../utils/utils";
 import { PlatformType } from "../../utils/platform";
+import RssItem from "./RssItem";
 
 function getQueryDomain(
   domain: string,
@@ -90,31 +91,7 @@ export default function WidgetRss(props) {
 
         <div className="widget-rss-list noscrollbar">
           {data?.items.map((x, idx) => {
-            return (
-              <Link
-                href={x.link}
-                key={idx}
-                className="rss-item"
-                target={"_blank"}
-              >
-                {x.itunes_image && (
-                  <img
-                    src={x.itunes_image}
-                    className="rss-item-img"
-                    alt={x.title}
-                  />
-                )}
-                <div className="rss-item-title">
-                  {x.title ? x.title : "Untitled"}
-                </div>
-                <div className="rss-item-date">
-                  {new Date(x.published).toDateString()}
-                </div>
-                <div className="rss-item-content text-assistive">
-                  {typeof x.description === "string" ? x.description : ""}
-                </div>
-              </Link>
-            );
+            return <RssItem data={x} key={idx} />;
           })}
         </div>
       </div>
