@@ -1,5 +1,4 @@
 import { BigNumber } from "bignumber.js";
-import { _fetcher } from "../components/apis/ens";
 import { resolveIPFS_URL } from "./ipfs";
 import { pow10 } from "./number";
 import { PlatformType } from "./platform";

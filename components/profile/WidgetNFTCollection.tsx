@@ -3,8 +3,12 @@ import { memo, useEffect, useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { ExpandController } from "./ExpandController";
 import { NFTCollections } from "./NFTCollections";
-import { _fetcher } from "../apis/ens";
-import { SIMPLEHASH_URL, SIMPLEHASH_CHAINS, SIMPLEHASH_PAGE_SIZE } from "../apis/simplehash";
+import { simplehashFetcher } from "../apis/simplehash";
+import {
+  SIMPLEHASH_URL,
+  SIMPLEHASH_CHAINS,
+  SIMPLEHASH_PAGE_SIZE,
+} from "../apis/simplehash";
 
 const CURSOR_PARAM = "&cursor=";
 
@@ -70,7 +74,7 @@ function useNFTs({ address, initialData, fromServer }) {
     : {};
   const { data, error, size, isValidating, setSize } = useSWRInfinite(
     (index, previous) => getURL(index, address, previous),
-    _fetcher,
+    simplehashFetcher,
     {
       ...options,
       suspense: !fromServer,
@@ -142,7 +146,7 @@ const RenderWidgetNFTCollection = ({
         }`}
       >
         <h2 className="profile-widget-title">
-          <span className="emoji-large mr-2">🖼{" "}</span>
+          <span className="emoji-large mr-2">🖼 </span>
           NFT Collections
         </h2>
         <ExpandController
