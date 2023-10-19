@@ -1,8 +1,6 @@
 "use client";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import useSWR from "swr";
-import { Loading } from "../shared/Loading";
-import { Error } from "../shared/Error";
 import { RSSFetcher, RSS_ENDPOINT } from "../apis/rss";
 import SVG from "react-inlinesvg";
 import Link from "next/link";
@@ -10,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { updateRssWidget } from "../../state/widgets/action";
 import { handleSearchPlatform } from "../../utils/utils";
 import { PlatformType } from "../../utils/platform";
+import RssItem from "./RssItem";
 
 function getQueryDomain(
   domain: string,
@@ -30,7 +29,6 @@ function getQueryDomain(
 function useRSS(domain: string, relations, initialData, fromServer) {
   const queryDomain = getQueryDomain(domain, relations);
   const fetchUrl = (() => {
-    if (fromServer && !initialData?.items) return null;
     if (!queryDomain) return null;
     return `${RSS_ENDPOINT}rss?query=${queryDomain}&mode=list`;
   })();
@@ -43,8 +41,8 @@ function useRSS(domain: string, relations, initialData, fromServer) {
     ...options,
     suspense: !fromServer,
     revalidateOnFocus: false,
-    revalidateOnMount: true,
-    revalidateOnReconnect: true,
+    revalidateOnMount: false,
+    revalidateOnReconnect: false,
   });
   return {
     data: data || [],
@@ -54,24 +52,14 @@ function useRSS(domain: string, relations, initialData, fromServer) {
 }
 
 export default function WidgetRss(props) {
-  const { domain, relations, initialData, fromServer } = props;
+  const { domain, relations, fromServer, rss } = props;
   const { data, isLoading, isError } = useRSS(
     domain,
     relations,
-    initialData,
+    rss,
     fromServer
   );
   const dispatch = useDispatch();
-  const getBoundaryRender = useCallback(() => {
-    if (isLoading)
-      return (
-        <div className="widget-loading">
-          <Loading />
-        </div>
-      );
-    if (isError) return <Error />;
-    return null;
-  }, [isLoading, isError]);
 
   useEffect(() => {
     if (!isLoading && data && data?.items?.length) {
@@ -100,34 +88,9 @@ export default function WidgetRss(props) {
         )}
 
         <div className="widget-rss-list noscrollbar">
-          {getBoundaryRender() ||
-            data?.items.map((x, idx) => {
-              return (
-                <Link
-                  href={x.link}
-                  key={idx}
-                  className="rss-item"
-                  target={"_blank"}
-                >
-                  {x.itunes_image && (
-                    <img
-                      src={x.itunes_image}
-                      className="rss-item-img"
-                      alt={x.title}
-                    />
-                  )}
-                  <div className="rss-item-title">
-                    {x.title ? x.title : "Untitled"}
-                  </div>
-                  <div className="rss-item-date">
-                    {new Date(x.published).toDateString()}
-                  </div>
-                  <div className="rss-item-content text-assistive">
-                    {typeof x.description === "string" ? x.description : ""}
-                  </div>
-                </Link>
-              );
-            })}
+          {data?.items.map((x, idx) => {
+            return <RssItem data={x} key={idx} />;
+          })}
         </div>
       </div>
     </div>

@@ -1,7 +1,6 @@
 import { memo } from "react";
 import useSWR from "swr";
-import { _fetcher } from "../apis/ens";
-import { SIMPLEHASH_URL } from "../apis/simplehash";
+import { SimplehashFetcher, SIMPLEHASH_URL } from "../apis/simplehash";
 import { formatEther } from "ethers";
 import {
   getSocialMediaLink,
@@ -13,7 +12,7 @@ import Link from "next/link";
 const useCollectionData = (id) => {
   const { data, isValidating, error } = useSWR(
     SIMPLEHASH_URL + "/api/v0/nfts/collections/ids?collection_ids=" + id,
-    _fetcher,
+    SimplehashFetcher,
     {
       revalidateOnFocus: false,
     }
@@ -93,18 +92,18 @@ const CollectionAboutRender = (props) => {
               </div>
             </div>
           )}
-          {INFO_CONFIG.map((x) => {
+          {INFO_CONFIG.map((x, idx) => {
             return (
-              <>
+              <div key={`${x.key}-${idx}`}>
                 {_collection[x.key] && (
-                  <div className="traits-card" key={x.key}>
+                  <div className="traits-card">
                     <div className="trait-type">{x.label}</div>
                     <div className="trait-value">
                       {_collection[x.key]?.toString()}
                     </div>
                   </div>
                 )}
-              </>
+              </div>
             );
           })}
         </div>

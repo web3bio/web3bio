@@ -20,7 +20,7 @@ export const Avatar = (props: Avatar) => {
       </div>
     ) : (
       <BoringAvatar
-        size={width}
+        size="100%"
         name={alt}
         variant="bauhaus"
         colors={["#ECD7C8", "#EEA4BC", "#BE88C4", "#9186E7", "#92C9F9"]}

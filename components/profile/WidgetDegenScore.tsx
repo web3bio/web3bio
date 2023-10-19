@@ -3,10 +3,13 @@ import useSWR from "swr";
 import { DegenFetcher, DEGENSCORE_ENDPOINT } from "../apis/degenscore";
 import Link from "next/link";
 import SVG from "react-inlinesvg";
+import { useEffect } from "react";
+import { updateDegenWidget } from "../../state/widgets/action";
+import { useDispatch } from "react-redux";
 
-function useDegenInfo(address: string, shouldFetch: boolean) {
+function useDegenInfo(address: string) {
   const { data, error } = useSWR(
-    shouldFetch ? `${DEGENSCORE_ENDPOINT}${address}` : null,
+    `${DEGENSCORE_ENDPOINT}${address}`,
     DegenFetcher,
     {
       suspense: true,
@@ -23,8 +26,14 @@ function useDegenInfo(address: string, shouldFetch: boolean) {
 }
 
 export default function WidgetDegenScore(props) {
-  const { address, shouldFetch } = props;
-  const { data } = useDegenInfo(address, shouldFetch);
+  const { address } = props;
+  const { data, isLoading } = useDegenInfo(address);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (!isLoading && data?.name) {
+      dispatch(updateDegenWidget({ isEmpty: false }));
+    }
+  }, [data, isLoading, dispatch]);
 
   if (!data || !data.name) return null;
   return (
