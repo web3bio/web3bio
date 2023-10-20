@@ -166,8 +166,7 @@ const RenderNFTCollections = (props) => {
                                 description: y.collection.description,
                                 name: x.name,
                                 id: y.collection.collection_id,
-                                address:
-                                  y.collection.address || y.contract_address,
+                                address: y.contract_address || y.collection.address,
                               },
                               asset: y,
                               mediaURL:
@@ -179,7 +178,7 @@ const RenderNFTCollections = (props) => {
                         >
                           <div className="nft-item">
                             <NFTAssetPlayer
-                              className="img-container"
+                              className="nft-img-container"
                               src={mediaURL}
                               type={type}
                               alt={x.name + " - " + y.name}
@@ -187,7 +186,7 @@ const RenderNFTCollections = (props) => {
                               width={"100%"}
                               height={"100%"}
                             />
-                            <div className="collection-name">{x.name}</div>
+                            <div className="nft-collection-name">{x.name}</div>
                             <div className="nft-name">
                               {y.name || `${x.name} #${y.token_id}`}
                             </div>
