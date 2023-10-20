@@ -4,7 +4,7 @@ import client from "../../utils/apollo";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import SearchInput from "../profile/SearchInput";
+import SearchInput from "../search/SearchInput";
 import { handleSearchPlatform, isDomainSearch } from "../../utils/utils";
 import SearchResultDomain from "./SearchResultDomain";
 import SearchResultQuery from "./SearchResultQuery";
