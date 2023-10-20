@@ -496,23 +496,19 @@ body {
 
 .img-placeholder {
   align-items: center;
-  color: $light-color;
   display: flex;
   flex: 0 0;
   justify-content: center;
-  opacity: .75;
   padding: .05rem;
-  position: relative;
+  text-align: center;
 
-  &[data-initial]::before {
+  .initial {
     color: inherit;
-    content: attr(data-initial);
     font-size: .5em;
     font-weight: 700;
-    line-height: .5em;
-    text-shadow: 0 .1rem .4rem rgba($dark-color, .2);
+    letter-spacing: -.025em;
+    line-height: 1em;
     text-transform: uppercase;
-    z-index: $zindex-0;
   }
 }
 

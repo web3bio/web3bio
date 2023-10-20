@@ -1,19 +1,20 @@
 import { memo } from "react";
 import useSWR from "swr";
-import { _fetcher } from "../apis/ens";
-import { SIMPLEHASH_URL } from "../apis/simplehash";
+import { SimplehashFetcher, SIMPLEHASH_URL } from "../apis/simplehash";
 import { formatEther } from "ethers";
+import { formatText } from "../../utils/utils";
 import {
   getSocialMediaLink,
   PlatformType,
   SocialPlatformMapping,
 } from "../../utils/platform";
+import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import Link from "next/link";
 
 const useCollectionData = (id) => {
   const { data, isValidating, error } = useSWR(
     SIMPLEHASH_URL + "/api/v0/nfts/collections/ids?collection_ids=" + id,
-    _fetcher,
+    SimplehashFetcher,
     {
       revalidateOnFocus: false,
     }
@@ -45,11 +46,11 @@ const renderSocialMediaLinks = (_collection) => {
         <Link
           href={getSocialMediaLink(item, key as PlatformType) || ""}
           className="btn btn-sm btn-primary"
-          key={item.collection_id + item}
+          key={key + item}
           target="_blank"
           rel="noopener noreferrer"
         >
-          {SocialPlatformMapping(key as PlatformType).label} ↗️
+          {SocialPlatformMapping(key as PlatformType).label}
         </Link>
       );
     }
@@ -63,10 +64,11 @@ const INFO_CONFIG = [
   { key: "total_quantity", label: "Max Supply" },
   { key: "distinct_owner_count", label: "Unique Minters" },
   { key: "category", label: "Category" },
+  { key: "chains", label: "Chain" },
 ];
 
-const CollectionWidgetRender = (props) => {
-  const { id } = props;
+const CollectionAboutRender = (props) => {
+  const { contractAddress, id } = props;
   const { data, isLoading, isError } = useCollectionData(id);
   if (!data || isLoading || isError) return null;
 
@@ -76,41 +78,70 @@ const CollectionWidgetRender = (props) => {
   )[0];
 
   return (
-    <>
+    <div className="panel-widget">
+      <div className="panel-widget-title collection-title">
+        Collection
+      </div>
+      <div className="panel-widget-content">
+        <div className="nft-header-logo mt-4 mb-4">
+          <NFTAssetPlayer
+            type={"image/png"}
+            className="collection-logo"
+            src={_collection.image_url}
+            alt={_collection.name}
+          />
+        </div>
+        <div className="nft-header-name h5">
+          {_collection.name}
+        </div>
+        {_collection.description && (
+          <div className="nft-header-description mt-4 mb-4">
+            {_collection.description}
+          </div>
+        )}
+      </div>
       <div className="panel-widget-content mt-4 mb-4">
         <div className="traits-cards">
           {renderSocialMediaLinks(_collection)}
         </div>
       </div>
       <div className="panel-widget-content">
-        <div className="traits-cards">
+        <div className="panel-widget-list">
           {floorPriceItem && (
-            <div key="floorPriceItem" className="traits-card traits-card-full">
-              <div className="trait-type">Floor Price</div>
-              <div className="trait-value">
-                {formatEther(floorPriceItem.value.toString() ?? 0)}{" "}
+            <div className="widget-list-item" key="floorPriceItem">
+              <div className="list-item-left">Floor Price</div>
+              <div className="list-item-right">
+                {formatEther(BigInt(floorPriceItem?.value))}{" "}
                 {floorPriceItem.payment_token.symbol}
               </div>
             </div>
           )}
-          {INFO_CONFIG.map((x) => {
-            return (
-              <>
-                {_collection[x.key] && (
-                  <div className="traits-card" key={x.key}>
-                    <div className="trait-type">{x.label}</div>
-                    <div className="trait-value">
-                      {_collection[x.key]?.toString()}
-                    </div>
+          {INFO_CONFIG.map((x, idx) => {
+            if (_collection[x.key]) {
+              return (
+                <div className="widget-list-item" key={`${x.key}-${idx}`}>
+                  <div className="list-item-left">{x.label}</div>
+                  <div className="list-item-right">
+                    {_collection[x.key]?.toString()}
                   </div>
-                )}
-              </>
-            );
+                </div>
+              );
+            }
           })}
+          {contractAddress && (
+            <div className="widget-list-item" key="contractAddress">
+              <div className="list-item-left">Contract Address</div>
+              <div className="list-item-right">
+                <a href={`https://etherscan.io/address/${contractAddress}`} target="_blank">
+                  {formatText(contractAddress)} ↗️
+                </a>
+              </div>
+            </div>
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
-export const CollectionWidget = memo(CollectionWidgetRender);
+export const CollectionAbout = memo(CollectionAboutRender);

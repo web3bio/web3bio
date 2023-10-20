@@ -15,11 +15,11 @@ import WidgetDegenScore from "./WidgetDegenScore";
 import { NFTModal, NFTModalType } from "./NFTModal";
 import ShareModal from "../shared/ShareModal";
 import ModalLink from "./ModalLink";
+import AddressMenu from "./AddressMenu";
+import { Avatar } from "../shared/Avatar";
 import { useSelector } from "react-redux";
 import { AppState } from "../../state";
 import { WidgetState } from "../../state/widgets/reducer";
-import AddressMenu from "./AddressMenu";
-import { Avatar } from "../shared/Avatar";
 
 export default function ProfileMain(props) {
   const {
@@ -30,15 +30,14 @@ export default function ProfileMain(props) {
     fromServer,
     relations,
     domain,
-    hasDegen,
-    hasPoaps,
-    hasRss,
+    rss,
   } = props;
   const [isCopied, setIsCopied] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [openShare, setOpenShare] = useState(false);
   const [curAsset, setCurAsset] = useState(null);
   const [dialogType, setDialogType] = useState(NFTModalType.NFT);
+  const widgets = useSelector<AppState, WidgetState>((state) => state.widgets);
   const pathName = usePathname();
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
   const onCopySuccess = () => {
@@ -76,8 +75,6 @@ export default function ProfileMain(props) {
                 src={data?.avatar}
                 className="avatar"
                 alt={`${pageTitle} Profile Photo`}
-                height={180}
-                width={180}
               />
             </div>
             <h1 className="text-assistive">{`${pageTitle} ${
@@ -201,8 +198,11 @@ export default function ProfileMain(props) {
                 <Suspense fallback={<p>Loading NFTs...</p>}>
                   <WidgetNFTCollection
                     initialExpand={
-                      Boolean(!hasDegen && !hasPoaps && !hasRss) &&
-                      !data?.links?.length
+                      Boolean(
+                        !rss?.items &&
+                          widgets.widgetState.degen?.isEmpty &&
+                          widgets.widgetState.poaps?.isEmpty
+                      ) && !data?.links?.length
                     }
                     fromServer={fromServer}
                     onShowDetail={(e, v) => {
@@ -218,25 +218,21 @@ export default function ProfileMain(props) {
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading Articles...</p>}>
                   <WidgetRSS
-                    shouldFetch={hasRss}
+                    rss={rss || []}
                     relations={relations}
-                    fromServer={false}
+                    fromServer={fromServer}
                     domain={data.identity}
                   />
                 </Suspense>
               </div>
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading DegenScore...</p>}>
-                  <WidgetDegenScore
-                    shouldFetch={hasDegen}
-                    address={data.address}
-                  />
+                  <WidgetDegenScore address={data.address} />
                 </Suspense>
               </div>
               <div className="web3-section-widgets">
-                <Suspense fallback={<p>Loading Poaps...</p>}>
+                <Suspense fallback={<p>Loading POAPs...</p>}>
                   <WidgetPoap
-                    shouldFetch={hasPoaps}
                     fromServer={fromServer}
                     onShowDetail={(v) => {
                       setDialogType(NFTModalType.POAP);
