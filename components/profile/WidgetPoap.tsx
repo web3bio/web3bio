@@ -17,6 +17,7 @@ function usePoaps(address: string, fromServer: boolean) {
     POAPFetcher,
     {
       suspense: !fromServer,
+      fallbackData: [],
       revalidateOnFocus: false,
       revalidateOnMount: true,
       revalidateOnReconnect: true,
@@ -31,10 +32,16 @@ function usePoaps(address: string, fromServer: boolean) {
 
 export default function WidgetPoap(props) {
   const { address, onShowDetail, fromServer } = props;
+
   const { data, isLoading, isError } = usePoaps(address, fromServer);
   const dispatch = useDispatch();
   const getBoundaryRender = useCallback(() => {
-    if (isLoading) return <div className="widget-loading"><Loading /></div>;
+    if (isLoading)
+      return (
+        <div className="widget-loading">
+          <Loading />
+        </div>
+      );
     if (isError) return <Error />;
     return null;
   }, [isLoading, isError]);
@@ -43,18 +50,33 @@ export default function WidgetPoap(props) {
       dispatch(updatePoapsWidget({ isEmpty: false }));
     }
   }, [data, isLoading, dispatch]);
-  if (!data || !data.length) return null;
+
+  if (!data || !data.length) {
+    return null;
+  }
 
   return (
     <div className="profile-widget-full" id="poap">
       <div className="profile-widget profile-widget-poap">
-        <h2 className="profile-widget-title" title="Proof of Attendance Protocol (POAP)">
+        <h2
+          className="profile-widget-title"
+          title="Proof of Attendance Protocol (POAP)"
+        >
           <div className="platform-icon mr-1">
-            <SVG src={`../icons/icon-poap.svg`} color={"#5E58A5"} width={24} height={24} />
+            <SVG
+              src={`../icons/icon-poap.svg`}
+              color={"#5E58A5"}
+              width={24}
+              height={24}
+            />
           </div>
           POAP
         </h2>
-        <Link className="action-icon btn btn-sm" href={`https://app.poap.xyz/scan/${address}`} target={"_blank"}>
+        <Link
+          className="action-icon btn btn-sm"
+          href={`https://app.poap.xyz/scan/${address}`}
+          target={"_blank"}
+        >
           <span className="action-icon-label">More</span>
           <SVG src="icons/icon-open.svg" width={20} height={20} />
         </Link>

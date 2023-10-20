@@ -48,7 +48,8 @@ async function fetchDataFromServer(domain: string) {
     )
       return null;
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${domain}`, {
+      `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${domain}`,
+      {
         next: { revalidate: 86400 },
       }
     );

@@ -1,7 +1,7 @@
 import { memo, useEffect } from "react";
 import SVG from "react-inlinesvg";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { CollectionWidget } from "./CollectionAbout";
+import { CollectionAbout } from "./CollectionAbout";
 
 export const enum NFTModalType {
   NFT = "nft",
@@ -47,7 +47,7 @@ const NFTModalRender = (props) => {
               />
             </div>
             <div className="preview-content">
-              <div className="nft-header-collection collection-title">
+              <div className="nft-header-collection collection-title mb-4">
                 <SVG
                   className="collection-logo"
                   src="../icons/icon-poap.svg"
@@ -56,7 +56,7 @@ const NFTModalRender = (props) => {
                 />
                 <div className="collection-name text-ellipsis">POAP</div>
               </div>
-              <div className="nft-header-name">{asset.asset.event.name}</div>
+              <div className="nft-header-name h4">{asset.asset.event.name}</div>
               <div className="nft-header-description mt-4 mb-4">
                 {asset.asset.event.description}
               </div>
@@ -76,24 +76,30 @@ const NFTModalRender = (props) => {
               <div className="panel-widget">
                 <div className="panel-widget-title">Attributes</div>
                 <div className="panel-widget-content">
-                  <div className="traits-cards">
-                    <div className="traits-card">
-                      <div className="trait-type">Event Start</div>
-                      <div className="trait-value">
+                  <div className="panel-widget-list">
+                    <div className="widget-list-item">
+                      <div className="list-item-left">Event Start</div>
+                      <div className="list-item-right">
                         {asset.asset.event.start_date}
                       </div>
                     </div>
                     {(asset.asset.event.city || asset.asset.event.country) && (
-                      <div className="traits-card">
-                        <div className="trait-type">Event Location</div>
-                        <div className="trait-value">
+                      <div className="widget-list-item">
+                        <div className="list-item-left">Event Location</div>
+                        <div className="list-item-right">
                           {asset.asset.event.city} {asset.asset.event.country}
                         </div>
                       </div>
                     )}
-                    <div className="traits-card">
-                      <div className="trait-type">POAP Supply</div>
-                      <div className="trait-value">
+                    <div className="widget-list-item">
+                      <div className="list-item-left">Chain</div>
+                      <div className="list-item-right">
+                        {asset.asset.chain}
+                      </div>
+                    </div>
+                    <div className="widget-list-item">
+                      <div className="list-item-left">POAP Supply</div>
+                      <div className="list-item-right">
                         {asset.asset.event.supply}
                       </div>
                     </div>
@@ -108,7 +114,6 @@ const NFTModalRender = (props) => {
   if (!asset) return null;
   const _asset = asset.asset;
   const attributes = _asset.extra_metadata?.attributes || [];
-                    
   return (
     <>
       <div
@@ -145,7 +150,7 @@ const NFTModalRender = (props) => {
           </div>
           <div className="preview-main">
             <div className="preview-content">
-              <div className="nft-header-collection collection-title">
+              <div className="nft-header-collection collection-title mb-4">
                 <NFTAssetPlayer
                   type={"image/png"}
                   className="collection-logo"
@@ -156,48 +161,38 @@ const NFTModalRender = (props) => {
                   {asset.collection.name}
                 </div>
               </div>
-              <div className="nft-header-name">
+              <div className="nft-header-name h4">
                 {_asset.name || `${asset.collection.name} #${_asset.token_id}`}
               </div>
               <div className="nft-header-description mt-4 mb-4">
-                {_asset?.description || asset.collection.description}
+                {_asset.description || asset.collection.description}
               </div>
 
               {attributes.length > 0 && (
+                <div className="panel-widget">
+                  <div className="panel-widget-title collection-title">
+                    Attributes
+                  </div>
                   <div className="panel-widget-content">
                     <div className="traits-cards">
                       {attributes.map((x, idx) => {
                         return (
-                          <div key={idx} className="traits-card">
+                          <div key={(x.attribute_name || x.trait_type) + idx} className="traits-card">
                             <div className="trait-type">
                               {x.attribute_name || x.trait_type}
                             </div>
                             <div className="trait-value">
                               {x.attribute_value || x.value}
                             </div>
-                            {/* {x.percentage && (
-                              <div className="trait-trait_percentage">
-                                {x.percentage}
-                              </div>
-                            )} */}
                           </div>
                         );
                       })}
                     </div>
                   </div>
+                </div>
               )}
 
-              <div className="panel-widget">
-                <div className="panel-widget-title collection-title">
-                  About Collection
-                </div>
-
-                <div className="panel-widget-content">
-                  {_asset?.description ? asset.collection.description : null}
-                </div>
-                
-                <CollectionWidget address={asset.collection.address} id={asset.collection.id} />
-              </div>
+              <CollectionAbout contractAddress={asset.collection.address} id={asset.collection.id} />
             </div>
           </div>
         </div>

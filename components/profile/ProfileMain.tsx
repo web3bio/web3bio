@@ -15,11 +15,11 @@ import WidgetDegenScore from "./WidgetDegenScore";
 import { NFTModal, NFTModalType } from "./NFTModal";
 import ShareModal from "../shared/ShareModal";
 import ModalLink from "./ModalLink";
+import AddressMenu from "./AddressMenu";
+import { Avatar } from "../shared/Avatar";
 import { useSelector } from "react-redux";
 import { AppState } from "../../state";
 import { WidgetState } from "../../state/widgets/reducer";
-import AddressMenu from "./AddressMenu";
-import { Avatar } from "../shared/Avatar";
 
 export default function ProfileMain(props) {
   const {
@@ -36,6 +36,7 @@ export default function ProfileMain(props) {
   const [openShare, setOpenShare] = useState(false);
   const [curAsset, setCurAsset] = useState(null);
   const [dialogType, setDialogType] = useState(NFTModalType.NFT);
+  const widgets = useSelector<AppState, WidgetState>((state) => state.widgets);
   const pathName = usePathname();
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
   const onCopySuccess = () => {
@@ -44,9 +45,6 @@ export default function ProfileMain(props) {
       setIsCopied(false);
     }, 1500);
   };
-  const widgetState = useSelector<AppState, WidgetState>(
-    (state) => state.widgets
-  );
 
   if (!data || data.error) {
     return (
@@ -76,8 +74,6 @@ export default function ProfileMain(props) {
                 src={data?.avatar}
                 className="avatar"
                 alt={`${pageTitle} Profile Photo`}
-                height={180}
-                width={180}
               />
             </div>
             <h1 className="text-assistive">{`${pageTitle} ${
@@ -202,8 +198,9 @@ export default function ProfileMain(props) {
                   <WidgetNFTCollection
                     initialExpand={
                       Boolean(
-                        widgetState.widgetState.poaps?.isEmpty &&
-                          widgetState.widgetState.rss?.isEmpty
+                        widgets.widgetState.rss?.isEmpty &&
+                          widgets.widgetState.degen?.isEmpty &&
+                          widgets.widgetState.poaps?.isEmpty
                       ) && !data?.links?.length
                     }
                     fromServer={fromServer}
@@ -221,7 +218,7 @@ export default function ProfileMain(props) {
                 <Suspense fallback={<p>Loading Articles...</p>}>
                   <WidgetRSS
                     relations={relations}
-                    fromServer={false}
+                    fromServer={fromServer}
                     domain={data.identity}
                   />
                 </Suspense>
@@ -232,7 +229,7 @@ export default function ProfileMain(props) {
                 </Suspense>
               </div>
               <div className="web3-section-widgets">
-                <Suspense fallback={<p>Loading Poaps...</p>}>
+                <Suspense fallback={<p>Loading POAPs...</p>}>
                   <WidgetPoap
                     fromServer={fromServer}
                     onShowDetail={(v) => {
