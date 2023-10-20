@@ -26,23 +26,17 @@ function getQueryDomain(
   );
 }
 
-function useRSS(domain: string, relations, initialData, fromServer) {
+function useRSS(domain: string, relations, fromServer) {
   const queryDomain = getQueryDomain(domain, relations);
   const fetchUrl = (() => {
     if (!queryDomain) return null;
     return `${RSS_ENDPOINT}rss?query=${queryDomain}&mode=list`;
   })();
-  const options = fromServer
-    ? {
-        fallbackData: initialData,
-      }
-    : {};
   const { data, error, isValidating } = useSWR(fetchUrl, RSSFetcher, {
-    ...options,
     suspense: !fromServer,
     revalidateOnFocus: false,
-    revalidateOnMount: false,
-    revalidateOnReconnect: false,
+    revalidateOnMount: true,
+    revalidateOnReconnect: true,
   });
   return {
     data: data || [],
@@ -52,11 +46,10 @@ function useRSS(domain: string, relations, initialData, fromServer) {
 }
 
 export default function WidgetRss(props) {
-  const { domain, relations, fromServer, rss } = props;
+  const { domain, relations, fromServer } = props;
   const { data, isLoading, isError } = useRSS(
     domain,
     relations,
-    rss,
     fromServer
   );
   const dispatch = useDispatch();
@@ -66,6 +59,7 @@ export default function WidgetRss(props) {
       dispatch(updateRssWidget({ isEmpty: false }));
     }
   }, [data, isLoading, dispatch]);
+
   if (!data || !data?.items?.length) return null;
   return (
     <div className="profile-widget-full" id="rss">
