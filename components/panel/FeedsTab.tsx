@@ -47,12 +47,12 @@ function useFeeds(address: string, startHash?: string, network?: string) {
 }
 
 const RenderFeedsTab = (props) => {
-  const { identity, network } = props;
+  const { address, network } = props;
   const [startHash, setStartHash] = useState("");
   const [issues, setIssues] = useState<Issue[]>([]);
   const [lastData, setLastData] = useState([]);
   const { data, error, size, setSize, isValidating, isLoading } = useFeeds(
-    network === PlatformType.lens ? identity.ownedBy : identity.identity,
+    address,
     startHash,
     network
   );
@@ -134,7 +134,7 @@ const RenderFeedsTab = (props) => {
           (x, idx) =>
             (isSupportedFeed(x) && (
               <div key={idx}>
-                <FeedItem network={network} identity={identity} feed={x} />
+                <FeedItem network={network} identity={address} feed={x} />
                 <div className="feed-timestamp">
                   {formatTimestamp(x.timestamp)}
                 </div>

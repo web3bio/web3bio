@@ -20,17 +20,11 @@ import { Avatar } from "../shared/Avatar";
 import { useSelector } from "react-redux";
 import { AppState } from "../../state";
 import { WidgetState } from "../../state/widgets/reducer";
+import { WidgetFeed } from "./WidgetFeed";
 
 export default function ProfileMain(props) {
-  const {
-    data,
-    pageTitle,
-    platform,
-    nfts,
-    fromServer,
-    relations,
-    domain,
-  } = props;
+  const { data, pageTitle, platform, nfts, fromServer, relations, domain } =
+    props;
   const [isCopied, setIsCopied] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [openShare, setOpenShare] = useState(false);
@@ -212,6 +206,11 @@ export default function ProfileMain(props) {
                     address={data.address}
                     initialData={nfts || []}
                   />
+                </Suspense>
+              </div>
+              <div className="web3-section-widgets">
+                <Suspense fallback={<p>Loading Feeds...</p>}>
+                  <WidgetFeed address={data.address} />
                 </Suspense>
               </div>
               <div className="web3-section-widgets">
