@@ -9,7 +9,6 @@ import { notFound, redirect } from "next/navigation";
 import { Metadata } from "next";
 import ProfileMain from "../../components/profile/ProfileMain";
 import { regexAvatar } from "../../utils/regexp";
-import { fetchRss } from "../../components/apis/rss";
 
 function mapNFTs(nfts) {
   if (!nfts) return [];
@@ -59,12 +58,10 @@ async function fetchDataFromServer(domain: string) {
     const remoteNFTs = data[0].address
       ? await fetchInitialNFTsData(data[0].address)
       : {};
-    const rss = await fetchRss(data[0].identity);
     return {
       data,
       platform,
       nfts: remoteNFTs,
-      rss,
     };
   } catch (e) {
     console.log(e, "error");
@@ -137,7 +134,7 @@ export default async function ProfilePage({
 }) {
   const serverData = await fetchDataFromServer(domain);
   if (!serverData) notFound();
-  const { data, nfts, platform, rss } = serverData;
+  const { data, nfts, platform } = serverData;
   const profile = data[0];
   const pageTitle =
     profile.identity == profile.displayName
@@ -160,7 +157,6 @@ export default async function ProfilePage({
       }}
       pageTitle={pageTitle}
       platform={platform}
-      rss={rss}
     />
   );
 }
