@@ -12,14 +12,15 @@ export function ImageLoader(props: ImgHTMLAttributes<HTMLImageElement>) {
     if (!loaded && image.current) {
       setLoaded(image.current.complete);
     }
-  }, []);
+  }, [loaded]);
   const handleLoad = () => {
     setLoaded(true);
   };
+
   if (error) {
     return <ImagePlaceholder alt={props.alt} />;
   }
-
+  
   return (
     <div
       className={
@@ -34,7 +35,7 @@ export function ImageLoader(props: ImgHTMLAttributes<HTMLImageElement>) {
       <img
         ref={image}
         onLoad={handleLoad}
-        onError={handleError}
+        onErrorCapture={handleError}
         className="img-responsive"
         loading="lazy"
         {...props}

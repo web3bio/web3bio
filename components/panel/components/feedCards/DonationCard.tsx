@@ -4,11 +4,11 @@ import {
   formatValue,
   isSameAddress,
 } from "../../../../utils/utils";
-import { Tag } from "../../../apis/rss3/types";
+import { Tag, Type } from "../../../apis/rss3/types";
 import { NFTAssetPlayer } from "../../../shared/NFTAssetPlayer";
 
 export function isDonationFeed(feed) {
-  return feed.tag === Tag.Donation;
+  return feed.tag === Tag.Donation && feed.type === Type.Donate;
 }
 
 const RenderDonationCard = (props) => {

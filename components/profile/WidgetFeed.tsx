@@ -1,5 +1,5 @@
 "use client";
-import { memo, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { ExpandController } from "./ExpandController";
 import { RSS3Fetcher, RSS3_ENDPOINT } from "../apis/rss3";
@@ -9,7 +9,7 @@ import { SocialFeeds } from "./SocialFeeds";
 const FEEDS_PAGE_SIZE = 10;
 
 const processFeedsData = (data) => {
-  if (!data?.[0]?.data?.length) return null;
+  if (!data?.[0]?.data?.length) return [];
   const issues = new Array();
   data.map((x) => {
     x.data.forEach((i) => {
@@ -27,7 +27,7 @@ const getURL = (index, address, previous) => {
     RSS3_ENDPOINT +
     `data/accounts/${address}/activities?limit=${FEEDS_PAGE_SIZE}${
       cursor ? "&cursor=" + cursor : ""
-    }&action_limit=10&network=ethereum&network=polygon`
+    }&action_limit=10&network=ethereum&network=polygon&tag=collectible`
   );
 };
 
@@ -76,11 +76,18 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
     : expand
     ? JSON.parse(JSON.stringify(data))
     : JSON.parse(JSON.stringify(data.slice(0, 3)));
-
+  useEffect(() => {
+    if (expand) {
+      const anchorElement = document.getElementById("feeds");
+      anchorElement?.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+  },[expand]);
   if (!issues?.length || isError) return null;
 
   return (
-    <div ref={scrollContainer} className="profile-widget-full" id="nft">
+    <div ref={scrollContainer} className="profile-widget-full" id="feeds">
       <div
         className={`profile-widget profile-widget-nft${
           expand ? " active" : ""

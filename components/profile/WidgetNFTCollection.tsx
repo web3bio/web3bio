@@ -45,7 +45,6 @@ export const processNFTsData = (data) => {
 
     collectionItem.assets.push(asset);
   }
-
   return collections;
 };
 
@@ -136,6 +135,7 @@ const RenderWidgetNFTCollection = ({
     }
     setFirstRender(false);
   }, [assetId, initialExpand]);
+
   if (!data.length || isError) return null;
 
   return (
