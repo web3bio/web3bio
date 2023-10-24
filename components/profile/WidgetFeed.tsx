@@ -3,6 +3,8 @@ import { memo, useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { ExpandController } from "./ExpandController";
 import { RSS3Fetcher, RSS3_ENDPOINT } from "../apis/rss3";
+import { PlatformType } from "../../utils/platform";
+import { FeedsTab } from "../panel/FeedsTab";
 
 const getURL = (index, address, previous) => {
   if (
@@ -23,18 +25,17 @@ const getURL = (index, address, previous) => {
 function useFeeds({ address }) {
   const { data, error, size, isValidating, setSize } = useSWRInfinite(
     (index, previous) => getURL(index, address, previous),
-    RSS3Fetcher,
-    {
-      suspense: false,
-      //   fallbackData: [],
-      revalidateOnFocus: false,
-      revalidateOnMount: false,
-      revalidateOnReconnect: false,
-    }
+    RSS3Fetcher
+    // {
+    //   revalidateOnFocus: false,
+    //   revalidateOnMount: true,
+    //   revalidateOnReconnect: false,
+    // }
   );
+
   return {
     hasNextPage: !!data?.[data.length - 1]?.meta?.cursor,
-    data: data,
+    data: data?.length ? data[0].data : [],
     isLoading: !error && !data,
     isError: error,
     size,
@@ -43,16 +44,15 @@ function useFeeds({ address }) {
   };
 }
 
-const RenderWidgetFeed = ({ address }) => {
+const RenderWidgetFeed = ({ profile }) => {
   const { data, size, setSize, isValidating, isError, hasNextPage } = useFeeds({
-    address,
+    address: profile.address,
   });
   const [expand, setExpand] = useState(false);
 
   const scrollContainer = useRef(null);
-  console.log(data, "kkk");
-  if (!data || isError) return null;
 
+  if (!data?.length || isError) return null;
   return (
     <div ref={scrollContainer} className="profile-widget-full" id="nft">
       <div
@@ -70,8 +70,11 @@ const RenderWidgetFeed = ({ address }) => {
             setExpand(!expand);
           }}
         />
-        2224
-        {/* <FeedsTab address={address} network={PlatformType.ethereum} /> */}
+        <FeedsTab
+          identity={profile}
+          data={expand ? data : data.slice(0, 3)}
+          network={PlatformType.ethereum}
+        />
       </div>
     </div>
   );

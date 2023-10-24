@@ -210,7 +210,7 @@ export default function ProfileMain(props) {
               </div>
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading Feeds...</p>}>
-                  <WidgetFeed address={data.address} />
+                  <WidgetFeed profile={data} />
                 </Suspense>
               </div>
               <div className="web3-section-widgets">
