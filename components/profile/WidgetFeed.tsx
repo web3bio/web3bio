@@ -20,14 +20,14 @@ const processFeedsData = (data) => {
 };
 
 const getURL = (index, address, previous) => {
-  const cursor = previous?.meta.cursor || "";
+  const cursor = previous?.meta?.cursor || "";
   if (index !== 0 && !(previous?.data?.length || cursor)) return null;
 
   return (
     RSS3_ENDPOINT +
     `data/accounts/${address}/activities?limit=${FEEDS_PAGE_SIZE}${
       cursor ? "&cursor=" + cursor : ""
-    }&action_limit=10`
+    }&action_limit=10&network=ethereum&network=polygon`
   );
 };
 
@@ -44,13 +44,11 @@ function useFeeds({ address, fromServer, initialData }) {
     {
       ...options,
       suspense: !fromServer,
-      fallbackData: [initialData],
       revalidateOnFocus: false,
-      revalidateOnMount: false,
+      revalidateOnMount: true,
       revalidateOnReconnect: false,
     }
   );
-
   return {
     hasNextPage: !!data?.[data.length - 1]?.meta?.cursor,
     data: processFeedsData(data),

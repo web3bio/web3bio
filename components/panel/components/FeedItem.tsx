@@ -12,7 +12,6 @@ import {
   TokenOperationCard,
 } from "./feedCards/TokenOperationCard";
 import { isTokenSwapFeed, TokenSwapCard } from "./feedCards/TokenSwapCard";
-import { PlatformType } from "../../../utils/platform";
 
 export const isSupportedFeed = (feed) => {
   return (
@@ -32,28 +31,16 @@ const RenderFeedItem = (props) => {
     return (
       <TokenOperationCard
         feed={feed}
-        owner={
-          network === PlatformType.lens ? identity.ownedBy : identity.identity
-        }
-        name={
-          network === PlatformType.lens
-            ? identity.displayName
-            : identity.name || identity.handle
-        }
+        identity={identity}
+        name={identity.displayName}
       />
     );
   if (isTokenSwapFeed(feed))
     return (
       <TokenSwapCard
         feed={feed}
-        owner={
-          network === PlatformType.lens ? identity.ownedBy : identity.identity
-        }
-        name={
-          network === PlatformType.lens
-            ? identity.displayName
-            : identity.name || identity.handle
-        }
+        identity={identity}
+        name={identity.displayName}
       />
     );
 
@@ -70,61 +57,33 @@ const RenderFeedItem = (props) => {
     return (
       <DonationCard
         feed={feed}
-        owner={
-          network === PlatformType.lens ? identity.ownedBy : identity.identity
-        }
-        name={
-          network === PlatformType.lens
-            ? identity.displayName
-            : identity.name || identity.handle
-        }
+        identity={identity}
+        name={identity.displayName}
       />
     );
 
-  if (isNoteFeed(feed))
-    return (
-      <NoteCard
-        feed={feed}
-        owner={
-          network === PlatformType.lens ? identity.ownedBy : identity.identity
-        }
-        name={
-          network === PlatformType.lens
-            ? identity.displayName
-            : identity.name || identity.handle
-        }
-      />
-    );
+  // if (isNoteFeed(feed))
+  //   return (
+  //     <NoteCard feed={feed} identity={identity} name={identity.displayName} />
+  //   );
 
-  if (isCommentFeed(feed))
-    return (
-      <CommentCard
-        feed={feed}
-        owner={
-          network === PlatformType.lens ? identity.ownedBy : identity.identity
-        }
-        name={
-          network === PlatformType.lens
-            ? identity.displayName
-            : identity.name || identity.handle
-        }
-      />
-    );
+  // if (isCommentFeed(feed))
+  //   return (
+  //     <CommentCard
+  //       feed={feed}
+  //       identity={identity}
+  //       name={identity.displayName}
+  //     />
+  //   );
 
-  if (isProfileFeed(feed))
-    return (
-      <ProfileCard
-        feed={feed}
-        owner={
-          network === PlatformType.lens ? identity.ownedBy : identity.identity
-        }
-        name={
-          network === PlatformType.lens
-            ? identity.displayName
-            : identity.name || identity.handle
-        }
-      />
-    );
+  // if (isProfileFeed(feed))
+  //   return (
+  //     <ProfileCard
+  //       feed={feed}
+  //       identity={identity}
+  //       name={identity.displayName}
+  //     />
+  //   );
 
   return null;
 };

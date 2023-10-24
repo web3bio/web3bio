@@ -7,25 +7,25 @@ export function isTokenSwapFeed(feed) {
 }
 
 const RenderTokenSwapCard = (props) => {
-  const { feed, owner,name } = props;
-  const action = feed.actions[0];
+  const { feed,identity,name } = props;
+  const action = feed.actions?.find(x=>x.type === Type.Swap);
+  const owner = identity.address
   const metadata = action.metadata;
-  const user = owner;
-  const isFromOwner = isSameAddress(user, action.address_from);
+  const isFromOwner = isSameAddress(owner, action.from);
 
   return (
     <div className="feed-item-box">
-      <div className="feed-type-badge"></div>
+      <div className="feed-badge-emoji">💹</div>
       <div className="feed-item">
         <div className="feed-item-header">
           <div className="feed-type-intro">
             <div className="strong">
               {isFromOwner
                 ? name || formatText(owner)
-                : formatText(action.address_from)}
+                : formatText(action.from)}
             </div>
             swaped on
-            <div className="strong">{feed.platform}</div>
+            <div className="strong">{action.platform}</div>
           </div>
         </div>
 
@@ -34,20 +34,20 @@ const RenderTokenSwapCard = (props) => {
             <div style={{ display: "flex" }}>
               <NFTAssetPlayer
                 className="feed-swap-img"
-                src={metadata.from.image}
+                src={metadata?.from?.image}
                 alt="ft1"
               />
               <NFTAssetPlayer
                 className="feed-swap-img"
-                src={metadata.to.image}
+                src={metadata?.to?.image}
                 alt="ft2"
               />
             </div>
 
             <div className="feed-nft-info">
               <div className="nft-title">
-                {formatValue(metadata.from)} {metadata.from.symbol} for{" "}
-                {formatValue(metadata.to)} {metadata.to.symbol}
+                {formatValue(metadata.from)} {metadata.from?.symbol} for{" "}
+                {formatValue(metadata.to)} {metadata.to?.symbol}
               </div>
             </div>
           </div>

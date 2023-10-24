@@ -27,6 +27,7 @@
       gap: 10px;
 
       .feed-badge-emoji {
+        margin-left: .2rem;
         transition: transform .15s ease-in-out;
         font-size: 1rem;
         cursor: pointer;
@@ -37,7 +38,7 @@
         opacity: 1;
 
         .feed-badge-emoji {
-          transform: scale(1.2) rotate(-10deg);
+          transform: scale(1.2) rotate(-20deg);
         }
       }
 

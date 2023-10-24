@@ -209,15 +209,21 @@ export default function ProfileMain(props) {
                 </Suspense>
               </div>
               <div className="web3-section-widgets">
-                <WidgetFeed
-                  initialData={[]}
-                  fromServer={fromServer}
-                  profile={data}
-                />
+                <Suspense fallback={<p>Loading Social Feeds...</p>}>
+                  <WidgetFeed
+                    initialData={[]}
+                    fromServer={fromServer}
+                    profile={data}
+                  />
+                </Suspense>
               </div>
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading Articles...</p>}>
-                  <WidgetRSS fromServer={fromServer} relations={relations} domain={data.identity} />
+                  <WidgetRSS
+                    fromServer={fromServer}
+                    relations={relations}
+                    domain={data.identity}
+                  />
                 </Suspense>
               </div>
               <div className="web3-section-widgets">

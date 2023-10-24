@@ -1,5 +1,9 @@
 import { memo } from "react";
-import { formatText, formatValue, isSameAddress } from "../../../../utils/utils";
+import {
+  formatText,
+  formatValue,
+  isSameAddress,
+} from "../../../../utils/utils";
 import { Tag, Type } from "../../../apis/rss3/types";
 import { NFTAssetPlayer } from "../../../shared/NFTAssetPlayer";
 
@@ -11,25 +15,26 @@ export const isTokenTransferFeed = (feed) => {
 };
 
 const RenderTokenOperationCard = (props) => {
-  const { feed, owner, name } = props;
+  const { feed, identity, name } = props;
   const action = feed.actions[0];
+  const owner = identity.address;
   const metadata = action.metadata;
-  const isFromOwner = isSameAddress(owner, action.address_from);
-  const _to = isSameAddress(owner, action.address_to)
+  const isFromOwner = isSameAddress(owner, action.from);
+  const _to = isSameAddress(owner, action.to)
     ? name
-    : formatText(feed.address_to ?? "");
+    : formatText(feed.to ?? "");
   const context =
     feed.type === Type.Burn ? "burn" : isFromOwner ? "send to" : "claim from";
   return (
     <div className="feed-item-box">
-      <div className="feed-type-badge"></div>
+      <div className="feed-badge-emoji">💰</div>
       <div className="feed-item">
         <div className="feed-item-header">
           <div className="feed-type-intro">
             <div className="strong">
               {isFromOwner
                 ? name || formatText(owner)
-                : formatText(action.address_from ?? "")}
+                : formatText(action.from ?? "")}
             </div>
             {context}
             <div className="strong">{_to}</div>
@@ -38,11 +43,15 @@ const RenderTokenOperationCard = (props) => {
 
         {metadata ? (
           <div className={"feed-item-main"}>
-            <NFTAssetPlayer
-              className="feed-nft-img"
-              src={metadata.image}
-              type="image/png"
-            />
+            {metadata.image && (
+              <NFTAssetPlayer
+                width={"100%"}
+                height={"100%"}
+                className="feed-nft-img"
+                src={metadata.image}
+                type="image/png"
+              />
+            )}
             <div className="feed-nft-info">
               <div className="nft-title">
                 {formatValue(metadata)} {metadata.symbol}
