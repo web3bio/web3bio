@@ -27,7 +27,7 @@ const getURL = (index, address, previous) => {
     RSS3_ENDPOINT +
     `data/accounts/${address}/activities?limit=${FEEDS_PAGE_SIZE}${
       cursor ? "&cursor=" + cursor : ""
-    }&action_limit=10&network=ethereum&network=polygon&tag=collectible`
+    }&action_limit=10&network=ethereum&network=polygon`
   );
 };
 

@@ -29,6 +29,7 @@ export enum Type {
     Vote = 'vote',
     Launch = 'launch',
     Donate = 'donate',
+    Approval = 'approval'
 }
 
 export enum CardType {
