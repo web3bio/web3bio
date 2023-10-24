@@ -1,4 +1,5 @@
 import { memo, useMemo } from "react";
+import { resolveIPFS_URL } from "../../../../utils/ipfs";
 import { formatText, isSameAddress } from "../../../../utils/utils";
 import { CardType, Tag, Type } from "../../../apis/rss3/types";
 import { NFTAssetPlayer } from "../../../shared/NFTAssetPlayer";
@@ -33,9 +34,7 @@ const RenderCollectibleCard = (props) => {
             <div className="feed-type-intro">
               <div className="strong">{_from}</div>
               minted an NFT
-              <div className="strong">
-                {metadata.title && `${metadata.title}`}
-              </div>
+              <div className="strong">{metadata.name}</div>
             </div>
           ),
         };
@@ -95,14 +94,16 @@ const RenderCollectibleCard = (props) => {
 
         {metadata ? (
           <div className={"feed-item-main"}>
-            <NFTAssetPlayer
-              className="feed-nft-img"
-              src={metadata.image_url}
-              type="image/png"
-            />
+            {metadata.image_url && (
+              <NFTAssetPlayer
+                className="feed-nft-img"
+                src={resolveIPFS_URL(metadata.image_url) || ''}
+                type="image/png"
+              />
+            )}
 
             <div className="feed-nft-info">
-              <div className="nft-title">{metadata.name}</div>
+              <div className="nft-title">{metadata.title}</div>
               {metadata.description ? (
                 <div className="nft-subtitle">{metadata.description}</div>
               ) : null}
