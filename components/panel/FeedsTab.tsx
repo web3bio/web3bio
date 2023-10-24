@@ -1,8 +1,5 @@
-import { memo, useState } from "react";
-import { formatTimestamp } from "../../utils/date";
-
+import { memo } from "react";
 import { Empty } from "../shared/Empty";
-import { Loading } from "../shared/Loading";
 import { FeedItem, isSupportedFeed } from "./components/FeedItem";
 
 const RenderFeedsTab = (props) => {
@@ -18,7 +15,7 @@ const RenderFeedsTab = (props) => {
               <div key={idx}>
                 <FeedItem network={network} identity={identity} feed={x} />
                 <div className="feed-timestamp">
-                  {formatTimestamp(x.timestamp)}
+                  {new Date(x.timestamp * 1000).toDateString()}
                 </div>
               </div>
             )) ||

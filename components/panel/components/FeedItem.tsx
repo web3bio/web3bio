@@ -1,7 +1,7 @@
 import { memo } from "react";
 import {
   CollectibleCard,
-  isCollectibleFeed
+  isCollectibleFeed,
 } from "./feedCards/CollectibleCard";
 import { CommentCard, isCommentFeed } from "./feedCards/CommentCard";
 import { DonationCard, isDonationFeed } from "./feedCards/DonationCard";
@@ -9,7 +9,7 @@ import { isNoteFeed, NoteCard } from "./feedCards/NoteCard";
 import { isProfileFeed, ProfileCard } from "./feedCards/ProfileCard";
 import {
   isTokenTransferFeed as isTokenOperationFeed,
-  TokenOperationCard
+  TokenOperationCard,
 } from "./feedCards/TokenOperationCard";
 import { isTokenSwapFeed, TokenSwapCard } from "./feedCards/TokenSwapCard";
 import { PlatformType } from "../../../utils/platform";
@@ -60,15 +60,9 @@ const RenderFeedItem = (props) => {
   if (isCollectibleFeed(feed))
     return (
       <CollectibleCard
+        identity={identity}
         feed={feed}
-        owner={
-          network === PlatformType.lens ? identity.ownedBy : identity.identity
-        }
-        name={
-          network === PlatformType.lens
-            ? identity.displayName
-            : identity.name || identity.handle
-        }
+        name={identity.displayName}
       />
     );
 

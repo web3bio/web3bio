@@ -26,3 +26,130 @@
     }
   }
 }
+
+// Social Feeds
+.feeds-container {
+  flex: 1 1;
+  height: 100%;
+  overflow-y: auto;
+  padding: 0 1.5rem;
+
+  .social-feeds-title {
+    font-size: .7rem;
+    font-weight: 700;
+    padding: 1rem 0;
+  }
+}
+
+.social-feeds-list {
+  .social-feeds-item {}
+
+  .feed-item-box {
+    display: flex;
+    width: 100%;
+    margin-top: 1rem;
+    align-items: flex-start;
+    gap: 10px;
+
+    .feed-badge-emoji {
+      transition: transform .15s ease-in-out;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    &:focus,
+    &:hover {
+      opacity: 1;
+
+      .feed-badge-emoji {
+        transform: scale(1.2) rotate(-10deg);
+      }
+    }
+
+    .feed-item {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 90%;
+
+      .feed-item-header {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .feed-type-intro {
+          display: flex;
+          align-items: center;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 22px;
+
+          .strong {
+            font-weight: 900;
+            margin: 0 4px;
+          }
+        }
+      }
+
+      .feed-item-main {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .feed-nft-img {
+          position: relative;
+          width: 40px;
+          height: 40px;
+          min-width: 40px;
+          min-height: 40px;
+          box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.15);
+          border-radius: 12px;
+
+          img {
+            box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+          }
+        }
+
+        .feed-swap-img {
+          width: 24px;
+          box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.15);
+          border-radius: 12px;
+          background: transparent;
+        }
+
+        .feed-nft-info {
+          display: flex;
+          flex-direction: column;
+
+          .nft-title {
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 22px;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+            overflow: hidden;
+          }
+
+          .nft-subtitle {
+            font-weight: 400;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+          }
+
+          .nft-collection-title {
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 1rem;
+            color: #121212;
+            opacity: 0.5;
+          }
+        }
+      }
+    }
+  }
+}
