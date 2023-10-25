@@ -32,15 +32,6 @@
         cursor: pointer;
       }
 
-      &:focus,
-      &:hover {
-        opacity: 1;
-
-        .feed-badge-emoji {
-          transform: scale(1.2) rotate(-20deg);
-        }
-      }
-
       .feed-item {
         width: 100%;
         display: flex;

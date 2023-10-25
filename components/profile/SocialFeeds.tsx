@@ -1,6 +1,6 @@
 import { memo } from "react";
 import useInfiniteScroll from "react-infinite-scroll-hook";
-import { FeedItem, isSupportedFeed } from "../panel/components/FeedItem";
+import { FeedItem, isSupportedFeed } from "../social/FeedItem";
 import { Empty } from "../shared/Empty";
 import { Loading } from "../shared/Loading";
 

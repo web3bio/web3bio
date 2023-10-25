@@ -4,9 +4,9 @@ import {
   formatText,
   formatValue,
   isSameAddress,
-} from "../../../../utils/utils";
-import { Tag, Type } from "../../../apis/rss3/types";
-import { NFTAssetPlayer } from "../../../shared/NFTAssetPlayer";
+} from "../../../utils/utils";
+import { Tag, Type } from "../../apis/rss3/types";
+import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
 import SVG from "react-inlinesvg";
 export function isTokenSwapFeed(feed) {
   return feed.tag === Tag.Exchange && feed.type === Type.Swap;

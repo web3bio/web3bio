@@ -90,6 +90,8 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
     initialData,
   });
 
+  console.log(process.env.NODE_ENV)
+
   const scrollContainer = useRef(null);
 
   const issues = !data?.results?.length
@@ -107,6 +109,10 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
   }, [expand]);
   if (!issues?.length || isError) return null;
 
+  if (process.env.NODE_ENV !== "production") {
+    console.log(data);
+  }
+
   return (
     <div ref={scrollContainer} className="profile-widget-full" id="feeds">
       <div
@@ -117,7 +123,6 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
         <h2 className="profile-widget-title">
           <span className="emoji-large mr-2">🌈 </span>
           Social Feeds
-          <span className="label ml-2">{data.total}</span>
         </h2>
         <ExpandController
           expand={expand}

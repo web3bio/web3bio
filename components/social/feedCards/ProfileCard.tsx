@@ -1,7 +1,7 @@
 import { memo, useMemo } from "react";
-import { formatText, isSameAddress } from "../../../../utils/utils";
-import { Tag, Type } from "../../../apis/rss3/types";
-import { NFTAssetPlayer } from "../../../shared/NFTAssetPlayer";
+import { formatText, isSameAddress } from "../../../utils/utils";
+import { Tag, Type } from "../../apis/rss3/types";
+import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
 import { getLastAction } from "./CollectibleCard";
 
 export function isProfileFeed(feed) {

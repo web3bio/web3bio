@@ -4,17 +4,16 @@ import {
   formatText,
   formatValue,
   isSameAddress,
-} from "../../../../utils/utils";
-import { Tag, Type } from "../../../apis/rss3/types";
-import { NFTAssetPlayer } from "../../../shared/NFTAssetPlayer";
+} from "../../../utils/utils";
+import { Tag, Type } from "../../apis/rss3/types";
 import { getLastAction } from "./CollectibleCard";
 import SVG from "react-inlinesvg";
 
-export function isDonationFeed(feed) {
-  return feed.tag === Tag.Donation && feed.type === Type.Donate;
+export function isGovernanceCard(feed) {
+  return feed.tag === Tag.Governance && feed.type === Type.Vote;
 }
 
-const RenderDonationCard = (props) => {
+const RenderGovernanceCard = (props) => {
   const { feed, identity, name } = props;
   const action = getLastAction(feed);
   const metadata = action.metadata;
@@ -23,18 +22,20 @@ const RenderDonationCard = (props) => {
 
   return (
     <div className="feed-item-box">
-      <div className="feed-badge-emoji">💌</div>
+      <div className="feed-badge-emoji">🏛️</div>
       <div className="feed-item">
         <div className="feed-item-header">
           <div className="feed-type-intro">
             <strong>
               {isOwner ? name || formatText(owner) : formatText(owner ?? "")}
             </strong>
-            donated
+            voted for
             <strong>
-              {formatValue(metadata?.token)} {metadata?.token?.symbol ?? ""} on{" "}
-              {feed.platform}
+              {metadata.proposal.options.join(",")}
+              {formatValue(metadata?.token)} {metadata?.token?.symbol ?? ""}
             </strong>
+            on
+            <strong>{feed.platform}</strong>
           </div>
           <Link
             href={action?.related_urls?.[0] || ""}
@@ -47,15 +48,9 @@ const RenderDonationCard = (props) => {
 
         {metadata && (
           <div className={"feed-item-main"}>
-            <NFTAssetPlayer
-              width={"100%"}
-              height={"100%"}
-              className="feed-nft-img"
-              src={metadata?.token?.image}
-            />
             <div className="feed-nft-info">
-              <div className="nft-title">{metadata.title}</div>
-              <div className="nft-subtitle">{metadata.description}</div>
+              <div className="nft-title">{metadata.proposal.title}</div>
+              <div className="nft-subtitle">{metadata.proposal.body}</div>
             </div>
           </div>
         )}
@@ -64,4 +59,4 @@ const RenderDonationCard = (props) => {
   );
 };
 
-export const DonationCard = memo(RenderDonationCard);
+export const GovernanceCard = memo(RenderGovernanceCard);

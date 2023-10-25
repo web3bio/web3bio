@@ -3,11 +3,11 @@ import {
   formatText,
   isSameAddress,
   resolveMediaURL,
-} from "../../../../utils/utils";
-import { Tag, Type } from "../../../apis/rss3/types";
-import { NFTAssetPlayer } from "../../../shared/NFTAssetPlayer";
+} from "../../../utils/utils";
+import { Tag, Type } from "../../apis/rss3/types";
+import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
 import SVG from "react-inlinesvg";
-import { SocialPlatformMapping } from "../../../../utils/platform";
+import { SocialPlatformMapping } from "../../../utils/platform";
 import Link from "next/link";
 
 export function isCommentFeed(feed) {
