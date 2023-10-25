@@ -3,15 +3,15 @@ import {
   CollectibleCard,
   isCollectibleFeed,
 } from "./feedCards/CollectibleCard";
-import { CommentCard, isCommentFeed } from "./feedCards/CommentCard";
 import { DonationCard, isDonationFeed } from "./feedCards/DonationCard";
-import { isNoteFeed, NoteCard } from "./feedCards/NoteCard";
+import { isArticleCard, ArticleCard } from "./feedCards/ArticleCard";
 import { isProfileFeed, ProfileCard } from "./feedCards/ProfileCard";
 import {
   isTokenTransferFeed as isTokenOperationFeed,
   TokenOperationCard,
 } from "./feedCards/TokenOperationCard";
 import { isTokenSwapFeed, TokenSwapCard } from "./feedCards/TokenSwapCard";
+import { isShareCard, ShareCard } from "./feedCards/ShareCard";
 
 export const isSupportedFeed = (feed) => {
   return (
@@ -19,9 +19,9 @@ export const isSupportedFeed = (feed) => {
     isTokenSwapFeed(feed) ||
     isCollectibleFeed(feed) ||
     isDonationFeed(feed) ||
-    isNoteFeed(feed) ||
-    isCommentFeed(feed) ||
-    isProfileFeed(feed)
+    isArticleCard(feed) ||
+    isProfileFeed(feed) ||
+    isShareCard(feed)
   );
 };
 
@@ -61,29 +61,27 @@ const RenderFeedItem = (props) => {
         name={identity.displayName}
       />
     );
+  if (isProfileFeed(feed))
+    return (
+      <ProfileCard
+        feed={feed}
+        identity={identity}
+        name={identity.displayName}
+      />
+    );
 
-  // if (isNoteFeed(feed))
-  //   return (
-  //     <NoteCard feed={feed} identity={identity} name={identity.displayName} />
-  //   );
-
-  // if (isCommentFeed(feed))
-  //   return (
-  //     <CommentCard
-  //       feed={feed}
-  //       identity={identity}
-  //       name={identity.displayName}
-  //     />
-  //   );
-
-  // if (isProfileFeed(feed))
-  //   return (
-  //     <ProfileCard
-  //       feed={feed}
-  //       identity={identity}
-  //       name={identity.displayName}
-  //     />
-  //   );
+  if (isArticleCard(feed))
+    return (
+      <ArticleCard
+        feed={feed}
+        identity={identity}
+        name={identity.displayName}
+      />
+    );
+  if (isShareCard(feed))
+    return (
+      <ShareCard feed={feed} identity={identity} name={identity.displayName} />
+    );
 
   return null;
 };

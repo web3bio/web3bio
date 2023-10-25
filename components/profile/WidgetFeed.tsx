@@ -83,7 +83,7 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
         behavior: "smooth",
       });
     }
-  },[expand]);
+  }, [expand]);
   if (!issues?.length || isError) return null;
 
   return (

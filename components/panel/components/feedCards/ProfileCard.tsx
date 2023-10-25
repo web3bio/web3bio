@@ -8,11 +8,12 @@ export function isProfileFeed(feed) {
 }
 
 const RenderProfileFeed = (props) => {
-  const { feed, owner,name } = props;
+  const { feed, identity, name } = props;
   const action = feed.actions[0];
   const metadata = action.metadata;
-  const imageSize = 40;
+  const owner = identity.address;
   const isOwner = isSameAddress(feed.owner, owner);
+  
   return (
     <div className="feed-item-box">
       <div className="feed-type-badge"></div>
@@ -24,8 +25,8 @@ const RenderProfileFeed = (props) => {
                 ? name || formatText(owner)
                 : formatText(feed.owner ?? "")}
             </div>
-            created an profile on
-            <div className="strong">{metadata?.platform}</div>
+            updated an profile on
+            <div className="strong">{feed?.platform}</div>
           </div>
         </div>
 
@@ -33,16 +34,18 @@ const RenderProfileFeed = (props) => {
           <div className={"feed-item-main"}>
             <NFTAssetPlayer
               className="feed-nft-img"
-              width={imageSize}
-              height={imageSize}
-              src={metadata.profile_uri[0]}
+              src={metadata.image_uri}
               type="image/png"
+              alt={metadata.handle}
             />
             <div className="feed-nft-info">
               <div className="nft-title">
                 {metadata.name || metadata.handle}
               </div>
-              <div className="nft-subtitle">{metadata?.bio}</div>
+              <div className="nft-subtitle">
+                <strong>{metadata?.action + " "}</strong>{" "}
+                {metadata?.key + " " + formatText(metadata?.value)}
+              </div>
             </div>
           </div>
         )}

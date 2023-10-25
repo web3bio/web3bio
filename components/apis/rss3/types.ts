@@ -4,6 +4,7 @@ export enum Tag {
     Exchange = 'exchange',
     Governance = 'governance',
     Social = 'social',
+    MetaVerse = 'metaverse',
     Transaction = 'transaction',
 }
 
