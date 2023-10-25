@@ -5,7 +5,7 @@ import {
   isSameAddress,
   resolveMediaURL,
 } from "../../../../utils/utils";
-import { CardType, Tag, Type } from "../../../apis/rss3/types";
+import { Tag, Type } from "../../../apis/rss3/types";
 import { NFTAssetPlayer } from "../../../shared/NFTAssetPlayer";
 import SVG from "react-inlinesvg";
 export function isCollectibleFeed(feed) {
@@ -53,7 +53,6 @@ const RenderCollectibleCard = (props) => {
         action = getLastAction(feed);
         metadata = action.metadata;
         return {
-          cardType: CardType.CollectibleOut,
           metadata,
           action,
           summary: (
@@ -68,7 +67,6 @@ const RenderCollectibleCard = (props) => {
         action = getLastAction(feed);
         metadata = action.metadata;
         return {
-          cardType: CardType.CollectibleOut,
           metadata,
           action,
           summary: (

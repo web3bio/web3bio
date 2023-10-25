@@ -5,7 +5,7 @@ import {
   formatValue,
   isSameAddress,
 } from "../../../../utils/utils";
-import { CardType, Tag, Type } from "../../../apis/rss3/types";
+import { Tag, Type } from "../../../apis/rss3/types";
 import { NFTAssetPlayer } from "../../../shared/NFTAssetPlayer";
 import SVG from "react-inlinesvg";
 import { getLastAction } from "./CollectibleCard";
@@ -59,7 +59,6 @@ const RenderTokenOperationCard = (props) => {
         };
       case Type.Burn:
         return {
-          cardType: CardType.CollectibleBurn,
           metadata,
           action,
           summary: (
