@@ -2,9 +2,8 @@ import { memo, useMemo } from "react";
 import {
   formatText,
   isSameAddress,
-  resolveMediaURL,
 } from "../../../../utils/utils";
-import { CardType, Tag, Type } from "../../../apis/rss3/types";
+import {  Tag, Type } from "../../../apis/rss3/types";
 import { NFTAssetPlayer } from "../../../shared/NFTAssetPlayer";
 import { getLastAction } from "./CollectibleCard";
 

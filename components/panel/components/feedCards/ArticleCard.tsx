@@ -4,10 +4,10 @@ import { resolveIPFS_URL } from "../../../../utils/ipfs";
 import { formatText, isSameAddress } from "../../../../utils/utils";
 import { Tag, Type } from "../../../apis/rss3/types";
 import { NFTAssetPlayer } from "../../../shared/NFTAssetPlayer";
-import SVG from 'react-inlinesvg'
+import SVG from "react-inlinesvg";
 
 export function isArticleCard(feed) {
-  return feed.tag === Tag.Social && [Type.Mint, Type.Post].includes(feed.type);
+  return feed.tag === Tag.Social && [Type.Post].includes(feed.type);
 }
 
 const RenderArticleCard = (props) => {

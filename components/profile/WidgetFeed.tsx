@@ -40,11 +40,11 @@ const getURL = (index, address, previous) => {
     query_status: true,
     refresh: true,
     tag: [
-    //   Tag.Social,
+      Tag.Social,
     //   Tag.Transaction,
     //   Tag.Collectible,
     //   Tag.Exchange,
-      Tag.Donation,
+    //   Tag.Donation,
     //   Tag.Governance,
     //   Tag.MetaVerse,
     ],
