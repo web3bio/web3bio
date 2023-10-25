@@ -56,6 +56,9 @@ const RenderCommentFeed = (props) => {
               <SVG
                 width={"100%"}
                 height={"100%"}
+                style={{
+                  borderRadius:'.6rem'
+                }}
                 fill={
                   SocialPlatformMapping(action?.platform.toLowerCase()).color
                 }
