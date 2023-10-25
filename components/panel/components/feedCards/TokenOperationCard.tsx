@@ -90,15 +90,14 @@ const RenderTokenOperationCard = (props) => {
 
         {metadata ? (
           <div className={"feed-item-main"}>
-            {metadata.image && (
-              <NFTAssetPlayer
-                width={"100%"}
-                height={"100%"}
-                className="feed-nft-img"
-                src={metadata.image}
-                type="image/png"
-              />
-            )}
+            <NFTAssetPlayer
+              width={"100%"}
+              height={"100%"}
+              className="feed-nft-img"
+              src={metadata.image}
+              alt={metadata.symbol}
+              type="image/png"
+            />
             <div className="feed-nft-info">
               <div className="nft-title">
                 {formatValue(metadata)} {metadata.symbol}

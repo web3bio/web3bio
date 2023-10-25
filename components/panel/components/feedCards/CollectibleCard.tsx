@@ -44,7 +44,7 @@ const RenderCollectibleCard = (props) => {
       case Type.Mint:
         action = getLastAction(feed);
         metadata = action.metadata;
-        image_url = metadata.image_url;
+        image_url = metadata.image;
         return {
           metadata,
           action,
@@ -94,7 +94,7 @@ const RenderCollectibleCard = (props) => {
       case Type.Approval:
         action = getLastAction(feed);
         metadata = action.metadata;
-        image_url = metadata.image_url;
+        image_url = metadata.image;
         return {
           metadata,
           action,
@@ -126,7 +126,7 @@ const RenderCollectibleCard = (props) => {
       case Type.Burn:
         action = getLastAction(feed);
         metadata = action.metadata;
-        image_url = metadata.image_url;
+        image_url = metadata.image;
         return {
           metadata,
           action,
