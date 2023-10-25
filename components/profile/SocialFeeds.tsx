@@ -31,7 +31,7 @@ const RenderSocialFeeds = (props) => {
               <div key={idx}>
                 <FeedItem network={network} identity={identity} feed={x} />
                 <div className="feed-timestamp">
-                  {new Date(x.timestamp * 1000).toDateString()}
+                  {new Date(x.timestamp).toDateString()}
                 </div>
               </div>
             )) ||

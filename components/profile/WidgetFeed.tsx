@@ -10,14 +10,17 @@ import { Networks, Tag } from "../apis/rss3/types";
 const FEEDS_PAGE_SIZE = 10;
 
 const processFeedsData = (data) => {
-  if (!data?.[0]?.result?.length) return [];
+  if (!data?.[0]?.result?.length) return { total: 0, results: [] };
   const issues = new Array();
   data.map((x) => {
     x.result.forEach((i) => {
       issues.push(i);
     });
   });
-  return issues;
+  return {
+    total: data?.[0]?.total,
+    results: issues,
+  };
 };
 
 const getURL = (index, address, previous) => {
@@ -27,7 +30,12 @@ const getURL = (index, address, previous) => {
   const data = {
     address: [address],
     limit: FEEDS_PAGE_SIZE,
-    network: [Networks.Ethereum, Networks.Farcaster, Networks.Matic],
+    network: [
+      Networks.Ethereum,
+      Networks.Farcaster,
+      Networks.Matic,
+      Networks.Arweave,
+    ],
     cursor,
     query_status: true,
     refresh: true,
@@ -63,7 +71,7 @@ function useFeeds({ address, fromServer, initialData }) {
     }
   );
   return {
-    hasNextPage: !!data?.[data.length - 1]?.meta?.cursor,
+    hasNextPage: !!data?.[data.length - 1]?.cursor,
     data: processFeedsData(data),
     isLoading: !error && !data,
     isError: error,
@@ -84,11 +92,11 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
 
   const scrollContainer = useRef(null);
 
-  const issues = !data?.length
+  const issues = !data?.results?.length
     ? []
     : expand
-    ? JSON.parse(JSON.stringify(data))
-    : JSON.parse(JSON.stringify(data.slice(0, 3)));
+    ? JSON.parse(JSON.stringify(data.results))
+    : JSON.parse(JSON.stringify(data.results.slice(0, 3)));
   useEffect(() => {
     if (expand) {
       const anchorElement = document.getElementById("feeds");
@@ -109,6 +117,7 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
         <h2 className="profile-widget-title">
           <span className="emoji-large mr-2">🌈 </span>
           Social Feeds
+          <span className="label ml-2">{data.total}</span>
         </h2>
         <ExpandController
           expand={expand}

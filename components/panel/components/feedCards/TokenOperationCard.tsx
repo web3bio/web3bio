@@ -26,12 +26,12 @@ const RenderTokenOperationCard = (props) => {
     let metadata;
     action = getLastAction(feed);
     metadata = action.metadata;
-    const isFromOwner = isSameAddress(owner, action.from);
+    const isFromOwner = isSameAddress(owner, action.address_from);
 
     const _from = isFromOwner ? name : formatText(owner ?? "");
-    const _to = isSameAddress(owner, feed.to)
+    const _to = isSameAddress(owner, action.address_to)
       ? name || formatText(owner)
-      : formatText(feed.to ?? "");
+      : formatText(action.address_to ?? "");
     switch (feed.type) {
       case Type.Transfer:
         return {

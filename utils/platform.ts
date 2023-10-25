@@ -51,6 +51,7 @@ export enum PlatformType {
   twitter_hexagon = "twitter_hexagon",
   uniswap = "uniswap",
   degenscore = "degenscore",
+  firefly="firefly",
 }
 
 export const platformData: { [key in PlatformType]: SocialPlatform } = {
@@ -379,6 +380,13 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
     color: "#a855f7",
     label: "DegenScore",
     urlPrefix: "https://degenscore.com/beacon/",
+  },
+  [PlatformType.firefly]: {
+    key: PlatformType.firefly,
+    icon: "icons/icon-firefly.svg",
+    color: "#D543ED",
+    label: "Firefly",
+    urlPrefix: "https://firefly.land/",
   },
 };
 
