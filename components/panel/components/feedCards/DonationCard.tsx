@@ -1,4 +1,5 @@
-import { memo, useState } from "react";
+import Link from "next/link";
+import { memo } from "react";
 import {
   formatText,
   formatValue,
@@ -6,16 +7,16 @@ import {
 } from "../../../../utils/utils";
 import { Tag, Type } from "../../../apis/rss3/types";
 import { NFTAssetPlayer } from "../../../shared/NFTAssetPlayer";
+import { getLastAction } from "./CollectibleCard";
+import SVG from "react-inlinesvg";
 
 export function isDonationFeed(feed) {
   return feed.tag === Tag.Donation && feed.type === Type.Donate;
 }
 
 const RenderDonationCard = (props) => {
-  const { feed, actionIndex, identity, name } = props;
-  const [index, setIndex] = useState(0);
-  const activeActionIndex = actionIndex ?? index;
-  const action = feed.actions[activeActionIndex];
+  const { feed, identity, name } = props;
+  const action = getLastAction(feed);
   const metadata = action.metadata;
   const owner = identity.address;
   const isOwner = isSameAddress(feed.owner, owner);
@@ -35,6 +36,13 @@ const RenderDonationCard = (props) => {
               {feed.platform}
             </div>
           </div>
+          <Link
+            href={action?.related_urls?.[0] || ""}
+            target="_blank"
+            className="action-icon"
+          >
+            <SVG src="../icons/icon-open.svg" width={20} height={20} />
+          </Link>
         </div>
 
         {metadata && (
@@ -43,9 +51,8 @@ const RenderDonationCard = (props) => {
               width={"100%"}
               height={"100%"}
               className="feed-nft-img"
-              src={metadata.token.image}
+              src={metadata?.token?.image}
             />
-            <picture></picture>
             <div className="feed-nft-info">
               <div className="nft-title">{metadata.title}</div>
               <div className="nft-subtitle">{metadata.description}</div>

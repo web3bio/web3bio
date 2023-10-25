@@ -40,13 +40,13 @@ const getURL = (index, address, previous) => {
     query_status: true,
     refresh: true,
     tag: [
-      Tag.Social,
-      Tag.Transaction,
-      Tag.Collectible,
-      Tag.Exchange,
+    //   Tag.Social,
+    //   Tag.Transaction,
+    //   Tag.Collectible,
+    //   Tag.Exchange,
       Tag.Donation,
-      Tag.Governance,
-      Tag.MetaVerse,
+    //   Tag.Governance,
+    //   Tag.MetaVerse,
     ],
   };
   return [url, data];

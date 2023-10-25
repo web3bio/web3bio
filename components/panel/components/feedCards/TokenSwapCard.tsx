@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { memo } from "react";
 import {
   formatText,
@@ -6,6 +7,7 @@ import {
 } from "../../../../utils/utils";
 import { Tag, Type } from "../../../apis/rss3/types";
 import { NFTAssetPlayer } from "../../../shared/NFTAssetPlayer";
+import SVG from 'react-inlinesvg'
 export function isTokenSwapFeed(feed) {
   return feed.tag === Tag.Exchange && feed.type === Type.Swap;
 }
@@ -15,7 +17,7 @@ const RenderTokenSwapCard = (props) => {
   const action = feed.actions?.find((x) => x.type === Type.Swap);
   const owner = identity.address;
   const metadata = action.metadata;
-  const isFromOwner = isSameAddress(owner, action.from);
+  const isFromOwner = isSameAddress(owner, action.address_from);
 
   return (
     <div className="feed-item-box">
@@ -26,11 +28,18 @@ const RenderTokenSwapCard = (props) => {
             <div className="strong">
               {isFromOwner
                 ? name || formatText(owner)
-                : formatText(action.from)}
+                : formatText(action.address_from)}
             </div>
-            swaped {action.platform && "on"}
-            <div className="strong">{action.platform}</div>
+            swaped {feed.platform && "on"}
+            <div className="strong">{feed.platform}</div>
           </div>
+          <Link
+            href={action?.related_urls?.[0] || ""}
+            target="_blank"
+            className="action-icon"
+          >
+            <SVG src="../icons/icon-open.svg" width={20} height={20} />
+          </Link>
         </div>
 
         {metadata ? (

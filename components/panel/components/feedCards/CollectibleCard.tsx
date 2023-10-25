@@ -1,12 +1,18 @@
 import Link from "next/link";
 import { memo, useMemo } from "react";
-import { resolveIPFS_URL } from "../../../../utils/ipfs";
-import { formatText, isSameAddress } from "../../../../utils/utils";
+import {
+  formatText,
+  isSameAddress,
+  resolveMediaURL,
+} from "../../../../utils/utils";
 import { CardType, Tag, Type } from "../../../apis/rss3/types";
 import { NFTAssetPlayer } from "../../../shared/NFTAssetPlayer";
 import SVG from "react-inlinesvg";
 export function isCollectibleFeed(feed) {
-  return feed.tag === Tag.Collectible;
+  return (
+    feed.tag === Tag.Collectible &&
+    [Type.Mint, Type.Transfer, Type.Trade, Type.Burn].includes(feed.type)
+  );
 }
 
 export function getLastAction(feed) {
@@ -22,15 +28,15 @@ const RenderCollectibleCard = (props) => {
     let action;
     let metadata;
     const _from = isOwner ? name : formatText(user ?? "");
-    const _to = isSameAddress(user, feed.to)
+    const _to = isSameAddress(user, feed.address_to)
       ? name || formatText(user)
-      : formatText(feed.to ?? "");
+      : formatText(feed.address_to ?? "");
+
     switch (feed.type) {
       case Type.Mint:
-        action = getLastAction(feed)
+        action = getLastAction(feed);
         metadata = action.metadata;
         return {
-          cardType: CardType.CollectibleMint,
           metadata,
           action,
           summary: (
@@ -59,11 +65,8 @@ const RenderCollectibleCard = (props) => {
       case Type.Transfer:
         action = getLastAction(feed);
         metadata = action.metadata;
-        const isSending = isSameAddress(feed.owner, action.from);
+
         return {
-          cardType: isSending
-            ? CardType.CollectibleOut
-            : CardType.CollectibleIn,
           metadata,
           action,
           summary: (
@@ -75,10 +78,9 @@ const RenderCollectibleCard = (props) => {
           ),
         };
       case Type.Burn:
-        action = getLastAction(feed)
+        action = getLastAction(feed);
         metadata = action.metadata;
         return {
-          cardType: CardType.CollectibleBurn,
           metadata,
           action,
           summary: (
@@ -90,9 +92,9 @@ const RenderCollectibleCard = (props) => {
         };
     }
 
-    return { summary: "", cardType: CardType.CollectibleIn };
+    return { summary: "" };
   }, [feed, user, isOwner, name]);
-  
+
   return (
     <div className="feed-item-box">
       <div className="feed-badge-emoji">🍞</div>
@@ -110,21 +112,21 @@ const RenderCollectibleCard = (props) => {
 
         {metadata ? (
           <div className={"feed-item-main"}>
-            {metadata.image_url && (
-              <NFTAssetPlayer
-                height={"100%"}
-                className="feed-nft-img"
-                src={resolveIPFS_URL(metadata.image_url) || ""}
-                type="image/png"
-                alt={metadata.name}
-              />
-            )}
+            <NFTAssetPlayer
+              height={"100%"}
+              className="feed-nft-img"
+              src={
+                resolveMediaURL(
+                  metadata.media?.[0]?.address || metadata.image
+                ) || ""
+              }
+              type="image/png"
+              alt={metadata.name}
+            />
 
             <div className="feed-nft-info">
-              <div className="nft-title">{metadata.title}</div>
-              {metadata.description ? (
-                <div className="nft-subtitle">{metadata.description}</div>
-              ) : null}
+              <div className="nft-title">{metadata.name || metadata.body}</div>
+              <div className="nft-subtitle">{metadata.description}</div>
             </div>
           </div>
         ) : null}
