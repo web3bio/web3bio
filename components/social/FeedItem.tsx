@@ -1,4 +1,7 @@
 import { memo } from "react";
+import { formatText, isSameAddress } from "../../utils/utils";
+import { SocialPlatformMapping } from "../../utils/platform";
+import SVG from "react-inlinesvg";
 import {
   CollectibleCard,
   isCollectibleFeed,
@@ -11,7 +14,7 @@ import {
   TokenOperationCard,
 } from "./feedCards/TokenOperationCard";
 import { isTokenSwapFeed, TokenSwapCard } from "./feedCards/TokenSwapCard";
-import { CommentCard, isCommentFeed } from "./feedCards/CommentCard";
+import { isCommentFeed } from "./feedCards/CommentCard";
 import { GovernanceCard, isGovernanceCard } from "./feedCards/GovernanceCard";
 
 export const isSupportedFeed = (feed) => {
@@ -27,81 +30,87 @@ export const isSupportedFeed = (feed) => {
   );
 };
 
+const RenderFeedContent = (props) => {
+  const {feed, identity} = props;
+  switch(true) {
+    case isPostCard(feed) || isCommentFeed(feed):
+      return (
+        <PostCard feed={feed} />
+      );
+    case isTokenSwapFeed(feed):
+      return (
+        <TokenSwapCard feed={feed} />
+      );
+    case isTokenOperationFeed(feed):
+      return (
+        <TokenOperationCard feed={feed} address={identity.address} name={identity.displayName} />
+      );
+    case isCollectibleFeed(feed):
+      return (
+        <CollectibleCard feed={feed} address={identity.address} name={identity.displayName} />
+      );
+    case isDonationFeed(feed):
+      return (
+        <DonationCard feed={feed} />
+      );
+    case isProfileFeed(feed):
+      return (
+        <ProfileCard feed={feed} address={identity.address} name={identity.displayName} />
+      );
+    case isGovernanceCard(feed):
+      return (
+        <GovernanceCard feed={feed} address={identity.address} name={identity.displayName} />
+      );
+
+    default:
+      return (
+        null
+      )
+  }
+}
+
 const RenderFeedItem = (props) => {
   const { feed, identity, network } = props;
-  if (isTokenSwapFeed(feed))
-    return (
-      <TokenSwapCard
-        feed={feed}
-        identity={identity}
-        name={identity.displayName}
-      />
-    );
+  const isOwner = isSameAddress(feed.owner, identity.address);
+  const platformName = feed.platform?.toLowerCase();
 
-  if (isPostCard(feed))
-    return (
-      <PostCard
-        feed={feed}
-        identity={identity}
-        name={identity.displayName}
-      />
-    );
-    
-  if (isCommentFeed(feed))
-    return (
-      <CommentCard
-        feed={feed}
-        identity={identity}
-        name={identity.displayName}
-      />
-    );
-
-  if (isTokenOperationFeed(feed))
-    return (
-      <TokenOperationCard
-        feed={feed}
-        identity={identity}
-        name={identity.displayName}
-      />
-    );
-  
-    if (isCollectibleFeed(feed))
-    return (
-      <CollectibleCard
-        identity={identity}
-        feed={feed}
-        name={identity.displayName}
-      />
-    );
-
-  if (isDonationFeed(feed))
-    return (
-      <DonationCard
-        feed={feed}
-        identity={identity}
-        name={identity.displayName}
-      />
-    );
-
-  if (isProfileFeed(feed))
-    return (
-      <ProfileCard
-        feed={feed}
-        identity={identity}
-        name={identity.displayName}
-      />
-    );
-
-  if (isGovernanceCard(feed))
-    return (
-      <GovernanceCard
-        feed={feed}
-        identity={identity}
-        name={identity.displayName}
-      />
-    );
-
-  return null;
+  return (
+    <>
+      <div className="feed-item-icon">
+        <div className="feed-icon-emoji">
+          💬
+          <div className={`feed-icon-platform ${platformName}`}>
+            <SVG
+              fill={
+                SocialPlatformMapping(platformName).color
+              }
+              src={
+                SocialPlatformMapping(platformName).icon ||
+                ""
+              }
+            />
+          </div>
+        </div>
+      </div>
+      <div className="feed-item-content">
+        <div className="feed-item-header">
+          <div className="feed-item-name">
+            <strong>
+              {isOwner
+                ? identity.displayName || formatText(identity.address)
+                : formatText(feed.from)}
+            </strong>
+          </div>
+          <div className="feed-item-action">
+            <div className="feed-timestamp">
+              {new Date(feed.timestamp).toDateString()}
+            </div>
+          </div>
+        </div>
+        <RenderFeedContent feed={feed} identity={identity} />
+      </div>
+    </>
+  )
 };
 
 export const FeedItem = memo(RenderFeedItem);

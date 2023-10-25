@@ -27,17 +27,16 @@ export function getLastAction(feed) {
 }
 
 const RenderCollectibleCard = (props) => {
-  const { feed, name, identity } = props;
-  const user = identity.address;
-  const isOwner = isSameAddress(user, feed.owner);
+  const { feed, name, address } = props;
+  const isOwner = isSameAddress(address, feed.owner);
 
   const { metadata, summary, action, image_url } = useMemo(() => {
     let action;
     let metadata;
     let image_url;
-    const _from = isOwner ? name : formatText(user ?? "");
-    const _to = isSameAddress(user, feed.address_to)
-      ? name || formatText(user)
+    const _from = isOwner ? name : formatText(address ?? "");
+    const _to = isSameAddress(address, feed.address_to)
+      ? name || formatText(address)
       : formatText(feed.address_to ?? "");
 
     switch (feed.type) {
@@ -141,7 +140,7 @@ const RenderCollectibleCard = (props) => {
     }
 
     return { summary: "", image_url };
-  }, [feed, user, isOwner, name]);
+  }, [feed, address, isOwner, name]);
 
   return (
     <div className="feed-item-box">

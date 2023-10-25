@@ -14,10 +14,11 @@ export function isGovernanceCard(feed) {
 }
 
 const RenderGovernanceCard = (props) => {
-  const { feed, identity, name } = props;
+  const { feed, identity } = props;
   const action = getLastAction(feed);
   const metadata = action.metadata;
   const owner = identity.address;
+  const name = identity.displayName;
   const isOwner = isSameAddress(feed.owner, owner);
 
   return (

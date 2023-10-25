@@ -12,17 +12,15 @@ export function isProfileFeed(feed) {
 }
 
 const RenderProfileFeed = (props) => {
-  const { feed, identity, name } = props;
+  const { feed, name, address } = props;
 
-  const owner = identity.address;
-  const isOwner = isSameAddress(feed.owner, owner);
+  const isOwner = isSameAddress(feed.owner, address);
   const { metadata, summary, image_url } = useMemo(() => {
     let action;
     let metadata;
     let image_url;
-    const _from = isOwner ? name : formatText(owner ?? "");
-    const _to = isSameAddress(owner, feed.to)
-      ? name || formatText(owner)
+    const _to = isSameAddress(address, feed.to)
+      ? name || formatText(address)
       : formatText(feed.to ?? "");
     switch (feed.type) {
       case Type.Mint:
@@ -35,7 +33,6 @@ const RenderProfileFeed = (props) => {
           image_url,
           summary: (
             <div className="feed-type-intro">
-              <strong>{_from}</strong>
               minted a note on <strong>{action.platform}</strong>
             </div>
           ),
@@ -50,7 +47,6 @@ const RenderProfileFeed = (props) => {
           image_url,
           summary: (
             <div className="feed-type-intro">
-              <strong>{_from}</strong>
               followed
               <strong>{metadata.name || metadata.handle}</strong>
               on <strong>{metadata.platform}</strong>
@@ -60,7 +56,7 @@ const RenderProfileFeed = (props) => {
     }
 
     return { summary: "", image_url };
-  }, [feed, isOwner, name, owner]);
+  }, [feed, isOwner, name, address]);
   return (
     <div className="feed-item-box">
       <div className="feed-badge-emoji">🚀</div>

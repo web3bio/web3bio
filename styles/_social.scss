@@ -203,7 +203,8 @@
     align-items: flex-start;
     display: flex;
     font-size: .75rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 0;
 
     .feed-item-icon {
       align-items: center;
@@ -289,6 +290,9 @@
         .img-responsive {
           border-radius: .4rem;
           box-shadow: 0 .1rem .2rem rgba($dark-color, .15);
+          height: 100%;
+          max-height: 16rem;
+          width: auto;
         }
       }
 

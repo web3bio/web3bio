@@ -18,19 +18,17 @@ export const isTokenTransferFeed = (feed) => {
 };
 
 const RenderTokenOperationCard = (props) => {
-  const { feed, identity, name } = props;
-  const owner = identity.address;
+  const { feed, name, address } = props;
 
   const { metadata, summary, action } = useMemo(() => {
     let action;
     let metadata;
     action = getLastAction(feed);
     metadata = action.metadata;
-    const isFromOwner = isSameAddress(owner, action.address_from);
+    const isFromOwner = isSameAddress(address, action.address_from);
 
-    const _from = isFromOwner ? name : formatText(owner ?? "");
-    const _to = isSameAddress(owner, action.address_to)
-      ? name || formatText(owner)
+    const _to = isSameAddress(address, action.address_to)
+      ? name || formatText(address)
       : formatText(action.address_to ?? "");
     switch (feed.type) {
       case Type.Transfer:
@@ -39,7 +37,6 @@ const RenderTokenOperationCard = (props) => {
           action,
           summary: (
             <div className="feed-type-intro">
-              <strong>{_from}</strong>
               sent to
               <strong>{_to}</strong>
             </div>
@@ -51,7 +48,6 @@ const RenderTokenOperationCard = (props) => {
           action,
           summary: (
             <div className="feed-type-intro">
-              <strong>{_from}</strong>
               approved to
               <strong>{_to}</strong>
             </div>
@@ -63,7 +59,6 @@ const RenderTokenOperationCard = (props) => {
           action,
           summary: (
             <div className="feed-type-intro">
-              <strong>{_from}</strong>
               burned
             </div>
           ),
@@ -71,14 +66,13 @@ const RenderTokenOperationCard = (props) => {
     }
 
     return { summary: "", metadata };
-  }, [feed, owner, name]);
+  }, [feed, address, name]);
   return (
     <div className="feed-item-box">
       <div className="feed-badge-emoji">💰</div>
       <div className="feed-item">
         <div className="feed-item-header">
           <div className="feed-type-intro">{summary}</div>
-
           <Link
             href={action?.related_urls?.[0] || ""}
             target="_blank"
