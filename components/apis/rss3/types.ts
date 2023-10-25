@@ -31,6 +31,7 @@ export enum Type {
   Launch = "launch",
   Donate = "donate",
   Approval = "approval",
+  Edit = 'edit',
 }
 
 export enum Networks {
