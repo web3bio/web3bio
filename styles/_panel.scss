@@ -69,15 +69,18 @@
           }
 
           .feed-type-intro {
-            display: flex;
-            align-items: center;
-            font-weight: 400;
-            font-size: .7rem;
-
-            .strong {
+              width: 100%;
+              max-width: 90%;
+              font-size: .7rem;
+              display: -webkit-box;
+              -webkit-box-orient: vertical;
+              -webkit-line-clamp: 1;
+              overflow: hidden;
+            strong {
               font-weight: 900;
               margin: 0 .25rem;
             }
+          
           }
         }
 
@@ -118,7 +121,7 @@
           }
 
           .feed-swap-img {
-            width: 24px;
+            width: 1.5rem;
             border-radius: 12px;
             background: transparent;
 

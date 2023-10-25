@@ -29,11 +29,11 @@ const RenderCommentFeed = (props) => {
       <div className="feed-item">
         <div className="feed-item-header">
           <div className="feed-type-intro">
-            <div className="strong">
+            <strong>
               {isOwner ? name || formatText(owner) : formatText(owner ?? "")}
-            </div>
+            </strong>
             made a comment on
-            <div className="strong">{action.platform || "unknown"}</div>
+            <strong>{action.platform || "unknown"}</strong>
           </div>
           <Link
             href={action?.related_urls?.[0] || ""}

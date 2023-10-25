@@ -39,9 +39,9 @@ const RenderTokenOperationCard = (props) => {
           action,
           summary: (
             <div className="feed-type-intro">
-              <div className="strong">{_from}</div>
+              <strong>{_from}</strong>
               sent to
-              <div className="strong">{_to}</div>
+              <strong>{_to}</strong>
             </div>
           ),
         };
@@ -51,9 +51,9 @@ const RenderTokenOperationCard = (props) => {
           action,
           summary: (
             <div className="feed-type-intro">
-              <div className="strong">{_from}</div>
+              <strong>{_from}</strong>
               approved to
-              <div className="strong">{_to}</div>
+              <strong>{_to}</strong>
             </div>
           ),
         };
@@ -64,7 +64,7 @@ const RenderTokenOperationCard = (props) => {
           action,
           summary: (
             <div className="feed-type-intro">
-              <div className="strong">{_from}</div>
+              <strong>{_from}</strong>
               burned
             </div>
           ),

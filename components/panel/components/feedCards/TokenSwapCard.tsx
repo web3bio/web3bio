@@ -7,7 +7,7 @@ import {
 } from "../../../../utils/utils";
 import { Tag, Type } from "../../../apis/rss3/types";
 import { NFTAssetPlayer } from "../../../shared/NFTAssetPlayer";
-import SVG from 'react-inlinesvg'
+import SVG from "react-inlinesvg";
 export function isTokenSwapFeed(feed) {
   return feed.tag === Tag.Exchange && feed.type === Type.Swap;
 }
@@ -25,13 +25,13 @@ const RenderTokenSwapCard = (props) => {
       <div className="feed-item">
         <div className="feed-item-header">
           <div className="feed-type-intro">
-            <div className="strong">
+            <strong>
               {isFromOwner
                 ? name || formatText(owner)
                 : formatText(action.address_from)}
-            </div>
+            </strong>
             swaped {feed.platform && "on"}
-            <div className="strong">{feed.platform}</div>
+            <strong>{feed.platform}</strong>
           </div>
           <Link
             href={action?.related_urls?.[0] || ""}

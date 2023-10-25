@@ -11,7 +11,9 @@ import SVG from "react-inlinesvg";
 export function isCollectibleFeed(feed) {
   return (
     feed.tag === Tag.Collectible &&
-    [Type.Mint, Type.Transfer, Type.Trade, Type.Burn].includes(feed.type)
+    [Type.Mint, Type.Transfer, Type.Trade, Type.Burn, Type.Approval].includes(
+      feed.type
+    )
   );
 }
 
@@ -41,9 +43,9 @@ const RenderCollectibleCard = (props) => {
           action,
           summary: (
             <div className="feed-type-intro">
-              <div className="strong">{_from}</div>
+              <strong>{_from}</strong>
               minted
-              <div className="strong">{metadata.name}</div>
+              <strong>{metadata.name}</strong>
             </div>
           ),
         };
@@ -56,9 +58,25 @@ const RenderCollectibleCard = (props) => {
           action,
           summary: (
             <div className="feed-type-intro">
-              <div className="strong">{_from}</div>
+              <strong>{_from}</strong>
               sold an NFT to
-              <div className="strong">{_to}</div>
+              <strong>{_to}</strong>
+            </div>
+          ),
+        };
+      case Type.Approval:
+        action = getLastAction(feed);
+        metadata = action.metadata;
+        return {
+          cardType: CardType.CollectibleOut,
+          metadata,
+          action,
+          summary: (
+            <div className="feed-type-intro">
+              <strong>{_from}</strong>
+              approved
+              <strong>{metadata.name}</strong> to
+              <strong>{_to}</strong>
             </div>
           ),
         };
@@ -71,9 +89,9 @@ const RenderCollectibleCard = (props) => {
           action,
           summary: (
             <div className="feed-type-intro">
-              <div className="strong">{_from}</div>
+              <strong>{_from}</strong>
               sent an NFT to
-              <div className="strong">{_to}</div>
+              <strong>{_to}</strong>
             </div>
           ),
         };
@@ -85,7 +103,7 @@ const RenderCollectibleCard = (props) => {
           action,
           summary: (
             <div className="feed-type-intro">
-              <div className="strong">{_from}</div>
+              <strong>{_from}</strong>
               burned an NFT
             </div>
           ),

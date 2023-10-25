@@ -1,9 +1,6 @@
 import { memo, useMemo } from "react";
-import {
-  formatText,
-  isSameAddress,
-} from "../../../../utils/utils";
-import {  Tag, Type } from "../../../apis/rss3/types";
+import { formatText, isSameAddress } from "../../../../utils/utils";
+import { Tag, Type } from "../../../apis/rss3/types";
 import { NFTAssetPlayer } from "../../../shared/NFTAssetPlayer";
 import { getLastAction } from "./CollectibleCard";
 
@@ -38,8 +35,8 @@ const RenderProfileFeed = (props) => {
           image_url,
           summary: (
             <div className="feed-type-intro">
-              <div className="strong">{_from}</div>
-              minted a note on <div className="strong">{action.platform}</div>
+              <strong>{_from}</strong>
+              minted a note on <strong>{action.platform}</strong>
             </div>
           ),
         };
@@ -53,10 +50,10 @@ const RenderProfileFeed = (props) => {
           image_url,
           summary: (
             <div className="feed-type-intro">
-              <div className="strong">{_from}</div>
+              <strong>{_from}</strong>
               followed
-              <div className="strong">{metadata.name || metadata.handle}</div>
-              on <div className="strong">{metadata.platform}</div>
+              <strong>{metadata.name || metadata.handle}</strong>
+              on <strong>{metadata.platform}</strong>
             </div>
           ),
         };

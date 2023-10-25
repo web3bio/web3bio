@@ -41,12 +41,12 @@ const getURL = (index, address, previous) => {
     refresh: true,
     tag: [
       Tag.Social,
-    //   Tag.Transaction,
-    //   Tag.Collectible,
-    //   Tag.Exchange,
-    //   Tag.Donation,
-    //   Tag.Governance,
-    //   Tag.MetaVerse,
+      Tag.Transaction,
+      Tag.Collectible,
+      Tag.Exchange,
+      Tag.Donation,
+      Tag.Governance,
+      Tag.MetaVerse,
     ],
   };
   return [url, data];

@@ -22,13 +22,13 @@ const RenderArticleCard = (props) => {
       <div className="feed-item">
         <div className="feed-item-header">
           <div className="feed-type-intro">
-            <div className="strong">
+            <strong>
               {isOwner
                 ? name || formatText(owner)
                 : formatText(feed.from ?? "")}
-            </div>
+            </strong>
             posted an article on
-            <div className="strong">{action.platform || "unknown"}</div>
+            <strong>{action.platform || "unknown"}</strong>
           </div>
           <Link
             href={resolveIPFS_URL(action?.related_urls?.[0]) || ""}

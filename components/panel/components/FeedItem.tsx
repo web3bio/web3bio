@@ -12,6 +12,7 @@ import {
 } from "./feedCards/TokenOperationCard";
 import { isTokenSwapFeed, TokenSwapCard } from "./feedCards/TokenSwapCard";
 import { CommentCard, isCommentFeed } from "./feedCards/CommentCard";
+import { GovernanceCard, isGovernanceCard } from "./feedCards/GovernanceCard";
 
 export const isSupportedFeed = (feed) => {
   return (
@@ -21,7 +22,8 @@ export const isSupportedFeed = (feed) => {
     isDonationFeed(feed) ||
     isArticleCard(feed) ||
     isProfileFeed(feed) ||
-    isCommentFeed(feed)
+    isCommentFeed(feed) ||
+    isGovernanceCard(feed)
   );
 };
 
@@ -80,7 +82,20 @@ const RenderFeedItem = (props) => {
     );
   if (isCommentFeed(feed))
     return (
-      <CommentCard feed={feed} identity={identity} name={identity.displayName} />
+      <CommentCard
+        feed={feed}
+        identity={identity}
+        name={identity.displayName}
+      />
+    );
+
+  if (isGovernanceCard(feed))
+    return (
+      <GovernanceCard
+        feed={feed}
+        identity={identity}
+        name={identity.displayName}
+      />
     );
 
   return null;
