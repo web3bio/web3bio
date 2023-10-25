@@ -5,14 +5,15 @@ import { ExpandController } from "./ExpandController";
 import { RSS3Fetcher, RSS3_ENDPOINT } from "../apis/rss3";
 import { PlatformType } from "../../utils/platform";
 import { SocialFeeds } from "./SocialFeeds";
+import { Networks, Tag } from "../apis/rss3/types";
 
 const FEEDS_PAGE_SIZE = 10;
 
 const processFeedsData = (data) => {
-  if (!data?.[0]?.data?.length) return [];
+  if (!data?.[0]?.result?.length) return [];
   const issues = new Array();
   data.map((x) => {
-    x.data.forEach((i) => {
+    x.result.forEach((i) => {
       issues.push(i);
     });
   });
@@ -20,15 +21,27 @@ const processFeedsData = (data) => {
 };
 
 const getURL = (index, address, previous) => {
-  const cursor = previous?.meta?.cursor || "";
-  if (index !== 0 && !(previous?.data?.length || cursor)) return null;
-
-  return (
-    RSS3_ENDPOINT +
-    `data/accounts/${address}/activities?limit=${FEEDS_PAGE_SIZE}${
-      cursor ? "&cursor=" + cursor : ""
-    }&action_limit=10&network=ethereum&network=polygon`
-  );
+  const cursor = previous?.cursor;
+  if (index !== 0 && !(previous?.result?.length || cursor)) return null;
+  const url = RSS3_ENDPOINT + `/notes`;
+  const data = {
+    address: [address],
+    limit: FEEDS_PAGE_SIZE,
+    network: [Networks.Ethereum, Networks.Farcaster, Networks.Matic],
+    cursor,
+    query_status: true,
+    refresh: true,
+    tag: [
+      Tag.Social,
+      Tag.Transaction,
+      Tag.Collectible,
+      Tag.Exchange,
+      Tag.Donation,
+      Tag.Governance,
+      Tag.MetaVerse,
+    ],
+  };
+  return [url, data];
 };
 
 function useFeeds({ address, fromServer, initialData }) {

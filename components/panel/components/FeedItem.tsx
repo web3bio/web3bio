@@ -11,7 +11,7 @@ import {
   TokenOperationCard,
 } from "./feedCards/TokenOperationCard";
 import { isTokenSwapFeed, TokenSwapCard } from "./feedCards/TokenSwapCard";
-import { isShareCard, ShareCard } from "./feedCards/ShareCard";
+import { CommentCard, isCommentFeed } from "./feedCards/CommentCard";
 
 export const isSupportedFeed = (feed) => {
   return (
@@ -21,7 +21,7 @@ export const isSupportedFeed = (feed) => {
     isDonationFeed(feed) ||
     isArticleCard(feed) ||
     isProfileFeed(feed) ||
-    isShareCard(feed)
+    isCommentFeed(feed)
   );
 };
 
@@ -78,9 +78,9 @@ const RenderFeedItem = (props) => {
         name={identity.displayName}
       />
     );
-  if (isShareCard(feed))
+  if (isCommentFeed(feed))
     return (
-      <ShareCard feed={feed} identity={identity} name={identity.displayName} />
+      <CommentCard feed={feed} identity={identity} name={identity.displayName} />
     );
 
   return null;
