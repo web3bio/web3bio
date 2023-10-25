@@ -542,6 +542,16 @@
       }
     }
   }
+  // Social Widget
+  .profile-widget-feeds {
+    background: $light-color;
+    border-color: lighten($bg-color, 3%);
+    position: relative;
+
+    &.active {
+      box-shadow: 0 .4rem 1.6rem -.4rem rgba($dark-color, .15), 0 .1rem .2rem rgba($dark-color, .01);
+    }
+  }
 
   // RSS Widget
   .profile-widget-rss {

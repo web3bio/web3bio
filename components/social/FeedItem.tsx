@@ -4,7 +4,7 @@ import {
   isCollectibleFeed,
 } from "./feedCards/CollectibleCard";
 import { DonationCard, isDonationFeed } from "./feedCards/DonationCard";
-import { isArticleCard, ArticleCard } from "./feedCards/ArticleCard";
+import { isPostCard, PostCard } from "./feedCards/PostCard";
 import { isProfileFeed, ProfileCard } from "./feedCards/ProfileCard";
 import {
   isTokenTransferFeed as isTokenOperationFeed,
@@ -20,7 +20,7 @@ export const isSupportedFeed = (feed) => {
     isTokenSwapFeed(feed) ||
     isCollectibleFeed(feed) ||
     isDonationFeed(feed) ||
-    isArticleCard(feed) ||
+    isPostCard(feed) ||
     isProfileFeed(feed) ||
     isCommentFeed(feed) ||
     isGovernanceCard(feed)
@@ -29,14 +29,6 @@ export const isSupportedFeed = (feed) => {
 
 const RenderFeedItem = (props) => {
   const { feed, identity, network } = props;
-  if (isTokenOperationFeed(feed))
-    return (
-      <TokenOperationCard
-        feed={feed}
-        identity={identity}
-        name={identity.displayName}
-      />
-    );
   if (isTokenSwapFeed(feed))
     return (
       <TokenSwapCard
@@ -46,7 +38,34 @@ const RenderFeedItem = (props) => {
       />
     );
 
-  if (isCollectibleFeed(feed))
+  if (isPostCard(feed))
+    return (
+      <PostCard
+        feed={feed}
+        identity={identity}
+        name={identity.displayName}
+      />
+    );
+    
+  if (isCommentFeed(feed))
+    return (
+      <CommentCard
+        feed={feed}
+        identity={identity}
+        name={identity.displayName}
+      />
+    );
+
+  if (isTokenOperationFeed(feed))
+    return (
+      <TokenOperationCard
+        feed={feed}
+        identity={identity}
+        name={identity.displayName}
+      />
+    );
+  
+    if (isCollectibleFeed(feed))
     return (
       <CollectibleCard
         identity={identity}
@@ -63,26 +82,10 @@ const RenderFeedItem = (props) => {
         name={identity.displayName}
       />
     );
+
   if (isProfileFeed(feed))
     return (
       <ProfileCard
-        feed={feed}
-        identity={identity}
-        name={identity.displayName}
-      />
-    );
-
-  if (isArticleCard(feed))
-    return (
-      <ArticleCard
-        feed={feed}
-        identity={identity}
-        name={identity.displayName}
-      />
-    );
-  if (isCommentFeed(feed))
-    return (
-      <CommentCard
         feed={feed}
         identity={identity}
         name={identity.displayName}

@@ -21,21 +21,17 @@ const RenderSocialFeeds = (props) => {
     onLoadMore: getNext,
     hasNextPage: hasNextPage,
   });
-  if (!data) return <Empty text="No Feeds" />;
+  if (!data) return <Empty text="No Social Feeds" />;
   return (
-    <div className="feeds-container">
-      <div className="social-feeds-list">
-        {data.map(
-          (x, idx) =>
-            (isSupportedFeed(x) && (
-              <div key={idx}>
-                <FeedItem network={network} identity={identity} feed={x} />
-                <div className="feed-timestamp">
-                  {new Date(x.timestamp).toDateString()}
-                </div>
-              </div>
-            )) ||
-            null
+    <div className="widget-feeds-container">
+      <div className="feeds-list">
+        {data.map((x) =>
+          (isSupportedFeed(x) && (
+            <div key={x.hash} className={`feed-item ${x.network} ${x.tag} ${x.type}`}>
+              <FeedItem network={network} identity={identity} feed={x} />
+            </div>
+          )) ||
+          null
         )}
         {expand && (isLoadingMore || hasNextPage) && (
           <div

@@ -90,15 +90,13 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
     initialData,
   });
 
-  console.log(process.env.NODE_ENV)
-
   const scrollContainer = useRef(null);
 
   const issues = !data?.results?.length
     ? []
     : expand
     ? JSON.parse(JSON.stringify(data.results))
-    : JSON.parse(JSON.stringify(data.results.slice(0, 3)));
+    : JSON.parse(JSON.stringify(data.results.slice(0, 10)));
   useEffect(() => {
     if (expand) {
       const anchorElement = document.getElementById("feeds");
@@ -116,13 +114,13 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
   return (
     <div ref={scrollContainer} className="profile-widget-full" id="feeds">
       <div
-        className={`profile-widget profile-widget-nft${
+        className={`profile-widget profile-widget-feeds${
           expand ? " active" : ""
         }`}
       >
         <h2 className="profile-widget-title">
           <span className="emoji-large mr-2">🌈 </span>
-          Social Feeds
+          Activity Feeds
         </h2>
         <ExpandController
           expand={expand}

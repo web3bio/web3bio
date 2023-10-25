@@ -37,13 +37,6 @@ const RenderGovernanceCard = (props) => {
             on
             <strong>{feed.platform}</strong>
           </div>
-          <Link
-            href={action?.related_urls?.[0] || ""}
-            target="_blank"
-            className="action-icon"
-          >
-            <SVG src="../icons/icon-open.svg" width={20} height={20} />
-          </Link>
         </div>
 
         {metadata && (
