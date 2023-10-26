@@ -16,6 +16,8 @@ export enum NetworkType {
   Arweave = "arweave",
   Celo = "celo",
   XDai = "xdai",
+  Scroll = "scroll",
+  Zora = "zora",
 }
 
 export interface NetworkMetaData {
@@ -141,7 +143,7 @@ export const networkData: { [key in NetworkType]: NetworkMetaData } = {
     icon: "",
   },
   [NetworkType.ETC]: {
-    key: NetworkType.Ethereum,
+    key: NetworkType.ETC,
     primaryColor: "",
     bgColor: "",
     lightColor: "",
@@ -181,7 +183,7 @@ export const networkData: { [key in NetworkType]: NetworkMetaData } = {
     icon: "",
   },
   [NetworkType.Zks]: {
-    key: NetworkType.OP,
+    key: NetworkType.Zks,
     primaryColor: "",
     bgColor: "",
     lightColor: "",
@@ -198,6 +200,26 @@ export const networkData: { [key in NetworkType]: NetworkMetaData } = {
     darkColor: "",
     label: "XDai",
     scanPrefix: "https://gnosisscan.io/",
+    icon: "",
+  },
+  [NetworkType.Scroll]: {
+    key: NetworkType.Scroll,
+    primaryColor: "",
+    bgColor: "",
+    lightColor: "",
+    darkColor: "",
+    label: "Scroll",
+    scanPrefix: "https://scrollscan.com/",
+    icon: "",
+  },
+  [NetworkType.Zora]: {
+    key: NetworkType.Zora,
+    primaryColor: "",
+    bgColor: "",
+    lightColor: "",
+    darkColor: "",
+    label: "Zora",
+    scanPrefix: "https://explorer.zora.energy/",
     icon: "",
   },
 };

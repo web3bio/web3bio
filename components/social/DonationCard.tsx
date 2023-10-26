@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { memo } from "react";
-import { resolveIPFS_URL } from "../../../utils/ipfs";
-import { formatValue } from "../../../utils/utils";
-import { Tag, Type } from "../../apis/rss3/types";
-import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
+import { resolveIPFS_URL } from "../../utils/ipfs";
+import { formatValue } from "../../utils/utils";
+import { ActivityTag, ActivityType } from "../apis/rss3/types";
+import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
 export function isDonationFeed(feed) {
-  return feed.tag === Tag.Donation && feed.type === Type.Donate;
+  return feed.tag === ActivityTag.Donation && feed.type === ActivityType.Donate;
 }
 
 const RenderDonationCard = (props) => {

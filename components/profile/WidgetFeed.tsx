@@ -5,7 +5,7 @@ import { ExpandController } from "./ExpandController";
 import { RSS3Fetcher, RSS3_ENDPOINT } from "../apis/rss3";
 import { SocialFeeds } from "./SocialFeeds";
 
-const FEEDS_PAGE_SIZE = 10;
+const FEEDS_PAGE_SIZE = 20;
 
 const processFeedsData = (data) => {
   if (!data?.[0]?.data?.length) return [];
@@ -28,7 +28,7 @@ const getURL = (index, address, previous) => {
     address +
     `/activities?limit=${FEEDS_PAGE_SIZE}${
       cursor ? `&cursor=${cursor}` : ""
-    }&direction=out`
+    }&direction=out&status=successful`
   );
 };
 

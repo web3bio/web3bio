@@ -204,8 +204,10 @@
     align-items: flex-start;
     display: flex;
     font-size: .75rem;
+    height: auto;
     margin-bottom: 1.5rem;
     padding: 0;
+    width: 100%;
 
     .feed-item-icon {
       align-items: center;
@@ -217,6 +219,7 @@
       height: 2rem;
       justify-content: center;
       margin-right: 1rem;
+      margin-top: .25rem;
       position: relative;
       width: 2rem;
 
@@ -265,17 +268,9 @@
     }
 
     .feed-item-header {
+      align-items: center;
       display: flex;
       justify-content: space-between;
-      margin-bottom: .2rem;
-    }
-
-    .feed-item-body {
-
-      &:focus,
-      &:hover {
-        text-decoration: none;
-      }
     }
 
     .feed-item-action {
@@ -289,22 +284,22 @@
       }
     }
 
-    .flex {
-      display: flex;
-      align-items: center;
-
-    }
-
     .feed-content {
       font-size: .8rem;
       line-height: 1.5;
-      .feed-content-header{
+      margin: .25rem 0;
+
+      .feed-content-target {
+        border: .05rem solid $border-color;
+        border-radius: .4rem;
+        margin-top: .75rem;
+        padding: .75rem;
+        transition: all .25s ease-in-out;
+      }
+
+      .feed-content-header {
         display: flex;
         align-items: center;
-        margin-bottom: .5rem;
-      }
-      strong {
-        margin: 0 .5rem;
       }
 
       &.media-gallery {
@@ -314,13 +309,15 @@
         overflow-x: auto;
 
         .feed-content-img {
+          align-items: center;
+          display: flex;
           max-width: 10rem;
         }
 
       }
 
       .feed-content-img {
-        margin: .5rem 0;
+        margin: .25rem 0;
         max-width: 16rem;
 
         .img-responsive {
@@ -336,22 +333,29 @@
         margin-right: .2rem;
         height: 1rem;
         width: 1rem;
+
         .img-responsive {
           border-radius: 100%;
           box-shadow: 0 .1rem .2rem rgba($dark-color, .15);
           height: 100%;
           width: 100%;
         }
+
         .img-placeholder{
           height: 100%;
         }
       }
+    }
 
-      .feed-content-target {
-        border: .05rem solid $border-color;
-        border-radius: .4rem;
-        margin-top: .75rem;
-        padding: .75rem;
+    a.feed-content {
+      &:focus,
+      &:hover {
+        text-decoration: none;
+
+        .feed-content-target {
+          border-color: darken($border-color, 2%);
+          box-shadow: 0 .1rem .6rem rgba($dark-color, .05);
+        }
       }
     }
   }

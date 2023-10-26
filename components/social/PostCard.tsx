@@ -1,13 +1,17 @@
 import Link from "next/link";
 import { memo } from "react";
-import { resolveIPFS_URL } from "../../../utils/ipfs";
-import { Tag, Type } from "../../apis/rss3/types";
-import { formatText, resolveMediaURL } from "../../../utils/utils";
-import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
+import { resolveIPFS_URL } from "../../utils/ipfs";
+import { ActivityTag, ActivityType } from "../apis/rss3/types";
+import { formatText, resolveMediaURL } from "../../utils/utils";
+import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { getLastAction } from "./CollectibleCard";
 
 export function isPostCard(feed) {
-  return feed.tag === Tag.Social && [Type.Post].includes(feed.type);
+  return feed.tag === ActivityTag.Social && [ActivityType.Post].includes(feed.type);
+}
+
+export function isCommentFeed(feed) {
+  return feed.tag === ActivityTag.Social && feed.type === ActivityType.Comment;
 }
 
 const RenderPostCard = (props) => {
@@ -18,33 +22,29 @@ const RenderPostCard = (props) => {
   const commentTarget = metadata?.target;
 
   return (
-    <Link
-      className="feed-item-body"
-      href={resolveIPFS_URL(action?.related_urls?.[0]) || ""}
-      target="_blank"
-    >
-      <div className="feed-content text-assistive">
-        published a post on <strong>{feed.platform}</strong>
-      </div>
+    <div className="feed-item-body">
       <div className="feed-content">
         {metadata.body}
       </div>
       {metadata.media?.length > 0 && (
         <div className={`feed-content${metadata.media.length > 1 ? " media-gallery" : ""}`}>
           {metadata.media.map((x) => (
-              <NFTAssetPlayer
-                className="feed-content-img"
-                src={resolveMediaURL(x.address)}
-                type={x.mime_type}
-                alt={metadata.handle}
-                key={x.address}
-              />
-            )
-          )}
+            <NFTAssetPlayer
+              className="feed-content-img"
+              src={resolveMediaURL(x.address)}
+              type={x.mime_type}
+              alt={metadata.handle}
+              key={x.address}
+            />
+          ))}
         </div>
       )}
       {commentTarget && (
-        <div className="feed-content">
+        <Link
+          className="feed-content"
+          href={resolveIPFS_URL(metadata?.target_url) || ""}
+          target="_blank"
+        >
           <div className="feed-content-target">
             <div className="feed-target-name">
               <strong>
@@ -55,9 +55,9 @@ const RenderPostCard = (props) => {
               {commentTarget?.body}
             </div>
           </div>
-        </div>
+        </Link>
       )}
-    </Link>
+    </div>
   );
 };
 

@@ -6,33 +6,19 @@ import {
   CollectibleCard,
   getLastAction,
   isCollectibleFeed,
-} from "./feedCards/CollectibleCard";
-import { DonationCard, isDonationFeed } from "./feedCards/DonationCard";
-import { isPostCard, PostCard } from "./feedCards/PostCard";
-import { isProfileFeed, ProfileCard } from "./feedCards/ProfileCard";
+} from "./CollectibleCard";
+import { DonationCard, isDonationFeed } from "./DonationCard";
+import { isPostCard, isCommentFeed, PostCard } from "./PostCard";
+import { isProfileFeed, ProfileCard } from "./ProfileCard";
 import {
   isTokenTransferFeed as isTokenOperationFeed,
   TokenOperationCard,
-} from "./feedCards/TokenOperationCard";
-import { isTokenSwapFeed, TokenSwapCard } from "./feedCards/TokenSwapCard";
-import { isCommentFeed } from "./feedCards/CommentCard";
-import { GovernanceCard, isGovernanceCard } from "./feedCards/GovernanceCard";
-import { FeedEmojiMapByTag } from "../apis/rss3";
+} from "./TokenOperationCard";
+import { isTokenSwapFeed, TokenSwapCard } from "./TokenSwapCard";
+import { GovernanceCard, isGovernanceCard } from "./GovernanceCard";
+import { FeedEmojiMapByType } from "../apis/rss3";
 import { NetworkMapping } from "../../utils/network";
-import ActionExternalMenu from "./feedCards/ActionExternalMenu";
-
-export const isSupportedFeed = (feed) => {
-  return (
-    isTokenOperationFeed(feed) ||
-    isTokenSwapFeed(feed) ||
-    isCollectibleFeed(feed) ||
-    isDonationFeed(feed) ||
-    isPostCard(feed) ||
-    isProfileFeed(feed) ||
-    isCommentFeed(feed) ||
-    isGovernanceCard(feed)
-  );
-};
+import ActionExternalMenu from "./ActionExternalMenu";
 
 const RenderFeedContent = (props) => {
   const { feed, identity } = props;
@@ -76,7 +62,7 @@ const RenderFeedItem = (props) => {
     <>
       <div className="feed-item-icon">
         <div className="feed-icon-emoji">
-          {FeedEmojiMapByTag[feed.tag]}
+          {FeedEmojiMapByType[feed.type]}
           {(platformName || networkName) && (
             <div
               className={`feed-icon-platform ${platformName || networkName}`}
@@ -110,7 +96,7 @@ const RenderFeedItem = (props) => {
             <div className="feed-timestamp">
               {new Date(feed.timestamp * 1000).toLocaleString()}
             </div>
-            <ActionExternalMenu links={action.related_urls || []} />
+            <ActionExternalMenu links={action?.related_urls || []} />
           </div>
         </div>
         <RenderFeedContent action={action} feed={feed} identity={identity} />

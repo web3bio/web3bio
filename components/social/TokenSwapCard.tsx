@@ -1,15 +1,15 @@
 import Link from "next/link";
 import { memo } from "react";
-import { formatText, formatValue, isSameAddress } from "../../../utils/utils";
-import { Tag, Type } from "../../apis/rss3/types";
-import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
+import { formatText, formatValue, isSameAddress } from "../../utils/utils";
+import { ActivityTag, ActivityType } from "../apis/rss3/types";
+import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 export function isTokenSwapFeed(feed) {
-  return feed.tag === Tag.Exchange && feed.type === Type.Swap;
+  return feed.tag === ActivityTag.Exchange && feed.type === ActivityType.Swap;
 }
 
 const RenderTokenSwapCard = (props) => {
   const { feed } = props;
-  const action = feed.actions?.find((x) => x.type === Type.Swap);
+  const action = feed.actions?.find((x) => x.type === ActivityType.Swap);
   const metadata = action.metadata;
 
   return (

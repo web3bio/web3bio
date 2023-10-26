@@ -1,13 +1,13 @@
 import { memo, useMemo } from "react";
-import { formatText, formatValue, isSameAddress } from "../../../utils/utils";
-import { Tag, Type } from "../../apis/rss3/types";
-import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
+import { formatText, formatValue, isSameAddress } from "../../utils/utils";
+import { ActivityTag, ActivityType } from "../apis/rss3/types";
+import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { getLastAction } from "./CollectibleCard";
 
 export const isTokenTransferFeed = (feed) => {
   return (
-    feed.tag === Tag.Transaction &&
-    [Type.Transfer, Type.Burn, Type.Approval].includes(feed.type)
+    feed.tag === ActivityTag.Transaction &&
+    [ActivityType.Transfer, ActivityType.Burn, ActivityType.Approval].includes(feed.type)
   );
 };
 
@@ -42,7 +42,7 @@ const RenderTokenOperationCard = (props) => {
       ? identity.displayName || formatText(identity.address)
       : formatText(action.to ?? "");
     switch (feed.type) {
-      case Type.Transfer:
+      case ActivityType.Transfer:
         return {
           metadata,
           action,
@@ -54,7 +54,7 @@ const RenderTokenOperationCard = (props) => {
             </>
           ),
         };
-      case Type.Approval:
+      case ActivityType.Approval:
         return {
           metadata,
           action,
@@ -66,7 +66,7 @@ const RenderTokenOperationCard = (props) => {
             </>
           ),
         };
-      case Type.Burn:
+      case ActivityType.Burn:
         return {
           metadata,
           action,

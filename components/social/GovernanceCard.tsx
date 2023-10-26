@@ -1,20 +1,17 @@
 import Link from "next/link";
 import { memo } from "react";
-import { formatText, formatValue, isSameAddress } from "../../../utils/utils";
-import { Tag, Type } from "../../apis/rss3/types";
+import { formatText, formatValue, isSameAddress } from "../../utils/utils";
+import { ActivityTag, ActivityType } from "../apis/rss3/types";
 import { getLastAction } from "./CollectibleCard";
 import SVG from "react-inlinesvg";
 export function isGovernanceCard(feed) {
-  return feed.tag === Tag.Governance && feed.type === Type.Vote;
+  return feed.tag === ActivityTag.Governance && feed.type === ActivityType.Vote;
 }
 
 const RenderGovernanceCard = (props) => {
-  const { feed, identity } = props;
+  const { feed } = props;
   const action = getLastAction(feed);
   const metadata = action.metadata;
-  const owner = identity.address;
-  const name = identity.displayName;
-  const isOwner = isSameAddress(feed.owner, owner);
 
   return (
     <div className="feed-item-body">

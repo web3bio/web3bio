@@ -6,18 +6,19 @@ export default function ActionExternalMenu({ links }) {
   return (
     <>
       <div
-        className={`btn btn-sm ${links?.length && "dropdown-toggle"}`}
+        className={`btn btn-sm btn-link ${links?.length && "dropdown-toggle"}`}
         tabIndex={0}
       >
         <SVG
           src="../icons/icon-more.svg"
-          width={14}
-          height={14}
+          width={16}
+          height={16}
           className="action"
           style={{ transform: "rotate(90deg)" }}
         />
       </div>
       <ul className="menu">
+      <li className="divider" data-content="LINKS"></li>
         {links?.map((x) => (
           <li key={x} className="menu-item dropdown-menu-item">
             <Link href={x} target="_blank">

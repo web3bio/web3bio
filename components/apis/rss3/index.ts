@@ -1,4 +1,4 @@
-import { Tag } from "./types";
+import { ActivityType } from "./types";
 export const RSS3_ENDPOINT = "https://testnet.rss3.io/";
 export const RSS3Fetcher = async (url, options?) => {
   try {
@@ -9,12 +9,28 @@ export const RSS3Fetcher = async (url, options?) => {
   }
 };
 
-export const FeedEmojiMapByTag = {
-  [Tag.Social]: "💬",
-  [Tag.Collectible]: "🌃",
-  [Tag.Donation]: "💌",
-  [Tag.Exchange]: "💵",
-  [Tag.Transaction]: "💰",
-  [Tag.Governance]: "🏛️",
-  [Tag.MetaVerse]: "👽",
+export const FeedEmojiMapByType = {
+  [ActivityType.Transfer]: "💵",
+  [ActivityType.Mint]: "🖼️",
+  [ActivityType.Burn]: "🔥",
+  [ActivityType.Withdraw]: "💰",
+  [ActivityType.Deposit]: "💰",
+  [ActivityType.Swap]: "💵",
+  [ActivityType.Liquidity]: "🌊",
+  [ActivityType.Trade]: "💸",
+  [ActivityType.Poap]: "🔮",
+  [ActivityType.Post]: "📄",
+  [ActivityType.Revise]: "💵",
+  [ActivityType.Comment]: "💬",
+  [ActivityType.Share]: "🏛️",
+  [ActivityType.Profile]: "👤",
+  [ActivityType.Follow]: "🤝",
+  [ActivityType.Unfollow]: "🙅",
+  [ActivityType.Like]: "❤️",
+  [ActivityType.Propose]: "💵",
+  [ActivityType.Vote]: "💰",
+  [ActivityType.Launch]: "🏛️",
+  [ActivityType.Donate]: "💌",
+  [ActivityType.Approval]: "✅",
+  [ActivityType.Edit]: "📝",
 };

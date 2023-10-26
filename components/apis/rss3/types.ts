@@ -1,4 +1,4 @@
-export enum Tag {
+export enum ActivityTag {
   Collectible = "collectible",
   Donation = "donation",
   Exchange = "exchange",
@@ -9,7 +9,7 @@ export enum Tag {
   Unknown = 'unknown'
 }
 
-export enum Type {
+export enum ActivityType {
   Transfer = "transfer",
   Mint = "mint",
   Burn = "burn",
@@ -34,4 +34,3 @@ export enum Type {
   Approval = "approval",
   Edit = 'edit',
 }
-
