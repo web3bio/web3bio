@@ -1,15 +1,20 @@
-export const RSS3_ENDPOINT = "https://api.rss3.io/v1";
-export const RSS3Fetcher = async ([url,data]) => {
+import { Tag } from "./types";
+export const RSS3_ENDPOINT = "https://testnet.rss3.io/";
+export const RSS3Fetcher = async (url, options?) => {
   try {
-    const res = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    }).then((r) => r.json());
+    const res = await fetch(url, options).then((r) => r.json());
     return res;
   } catch {
     return null;
   }
+};
+
+export const FeedEmojiMapByTag = {
+  [Tag.Social]: "💬",
+  [Tag.Collectible]: "🍞",
+  [Tag.Donation]: "💌",
+  [Tag.Exchange]: "💵",
+  [Tag.Transaction]: "💰",
+  [Tag.Governance]: "🏛️",
+  [Tag.MetaVerse]: "👽",
 };

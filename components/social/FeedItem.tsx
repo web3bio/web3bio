@@ -4,6 +4,7 @@ import { SocialPlatformMapping } from "../../utils/platform";
 import SVG from "react-inlinesvg";
 import {
   CollectibleCard,
+  getLastAction,
   isCollectibleFeed,
 } from "./feedCards/CollectibleCard";
 import { DonationCard, isDonationFeed } from "./feedCards/DonationCard";
@@ -16,6 +17,8 @@ import {
 import { isTokenSwapFeed, TokenSwapCard } from "./feedCards/TokenSwapCard";
 import { isCommentFeed } from "./feedCards/CommentCard";
 import { GovernanceCard, isGovernanceCard } from "./feedCards/GovernanceCard";
+import { FeedEmojiMapByTag } from "../apis/rss3";
+import { NetworkMapping } from "../../utils/network";
 
 export const isSupportedFeed = (feed) => {
   return (
@@ -31,65 +34,68 @@ export const isSupportedFeed = (feed) => {
 };
 
 const RenderFeedContent = (props) => {
-  const {feed, identity} = props;
-  switch(true) {
+  const { feed, identity } = props;
+  switch (!!feed) {
     case isPostCard(feed) || isCommentFeed(feed):
-      return (
-        <PostCard feed={feed} />
-      );
-    case isTokenSwapFeed(feed):
-      return (
-        <TokenSwapCard feed={feed} />
-      );
+      return <PostCard feed={feed} />;
+    // case isTokenSwapFeed(feed):
+    //   return (
+    //     <TokenSwapCard feed={feed} />
+    //   );
     case isTokenOperationFeed(feed):
-      return (
-        <TokenOperationCard feed={feed} address={identity.address} name={identity.displayName} />
-      );
-    case isCollectibleFeed(feed):
-      return (
-        <CollectibleCard feed={feed} address={identity.address} name={identity.displayName} />
-      );
-    case isDonationFeed(feed):
-      return (
-        <DonationCard feed={feed} />
-      );
-    case isProfileFeed(feed):
-      return (
-        <ProfileCard feed={feed} address={identity.address} name={identity.displayName} />
-      );
-    case isGovernanceCard(feed):
-      return (
-        <GovernanceCard feed={feed} address={identity.address} name={identity.displayName} />
-      );
+      return <TokenOperationCard feed={feed} />;
+    // case isCollectibleFeed(feed):
+    //   return (
+    //     <CollectibleCard feed={feed} address={identity.address} name={identity.displayName} />
+    //   );
+    // case isDonationFeed(feed):
+    //   return (
+    //     <DonationCard feed={feed} />
+    //   );
+    // case isProfileFeed(feed):
+    //   return (
+    //     <ProfileCard feed={feed} address={identity.address} name={identity.displayName} />
+    //   );
+    // case isGovernanceCard(feed):
+    //   return (
+    //     <GovernanceCard feed={feed} address={identity.address} name={identity.displayName} />
+    //   );
 
     default:
-      return (
-        null
-      )
+      return null;
   }
-}
+};
 
 const RenderFeedItem = (props) => {
-  const { feed, identity, network } = props;
+  const { feed, identity } = props;
   const isOwner = isSameAddress(feed.owner, identity.address);
   const platformName = feed.platform?.toLowerCase();
+  const networkName = feed.network?.toLowerCase();
+  const action = getLastAction(feed);
 
   return (
     <>
       <div className="feed-item-icon">
         <div className="feed-icon-emoji">
-          💬
-          <div className={`feed-icon-platform ${platformName}`}>
-            <SVG
-              fill={
-                SocialPlatformMapping(platformName).color
-              }
-              src={
-                SocialPlatformMapping(platformName).icon ||
-                ""
-              }
-            />
-          </div>
+          {FeedEmojiMapByTag[feed.tag]}
+          {(platformName || networkName) && (
+            <div
+              className={`feed-icon-platform ${platformName || networkName}`}
+            >
+              <SVG
+                fill={
+                  platformName
+                    ? SocialPlatformMapping(platformName).color
+                    : NetworkMapping(networkName).primaryColor
+                }
+                src={
+                  (platformName
+                    ? SocialPlatformMapping(platformName).icon
+                    : NetworkMapping(networkName).icon) || ""
+                }
+              />
+            </div>
+          )}
         </div>
       </div>
       <div className="feed-item-content">
@@ -97,20 +103,22 @@ const RenderFeedItem = (props) => {
           <div className="feed-item-name">
             <strong>
               {isOwner
-                ? identity.displayName || formatText(identity.address)
+                ? action?.metadata?.handle ||
+                  identity.displayName ||
+                  formatText(identity.address)
                 : formatText(feed.from)}
             </strong>
           </div>
           <div className="feed-item-action">
             <div className="feed-timestamp">
-              {new Date(feed.timestamp).toDateString()}
+              {new Date(feed.timestamp * 1000).toLocaleString()}
             </div>
           </div>
         </div>
-        <RenderFeedContent feed={feed} identity={identity} />
+        <RenderFeedContent action={action} feed={feed} identity={identity} />
       </div>
     </>
-  )
+  );
 };
 
 export const FeedItem = memo(RenderFeedItem);

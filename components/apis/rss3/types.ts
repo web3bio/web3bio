@@ -34,22 +34,3 @@ export enum Type {
   Edit = 'edit',
 }
 
-export enum Networks {
-  Ethereum = "ethereum",
-  BSC = "binance_smart_chain",
-  Base = "base",
-  Arb = "arbitrum",
-  Matic = "polygon",
-  OP = "optimism",
-  Fantom = "fantom",
-  Zks = "zksync",
-  AVA = "avalanche",
-  Crossbell = "crossbell",
-  Farcaster = "farcaster",
-  Conflux = "conflux",
-  ETC = "ethereum_classic",
-  Aptos = "aptos",
-  Arweave = "arweave",
-  Celo = "celo",
-  XDai = "xdai",
-}

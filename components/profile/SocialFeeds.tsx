@@ -27,7 +27,7 @@ const RenderSocialFeeds = (props) => {
       <div className="feeds-list">
         {data.map((x) =>
           (isSupportedFeed(x) && (
-            <div key={x.hash} className={`feed-item ${x.network} ${x.tag} ${x.type}`}>
+            <div key={x.id} className={`feed-item ${x.network} ${x.tag} ${x.type}`}>
               <FeedItem network={network} identity={identity} feed={x} />
             </div>
           )) ||

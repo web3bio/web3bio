@@ -68,9 +68,8 @@ const RenderTokenOperationCard = (props) => {
     return { summary: "", metadata };
   }, [feed, address, name]);
   return (
-    <div className="feed-item-box">
-      <div className="feed-badge-emoji">💰</div>
-      <div className="feed-item">
+    <div className="feed-item-body">
+      <div className="feed-content">
         <div className="feed-item-header">
           <div className="feed-type-intro">{summary}</div>
           <Link
@@ -83,11 +82,11 @@ const RenderTokenOperationCard = (props) => {
         </div>
 
         {metadata ? (
-          <div className={"feed-item-main"}>
+          <div className={"feed-content"}>
             <NFTAssetPlayer
               width={"100%"}
               height={"100%"}
-              className="feed-nft-img"
+              className="feed-content-img"
               src={metadata.image}
               alt={metadata.symbol}
               type="image/png"

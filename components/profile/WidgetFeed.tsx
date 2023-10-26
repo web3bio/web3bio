@@ -5,51 +5,31 @@ import { ExpandController } from "./ExpandController";
 import { RSS3Fetcher, RSS3_ENDPOINT } from "../apis/rss3";
 import { PlatformType } from "../../utils/platform";
 import { SocialFeeds } from "./SocialFeeds";
-import { Networks, Tag } from "../apis/rss3/types";
 
 const FEEDS_PAGE_SIZE = 10;
 
 const processFeedsData = (data) => {
-  if (!data?.[0]?.result?.length) return { total: 0, results: [] };
+  if (!data?.[0]?.data?.length) return [];
   const issues = new Array();
   data.map((x) => {
-    x.result.forEach((i) => {
+    x.data.forEach((i) => {
       issues.push(i);
     });
   });
-  return {
-    total: data?.[0]?.total,
-    results: issues,
-  };
+  return issues;
 };
 
 const getURL = (index, address, previous) => {
-  const cursor = previous?.cursor;
-  if (index !== 0 && !(previous?.result?.length || cursor)) return null;
-  const url = RSS3_ENDPOINT + `/notes`;
-  const data = {
-    address: [address],
-    limit: FEEDS_PAGE_SIZE,
-    network: [
-      Networks.Ethereum,
-      Networks.Farcaster,
-      Networks.Matic,
-      Networks.Arweave,
-    ],
-    cursor,
-    query_status: true,
-    refresh: true,
-    tag: [
-      Tag.Social,
-      Tag.Transaction,
-      Tag.Collectible,
-      Tag.Exchange,
-      Tag.Donation,
-      Tag.Governance,
-      Tag.MetaVerse,
-    ],
-  };
-  return [url, data];
+  const cursor = previous?.meta?.cursor;
+  if (index !== 0 && !(previous?.data?.length || cursor)) return null;
+  return (
+    RSS3_ENDPOINT +
+    `data/accounts/` +
+    address +
+    `/activities?limit=${FEEDS_PAGE_SIZE}&direction=out${
+      cursor ? `&cursor=${cursor}` : ""
+    }`
+  );
 };
 
 function useFeeds({ address, fromServer, initialData }) {
@@ -66,14 +46,14 @@ function useFeeds({ address, fromServer, initialData }) {
       ...options,
       suspense: !fromServer,
       revalidateOnFocus: false,
-      revalidateOnMount: true,
+      revalidateOnMount: false,
       revalidateOnReconnect: false,
     }
   );
+
   return {
-    hasNextPage: !!data?.[data.length - 1]?.cursor,
+    hasNextPage: !!data?.[data.length - 1]?.meta?.cursor,
     data: processFeedsData(data),
-    isLoading: !error && !data,
     isError: error,
     size,
     isValidating,
@@ -92,11 +72,11 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
 
   const scrollContainer = useRef(null);
 
-  const issues = !data?.results?.length
+  const issues = !data?.length
     ? []
     : expand
-    ? JSON.parse(JSON.stringify(data.results))
-    : JSON.parse(JSON.stringify(data.results.slice(0, 10)));
+    ? JSON.parse(JSON.stringify(data))
+    : JSON.parse(JSON.stringify(data.slice(0, 10)));
   useEffect(() => {
     if (expand) {
       const anchorElement = document.getElementById("feeds");
@@ -108,7 +88,7 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
   if (!issues?.length || isError) return null;
 
   if (process.env.NODE_ENV !== "production") {
-    console.log(data);
+    console.log("raw:", data, "\nrendered:\n", issues);
   }
 
   return (
@@ -133,7 +113,6 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
           parentScrollRef={scrollContainer}
           identity={profile}
           data={issues}
-          network={PlatformType.ethereum}
           isLoadingMore={isValidating}
           hasNextPage={hasNextPage}
           isError={isError}

@@ -4,6 +4,7 @@ import { resolveIPFS_URL } from "../../../utils/ipfs";
 import { Tag, Type } from "../../apis/rss3/types";
 import { formatText } from "../../../utils/utils";
 import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
+import { getLastAction } from "./CollectibleCard";
 
 export function isPostCard(feed) {
   return feed.tag === Tag.Social && [Type.Post].includes(feed.type);
@@ -11,7 +12,8 @@ export function isPostCard(feed) {
 
 const RenderPostCard = (props) => {
   const { feed } = props;
-  const action = feed.actions[0];
+
+  const action = getLastAction(feed)
   const metadata = action.metadata;
   const commentTarget = metadata?.target;
 
@@ -46,7 +48,7 @@ const RenderPostCard = (props) => {
           <div className="feed-content-target">
             <div className="feed-target-name">
               <strong>
-                {formatText(commentTarget?.author[0])}
+                {formatText(commentTarget?.handle)}
               </strong>
             </div>
             <div className="feed-target-content">
