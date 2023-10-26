@@ -39,11 +39,11 @@ const RenderTokenSwapCard = (props) => {
 
             <div className="feed-content">
               <strong>
-                {formatValue(metadata.from)} {metadata.from?.symbol}
+                {formatText(formatValue(metadata.from))} {metadata.from?.symbol}
               </strong>{" "}
               for{" "}
               <strong>
-                {formatValue(metadata.to)} {metadata.to?.symbol}
+                {formatText(formatValue(metadata.to))} {metadata.to?.symbol}
               </strong>
             </div>
           </div>

@@ -18,7 +18,7 @@ const RenderTokenOperationCard = (props) => {
     return (
       <>
         <strong>
-          {formatValue(metadata)} {metadata.symbol}
+          {formatText(formatValue(metadata))} {metadata.symbol}
         </strong>{" "}
         {metadata?.image && (
           <NFTAssetPlayer
