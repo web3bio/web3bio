@@ -19,6 +19,7 @@ import { isCommentFeed } from "./feedCards/CommentCard";
 import { GovernanceCard, isGovernanceCard } from "./feedCards/GovernanceCard";
 import { FeedEmojiMapByTag } from "../apis/rss3";
 import { NetworkMapping } from "../../utils/network";
+import ActionExternalMenu from "./feedCards/ActionExternalMenu";
 
 export const isSupportedFeed = (feed) => {
   return (
@@ -109,10 +110,11 @@ const RenderFeedItem = (props) => {
                 : formatText(feed.from)}
             </strong>
           </div>
-          <div className="feed-item-action">
+          <div className="feed-item-action dropdown">
             <div className="feed-timestamp">
               {new Date(feed.timestamp * 1000).toLocaleString()}
             </div>
+            <ActionExternalMenu links={action.related_urls || []} />
           </div>
         </div>
         <RenderFeedContent action={action} feed={feed} identity={identity} />

@@ -277,10 +277,19 @@
       }
     }
 
-    .feed-timestamp {
-      color: $gray-color;
-      font-size: .7rem;
+    .feed-item-action{
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      .feed-timestamp {
+        color: $gray-color;
+        font-size: .7rem;
+      }
+      .feed-external{
+        
+      }
     }
+   
 
     .feed-content {
       font-size: .8rem;
