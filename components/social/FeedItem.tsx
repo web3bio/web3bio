@@ -39,20 +39,18 @@ const RenderFeedContent = (props) => {
   switch (!!feed) {
     case isPostCard(feed) || isCommentFeed(feed):
       return <PostCard feed={feed} />;
-    // case isTokenSwapFeed(feed):
-    //   return (
-    //     <TokenSwapCard feed={feed} />
-    //   );
+    case isTokenSwapFeed(feed):
+      return <TokenSwapCard feed={feed} />;
     case isTokenOperationFeed(feed):
-      return <TokenOperationCard feed={feed} />;
-    // case isCollectibleFeed(feed):
-    //   return (
-    //     <CollectibleCard feed={feed} address={identity.address} name={identity.displayName} />
-    //   );
-    // case isDonationFeed(feed):
-    //   return (
-    //     <DonationCard feed={feed} />
-    //   );
+      return <TokenOperationCard feed={feed} identity={identity} />;
+    case isCollectibleFeed(feed):
+      return (
+        <CollectibleCard feed={feed}  identity={identity} />
+      );
+    case isDonationFeed(feed):
+      return (
+        <DonationCard feed={feed} />
+      );
     // case isProfileFeed(feed):
     //   return (
     //     <ProfileCard feed={feed} address={identity.address} name={identity.displayName} />

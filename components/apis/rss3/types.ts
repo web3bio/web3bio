@@ -6,6 +6,7 @@ export enum Tag {
   Social = "social",
   MetaVerse = "metaverse",
   Transaction = "transaction",
+  Unknown = 'unknown'
 }
 
 export enum Type {

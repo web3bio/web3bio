@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { memo, useMemo } from "react";
+import { resolveIPFS_URL } from "../../../utils/ipfs";
 import {
   formatText,
   isSameAddress,
@@ -7,7 +8,7 @@ import {
 } from "../../../utils/utils";
 import { Tag, Type } from "../../apis/rss3/types";
 import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
-import SVG from "react-inlinesvg";
+
 export function isCollectibleFeed(feed) {
   return (
     feed.tag === Tag.Collectible &&
@@ -27,47 +28,45 @@ export function getLastAction(feed) {
 }
 
 const RenderCollectibleCard = (props) => {
-  const { feed, name, address } = props;
-  const isOwner = isSameAddress(address, feed.owner);
+  const { feed, identity } = props;
+  const isOwner = isSameAddress(identity.address, feed.owner);
 
-  const { metadata, summary, action, image_url } = useMemo(() => {
+  const { metadata, summary, image_url, action } = useMemo(() => {
     let action;
     let metadata;
     let image_url;
-    const _from = isOwner ? name : formatText(address ?? "");
-    const _to = isSameAddress(address, feed.address_to)
-      ? name || formatText(address)
-      : formatText(feed.address_to ?? "");
+
+    const _to = isSameAddress(identity.address, feed.to)
+      ? identity.displayName || formatText(identity.address)
+      : formatText(feed.to ?? "");
 
     switch (feed.type) {
       case Type.Mint:
         action = getLastAction(feed);
         metadata = action.metadata;
-        image_url = metadata.image;
+        image_url = metadata.image_url;
         return {
           metadata,
           action,
           image_url,
           summary: (
-            <div className="feed-type-intro">
-              <strong>{_from}</strong>
+            <>
               minted
               <strong>{metadata.name}</strong>
-            </div>
+            </>
           ),
         };
       case Type.Trade:
         action = getLastAction(feed);
         metadata = action.metadata;
-        image_url = metadata.image;
+        image_url = metadata.image_url;
         return {
           metadata,
           action,
           image_url,
           summary: (
             <div className="feed-type-intro">
-              <strong>{_from}</strong>
-              sold an NFT to
+              Sold an NFT to
               <strong>{_to}</strong>
             </div>
           ),
@@ -81,13 +80,12 @@ const RenderCollectibleCard = (props) => {
           action,
           image_url,
           summary: (
-            <div className="feed-type-intro">
-              <strong>{_from}</strong>
+            <>
               {metadata.action == "text"
-                ? "updated a text record on"
-                : "renewed"}
+                ? "Updated a text record on"
+                : "Renewed"}
               <strong>{action.platform}</strong>
-            </div>
+            </>
           ),
         };
       case Type.Approval:
@@ -99,93 +97,87 @@ const RenderCollectibleCard = (props) => {
           action,
           image_url,
           summary: (
-            <div className="feed-type-intro">
-              <strong>{_from}</strong>
-              approved
+            <>
+              Approved
               <strong>{metadata.name}</strong> to
               <strong>{_to}</strong>
-            </div>
+            </>
           ),
         };
       case Type.Transfer:
         action = getLastAction(feed);
         metadata = action.metadata;
-
+        image_url = resolveIPFS_URL(metadata.image_url);
         return {
           metadata,
           action,
           summary: (
-            <div className="feed-type-intro">
-              <strong>{_from}</strong>
-              sent an NFT to
+            <>
+              Sent <strong>{metadata.name}</strong> to
               <strong>{_to}</strong>
-            </div>
+            </>
           ),
         };
       case Type.Burn:
         action = getLastAction(feed);
         metadata = action.metadata;
-        image_url = metadata.image;
+        image_url = metadata.image_url;
         return {
           metadata,
           action,
           image_url,
           summary: (
-            <div className="feed-type-intro">
-              <strong>{_from}</strong>
-              burned an NFT
-            </div>
+            <>
+              Burned <strong>{metadata.name}</strong>
+            </>
           ),
         };
     }
 
     return { summary: "", image_url };
-  }, [feed, address, isOwner, name]);
+  }, [feed, identity]);
 
   return (
-    <div className="feed-item-box">
-      <div className="feed-badge-emoji">🍞</div>
-      <div className="feed-item">
-        <div className="feed-item-header">
-          {summary}
-          <Link
-            href={action?.related_urls?.[0] || ""}
-            target="_blank"
-            className="action-icon"
-          >
-            <SVG src="../icons/icon-open.svg" width={20} height={20} />
-          </Link>
-        </div>
+    <Link
+      href={resolveIPFS_URL(action?.related_urls?.[0]) || ""}
+      target="_blank"
+      className="feed-item-body"
+    >
+      <div className="feed-content">
+        <div className="feed-content-header">{summary}</div>
 
         {metadata ? (
-          <div className={"feed-item-main"}>
-            <NFTAssetPlayer
-              height={"100%"}
-              className="feed-nft-img"
-              src={resolveMediaURL(image_url) || ""}
-              type="image/png"
-              alt={metadata.name}
-            />
+          <div className={"feed-content"}>
+            {image_url && (
+              <NFTAssetPlayer
+                className="feed-content-img"
+                src={resolveMediaURL(image_url) || ""}
+                type="image/png"
+                alt={metadata.name}
+              />
+            )}
 
             {feed.type === Type.Edit ? (
-              <div className="feed-nft-info">
-                <div className="nft-title">{metadata.name}</div>
-                <div className="nft-subtitle">
+              <div className="feed-content-target">
+                <div className="feed-target-name">{metadata.name}</div>
+                <div className="feed-target-content">
                   <strong>{metadata.key}</strong> {metadata.value}
                 </div>
               </div>
             ) : (
-              <div className="feed-nft-info">
-                <div className="nft-title">
-                  {metadata.name || metadata.body}
+              <div className="feed-content-target">
+                <div className="feed-target-name">
+                  <strong>{metadata.title || metadata.name}</strong>
                 </div>
-                <div className="nft-subtitle">{metadata.description}</div>
+                <div className="feed-target-content">
+                  {metadata.description}
+                </div>
               </div>
             )}
           </div>
         ) : null}
       </div>
-    </div>
+    </Link>
   );
 };
 

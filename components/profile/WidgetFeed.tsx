@@ -3,20 +3,20 @@ import { memo, useEffect, useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { ExpandController } from "./ExpandController";
 import { RSS3Fetcher, RSS3_ENDPOINT } from "../apis/rss3";
-import { PlatformType } from "../../utils/platform";
 import { SocialFeeds } from "./SocialFeeds";
 
 const FEEDS_PAGE_SIZE = 10;
 
 const processFeedsData = (data) => {
   if (!data?.[0]?.data?.length) return [];
-  const issues = new Array();
+  const res = new Array();
   data.map((x) => {
     x.data.forEach((i) => {
-      issues.push(i);
+      res.push(i);
     });
   });
-  return issues;
+
+  return res;
 };
 
 const getURL = (index, address, previous) => {
@@ -26,9 +26,9 @@ const getURL = (index, address, previous) => {
     RSS3_ENDPOINT +
     `data/accounts/` +
     address +
-    `/activities?limit=${FEEDS_PAGE_SIZE}&direction=out${
+    `/activities?limit=${FEEDS_PAGE_SIZE}${
       cursor ? `&cursor=${cursor}` : ""
-    }`
+    }&direction=out`
   );
 };
 
@@ -46,7 +46,7 @@ function useFeeds({ address, fromServer, initialData }) {
       ...options,
       suspense: !fromServer,
       revalidateOnFocus: false,
-      revalidateOnMount: false,
+      revalidateOnMount: true,
       revalidateOnReconnect: false,
     }
   );
@@ -76,7 +76,7 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
     ? []
     : expand
     ? JSON.parse(JSON.stringify(data))
-    : JSON.parse(JSON.stringify(data.slice(0, 10)));
+    : JSON.parse(JSON.stringify(data.slice(0, 3)));
   useEffect(() => {
     if (expand) {
       const anchorElement = document.getElementById("feeds");
@@ -85,6 +85,7 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
       });
     }
   }, [expand]);
+
   if (!issues?.length || isError) return null;
 
   if (process.env.NODE_ENV !== "production") {

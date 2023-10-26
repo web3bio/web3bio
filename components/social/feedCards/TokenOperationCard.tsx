@@ -1,13 +1,7 @@
-import Link from "next/link";
 import { memo, useMemo } from "react";
-import {
-  formatText,
-  formatValue,
-  isSameAddress,
-} from "../../../utils/utils";
+import { formatText, formatValue, isSameAddress } from "../../../utils/utils";
 import { Tag, Type } from "../../apis/rss3/types";
 import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
-import SVG from "react-inlinesvg";
 import { getLastAction } from "./CollectibleCard";
 
 export const isTokenTransferFeed = (feed) => {
@@ -18,28 +12,46 @@ export const isTokenTransferFeed = (feed) => {
 };
 
 const RenderTokenOperationCard = (props) => {
-  const { feed, name, address } = props;
+  const { feed, identity } = props;
 
-  const { metadata, summary, action } = useMemo(() => {
+  const RenderToken = (metadata) => {
+    return (
+      <>
+        <strong>
+          {formatValue(metadata)} {metadata.symbol}
+        </strong>{" "}
+        {metadata?.image && (
+          <NFTAssetPlayer
+            width={"100%"}
+            height={"100%"}
+            className="feed-content-token-img"
+            src={metadata.image}
+            alt={metadata.symbol}
+            type="image/png"
+          />
+        )}
+      </>
+    );
+  };
+  const { summary } = useMemo(() => {
     let action;
     let metadata;
     action = getLastAction(feed);
     metadata = action.metadata;
-    const isFromOwner = isSameAddress(address, action.address_from);
-
-    const _to = isSameAddress(address, action.address_to)
-      ? name || formatText(address)
-      : formatText(action.address_to ?? "");
+    const _to = isSameAddress(identity.address, action.to)
+      ? identity.displayName || formatText(identity.address)
+      : formatText(action.to ?? "");
     switch (feed.type) {
       case Type.Transfer:
         return {
           metadata,
           action,
           summary: (
-            <div className="feed-type-intro">
-              sent to
+            <>
+              Sent {RenderToken(metadata)}
+              to
               <strong>{_to}</strong>
-            </div>
+            </>
           ),
         };
       case Type.Approval:
@@ -47,58 +59,26 @@ const RenderTokenOperationCard = (props) => {
           metadata,
           action,
           summary: (
-            <div className="feed-type-intro">
-              approved to
+            <>
+              Approved {RenderToken(metadata)}
+              to
               <strong>{_to}</strong>
-            </div>
+            </>
           ),
         };
       case Type.Burn:
         return {
           metadata,
           action,
-          summary: (
-            <div className="feed-type-intro">
-              burned
-            </div>
-          ),
+          summary: <>Burned {RenderToken(metadata)}</>,
         };
     }
 
-    return { summary: "", metadata };
-  }, [feed, address, name]);
+    return { summary: "" };
+  }, [feed, identity]);
   return (
     <div className="feed-item-body">
-      <div className="feed-content">
-        <div className="feed-item-header">
-          <div className="feed-type-intro">{summary}</div>
-          <Link
-            href={action?.related_urls?.[0] || ""}
-            target="_blank"
-            className="action-icon"
-          >
-            <SVG src="../icons/icon-open.svg" width={20} height={20} />
-          </Link>
-        </div>
-
-        {metadata ? (
-          <div className={"feed-content"}>
-            <NFTAssetPlayer
-              width={"100%"}
-              height={"100%"}
-              className="feed-content-img"
-              src={metadata.image}
-              alt={metadata.symbol}
-              type="image/png"
-            />
-            <div className="feed-nft-info">
-              <div className="nft-title">
-                {formatValue(metadata)} {metadata.symbol}
-              </div>
-            </div>
-          </div>
-        ) : null}
-      </div>
+      <div className="feed-content flex">{summary}</div>
     </div>
   );
 };
