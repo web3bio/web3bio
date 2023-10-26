@@ -1,5 +1,5 @@
 import { memo, useMemo } from "react";
-import { formatText, isSameAddress } from "../../../utils/utils";
+import { formatText, isSameAddress, resolveMediaURL } from "../../../utils/utils";
 import { Tag, Type } from "../../apis/rss3/types";
 import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
 import { getLastAction } from "./CollectibleCard";
@@ -19,22 +19,20 @@ const RenderProfileFeed = (props) => {
     let action;
     let metadata;
     let image_url;
-    const _to = isSameAddress(address, feed.to)
-      ? name || formatText(address)
-      : formatText(feed.to ?? "");
+
     switch (feed.type) {
       case Type.Mint:
         action = getLastAction(feed);
         metadata = action.metadata;
-        image_url = metadata.media?.[0]?.address;
+        image_url =resolveMediaURL( metadata.media?.[0]?.address);
         return {
           metadata,
           action,
           image_url,
           summary: (
-            <div className="feed-type-intro">
-              minted a note on <strong>{action.platform}</strong>
-            </div>
+            <>
+              Minted a note on <strong>{action.platform}</strong>
+            </>
           ),
         };
       case Type.Follow:
@@ -46,11 +44,11 @@ const RenderProfileFeed = (props) => {
           action,
           image_url,
           summary: (
-            <div className="feed-type-intro">
-              followed
+            <>
+              Followed
               <strong>{metadata.name || metadata.handle}</strong>
               on <strong>{metadata.platform}</strong>
-            </div>
+            </>
           ),
         };
     }
@@ -58,24 +56,23 @@ const RenderProfileFeed = (props) => {
     return { summary: "", image_url };
   }, [feed, isOwner, name, address]);
   return (
-    <div className="feed-item-box">
-      <div className="feed-badge-emoji">🚀</div>
-      <div className="feed-item">
-        <div className="feed-item-header">{summary}</div>
+    <div className="feed-item-body">
+      <div className="feed-content">
+        <div className="feed-content-header">{summary}</div>
 
         {metadata && (
-          <div className={"feed-item-main"}>
-            <NFTAssetPlayer
-              className="feed-nft-img"
+          <div className={"feed-content"}>
+           {image_url &&  <NFTAssetPlayer
+              className="feed-content-img"
               src={image_url}
               type="image/png"
               alt={metadata.handle}
-            />
-            <div className="feed-nft-info">
-              <div className="nft-title">
+            />}
+            <div className="feed-content-target">
+              <div className="feed-target-name">
                 {metadata.name || metadata.handle}
               </div>
-              <div className="nft-subtitle">{metadata.body}</div>
+              <div className="feed-target-content">{metadata.body}</div>
             </div>
           </div>
         )}

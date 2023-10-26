@@ -11,7 +11,7 @@ export const RSS3Fetcher = async (url, options?) => {
 
 export const FeedEmojiMapByTag = {
   [Tag.Social]: "💬",
-  [Tag.Collectible]: "🍞",
+  [Tag.Collectible]: "🌃",
   [Tag.Donation]: "💌",
   [Tag.Exchange]: "💵",
   [Tag.Transaction]: "💰",

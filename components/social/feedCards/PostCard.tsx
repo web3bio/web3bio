@@ -2,7 +2,7 @@ import Link from "next/link";
 import { memo } from "react";
 import { resolveIPFS_URL } from "../../../utils/ipfs";
 import { Tag, Type } from "../../apis/rss3/types";
-import { formatText } from "../../../utils/utils";
+import { formatText, resolveMediaURL } from "../../../utils/utils";
 import { NFTAssetPlayer } from "../../shared/NFTAssetPlayer";
 import { getLastAction } from "./CollectibleCard";
 
@@ -34,7 +34,7 @@ const RenderPostCard = (props) => {
           {metadata.media.map((x) => (
               <NFTAssetPlayer
                 className="feed-content-img"
-                src={x.address}
+                src={resolveMediaURL(x.address)}
                 type={x.mime_type}
                 alt={metadata.handle}
                 key={x.address}

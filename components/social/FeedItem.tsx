@@ -44,17 +44,17 @@ const RenderFeedContent = (props) => {
     case isTokenOperationFeed(feed):
       return <TokenOperationCard feed={feed} identity={identity} />;
     case isCollectibleFeed(feed):
-      return (
-        <CollectibleCard feed={feed}  identity={identity} />
-      );
+      return <CollectibleCard feed={feed} identity={identity} />;
     case isDonationFeed(feed):
+      return <DonationCard feed={feed} />;
+    case isProfileFeed(feed):
       return (
-        <DonationCard feed={feed} />
+        <ProfileCard
+          feed={feed}
+          address={identity.address}
+          name={identity.displayName}
+        />
       );
-    // case isProfileFeed(feed):
-    //   return (
-    //     <ProfileCard feed={feed} address={identity.address} name={identity.displayName} />
-    //   );
     // case isGovernanceCard(feed):
     //   return (
     //     <GovernanceCard feed={feed} address={identity.address} name={identity.displayName} />
@@ -102,9 +102,7 @@ const RenderFeedItem = (props) => {
           <div className="feed-item-name">
             <strong>
               {isOwner
-                ? action?.metadata?.handle ||
-                  identity.displayName ||
-                  formatText(identity.address)
+                ? identity.displayName || formatText(identity.address)
                 : formatText(feed.from)}
             </strong>
           </div>
