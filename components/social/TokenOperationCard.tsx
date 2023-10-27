@@ -6,8 +6,8 @@ import { getLastAction } from "./CollectibleCard";
 
 export const isTokenTransferFeed = (feed) => {
   return (
-    feed.tag === ActivityTag.Transaction &&
-    [ActivityType.Transfer, ActivityType.Burn, ActivityType.Approval].includes(feed.type)
+    feed.tag === ActivityTag.transaction &&
+    [ActivityType.transfer, ActivityType.burn, ActivityType.approval].includes(feed.type)
   );
 };
 
@@ -17,19 +17,20 @@ const RenderTokenOperationCard = (props) => {
   const RenderToken = (metadata) => {
     return (
       <>
-        <strong>
-          {formatText(formatValue(metadata))} {metadata.symbol}
-        </strong>{" "}
         {metadata?.image && (
           <NFTAssetPlayer
             width={"100%"}
             height={"100%"}
-            className="feed-content-token-img"
+            className="feed-content-token-icon"
             src={metadata.image}
             alt={metadata.symbol}
             type="image/png"
           />
         )}
+        {" "}
+        <strong>
+          {formatText(formatValue(metadata))} {metadata.symbol}
+        </strong>
       </>
     );
   };
@@ -42,35 +43,34 @@ const RenderTokenOperationCard = (props) => {
       ? identity.displayName || formatText(identity.address)
       : formatText(action.to ?? "");
     switch (feed.type) {
-      case ActivityType.Transfer:
+      case ActivityType.transfer:
         return {
           metadata,
           action,
           summary: (
             <>
-              Sent {RenderToken(metadata)}
-              to
+              Sent{" "}{RenderToken(metadata)}{" "}
+              to{" "}
               <strong>{_to}</strong>
             </>
           ),
         };
-      case ActivityType.Approval:
+      case ActivityType.approval:
         return {
           metadata,
           action,
           summary: (
             <>
-              Approved {RenderToken(metadata)}
-              to
+              Approved{" "}{RenderToken(metadata)}{" "}to{" "}
               <strong>{_to}</strong>
             </>
           ),
         };
-      case ActivityType.Burn:
+      case ActivityType.burn:
         return {
           metadata,
           action,
-          summary: <>Burned {RenderToken(metadata)}</>,
+          summary: <>Burned{" "}{RenderToken(metadata)}</>,
         };
     }
 
@@ -78,7 +78,7 @@ const RenderTokenOperationCard = (props) => {
   }, [feed, identity]);
   return (
     <div className="feed-item-body">
-      <div className="feed-content flex">{summary}</div>
+      <div className="feed-content">{summary}</div>
     </div>
   );
 };

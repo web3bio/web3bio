@@ -6,7 +6,7 @@ import { ActivityTag, ActivityType } from "../apis/rss3/types";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
 export function isDonationFeed(feed) {
-  return feed.tag === ActivityTag.Donation && feed.type === ActivityType.Donate;
+  return feed.tag === ActivityTag.donation && feed.type === ActivityType.donate;
 }
 
 const RenderDonationCard = (props) => {
@@ -22,14 +22,14 @@ const RenderDonationCard = (props) => {
     >
       <div className="feed-content">
         <div className="feed-content-header">
-          Donated
+          Donated{" "}
           <strong>
             {formatValue(metadata?.token)} {metadata?.token?.symbol ?? ""}{" "}
           </strong>{" "}
           <NFTAssetPlayer
             width={"100%"}
             height={"100%"}
-            className="feed-content-token-img"
+            className="feed-content-token-icon"
             src={metadata?.token?.image}
           />{" "}
           on <strong>{feed.platform}</strong>

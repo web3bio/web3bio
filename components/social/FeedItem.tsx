@@ -8,46 +8,31 @@ import {
   isCollectibleFeed,
 } from "./CollectibleCard";
 import { DonationCard, isDonationFeed } from "./DonationCard";
-import { isPostCard, isCommentFeed, PostCard } from "./PostCard";
-import { isProfileFeed, ProfileCard } from "./ProfileCard";
+import { DefaultCard } from "./DefaultCard";
+import { PostCard } from "./PostCard";
 import {
   isTokenTransferFeed as isTokenOperationFeed,
   TokenOperationCard,
 } from "./TokenOperationCard";
 import { isTokenSwapFeed, TokenSwapCard } from "./TokenSwapCard";
-import { GovernanceCard, isGovernanceCard } from "./GovernanceCard";
 import { FeedEmojiMapByType } from "../apis/rss3";
+import { ActivityTag, ActivityType, ActivityTypeMapping } from "../apis/rss3/types";
 import { NetworkMapping } from "../../utils/network";
 import ActionExternalMenu from "./ActionExternalMenu";
 
 const RenderFeedContent = (props) => {
   const { feed, identity } = props;
   switch (!!feed) {
-    case isPostCard(feed) || isCommentFeed(feed):
+    case ([ActivityType.post, ActivityType.comment].includes(feed.type)):
       return <PostCard feed={feed} />;
-    case isTokenSwapFeed(feed):
-      return <TokenSwapCard feed={feed} />;
-    case isTokenOperationFeed(feed):
-      return <TokenOperationCard feed={feed} identity={identity} />;
-    case isCollectibleFeed(feed):
-      return <CollectibleCard feed={feed} identity={identity} />;
-    case isDonationFeed(feed):
-      return <DonationCard feed={feed} />;
-    case isProfileFeed(feed):
-      return (
-        <ProfileCard
-          feed={feed}
-          address={identity.address}
-          name={identity.displayName}
-        />
-      );
+    
     // case isGovernanceCard(feed):
     //   return (
     //     <GovernanceCard feed={feed} address={identity.address} name={identity.displayName} />
     //   );
 
     default:
-      return null;
+      return <DefaultCard feed={feed} />;
   }
 };
 
@@ -62,7 +47,7 @@ const RenderFeedItem = (props) => {
     <>
       <div className="feed-item-icon">
         <div className="feed-icon-emoji">
-          {FeedEmojiMapByType[feed.type]}
+          {ActivityTypeMapping(feed.type).emoji}
           {(platformName || networkName) && (
             <div
               className={`feed-icon-platform ${platformName || networkName}`}

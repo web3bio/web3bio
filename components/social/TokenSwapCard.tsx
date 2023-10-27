@@ -4,12 +4,12 @@ import { formatText, formatValue, isSameAddress } from "../../utils/utils";
 import { ActivityTag, ActivityType } from "../apis/rss3/types";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 export function isTokenSwapFeed(feed) {
-  return feed.tag === ActivityTag.Exchange && feed.type === ActivityType.Swap;
+  return feed.tag === ActivityTag.exchange && feed.type === ActivityType.swap;
 }
 
 const RenderTokenSwapCard = (props) => {
   const { feed } = props;
-  const action = feed.actions?.find((x) => x.type === ActivityType.Swap);
+  const action = feed.actions?.find((x) => x.type === ActivityType.swap);
   const metadata = action.metadata;
 
   return (
@@ -17,7 +17,7 @@ const RenderTokenSwapCard = (props) => {
       <div className="feed-content">
         <div className="feed-content-header">
           <div>
-            Swaped {feed.platform && "on"}
+            Swapped {feed.platform && "on"}
             <strong>{feed.platform}</strong>
           </div>
         </div>
@@ -26,12 +26,12 @@ const RenderTokenSwapCard = (props) => {
           <div className={"feed-content flex"}>
             <div className="flex">
               <NFTAssetPlayer
-                className="feed-content-token-img"
+                className="feed-content-token-icon"
                 src={metadata?.from?.image}
                 alt={metadata?.from?.symbol || "ft1"}
               />
               <NFTAssetPlayer
-                className="feed-content-token-img"
+                className="feed-content-token-icon"
                 src={metadata?.to?.image}
                 alt={metadata?.to?.symbol || "ft2"}
               />

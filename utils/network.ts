@@ -1,9 +1,9 @@
 export enum NetworkType {
-  Ethereum = "ethereum",
+  ethereum = "ethereum",
   BSC = "binance_smart_chain",
   Base = "base",
   Arb = "arbitrum",
-  Polygon = "polygon",
+  polygon = "polygon",
   OP = "optimism",
   Fantom = "fantom",
   Zks = "zksync",
@@ -16,8 +16,8 @@ export enum NetworkType {
   Arweave = "arweave",
   Celo = "celo",
   XDai = "xdai",
-  Scroll = "scroll",
-  Zora = "zora",
+  scroll = "scroll",
+  zora = "zora",
 }
 
 export interface NetworkMetaData {
@@ -31,9 +31,9 @@ export interface NetworkMetaData {
   darkColor?: string;
 }
 
-export const networkData: { [key in NetworkType]: NetworkMetaData } = {
-  [NetworkType.Ethereum]: {
-    key: NetworkType.Ethereum,
+export const NetworkData: { [key in NetworkType]: NetworkMetaData } = {
+  [NetworkType.ethereum]: {
+    key: NetworkType.ethereum,
     primaryColor: "#5298FF",
     bgColor: "#ebf3ff",
     lightColor: "#FFFFFF",
@@ -42,8 +42,8 @@ export const networkData: { [key in NetworkType]: NetworkMetaData } = {
     scanPrefix: "https://etherscan.io/",
     icon: "icons/icon-ethereum.svg",
   },
-  [NetworkType.Polygon]: {
-    key: NetworkType.Polygon,
+  [NetworkType.polygon]: {
+    key: NetworkType.polygon,
     primaryColor: "#8465CB",
     bgColor: "#efeaf8",
     lightColor: "#FFFFFF",
@@ -202,8 +202,8 @@ export const networkData: { [key in NetworkType]: NetworkMetaData } = {
     scanPrefix: "https://gnosisscan.io/",
     icon: "",
   },
-  [NetworkType.Scroll]: {
-    key: NetworkType.Scroll,
+  [NetworkType.scroll]: {
+    key: NetworkType.scroll,
     primaryColor: "",
     bgColor: "",
     lightColor: "",
@@ -212,8 +212,8 @@ export const networkData: { [key in NetworkType]: NetworkMetaData } = {
     scanPrefix: "https://scrollscan.com/",
     icon: "",
   },
-  [NetworkType.Zora]: {
-    key: NetworkType.Zora,
+  [NetworkType.zora]: {
+    key: NetworkType.zora,
     primaryColor: "",
     bgColor: "",
     lightColor: "",
@@ -226,7 +226,7 @@ export const networkData: { [key in NetworkType]: NetworkMetaData } = {
 
 export const NetworkMapping = (network: NetworkType) => {
   return (
-    networkData[network] ?? {
+    NetworkData[network] ?? {
       key: network,
       color: "#000000",
       icon: "",

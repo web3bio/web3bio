@@ -11,14 +11,13 @@ import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
 export function isCollectibleFeed(feed) {
   return (
-    feed.tag === ActivityTag.Collectible &&
+    feed.tag === ActivityTag.collectible &&
     [
-      ActivityType.Mint,
-      ActivityType.Transfer,
-      ActivityType.Trade,
-      ActivityType.Burn,
-      ActivityType.Approval,
-      ActivityType.Edit,
+      ActivityType.mint,
+      ActivityType.transfer,
+      ActivityType.trade,
+      ActivityType.burn,
+      ActivityType.approval,
     ].includes(feed.type)
   );
 }
@@ -41,7 +40,7 @@ const RenderCollectibleCard = (props) => {
       : formatText(feed.to ?? "");
 
     switch (feed.type) {
-      case ActivityType.Mint:
+      case ActivityType.mint:
         action = getLastAction(feed);
         metadata = action.metadata;
         image_url = metadata.image_url;
@@ -56,7 +55,7 @@ const RenderCollectibleCard = (props) => {
             </>
           ),
         };
-      case ActivityType.Trade:
+      case ActivityType.trade:
         action = getLastAction(feed);
         metadata = action.metadata;
         image_url = metadata.image_url;
@@ -71,24 +70,7 @@ const RenderCollectibleCard = (props) => {
             </div>
           ),
         };
-      case ActivityType.Edit:
-        action = getLastAction(feed);
-        metadata = action.metadata;
-        image_url = metadata.detail.image;
-        return {
-          metadata,
-          action,
-          image_url,
-          summary: (
-            <>
-              {metadata.action == "text"
-                ? "Updated a text record on"
-                : "Renewed"}
-              <strong>{action.platform}</strong>
-            </>
-          ),
-        };
-      case ActivityType.Approval:
+      case ActivityType.approval:
         action = getLastAction(feed);
         metadata = action.metadata;
         image_url = metadata.image;
@@ -104,7 +86,7 @@ const RenderCollectibleCard = (props) => {
             </>
           ),
         };
-      case ActivityType.Transfer:
+      case ActivityType.transfer:
         action = getLastAction(feed);
         metadata = action.metadata;
         image_url = resolveIPFS_URL(metadata.image_url);
@@ -118,7 +100,7 @@ const RenderCollectibleCard = (props) => {
             </>
           ),
         };
-      case ActivityType.Burn:
+      case ActivityType.burn:
         action = getLastAction(feed);
         metadata = action.metadata;
         image_url = metadata.image_url;
@@ -144,7 +126,7 @@ const RenderCollectibleCard = (props) => {
       className="feed-item-body"
     >
       <div className="feed-content">
-        <div className="feed-content-header">{summary}</div>
+        {summary}
 
         {metadata ? (
           <div className={"feed-content"}>
@@ -155,24 +137,6 @@ const RenderCollectibleCard = (props) => {
                 type="image/png"
                 alt={metadata.name}
               />
-            )}
-
-            {feed.type === ActivityType.Edit ? (
-              <div className="feed-content-target">
-                <div className="feed-target-name">{metadata.name}</div>
-                <div className="feed-target-content">
-                  <strong>{metadata.key}</strong> {metadata.value}
-                </div>
-              </div>
-            ) : (
-              <div className="feed-content-target">
-                <div className="feed-target-name">
-                  <strong>{metadata.title || metadata.name}</strong>
-                </div>
-                <div className="feed-target-content">
-                  {metadata.description}
-                </div>
-              </div>
             )}
           </div>
         ) : null}

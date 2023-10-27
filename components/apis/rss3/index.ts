@@ -8,29 +8,3 @@ export const RSS3Fetcher = async (url, options?) => {
     return null;
   }
 };
-
-export const FeedEmojiMapByType = {
-  [ActivityType.Transfer]: "💵",
-  [ActivityType.Mint]: "🖼️",
-  [ActivityType.Burn]: "🔥",
-  [ActivityType.Withdraw]: "💰",
-  [ActivityType.Deposit]: "💰",
-  [ActivityType.Swap]: "💵",
-  [ActivityType.Liquidity]: "🌊",
-  [ActivityType.Trade]: "💸",
-  [ActivityType.Poap]: "🔮",
-  [ActivityType.Post]: "📄",
-  [ActivityType.Revise]: "💵",
-  [ActivityType.Comment]: "💬",
-  [ActivityType.Share]: "🏛️",
-  [ActivityType.Profile]: "👤",
-  [ActivityType.Follow]: "🤝",
-  [ActivityType.Unfollow]: "🙅",
-  [ActivityType.Like]: "❤️",
-  [ActivityType.Propose]: "💵",
-  [ActivityType.Vote]: "💰",
-  [ActivityType.Launch]: "🏛️",
-  [ActivityType.Donate]: "💌",
-  [ActivityType.Approval]: "✅",
-  [ActivityType.Edit]: "📝",
-};

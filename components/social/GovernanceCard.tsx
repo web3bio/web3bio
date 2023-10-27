@@ -4,8 +4,9 @@ import { formatText, formatValue, isSameAddress } from "../../utils/utils";
 import { ActivityTag, ActivityType } from "../apis/rss3/types";
 import { getLastAction } from "./CollectibleCard";
 import SVG from "react-inlinesvg";
+
 export function isGovernanceCard(feed) {
-  return feed.tag === ActivityTag.Governance && feed.type === ActivityType.Vote;
+  return feed.tag === ActivityTag.governance && feed.type === ActivityType.vote;
 }
 
 const RenderGovernanceCard = (props) => {

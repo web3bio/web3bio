@@ -5,7 +5,7 @@ import { formatText, resolveMediaURL } from "../../utils/utils";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { getLastAction } from "./CollectibleCard";
 
-const RenderPostCard = (props) => {
+const RenderDefaultCard = (props) => {
   const { feed } = props;
 
   const action = getLastAction(feed)
@@ -36,7 +36,7 @@ const RenderPostCard = (props) => {
           href={resolveIPFS_URL(metadata?.target_url) || ""}
           target="_blank"
         >
-          <div className="feed-target">
+          <div className="feed-content-target">
             <div className="feed-target-name">
               <strong>
                 {formatText(target?.handle)}
@@ -52,4 +52,4 @@ const RenderPostCard = (props) => {
   );
 };
 
-export const PostCard = memo(RenderPostCard);
+export const DefaultCard = memo(RenderDefaultCard);
