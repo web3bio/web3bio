@@ -1,6 +1,6 @@
 export const SIMPLEHASH_URL = "https://simplehash-proxy.r2d2.to";
 export const SIMPLEHASH_CHAINS =
-  "ethereum,base,arbitrum,scroll,gnosis,linea,optimism,zora,zksync-era,flow";
+  "ethereum,base,arbitrum,scroll,linea,optimism,zora,zksync-era,flow";
 export const SIMPLEHASH_PAGE_SIZE = 40;
 
 export const SimplehashFetcher = async (url: string, options?) => {

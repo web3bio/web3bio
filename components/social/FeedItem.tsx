@@ -1,4 +1,6 @@
 import { memo } from "react";
+import Link from "next/link";
+import { resolveIPFS_URL } from "../../utils/ipfs";
 import { formatText, isSameAddress } from "../../utils/utils";
 import { SocialPlatformMapping } from "../../utils/platform";
 import SVG from "react-inlinesvg";
@@ -15,7 +17,6 @@ import {
   TokenOperationCard,
 } from "./TokenOperationCard";
 import { isTokenSwapFeed, TokenSwapCard } from "./TokenSwapCard";
-import { FeedEmojiMapByType } from "../apis/rss3";
 import { ActivityTag, ActivityType, ActivityTypeMapping } from "../apis/rss3/types";
 import { NetworkMapping } from "../../utils/network";
 import ActionExternalMenu from "./ActionExternalMenu";
@@ -23,8 +24,14 @@ import ActionExternalMenu from "./ActionExternalMenu";
 const RenderFeedContent = (props) => {
   const { feed, identity } = props;
   switch (!!feed) {
-    case ([ActivityType.post, ActivityType.comment].includes(feed.type)):
-      return <PostCard feed={feed} />;
+    case isTokenSwapFeed(feed):
+      return <TokenSwapCard feed={feed} />;
+    case isTokenOperationFeed(feed):
+      return <TokenOperationCard feed={feed} identity={identity} />;
+    case isCollectibleFeed(feed):
+      return <CollectibleCard feed={feed} identity={identity} />;
+    case isDonationFeed(feed):
+      return <DonationCard feed={feed} />;
     
     // case isGovernanceCard(feed):
     //   return (
@@ -78,9 +85,13 @@ const RenderFeedItem = (props) => {
             </strong>
           </div>
           <div className="feed-item-action dropdown">
-            <div className="feed-timestamp">
+            <Link
+              href={resolveIPFS_URL(action?.related_urls?.[0]) || ""}
+              target="_blank"
+              className="feed-timestamp"
+            >
               {new Date(feed.timestamp * 1000).toLocaleString()}
-            </div>
+            </Link>
             <ActionExternalMenu links={action?.related_urls || []} />
           </div>
         </div>

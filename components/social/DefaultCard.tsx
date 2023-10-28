@@ -31,12 +31,12 @@ const RenderDefaultCard = (props) => {
         </div>
       )}
       {target && (
-        <Link
-          className="feed-content"
-          href={resolveIPFS_URL(metadata?.target_url) || ""}
-          target="_blank"
-        >
-          <div className="feed-content-target">
+        <div className="feed-content">
+          <Link
+            className="feed-target"
+            href={resolveIPFS_URL(metadata?.target_url) || ""}
+            target="_blank"
+          >
             <div className="feed-target-name">
               <strong>
                 {formatText(target?.handle)}
@@ -45,8 +45,8 @@ const RenderDefaultCard = (props) => {
             <div className="feed-target-content">
               {target?.body}
             </div>
-          </div>
-        </Link>
+          </Link>
+        </div>
       )}
     </div>
   );

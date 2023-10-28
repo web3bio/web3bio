@@ -11,7 +11,6 @@
     padding: 0;
     position: relative;
     width: 100%;
-    z-index: 0;
 
     &:not(:last-child) {
       margin-bottom: .5rem;
@@ -56,7 +55,6 @@
         position: absolute;
         right: -.4rem;
         width: 1.2rem;
-        z-index: 1;
 
         // platforms
         &.farcaster {
@@ -101,6 +99,12 @@
       .feed-timestamp {
         color: $gray-color;
         font-size: .7rem;
+        text-decoration: none;
+
+        &:focus,
+        &:hover {
+          color: $gray-color-dark;
+        }
       }
     }
 
@@ -110,6 +114,11 @@
       font-size: .8rem;
       line-height: 1.5;
       margin: .25rem 0;
+
+      &:focus,
+      &:hover {
+        text-decoration: none;
+      }
 
       .feed-target {
         border: .05rem solid $border-color;
@@ -121,6 +130,15 @@
         transition: all .25s ease-in-out;
         word-wrap: break-word;
         width: 75%;
+      }
+
+      a.feed-target {
+        &:focus,
+        &:hover {
+          border-color: darken($border-color, 2%);
+          box-shadow: 0 .1rem .6rem rgba($dark-color, .05);
+          text-decoration: none;
+        }
       }
 
       &.media-gallery {
@@ -167,18 +185,6 @@
 
         .img-placeholder {
           height: 100%;
-        }
-      }
-    }
-
-    a.feed-content {
-      &:focus,
-      &:hover {
-        text-decoration: none;
-
-        .feed-target {
-          border-color: darken($border-color, 2%);
-          box-shadow: 0 .1rem .6rem rgba($dark-color, .05);
         }
       }
     }

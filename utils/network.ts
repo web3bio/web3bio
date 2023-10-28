@@ -1,11 +1,11 @@
 export enum NetworkType {
   ethereum = "ethereum",
   BSC = "binance_smart_chain",
-  Base = "base",
-  Arb = "arbitrum",
+  base = "base",
+  arbitrum = "arbitrum",
   polygon = "polygon",
   OP = "optimism",
-  Fantom = "fantom",
+  fantom = "fantom",
   Zks = "zksync",
   AVA = "avalanche",
   Crossbell = "crossbell",
@@ -72,8 +72,8 @@ export const NetworkData: { [key in NetworkType]: NetworkMetaData } = {
     scanPrefix: "https://aptoscan.com/",
     icon: "",
   },
-  [NetworkType.Arb]: {
-    key: NetworkType.Arb,
+  [NetworkType.arbitrum]: {
+    key: NetworkType.arbitrum,
     primaryColor: "",
     bgColor: "",
     lightColor: "",
@@ -102,8 +102,8 @@ export const NetworkData: { [key in NetworkType]: NetworkMetaData } = {
     scanPrefix: "https://bscscan.com/",
     icon: "",
   },
-  [NetworkType.Base]: {
-    key: NetworkType.Base,
+  [NetworkType.base]: {
+    key: NetworkType.base,
     primaryColor: "",
     bgColor: "",
     lightColor: "",
@@ -152,8 +152,8 @@ export const NetworkData: { [key in NetworkType]: NetworkMetaData } = {
     scanPrefix: "https://etc.blockscout.com/",
     icon: "",
   },
-  [NetworkType.Fantom]: {
-    key: NetworkType.Fantom,
+  [NetworkType.fantom]: {
+    key: NetworkType.fantom,
     primaryColor: "",
     bgColor: "",
     lightColor: "",
