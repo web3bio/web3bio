@@ -9,28 +9,26 @@ const RenderDefaultCard = (props) => {
   const { feed } = props;
 
   const action = getLastAction(feed)
-  const metadata = action.metadata;
-  const target = metadata?.target;
+  const metadata = action?.metadata;
 
   return (
     <div className="feed-item-body">
       <div className="feed-content">
-        {metadata.body}
+        {metadata?.body}
       </div>
-      {metadata.media?.length > 0 && (
+      {metadata?.media?.length > 0 && (
         <div className={`feed-content${metadata.media.length > 1 ? " media-gallery" : ""}`}>
           {metadata.media.map((x) => (
             <NFTAssetPlayer
               className="feed-content-img"
               src={resolveMediaURL(x.address)}
               type={x.mime_type}
-              alt={metadata.handle}
               key={x.address}
             />
           ))}
         </div>
       )}
-      {target && (
+      {metadata?.target && (
         <div className="feed-content">
           <Link
             className="feed-target"
@@ -39,11 +37,11 @@ const RenderDefaultCard = (props) => {
           >
             <div className="feed-target-name">
               <strong>
-                {formatText(target?.handle)}
+                {formatText(metadata?.target?.handle)}
               </strong>
             </div>
             <div className="feed-target-content">
-              {target?.body}
+              {metadata?.target?.body}
             </div>
           </Link>
         </div>

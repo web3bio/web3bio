@@ -11,7 +11,6 @@ import {
 } from "./CollectibleCard";
 import { DonationCard, isDonationFeed } from "./DonationCard";
 import { DefaultCard } from "./DefaultCard";
-import { PostCard } from "./PostCard";
 import {
   isTokenTransferFeed as isTokenOperationFeed,
   TokenOperationCard,
@@ -57,7 +56,7 @@ const RenderFeedItem = (props) => {
           {ActivityTypeMapping(feed.type).emoji}
           {(platformName || networkName) && (
             <div
-              className={`feed-icon-platform ${platformName || networkName}`}
+              className={`feed-icon-platform ${platformName} ${networkName}`}
             >
               <SVG
                 fill={

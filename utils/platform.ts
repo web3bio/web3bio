@@ -254,7 +254,7 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
   },
   [PlatformType.facebook]: {
     key: PlatformType.facebook,
-    icon: "icons/social-facebook.svg",
+    icon: "icons/icon-facebook.svg",
     color: "#385898",
     label: "Facebook",
     urlPrefix: "https://www.facebook.com/",
@@ -262,7 +262,7 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
   },
   [PlatformType.youtube]: {
     key: PlatformType.youtube,
-    icon: "",
+    icon: "icons/icon-youtube.svg",
     color: "#FF0000",
     label: "Youtube",
     urlPrefix: "https://www.youtube.com/",
@@ -286,7 +286,7 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
   },
   [PlatformType.medium]: {
     key: PlatformType.medium,
-    icon: "icons/social-medium.svg",
+    icon: "icons/icon-medium.svg",
     color: "#000000",
     label: "Medium",
     urlPrefix: "https://medium.com/",
@@ -294,7 +294,7 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
   },
   [PlatformType.mirror]: {
     key: PlatformType.mirror,
-    icon: "",
+    icon: "icons/icon-mirror.svg",
     color: "#007aff",
     label: "Mirror",
     urlPrefix: "https://mirror.xyz/",
@@ -362,8 +362,8 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
   },
   [PlatformType.twitter_hexagon]: {
     key: PlatformType.twitter_hexagon,
-    icon: "",
-    color: "#000000",
+    icon: "icons/icon-twitter.svg",
+    color: "#4A99E9",
     label: "Twitter Hexagon",
     urlPrefix: "https://twitter.com/",
   },

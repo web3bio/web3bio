@@ -76,7 +76,7 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
     ? []
     : expand
     ? JSON.parse(JSON.stringify(data))
-    : JSON.parse(JSON.stringify(data.slice(0, 1)));
+    : JSON.parse(JSON.stringify(data.slice(0, 3)));
   useEffect(() => {
     if (expand) {
       const anchorElement = document.getElementById("feeds");
