@@ -70,7 +70,6 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
     icon: "icons/icon-ens.svg",
     label: "ENS",
     urlPrefix: "https://app.ens.domains/search/",
-    ensText: [],
   },
   [PlatformType.ethereum]: {
     key: PlatformType.ethereum,
@@ -78,7 +77,6 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
     icon: "icons/icon-ethereum.svg",
     label: "Ethereum",
     urlPrefix: "https://etherscan.io/address/",
-    ensText: [],
   },
   [PlatformType.farcaster]: {
     key: PlatformType.farcaster,
@@ -86,7 +84,6 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
     icon: "icons/icon-farcaster.svg",
     label: "Farcaster",
     urlPrefix: "https://warpcast.com/",
-    ensText: [],
   },
   [PlatformType.github]: {
     key: PlatformType.github,
@@ -111,7 +108,6 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
     icon: "icons/icon-lens.svg",
     label: "Lens",
     urlPrefix: "https://www.lensfrens.xyz/",
-    ensText: [],
   },
   [PlatformType.nextid]: {
     key: PlatformType.nextid,
@@ -119,7 +115,6 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
     icon: "icons/icon-nextid.svg",
     label: "Next.ID",
     urlPrefix: "https://web3.bio",
-    ensText: [],
     dotbitText: ["profile.nextid"],
   },
   [PlatformType.reddit]: {
@@ -182,7 +177,6 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
     key: PlatformType.rss3,
     color: "#3070F6",
     label: "RSS3",
-    ensText: [],
     urlPrefix: "https://rss3.io/",
   },
   [PlatformType.cyberconnect]: {
@@ -190,12 +184,11 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
     color: "#000000",
     icon: "icons/icon-cyberconnect.svg",
     label: "CyberConnect",
-    ensText: [],
   },
   [PlatformType.opensea]: {
     key: PlatformType.opensea,
     color: "#407FDB",
-    icon: "icons/social-opensea.svg",
+    icon: "icons/icon-opensea.svg",
     label: "OpenSea",
     ensText: [],
     urlPrefix: "https://opensea.io/",
@@ -220,7 +213,6 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
     icon: "icons/icon-web.svg",
     color: "#121212",
     label: "Website",
-    ensText: [],
   },
   [PlatformType.website]: {
     key: PlatformType.website,

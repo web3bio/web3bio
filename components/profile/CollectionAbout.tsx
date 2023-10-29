@@ -7,6 +7,7 @@ import { PlatformType } from "../../utils/platform";
 import { getSocialMediaLink, SocialPlatformMapping } from "../../utils/utils";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import Link from "next/link";
+import SVG from "react-inlinesvg";
 
 const useCollectionData = (id) => {
   const { data, isValidating, error } = useSWR(
@@ -42,12 +43,12 @@ const renderSocialMediaLinks = (_collection) => {
       links.push(
         <Link
           href={getSocialMediaLink(item, key as PlatformType) || ""}
-          className="btn btn-sm btn-primary"
+          className="btn"
           key={key + item}
           target="_blank"
           rel="noopener noreferrer"
         >
-          {SocialPlatformMapping(key as PlatformType).label}
+          <SVG src={`../${SocialPlatformMapping(key as PlatformType).icon}`} fill="#121212" width={20} height={20} />
         </Link>
       );
     }
@@ -91,17 +92,18 @@ const CollectionAboutRender = (props) => {
         <div className="nft-header-name h5">
           {_collection.name}
         </div>
+        <div className="panel-widget-content mt-4 mb-4">
+        <div className="btn-group">
+          {renderSocialMediaLinks(_collection)}
+        </div>
+      </div>
         {_collection.description && (
           <div className="nft-header-description mt-4 mb-4">
             {_collection.description}
           </div>
         )}
       </div>
-      <div className="panel-widget-content mt-4 mb-4">
-        <div className="traits-cards">
-          {renderSocialMediaLinks(_collection)}
-        </div>
-      </div>
+      
       <div className="panel-widget-content">
         <div className="panel-widget-list">
           {floorPriceItem && (
