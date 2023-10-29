@@ -28,7 +28,6 @@ export function getLastAction(feed) {
 
 const RenderCollectibleCard = (props) => {
   const { feed, identity } = props;
-  const isOwner = isSameAddress(identity.address, feed.owner);
 
   const { metadata, summary, image_url, action } = useMemo(() => {
     let action;

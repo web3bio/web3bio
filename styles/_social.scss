@@ -55,11 +55,6 @@
         position: absolute;
         right: -.4rem;
         width: 1.2rem;
-
-        // platforms
-        &.farcaster {
-          background: lighten(#fdff71, 10%);
-        }
       }
     }
 
@@ -107,7 +102,7 @@
         border: .05rem solid $border-color;
         border-radius: .4rem;
         font-size: .7rem;
-        margin-top: .75rem;
+        margin-top: .5rem;
         min-width: 10rem;
         padding: .75rem;
         transition: all .25s ease-in-out;

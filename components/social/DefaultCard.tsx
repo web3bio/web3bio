@@ -3,16 +3,13 @@ import { memo } from "react";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 import { formatText, resolveMediaURL } from "../../utils/utils";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { getLastAction } from "./CollectibleCard";
 
 const RenderDefaultCard = (props) => {
-  const { feed } = props;
-
-  const action = getLastAction(feed)
+  const { action } = props;
   const metadata = action?.metadata;
 
   return (
-    <div className="feed-item-body">
+    <>
       <div className="feed-content">
         {metadata?.body}
       </div>
@@ -46,7 +43,7 @@ const RenderDefaultCard = (props) => {
           </Link>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

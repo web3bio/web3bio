@@ -6,10 +6,8 @@ import { SocialPlatformMapping } from "../../utils/platform";
 import SVG from "react-inlinesvg";
 import {
   CollectibleCard,
-  getLastAction,
   isCollectibleFeed,
 } from "./CollectibleCard";
-import { DonationCard, isDonationFeed } from "./DonationCard";
 import { DefaultCard } from "./DefaultCard";
 import {
   isTokenTransferFeed as isTokenOperationFeed,
@@ -21,7 +19,7 @@ import { NetworkMapping } from "../../utils/network";
 import ActionExternalMenu from "./ActionExternalMenu";
 
 const RenderFeedContent = (props) => {
-  const { feed, identity } = props;
+  const { action, feed, identity } = props;
   switch (!!feed) {
     case isTokenSwapFeed(feed):
       return <TokenSwapCard feed={feed} />;
@@ -29,18 +27,14 @@ const RenderFeedContent = (props) => {
       return <TokenOperationCard feed={feed} identity={identity} />;
     case isCollectibleFeed(feed):
       return <CollectibleCard feed={feed} identity={identity} />;
-    case isDonationFeed(feed):
-      return <DonationCard feed={feed} />;
-    
-    // case isGovernanceCard(feed):
-    //   return (
-    //     <GovernanceCard feed={feed} address={identity.address} name={identity.displayName} />
-    //   );
-
     default:
-      return <DefaultCard feed={feed} />;
+      return <DefaultCard action={action} />;
   }
 };
+
+export function getLastAction(feed) {
+  return feed.actions[feed.actions.length - 1];
+}
 
 const RenderFeedItem = (props) => {
   const { feed, identity } = props;
@@ -54,28 +48,30 @@ const RenderFeedItem = (props) => {
       <div className="feed-item-icon">
         <div className="feed-icon-emoji">
           {ActivityTypeMapping(feed.type).emoji}
-          {(platformName || networkName) && (
+          {networkName && platformName !== "lens" ? (
             <div
-              className={`feed-icon-platform ${networkName} ${platformName}`}
-              style={
-                {backgroundColor: networkName
-                  ? NetworkMapping(networkName).bgColor
-                  : NetworkMapping(platformName).bgColor,
-                }
-              }
+              className={`feed-icon-platform ${networkName}`}
+              style={{
+                backgroundColor: NetworkMapping(networkName).bgColor,
+              }}
+              title={NetworkMapping(networkName).label}
+            >
+              <SVG
+                fill={NetworkMapping(networkName).primaryColor}
+                src={NetworkMapping(networkName).icon || ""}
+              />
+            </div>
+          ) : (
+            <div
+              className={`feed-icon-platform ${platformName}`}
+              style={{
+                backgroundColor: NetworkMapping(platformName).bgColor,
+              }}
               title={NetworkMapping(platformName).label}
             >
               <SVG
-                fill={
-                  networkName
-                    ? NetworkMapping(networkName).primaryColor
-                    : SocialPlatformMapping(platformName).color
-                }
-                src={
-                  (networkName
-                    ? NetworkMapping(networkName).icon
-                    : SocialPlatformMapping(platformName).icon) || ""
-                }
+                fill={SocialPlatformMapping(platformName).color}
+                src={SocialPlatformMapping(platformName).icon || ""}
               />
             </div>
           )}
@@ -101,7 +97,9 @@ const RenderFeedItem = (props) => {
             <ActionExternalMenu links={action?.related_urls || []} />
           </div>
         </div>
-        <RenderFeedContent action={action} feed={feed} identity={identity} />
+        <div className="feed-item-body">
+          <RenderFeedContent action={action} feed={feed} identity={identity} />
+        </div>
       </div>
     </>
   );
