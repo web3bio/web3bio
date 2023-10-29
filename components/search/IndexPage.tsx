@@ -53,15 +53,15 @@ export default function HomePage() {
                 pathname: "/",
                 query: {},
               }}
+              className="web3bio-logo"
+              title="Web3.bio"
             >
-              <div className="web3bio-logo" title="Web3.bio">
-                <h1 className="text-pride">
-                  WEB3
-                  <br />
-                  BIO
-                </h1>
-                <h2 className="text-assistive">Web3.bio is a platform for Web3 and Web 2.0 Identity Graph search and link in bio profiles. It provides a list of relevant identities when searching for a Twitter handle, Ethereum address, ENS domain, Lens profile, Farcaster account, Unstoppable Domains, and other Web3 identities.</h2>
-              </div>
+              <h1 className="text-pride">
+                WEB3
+                <br />
+                BIO
+              </h1>
+              <h2 className="text-assistive">Web3.bio is a platform for Web3 and Web 2.0 Identity Graph search and link in bio profiles. It provides a list of relevant identities when searching for a Twitter handle, Ethereum address, ENS domain, Lens profile, Farcaster account, Unstoppable Domains, and other Web3 identities.</h2>
             </Link>
             <div className="form-label">
               Web3 Identity Search<br/><small>Discover Web3 Identity Graph and Profiles</small>
