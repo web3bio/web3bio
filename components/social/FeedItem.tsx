@@ -92,7 +92,7 @@ const RenderFeedItem = (props) => {
               <RenderFeedContent action={action} tag={feed.tag} />
           ) : (
             feed.actions.map((x) => (
-              <RenderFeedContent action={x} tag={x.tag} />
+              <RenderFeedContent key={x.id} action={x} tag={x.tag} />
             ))
           )}
         </div>

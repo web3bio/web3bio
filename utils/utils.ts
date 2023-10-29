@@ -45,6 +45,7 @@ export const formatValue = (value?: {
   if (!value) return "";
   return formatBalance(value.value, value.decimals, 5);
 };
+
 export function formatBalance(
   rawValue: BigNumber.Value = "0",
   decimals = 0,

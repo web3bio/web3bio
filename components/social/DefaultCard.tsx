@@ -10,9 +10,11 @@ const RenderDefaultCard = (props) => {
 
   return (
     <>
-      <div className="feed-content">
-        {metadata?.body}
-      </div>
+      {metadata?.body && (
+        <div className="feed-content">
+          {metadata?.body}
+        </div>
+      )}
       {metadata?.media?.length > 0 && (
         <div className={`feed-content${metadata.media.length > 1 ? " media-gallery" : ""}`}>
           {metadata.media.map((x) => (

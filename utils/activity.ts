@@ -43,7 +43,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     key: ActivityType.approval,
     emoji: "✅",
     label: "Approval",
-    action: "Approvaled",
+    action: "Approved",
     prep: "to",
   },
   [ActivityType.auction]: {
@@ -205,7 +205,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "💵",
     label: "Transfer",
     action: "Transferred",
-    prep: "",
+    prep: "to",
   },
   [ActivityType.unknown]: {
     key: ActivityType.unknown,
