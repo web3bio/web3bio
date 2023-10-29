@@ -3,36 +3,27 @@ import Link from "next/link";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 import { formatText, isSameAddress, SocialPlatformMapping } from "../../utils/utils";
 import SVG from "react-inlinesvg";
-import {
-  CollectibleCard,
-  isCollectibleFeed,
-} from "./CollectibleCard";
 import { DefaultCard } from "./DefaultCard";
-import {
-  isTokenTransferFeed as isTokenOperationFeed,
-  TokenOperationCard,
-} from "./TokenOperationCard";
-import { isTokenSwapFeed, TokenSwapCard } from "./TokenSwapCard";
+import { TransactionCard } from "./TransactionCard";
+import { TokenSwapCard } from "./TokenSwapCard";
 import { ActivityTag, ActivityType  } from "../../utils/activity";
 import { NetworkMapping, ActivityTypeMapping } from "../../utils/utils";
 import ActionExternalMenu from "./ActionExternalMenu";
 
 const RenderFeedContent = (props) => {
-  const { action, feed, identity } = props;
-  switch (!!feed) {
-    case isTokenSwapFeed(feed):
-      return <TokenSwapCard feed={feed} />;
-    case isTokenOperationFeed(feed):
-      return <TokenOperationCard feed={feed} identity={identity} />;
-    case isCollectibleFeed(feed):
-      return <CollectibleCard feed={feed} identity={identity} />;
+  const { action, tag, type } = props;
+  switch (tag) {
+    case ("collectible"):
+      return <TokenSwapCard action={action} />;
+    case ("transaction"):
+      return <TransactionCard action={action} />;
     default:
       return <DefaultCard action={action} />;
   }
 };
 
-export function getLastAction(feed) {
-  return feed.actions[feed.actions.length - 1];
+export function getLastAction(actions) {
+  return actions[actions.length - 1];
 }
 
 const RenderFeedItem = (props) => {
@@ -40,7 +31,7 @@ const RenderFeedItem = (props) => {
   const isOwner = isSameAddress(feed.owner, identity.address);
   const platformName = feed.platform?.toLowerCase();
   const networkName = feed.network?.toLowerCase();
-  const action = getLastAction(feed);
+  const action = getLastAction(feed.actions);
 
   return (
     <>
@@ -97,7 +88,13 @@ const RenderFeedItem = (props) => {
           </div>
         </div>
         <div className="feed-item-body">
-          <RenderFeedContent action={action} feed={feed} identity={identity} />
+          { feed.tag === "social" ? (
+              <RenderFeedContent action={action} tag={feed.tag} />
+          ) : (
+            feed.actions.map((x) => (
+              <RenderFeedContent action={x} tag={x.tag} />
+            ))
+          )}
         </div>
       </div>
     </>

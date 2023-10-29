@@ -4,7 +4,7 @@ import { resolveIPFS_URL } from "../../utils/ipfs";
 import { formatText, resolveMediaURL } from "../../utils/utils";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
-const RenderDefaultCard = (props) => {
+const RenderTransactionCard = (props) => {
   const { action } = props;
   const metadata = action?.metadata;
 
@@ -47,4 +47,4 @@ const RenderDefaultCard = (props) => {
   );
 };
 
-export const DefaultCard = memo(RenderDefaultCard);
+export const TransactionCard = memo(RenderTransactionCard);

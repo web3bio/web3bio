@@ -75,3 +75,5 @@ export default function RootLayout({ children, modal }) {
     </html>
   );
 }
+
+export const runtime = "edge";

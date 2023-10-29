@@ -4,13 +4,8 @@ import { formatText, formatValue } from "../../utils/utils";
 import { ActivityTag, ActivityType } from "../../utils/activity";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
-export function isTokenSwapFeed(feed) {
-  return feed.tag === ActivityTag.exchange && feed.type === ActivityType.swap;
-}
-
 const RenderTokenSwapCard = (props) => {
-  const { feed } = props;
-  const action = feed.actions?.find((x) => x.type === ActivityType.swap);
+  const { action } = props;
   const metadata = action.metadata;
 
   return (
@@ -18,8 +13,7 @@ const RenderTokenSwapCard = (props) => {
       <div className="feed-content">
         <div className="feed-content-header">
           <div>
-            Swapped {feed.platform && "on"}
-            <strong>{feed.platform}</strong>
+            Swapped 
           </div>
         </div>
 

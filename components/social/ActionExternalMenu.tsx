@@ -18,7 +18,7 @@ export default function ActionExternalMenu({ links }) {
         />
       </div>
       <ul className="menu">
-      <li className="divider" data-content="LINKS"></li>
+        <li className="divider" data-content="LINKS"></li>
         {links?.map((x) => (
           <li key={x} className="menu-item dropdown-menu-item">
             <Link href={x} target="_blank">
