@@ -56,18 +56,25 @@ const RenderFeedItem = (props) => {
           {ActivityTypeMapping(feed.type).emoji}
           {(platformName || networkName) && (
             <div
-              className={`feed-icon-platform ${platformName} ${networkName}`}
+              className={`feed-icon-platform ${networkName} ${platformName}`}
+              style={
+                {backgroundColor: networkName
+                  ? NetworkMapping(networkName).bgColor
+                  : NetworkMapping(platformName).bgColor,
+                }
+              }
+              title={NetworkMapping(platformName).label}
             >
               <SVG
                 fill={
-                  platformName
-                    ? SocialPlatformMapping(platformName).color
-                    : NetworkMapping(networkName).primaryColor
+                  networkName
+                    ? NetworkMapping(networkName).primaryColor
+                    : SocialPlatformMapping(platformName).color
                 }
                 src={
-                  (platformName
-                    ? SocialPlatformMapping(platformName).icon
-                    : NetworkMapping(networkName).icon) || ""
+                  (networkName
+                    ? NetworkMapping(networkName).icon
+                    : SocialPlatformMapping(platformName).icon) || ""
                 }
               />
             </div>

@@ -58,24 +58,7 @@
 
         // platforms
         &.farcaster {
-          background: lighten(#8465CB, 30%);
-          border-color: lighten(#8465CB, 27%);
-        }
-
-        &.lens {
-          background: lighten(#6bc674, 30%);
-          border-color: lighten(#6bc674, 27%);
-        }
-
-        // networks
-        &.ethereum {
-          background: lighten(#5298FF, 30%);
-          border-color: lighten(#5298FF, 27%);
-        }
-
-        &.polygon {
-          background: lighten(#8465CB, 30%);
-          border-color: lighten(#8465CB, 27%);
+          background: lighten(#fdff71, 10%);
         }
       }
     }

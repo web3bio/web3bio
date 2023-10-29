@@ -74,7 +74,7 @@ export const platformData: { [key in PlatformType]: SocialPlatform } = {
   },
   [PlatformType.ethereum]: {
     key: PlatformType.ethereum,
-    color: "#3c3c3d",
+    color: "#3741ba",
     icon: "icons/icon-ethereum.svg",
     label: "Ethereum",
     urlPrefix: "https://etherscan.io/address/",
