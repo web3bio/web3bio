@@ -340,6 +340,11 @@
   dependencies:
     glob "7.1.7"
 
+"@next/font@^13.5.6":
+  version "13.5.6"
+  resolved "https://registry.yarnpkg.com/@next/font/-/font-13.5.6.tgz#2659cfbd9298e21c4ff734bb863d139ef6971cb8"
+  integrity sha512-urmUq05uCVJsBqAAJEV+xK5OTTodrSxdiG+351SOSjlWctywdBM6qX+K9pIe3K48RxjfnxlBbXjGyOJAji+pfw==
+
 "@next/swc-darwin-arm64@14.0.0":
   version "14.0.0"
   resolved "https://registry.yarnpkg.com/@next/swc-darwin-arm64/-/swc-darwin-arm64-14.0.0.tgz#74599aec959b2c425f603447f852ac5eefbb3fd6"
@@ -1622,6 +1627,13 @@ functions-have-names@^1.2.3:
   version "1.2.3"
   resolved "https://registry.npmjs.org/functions-have-names/-/functions-have-names-1.2.3.tgz"
   integrity sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==
+
+geist@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/geist/-/geist-1.0.0.tgz#d3f9d0d99da03cab7d5eada1e1fccfa023384bc5"
+  integrity sha512-7hqXZqIdSiFbXjlMZ8Ag0fBAW8RzUjIXPkh160rT4m4ECMtsKdFX+06e0mK28oRCpU+lOB1C5Es8qxzvv7H2Hg==
+  dependencies:
+    "@next/font" "^13.5.6"
 
 get-caller-file@^2.0.1:
   version "2.0.5"

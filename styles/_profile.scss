@@ -67,8 +67,8 @@
   .profile-name {
     color: $dark-color;
     font-size: 1.8rem;
-    font-weight: 800;
-    letter-spacing: -.05em;
+    font-weight: 700;
+    letter-spacing: -.025em;
     line-height: 1.25;
     margin-bottom: .5rem;
     margin-top: 1rem;
@@ -695,7 +695,7 @@
           .trait-label {
             border-radius: 1rem;
             font-size: .55rem;
-            font-weight: 900;
+            font-weight: 700;
             line-height: .8rem;
             height: .8rem;
             text-shadow: rgba($dark-color, .95);
@@ -843,7 +843,7 @@
 
       .panel-widget-title {
         font-size: .8rem;
-        font-weight: 900;
+        font-weight: 700;
         line-height: 1.2rem;
         margin-bottom: .5rem;
         text-transform: uppercase;
@@ -864,7 +864,7 @@
 
           .list-item-right {
             font-size: .8rem;
-            font-weight: 900;
+            font-weight: 700;
             text-transform: uppercase;
           }
 
@@ -896,14 +896,14 @@
       .collection-name {
         font-size: .8rem;
         font-weight: 700;
-        letter-spacing: -0.05em;
+        letter-spacing: -.025em;
         line-height: 1.2rem;
       }
     }
 
     .nft-header-name {
-      font-weight: 900;
-      letter-spacing: -.05em;
+      font-weight: 700;
+      letter-spacing: -.025em;
       line-height: 1.25;
       margin-bottom: 1rem;
       word-break: break-all;
@@ -1079,7 +1079,7 @@
       .collection-name {
         font-size: .8rem;
         font-weight: 700;
-        letter-spacing: -.05em;
+        letter-spacing: -.025em;
       }
     }
 
@@ -1145,7 +1145,7 @@
         .nft-name {
           font-size: .75rem;
           font-weight: 700;
-          letter-spacing: -.05em;
+          letter-spacing: -.025em;
           text-overflow: ellipsis;
           overflow: hidden;
           -webkit-box-orient: vertical;

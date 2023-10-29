@@ -206,8 +206,8 @@ body {
 
   h1 {
     font-size: .8rem;
-    font-weight: 900;
-    letter-spacing: -.02rem;
+    font-weight: 700;
+    letter-spacing: -.025rem;
     line-height: .8rem;
     margin: 0;
   }
@@ -248,7 +248,7 @@ body {
 
   .web3bio-content-title {
     font-size: 1.6rem;
-    font-weight: 900;
+    font-weight: 700;
     line-height: 2rem;
 
     @media screen and (max-width: $size-md) {
@@ -311,7 +311,7 @@ body {
 
     h3 {
       font-size: 1rem;
-      font-weight: 800;
+      font-weight: 700;
     }
 
     h4 {
@@ -370,7 +370,7 @@ body {
 
         .name {
           font-size: .8rem;
-          font-weight: 800;
+          font-weight: 700;
           margin-left: .4rem;
         }
       }
