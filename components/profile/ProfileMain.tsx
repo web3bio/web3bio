@@ -56,8 +56,8 @@ export default function ProfileMain(props) {
         style={{
           backgroundImage:
             data.header || data.avatar
-              ? `url(${data.header || data.avatar})`
-              : `none`,
+              ? `url("${data.header || data.avatar}")`
+              : "none",
         }}
       ></div>
       <div className="columns">

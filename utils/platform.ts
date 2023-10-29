@@ -54,7 +54,7 @@ export enum PlatformType {
   firefly="firefly",
 }
 
-export const platformData: { [key in PlatformType]: SocialPlatform } = {
+export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.twitter]: {
     key: PlatformType.twitter,
     color: "#4A99E9",

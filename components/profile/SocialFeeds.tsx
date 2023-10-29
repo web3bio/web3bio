@@ -39,8 +39,9 @@ const RenderSocialFeeds = (props) => {
               position: "relative",
               width: "100%",
               display: "flex",
-              margin: "1.5rem 0",
+              height: "6rem",
               justifyContent: "center",
+              paddingTop: "2rem",
             }}
           >
             <Loading />

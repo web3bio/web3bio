@@ -201,16 +201,3 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
     scanPrefix: "",
   },
 };
-
-export const NetworkMapping = (network: Network) => {
-  return (
-    NetworkData[network] ?? {
-      key: network,
-      icon: "",
-      label: network,
-      primaryColor: "#000000",
-      bgColor: "#efefef",
-      scanPrefix: "",
-    }
-  );
-};

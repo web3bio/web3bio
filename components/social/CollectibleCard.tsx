@@ -6,7 +6,7 @@ import {
   isSameAddress,
   resolveMediaURL,
 } from "../../utils/utils";
-import { ActivityTag, ActivityType } from "../apis/rss3/types";
+import { ActivityTag, ActivityType } from "../../utils/activity";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
 export function isCollectibleFeed(feed) {

@@ -1,6 +1,6 @@
 import { memo, useMemo } from "react";
 import { formatText, formatValue, isSameAddress } from "../../utils/utils";
-import { ActivityTag, ActivityType } from "../apis/rss3/types";
+import { ActivityTag, ActivityType } from "../../utils/activity";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { getLastAction } from "./CollectibleCard";
 

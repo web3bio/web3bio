@@ -1,7 +1,9 @@
 import { BigNumber } from "bignumber.js";
 import { resolveIPFS_URL } from "./ipfs";
 import { pow10 } from "./number";
-import { PlatformType, platformData } from "./platform";
+import { PlatformType, PlatformData } from "./platform";
+import { Network, NetworkData } from "./network";
+import { ActivityType, ActivityTypeData } from "./activity";
 import {
   regexDotbit,
   regexEns,
@@ -140,12 +142,37 @@ export const resolveMediaURL = (url) => {
 
 export const SocialPlatformMapping = (platform: PlatformType) => {
   return (
-    platformData[platform] ?? {
+    PlatformData[platform] ?? {
       key: platform,
       color: "#000000",
       icon: "",
       label: platform,
       ensText: [],
+    }
+  );
+};
+
+export const NetworkMapping = (network: Network) => {
+  return (
+    NetworkData[network] ?? {
+      key: network,
+      icon: "",
+      label: network,
+      primaryColor: "#000000",
+      bgColor: "#efefef",
+      scanPrefix: "",
+    }
+  );
+};
+
+export const ActivityTypeMapping = (type: ActivityType) => {
+  return (
+    ActivityTypeData[type] ?? {
+      key: type,
+      emoji: "",
+      label: type,
+      action: "",
+      prep: "",
     }
   );
 };

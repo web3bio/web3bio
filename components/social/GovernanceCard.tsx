@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { memo } from "react";
 import { formatText, formatValue, isSameAddress } from "../../utils/utils";
-import { ActivityTag, ActivityType } from "../apis/rss3/types";
+import { ActivityTag, ActivityType } from "../../utils/activity";
 import { getLastAction } from "./CollectibleCard";
 import SVG from "react-inlinesvg";
 

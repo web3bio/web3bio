@@ -89,7 +89,7 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
   if (!issues?.length || isError) return null;
 
   if (process.env.NODE_ENV !== "production") {
-    console.log("raw:", data, "\nrendered:\n", issues);
+    console.log("Feed Data:", data);
   }
 
   return (

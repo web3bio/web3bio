@@ -13,8 +13,8 @@ import {
   TokenOperationCard,
 } from "./TokenOperationCard";
 import { isTokenSwapFeed, TokenSwapCard } from "./TokenSwapCard";
-import { ActivityTag, ActivityType, ActivityTypeMapping } from "../apis/rss3/types";
-import { NetworkMapping } from "../../utils/network";
+import { ActivityTag, ActivityType  } from "../../utils/activity";
+import { NetworkMapping, ActivityTypeMapping } from "../../utils/utils";
 import ActionExternalMenu from "./ActionExternalMenu";
 
 const RenderFeedContent = (props) => {

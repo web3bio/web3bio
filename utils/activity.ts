@@ -230,15 +230,3 @@ export interface ActivityTypeData {
   action: string;
   prep: string;
 }
-
-export const ActivityTypeMapping = (type: ActivityType) => {
-  return (
-    ActivityTypeData[type] ?? {
-      key: type,
-      emoji: "",
-      label: type,
-      action: "",
-      prep: "",
-    }
-  );
-};

@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { memo } from "react";
-import { formatText, formatValue, isSameAddress } from "../../utils/utils";
-import { ActivityTag, ActivityType } from "../apis/rss3/types";
+import { formatText, formatValue } from "../../utils/utils";
+import { ActivityTag, ActivityType } from "../../utils/activity";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
+
 export function isTokenSwapFeed(feed) {
   return feed.tag === ActivityTag.exchange && feed.type === ActivityType.swap;
 }
