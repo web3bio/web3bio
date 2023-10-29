@@ -1,5 +1,6 @@
 import { fetchInitialNFTsData } from "../../hooks/api/fetchProfile";
-import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import { PlatformType } from "../../utils/platform";
+import { SocialPlatformMapping } from "../../utils/utils";
 import {
   handleSearchPlatform,
   mapLinks,

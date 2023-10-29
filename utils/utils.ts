@@ -1,7 +1,7 @@
 import { BigNumber } from "bignumber.js";
 import { resolveIPFS_URL } from "./ipfs";
 import { pow10 } from "./number";
-import { PlatformType } from "./platform";
+import { PlatformType, platformData } from "./platform";
 import {
   regexDotbit,
   regexEns,
@@ -136,6 +136,45 @@ export const resolveMediaURL = (url) => {
     : url.startsWith("ar://")
     ? url.replaceAll("ar://", ArweaveAssetPrefix)
     : resolveIPFS_URL(url);
+};
+
+export const SocialPlatformMapping = (platform: PlatformType) => {
+  return (
+    platformData[platform] ?? {
+      key: platform,
+      color: "#000000",
+      icon: "",
+      label: platform,
+      ensText: [],
+    }
+  );
+};
+
+const resolveSocialMediaLink = (name: string, type: PlatformType) => {
+  if (!Object.keys(PlatformType).includes(type))
+    return `https://web3.bio/?s=${name}`;
+  switch (type) {
+    case PlatformType.url:
+      return `${name}`;
+    case PlatformType.website:
+      return `https://${name}`;
+    default:
+      return SocialPlatformMapping(type).urlPrefix
+        ? SocialPlatformMapping(type).urlPrefix + name
+        : "";
+  }
+};
+
+export const getSocialMediaLink = (url: string, type: PlatformType) => {
+  let resolvedURL = "";
+  if (!url) return null;
+  if (url.startsWith("https")) {
+    resolvedURL = url;
+  } else {
+    resolvedURL = resolveSocialMediaLink(url, type);
+  }
+
+  return resolvedURL;
 };
 
 export const fallbackEmoji = [

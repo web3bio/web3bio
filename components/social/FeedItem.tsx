@@ -1,8 +1,7 @@
 import { memo } from "react";
 import Link from "next/link";
 import { resolveIPFS_URL } from "../../utils/ipfs";
-import { formatText, isSameAddress } from "../../utils/utils";
-import { SocialPlatformMapping } from "../../utils/platform";
+import { formatText, isSameAddress, SocialPlatformMapping } from "../../utils/utils";
 import SVG from "react-inlinesvg";
 import {
   CollectibleCard,

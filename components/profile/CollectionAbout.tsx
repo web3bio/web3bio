@@ -3,11 +3,8 @@ import useSWR from "swr";
 import { SimplehashFetcher, SIMPLEHASH_URL } from "../apis/simplehash";
 import { formatEther } from "ethers";
 import { formatText } from "../../utils/utils";
-import {
-  getSocialMediaLink,
-  PlatformType,
-  SocialPlatformMapping,
-} from "../../utils/platform";
+import { PlatformType } from "../../utils/platform";
+import { getSocialMediaLink, SocialPlatformMapping } from "../../utils/utils";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import Link from "next/link";
 
