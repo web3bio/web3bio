@@ -5,7 +5,7 @@ import { resolveIPFS_URL } from "../../utils/ipfs";
 import SVG from "react-inlinesvg";
 import { DefaultCard } from "./DefaultCard";
 import { TransactionCard } from "./TransactionCard";
-import { ExchangeCard } from "./ExchangeCard";
+import { GovernanceCard } from "./GovernanceCard";
 import { ActivityTag, ActivityType  } from "../../utils/activity";
 import { 
   NetworkMapping, 
@@ -27,6 +27,7 @@ export const RenderToken = (metadata) => {
           alt={metadata.name}
           height={20}
           width={20}
+          loading="lazy"
         />
       )}
       <span className="feed-token-value" title={formatValue(metadata)}>
@@ -40,10 +41,11 @@ export const RenderToken = (metadata) => {
 const RenderFeedContent = (props) => {
   const { action, tag } = props;
   switch (tag) {
+    case ("exchange"):
     case ("transaction"):
       return <TransactionCard action={action} />;
-    case ("exchange"):
-      return <ExchangeCard action={action} />;
+    case ("governance"):
+      return <GovernanceCard action={action} />
     default:
       return <DefaultCard action={action} />;
   }
@@ -108,7 +110,7 @@ const RenderFeedItem = (props) => {
           </div>
         </div>
         <div className="feed-item-body">
-          { feed.tag === "social" ? (
+          {feed.tag === "social" ? (
               <RenderFeedContent action={action} tag={feed.tag} />
           ) : (
             actions.map((x, index) => (

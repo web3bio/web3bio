@@ -53,7 +53,7 @@
         background: $bg-color;
         border-radius: 50%;
         bottom: -.4rem;
-        box-shadow: 0 .4rem 1.6rem -.4rem rgba($dark-color, .25), 0 .1rem .2rem rgba($dark-color, .05);
+        box-shadow: 0 .1rem .4rem -.4rem rgba($dark-color, .25), 0 .1rem .2rem rgba($dark-color, .05);
         flex: 0 0;
         display: flex;
         height: 1.2rem;
@@ -154,6 +154,19 @@
         }
       }
 
+      .feed-highlight {
+        align-items: center;
+        background: lighten($bg-color, 6%);
+        border: .05rem solid $border-color;
+        border-radius: .3rem;
+        box-shadow: 0 .05rem .2rem rgba($dark-color, .05);
+        display: inline-flex;
+        gap: .2rem;
+        height: 1.2rem;
+        margin: 0 0 0 .2rem;
+        padding: .1rem .2rem;
+      }
+
       .feed-token {
         align-items: center;
         background: lighten($bg-color, 6%);
@@ -163,7 +176,7 @@
         display: inline-flex;
         gap: .2rem;
         height: 1.2rem;
-        margin: 0 .2rem;
+        margin: 0 0 0 .2rem;
         padding: .1rem .2rem;
 
         .feed-token-value {

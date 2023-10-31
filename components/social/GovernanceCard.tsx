@@ -1,47 +1,61 @@
+import Image from "next/image";
 import Link from "next/link";
 import { memo } from "react";
-import { formatText, formatValue, isSameAddress } from "../../utils/utils";
-import { ActivityTag, ActivityType } from "../../utils/activity";
-import { getLastAction } from "./CollectibleCard";
-import SVG from "react-inlinesvg";
-
-export function isGovernanceCard(feed) {
-  return feed.tag === ActivityTag.governance && feed.type === ActivityType.vote;
-}
+import { ActivityTypeMapping, formatText } from "../../utils/utils";
+import { resolveIPFS_URL } from "../../utils/ipfs";
+import { isArray } from "@apollo/client/cache/inmemory/helpers";
 
 const RenderGovernanceCard = (props) => {
-  const { feed } = props;
-  const action = getLastAction(feed);
-  const metadata = action.metadata;
-
-  return (
-    <div className="feed-item-body">
-      <div className="feed-content">
-        <div className="feed-content-header">
-          Voted for
-          <strong>
-            {metadata.proposal.options.join(",")}
-            {formatValue(metadata?.token)} {metadata?.token?.symbol ?? ""}
-          </strong>
-          on
-          <strong>{feed.platform}</strong>
-        </div>
-
-        {metadata && (
-          <div className={"feed-content"}>
-            <div className="feed-content-target">
-              <div className="feed-target-name">
-                <strong>{metadata.proposal.title}</strong>
-              </div>
-              <div className="feed-target-content">
-                {metadata.proposal.body}
-              </div>
-            </div>
+  const { action } = props;
+  const metadata = action?.metadata;
+  
+  switch (action.type) {
+    case ("vote"):
+      const choices = JSON.parse(metadata.choice);
+      return (
+        <>
+          <div className="feed-content">
+            {ActivityTypeMapping(action.type).action["default"]}
+            { isArray(choices) ? (
+                choices.map((x) => (
+                  <span className="feed-highlight">{metadata.proposal?.options[x - 1]}</span>
+                )
+              )) : (
+                <span className="feed-highlight">{metadata.proposal?.options[choices - 1]}</span>
+              )
+            }
+            {action.platform && (
+              <span className="feed-platform">&nbsp;on {action.platform}</span>
+            )}
           </div>
-        )}
-      </div>
-    </div>
-  );
+          {metadata.proposal && (
+            <div className="feed-content">
+              <Link
+                className="feed-target"
+                href={metadata.proposal?.link}
+                target="_blank"
+              >
+                <div className="feed-target-name">
+                  <strong>
+                  {metadata.proposal?.title}
+                  </strong>
+                </div>
+                <div className="feed-target-content">
+                  {metadata.proposal?.organization.name} <small className="text-gray-dark">({metadata.proposal?.organization.id})</small>
+                </div>
+              </Link>
+            </div>
+          )}
+        </>
+      );
+    
+    default:
+      return (
+        <div className="feed-content">
+          {ActivityTypeMapping(action.type).action["default"]}
+        </div>
+      );
+  }
 };
 
 export const GovernanceCard = memo(RenderGovernanceCard);

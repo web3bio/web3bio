@@ -262,7 +262,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "👽",
     label: "Unknown",
     action: {
-      "default": "",
+      "default": "Did something unknown",
     },
     prep: "",
   },
