@@ -1,37 +1,61 @@
 import { memo } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { resolveIPFS_URL } from "../../utils/ipfs";
-import { formatText, isSameAddress, SocialPlatformMapping } from "../../utils/utils";
 import SVG from "react-inlinesvg";
 import { DefaultCard } from "./DefaultCard";
 import { TransactionCard } from "./TransactionCard";
-import { TokenSwapCard } from "./TokenSwapCard";
+import { ExchangeCard } from "./ExchangeCard";
 import { ActivityTag, ActivityType  } from "../../utils/activity";
-import { NetworkMapping, ActivityTypeMapping } from "../../utils/utils";
+import { 
+  NetworkMapping, 
+  ActivityTypeMapping, 
+  formatValue, 
+  formatText, 
+  isSameAddress, 
+  SocialPlatformMapping 
+} from "../../utils/utils";
 import ActionExternalMenu from "./ActionExternalMenu";
 
+export const RenderToken = (metadata) => {
+  return (
+    <div className="feed-token" title={metadata.name}>
+      {metadata.image && (
+        <Image
+          className="feed-token-icon"
+          src={metadata.image}
+          alt={metadata.name}
+          height={20}
+          width={20}
+        />
+      )}
+      <span className="feed-token-value" title={formatValue(metadata)}>
+        {formatText(formatValue(metadata))} 
+      </span>
+      <span className="feed-token-symbol">{metadata.symbol}</span>
+    </div>
+  );
+};
+
 const RenderFeedContent = (props) => {
-  const { action, tag, type } = props;
+  const { action, tag } = props;
   switch (tag) {
-    case ("collectible"):
-      return <TokenSwapCard action={action} />;
     case ("transaction"):
       return <TransactionCard action={action} />;
+    case ("exchange"):
+      return <ExchangeCard action={action} />;
     default:
       return <DefaultCard action={action} />;
   }
 };
-
-export function getLastAction(actions) {
-  return actions[actions.length - 1];
-}
 
 const RenderFeedItem = (props) => {
   const { feed, identity } = props;
   const isOwner = isSameAddress(feed.owner, identity.address);
   const platformName = feed.platform?.toLowerCase();
   const networkName = feed.network?.toLowerCase();
-  const action = getLastAction(feed.actions);
+  const actions = feed.actions;
+  const action = actions[0];
 
   return (
     <>
@@ -41,9 +65,7 @@ const RenderFeedItem = (props) => {
           {networkName && platformName !== "lens" ? (
             <div
               className={`feed-icon-platform ${networkName}`}
-              style={{
-                backgroundColor: NetworkMapping(networkName).bgColor,
-              }}
+              style={{backgroundColor: NetworkMapping(networkName).bgColor,}}
               title={NetworkMapping(networkName).label}
             >
               <SVG
@@ -54,9 +76,7 @@ const RenderFeedItem = (props) => {
           ) : (
             <div
               className={`feed-icon-platform ${platformName}`}
-              style={{
-                backgroundColor: NetworkMapping(platformName).bgColor,
-              }}
+              style={{backgroundColor: NetworkMapping(platformName).bgColor,}}
               title={NetworkMapping(platformName).label}
             >
               <SVG
@@ -91,8 +111,8 @@ const RenderFeedItem = (props) => {
           { feed.tag === "social" ? (
               <RenderFeedContent action={action} tag={feed.tag} />
           ) : (
-            feed.actions.map((x) => (
-              <RenderFeedContent key={x.id} action={x} tag={x.tag} />
+            actions.map((x, index) => (
+              <RenderFeedContent key={index} action={x} tag={x.tag} />
             ))
           )}
         </div>

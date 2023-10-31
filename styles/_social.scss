@@ -28,6 +28,12 @@
       width: .05rem;
     }
 
+    &.social {
+      .feed-content {
+        font-size: .85rem;
+      }
+    }
+
     .feed-item-icon {
       align-items: center;
       background: lighten($bg-color, 3%);
@@ -89,7 +95,7 @@
     .feed-content {
       align-items: center;
       display: flex;
-      font-size: .8rem;
+      font-size: .75rem;
       line-height: 1.5;
       margin: .25rem 0;
 
@@ -150,14 +156,19 @@
 
       .feed-token {
         align-items: center;
-        background: lighten($bg-color, 8%);
+        background: lighten($bg-color, 6%);
         border: .05rem solid $border-color;
-        border-radius: .2rem;
+        border-radius: .3rem;
+        box-shadow: 0 .05rem .2rem rgba($dark-color, .05);
         display: inline-flex;
         gap: .2rem;
         height: 1.2rem;
-        margin: 0 .4rem;
+        margin: 0 .2rem;
         padding: .1rem .2rem;
+
+        .feed-token-value {
+          font-weight: 600;
+        }
 
         .feed-token-icon {
           border-radius: 50%;

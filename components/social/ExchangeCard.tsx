@@ -4,37 +4,46 @@ import { memo } from "react";
 import { ActivityTypeMapping, formatText } from "../../utils/utils";
 import { RenderToken } from "./FeedItem";
 
-const RenderTransactionCard = (props) => {
+const RenderExchangeCard = (props) => {
   const { action } = props;
   const metadata = action?.metadata;
 
   switch (action.type) {
-    case ("multisig"):
+    case ("swap"):
       return (
         <>
           <div className="feed-content">
             {ActivityTypeMapping(action.type).action["default"]}
+            {RenderToken(metadata.from)}
+            {" "}{ActivityTypeMapping(action.type).prep}{" "}
+            {RenderToken(metadata.to)}
             {action.platform && (
               <span className="feed-platform">{" "}on {action.platform}</span>
             )} 
           </div>
-          {/* <div className="feed-content">
-            <div className="feed-target">
-              <div className="feed-target-content">
-                {metadata.action}
-              </div>
-            </div>
-          </div> */}
         </>
       );
-    case ("bridge"):
+    case ("liquidity"):
       return (
         <>
           <div className="feed-content">
-            {ActivityTypeMapping(action.type).action["default"]}
-            {RenderToken(metadata.token)}
+            {ActivityTypeMapping(action.type).action["default"]} 
+            {metadata.tokens.map((x) => RenderToken(x))}
+            {" "}{ActivityTypeMapping(action.type).prep}
             {action.platform && (
               <span className="feed-platform">{" "}on {action.platform}</span>
+            )} 
+          </div>
+        </>
+      );
+    case ("staking"):
+      return (
+        <>
+          <div className="feed-content">
+            {ActivityTypeMapping(action.type).action[metadata.action]}
+            {RenderToken(metadata.token)}
+            {action.platform && (
+              <span className="feed-platform">on {action.platform}</span>
             )} 
           </div>
         </>
@@ -46,8 +55,8 @@ const RenderTransactionCard = (props) => {
           {RenderToken(metadata)}
           {ActivityTypeMapping(action.type).prep && (
             <>
-              {" "}{ActivityTypeMapping(action.type).prep}{" "}
-              <span className="feed-identity ml-1">{" "}{formatText(action.to)}</span>
+              {" "}{ActivityTypeMapping(action.type).prep}
+              <span className="feed-identity">{" "}{formatText(action.to)}</span>
             </>
           )}
         </div>
@@ -55,4 +64,4 @@ const RenderTransactionCard = (props) => {
   }
 };
 
-export const TransactionCard = memo(RenderTransactionCard);
+export const ExchangeCard = memo(RenderExchangeCard);

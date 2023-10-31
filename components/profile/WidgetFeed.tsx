@@ -28,7 +28,7 @@ const getURL = (index, address, previous) => {
     address +
     `/activities?limit=${FEEDS_PAGE_SIZE}${
       cursor ? `&cursor=${cursor}` : ""
-    }&direction=out&status=successful`
+    }&direction=out&status=successful&tag=exchange`
   );
 };
 

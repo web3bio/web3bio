@@ -172,7 +172,7 @@ export const ActivityTypeMapping = (type: ActivityType) => {
       key: type,
       emoji: "",
       label: type,
-      action: "",
+      action: [],
       prep: "",
     }
   );

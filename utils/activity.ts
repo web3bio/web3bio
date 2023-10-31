@@ -43,182 +43,236 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     key: ActivityType.approval,
     emoji: "✅",
     label: "Approval",
-    action: "Approved",
-    prep: "to",
+    action: {
+      "default": "Approved",
+    },
+    prep: "for trade on",
   },
   [ActivityType.auction]: {
     key: ActivityType.auction,
     emoji: "👨‍⚖",
     label: "Auction",
-    action: "Auctioned",
+    action: {
+      "default": "Auctioned",
+    },
     prep: "",
   },
   [ActivityType.bridge]: {
     key: ActivityType.bridge,
     emoji: "🌉",
     label: "Bridge",
-    action: "Bridged",
+    action: {
+      "default": "Bridged",
+    },
     prep: "to",
   },
   [ActivityType.burn]: {
     key: ActivityType.burn,
     emoji: "🔥",
     label: "Burn",
-    action: "Burned",
+    action: {
+      "default": "Burned",
+    },
     prep: "",
   },
   [ActivityType.claim]: {
     key: ActivityType.claim,
     emoji: "📢",
     label: "Claim",
-    action: "Claimed",
+    action: {
+      "default": "Claimed",
+    },
     prep: "",
   },
   [ActivityType.comment]: {
     key: ActivityType.comment,
     emoji: "💬",
     label: "Comment",
-    action: "Commented",
+    action: {
+      "default": "Commented",
+    },
     prep: "",
   },
   [ActivityType.delete]: {
     key: ActivityType.delete,
     emoji: "🗑️",
     label: "Delete",
-    action: "Deleted",
+    action: {
+      "default": "Deleted",
+    },
     prep: "",
   },
   [ActivityType.deploy]: {
     key: ActivityType.deploy,
     emoji: "🚀",
     label: "Deploy",
-    action: "Deployed",
+    action: {
+      "default": "Deployed",
+    },
     prep: "",
   },
   [ActivityType.donate]: {
     key: ActivityType.donate,
     emoji: "💌",
     label: "Donate",
-    action: "Donated",
+    action: {
+      "default": "Donated",
+    },
     prep: "to",
   },
   [ActivityType.liquidity]: {
     key: ActivityType.liquidity,
     emoji: "🏦",
     label: "Liquidity",
-    action: "",
+    action: {
+      "default": "Staked",
+    },
     prep: "",
   },
   [ActivityType.loan]: {
     key: ActivityType.loan,
     emoji: "💸",
     label: "Loan",
-    action: "Loaned",
+    action: {
+      "default": "Loaned",
+    },
     prep: "to",
   },
   [ActivityType.mint]: {
     key: ActivityType.mint,
     emoji: "🖼️",
     label: "Mint",
-    action: "Minted",
+    action: {
+      "default": "Minted",
+    },
     prep: "",
   },
   [ActivityType.multisig]: {
     key: ActivityType.multisig,
     emoji: "✍🏻",
     label: "Multisig",
-    action: "Multisiged",
+    action: {
+      "default": "Signed a multisig transaction",
+    },
     prep: "",
   },
   [ActivityType.post]: {
     key: ActivityType.post,
     emoji: "📄",
     label: "Post",
-    action: "Posted",
+    action: {
+      "default": "Published a post",
+    },
     prep: "to",
   },
   [ActivityType.profile]: {
     key: ActivityType.profile,
     emoji: "👤",
     label: "Profile",
-    action: "",
+    action: {
+      "default": "",
+    },
     prep: "",
   },
   [ActivityType.propose]: {
     key: ActivityType.propose,
     emoji: "📝",
     label: "Propose",
-    action: "Proposed",
+    action: {
+      "default": "",
+    },
     prep: "",
   },
   [ActivityType.proxy]: {
     key: ActivityType.proxy,
     emoji: "🔮",
     label: "Proxy",
-    action: "",
+    action: {
+      "default": "",
+    },
     prep: "",
   },
   [ActivityType.revise]: {
     key: ActivityType.revise,
     emoji: "✍🏻",
     label: "Revise",
-    action: "",
+    action: {
+      "default": "",
+    },
     prep: "",
   },
   [ActivityType.reward]: {
     key: ActivityType.reward,
     emoji: "🍬",
     label: "Reward",
-    action: "Rewarded",
+    action: {
+      "default": "Rewarded",
+    },
     prep: "",
   },
   [ActivityType.share]: {
     key: ActivityType.share,
     emoji: "✨",
     label: "Share",
-    action: "Shared",
+    action: {
+      "default": "Shared",
+    },
     prep: "",
   },
   [ActivityType.staking]: {
     key: ActivityType.staking,
     emoji: "🏦",
     label: "Staking",
-    action: "Staked",
-    prep: "to",
+    action: {
+      "default": "Staked",
+      "claim": "Claimed",
+      "unstake": "Unstaked",
+    },
+    prep: "",
   },
   [ActivityType.swap]: {
     key: ActivityType.swap,
     emoji: "💵",
     label: "Swap",
-    action: "Swapped",
-    prep: "to",
+    action: {
+      "default": "Swapped",
+    },
+    prep: "for",
   },
   [ActivityType.trade]: {
     key: ActivityType.trade,
     emoji: "⚖️",
     label: "Trade",
-    action: "Traded",
+    action: {
+      "default": "Traded",
+    },
     prep: "",
   },
   [ActivityType.transfer]: {
     key: ActivityType.transfer,
     emoji: "💵",
     label: "Transfer",
-    action: "Transferred",
+    action: {
+      "default": "Transferred",
+    },
     prep: "to",
   },
   [ActivityType.unknown]: {
     key: ActivityType.unknown,
     emoji: "👽",
     label: "Unknown",
-    action: "",
+    action: {
+      "default": "",
+    },
     prep: "",
   },
   [ActivityType.vote]: {
     key: ActivityType.vote,
     emoji: "🗳️",
     label: "Vote",
-    action: "Voted",
+    action: {
+      "default": "Voted",
+    },
     prep: "",
   },
 }
@@ -227,6 +281,6 @@ export interface ActivityTypeData {
   key: string;
   emoji: string;
   label: string;
-  action: string;
+  action: Object;
   prep: string;
 }
