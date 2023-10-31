@@ -71,7 +71,7 @@ const RenderTransactionCard = (props) => {
           {RenderToken(metadata.token || metadata)}
           {ActivityTypeMapping(action.type).prep && (
             <>
-              {ActivityTypeMapping(action.type).prep}
+              &nbsp;{ActivityTypeMapping(action.type).prep}
               <span className="feed-identity">&nbsp;{formatText(action.to)}</span>
             </>
           )}

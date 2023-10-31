@@ -1,47 +1,48 @@
 import Image from "next/image";
 import Link from "next/link";
 import { memo } from "react";
-import { ActivityTypeMapping, formatText } from "../../utils/utils";
-import { resolveIPFS_URL } from "../../utils/ipfs";
-import { isArray } from "@apollo/client/cache/inmemory/helpers";
+import { ActivityTypeMapping, resolveMediaURL } from "../../utils/utils";
+import { RenderToken } from "./FeedItem";
+import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
-const RenderGovernanceCard = (props) => {
+const RenderDonationCard = (props) => {
   const { action } = props;
   const metadata = action?.metadata;
   
   switch (action.type) {
-    case ("vote"):
-      const choices = JSON.parse(metadata.choice);
+    case ("donate"):
       return (
         <>
           <div className="feed-content">
             {ActivityTypeMapping(action.type).action["default"]}
-            {isArray(choices) ? (
-                choices.map((x) => (
-                  <span className="feed-token" key={x}>{metadata.proposal?.options[x - 1]}</span>
-                )
-              )) : (
-                <span className="feed-token">{metadata.proposal?.options[choices - 1]}</span>
-              )
-            }
+            {RenderToken(metadata.token)}
+            &nbsp;{ActivityTypeMapping(action.type).prep}&nbsp;
+            <strong>{metadata.title}</strong>
             {action.platform && (
               <span className="feed-platform">&nbsp;on {action.platform}</span>
-            )}
+            )} 
           </div>
-          {metadata.proposal && (
+          {metadata && (
             <div className="feed-content">
               <Link
                 className="feed-target"
-                href={metadata.proposal?.link}
+                href={action.related_urls[action.related_urls.length - 1]}
                 target="_blank"
               >
                 <div className="feed-target-name">
                   <strong>
-                  {metadata.proposal?.title}
+                  {metadata.title}
                   </strong>
                 </div>
                 <div className="feed-target-content">
-                  {metadata.proposal?.organization.name} <small className="text-gray-dark">({metadata.proposal?.organization.id})</small>
+                  <NFTAssetPlayer
+                    className="feed-content-img float-right"
+                    src={resolveMediaURL(metadata.logo)}
+                    height={40}
+                    width={40}
+                    type={"image/png"}
+                  />
+                  <div className="feed-target-description">{metadata.description}</div>
                 </div>
               </Link>
             </div>
@@ -57,4 +58,4 @@ const RenderGovernanceCard = (props) => {
   }
 };
 
-export const GovernanceCard = memo(RenderGovernanceCard);
+export const DonationCard = memo(RenderDonationCard);

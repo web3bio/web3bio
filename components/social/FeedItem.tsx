@@ -6,6 +6,7 @@ import SVG from "react-inlinesvg";
 import { DefaultCard } from "./DefaultCard";
 import { TransactionCard } from "./TransactionCard";
 import { GovernanceCard } from "./GovernanceCard";
+import { DonationCard } from "./DonationCard";
 import { ActivityTag, ActivityType  } from "../../utils/activity";
 import { 
   NetworkMapping, 
@@ -46,6 +47,8 @@ const RenderFeedContent = (props) => {
       return <TransactionCard action={action} />;
     case ("governance"):
       return <GovernanceCard action={action} />
+    case ("donation"):
+      return <DonationCard action={action} />
     default:
       return <DefaultCard action={action} />;
   }

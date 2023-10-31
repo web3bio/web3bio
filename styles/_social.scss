@@ -3,9 +3,14 @@
   overflow-y: auto;
   padding: 1rem;
 
+  @media screen and (max-width: $size-md) {
+    padding: 1rem 0;
+  }
+
   .feed-item {
     align-items: flex-start;
     display: flex;
+    flex-wrap: nowrap;
     font-size: .75rem;
     height: auto;
     padding: 0;
@@ -65,7 +70,8 @@
     }
 
     .feed-item-content {
-      flex: 1 1 auto;
+      flex: 1 1;
+      overflow: hidden;
       width: 100%;
     }
 
@@ -95,6 +101,7 @@
     .feed-content {
       align-items: center;
       display: flex;
+      flex-wrap: wrap;
       font-size: .75rem;
       line-height: 1.5;
       margin: .25rem 0;
@@ -107,13 +114,24 @@
       .feed-target {
         border: .05rem solid $border-color;
         border-radius: .4rem;
+        box-shadow: 0 .1rem .4rem rgba($dark-color, .05);
         font-size: .7rem;
         margin: .5rem 0;
+        max-width: 20rem;
         min-width: 10rem;
         padding: .75rem;
         transition: all .25s ease-in-out;
         word-wrap: break-word;
-        width: 75%;
+        width: 100%;
+
+        .feed-target-description {
+          display: -webkit-box;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          padding-right: 1rem;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 3;
+        }
       }
 
       a.feed-target {
@@ -135,14 +153,13 @@
           align-items: center;
           display: flex;
           max-width: 10rem;
+          min-height: 4rem;
         }
-
       }
 
       .feed-content-img {
         margin: .25rem 0;
         max-width: 16rem;
-        min-height: 4rem;
 
         .img-responsive {
           background: $bg-color;
@@ -154,19 +171,6 @@
         }
       }
 
-      .feed-highlight {
-        align-items: center;
-        background: lighten($bg-color, 6%);
-        border: .05rem solid $border-color;
-        border-radius: .3rem;
-        box-shadow: 0 .05rem .2rem rgba($dark-color, .05);
-        display: inline-flex;
-        gap: .2rem;
-        height: 1.2rem;
-        margin: 0 0 0 .2rem;
-        padding: .1rem .2rem;
-      }
-
       .feed-token {
         align-items: center;
         background: lighten($bg-color, 6%);
@@ -174,9 +178,10 @@
         border-radius: .3rem;
         box-shadow: 0 .05rem .2rem rgba($dark-color, .05);
         display: inline-flex;
+        flex-wrap: nowrap;
         gap: .2rem;
         height: 1.2rem;
-        margin: 0 0 0 .2rem;
+        margin: .05rem 0 .05rem .2rem;
         padding: .1rem .2rem;
 
         .feed-token-value {
