@@ -13,10 +13,12 @@ const generateVCardData = (profile) => {
       )?.link || "",
     ["PHOTO;VALUE=URL"]: profile.avatar,
     NOTE: profile.description || "",
+    ["X-SOCIALPROFILE;type=Web3bio"]:
+      window.location.origin + "/" + profile.identity,
   };
   profile.links.forEach((x) => {
     const platform = platformData[x.platform];
-    const prefix = "X-SOCIALPROFILE;" + `type=${platform.label}:` + "x-apple";
+    const prefix = "X-SOCIALPROFILE;" + `type=${platform.label}`;
     if (platform) {
       obj[prefix] = x.handle || x.link;
     }
@@ -27,7 +29,6 @@ const generateVCardData = (profile) => {
 export function createVCardString(profile) {
   let vCardString = "";
   const vCard = generateVCardData(profile);
-  console.log(vCard,'card')
   vCardString += "BEGIN:VCARD\n";
   vCardString += "VERSION:3.0\n";
 
