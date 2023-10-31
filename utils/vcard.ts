@@ -11,6 +11,7 @@ const generateVCardData = (profile) => {
         (x) =>
           x.platform === PlatformType.website || x.platform === PlatformType.url
       )?.link || "",
+    ["PHOTO;VALUE=URL"]: profile.avatar,
     NOTE: profile.description || "",
   };
   profile.links.forEach((x) => {
@@ -26,6 +27,7 @@ const generateVCardData = (profile) => {
 export function createVCardString(profile) {
   let vCardString = "";
   const vCard = generateVCardData(profile);
+  console.log(vCard,'card')
   vCardString += "BEGIN:VCARD\n";
   vCardString += "VERSION:3.0\n";
 
