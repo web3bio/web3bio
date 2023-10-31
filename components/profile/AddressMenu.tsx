@@ -1,23 +1,8 @@
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import SVG from "react-inlinesvg";
-import { createVCardString, fetchAndConvertToBase64 } from "../../utils/vcard";
-import _ from "lodash";
-import { PlatformType } from "../../utils/platform";
+import { createVCardString } from "../../utils/vcard";
 
 export default function AddressMenu({ profile }) {
-  const [avatarBase64, setAvatarBase64] = useState("");
-
-  useEffect(() => {
-    const fetchAvatarBase64 = async () => {
-      fetchAndConvertToBase64(profile.avatar).then((base64) =>
-        setAvatarBase64((base64 as string) || "")
-      );
-    };
-    if (profile.avatar) {
-      fetchAvatarBase64();
-    }
-  }, [profile]);
   const createDownloadLink = (data, filename) => {
     var blob = new Blob([data], { type: "text/vcard" });
 
@@ -28,19 +13,7 @@ export default function AddressMenu({ profile }) {
     return link;
   };
   const downloadVCard = () => {
-    const vCardData = createVCardString({
-      FN: profile.displayName,
-      EMAIL: profile.email || "",
-      URL:
-        _.find(
-          profile.links,
-          (x) =>
-            x.platform === PlatformType.website ||
-            x.platform === PlatformType.url
-        )?.link || "",
-      NOTE: profile.description || "",
-      ["PHOTO"]: avatarBase64 || "",
-    });
+    const vCardData = createVCardString(profile);
     const downloadLink = createDownloadLink(
       vCardData,
       `${profile.displayName}.vcf`

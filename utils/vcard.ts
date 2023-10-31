@@ -1,6 +1,31 @@
-export function createVCardString(vCard) {
-  let vCardString = "";
+import { platformData, PlatformType } from "./platform";
+import _ from "lodash";
 
+const generateVCardData = (profile) => {
+  const obj = {
+    FN: profile.displayName,
+    EMAIL: profile.email || "",
+    URL:
+      _.find(
+        profile.links,
+        (x) =>
+          x.platform === PlatformType.website || x.platform === PlatformType.url
+      )?.link || "",
+    NOTE: profile.description || "",
+  };
+  profile.links.forEach((x) => {
+    const platform = platformData[x.platform];
+    const prefix = "X-SOCIALPROFILE;" + `type=${platform.label}:` + "x-apple";
+    if (platform) {
+      obj[prefix] = x.handle || x.link;
+    }
+  });
+  return obj;
+};
+
+export function createVCardString(profile) {
+  let vCardString = "";
+  const vCard = generateVCardData(profile);
   vCardString += "BEGIN:VCARD\n";
   vCardString += "VERSION:3.0\n";
 
@@ -14,14 +39,14 @@ export function createVCardString(vCard) {
 }
 
 export function fetchAndConvertToBase64(url) {
-    return fetch(url)
-      .then(response => response.blob())
-      .then(blob => {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onloadend = () => resolve(reader.result);
-          reader.onerror = reject;
-          reader.readAsDataURL(blob);
-        });
+  return fetch(url)
+    .then((response) => response.blob())
+    .then((blob) => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
       });
-  }
+    });
+}
