@@ -24,7 +24,7 @@ const RenderTransactionCard = (props) => {
       return (
         <>
           <div className="feed-content">
-            {ActivityTypeMapping(action.type).action[metadata.action]}
+            {ActivityTypeMapping(action.type).action[metadata.action||"default"]}
             {RenderToken(metadata.token)}
             {action.platform && (
               <span className="feed-platform">&nbsp;on {action.platform}</span>

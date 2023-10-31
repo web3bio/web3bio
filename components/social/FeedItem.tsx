@@ -7,6 +7,7 @@ import { DefaultCard } from "./DefaultCard";
 import { TransactionCard } from "./TransactionCard";
 import { GovernanceCard } from "./GovernanceCard";
 import { DonationCard } from "./DonationCard";
+import { SocialCard } from "./SocialCard";
 import { ActivityTag, ActivityType  } from "../../utils/activity";
 import { 
   NetworkMapping, 
@@ -42,13 +43,15 @@ export const RenderToken = (metadata) => {
 const RenderFeedContent = (props) => {
   const { action, tag } = props;
   switch (tag) {
+    case ("social"):
+      return <SocialCard action={action} />;
     case ("exchange"):
     case ("transaction"):
       return <TransactionCard action={action} />;
     case ("governance"):
-      return <GovernanceCard action={action} />
+      return <GovernanceCard action={action} />;
     case ("donation"):
-      return <DonationCard action={action} />
+      return <DonationCard action={action} />;
     default:
       return <DefaultCard action={action} />;
   }

@@ -144,6 +144,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     label: "Mint",
     action: {
       "default": "Minted",
+      "post": "Minted a post",
     },
     prep: "",
   },
@@ -171,6 +172,8 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     label: "Profile",
     action: {
       "default": "",
+      "update": "Updated the profile",
+      "renew": "Renewed the domain",
     },
     prep: "",
   },
@@ -189,6 +192,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     label: "Proxy",
     action: {
       "default": "",
+      "appoint": "Approved a proxy",
     },
     prep: "",
   },

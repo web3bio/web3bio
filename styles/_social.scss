@@ -71,7 +71,7 @@
 
     .feed-item-content {
       flex: 1 1;
-      overflow: hidden;
+      overflow: initial;
       width: 100%;
     }
 
@@ -111,42 +111,10 @@
         text-decoration: none;
       }
 
-      .feed-target {
-        border: .05rem solid $border-color;
-        border-radius: .4rem;
-        box-shadow: 0 .1rem .4rem rgba($dark-color, .05);
-        font-size: .7rem;
-        margin: .5rem 0;
-        max-width: 20rem;
-        min-width: 10rem;
-        padding: .75rem;
-        transition: all .25s ease-in-out;
-        word-wrap: break-word;
-        width: 100%;
-
-        .feed-target-description {
-          display: -webkit-box;
-          text-overflow: ellipsis;
-          overflow: hidden;
-          padding-right: 1rem;
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 3;
-        }
-      }
-
-      a.feed-target {
-        &:focus,
-        &:hover {
-          border-color: darken($border-color, 2%);
-          box-shadow: 0 .1rem .6rem rgba($dark-color, .05);
-          text-decoration: none;
-        }
-      }
-
       &.media-gallery {
         display: flex;
         flex-wrap: nowrap;
-        gap: .5rem;
+        gap: .25rem;
         overflow-x: auto;
 
         .feed-content-img {
@@ -168,6 +136,55 @@
           height: 100%;
           max-height: 16rem;
           width: auto;
+        }
+      }
+
+      .feed-target {
+        border: .05rem solid $border-color;
+        border-radius: .4rem;
+        box-shadow: 0 .1rem .4rem rgba($dark-color, .05);
+        font-size: .7rem;
+        margin: .5rem 0;
+        max-width: 24rem;
+        min-width: 10rem;
+        padding: .75rem;
+        transition: all .25s ease-in-out;
+        word-wrap: break-word;
+        width: 100%;
+
+        .feed-target-description {
+          display: -webkit-box;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          padding-right: 1rem;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 3;
+        }
+
+        .feed-target-content {
+          &.media-gallery {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: .25rem;
+            overflow-x: auto;
+          }
+  
+          .feed-content-img {
+            max-width: 6rem;
+  
+            .img-responsive {
+              max-height: 8rem;
+            }
+          }
+        }
+      }
+
+      a.feed-target {
+        &:focus,
+        &:hover {
+          border-color: darken($border-color, 2%);
+          box-shadow: 0 .1rem .6rem rgba($dark-color, .05);
+          text-decoration: none;
         }
       }
 
