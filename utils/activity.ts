@@ -191,7 +191,6 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "🔮",
     label: "Proxy",
     action: {
-      "default": "",
       "appoint": "Approved a proxy",
     },
     prep: "",
@@ -201,7 +200,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "✍🏻",
     label: "Revise",
     action: {
-      "default": "",
+      "default": "Saved a revision for an article",
     },
     prep: "",
   },
@@ -219,7 +218,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "✨",
     label: "Share",
     action: {
-      "default": "Shared",
+      "default": "Shared a post",
     },
     prep: "",
   },
