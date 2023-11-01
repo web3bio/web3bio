@@ -28,7 +28,7 @@ const getURL = (index, address, previous) => {
     address +
     `/activities?limit=${FEEDS_PAGE_SIZE}${
       cursor ? `&cursor=${cursor}` : ""
-    }&direction=out&status=successful&tag=social`
+    }&direction=out&status=successful&tag=collectible`
   );
 };
 

@@ -1,8 +1,5 @@
-import Link from "next/link";
 import { memo } from "react";
-import { resolveIPFS_URL } from "../../utils/ipfs";
-import { ActivityTypeMapping, resolveMediaURL } from "../../utils/utils";
-import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
+import { ActivityTypeMapping } from "../../utils/utils";
 
 const RenderDefaultCard = (props) => {
   const { action } = props;

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { memo } from "react";
 import { ActivityTypeMapping, resolveMediaURL } from "../../utils/utils";
@@ -53,6 +52,9 @@ const RenderDonationCard = (props) => {
       return (
         <div className="feed-content">
           {ActivityTypeMapping(action.type).action["default"]}
+          {action.platform && (
+            <span className="feed-platform">&nbsp;on {action.platform}</span>
+          )}
         </div>
       );
   }

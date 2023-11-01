@@ -45,6 +45,8 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     label: "Approval",
     action: {
       "default": "Approved",
+      "approve": "Approved",
+      "revoke": "Revoked",
     },
     prep: "for trade on",
   },
@@ -54,6 +56,9 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     label: "Auction",
     action: {
       "default": "Auctioned",
+      "buy": "Bought",
+      "bid": "Placed a bid for",
+      "finalize": "Finalized a bid for",
     },
     prep: "",
   },
@@ -71,7 +76,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "🔥",
     label: "Burn",
     action: {
-      "default": "Burned",
+      "default": "Burnt",
     },
     prep: "",
   },
@@ -191,6 +196,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "🔮",
     label: "Proxy",
     action: {
+      "default": "",
       "appoint": "Approved a proxy",
     },
     prep: "",
@@ -248,6 +254,8 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     label: "Trade",
     action: {
       "default": "Traded",
+      "buy": "Bought",
+      "sell": "Sold",
     },
     prep: "",
   },

@@ -8,7 +8,7 @@ import { TransactionCard } from "./TransactionCard";
 import { GovernanceCard } from "./GovernanceCard";
 import { DonationCard } from "./DonationCard";
 import { SocialCard } from "./SocialCard";
-import { ActivityTag, ActivityType  } from "../../utils/activity";
+import { CollectibleCard } from "./CollectibleCard";
 import { 
   NetworkMapping, 
   ActivityTypeMapping, 
@@ -48,6 +48,8 @@ const RenderFeedContent = (props) => {
     case ("exchange"):
     case ("transaction"):
       return <TransactionCard action={action} />;
+    case ("collectible"):
+      return <CollectibleCard action={action} />;
     case ("governance"):
       return <GovernanceCard action={action} />;
     case ("donation"):

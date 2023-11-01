@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { memo } from "react";
-import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 import { ActivityTypeMapping, resolveMediaURL } from "../../utils/utils";
+import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
 const RenderSocialCard = (props) => {
   const { action } = props;

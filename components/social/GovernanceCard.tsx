@@ -1,8 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import { memo } from "react";
-import { ActivityTypeMapping, formatText } from "../../utils/utils";
-import { resolveIPFS_URL } from "../../utils/ipfs";
+import { ActivityTypeMapping } from "../../utils/utils";
 import { isArray } from "@apollo/client/cache/inmemory/helpers";
 
 const RenderGovernanceCard = (props) => {
@@ -11,7 +9,7 @@ const RenderGovernanceCard = (props) => {
   
   switch (action.type) {
     case ("vote"):
-      const choices = JSON.parse(metadata.choice);
+      const choices = JSON.parse(metadata.choice || "[]");
       return (
         <>
           <div className="feed-content">
@@ -52,6 +50,9 @@ const RenderGovernanceCard = (props) => {
       return (
         <div className="feed-content">
           {ActivityTypeMapping(action.type).action["default"]}
+          {action.platform && (
+            <span className="feed-platform">&nbsp;on {action.platform}</span>
+          )}
         </div>
       );
   }
