@@ -72,11 +72,6 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
 
   const scrollContainer = useRef(null);
 
-  const issues = !data?.length
-    ? []
-    : expand
-    ? JSON.parse(JSON.stringify(data))
-    : JSON.parse(JSON.stringify(data.slice(0, 1)));
   useEffect(() => {
     if (expand) {
       const anchorElement = document.getElementById("feeds");
@@ -86,7 +81,7 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
     }
   }, [expand]);
 
-  if (!issues?.length || isError) return null;
+  if (!data?.length || isError) return null;
 
   if (process.env.NODE_ENV !== "production") {
     console.log("Feed Data:", data);
@@ -113,7 +108,7 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
           expand={expand}
           parentScrollRef={scrollContainer}
           identity={profile}
-          data={issues}
+          data={data}
           isLoadingMore={isValidating}
           hasNextPage={hasNextPage}
           isError={isError}
@@ -122,6 +117,11 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
             setSize(size + 1);
           }}
         />
+        {!expand && (<div className="btn-widget-more">
+          <button className="btn btn-block" onClick={() => {
+            setExpand(true);
+          }}>View more</button>
+        </div>)}
       </div>
     </div>
   );

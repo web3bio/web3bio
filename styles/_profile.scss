@@ -417,7 +417,6 @@
       font-weight: 500;
       margin-bottom: 0;
       text-decoration: none;
-
     }
   }
 
@@ -546,10 +545,35 @@
   .profile-widget-feeds {
     background: $light-color;
     border-color: lighten($bg-color, 3%);
+    height: 16rem;
     position: relative;
+
+    .widget-feeds-container {
+      overflow: hidden;
+    }
 
     &.active {
       box-shadow: 0 .4rem 1.6rem -.4rem rgba($dark-color, .15), 0 .1rem .2rem rgba($dark-color, .01);
+      height: 100%;
+
+      .widget-feeds-container {
+        overflow-y: auto;
+      }
+    }
+
+    .btn-widget-more {
+      align-items: flex-end;
+      background: linear-gradient(to bottom, rgba($light-color, 0) 0, rgba($light-color, 1) 75%);
+      bottom: 0;
+      display: flex;
+      height: 10rem;
+      justify-content: center;
+      left: 0;
+      padding: 1rem;
+      position: absolute;
+      right: 0;
+      width: 100%;
+      z-index: 99;
     }
   }
 
