@@ -28,7 +28,7 @@ const getURL = (index, address, previous) => {
     address +
     `/activities?limit=${FEEDS_PAGE_SIZE}${
       cursor ? `&cursor=${cursor}` : ""
-    }&direction=out&status=successful&tag=collectible`
+    }&direction=out&status=successful&tag=transaction&tag=social&tag=collectible&tag=donation&tag=exchange&tag=governance&tag=metaverse`
   );
 };
 
@@ -76,7 +76,7 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
     ? []
     : expand
     ? JSON.parse(JSON.stringify(data))
-    : JSON.parse(JSON.stringify(data.slice(0, 3)));
+    : JSON.parse(JSON.stringify(data.slice(0, 1)));
   useEffect(() => {
     if (expand) {
       const anchorElement = document.getElementById("feeds");

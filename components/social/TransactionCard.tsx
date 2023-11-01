@@ -11,7 +11,7 @@ const RenderTransactionCard = (props) => {
       return (
         <>
           <div className="feed-content">
-            {ActivityTypeMapping(action.type).action["default"]} 
+            {ActivityTypeMapping(action.type).action["default"]} &nbsp;
             {metadata.tokens.map((x) => RenderToken(x))}
             {" "}{ActivityTypeMapping(action.type).prep}
             {action.platform && (
@@ -24,7 +24,7 @@ const RenderTransactionCard = (props) => {
       return (
         <>
           <div className="feed-content">
-            {ActivityTypeMapping(action.type).action[metadata.action||"default"]}
+            {ActivityTypeMapping(action.type).action[metadata.action||"default"]}&nbsp;
             {RenderToken(metadata.token)}
             {action.platform && (
               <span className="feed-platform">&nbsp;on {action.platform}</span>
@@ -36,7 +36,7 @@ const RenderTransactionCard = (props) => {
       return (
         <>
           <div className="feed-content">
-            {ActivityTypeMapping(action.type).action["default"]}
+            {ActivityTypeMapping(action.type).action["default"]}&nbsp;
             {RenderToken(metadata.from)}
             &nbsp;{ActivityTypeMapping(action.type).prep}&nbsp;
             {RenderToken(metadata.to)}
@@ -50,29 +50,23 @@ const RenderTransactionCard = (props) => {
       return (
         <>
           <div className="feed-content">
-            {ActivityTypeMapping(action.type).action["default"]}
+            {ActivityTypeMapping(action.type).action[metadata.action || "default"]}&nbsp;
+            {metadata.owner && (`<span className="feed-token">${formatText(metadata.owner)}</span>`)}
             {action.platform && (
               <span className="feed-platform">&nbsp;on {action.platform}</span>
             )} 
           </div>
-          {/* <div className="feed-content">
-            <div className="feed-target">
-              <div className="feed-target-content">
-                {metadata.action}
-              </div>
-            </div>
-          </div> */}
         </>
       );
     default:
       return (
         <div className="feed-content">
-          {ActivityTypeMapping(action.type).action["default"]}
+          {ActivityTypeMapping(action.type).action["default"]}&nbsp;
           {RenderToken(metadata.token || metadata)}
           {ActivityTypeMapping(action.type).prep && (
             <>
-              &nbsp;{ActivityTypeMapping(action.type).prep}
-              <span className="feed-identity">&nbsp;{formatText(action.to)}</span>
+              &nbsp;{ActivityTypeMapping(action.type).prep}&nbsp;
+              <span className="feed-token">{formatText(action.to)}</span>
             </>
           )}
           {action.platform && (

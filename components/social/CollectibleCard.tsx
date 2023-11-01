@@ -12,7 +12,7 @@ const RenderCollectibleCard = (props) => {
       return (
         <>
           <div className="feed-content">
-            {ActivityTypeMapping(action.type).action[metadata.action || "default"]}
+            {ActivityTypeMapping(action.type).action[metadata.action || "default"]}&nbsp;
             <span className="feed-token">
               {metadata.title || metadata.name}
               {metadata.id && (<span className="text-gray">{`#${formatText(metadata.id)}`}</span>)}
@@ -58,7 +58,7 @@ const RenderCollectibleCard = (props) => {
       return (
         <>
           <div className="feed-content">
-            {ActivityTypeMapping(action.type).action[metadata.action || "default"]}
+            {ActivityTypeMapping(action.type).action[metadata.action || "default"]}&nbsp;
             <span className="feed-token">
               {metadata.title || metadata.name}
               {metadata.id && (<span className="text-gray">{`#${formatText(metadata.id)}`}</span>)}

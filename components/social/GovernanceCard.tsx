@@ -13,7 +13,7 @@ const RenderGovernanceCard = (props) => {
       return (
         <>
           <div className="feed-content">
-            {ActivityTypeMapping(action.type).action["default"]}
+            {ActivityTypeMapping(action.type).action["default"]}&nbsp;
             {isArray(choices) ? (
                 choices.map((x) => (
                   <span className="feed-token" key={x}>{metadata.proposal?.options[x - 1]}</span>

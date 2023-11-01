@@ -13,7 +13,7 @@ const RenderSocialCard = (props) => {
       return (
         <>
           <div className="feed-content">
-            {ActivityTypeMapping(action.type).action[metadata.action||"default"]}
+            {ActivityTypeMapping(action.type).action[metadata.action||"default"]}&nbsp;
             <span className="feed-token">{metadata.handle}</span>
             {action.platform && (
               <span className="feed-platform">&nbsp;on {action.platform}</span>
