@@ -93,7 +93,7 @@ function useNFTs({ address, initialData, fromServer }) {
   };
 }
 
-const RenderWidgetNFTCollection = ({
+const RenderWidgetNFT = ({
   address,
   onShowDetail,
   initialData,
@@ -177,4 +177,4 @@ const RenderWidgetNFTCollection = ({
   );
 };
 
-export const WidgetNFTCollection = memo(RenderWidgetNFTCollection);
+export const WidgetNFT = memo(RenderWidgetNFT);

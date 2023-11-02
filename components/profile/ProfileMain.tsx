@@ -9,7 +9,7 @@ import { SocialPlatformMapping } from "../../utils/utils";
 import { Error } from "../shared/Error";
 import { formatText } from "../../utils/utils";
 import { RenderWidgetItem } from "./WidgetLinkItem";
-import { WidgetNFTCollection } from "./WidgetNFTCollection";
+import { WidgetNFT } from "./WidgetNFT";
 import WidgetRSS from "./WidgetRSS";
 import WidgetPoap from "./WidgetPoap";
 import WidgetDegenScore from "./WidgetDegenScore";
@@ -74,7 +74,7 @@ export default function ProfileMain(props) {
             <h1 className="text-assistive">{`${pageTitle} ${
               SocialPlatformMapping(platform).label
             } Web3 Profile`}</h1>
-            <h2 className="text-assistive">{`Explore ${pageTitle} Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, activities etc on the Web3.bio Link in bio page.`}</h2>
+            <h2 className="text-assistive">{`Explore ${pageTitle} Web3 identity profile, description, social links, NFT collections, POAPs, activities etc on the Web3.bio Link in bio page.`}</h2>
             <div className="profile-name">{data.displayName}</div>
             <h3 className="text-assistive">{`${pageTitle}‘s Ethereum wallet address is ${data.address}`}</h3>
             <div className="profile-identity">
@@ -190,7 +190,7 @@ export default function ProfileMain(props) {
             <>
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading NFTs...</p>}>
-                  <WidgetNFTCollection
+                  <WidgetNFT
                     initialExpand={
                       Boolean(
                         widgets.widgetState.rss?.isEmpty &&

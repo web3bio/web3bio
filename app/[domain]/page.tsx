@@ -17,14 +17,7 @@ function mapNFTs(nfts) {
     image_url: x.image_url,
     previews: x.previews,
     token_id: x.token_id,
-    collection: {
-      address: x.contract_address,
-      collection_id: x.collection.collection_id,
-      description: x.collection.description,
-      name: x.collection.name,
-      image_url: x.collection.image_url,
-      spam_score: x.collection.spam_score,
-    },
+    collection: x.collection,
     video_url: x.video_url,
     audio_url: x.audio_url,
     video_properties: x.video_properties,
@@ -94,7 +87,7 @@ export async function generateMetadata({
     profile.description ||
     `Explore ${pageTitle} ${
       SocialPlatformMapping(platform!).label
-    } Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, activities etc on the Web3.bio Link in bio page.`;
+    } Web3 identity profile, description, social links, NFT collections, POAPs, activities etc on the Web3.bio Link in bio page.`;
   return {
     metadataBase: new URL(baseURL),
     title: pageTitle,

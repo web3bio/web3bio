@@ -885,9 +885,17 @@
           padding: .6rem;
 
           .list-item-right {
+            align-items: center;
+            display: flex;
             font-size: .8rem;
             font-weight: 700;
             text-transform: uppercase;
+
+            .icon-platform {
+              display: flex;
+              height: 1rem;
+              width: 1rem;
+            }
           }
 
           &:not(:first-child) {
