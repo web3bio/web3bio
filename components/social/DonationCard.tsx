@@ -13,7 +13,7 @@ const RenderDonationCard = (props) => {
       return (
         <>
           <div className="feed-content">
-            {ActivityTypeMapping(action.type).action["default"]}&nbsp;
+            {ActivityTypeMapping(action.type).action[metadata.action||"default"]}&nbsp;
             {RenderToken(metadata.token)}&nbsp;
             {ActivityTypeMapping(action.type).prep}&nbsp;
             <strong>{metadata.title}</strong>
@@ -51,7 +51,7 @@ const RenderDonationCard = (props) => {
     default:
       return (
         <div className="feed-content">
-          {ActivityTypeMapping(action.type).action["default"]}
+          {ActivityTypeMapping(action.type).action[metadata.action||"default"]}
           {action.platform && (
             <span className="feed-platform">&nbsp;on {action.platform}</span>
           )}

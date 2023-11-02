@@ -11,7 +11,7 @@ const processFeedsData = (data) => {
   if (!data?.[0]?.data?.length) return [];
   const res = new Array();
   data.map((x) => {
-    x.data.forEach((i) => {
+    x.data?.forEach((i) => {
       res.push(i);
     });
   });

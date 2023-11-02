@@ -13,7 +13,7 @@ const RenderGovernanceCard = (props) => {
       return (
         <>
           <div className="feed-content">
-            {ActivityTypeMapping(action.type).action["default"]}&nbsp;
+            {ActivityTypeMapping(action.type).action[metadata.action||"default"]}&nbsp;
             {isArray(choices) ? (
                 choices.map((x) => (
                   <span className="feed-token" key={x}>{metadata.proposal?.options[x - 1]}</span>
@@ -49,7 +49,7 @@ const RenderGovernanceCard = (props) => {
     default:
       return (
         <div className="feed-content">
-          {ActivityTypeMapping(action.type).action["default"]}
+          {ActivityTypeMapping(action.type).action[metadata.action||"default"]}
           {action.platform && (
             <span className="feed-platform">&nbsp;on {action.platform}</span>
           )}

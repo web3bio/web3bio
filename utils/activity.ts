@@ -46,7 +46,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     action: {
       "default": "Approved",
       "approve": "Approved",
-      "revoke": "Revoked",
+      "revoke": "Revoked the approval of",
     },
     prep: "for trade on",
   },
@@ -68,7 +68,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     label: "Bridge",
     action: {
       "default": "Bridged",
-      "deposit": "Deposited {{token}} to ETH",
+      "deposit": "Deposited",
       "withdraw": "Withdrawn",
     },
     prep: "",
@@ -133,6 +133,10 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     label: "Liquidity",
     action: {
       "default": "Staked",
+      "add": "Staked",
+      "remove": "Unstaked",
+      "withdraw": "Withdrawn",
+      "supply": "Supplied",
     },
     prep: "",
   },

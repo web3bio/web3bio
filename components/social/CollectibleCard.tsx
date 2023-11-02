@@ -50,10 +50,6 @@ const RenderCollectibleCard = (props) => {
           )}
         </>
       );
-    case ("approval"):
-      if (metadata.action === "revoke") {
-        return null;
-      }
     default:
       return (
         <>
