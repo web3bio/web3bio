@@ -118,7 +118,7 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
             setSize(size + 1);
           }}
         />
-        {!expand && (
+        {!expand && data?.length > 2 && (
           <div className="btn-widget-more" onClick={() => {
             setExpand(true);
           }}>

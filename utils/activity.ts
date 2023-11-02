@@ -68,8 +68,10 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     label: "Bridge",
     action: {
       "default": "Bridged",
+      "deposit": "Deposited {{token}} to ETH",
+      "withdraw": "Withdrawn",
     },
-    prep: "to",
+    prep: "",
   },
   [ActivityType.burn]: {
     key: ActivityType.burn,

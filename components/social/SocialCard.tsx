@@ -122,8 +122,7 @@ const RenderSocialCard = (props) => {
             </div>
           </>
         );
-      }
-      
+      };
     case ("mint"):
       return (
         <>
@@ -164,11 +163,11 @@ const RenderSocialCard = (props) => {
           </div>
         </>
       );
-    case ("share"):
+    default:
       return (
         <>
           <div className="feed-content">
-            {ActivityTypeMapping(action.type).action["default"]}
+            {ActivityTypeMapping(action.type).action[metadata.action||"default"]}
             {action.platform && (
               <span className="feed-platform">&nbsp;on {action.platform}</span>
             )} 
@@ -204,17 +203,6 @@ const RenderSocialCard = (props) => {
               </Link>
             </div>
           )}
-        </>
-      );
-    default:
-      return (
-        <>
-          <div className="feed-content">
-            {ActivityTypeMapping(action.type).action[metadata.action||"default"]}
-            {action.platform && (
-              <span className="feed-platform">&nbsp;on {action.platform}</span>
-            )} 
-          </div>
         </>
       );
   }

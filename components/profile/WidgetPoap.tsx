@@ -63,7 +63,7 @@ export default function WidgetPoap(props) {
           title="Proof of Attendance Protocol (POAP)"
         >
           <span className="emoji-large mr-2">🔮 </span>
-          POAP
+          POAPs
         </h2>
         <Link
           className="action-icon btn btn-sm"

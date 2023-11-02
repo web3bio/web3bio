@@ -20,18 +20,6 @@ const RenderTransactionCard = (props) => {
           </div>
         </>
       );
-    case ("staking"):
-      return (
-        <>
-          <div className="feed-content">
-            {ActivityTypeMapping(action.type).action[metadata.action||"default"]}&nbsp;
-            {RenderToken(metadata.token)}
-            {action.platform && (
-              <span className="feed-platform">&nbsp;on {action.platform}</span>
-            )} 
-          </div>
-        </>
-      );
     case ("swap"):
       return (
         <>
@@ -54,14 +42,14 @@ const RenderTransactionCard = (props) => {
             {metadata.owner && (`<span className="feed-token">${formatText(metadata.owner)}</span>`)}
             {action.platform && (
               <span className="feed-platform">&nbsp;on {action.platform}</span>
-            )} 
+            )}
           </div>
         </>
       );
     default:
       return (
         <div className="feed-content">
-          {ActivityTypeMapping(action.type).action["default"]}&nbsp;
+          {ActivityTypeMapping(action.type).action[metadata.action||"default"]}&nbsp;
           {RenderToken(metadata.token || metadata)}
           {ActivityTypeMapping(action.type).prep && (
             <>
@@ -71,7 +59,8 @@ const RenderTransactionCard = (props) => {
           )}
           {action.platform && (
             <span className="feed-platform">&nbsp;on {action.platform}</span>
-          )} 
+          )}
+          
         </div>
       );
   }
