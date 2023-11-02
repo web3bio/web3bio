@@ -22,9 +22,6 @@ const CollectionAboutRender = (props) => {
 
   return (
     <div className="panel-widget">
-      <div className="panel-widget-title collection-title">
-        Collection
-      </div>
       <div className="panel-widget-content">
         <div className="nft-header-logo mt-4 mb-4">
           <NFTAssetPlayer

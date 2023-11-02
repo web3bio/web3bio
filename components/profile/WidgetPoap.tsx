@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect } from "react";
+import { memo, useCallback, useEffect } from "react";
 import Link from "next/link";
 import useSWR from "swr";
 import { Loading } from "../shared/Loading";
@@ -30,10 +30,10 @@ function usePoaps(address: string, fromServer: boolean) {
   };
 }
 
-export default function WidgetPoap(props) {
-  const { address, onShowDetail, fromServer } = props;
-
-  const { data, isLoading, isError } = usePoaps(address, fromServer);
+const RenderWidgetPOAP = ({
+  address, onShowDetail, fromServer
+}) => {
+  const { data, isLoading } = usePoaps(address, fromServer);
   const dispatch = useDispatch();
   const getBoundaryRender = useCallback(() => {
     if (isLoading)
@@ -42,9 +42,8 @@ export default function WidgetPoap(props) {
           <Loading />
         </div>
       );
-    if (isError) return <Error />;
     return null;
-  }, [isLoading, isError]);
+  }, [isLoading]);
   useEffect(() => {
     if (!isLoading && data.length) {
       dispatch(updatePoapsWidget({ isEmpty: false }));
@@ -54,6 +53,10 @@ export default function WidgetPoap(props) {
   if (!data || !data.length) {
     return null;
   }
+
+  // if (process.env.NODE_ENV !== "production") {
+  //   console.log("POAP Data:", data);
+  // }
 
   return (
     <div className="profile-widget-full" id="poap">
@@ -111,4 +114,6 @@ export default function WidgetPoap(props) {
       </div>
     </div>
   );
-}
+};
+
+export const WidgetPOAP = memo(RenderWidgetPOAP);

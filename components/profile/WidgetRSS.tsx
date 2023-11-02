@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, memo } from "react";
 import useSWR from "swr";
 import { RSSFetcher, RSS_ENDPOINT } from "../apis/rss";
 import SVG from "react-inlinesvg";
@@ -45,9 +45,10 @@ function useRSS(domain: string, relations, fromServer) {
   };
 }
 
-export default function WidgetRss(props) {
-  const { domain, relations, fromServer } = props;
-  const { data, isLoading, isError } = useRSS(
+const RenderWidgetRSS = ({
+  domain, relations, fromServer
+}) => {
+  const { data, isLoading } = useRSS(
     domain,
     relations,
     fromServer
@@ -61,6 +62,11 @@ export default function WidgetRss(props) {
   }, [data, isLoading, dispatch]);
 
   if (!data || !data?.items?.length) return null;
+
+  // if (process.env.NODE_ENV !== "production") {
+  //   console.log("RSS Data:", data);
+  // }
+
   return (
     <div className="profile-widget-full" id="rss">
       <div className="profile-widget profile-widget-rss">
@@ -89,4 +95,6 @@ export default function WidgetRss(props) {
       </div>
     </div>
   );
-}
+};
+
+export const WidgetRSS = memo(RenderWidgetRSS);

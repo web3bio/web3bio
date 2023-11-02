@@ -1,9 +1,9 @@
 "use client";
+import { memo, useEffect } from "react";
 import useSWR from "swr";
 import { DegenFetcher, DEGENSCORE_ENDPOINT } from "../apis/degenscore";
 import Link from "next/link";
 import SVG from "react-inlinesvg";
-import { useEffect } from "react";
 import { updateDegenWidget } from "../../state/widgets/action";
 import { useDispatch } from "react-redux";
 
@@ -25,8 +25,9 @@ function useDegenInfo(address: string) {
   };
 }
 
-export default function WidgetDegenScore(props) {
-  const { address } = props;
+const RenderWidgetDegenScore = ({
+  address
+}) => {
   const { data, isLoading } = useDegenInfo(address);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -36,6 +37,11 @@ export default function WidgetDegenScore(props) {
   }, [data, isLoading, dispatch]);
 
   if (!data || !data.name) return null;
+
+  // if (process.env.NODE_ENV !== "production") {
+  //   console.log("DegenScore Data:", data);
+  // }
+
   return (
     <div className="profile-widget-full" id="degenscore">
       <div className="profile-widget profile-widget-degenscore">
@@ -89,4 +95,6 @@ export default function WidgetDegenScore(props) {
       </div>
     </div>
   );
-}
+};
+
+export const WidgetDegenScore = memo(RenderWidgetDegenScore);

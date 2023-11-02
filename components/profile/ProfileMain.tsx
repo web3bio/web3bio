@@ -5,14 +5,14 @@ import { usePathname } from "next/navigation";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { PlatformType } from "../../utils/platform";
-import { SocialPlatformMapping } from "../../utils/utils";
+import { SocialPlatformMapping, formatText } from "../../utils/utils";
 import { Error } from "../shared/Error";
-import { formatText } from "../../utils/utils";
 import { RenderWidgetItem } from "./WidgetLinkItem";
 import { WidgetNFT } from "./WidgetNFT";
-import WidgetRSS from "./WidgetRSS";
-import WidgetPoap from "./WidgetPoap";
-import WidgetDegenScore from "./WidgetDegenScore";
+import { WidgetRSS } from "./WidgetRSS";
+import { WidgetPOAP } from "./WidgetPoap";
+import { WidgetDegenScore } from "./WidgetDegenScore";
+import { WidgetFeed } from "./WidgetFeed";
 import { NFTModal, NFTModalType } from "./NFTModal";
 import ShareModal from "../shared/ShareModal";
 import ModalLink from "./ModalLink";
@@ -21,7 +21,6 @@ import { Avatar } from "../shared/Avatar";
 import { useSelector } from "react-redux";
 import { AppState } from "../../state";
 import { WidgetState } from "../../state/widgets/reducer";
-import { WidgetFeed } from "./WidgetFeed";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, nfts, fromServer, relations, domain } =
@@ -234,7 +233,7 @@ export default function ProfileMain(props) {
               </div>
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading POAPs...</p>}>
-                  <WidgetPoap
+                  <WidgetPOAP
                     fromServer={fromServer}
                     onShowDetail={(v) => {
                       setDialogType(NFTModalType.POAP);
