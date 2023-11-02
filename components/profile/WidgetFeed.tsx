@@ -76,6 +76,7 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
     if (expand) {
       const anchorElement = document.getElementById("feeds");
       anchorElement?.scrollIntoView({
+        block: "center",
         behavior: "smooth",
       });
     }
@@ -117,11 +118,13 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
             setSize(size + 1);
           }}
         />
-        {!expand && (<div className="btn-widget-more">
-          <button className="btn btn-block" onClick={() => {
+        {!expand && (
+          <div className="btn-widget-more" onClick={() => {
             setExpand(true);
-          }}>View more</button>
-        </div>)}
+          }}>
+            <button className="btn btn-block">View more</button>
+          </div>
+        )}
       </div>
     </div>
   );

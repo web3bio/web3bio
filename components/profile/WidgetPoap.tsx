@@ -62,14 +62,7 @@ export default function WidgetPoap(props) {
           className="profile-widget-title"
           title="Proof of Attendance Protocol (POAP)"
         >
-          <div className="platform-icon mr-1">
-            <SVG
-              src={`../icons/icon-poap.svg`}
-              color={"#5E58A5"}
-              width={24}
-              height={24}
-            />
-          </div>
+          <span className="emoji-large mr-2">🔮 </span>
           POAP
         </h2>
         <Link

@@ -45,7 +45,7 @@ const RenderSocialCard = (props) => {
         return (
           <>
             {metadata?.body && (
-              <div className="feed-content">
+              <div className="feed-content text-large">
                 {metadata?.body}
               </div>
             )}

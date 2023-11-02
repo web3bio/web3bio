@@ -33,12 +33,6 @@
       width: .05rem;
     }
 
-    &.social {
-      .feed-content {
-        font-size: .85rem;
-      }
-    }
-
     .feed-item-icon {
       align-items: center;
       background: lighten($bg-color, 3%);
@@ -105,6 +99,10 @@
       font-size: .75rem;
       line-height: 1.5;
       margin: .25rem 0;
+
+      &.text-large {
+        font-size: .85rem;
+      }
 
       &:focus,
       &:hover {
