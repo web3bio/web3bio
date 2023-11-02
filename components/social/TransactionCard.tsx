@@ -1,6 +1,6 @@
 import { memo } from "react";
-import { ActivityTypeMapping, formatText } from "../../utils/utils";
-import { RenderToken } from "./FeedItem";
+import { ActivityTypeMapping } from "../../utils/utils";
+import { RenderToken, RenderIdentity } from "./FeedItem";
 
 const RenderTransactionCard = (props) => {
   const { action } = props;
@@ -39,7 +39,7 @@ const RenderTransactionCard = (props) => {
         <>
           <div className="feed-content">
             {ActivityTypeMapping(action.type).action[metadata.action || "default"]}&nbsp;
-            {metadata.owner && (`<span className="feed-token">${formatText(metadata.owner)}</span>`)}
+            {RenderIdentity(metadata.owner)}
             {action.platform && (
               <span className="feed-platform">&nbsp;on {action.platform}</span>
             )}
@@ -54,7 +54,7 @@ const RenderTransactionCard = (props) => {
           {ActivityTypeMapping(action.type).prep && (
             <>
               &nbsp;{ActivityTypeMapping(action.type).prep}&nbsp;
-              <span className="feed-token">{formatText(action.to)}</span>
+              {RenderIdentity(action.to)}
             </>
           )}
           {action.platform && (

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { memo } from "react";
 import { ActivityTypeMapping, formatText, resolveMediaURL } from "../../utils/utils";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
+import { RenderIdentity } from "./FeedItem";
 
 const RenderCollectibleCard = (props) => {
   const { action } = props;
@@ -54,15 +55,15 @@ const RenderCollectibleCard = (props) => {
       return (
         <>
           <div className="feed-content">
-            {ActivityTypeMapping(action.type).action[metadata.action || "default"]}&nbsp;
+            {ActivityTypeMapping(action.type).action[metadata.action||"default"]}&nbsp;
             <span className="feed-token">
               {metadata.title || metadata.name}
               {metadata.id && (<span className="text-gray">{`#${formatText(metadata.id)}`}</span>)}
             </span>
             {ActivityTypeMapping(action.type).prep && (
               <>
-                &nbsp;{ActivityTypeMapping(action.type).prep}
-                <span className="feed-identity">&nbsp;{formatText(action.to)}</span>
+                &nbsp;{ActivityTypeMapping(action.type).prep}&nbsp;
+                {RenderIdentity(action.to)}
               </>
             )}
             {action.platform && (

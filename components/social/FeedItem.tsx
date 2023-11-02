@@ -19,23 +19,33 @@ import {
 } from "../../utils/utils";
 import ActionExternalMenu from "./ActionExternalMenu";
 
-export const RenderToken = (metadata) => {
+export const RenderToken = (token) => {
   return (
-    <div className="feed-token" title={metadata.name}>
-      {metadata.image && (
+    token && <div className="feed-token" title={token.name}>
+      {token.image && (
         <Image
           className="feed-token-icon"
-          src={metadata.image}
-          alt={metadata.name}
+          src={token.image}
+          alt={token.name}
           height={20}
           width={20}
           loading="lazy"
         />
       )}
-      <span className="feed-token-value" title={formatValue(metadata)}>
-        {formatText(formatValue(metadata))} 
+      <span className="feed-token-value" title={formatValue(token)}>
+        {formatText(formatValue(token))} 
       </span>
-      <span className="feed-token-symbol">{metadata.symbol}</span>
+      <span className="feed-token-symbol">{token.symbol}</span>
+    </div>
+  );
+};
+
+export const RenderIdentity = (identity) => {
+  return (
+    identity && <div className="feed-token">
+      <span className="feed-token-value" title={identity}>
+        {formatText(identity)}
+      </span>
     </div>
   );
 };

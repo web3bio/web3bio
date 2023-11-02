@@ -3,6 +3,7 @@ import { memo } from "react";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 import { ActivityTypeMapping, resolveMediaURL } from "../../utils/utils";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
+import { RenderIdentity } from "./FeedItem";
 
 const RenderSocialCard = (props) => {
   const { action } = props;
@@ -14,7 +15,7 @@ const RenderSocialCard = (props) => {
         <>
           <div className="feed-content">
             {ActivityTypeMapping(action.type).action[metadata.action||"default"]}&nbsp;
-            <span className="feed-token">{metadata.handle}</span>
+            {RenderIdentity(metadata.handle)}
             {action.platform && (
               <span className="feed-platform">&nbsp;on {action.platform}</span>
             )} 
