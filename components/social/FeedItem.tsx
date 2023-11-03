@@ -35,7 +35,7 @@ export const RenderToken = (token) => {
       <span className="feed-token-value" title={formatValue(token)}>
         {formatText(formatValue(token))} 
       </span>
-      <span className="feed-token-symbol">{token.symbol}</span>
+      <small className="feed-token-meta">{token.symbol}</small>
     </div>
   );
 };

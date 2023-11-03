@@ -15,8 +15,15 @@ const RenderCollectibleCard = (props) => {
           <div className="feed-content">
             {ActivityTypeMapping(action.type).action[metadata.action || "default"]}&nbsp;
             <span className="feed-token">
+              {metadata.image_url && (
+                <NFTAssetPlayer
+                  className="feed-token-icon"
+                  src={resolveMediaURL(metadata.image_url)}
+                  type={"image/png"}
+                />
+              )}
               {metadata.title || metadata.name}
-              {metadata.id && (<span className="text-gray">{`#${formatText(metadata.id)}`}</span>)}
+              {metadata.id && (<small className="feed-token-meta">{`#${formatText(metadata.id)}`}</small>)}
             </span>
             {action.platform && (
               <span className="feed-platform">&nbsp;on {action.platform}</span>
@@ -37,7 +44,7 @@ const RenderCollectibleCard = (props) => {
                 <div className="feed-target-content">
                   {metadata.name}
                 </div>
-                {metadata.image_url?.length > 0 && (
+                {metadata.image_url && (
                   <div className={`feed-target-content media-gallery`}>
                     <NFTAssetPlayer
                       className="feed-content-img"
@@ -58,7 +65,7 @@ const RenderCollectibleCard = (props) => {
             {ActivityTypeMapping(action.type).action[metadata.action||"default"]}&nbsp;
             <span className="feed-token">
               {metadata.title || metadata.name}
-              {metadata.id && (<span className="text-gray">{`#${formatText(metadata.id)}`}</span>)}
+              {metadata.id && (<small className="feed-token-meta">{`#${formatText(metadata.id)}`}</small>)}
             </span>
             {ActivityTypeMapping(action.type).prep && (
               <>
