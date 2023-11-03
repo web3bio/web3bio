@@ -22,6 +22,7 @@ function mapNFTs(nfts) {
     audio_url: x.audio_url,
     video_properties: x.video_properties,
     image_properties: x.image_properties,
+    chain: x.chain,
     extra_metadata: x.extra_metadata,
   }));
 }

@@ -2,6 +2,7 @@ export enum Network {
   ethereum = "ethereum",
   binance_smart_chain = "binance_smart_chain",
   base = "base",
+  arbitrum = "arbitrum",
   arbitrum_one = "arbitrum_one",
   arbitrum_nova = "arbitrum_nova",
   polygon = "polygon",
@@ -65,6 +66,14 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
     primaryColor: "#6fe0b2",
     bgColor: "#e9faf3",
     scanPrefix: "https://aptoscan.com/",
+  },
+  [Network.arbitrum]: {
+    key: Network.arbitrum,
+    icon: "icons/icon-arbitrum.svg",
+    label: "Arbitrum",
+    primaryColor: "#2949d4",
+    bgColor: "#eaedfb",
+    scanPrefix: "https://arbiscan.io/",
   },
   [Network.arbitrum_one]: {
     key: Network.arbitrum_one,

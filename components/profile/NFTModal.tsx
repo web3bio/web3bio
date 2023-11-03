@@ -4,7 +4,7 @@ import SVG from "react-inlinesvg";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { CollectionAbout } from "./CollectionAbout";
 import { PlatformType } from "../../utils/platform";
-import { getSocialMediaLink, SocialPlatformMapping, formatText } from "../../utils/utils";
+import { getSocialMediaLink, SocialPlatformMapping, NetworkMapping, formatText } from "../../utils/utils";
 
 export const enum NFTModalType {
   NFT = "nft",
@@ -187,6 +187,20 @@ const NFTModalRender = (props) => {
               alt={asset.collection?.name + _asset.name}
               poster={_asset.previews.image_large_url}
             />
+            
+            <div
+              className={`preview-network ${_asset.chain}`}
+              title={NetworkMapping(_asset.chain).label}
+            >
+              <SVG
+                fill={"#fff"}
+                src={NetworkMapping(_asset.chain).icon || ""}
+                className="preview-network-icon"
+              />
+              <span className="preview-network-name">
+                {NetworkMapping(_asset.chain).label}
+              </span>
+            </div>
           </div>
           <div className="preview-main">
             <div className="preview-content">
