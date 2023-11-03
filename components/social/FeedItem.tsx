@@ -116,15 +116,15 @@ const RenderFeedItem = (props) => {
                 : formatText(feed.from)}
             </strong>
           </div>
-          <div className="feed-item-action dropdown">
+          <div className="feed-item-action dropdown dropdown-right">
             <Link
               href={resolveIPFS_URL(action?.related_urls?.[0]) || ""}
               target="_blank"
-              className="feed-timestamp"
+              className="feed-timestamp hide-sm"
             >
               {new Date(feed.timestamp * 1000).toLocaleString()}
             </Link>
-            <ActionExternalMenu links={action?.related_urls || []} />
+            <ActionExternalMenu links={action?.related_urls||[]} timestamp={feed.timestamp} />
           </div>
         </div>
         <div className="feed-item-body">

@@ -26,7 +26,7 @@ const RenderSocialFeeds = (props) => {
     <div className="widget-feeds-container">
       <div className="feeds-list">
         {data.map((x) => (
-            <div key={x.id} className={`feed-item ${x.network} ${x.tag} ${x.type}`}>
+            <div key={x.id} className={`feed-item`}>
               <FeedItem network={network} identity={identity} feed={x} />
             </div>
           ) ||

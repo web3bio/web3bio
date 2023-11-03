@@ -4,7 +4,7 @@
   padding: 1rem;
 
   @media screen and (max-width: $size-md) {
-    padding: 1rem 0;
+    margin: 0 -1rem;
   }
 
   .feed-item {
@@ -47,6 +47,12 @@
       position: relative;
       width: 2rem;
 
+      @media screen and (max-width: $size-sm) {
+        flex: 0 0 1.8rem;
+        height: 1.8rem;
+        width: 1.8rem;
+      }
+
       .feed-icon-platform {
         align-items: center;
         background: $bg-color;
@@ -64,8 +70,10 @@
     }
 
     .feed-item-content {
+      display: flex;
       flex: 1 1;
-      overflow: initial;
+      flex-direction: column;
+      overflow: auto;
       width: 100%;
     }
 
@@ -73,6 +81,12 @@
       align-items: center;
       display: flex;
       justify-content: space-between;
+    }
+
+    .feed-item-body {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
     }
 
     .feed-item-action {
@@ -95,10 +109,13 @@
     .feed-content {
       align-items: center;
       display: flex;
+      flex: 1 1 100%;
       flex-wrap: wrap;
       font-size: .75rem;
       line-height: 1.5;
       margin: .25rem 0;
+      width: 100%;
+      word-break: break-word;
 
       &.text-large {
         font-size: .85rem;
@@ -147,7 +164,6 @@
         min-width: 10rem;
         padding: .75rem;
         transition: all .25s ease-in-out;
-        word-wrap: break-word;
         width: 100%;
 
         .feed-target-description {
@@ -160,6 +176,9 @@
         }
 
         .feed-target-content {
+          word-break: break-word;
+          width: 100%;
+
           &.media-gallery {
             display: flex;
             flex-wrap: nowrap;
@@ -197,8 +216,12 @@
         gap: .2rem;
         height: 1.2rem;
         margin: .05rem 0;
+        max-width: 100%;
+        overflow: hidden;
         padding: .1rem .2rem;
         text-overflow: ellipsis;
+        white-space: nowrap;
+        word-break: keep-all;
 
         .feed-token-value {
           font-weight: 600;

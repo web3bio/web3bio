@@ -2,7 +2,7 @@ import Link from "next/link";
 import SVG from "react-inlinesvg";
 const domainRegexp = /^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)/;
 
-export default function ActionExternalMenu({ links }) {
+export default function ActionExternalMenu({ links, timestamp }) {
   return (
     <>
       <div
@@ -18,6 +18,11 @@ export default function ActionExternalMenu({ links }) {
         />
       </div>
       <ul className="menu">
+        <li className="menu-item dropdown-menu-item">
+          <Link href={links[0]} target="_blank">
+            {new Date(timestamp * 1000).toLocaleString()}
+          </Link>
+        </li>
         <li className="divider" data-content="LINKS"></li>
         {links?.map((x) => (
           <li key={x} className="menu-item dropdown-menu-item">
