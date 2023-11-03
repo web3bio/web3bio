@@ -13,7 +13,6 @@ export const DefaultSearchSuffix = [
   {
     key: PlatformType.twitter,
     label: "",
-    maxLength: 15,
   },
   {
     key: PlatformType.farcaster,
