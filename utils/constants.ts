@@ -1,4 +1,5 @@
-import { PlatformType, SocialPlatformMapping } from "./platform";
+import { PlatformType } from "./platform";
+import { SocialPlatformMapping } from "./utils";
 
 // empty for twitter and farcaster
 export const DefaultSearchSuffix = [

@@ -5,7 +5,8 @@ import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { formatText } from "../../utils/utils";
 import { RenderSourceFooter } from "./SourcesFooter";
-import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import { PlatformType } from "../../utils/platform";
+import { SocialPlatformMapping } from "../../utils/utils";
 import { isAddress } from "ethers";
 import ModalLink from "../profile/ModalLink";
 

@@ -4,14 +4,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
-import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import { PlatformType } from "../../utils/platform";
+import { SocialPlatformMapping, formatText } from "../../utils/utils";
 import { Error } from "../shared/Error";
-import { formatText } from "../../utils/utils";
 import { RenderWidgetItem } from "./WidgetLinkItem";
-import { WidgetNFTCollection } from "./WidgetNFTCollection";
-import WidgetRSS from "./WidgetRSS";
-import WidgetPoap from "./WidgetPoap";
-import WidgetDegenScore from "./WidgetDegenScore";
+import { WidgetNFT } from "./WidgetNFT";
+import { WidgetRSS } from "./WidgetRSS";
+import { WidgetPOAP } from "./WidgetPoap";
+import { WidgetDegenScore } from "./WidgetDegenScore";
+import { WidgetFeed } from "./WidgetFeed";
 import { NFTModal, NFTModalType } from "./NFTModal";
 import ShareModal from "../shared/ShareModal";
 import ModalLink from "./ModalLink";
@@ -22,15 +23,8 @@ import { AppState } from "../../state";
 import { WidgetState } from "../../state/widgets/reducer";
 
 export default function ProfileMain(props) {
-  const {
-    data,
-    pageTitle,
-    platform,
-    nfts,
-    fromServer,
-    relations,
-    domain,
-  } = props;
+  const { data, pageTitle, platform, nfts, fromServer, relations, domain } =
+    props;
   const [isCopied, setIsCopied] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [openShare, setOpenShare] = useState(false);
@@ -61,8 +55,8 @@ export default function ProfileMain(props) {
         style={{
           backgroundImage:
             data.header || data.avatar
-              ? `url(${data.header || data.avatar})`
-              : `none`,
+              ? `url("${data.header || data.avatar}")`
+              : "none",
         }}
       ></div>
       <div className="columns">
@@ -79,7 +73,7 @@ export default function ProfileMain(props) {
             <h1 className="text-assistive">{`${pageTitle} ${
               SocialPlatformMapping(platform).label
             } Web3 Profile`}</h1>
-            <h2 className="text-assistive">{`Explore ${pageTitle} Web3 identity profile, description, crypto addresses, social links, NFT collections, POAPs, etc on the Web3.bio Link in bio page.`}</h2>
+            <h2 className="text-assistive">{`Explore ${pageTitle} Web3 identity profile, description, social links, NFT collections, POAPs, activities etc on the Web3.bio Link in bio page.`}</h2>
             <div className="profile-name">{data.displayName}</div>
             <h3 className="text-assistive">{`${pageTitle}‘s Ethereum wallet address is ${data.address}`}</h3>
             <div className="profile-identity">
@@ -195,7 +189,7 @@ export default function ProfileMain(props) {
             <>
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading NFTs...</p>}>
-                  <WidgetNFTCollection
+                  <WidgetNFT
                     initialExpand={
                       Boolean(
                         widgets.widgetState.rss?.isEmpty &&
@@ -215,10 +209,19 @@ export default function ProfileMain(props) {
                 </Suspense>
               </div>
               <div className="web3-section-widgets">
+                <Suspense fallback={<p>Loading Activity Feeds...</p>}>
+                  <WidgetFeed
+                    initialData={[]}
+                    fromServer={fromServer}
+                    profile={data}
+                  />
+                </Suspense>
+              </div>
+              <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading Articles...</p>}>
                   <WidgetRSS
-                    relations={relations}
                     fromServer={fromServer}
+                    relations={relations}
                     domain={data.identity}
                   />
                 </Suspense>
@@ -230,7 +233,7 @@ export default function ProfileMain(props) {
               </div>
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading POAPs...</p>}>
-                  <WidgetPoap
+                  <WidgetPOAP
                     fromServer={fromServer}
                     onShowDetail={(v) => {
                       setDialogType(NFTModalType.POAP);

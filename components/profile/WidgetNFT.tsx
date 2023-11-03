@@ -45,7 +45,6 @@ export const processNFTsData = (data) => {
 
     collectionItem.assets.push(asset);
   }
-
   return collections;
 };
 
@@ -94,7 +93,7 @@ function useNFTs({ address, initialData, fromServer }) {
   };
 }
 
-const RenderWidgetNFTCollection = ({
+const RenderWidgetNFT = ({
   address,
   onShowDetail,
   initialData,
@@ -136,7 +135,12 @@ const RenderWidgetNFTCollection = ({
     }
     setFirstRender(false);
   }, [assetId, initialExpand]);
+
   if (!data.length || isError) return null;
+
+  // if (process.env.NODE_ENV !== "production") {
+  //   console.log("NFT Data:", data);
+  // }
 
   return (
     <div ref={scrollContainer} className="profile-widget-full" id="nft">
@@ -177,4 +181,4 @@ const RenderWidgetNFTCollection = ({
   );
 };
 
-export const WidgetNFTCollection = memo(RenderWidgetNFTCollection);
+export const WidgetNFT = memo(RenderWidgetNFT);

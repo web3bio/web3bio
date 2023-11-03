@@ -1,7 +1,9 @@
 import { BigNumber } from "bignumber.js";
 import { resolveIPFS_URL } from "./ipfs";
 import { pow10 } from "./number";
-import { PlatformType } from "./platform";
+import { PlatformType, PlatformData } from "./platform";
+import { Network, NetworkData } from "./network";
+import { ActivityType, ActivityTypeData } from "./activity";
 import {
   regexDotbit,
   regexEns,
@@ -43,6 +45,7 @@ export const formatValue = (value?: {
   if (!value) return "";
   return formatBalance(value.value, value.decimals, 5);
 };
+
 export function formatBalance(
   rawValue: BigNumber.Value = "0",
   decimals = 0,
@@ -136,6 +139,70 @@ export const resolveMediaURL = (url) => {
     : url.startsWith("ar://")
     ? url.replaceAll("ar://", ArweaveAssetPrefix)
     : resolveIPFS_URL(url);
+};
+
+export const SocialPlatformMapping = (platform: PlatformType) => {
+  return (
+    PlatformData[platform] ?? {
+      key: platform,
+      color: "#000000",
+      icon: "",
+      label: platform,
+      ensText: [],
+    }
+  );
+};
+
+export const NetworkMapping = (network: Network) => {
+  return (
+    NetworkData[network] ?? {
+      key: network,
+      icon: "",
+      label: network,
+      primaryColor: "#000000",
+      bgColor: "#efefef",
+      scanPrefix: "",
+    }
+  );
+};
+
+export const ActivityTypeMapping = (type: ActivityType) => {
+  return (
+    ActivityTypeData[type] ?? {
+      key: type,
+      emoji: "",
+      label: type,
+      action: [],
+      prep: "",
+    }
+  );
+};
+
+const resolveSocialMediaLink = (name: string, type: PlatformType) => {
+  if (!Object.keys(PlatformType).includes(type))
+    return `https://web3.bio/?s=${name}`;
+  switch (type) {
+    case PlatformType.url:
+      return `${name}`;
+    case PlatformType.website:
+      return `https://${name}`;
+    default:
+      return SocialPlatformMapping(type).urlPrefix
+        ? SocialPlatformMapping(type).urlPrefix + name
+        : "";
+  }
+};
+
+export const getSocialMediaLink = (url: string, type: PlatformType) => {
+  let resolvedURL = "";
+  if (!url) return null;
+  if (url.startsWith("https")) {
+    resolvedURL = url;
+  } else {
+    resolvedURL = resolveSocialMediaLink(url, type);
+  }
+
+  return resolvedURL;
 };
 
 export const fallbackEmoji = [

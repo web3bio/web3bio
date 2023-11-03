@@ -1,0 +1,235 @@
+// Social Feeds
+.widget-feeds-container {
+  overflow-y: auto;
+  padding: 1rem;
+
+  @media screen and (max-width: $size-md) {
+    padding: 1rem 0;
+  }
+
+  .feed-item {
+    align-items: flex-start;
+    display: flex;
+    flex-wrap: nowrap;
+    font-size: .75rem;
+    height: auto;
+    padding: 0;
+    position: relative;
+    width: 100%;
+
+    &:not(:last-child) {
+      margin-bottom: .5rem;
+      padding-bottom: .5rem;
+    }
+
+    &::after {
+      border-left: .05rem solid $border-color;
+      bottom: -.5rem;
+      content: "";
+      display: flex;
+      left: 1rem;
+      position: absolute;
+      top: 2.5rem;
+      width: .05rem;
+    }
+
+    .feed-item-icon {
+      align-items: center;
+      background: lighten($bg-color, 3%);
+      border-radius: 50%;
+      display: flex;
+      flex: 0 0 2rem;
+      font-size: 1rem;
+      height: 2rem;
+      justify-content: center;
+      margin-right: 1rem;
+      margin-top: .25rem;
+      position: relative;
+      width: 2rem;
+
+      .feed-icon-platform {
+        align-items: center;
+        background: $bg-color;
+        border-radius: 50%;
+        bottom: -.4rem;
+        box-shadow: 0 .1rem .4rem -.4rem rgba($dark-color, .25), 0 .1rem .2rem rgba($dark-color, .05);
+        display: flex;
+        flex: 0 0;
+        height: 1.2rem;
+        padding: .2rem;
+        position: absolute;
+        right: -.4rem;
+        width: 1.2rem;
+      }
+    }
+
+    .feed-item-content {
+      flex: 1 1;
+      overflow: initial;
+      width: 100%;
+    }
+
+    .feed-item-header {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .feed-item-action {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+
+      .feed-timestamp {
+        color: $gray-color;
+        font-size: .7rem;
+        text-decoration: none;
+
+        &:focus,
+        &:hover {
+          color: $gray-color-dark;
+        }
+      }
+    }
+
+    .feed-content {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      font-size: .75rem;
+      line-height: 1.5;
+      margin: .25rem 0;
+
+      &.text-large {
+        font-size: .85rem;
+      }
+
+      &:focus,
+      &:hover {
+        text-decoration: none;
+      }
+
+      &.media-gallery {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: .25rem;
+        overflow-x: auto;
+
+        .feed-content-img {
+          align-items: center;
+          display: flex;
+          max-width: 10rem;
+          min-height: 4rem;
+        }
+      }
+
+      .feed-content-img {
+        margin: .25rem 0;
+        max-width: 16rem;
+
+        .img-responsive {
+          background: $bg-color;
+          border-radius: .4rem;
+          box-shadow: 0 .1rem .2rem rgba($dark-color, .15);
+          height: 100%;
+          max-height: 16rem;
+          width: auto;
+        }
+      }
+
+      .feed-target {
+        border: .05rem solid $border-color;
+        border-radius: .4rem;
+        box-shadow: 0 .1rem .4rem rgba($dark-color, .05);
+        font-size: .7rem;
+        margin: .5rem 0;
+        max-width: 24rem;
+        min-width: 10rem;
+        padding: .75rem;
+        transition: all .25s ease-in-out;
+        word-wrap: break-word;
+        width: 100%;
+
+        .feed-target-description {
+          display: -webkit-box;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          padding-right: 1rem;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 3;
+        }
+
+        .feed-target-content {
+          &.media-gallery {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: .25rem;
+            overflow-x: auto;
+          }
+  
+          .feed-content-img {
+            max-width: 6rem;
+  
+            .img-responsive {
+              max-height: 8rem;
+            }
+          }
+        }
+      }
+
+      a.feed-target {
+        &:focus,
+        &:hover {
+          border-color: darken($border-color, 2%);
+          box-shadow: 0 .1rem .6rem rgba($dark-color, .05);
+          text-decoration: none;
+        }
+      }
+
+      .feed-token {
+        align-items: center;
+        background: lighten($bg-color, 6%);
+        border: .05rem solid $border-color;
+        border-radius: .3rem;
+        box-shadow: 0 .05rem .2rem rgba($dark-color, .05);
+        display: inline-flex;
+        flex-wrap: nowrap;
+        gap: .2rem;
+        height: 1.2rem;
+        margin: .05rem 0;
+        padding: .1rem .2rem;
+        text-overflow: ellipsis;
+
+        .feed-token-value {
+          font-weight: 600;
+        }
+
+        .feed-token-icon {
+          border-radius: .25rem;
+          flex: 0 0 1rem;
+          height: 1rem;
+          margin-left: -.1rem;
+          width: 1rem;
+
+          .img-responsive {
+            border-radius: .25rem;
+            height: 1rem;
+            object-fit: cover;
+            width: 1rem;
+          }
+        }
+
+        .feed-token-meta {
+          color: $gray-color-dark;
+          font-size: 85%;
+          line-height: 1.2rem;
+        }
+      }
+    }
+
+    .feed-meta {
+      color: $gray-color;
+      font-size: .7rem;
+    }
+  }
+}

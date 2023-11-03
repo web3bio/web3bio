@@ -2,7 +2,7 @@ import urlcat from "urlcat";
 const MATCH_IPFS_CID_RAW =
   "Qm[1-9A-HJ-NP-Za-km-z]{44,}|b[2-7A-Za-z]{58,}|B[2-7A-Z]{58,}|z[1-9A-HJ-NP-Za-km-z]{48,}|F[\\dA-F]{50,}";
 const CORS_HOST = "https://cors-next.r2d2.to";
-const IPFS_GATEWAY_HOST = "https://hoot.hit";
+const IPFS_GATEWAY_HOST = "https://gateway.pinata.cloud";
 const MATCH_IPFS_DATA_RE = /ipfs\/(data:.*)$/;
 const MATCH_IPFS_CID_RE = new RegExp(`(${MATCH_IPFS_CID_RAW})`);
 const MATCH_IPFS_CID_AT_STARTS_RE = new RegExp(
@@ -37,8 +37,8 @@ export function resolveIPFS_URL(
     );
   }
 
-  // a ipfs.io host
-  if (cidOrURL.startsWith(IPFS_GATEWAY_HOST)) {
+  // ipfs.io host
+  if (cidOrURL.startsWith("https://ipfs.io")) {
     // base64 data string
     const [_, data] = cidOrURL.match(MATCH_IPFS_DATA_RE) ?? [];
     if (data) return decodeURIComponent(data);
@@ -61,13 +61,13 @@ export function resolveIPFS_URL(
         if (cid) {
           if (u.pathname === "/") {
             return resolveIPFS_URL(
-              urlcat("https://ipfs.io/ipfs/:cid", {
+              urlcat(`${IPFS_GATEWAY_HOST}/ipfs/:cid`, {
                 cid,
               })
             );
           } else {
             return resolveIPFS_URL(
-              urlcat("https://ipfs.io/ipfs/:cid/:path", {
+              urlcat(`${IPFS_GATEWAY_HOST}/ipfs/:cid/:path`, {
                 cid,
                 path: u.pathname.slice(1),
               })

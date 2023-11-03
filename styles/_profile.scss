@@ -67,8 +67,8 @@
   .profile-name {
     color: $dark-color;
     font-size: 1.8rem;
-    font-weight: 800;
-    letter-spacing: -.05em;
+    font-weight: 700;
+    letter-spacing: -.025em;
     line-height: 1.25;
     margin-bottom: .5rem;
     margin-top: 1rem;
@@ -426,9 +426,17 @@
     border-color: lighten($bg-color, 3%);
     position: relative;
 
+    .profile-widget-title {
+      .label {
+        background: #5298FF;
+        box-shadow: inset 0 0 .25rem rgba($dark-color, .15), 0 .1rem .4rem rgba(#5298FF, .5);
+        color: #fff;
+      }
+    }
+
     &.active {
       box-shadow: 0 .4rem 1.6rem -.4rem rgba($dark-color, .15), 0 .1rem .2rem rgba($dark-color, .01);
-      
+
       .collection-switcher {
         box-shadow: 0 .4rem .4rem -.2rem rgba($dark-color, .1);
       }
@@ -493,7 +501,6 @@
   // POAP Widget
   .profile-widget-poap {
     aspect-ratio: auto;
-    color: #5E58A5;
     position: relative;
 
     .platform-icon {
@@ -530,6 +537,41 @@
           width: 3.2rem;
         }
       }
+    }
+  }
+  // Social Widget
+  .profile-widget-feeds {
+    background: $light-color;
+    border-color: lighten($bg-color, 3%);
+    height: 16rem;
+    position: relative;
+
+    .widget-feeds-container {
+      overflow: hidden;
+    }
+
+    &.active {
+      box-shadow: 0 .4rem 1.6rem -.4rem rgba($dark-color, .15), 0 .1rem .2rem rgba($dark-color, .01);
+      height: 100%;
+
+      .widget-feeds-container {
+        overflow-y: auto;
+      }
+    }
+
+    .btn-widget-more {
+      align-items: flex-end;
+      background: linear-gradient(to bottom, rgba($light-color, 0) 0, rgba($light-color, 1) 75%);
+      bottom: 0;
+      display: flex;
+      height: 10rem;
+      justify-content: center;
+      left: 0;
+      padding: 1rem;
+      position: absolute;
+      right: 0;
+      width: 100%;
+      z-index: 99;
     }
   }
 
@@ -597,9 +639,9 @@
           object-fit: contain;
           width: 100%;
 
-          & + .rss-item-title {
+          &+.rss-item-title {
             font-size: .7rem;
-          }           
+          }
         }
       }
     }
@@ -633,10 +675,10 @@
       flex-wrap: wrap;
       gap: .5rem;
       margin-top: .5rem;
-      
+
       .trait-item {
         align-items: center;
-        background: linear-gradient(90.47deg,#efefef 2%,#fcfcfc 32%,#cdcdcd 98%);
+        background: linear-gradient(90.47deg, #efefef 2%, #fcfcfc 32%, #cdcdcd 98%);
         border-radius: 1rem;
         box-shadow: inset 0 0 0 .1rem rgba($light-color, .2), inset 0 0 .25rem rgba($dark-color, .15), 0 0 .4rem rgba($dark-color, .1);
         display: flex;
@@ -644,22 +686,22 @@
         padding: .05rem;
 
         &.action_tier_legendary {
-          background: linear-gradient(124.2deg,#d6fdff 8%,#bad1ff 34%,#7cd4f0 74%,#b4fffa 95%);
+          background: linear-gradient(124.2deg, #d6fdff 8%, #bad1ff 34%, #7cd4f0 74%, #b4fffa 95%);
           order: -12;
         }
 
         &.action_tier_epic {
-          background: linear-gradient(113.06deg,#ffd6d6 19%,#ffbaf8 34%,#9593ff 85%);
+          background: linear-gradient(113.06deg, #ffd6d6 19%, #ffbaf8 34%, #9593ff 85%);
           order: -9;
         }
 
         &.action_tier_rare {
-          background: linear-gradient(117.25deg,#f1cc9c 20%,#f2a94e 42%,#f07c7c 65%,#fbade5 96%);
+          background: linear-gradient(117.25deg, #f1cc9c 20%, #f2a94e 42%, #f07c7c 65%, #fbade5 96%);
           order: -6;
         }
 
         &.action_tier_uncommon {
-          background: linear-gradient(90.47deg,#e9f3ad 2%,#c6d390 32%,#7cbc55 98%);
+          background: linear-gradient(90.47deg, #e9f3ad 2%, #c6d390 32%, #7cbc55 98%);
           order: -3;
         }
 
@@ -668,14 +710,14 @@
         }
 
         &.degen_score {
-          background: linear-gradient(113.06deg,#ffbaf8 1%,#ffbaf8 25%,#a855f7 85%);
+          background: linear-gradient(113.06deg, #ffbaf8 1%, #ffbaf8 25%, #a855f7 85%);
           display: none;
           order: -15;
 
           .trait-label {
             border-radius: 1rem;
             font-size: .55rem;
-            font-weight: 900;
+            font-weight: 700;
             line-height: .8rem;
             height: .8rem;
             text-shadow: rgba($dark-color, .95);
@@ -756,6 +798,7 @@
       }
 
       .preview-image {
+
         .img-responsive,
         .video-responsive {
           max-width: 98vw;
@@ -803,6 +846,40 @@
       height: 12rem;
       width: 12rem;
     }
+
+    .preview-network {
+      align-items: center;
+      background: $dark-color;
+      border-radius: .5rem;
+      bottom: .5rem;
+      display: flex;
+      height: 1.5rem;
+      left: .5rem;
+      opacity: .5;
+      padding: .25rem;
+      position: absolute;
+      transition: all .25s ease-in-out;
+
+      &:focus,
+      &:hover {
+        opacity: .75;
+
+        .preview-network-name {
+          display: inline-flex;
+        }
+      }
+
+      .preview-network-icon {
+        height: 1rem;
+        width: 1rem;
+      }
+
+      .preview-network-name {
+        color: #fff;
+        display: none;
+        padding: 0 .25rem;
+      }
+    }
   }
 
   .preview-content {
@@ -815,19 +892,23 @@
 
     .panel-widget {
       margin: 2rem 0;
-  
+
+      &:first-child {
+        margin-top: 0;
+      }
+
       &:last-child {
         margin-bottom: 0;
       }
-  
+
       .panel-widget-title {
         font-size: .8rem;
-        font-weight: 900;
+        font-weight: 700;
         line-height: 1.2rem;
         margin-bottom: .5rem;
         text-transform: uppercase;
       }
-  
+
       .panel-widget-list {
         background: $bg-color;
         border: .05rem solid rgba($dark-color, 0.01);
@@ -840,11 +921,19 @@
           display: flex;
           justify-content: space-between;
           padding: .6rem;
-          
+
           .list-item-right {
+            align-items: center;
+            display: flex;
             font-size: .8rem;
-            font-weight: 900;
+            font-weight: 700;
             text-transform: uppercase;
+
+            .icon-platform {
+              display: flex;
+              height: 1rem;
+              width: 1rem;
+            }
           }
 
           &:not(:first-child) {
@@ -875,16 +964,15 @@
       .collection-name {
         font-size: .8rem;
         font-weight: 700;
-        letter-spacing: -0.05em;
+        letter-spacing: -.025em;
         line-height: 1.2rem;
       }
     }
 
     .nft-header-name {
-      font-weight: 900;
-      letter-spacing: -.05em;
+      font-weight: 700;
+      letter-spacing: -.025em;
       line-height: 1.25;
-      margin-bottom: 1rem;
       word-break: break-all;
     }
 
@@ -1058,7 +1146,7 @@
       .collection-name {
         font-size: .8rem;
         font-weight: 700;
-        letter-spacing: -.05em;
+        letter-spacing: -.025em;
       }
     }
 
@@ -1124,7 +1212,7 @@
         .nft-name {
           font-size: .75rem;
           font-weight: 700;
-          letter-spacing: -.05em;
+          letter-spacing: -.025em;
           text-overflow: ellipsis;
           overflow: hidden;
           -webkit-box-orient: vertical;

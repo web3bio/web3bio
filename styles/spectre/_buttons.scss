@@ -2,11 +2,11 @@
 .btn {
   align-items: center;
   appearance: none;
-  background: lighten($bg-color, 3%);
+  background: $bg-color;
   border: $border-width solid transparent;
   border-radius: $border-radius;
   box-shadow: none;
-  color: $gray-color-dark;
+  color: $dark-color;
   cursor: pointer;
   display: inline-flex;
   font-size: $font-size;
@@ -22,13 +22,13 @@
   white-space: nowrap;
   &:focus,
   &:hover {
-    background: $bg-color;
+    background: darken($bg-color, 3%);
     color: $dark-color;
     text-decoration: none;
   }
   &:active,
   &.active {
-    background: $bg-color-dark;
+    background: darken($bg-color, 6%);
     color: $dark-color;
     text-decoration: none;
     &.loading {
