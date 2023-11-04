@@ -84,32 +84,34 @@ const NFTModalRender = (props) => {
             </div>
             <div className="preview-content">
               <div className="panel-widget">
-                <div className="nft-header-collection collection-title mb-4">
-                  <SVG
-                    className="collection-logo"
-                    src="../icons/icon-poap.svg"
-                    width={24}
-                    height={24}
-                  />
-                  <div className="collection-name text-ellipsis">POAP</div>
-                </div>
-                <div className="nft-header-name h4">{asset.asset.event.name}</div>
-                <div className="nft-header-description mt-4 mb-4">
-                  {asset.asset.event.description}
-                </div>
-                {asset.asset.event.event_url && (
-                  <div className="panel-widget-content mt-4 mb-4">
-                    <Link
-                      href={asset.asset.event.event_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn"
-                    >
-                      <SVG src={`../icons/icon-web.svg`} fill="#121212" width={20} height={20} />
-                      <span className="ml-1">Website</span>
-                    </Link>
+                <div className="panel-widget-content">
+                  <div className="nft-header-collection collection-title mb-4">
+                    <SVG
+                      className="collection-logo"
+                      src="../icons/icon-poap.svg"
+                      width={24}
+                      height={24}
+                    />
+                    <div className="collection-name text-ellipsis">POAP</div>
                   </div>
-                )}
+                  <div className="nft-header-name h4">{asset.asset.event.name}</div>
+                  <div className="nft-header-description mt-2 mb-4">
+                    {asset.asset.event.description}
+                  </div>
+                  {asset.asset.event.event_url && (
+                    <div className="panel-widget-content mt-4">
+                      <Link
+                        href={asset.asset.event.event_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn"
+                      >
+                        <SVG src={`../icons/icon-web.svg`} fill="#121212" width={20} height={20} />
+                        <span className="ml-1">Website</span>
+                      </Link>
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="panel-widget">
@@ -152,7 +154,7 @@ const NFTModalRender = (props) => {
     );
   if (!asset) return null;
   const _asset = asset.asset;
-  const _collection = asset.asset.collection;
+  const _collection = _asset.collection;
   const attributes = _asset.extra_metadata?.attributes || [];
   return (
     <>
@@ -205,57 +207,57 @@ const NFTModalRender = (props) => {
           <div className="preview-main">
             <div className="preview-content">
               <div className="panel-widget">
-                <div className="nft-header-collection collection-title mb-4">
-                  <NFTAssetPlayer
-                    type={"image/png"}
-                    className="collection-logo"
-                    src={asset.collection.url}
-                    alt={asset.collection.name}
-                  />
-                  <div className="collection-name text-ellipsis">
-                    {asset.collection.name}
+                <div className="panel-widget-content">
+                  <div className="nft-header-collection collection-title mb-4">
+                    <NFTAssetPlayer
+                      type={"image/png"}
+                      className="collection-logo"
+                      src={asset.collection.url}
+                      alt={asset.collection.name}
+                    />
+                    <div className="collection-name text-ellipsis">
+                      {asset.collection.name}
+                    </div>
                   </div>
-                </div>
-                <div className="nft-header-name h4">
-                  {_asset.name || `${asset.collection.name} #${_asset.token_id}`}
-                </div>
-                <div className="nft-header-description mt-4 mb-4">
-                  {_asset.description || asset.collection.description}
-                </div>
+                  <div className="nft-header-name h4">
+                    {_asset.name || `${asset.collection.name} #${_asset.token_id}`}
+                  </div>
+                  <div className="nft-header-description mt-2 mb-4">
+                    {_asset.description || asset.collection.description}
+                  </div>
 
-                <div className="panel-widget-content mt-4 mb-4">
-                  <div className="btn-group">
+                  <div className="btn-group mt-4">
                     {renderSocialMediaLinks(_collection)}
                   </div>
                 </div>
+              </div>
 
-                {attributes.length > 0 && (
-                  <div className="panel-widget">
-                    <div className="panel-widget-title collection-title">
-                      Attributes
-                    </div>
-                    <div className="panel-widget-content">
-                      <div className="traits-cards">
-                        {attributes.map((x, idx) => {
-                          return (
-                            <div key={(x.attribute_name || x.trait_type) + idx} className="traits-card">
-                              <div className="trait-type">
-                                {x.attribute_name || x.trait_type}
-                              </div>
-                              <div className="trait-value">
-                                {x.attribute_value || x.value}
-                              </div>
+              {attributes.length > 0 && (
+                <div className="panel-widget">
+                  <div className="panel-widget-title collection-title">
+                    Attributes
+                  </div>
+                  <div className="panel-widget-content">
+                    <div className="traits-cards">
+                      {attributes.map((x, idx) => {
+                        return (
+                          <div key={(x.attribute_name || x.trait_type) + idx} className="traits-card">
+                            <div className="trait-type">
+                              {x.attribute_name || x.trait_type}
                             </div>
-                          );
-                        })}
-                      </div>
+                            <div className="trait-value">
+                              {x.attribute_value || x.value}
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
-                )}
+                </div>
+              )}
 
-                <div className="divider"></div>
-                <CollectionAbout collection={_collection} />
-              </div>
+              <div className="divider"></div>
+              <CollectionAbout collection={_collection} />
             </div>
           </div>
         </div>

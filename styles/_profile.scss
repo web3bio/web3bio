@@ -225,6 +225,23 @@
   }
 }
 
+.profile-widget-header {
+  align-items: center;
+  display: flex;
+
+  &:focus,
+  &:hover {
+    .profile-widget-subtitle {
+      display: flex;
+    }
+  }
+}
+
+.profile-widget-subtitle {
+  display: none;
+  padding: 0 .5rem;
+}
+
 .web3-section-title {
   font-size: .9rem;
   font-weight: 500;

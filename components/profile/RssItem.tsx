@@ -12,6 +12,8 @@ export default function RssItem(props) {
           src={data.itunes_image}
           className="rss-item-img"
           alt={data.title}
+          height={96}
+          width={200}
         />
       )}
       <div className="rss-item-title">

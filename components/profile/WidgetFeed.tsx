@@ -95,16 +95,19 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
           expand ? " active" : ""
         }`}
       >
-        <h2 className="profile-widget-title">
-          <span className="emoji-large mr-2">🌈 </span>
-          Activity Feeds
-        </h2>
-        <ExpandController
-          expand={expand}
-          onToggle={() => {
-            setExpand(!expand);
-          }}
-        />
+        <div className="profile-widget-header">
+          <h2 className="profile-widget-title">
+            <span className="emoji-large mr-2">🌈 </span>
+            Activity Feeds
+          </h2>
+          <ExpandController
+            expand={expand}
+            onToggle={() => {
+              setExpand(!expand);
+            }}
+          />
+        </div>
+        
         <SocialFeeds
           expand={expand}
           parentScrollRef={scrollContainer}
