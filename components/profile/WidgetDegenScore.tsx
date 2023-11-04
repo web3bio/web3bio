@@ -60,7 +60,7 @@ const RenderWidgetDegenScore = ({
           <div className="widget-action">
             <div className="action-icon">
               <Link 
-                className="btn btn-sm tooltip tooltip-left"
+                className="btn btn-sm"
                 title="More on DegenScore"
                 href={`https://degenscore.com/beacon/${address}`}
                 target={"_blank"}

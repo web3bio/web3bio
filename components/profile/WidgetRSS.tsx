@@ -81,7 +81,7 @@ const RenderWidgetRSS = ({
           <div className="widget-action">
             <div className="action-icon">
               <Link 
-                className="btn btn-sm tooltip tooltip-left" 
+                className="btn btn-sm" 
                 title="More Articles"
                 href={data.link}
                 target={"_blank"}

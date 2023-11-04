@@ -76,7 +76,7 @@ const RenderWidgetPOAP = ({
           <div className="widget-action">
             <div className="action-icon">
               <Link 
-                className="btn btn-sm tooltip tooltip-left" 
+                className="btn btn-sm" 
                 title="More on POAPs"
                 href={`https://app.poap.xyz/scan/${address}`}
                 target={"_blank"}

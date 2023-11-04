@@ -4,7 +4,7 @@ import SVG from "react-inlinesvg";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { CollectionAbout } from "./CollectionAbout";
 import { PlatformType } from "../../utils/platform";
-import { getSocialMediaLink, SocialPlatformMapping, NetworkMapping, formatText } from "../../utils/utils";
+import { getSocialMediaLink, SocialPlatformMapping, NetworkMapping } from "../../utils/utils";
 
 export const enum NFTModalType {
   NFT = "nft",
@@ -195,7 +195,7 @@ const NFTModalRender = (props) => {
               title={NetworkMapping(_asset.chain).label}
             >
               <SVG
-                fill={"#fff"}
+                fill={"#121212"}
                 src={NetworkMapping(_asset.chain).icon || ""}
                 className="preview-network-icon"
               />

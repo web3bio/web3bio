@@ -653,7 +653,40 @@
               .loaded .img-responsive {
                 filter: none;
               }
-    
+
+              .preview-network {
+                align-items: center;
+                background: $bg-color;
+                border-radius: .4rem;
+                bottom: .5rem;
+                display: flex;
+                height: 1.25rem;
+                left: .5rem;
+                opacity: .75;
+                padding: .25rem;
+                position: absolute;
+                transition: all .25s ease-in-out;
+
+                &:focus,
+                &:hover {
+                  opacity: .75;
+
+                  .preview-network-name {
+                    display: inline-flex;
+                  }
+                }
+
+                .preview-network-name {
+                  color: $dark-color;
+                  display: none;
+                  padding: 0 .25rem;
+                }
+          
+                .preview-network-icon {
+                  height: .75rem;
+                  width: .75rem;
+                }
+              }
     
               .img-responsive {
                 aspect-ratio: 1 / 1;
@@ -962,10 +995,10 @@
 
       .preview-content {
         max-height: none;
+        padding: 1rem;
       }
 
       .preview-image {
-
         .img-responsive,
         .video-responsive {
           max-width: 98vw;
@@ -1016,7 +1049,7 @@
 
     .preview-network {
       align-items: center;
-      background: $dark-color;
+      background: $bg-color;
       border-radius: .5rem;
       bottom: .5rem;
       display: flex;
@@ -1042,7 +1075,7 @@
       }
 
       .preview-network-name {
-        color: #fff;
+        color: $dark-color;
         display: none;
         padding: 0 .25rem;
       }
