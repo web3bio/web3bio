@@ -100,12 +100,18 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
             <span className="emoji-large mr-2">🌈 </span>
             Activity Feeds
           </h2>
-          <ExpandController
-            expand={expand}
-            onToggle={() => {
-              setExpand(!expand);
-            }}
-          />
+          <div className="widget-action">
+            <div
+              className="action-icon btn btn-sm"
+            >
+            </div>
+            <ExpandController
+              expand={expand}
+              onToggle={() => {
+                setExpand(!expand);
+              }}
+            />
+          </div>
         </div>
         
         <SocialFeeds

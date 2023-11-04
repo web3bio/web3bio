@@ -61,25 +61,30 @@ const RenderWidgetPOAP = ({
   return (
     <div className="profile-widget-full" id="poap">
       <div className="profile-widget profile-widget-poap">
-        <h2
-          className="profile-widget-title"
-          title="Proof of Attendance Protocol (POAP)"
-        >
-          <span className="emoji-large mr-2">🔮 </span>
-          POAPs
-        </h2>
-        <Link
-          className="action-icon btn btn-sm"
-          href={`https://app.poap.xyz/scan/${address}`}
-          target={"_blank"}
-        >
-          <span className="action-icon-label">More</span>
-          <SVG src="icons/icon-open.svg" width={20} height={20} />
-        </Link>
-        <div className="text-assistive">
-          POAP are the bookmarks for your life. Mint the most important memories
-          of your life as digital collectibles (NFTs) forever on the blockchain.
+        <div className="profile-widget-header">
+          <h2
+            className="profile-widget-title"
+            title="Proof of Attendance Protocol (POAP)"
+          >
+            <span className="emoji-large mr-2">🔮 </span>
+            POAPs
+          </h2>
+          <h3 className="text-assistive">
+            POAP are the bookmarks for your life. Mint the most important memories
+            of your life as digital collectibles (NFTs) forever on the blockchain.
+          </h3>
+          <div className="widget-action">
+            <Link
+              className="action-icon btn btn-sm"
+              href={`https://app.poap.xyz/scan/${address}`}
+              target={"_blank"}
+            >
+              <span className="action-icon-label">More</span>
+              <SVG src="icons/icon-open.svg" width={20} height={20} />
+            </Link>
+          </div>
         </div>
+        
         <div className="widget-collection-list noscrollbar">
           {getBoundaryRender() ||
             data.map((x, idx) => {
