@@ -80,13 +80,14 @@ const RenderWidgetRSS = ({
           )}
           <div className="widget-action">
             <Link
-              className="action-icon btn btn-sm"
+              className="action-icon"
               href={data.link}
               target={"_blank"}
               title={`Click to learn more`}
             >
-              <span className="action-icon-label">More</span>
-              <SVG src="icons/icon-open.svg" width={20} height={20} />
+              <div className="btn btn-sm tooltip" title="More Articles">
+                <SVG src="icons/icon-open.svg" width={20} height={20} />
+              </div>
             </Link>
           </div>
         </div>

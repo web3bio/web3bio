@@ -63,8 +63,9 @@ const RenderWidgetDegenScore = ({
               href={`https://degenscore.com/beacon/${address}`}
               target={"_blank"}
             >
-              <span className="action-btn-label">More</span>
-              <SVG src="icons/icon-open.svg" width={20} height={20} />
+              <div className="btn btn-sm tooltip" title="More on DegenScore">
+                <SVG src="icons/icon-open.svg" width={20} height={20} />
+              </div>
             </Link>
           </div>
         </div>

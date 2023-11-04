@@ -75,12 +75,13 @@ const RenderWidgetPOAP = ({
           </h3>
           <div className="widget-action">
             <Link
-              className="action-icon btn btn-sm"
+              className="action-icon"
               href={`https://app.poap.xyz/scan/${address}`}
               target={"_blank"}
             >
-              <span className="action-icon-label">More</span>
-              <SVG src="icons/icon-open.svg" width={20} height={20} />
+              <div className="btn btn-sm tooltip" title="More on POAPs">
+                <SVG src="icons/icon-open.svg" width={20} height={20} />
+              </div>
             </Link>
           </div>
         </div>

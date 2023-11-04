@@ -101,10 +101,12 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
             Activity Feeds
           </h2>
           <div className="widget-action">
-            <div
-              className="action-icon btn btn-sm"
-            >
-            </div>
+            {/* <select className="form-select select-sm mr-2">
+              <option>Categories</option>
+              <option>Social</option>
+              <option>Finance</option>
+              <option>Collectibles</option>
+            </select> */}
             <ExpandController
               expand={expand}
               onToggle={() => {

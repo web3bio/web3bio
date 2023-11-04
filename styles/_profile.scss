@@ -312,7 +312,6 @@
     flex-direction: column;
     height: 100%;
     gap: .5rem;
-    overflow: hidden;
     padding: 1rem;
     text-decoration: none;
     transition: all .25s ease-in-out;
@@ -333,30 +332,24 @@
       width: 2.6rem;
     }
 
-    .action-icon {
+    .widget-action {
+      display: flex;
+      flex-wrap: nowrap;
       position: absolute;
       right: 1rem;
       top: 1rem;
       cursor: pointer;
+    }
 
+    .action-icon {
       svg {
         flex: 0 0 1rem;
-      }
-
-      .action-icon-label {
-        display: none;
-      }
-
-      &:focus,
-      &:hover {
-        .action-icon-label {
-          display: inline-flex;
-        }
       }
     }
 
     &.profile-widget-link {
       cursor: pointer;
+      overflow: hidden;
 
       &:focus,
       &:hover {
@@ -375,7 +368,7 @@
       align-items: center;
       background: var(--widget-primary-color, $light-color);
       border-radius: .6rem;
-      box-shadow: inset 0 0 0 .05rem rgba($dark-color, .1), 0 .2rem .4rem rgba($dark-color, .15), 1rem 0 6rem 3rem var(--widget-bg-color);
+      box-shadow: inset 0 0 0 .05rem rgba($dark-color, .1), 0 .2rem .4rem rgba($dark-color, .15), 1rem 0 4rem 2rem var(--widget-bg-color);
       color: $light-color;
       display: flex;
       flex: 0 0 2rem;
@@ -441,6 +434,7 @@
   .profile-widget-nft {
     background: $light-color;
     border-color: lighten($bg-color, 3%);
+    overflow: hidden;
     position: relative;
 
     .profile-widget-title {
@@ -1059,6 +1053,7 @@
   background: $light-color;
   user-select: none;
   margin: 0 -1rem;
+  overflow: hidden;
 
   .collection-list {
     display: flex;

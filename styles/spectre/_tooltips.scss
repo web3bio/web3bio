@@ -1,12 +1,12 @@
 // Tooltips
 .tooltip {
   position: relative;
-  &[data-tooltip]::after {
+  &[title]::after {
     background: rgba($dark-color, .95);
     border-radius: $border-radius;
     bottom: 100%;
     color: $light-color;
-    content: attr(data-tooltip);
+    content: attr(title);
     display: block;
     font-size: $font-size-sm;
     left: 50%;

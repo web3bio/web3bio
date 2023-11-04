@@ -5,8 +5,6 @@ import { resolveIPFS_URL } from "../../utils/ipfs";
 import SVG from "react-inlinesvg";
 import { DefaultCard } from "./DefaultCard";
 import { TransactionCard } from "./TransactionCard";
-import { GovernanceCard } from "./GovernanceCard";
-import { DonationCard } from "./DonationCard";
 import { SocialCard } from "./SocialCard";
 import { CollectibleCard } from "./CollectibleCard";
 import { 
@@ -60,10 +58,6 @@ const RenderFeedContent = (props) => {
       return <TransactionCard action={action} />;
     case ("collectible"):
       return <CollectibleCard action={action} />;
-    case ("governance"):
-      return <GovernanceCard action={action} />;
-    case ("donation"):
-      return <DonationCard action={action} />;
     default:
       return <DefaultCard action={action} />;
   }

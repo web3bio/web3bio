@@ -42,16 +42,9 @@
       font-size: 1rem;
       height: 2rem;
       justify-content: center;
-      margin-right: 1rem;
-      margin-top: .25rem;
+      margin: .25rem 1rem .25rem 0;
       position: relative;
       width: 2rem;
-
-      @media screen and (max-width: $size-sm) {
-        flex: 0 0 1.8rem;
-        height: 1.8rem;
-        width: 1.8rem;
-      }
 
       .feed-icon-platform {
         align-items: center;
@@ -73,7 +66,6 @@
       display: flex;
       flex: 1 1;
       flex-direction: column;
-      overflow: auto;
       width: 100%;
     }
 
@@ -103,6 +95,10 @@
         &:hover {
           color: $gray-color-dark;
         }
+      }
+
+      .menu {
+        width: 12rem;
       }
     }
 
