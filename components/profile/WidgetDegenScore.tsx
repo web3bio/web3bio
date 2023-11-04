@@ -58,15 +58,16 @@ const RenderWidgetDegenScore = ({
             web3.
           </h3>
           <div className="widget-action">
-            <Link
-              className="action-icon btn btn-sm"
-              href={`https://degenscore.com/beacon/${address}`}
-              target={"_blank"}
-            >
-              <div className="btn btn-sm tooltip" title="More on DegenScore">
+            <div className="action-icon">
+              <Link 
+                className="btn btn-sm tooltip tooltip-left"
+                title="More on DegenScore"
+                href={`https://degenscore.com/beacon/${address}`}
+                target={"_blank"}
+              >
                 <SVG src="icons/icon-open.svg" width={20} height={20} />
-              </div>
-            </Link>
+              </Link>
+            </div>
           </div>
         </div>
 

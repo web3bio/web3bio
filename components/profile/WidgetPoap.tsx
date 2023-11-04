@@ -74,19 +74,20 @@ const RenderWidgetPOAP = ({
             of your life as digital collectibles (NFTs) forever on the blockchain.
           </h3>
           <div className="widget-action">
-            <Link
-              className="action-icon"
-              href={`https://app.poap.xyz/scan/${address}`}
-              target={"_blank"}
-            >
-              <div className="btn btn-sm tooltip" title="More on POAPs">
+            <div className="action-icon">
+              <Link 
+                className="btn btn-sm tooltip tooltip-left" 
+                title="More on POAPs"
+                href={`https://app.poap.xyz/scan/${address}`}
+                target={"_blank"}
+              >
                 <SVG src="icons/icon-open.svg" width={20} height={20} />
-              </div>
-            </Link>
+              </Link>
+            </div>
           </div>
         </div>
         
-        <div className="widget-collection-list noscrollbar">
+        <div className="widget-poap-list noscrollbar">
           {getBoundaryRender() ||
             data.map((x, idx) => {
               return (

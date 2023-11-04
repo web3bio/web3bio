@@ -164,23 +164,25 @@ const RenderWidgetNFT = ({
           </div>
         </div>
         
-        <NFTCollections
-          handleScrollToAsset={(ref, assetId) => {
-            setScrollRefAndAssetId([ref, assetId]);
-          }}
-          parentScrollRef={scrollContainer}
-          expand={expand}
-          setExpand={setExpand}
-          data={data}
-          onShowDetail={onShowDetail}
-          isLoadingMore={isValidating}
-          hasNextPage={hasNextPage}
-          isError={isError}
-          getNext={() => {
-            if (isValidating || !hasNextPage) return;
-            setSize(size + 1);
-          }}
-        />
+        <div className="profile-widget-body">
+          <NFTCollections
+            handleScrollToAsset={(ref, assetId) => {
+              setScrollRefAndAssetId([ref, assetId]);
+            }}
+            parentScrollRef={scrollContainer}
+            expand={expand}
+            setExpand={setExpand}
+            data={data}
+            onShowDetail={onShowDetail}
+            isLoadingMore={isValidating}
+            hasNextPage={hasNextPage}
+            isError={isError}
+            getNext={() => {
+              if (isValidating || !hasNextPage) return;
+              setSize(size + 1);
+            }}
+          />
+        </div>
       </div>
     </div>
   );

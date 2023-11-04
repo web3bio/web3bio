@@ -79,16 +79,16 @@ const RenderWidgetRSS = ({
             <h3 className="text-assistive">{data.description}</h3>
           )}
           <div className="widget-action">
-            <Link
-              className="action-icon"
-              href={data.link}
-              target={"_blank"}
-              title={`Click to learn more`}
-            >
-              <div className="btn btn-sm tooltip" title="More Articles">
+            <div className="action-icon">
+              <Link 
+                className="btn btn-sm tooltip tooltip-left" 
+                title="More Articles"
+                href={data.link}
+                target={"_blank"}
+              >
                 <SVG src="icons/icon-open.svg" width={20} height={20} />
-              </div>
-            </Link>
+              </Link>
+            </div>
           </div>
         </div>
         
