@@ -5,8 +5,6 @@ import { resolveIPFS_URL } from "../../utils/ipfs";
 import SVG from "react-inlinesvg";
 import { DefaultCard } from "./DefaultCard";
 import { TransactionCard } from "./TransactionCard";
-import { GovernanceCard } from "./GovernanceCard";
-import { DonationCard } from "./DonationCard";
 import { SocialCard } from "./SocialCard";
 import { CollectibleCard } from "./CollectibleCard";
 import { 
@@ -60,10 +58,6 @@ const RenderFeedContent = (props) => {
       return <TransactionCard action={action} />;
     case ("collectible"):
       return <CollectibleCard action={action} />;
-    case ("governance"):
-      return <GovernanceCard action={action} />;
-    case ("donation"):
-      return <DonationCard action={action} />;
     default:
       return <DefaultCard action={action} />;
   }
@@ -116,15 +110,15 @@ const RenderFeedItem = (props) => {
                 : formatText(feed.from)}
             </strong>
           </div>
-          <div className="feed-item-action dropdown">
+          <div className="feed-item-action dropdown dropdown-right">
             <Link
               href={resolveIPFS_URL(action?.related_urls?.[0]) || ""}
               target="_blank"
-              className="feed-timestamp"
+              className="feed-timestamp hide-sm"
             >
               {new Date(feed.timestamp * 1000).toLocaleString()}
             </Link>
-            <ActionExternalMenu links={action?.related_urls || []} />
+            <ActionExternalMenu links={action?.related_urls||[]} timestamp={feed.timestamp} />
           </div>
         </div>
         <div className="feed-item-body">

@@ -8,21 +8,21 @@ const RenderExpandController = (props: ExpandControllerProps) => {
   const { onToggle, expand } = props;
   return (
     <div
-      className="action-icon btn btn-sm"
+      className="action-icon"
       onClick={() => {
         onToggle(!expand);
       }}
     >
       {expand ? (
-        <>
-          <span className="action-icon-label">Collapse</span>
+        <div className="btn btn-sm" title="Collapse">
+          <span className="action-icon-label text-assistive">Collapse</span>
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="4 14 10 14 10 20"></polyline><polyline points="20 10 14 10 14 4"></polyline><line x1="14" y1="10" x2="21" y2="3"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-        </>
+        </div>
       ) : (
-        <>
-          <span className="action-icon-label">Expand</span>
+        <div className="btn btn-sm" title="Expand">
+          <span className="action-icon-label text-assistive">Expand</span>
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-        </>
+        </div>
       )}
     </div>
   );

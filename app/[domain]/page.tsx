@@ -88,7 +88,7 @@ export async function generateMetadata({
     profile.description ||
     `Explore ${pageTitle} ${
       SocialPlatformMapping(platform!).label
-    } Web3 identity profile, description, social links, NFT collections, POAPs, activities etc on the Web3.bio Link in bio page.`;
+    } Web3 identity profiles, social links, NFT collections, Web3 activities, dWebsites, POAPs etc on the Web3.bio profile page.`;
   return {
     metadataBase: new URL(baseURL),
     title: pageTitle,

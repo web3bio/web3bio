@@ -131,7 +131,7 @@ const RenderWidgetNFT = ({
       }
       setTimeout(() => {
         scrollToAsset(assetId);
-      }, 500);
+      }, 550);
     }
     setFirstRender(false);
   }, [assetId, initialExpand]);
@@ -149,16 +149,21 @@ const RenderWidgetNFT = ({
           expand ? " active" : ""
         }`}
       >
-        <h2 className="profile-widget-title">
-          <span className="emoji-large mr-2">🖼 </span>
-          NFT Collections
-        </h2>
-        <ExpandController
-          expand={expand}
-          onToggle={() => {
-            setExpand(!expand);
-          }}
-        />
+        <div className="profile-widget-header">
+          <h2 className="profile-widget-title">
+            <span className="emoji-large mr-2">🖼 </span>
+            NFT Collections
+          </h2>
+          <div className="widget-action">
+            <ExpandController
+              expand={expand}
+              onToggle={() => {
+                setExpand(!expand);
+              }}
+            />
+          </div>
+        </div>
+        
         <NFTCollections
           handleScrollToAsset={(ref, assetId) => {
             setScrollRefAndAssetId([ref, assetId]);
