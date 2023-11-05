@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect } from "react";
+import { memo, useCallback, useEffect } from "react";
 import Link from "next/link";
 import useSWR from "swr";
 import { Loading } from "../shared/Loading";
@@ -30,10 +30,10 @@ function usePoaps(address: string, fromServer: boolean) {
   };
 }
 
-export default function WidgetPoap(props) {
-  const { address, onShowDetail, fromServer } = props;
-
-  const { data, isLoading, isError } = usePoaps(address, fromServer);
+const RenderWidgetPOAP = ({
+  address, onShowDetail, fromServer
+}) => {
+  const { data, isLoading } = usePoaps(address, fromServer);
   const dispatch = useDispatch();
   const getBoundaryRender = useCallback(() => {
     if (isLoading)
@@ -42,9 +42,8 @@ export default function WidgetPoap(props) {
           <Loading />
         </div>
       );
-    if (isError) return <Error />;
     return null;
-  }, [isLoading, isError]);
+  }, [isLoading]);
   useEffect(() => {
     if (!isLoading && data.length) {
       dispatch(updatePoapsWidget({ isEmpty: false }));
@@ -55,36 +54,40 @@ export default function WidgetPoap(props) {
     return null;
   }
 
+  // if (process.env.NODE_ENV !== "production") {
+  //   console.log("POAP Data:", data);
+  // }
+
   return (
     <div className="profile-widget-full" id="poap">
       <div className="profile-widget profile-widget-poap">
-        <h2
-          className="profile-widget-title"
-          title="Proof of Attendance Protocol (POAP)"
-        >
-          <div className="platform-icon mr-1">
-            <SVG
-              src={`../icons/icon-poap.svg`}
-              color={"#5E58A5"}
-              width={24}
-              height={24}
-            />
+        <div className="profile-widget-header">
+          <h2
+            className="profile-widget-title"
+            title="Proof of Attendance Protocol (POAP)"
+          >
+            <span className="emoji-large mr-2">🔮 </span>
+            POAPs
+          </h2>
+          <h3 className="text-assistive">
+            POAP are the bookmarks for your life. Mint the most important memories
+            of your life as digital collectibles (NFTs) forever on the blockchain.
+          </h3>
+          <div className="widget-action">
+            <div className="action-icon">
+              <Link 
+                className="btn btn-sm" 
+                title="More on POAPs"
+                href={`https://app.poap.xyz/scan/${address}`}
+                target={"_blank"}
+              >
+                <SVG src="icons/icon-open.svg" width={20} height={20} />
+              </Link>
+            </div>
           </div>
-          POAP
-        </h2>
-        <Link
-          className="action-icon btn btn-sm"
-          href={`https://app.poap.xyz/scan/${address}`}
-          target={"_blank"}
-        >
-          <span className="action-icon-label">More</span>
-          <SVG src="icons/icon-open.svg" width={20} height={20} />
-        </Link>
-        <div className="text-assistive">
-          POAP are the bookmarks for your life. Mint the most important memories
-          of your life as digital collectibles (NFTs) forever on the blockchain.
         </div>
-        <div className="widget-collection-list noscrollbar">
+        
+        <div className="widget-poap-list noscrollbar">
           {getBoundaryRender() ||
             data.map((x, idx) => {
               return (
@@ -118,4 +121,6 @@ export default function WidgetPoap(props) {
       </div>
     </div>
   );
-}
+};
+
+export const WidgetPOAP = memo(RenderWidgetPOAP);

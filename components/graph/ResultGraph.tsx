@@ -2,7 +2,8 @@
 import _ from "lodash";
 import React, { memo, useEffect, useState } from "react";
 import SVG from "react-inlinesvg";
-import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import { PlatformType } from "../../utils/platform";
+import { SocialPlatformMapping } from "../../utils/utils";
 import { formatText } from "../../utils/utils";
 import { Loading } from "../shared/Loading";
 import { register } from "./GraphUtils/LargeRegister";

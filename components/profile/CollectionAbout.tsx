@@ -1,63 +1,7 @@
 import { memo } from "react";
-import useSWR from "swr";
-import { SimplehashFetcher, SIMPLEHASH_URL } from "../apis/simplehash";
 import { formatEther } from "ethers";
 import { formatText } from "../../utils/utils";
-import {
-  getSocialMediaLink,
-  PlatformType,
-  SocialPlatformMapping,
-} from "../../utils/platform";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import Link from "next/link";
-
-const useCollectionData = (id) => {
-  const { data, isValidating, error } = useSWR(
-    SIMPLEHASH_URL + "/api/v0/nfts/collections/ids?collection_ids=" + id,
-    SimplehashFetcher,
-    {
-      revalidateOnFocus: false,
-    }
-  );
-  return {
-    data,
-    isLoading: isValidating,
-    isError: error,
-  };
-};
-const renderSocialMediaLinks = (_collection) => {
-  const renderArr = {
-    [PlatformType.website]: _collection.external_url,
-    [PlatformType.twitter]: _collection.twitter_username,
-    [PlatformType.medium]: _collection.medium_username,
-    [PlatformType.telegram]: _collection.telegram_url,
-    [PlatformType.opensea]: _collection.marketplace_pages?.find(
-      (x) => x.marketplace_id === PlatformType.opensea
-    )?.collection_url,
-    [PlatformType.discord]: _collection.discord_url,
-    [PlatformType.instagram]: _collection.instagram_username,
-  };
-
-  const links = new Array();
-  for (let key in renderArr) {
-    if (renderArr[key]) {
-      const item = renderArr[key];
-      links.push(
-        <Link
-          href={getSocialMediaLink(item, key as PlatformType) || ""}
-          className="btn btn-sm btn-primary"
-          key={key + item}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {SocialPlatformMapping(key as PlatformType).label}
-        </Link>
-      );
-    }
-  }
-
-  return links;
-};
 
 const INFO_CONFIG = [
   { key: "distinct_nft_count", label: "Total Minted" },
@@ -68,42 +12,34 @@ const INFO_CONFIG = [
 ];
 
 const CollectionAboutRender = (props) => {
-  const { contractAddress, id } = props;
-  const { data, isLoading, isError } = useCollectionData(id);
-  if (!data || isLoading || isError) return null;
+  const { collection } = props;
+  if (!collection) return null;
 
-  const _collection = data?.collections?.[0];
-  const floorPriceItem = _collection.floor_prices?.sort(
+  const floorPriceItem = collection.floor_prices?.sort(
     (a, b) => a.value - b.value
   )[0];
 
   return (
     <div className="panel-widget">
-      <div className="panel-widget-title collection-title">
-        Collection
-      </div>
       <div className="panel-widget-content">
         <div className="nft-header-logo mt-4 mb-4">
           <NFTAssetPlayer
             type={"image/png"}
             className="collection-logo"
-            src={_collection.image_url}
-            alt={_collection.name}
+            src={collection.image_url}
+            alt={collection.name}
+            width={80}
+            height={80}
           />
         </div>
         <div className="nft-header-name h5">
-          {_collection.name}
+          {collection.name}
         </div>
-        {_collection.description && (
-          <div className="nft-header-description mt-4 mb-4">
-            {_collection.description}
+        {collection.description && (
+          <div className="nft-header-description mt-2 mb-4">
+            {collection.description}
           </div>
         )}
-      </div>
-      <div className="panel-widget-content mt-4 mb-4">
-        <div className="traits-cards">
-          {renderSocialMediaLinks(_collection)}
-        </div>
       </div>
       <div className="panel-widget-content">
         <div className="panel-widget-list">
@@ -117,23 +53,23 @@ const CollectionAboutRender = (props) => {
             </div>
           )}
           {INFO_CONFIG.map((x, idx) => {
-            if (_collection[x.key]) {
+            if (collection[x.key]) {
               return (
                 <div className="widget-list-item" key={`${x.key}-${idx}`}>
                   <div className="list-item-left">{x.label}</div>
                   <div className="list-item-right">
-                    {_collection[x.key]?.toString()}
+                    {collection[x.key]?.toString()}
                   </div>
                 </div>
               );
             }
           })}
-          {contractAddress && (
+          {collection.address && (
             <div className="widget-list-item" key="contractAddress">
               <div className="list-item-left">Contract Address</div>
               <div className="list-item-right">
-                <a href={`https://etherscan.io/address/${contractAddress}`} target="_blank">
-                  {formatText(contractAddress)} ↗️
+                <a href={`https://etherscan.io/address/${collection.address}`} target="_blank">
+                  {formatText(collection.address)} ↗️
                 </a>
               </div>
             </div>

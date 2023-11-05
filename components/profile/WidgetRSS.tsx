@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, memo } from "react";
 import useSWR from "swr";
 import { RSSFetcher, RSS_ENDPOINT } from "../apis/rss";
 import SVG from "react-inlinesvg";
@@ -45,9 +45,10 @@ function useRSS(domain: string, relations, fromServer) {
   };
 }
 
-export default function WidgetRss(props) {
-  const { domain, relations, fromServer } = props;
-  const { data, isLoading, isError } = useRSS(
+const RenderWidgetRSS = ({
+  domain, relations, fromServer
+}) => {
+  const { data, isLoading } = useRSS(
     domain,
     relations,
     fromServer
@@ -61,26 +62,36 @@ export default function WidgetRss(props) {
   }, [data, isLoading, dispatch]);
 
   if (!data || !data?.items?.length) return null;
+
+  // if (process.env.NODE_ENV !== "production") {
+  //   console.log("RSS Data:", data);
+  // }
+
   return (
     <div className="profile-widget-full" id="rss">
       <div className="profile-widget profile-widget-rss">
-        <h2 className="profile-widget-title">
-          <span className="emoji-large mr-2">📰 </span>
-          {data.title}
-        </h2>
-        <Link
-          className="action-icon btn btn-sm"
-          href={data.link}
-          target={"_blank"}
-          title={`Click to learn more`}
-        >
-          <span className="action-icon-label">More</span>
-          <SVG src="icons/icon-open.svg" width={20} height={20} />
-        </Link>
-        {data.description && (
-          <h3 className="text-assistive">{data.description}</h3>
-        )}
-
+        <div className="profile-widget-header">
+          <h2 className="profile-widget-title">
+            <span className="emoji-large mr-2">📰 </span>
+            {data.title}
+          </h2>
+          {data.description && (
+            <h3 className="text-assistive">{data.description}</h3>
+          )}
+          <div className="widget-action">
+            <div className="action-icon">
+              <Link 
+                className="btn btn-sm" 
+                title="More Articles"
+                href={data.link}
+                target={"_blank"}
+              >
+                <SVG src="icons/icon-open.svg" width={20} height={20} />
+              </Link>
+            </div>
+          </div>
+        </div>
+        
         <div className="widget-rss-list noscrollbar">
           {data?.items.map((x, idx) => {
             return <RssItem data={x} key={idx} />;
@@ -89,4 +100,6 @@ export default function WidgetRss(props) {
       </div>
     </div>
   );
-}
+};
+
+export const WidgetRSS = memo(RenderWidgetRSS);
