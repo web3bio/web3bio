@@ -84,9 +84,9 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
 
   if (!data?.length || isError) return null;
 
-  if (process.env.NODE_ENV !== "production") {
-    console.log("Feed Data:", data);
-  }
+  // if (process.env.NODE_ENV !== "production") {
+  //   console.log("Feed Data:", data);
+  // }
 
   return (
     <div ref={scrollContainer} className="profile-widget-full" id="feeds">

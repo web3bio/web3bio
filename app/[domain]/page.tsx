@@ -59,7 +59,7 @@ async function fetchDataFromServer(domain: string) {
       nfts: remoteNFTs,
     };
   } catch (e) {
-    console.log(e, "error");
+    console.log(e, "ERROR");
     return null;
   }
 }

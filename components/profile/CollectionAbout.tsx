@@ -13,7 +13,6 @@ const INFO_CONFIG = [
 
 const CollectionAboutRender = (props) => {
   const { collection } = props;
-  console.log(collection)
   if (!collection) return null;
 
   const floorPriceItem = collection.floor_prices?.sort(

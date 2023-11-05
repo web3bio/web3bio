@@ -22,6 +22,25 @@ export enum VideoType {
   QUICKTIME = "video/quicktime",
 }
 
+const shimmer = (w: number, h: number) => `
+  <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+      <linearGradient id="g">
+        <stop stop-color="rgba(255,255,255,0)" offset="20%" />
+        <stop stop-color="rgba(255,255,255,.25)" offset="50%" />
+        <stop stop-color="rgba(255,255,255,0)" offset="70%" />
+      </linearGradient>
+    </defs>
+    <rect width="${w}" height="${h}" fill="rgba(233,233,233,.5)" rx="10" ry="10"/>
+    <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
+    <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1.25s" repeatCount="indefinite"  />
+  </svg>`
+
+const toBase64 = (str: string) =>
+  typeof window === 'undefined'
+    ? Buffer.from(str).toString('base64')
+    : window.btoa(str)
+
 function isImage(type: string) {
   return Object.values(MediaType).includes(type as MediaType);
 }
@@ -48,10 +67,12 @@ function renderImage(props: AssetPlayerProps) {
     <Image
       width={0}
       height={0}
+      placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(400, 400))}`}
       className="img-responsive"
       style={{ width: width ? width : "100%", height: height ? height : "auto" }}
       src={src}
       alt={alt}
+      loading={"lazy"}
     />
   );
 }

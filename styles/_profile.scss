@@ -1021,7 +1021,8 @@
     position: relative;
 
     &.preview-image-poap {
-      .img-container {
+      .img-container,
+      .img-responsive {
         border-radius: 50%;
       }
     }
