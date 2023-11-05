@@ -46,6 +46,18 @@ const RenderTransactionCard = (props) => {
           </div>
         </>
       );
+    case ("deploy"):
+      return (
+        <>
+          <div className="feed-content">
+            {ActivityTypeMapping(action.type).action[metadata.action||"default"]}&nbsp;
+            {RenderIdentity(metadata.address)}
+            {action.platform && (
+              <span className="feed-platform">&nbsp;on {action.platform}</span>
+            )} 
+          </div>
+        </>
+      );
     default:
       return (
         <div className="feed-content">

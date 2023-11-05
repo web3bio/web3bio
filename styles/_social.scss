@@ -137,7 +137,6 @@
       }
 
       .feed-content-img {
-        margin: .25rem 0;
         max-width: 16rem;
 
         .img-responsive {
@@ -178,6 +177,7 @@
           &.media-gallery {
             display: flex;
             flex-wrap: nowrap;
+            margin-top: .25rem;
             gap: .25rem;
             overflow-x: auto;
           }

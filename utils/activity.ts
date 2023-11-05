@@ -48,7 +48,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
       "approve": "Approved",
       "revoke": "Revoked the approval of",
     },
-    prep: "for trade on",
+    prep: "on",
   },
   [ActivityType.auction]: {
     key: ActivityType.auction,
@@ -114,7 +114,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "🚀",
     label: "Deploy",
     action: {
-      "default": "Deployed",
+      "default": "Deployed the contract",
     },
     prep: "",
   },
@@ -137,6 +137,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
       "remove": "Unstaked",
       "withdraw": "Withdrawn",
       "supply": "Supplied",
+      "borrow": "Borrowed",
     },
     prep: "",
   },
