@@ -19,7 +19,7 @@ import ActionExternalMenu from "./ActionExternalMenu";
 
 export const RenderToken = (token) => {
   return (
-    token && <div className="feed-token" title={token.name}>
+    token && <div className="feed-token" key={token.name} title={token.name}>
       {token.image && (
         <Image
           className="feed-token-icon"
