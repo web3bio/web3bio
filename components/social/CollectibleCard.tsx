@@ -20,6 +20,7 @@ const RenderCollectibleCard = (props) => {
                   className="feed-token-icon"
                   src={resolveMediaURL(metadata.image_url)}
                   type={"image/png"}
+                  alt={metadata.title}
                 />
               )}
               {metadata.title || metadata.name}
@@ -50,6 +51,7 @@ const RenderCollectibleCard = (props) => {
                       className="feed-content-img"
                       src={resolveMediaURL(metadata.image_url)}
                       type={"image/png"}
+                      alt={metadata.title}
                     />
                   </div>
                 )}

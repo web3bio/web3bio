@@ -59,6 +59,7 @@ const RenderSocialCard = (props) => {
                       src={resolveMediaURL(x.address)}
                       type={x.mime_type}
                       key={x.address}
+                      alt={"Feed Image"}
                     /> : "")
                 )}
               </div>
@@ -87,6 +88,7 @@ const RenderSocialCard = (props) => {
                             src={resolveMediaURL(x.address)}
                             type={x.mime_type}
                             key={x.address}
+                            alt={"Feed Image"}
                           /> : "")
                       )}
                     </div>
@@ -156,6 +158,7 @@ const RenderSocialCard = (props) => {
                         src={resolveMediaURL(x.address)}
                         type={x.mime_type}
                         key={x.address}
+                        alt={"Feed Image"}
                       /> : "")
                   ))}
                 </div>
@@ -197,6 +200,7 @@ const RenderSocialCard = (props) => {
                           src={resolveMediaURL(x.address)}
                           type={x.mime_type}
                           key={x.address}
+                          alt={"Feed Image"}
                         /> : "")
                     )}
                   </div>

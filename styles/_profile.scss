@@ -649,10 +649,6 @@
               overflow: hidden;
               transition: filter 0.3s ease-out;
               border-radius: .5rem;
-    
-              .loaded .img-responsive {
-                filter: none;
-              }
 
               .preview-network {
                 align-items: center;
@@ -695,7 +691,6 @@
                 font-size: 4rem;
                 object-fit: cover;
                 width: 100%;
-                filter: blur(8px);
                 transition: filter 0.3s ease-out;
               }
             }
@@ -1055,14 +1050,14 @@
       display: flex;
       height: 1.5rem;
       left: .5rem;
-      opacity: .5;
+      opacity: .75;
       padding: .25rem;
       position: absolute;
       transition: all .25s ease-in-out;
 
       &:focus,
       &:hover {
-        opacity: .75;
+        opacity: .85;
 
         .preview-network-name {
           display: inline-flex;

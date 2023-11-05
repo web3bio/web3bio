@@ -1,6 +1,6 @@
 import { memo } from "react";
-import { ImageLoader } from "./ImageLoader";
 import ImagePlaceholder from "./ImgPlaceholder";
+import Image from "next/image";
 
 export enum MediaType {
   PNG = "image/png",
@@ -37,19 +37,19 @@ export interface AssetPlayerProps {
   width?: number | string;
   height?: number | string;
   onClick?: () => void;
-  onErrorHandle?: () => void;
-  alt?: string;
+  alt: string;
   style?: React.CSSProperties;
   poster?: string;
 }
 
 function renderImage(props: AssetPlayerProps) {
-  const { width, height, src, alt, onErrorHandle } = props;
+  const { width, height, src, alt } = props;
   return (
-    <ImageLoader
-      onError={onErrorHandle}
-      width={width}
-      height={height}
+    <Image
+      width={0}
+      height={0}
+      className="img-responsive"
+      style={{ width: width ? width : "100%", height: height ? height : "auto" }}
       src={src}
       alt={alt}
     />
@@ -83,7 +83,7 @@ const RenderNFTAssetPlayer = (props: AssetPlayerProps) => {
     if (!props.src) return <ImagePlaceholder alt={props.alt} />;
     if (isImage(type)) return renderImage(props);
     if (isVideo(type)) return renderVideo(props);
-    return <ImagePlaceholder alt={props.alt} />;
+    return <ImagePlaceholder alt={props.alt} style={{ width: props.width ? props.width : "100%", height: props.height ? props.height : "auto" }} />;
   }
 
   return (

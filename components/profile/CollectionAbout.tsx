@@ -29,6 +29,8 @@ const CollectionAboutRender = (props) => {
             className="collection-logo"
             src={collection.image_url}
             alt={collection.name}
+            width={80}
+            height={80}
           />
         </div>
         <div className="nft-header-name h5">

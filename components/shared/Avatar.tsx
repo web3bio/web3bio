@@ -34,6 +34,7 @@ export const Avatar = (props: Avatar) => {
       src={src}
       width={width}
       height={height}
+      alt={"Avatar"}
     />
   );
 };

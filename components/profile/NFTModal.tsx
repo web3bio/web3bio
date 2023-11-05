@@ -91,8 +91,9 @@ const NFTModalRender = (props) => {
                       src="../icons/icon-poap.svg"
                       width={24}
                       height={24}
+                      color={"#5E58A5"}
                     />
-                    <div className="collection-name text-ellipsis">POAP</div>
+                    <div className="collection-name text-ellipsis" style={{color: "#5E58A5"}}>POAP</div>
                   </div>
                   <div className="nft-header-name h4">{asset.asset.event.name}</div>
                   <div className="nft-header-description mt-2 mb-4">

@@ -41,6 +41,7 @@ const RenderDefaultCard = (props) => {
                     height={40}
                     width={40}
                     type={"image/png"}
+                    alt={metadata.title}
                   />
                   <div className="feed-target-description">{metadata.description}</div>
                 </div>
