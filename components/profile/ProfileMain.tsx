@@ -64,10 +64,12 @@ export default function ProfileMain(props) {
           <div className="web3-profile-base">
             <div className="profile-avatar">
               <Avatar
-                useBoring
                 src={data?.avatar}
+                identity={data?.identity}
                 className="avatar"
                 alt={`${pageTitle} Profile Photo`}
+                height={180}
+                width={180}
               />
             </div>
             <h1 className="text-assistive">{`${pageTitle} ${

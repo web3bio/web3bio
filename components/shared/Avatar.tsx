@@ -1,40 +1,27 @@
 import { AssetPlayerProps, NFTAssetPlayer } from "./NFTAssetPlayer";
 import BoringAvatar from "boring-avatars";
-import SVG from "react-inlinesvg";
-import { useState } from "react";
 interface Avatar extends AssetPlayerProps {
-  useBoring?: boolean;
-  fallbackImg?: string;
-  fallbackClassName?: string;
+  identity?: string
 }
 
 export const Avatar = (props: Avatar) => {
-  const { src, width, height, fallbackImg, fallbackClassName, useBoring, alt } =
-    props;
-  const [showFallback, setShowFallback] = useState(!src);
+  const { src, width, height, alt, identity } = props;
 
-  return showFallback ? (
-    !useBoring && fallbackImg ? (
-      <div className={fallbackClassName}>
-        <SVG src={fallbackImg || ""} width={width} height={width} />
-      </div>
+  return src ? (
+      <NFTAssetPlayer
+        type="image/png"
+        className="avatar"
+        src={src}
+        width={width}
+        height={height}
+        alt={alt}
+      />
     ) : (
       <BoringAvatar
         size="100%"
-        name={alt}
+        name={identity}
         variant="bauhaus"
         colors={["#ECD7C8", "#EEA4BC", "#BE88C4", "#9186E7", "#92C9F9"]}
       />
-    )
-  ) : (
-    <NFTAssetPlayer
-      type="image/png"
-      onErrorHandle={() => setShowFallback(true)}
-      className="avatar"
-      src={src}
-      width={width}
-      height={height}
-      alt={"Avatar"}
-    />
-  );
+    );
 };
