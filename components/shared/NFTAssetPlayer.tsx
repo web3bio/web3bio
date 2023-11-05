@@ -65,8 +65,8 @@ function renderImage(props: AssetPlayerProps) {
   const { width, height, src, alt } = props;
   return (
     <Image
-      width={0}
-      height={0}
+      width={typeof width === "number" ? width : 0}
+      height={typeof height === "number" ? height : 0}
       placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(400, 400))}`}
       className="img-responsive"
       style={{ width: width ? width : "100%", height: height ? height : "auto" }}

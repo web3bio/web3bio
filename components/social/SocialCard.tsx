@@ -59,6 +59,8 @@ const RenderSocialCard = (props) => {
                       src={resolveMediaURL(x.address)}
                       type={x.mime_type}
                       key={x.address}
+                      width="auto"
+                      height="100%"
                       alt={"Feed Image"}
                     /> : "")
                 )}
@@ -88,6 +90,8 @@ const RenderSocialCard = (props) => {
                             src={resolveMediaURL(x.address)}
                             type={x.mime_type}
                             key={x.address}
+                            width="auto"
+                            height="100%"
                             alt={"Feed Image"}
                           /> : "")
                       )}
@@ -158,6 +162,8 @@ const RenderSocialCard = (props) => {
                         src={resolveMediaURL(x.address)}
                         type={x.mime_type}
                         key={x.address}
+                        width="auto"
+                        height="100%"
                         alt={"Feed Image"}
                       /> : "")
                   ))}
@@ -200,6 +206,8 @@ const RenderSocialCard = (props) => {
                           src={resolveMediaURL(x.address)}
                           type={x.mime_type}
                           key={x.address}
+                          width="auto"
+                          height="100%"
                           alt={"Feed Image"}
                         /> : "")
                     )}
