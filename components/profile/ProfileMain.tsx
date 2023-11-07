@@ -192,13 +192,6 @@ export default function ProfileMain(props) {
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading NFTs...</p>}>
                   <WidgetNFT
-                    initialExpand={
-                      Boolean(
-                        widgets.widgetState.rss?.isEmpty &&
-                          widgets.widgetState.degen?.isEmpty &&
-                          widgets.widgetState.poaps?.isEmpty
-                      ) && !data?.links?.length
-                    }
                     fromServer={fromServer}
                     onShowDetail={(e, v) => {
                       setDialogType(NFTModalType.NFT);

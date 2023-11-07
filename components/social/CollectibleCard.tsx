@@ -53,8 +53,8 @@ const RenderCollectibleCard = (props) => {
                       className="feed-content-img"
                       src={resolveMediaURL(metadata.image_url)}
                       type={"image/png"}
-                      width={20}
-                      height={20}
+                      width="auto"
+                      height="100%"
                       alt={metadata.title}
                     />
                   </div>
