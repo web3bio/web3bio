@@ -98,14 +98,13 @@ const RenderWidgetNFT = ({
   onShowDetail,
   initialData,
   fromServer,
-  initialExpand,
 }) => {
   const { data, size, setSize, isValidating, isError, hasNextPage } = useNFTs({
     address,
     initialData,
     fromServer,
   });
-  const [expand, setExpand] = useState(initialExpand);
+  const [expand, setExpand] = useState(false);
   const [firstRender, setFirstRender] = useState(true);
   const [[ref, assetId], setScrollRefAndAssetId] = useState<
     [{ current: HTMLElement | null }, string]
@@ -134,7 +133,7 @@ const RenderWidgetNFT = ({
       }, 550);
     }
     setFirstRender(false);
-  }, [assetId, initialExpand]);
+  }, [assetId]);
 
   if (!data.length || isError) return null;
 
