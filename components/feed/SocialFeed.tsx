@@ -8,7 +8,9 @@ import { RenderIdentity } from "./FeedItem";
 const RenderSocialCard = (props) => {
   const { action } = props;
   const metadata = action?.metadata;
-  
+  const checkEmojis = /^(\p{Emoji}\uFE0F|\p{Emoji_Presentation})+$/gu.test(metadata?.body); 
+  console.log(checkEmojis)
+
   switch (action.type) {
     case ("profile"):
       return (
@@ -46,7 +48,7 @@ const RenderSocialCard = (props) => {
         return (
           <>
             {metadata?.body && (
-              <div className="feed-content text-large">
+              <div className={`feed-content text-large${checkEmojis?" text-emoji":""}`}>
                 {metadata?.body}
               </div>
             )}

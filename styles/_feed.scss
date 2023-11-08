@@ -114,7 +114,12 @@
       word-break: break-word;
 
       &.text-large {
-        font-size: .85rem;
+        font-size: .8rem;
+      }
+
+      &.text-emoji {
+        font-size: 1.5rem;
+        line-height: 1.25rem;
       }
 
       &:focus,
