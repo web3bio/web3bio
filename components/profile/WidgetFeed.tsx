@@ -171,6 +171,11 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
             <button className="btn btn-block">View more</button>
           </div>
         )}
+        {expand && (
+          <div className="profile-widget-footer">
+            Powered by <strong>RSS3</strong>
+          </div>
+        )}
       </div>
     </div>
   );
