@@ -109,12 +109,17 @@
       flex-wrap: wrap;
       font-size: .75rem;
       line-height: 1.5;
-      margin: .25rem 0;
+      margin-top: .25rem;
       width: 100%;
       word-break: break-word;
 
       &.text-large {
-        font-size: .85rem;
+        font-size: .8rem;
+      }
+
+      &.text-emoji {
+        font-size: 1.5rem;
+        line-height: 1.25rem;
       }
 
       &:focus,
@@ -126,13 +131,18 @@
         display: flex;
         flex-wrap: nowrap;
         gap: .25rem;
-        overflow-x: auto;
+        overflow: auto hidden;
 
         .feed-content-img {
           align-items: center;
           display: flex;
-          max-width: 10rem;
-          min-height: 4rem;
+          flex: 0 0 auto;
+          height: 100%;
+
+          .img-responsive {
+            max-height: 8rem;
+            object-fit: cover;
+          }
         }
       }
 
@@ -171,20 +181,20 @@
         }
 
         .feed-target-content {
+          margin-top: .25rem;
           word-break: break-word;
           width: 100%;
 
           &.media-gallery {
             display: flex;
             flex-wrap: nowrap;
-            margin-top: .25rem;
             gap: .25rem;
             overflow-x: auto;
           }
   
           .feed-content-img {
-            max-width: 6rem;
-  
+            flex: 0 0 auto;
+
             .img-responsive {
               max-height: 8rem;
             }

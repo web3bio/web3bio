@@ -40,6 +40,7 @@ const RenderDefaultCard = (props) => {
                     src={resolveMediaURL(metadata.logo)}
                     height={40}
                     width={40}
+                    placeholder={true}
                     type={"image/png"}
                     alt={metadata.title}
                   />

@@ -57,17 +57,18 @@ export interface AssetPlayerProps {
   height?: number | string;
   onClick?: () => void;
   alt: string;
+  placeholder? : boolean;
   style?: React.CSSProperties;
   poster?: string;
 }
 
 function renderImage(props: AssetPlayerProps) {
-  const { width, height, src, alt } = props;
+  const { width, height, placeholder, src, alt } = props;
   return (
     <Image
       width={typeof width === "number" ? width : 0}
       height={typeof height === "number" ? height : 0}
-      placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(100, 100))}`}
+      placeholder={placeholder ? `data:image/svg+xml;base64,${toBase64(shimmer(100, 100))}` : "empty"}
       className="img-responsive"
       style={{ width: width ? width : "100%", height: height ? height : "auto" }}
       src={src}
