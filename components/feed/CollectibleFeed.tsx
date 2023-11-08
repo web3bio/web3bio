@@ -73,7 +73,7 @@ const RenderCollectibleCard = (props) => {
               {metadata.title || metadata.name}
               {metadata.id && (<small className="feed-token-meta">{`#${formatText(metadata.id)}`}</small>)}
             </span>
-            {ActivityTypeMapping(action.type).prep && (
+            {action.to && ActivityTypeMapping(action.type).prep && (
               <>
                 &nbsp;{ActivityTypeMapping(action.type).prep}&nbsp;
                 {RenderIdentity(action.to)}
