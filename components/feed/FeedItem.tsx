@@ -3,10 +3,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 import SVG from "react-inlinesvg";
-import { DefaultCard } from "./DefaultCard";
-import { TransactionCard } from "./TransactionCard";
-import { SocialCard } from "./SocialCard";
-import { CollectibleCard } from "./CollectibleCard";
+import { DefaultCard } from "./DefaultFeed";
+import { TransactionCard } from "./TransactionFeed";
+import { SocialCard } from "./SocialFeed";
+import { CollectibleCard } from "./CollectibleFeed";
 import { 
   NetworkMapping, 
   ActivityTypeMapping, 
