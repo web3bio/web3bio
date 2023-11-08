@@ -4,6 +4,7 @@ import useSWRInfinite from "swr/infinite";
 import { ExpandController } from "./ExpandController";
 import { RSS3Fetcher, RSS3_ENDPOINT } from "../apis/rss3";
 import { SocialFeeds } from "./SocialFeeds";
+import { ActivityTag } from "../../utils/activity";
 
 const FEEDS_PAGE_SIZE = 20;
 
@@ -20,16 +21,28 @@ const processFeedsData = (data) => {
 };
 
 const getURL = (index, address, previous) => {
-  const cursor = previous?.meta?.cursor;
-  if (index !== 0 && !(previous?.data?.length || cursor)) return null;
-  return (
-    RSS3_ENDPOINT +
-    `data/accounts/` +
-    address +
-    `/activities?limit=${FEEDS_PAGE_SIZE}${
-      cursor ? `&cursor=${cursor}` : ""
-    }&direction=out&status=successful&tag=transaction&tag=social&tag=collectible&tag=donation&tag=exchange&tag=governance&tag=metaverse`
-  );
+  const cursor = previous?.cursor;
+  if (index !== 0 && !(previous?.result?.length || cursor)) return null;
+  const url = RSS3_ENDPOINT + `/data/accounts/activities`;
+  const data = {
+    account: [address],
+    limit: FEEDS_PAGE_SIZE,
+    cursor,
+    status: "successful",
+    refresh: true,
+    direction: "out",
+    tag: [
+      ActivityTag.social,
+      ActivityTag.transaction,
+      ActivityTag.exchange,
+      ActivityTag.collectible,
+      ActivityTag.exchange,
+      ActivityTag.donation,
+      ActivityTag.governance,
+      ActivityTag.metaverse,
+    ],
+  };
+  return [url, data];
 };
 
 function useFeeds({ address, fromServer, initialData }) {

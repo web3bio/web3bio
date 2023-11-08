@@ -14,8 +14,8 @@ const RenderDefaultCard = (props) => {
       return (
         <>
           <div className="feed-content">
-            {ActivityTypeMapping(action.type).action[metadata.action||"default"]}&nbsp;
-            {RenderToken(metadata.token)}&nbsp;
+            {ActivityTypeMapping(action.type).action[metadata?.action||"default"]}&nbsp;
+            {RenderToken(metadata?.token)}&nbsp;
             {ActivityTypeMapping(action.type).prep}&nbsp;
             <strong>{metadata.title}</strong>
             {action.platform && (
@@ -51,11 +51,11 @@ const RenderDefaultCard = (props) => {
         </>
       );
     case ("vote"):
-      const choices = JSON.parse(metadata.choice || "[]");
+      const choices = JSON.parse(metadata?.choice || "[]");
       return (
         <>
           <div className="feed-content">
-            {ActivityTypeMapping(action.type).action[metadata.action||"default"]}&nbsp;
+            {ActivityTypeMapping(action.type).action[metadata?.action||"default"]}&nbsp;
             {isArray(choices) ? (
                 choices.map((x) => (
                   <span className="feed-token" key={x}>{metadata.proposal?.options[x - 1]}</span>
@@ -91,7 +91,7 @@ const RenderDefaultCard = (props) => {
     default:
       return (
         <div className="feed-content">
-          {ActivityTypeMapping(action.type).action[metadata.action||"default"]}
+          {ActivityTypeMapping(action.type).action[metadata?.action||"default"]}
           {action.platform && (
             <span className="feed-platform">&nbsp;on {action.platform}</span>
           )}
