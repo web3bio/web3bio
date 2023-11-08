@@ -137,9 +137,9 @@ const RenderWidgetNFT = ({
 
   if (!data.length || isError) return null;
 
-  // if (process.env.NODE_ENV !== "production") {
-  //   console.log("NFT Data:", data);
-  // }
+  if (process.env.NODE_ENV !== "production") {
+    console.log("NFT Data:", data);
+  }
 
   return (
     <div ref={scrollContainer} className="profile-widget-full" id="nft">

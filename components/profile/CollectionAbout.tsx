@@ -30,6 +30,7 @@ const CollectionAboutRender = (props) => {
             alt={collection.name}
             width={80}
             height={80}
+            placeholder={true}
           />
         </div>
         <div className="nft-header-name h5">

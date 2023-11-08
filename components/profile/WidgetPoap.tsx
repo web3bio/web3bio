@@ -113,6 +113,7 @@ const RenderWidgetPOAP = ({
                     alt={x.event.name}
                     height={64}
                     width={64}
+                    placeholder={true}
                   />
                 </div>
               );

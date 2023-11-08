@@ -8,8 +8,7 @@ import { RenderIdentity } from "./FeedItem";
 const RenderSocialCard = (props) => {
   const { action } = props;
   const metadata = action?.metadata;
-  const checkEmojis = /^(\p{Emoji}\uFE0F|\p{Emoji_Presentation})+$/gu.test(metadata?.body); 
-  console.log(checkEmojis)
+  const checkEmojis = /^(\p{Emoji}\uFE0F|\p{Emoji_Presentation})+$/gu.test(metadata?.body);
 
   switch (action.type) {
     case ("profile"):
@@ -68,6 +67,7 @@ const RenderSocialCard = (props) => {
                         type={x.mime_type}
                         width="auto"
                         height="100%"
+                        placeholder={true}
                         alt={metadata?.body || "Feed Image"}
                       />
                     </Link>
@@ -101,6 +101,7 @@ const RenderSocialCard = (props) => {
                             key={x.address}
                             width="auto"
                             height="100%"
+                            placeholder={true}
                             alt={metadata.target?.body}
                           /> : "")
                       )}
@@ -173,6 +174,7 @@ const RenderSocialCard = (props) => {
                         key={x.address}
                         width="auto"
                         height="100%"
+                        placeholder={true}
                         alt={metadata.body}
                       /> : "")
                   ))}
@@ -217,6 +219,7 @@ const RenderSocialCard = (props) => {
                           key={x.address}
                           width="auto"
                           height="100%"
+                          placeholder={true}
                           alt={metadata.target?.body}
                         /> : "")
                     )}

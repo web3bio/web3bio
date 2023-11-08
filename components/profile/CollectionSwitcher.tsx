@@ -26,6 +26,7 @@ const RenderCollectionSwitcher = (props) => {
               src={item.image_url}
               height={52}
               width={52}
+              placeholder={true}
               alt={item.name}
             />
             <div className="collection-name text-assistive">NFT Collection: {item.name}</div>

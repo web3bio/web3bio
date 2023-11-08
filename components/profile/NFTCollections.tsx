@@ -136,8 +136,8 @@ const RenderNFTCollections = (props) => {
                       className="collection-logo"
                       src={x.image_url}
                       alt={x.name}
-                      width={"1.2rem"}
-                      height={"1.2rem"}
+                      width={24}
+                      height={24}
                     />
                     <div className="collection-name text-ellipsis">
                       {x.name}
@@ -187,6 +187,7 @@ const RenderNFTCollections = (props) => {
                                 poster={y.previews.image_large_url}
                                 width={"100%"}
                                 height={"100%"}
+                                placeholder={true}
                               />
                               <div
                                 className={`preview-network ${y.chain}`}
