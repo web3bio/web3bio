@@ -1,6 +1,7 @@
 import { memo, useEffect } from "react";
 import Link from "next/link";
 import SVG from "react-inlinesvg";
+import Markdown from "react-markdown";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { CollectionAbout } from "./CollectionAbout";
 import { PlatformType } from "../../utils/platform";
@@ -228,7 +229,9 @@ const NFTModalRender = (props) => {
                     {_asset.name || `${asset.collection.name} #${_asset.token_id}`}
                   </div>
                   <div className="nft-header-description mt-2 mb-4">
-                    {_asset.description || asset.collection.description}
+                    <Markdown>
+                      {_asset.description || asset.collection.description}
+                    </Markdown>
                   </div>
 
                   <div className="btn-group mt-4">

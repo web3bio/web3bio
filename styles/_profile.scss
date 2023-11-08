@@ -1174,6 +1174,14 @@
 
     .nft-header-description {
       font-size: .8rem;
+
+      p {
+        margin-bottom: .5rem;
+      }
+
+      a {
+        text-decoration: underline;
+      }
     }
 
     .nft-header-actions {
