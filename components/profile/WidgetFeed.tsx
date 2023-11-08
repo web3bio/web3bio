@@ -4,9 +4,16 @@ import useSWRInfinite from "swr/infinite";
 import { ExpandController } from "./ExpandController";
 import { RSS3Fetcher, RSS3_ENDPOINT } from "../apis/rss3";
 import { SocialFeeds } from "./SocialFeeds";
-import { ActivityTag } from "../../utils/activity";
+import { ActivityTag, ActivityType } from "../../utils/activity";
 
 const FEEDS_PAGE_SIZE = 20;
+
+const tagOptions = {
+  "social": ["social"],
+  "finance": ["transaction", "exchange", "donation", "governance"],
+  "collectibles": ["collectible", "metaverse"],
+  "all": []
+}
 
 const processFeedsData = (data) => {
   if (!data?.[0]?.data?.length) return [];
@@ -21,25 +28,38 @@ const processFeedsData = (data) => {
 };
 
 const getURL = (index, address, previous) => {
-  const cursor = previous?.cursor;
+  const cursor = previous?.meta?.cursor;
   if (index !== 0 && !(previous?.result?.length || cursor)) return null;
   const url = RSS3_ENDPOINT + `/data/accounts/activities`;
   const data = {
     account: [address],
     limit: FEEDS_PAGE_SIZE,
-    cursor,
     status: "successful",
-    refresh: true,
     direction: "out",
-    tag: [
-      ActivityTag.social,
-      ActivityTag.transaction,
-      ActivityTag.exchange,
-      ActivityTag.collectible,
-      ActivityTag.exchange,
-      ActivityTag.donation,
-      ActivityTag.governance,
-      ActivityTag.metaverse,
+    cursor,
+    tag: [],
+    type: [
+      ActivityType.approval,
+      ActivityType.auction,
+      ActivityType.bridge,
+      ActivityType.claim,
+      ActivityType.comment,
+      ActivityType.donate,
+      ActivityType.liquidity,
+      ActivityType.loan,
+      ActivityType.mint,
+      ActivityType.multisig,
+      ActivityType.post,
+      ActivityType.profile,
+      ActivityType.propose,
+      ActivityType.revise,
+      ActivityType.reward,
+      ActivityType.share,
+      ActivityType.staking,
+      ActivityType.swap,
+      ActivityType.trade,
+      ActivityType.transfer,
+      ActivityType.vote,
     ],
   };
   return [url, data];
@@ -114,11 +134,13 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
             Activity Feeds
           </h2>
           <div className="widget-action">
-            {/* <select className="form-select select-sm mr-2">
-              <option>Categories</option>
-              <option>Social</option>
-              <option>Finance</option>
-              <option>Collectibles</option>
+            {/* <select
+              className="form-select select-sm mr-2"
+            >
+              <option value="social">Social feeds</option>
+              <option value="finance">Finance</option>
+              <option value="collectibles">Collectibles</option>
+              <option value="all">All feeds</option>
             </select> */}
             <ExpandController
               expand={expand}

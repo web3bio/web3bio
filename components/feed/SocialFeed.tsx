@@ -54,15 +54,22 @@ const RenderSocialCard = (props) => {
               <div className={`feed-content${metadata.media.length > 1 ? " media-gallery" : ""}`}>
                 {metadata.media?.map((x) => 
                   (x.mime_type.includes("image") ? 
-                    <NFTAssetPlayer
+                    <Link
                       className="feed-content-img"
-                      src={resolveMediaURL(x.address)}
-                      type={x.mime_type}
+                      href={resolveMediaURL(x.address)}
+                      target="_blank"
                       key={x.address}
-                      width="auto"
-                      height="100%"
-                      alt={"Feed Image"}
-                    /> : "")
+                    >
+                      <NFTAssetPlayer
+                        className="feed-content-img"
+                        src={resolveMediaURL(x.address)}
+                        type={x.mime_type}
+                        width="auto"
+                        height="100%"
+                        alt={metadata?.body || "Feed Image"}
+                      />
+                    </Link>
+                     : "")
                 )}
               </div>
             )}
@@ -82,7 +89,7 @@ const RenderSocialCard = (props) => {
                     {metadata.target?.body}
                   </div>
                   {metadata.target?.media?.length > 0 && (
-                    <div className={`feed-target-content media-gallery`}>
+                    <div className={`feed-target-content${metadata.target?.media?.length > 1 ? " media-gallery" : ""}`}>
                       {metadata.target?.media?.map((x) => 
                         (x.mime_type.includes("image") ? 
                           <NFTAssetPlayer
@@ -92,7 +99,7 @@ const RenderSocialCard = (props) => {
                             key={x.address}
                             width="auto"
                             height="100%"
-                            alt={"Feed Image"}
+                            alt={metadata.target?.body}
                           /> : "")
                       )}
                     </div>
@@ -154,7 +161,7 @@ const RenderSocialCard = (props) => {
                 {metadata.body}
               </div>
               {metadata.media?.length > 0 && (
-                <div className={`feed-target-content media-gallery`}>
+                <div className={`feed-target-content${metadata.media?.length > 1 ? " media-gallery" : ""}`}>
                   {metadata.media?.map((x) => (
                     (x.mime_type.includes("image") ? 
                       <NFTAssetPlayer
@@ -164,7 +171,7 @@ const RenderSocialCard = (props) => {
                         key={x.address}
                         width="auto"
                         height="100%"
-                        alt={"Feed Image"}
+                        alt={metadata.body}
                       /> : "")
                   ))}
                 </div>
@@ -208,7 +215,7 @@ const RenderSocialCard = (props) => {
                           key={x.address}
                           width="auto"
                           height="100%"
-                          alt={"Feed Image"}
+                          alt={metadata.target?.body}
                         /> : "")
                     )}
                   </div>
