@@ -80,6 +80,7 @@ const NFTModalRender = (props) => {
                 type={"image/png"}
                 src={asset.mediaURL}
                 alt={asset.asset.event.name}
+                placeholder={true}
               />
             </div>
             <div className="preview-content">
@@ -187,6 +188,7 @@ const NFTModalRender = (props) => {
                   : "image/png"
               }
               src={asset.mediaURL}
+              placeholder={true}
               alt={asset.collection?.name + _asset.name}
               poster={_asset.previews.image_large_url}
             />
@@ -215,6 +217,8 @@ const NFTModalRender = (props) => {
                       className="collection-logo"
                       src={asset.collection.url}
                       alt={asset.collection.name}
+                      width={24}
+                      height={24}
                     />
                     <div className="collection-name text-ellipsis">
                       {asset.collection.name}

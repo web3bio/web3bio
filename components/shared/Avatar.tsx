@@ -15,6 +15,7 @@ export const Avatar = (props: Avatar) => {
         width={width}
         height={height}
         alt={alt}
+        placeholder={true}
       />
     ) : (
       <BoringAvatar

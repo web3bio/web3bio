@@ -55,6 +55,7 @@ const RenderCollectibleCard = (props) => {
                       type={"image/png"}
                       width="auto"
                       height="100%"
+                      placeholder={true}
                       alt={metadata.title}
                     />
                   </div>
