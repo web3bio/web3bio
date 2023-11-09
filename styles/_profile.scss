@@ -580,6 +580,7 @@
       flex: 1 1;
       height: 100%;
       overflow-y: auto;
+      overscroll-behavior: contain;
       padding: 0 .5rem;
     
       .nft-collection-list {
@@ -773,6 +774,7 @@
 
       .widget-feeds-container {
         overflow-y: auto;
+        overscroll-behavior: contain;
       }
     }
 
@@ -986,6 +988,7 @@
       height: 98vh;
       gap: .5rem;
       overflow-y: auto;
+      overscroll-behavior: contain;
       width: 98vw;
 
       .preview-content {
