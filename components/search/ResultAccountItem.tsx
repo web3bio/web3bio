@@ -71,10 +71,10 @@ const RenderAccountItem = (props) => {
             </div>
             {identity.nft?.length > 0 && (
               <div className="nfts">
-                {identity.nft.map((nft, idx) => {
+                {identity.nft.map((nft) => {
                   return nft.category == "ENS" ? (
                     <Link
-                      key={`${nft.uuid}-${idx}`}
+                      key={`${nft.uuid}`}
                       href={{
                         pathname: "/",
                         query: { s: nft.id },
@@ -114,53 +114,9 @@ const RenderAccountItem = (props) => {
         </div>
       );
     case PlatformType.lens:
-      return (
-        <div className="social-item lens">
-          <div className="social-main">
-            <div className="social">
-              <div className="avatar">
-                {profile?.avatar && (
-                  <Image
-                    width={36}
-                    height={36}
-                    alt="avatar"
-                    src={profile?.avatar}
-                    className="avatar-img"
-                  />
-                )}
-                <div className="icon">
-                  <SVG
-                    src={SocialPlatformMapping(identity.platform)?.icon || ""}
-                    width={20}
-                    height={20}
-                  />
-                </div>
-              </div>
-              <div className="content">
-                <div className="content-title text-bold">{displayName}</div>
-                <div className="content-subtitle text-gray">
-                  <div className="address">{resolvedIdentity}</div>
-                  <div className="ml-1 mr-1">·</div>
-                  <div className="address" title="">#{identity.uid}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <ModalLink
-            href={`/${resolvedIdentity}`}
-            className="social-actions"
-            title="Open Lens Profile"
-          >
-            <button className="btn btn-sm btn-link action">
-              <SVG src="icons/icon-open.svg" width={20} height={20} /> <span className="hide-sm">Profile</span>
-            </button>
-          </ModalLink>
-          <RenderSourceFooter sources={sources} />
-        </div>
-      );
     case PlatformType.farcaster:
       return (
-        <div className="social-item farcaster">
+        <div className={`social-item ${identity.platform}`}>
           <div className="social-main">
             <div className="social">
               <div className="avatar">
@@ -185,63 +141,25 @@ const RenderAccountItem = (props) => {
                 <div className="content-title text-bold">{displayName}</div>
                 <div className="content-subtitle text-gray">
                   <div className="address">{resolvedIdentity}</div>
-                  <div className="ml-1 mr-1">·</div>
-                  <div className="address" title="">#{identity.uid}</div>
+                  {identity.uid && (
+                    <>
+                      <div className="ml-1 mr-1">·</div>
+                      <div className="address" title={`${SocialPlatformMapping(identity.platform)?.label} ${identity.platform === PlatformType.farcaster ? "FID" : "UID"}`}>#{identity.uid}</div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
           </div>
-
           <ModalLink
-            href={`/${resolvedIdentity}.farcaster`}
+            href={`/${identity.platform === PlatformType.farcaster ? resolvedIdentity + ".farcaster" : resolvedIdentity}`}
             className="social-actions"
-            title="Open Farcaster Profile"
+            title="Open Profile"
           >
             <button className="btn btn-sm btn-link action">
               <SVG src="icons/icon-open.svg" width={20} height={20} /> <span className="hide-sm">Profile</span>
             </button>
           </ModalLink>
-          <RenderSourceFooter sources={sources} />
-        </div>
-      );
-    case PlatformType.unstoppableDomains:
-      return (
-        <div className="social-item unstoppabledomains">
-          <div className="social-main">
-            <Link
-              href={{
-                pathname: "/",
-                query: {
-                  s: resolvedIdentity,
-                },
-              }}
-              className="social"
-              prefetch={false}
-            >
-              <div className="icon">
-                <SVG
-                  fill="#000"
-                  src={SocialPlatformMapping(identity.platform)?.icon || ""}
-                  width={20}
-                  height={20}
-                />
-              </div>
-              <div className="title">{displayName}</div>
-            </Link>
-          </div>
-          <div className="social-actions actions">
-            <a
-              className="btn btn-sm btn-link action"
-              href={`${SocialPlatformMapping(identity.platform)?.urlPrefix}${
-                identity.displayName
-              }`}
-              title="Open Unstoppable Domains"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
-            </a>
-          </div>
           <RenderSourceFooter sources={sources} />
         </div>
       );
