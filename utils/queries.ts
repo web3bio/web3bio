@@ -63,6 +63,7 @@ export const GET_PROFILES_DOMAIN = gql`
                 id
               }
               uuid
+              uid
               platform
               identity
               displayName
@@ -75,6 +76,7 @@ export const GET_PROFILES_DOMAIN = gql`
                 id
               }
               uuid
+              uid
               platform
               identity
               displayName

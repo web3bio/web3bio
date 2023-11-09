@@ -229,9 +229,9 @@
           border-radius: .5rem;
 
           & + .icon {
-            bottom: -.7rem;
+            bottom: -.6rem;
             position: absolute;
-            right: -.7rem;
+            right: -.6rem;
             transform: scale(.5);
             z-index: 1;
           }
@@ -317,6 +317,7 @@
     flex-wrap: wrap;
     gap: .1rem;
     margin-top: .4rem;
+    padding-left: .5rem;
   }
 
   .label-ens {
@@ -402,7 +403,7 @@
   .content-subtitle {
     align-items: center;
     display: flex;
-    font-size: .6rem;
+    font-size: .65rem;
     line-height: 1rem;
     max-width: 80%;
 
@@ -419,6 +420,10 @@
       &:hover {
         color: $dark-color;
       }
+    }
+
+    .address {
+      user-select: all;
     }
   }
 

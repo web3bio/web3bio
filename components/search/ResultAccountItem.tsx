@@ -121,8 +121,8 @@ const RenderAccountItem = (props) => {
               <div className="avatar">
                 {profile?.avatar && (
                   <Image
-                    width={18}
-                    height={18}
+                    width={36}
+                    height={36}
                     alt="avatar"
                     src={profile?.avatar}
                     className="avatar-img"
@@ -140,15 +140,8 @@ const RenderAccountItem = (props) => {
                 <div className="content-title text-bold">{displayName}</div>
                 <div className="content-subtitle text-gray">
                   <div className="address">{resolvedIdentity}</div>
-                  <Clipboard
-                    component="div"
-                    className="action"
-                    data-clipboard-text={resolvedIdentity}
-                    onSuccess={onCopySuccess}
-                  >
-                    <SVG src="icons/icon-copy.svg" width={20} height={20} />
-                    {isCopied && <div className="tooltip-copy">COPIED</div>}
-                  </Clipboard>
+                  <div className="ml-1 mr-1">·</div>
+                  <div className="address" title="">#{identity.uid}</div>
                 </div>
               </div>
             </div>
@@ -173,8 +166,8 @@ const RenderAccountItem = (props) => {
               <div className="avatar">
                 {profile?.avatar && (
                   <Image
-                    width={18}
-                    height={18}
+                    width={36}
+                    height={36}
                     alt="avatar"
                     src={profile?.avatar}
                     className="avatar-img"
@@ -192,15 +185,8 @@ const RenderAccountItem = (props) => {
                 <div className="content-title text-bold">{displayName}</div>
                 <div className="content-subtitle text-gray">
                   <div className="address">{resolvedIdentity}</div>
-                  <Clipboard
-                    component="div"
-                    className="action"
-                    data-clipboard-text={resolvedIdentity}
-                    onSuccess={onCopySuccess}
-                  >
-                    <SVG src="icons/icon-copy.svg" width={20} height={20} />
-                    {isCopied && <div className="tooltip-copy">COPIED</div>}
-                  </Clipboard>
+                  <div className="ml-1 mr-1">·</div>
+                  <div className="address" title="">#{identity.uid}</div>
                 </div>
               </div>
             </div>
