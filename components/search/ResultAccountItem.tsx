@@ -39,8 +39,8 @@ const RenderAccountItem = (props) => {
               <div className="avatar">
                 {profile?.avatar && (
                   <Image
-                    width={18}
-                    height={18}
+                    width={36}
+                    height={36}
                     alt="avatar"
                     src={profile?.avatar}
                     className="avatar-img"

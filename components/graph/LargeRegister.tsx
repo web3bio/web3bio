@@ -1,7 +1,7 @@
 import isArray from "@antv/util/lib/is-array";
 import isNumber from "@antv/util/lib/is-number";
-import { PlatformType } from "../../../utils/platform";
-import { SocialPlatformMapping } from "../../../utils/utils";
+import { PlatformType } from "../../utils/platform";
+import { SocialPlatformMapping } from "../../utils/utils";
 
 export const register = (G6) => {
   if (G6) {

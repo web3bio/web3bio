@@ -67,6 +67,10 @@ export const GET_PROFILES_DOMAIN = gql`
               platform
               identity
               displayName
+              ownedBy {
+                platform
+                identity
+              }
             }
             to {
               nft(category: ["ENS"], limit: 100, offset: 0) {
@@ -80,6 +84,10 @@ export const GET_PROFILES_DOMAIN = gql`
               platform
               identity
               displayName
+              ownedBy {
+                platform
+                identity
+              }
             }
           }
         }
@@ -95,6 +103,7 @@ export const GET_PROFILES_QUERY = gql`
       identity
       displayName
       uuid
+      uid
       ownedBy {
         uuid
         platform
@@ -119,6 +128,7 @@ export const GET_PROFILES_QUERY = gql`
               id
             }
             uuid
+            uid
             platform
             identity
             displayName
@@ -131,6 +141,7 @@ export const GET_PROFILES_QUERY = gql`
               id
             }
             uuid
+            uid
             platform
             identity
             displayName
@@ -146,9 +157,14 @@ export const GET_PROFILES_QUERY = gql`
               id
             }
             uuid
+            uid
             platform
             identity
             displayName
+            ownedBy {
+              platform
+              identity
+            }
           }
           to {
             nft(category: ["ENS"], limit: 100, offset: 0) {
@@ -158,9 +174,14 @@ export const GET_PROFILES_QUERY = gql`
               id
             }
             uuid
+            uid
             platform
             identity
             displayName
+            ownedBy {
+              platform
+              identity
+            }
           }
         }
       }
