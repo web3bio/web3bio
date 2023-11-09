@@ -6,7 +6,7 @@ import { PlatformType } from "../../utils/platform";
 import { SocialPlatformMapping } from "../../utils/utils";
 import { formatText } from "../../utils/utils";
 import { Loading } from "../shared/Loading";
-import { register } from "./GraphUtils/LargeRegister";
+import { register } from "./LargeRegister";
 import insertCss from "insert-css";
 import G6 from "@antv/g6";
 
@@ -22,6 +22,7 @@ interface Node {
   chain?: string;
   holder?: string;
   address?: string;
+  uid?: string;
   isTransferred?: boolean;
 }
 
@@ -37,9 +38,11 @@ interface Edge {
 let graph = null as any;
 let shiftKeydown = false;
 
+
+
 const registerCss = () => {
   insertCss(`
-  .web5bio-tooltip {
+  .web3bio-tooltip {
     background: #fcfcfc;
     z-index: 999;
     list-style-type: none;
@@ -51,21 +54,21 @@ const registerCss = () => {
     padding: 8px 12px;
     pointer-events: none;
     border: 1px solid rgba(0, 0, 0, .25);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 4px 24px rgba(0, 0, 0, .05);
+    box-shadow: 0 0.1rem 1.2rem hsla(0, 0%, 7%, .3);
     border: 0;
   }
-  .web5bio-tooltip ul {
+  .web3bio-tooltip ul {
     padding-left: 0;
     margin: 0;
   }
-  .web5bio-tooltip li {
+  .web3bio-tooltip li {
     list-style-type: none;
     list-style: none;
     overflow-wrap: break-word;
     word-break: break-all; 
     margin: 0;
   }
-  .web5bio-tooltip li span {
+  .web3bio-tooltip li span {
     font-size: .5rem;
   }
   `);
@@ -77,7 +80,7 @@ let CANVAS_WIDTH = 800,
 const resolveGraphData = (source) => {
   const nodes = new Array<Node>();
   const edges = new Array<Edge>();
-  source.forEach((x, idx) => {
+  source.forEach((x) => {
     const from = x.from;
     const to = x.to;
     const resolvedPlatform = SocialPlatformMapping(x.source);
@@ -88,7 +91,8 @@ const resolveGraphData = (source) => {
       source: x.source,
       displayName: to.profile?.displayName || to.displayName,
       identity: to.identity,
-      address: to.profile?.address,
+      uid: to.uid,
+      address: to.profile?.address || to.ownedBy?.identity,
       isIdentity: true,
     });
     nodes.push({
@@ -98,7 +102,8 @@ const resolveGraphData = (source) => {
       source: x.source,
       displayName: from.profile?.displayName || from.displayName,
       identity: from.identity,
-      address: from.profile?.address,
+      uid: from.uid,
+      address: from.profile?.address || from.ownedBy?.identity,
       isIdentity: true,
     });
     edges.push({
@@ -177,9 +182,7 @@ const processNodesEdges = (nodes, edges) => {
       if (node.displayName) {
         node.label = `${formatText(node.displayName)}`;
         if (node.displayName !== node.identity) {
-          node.label += `\n${formatText(
-            node.profile?.identity || node.identity
-          )}`;
+          node.label += `\n${formatText(node.identity)}`;
           node.labelLineNum = 1.5;
         }
       } else {
@@ -254,7 +257,7 @@ const RenderResultGraph = (props) => {
     processNodesEdges(res.nodes, res.edges);
 
     const tooltip = new G6.Tooltip({
-      className: "web5bio-tooltip",
+      className: "web3bio-tooltip",
       container: tooltipContainer.current,
       getContent(e) {
         const outDiv = document.createElement("div");
@@ -268,16 +271,19 @@ const RenderResultGraph = (props) => {
             }</li>
             <li class="mb-1">${
               currentNode.identity != currentNode.displayName
-                ? currentNode.identity
+                ? currentNode.platform === PlatformType.ethereum ? 
+                    formatText(currentNode.identity) :
+                    currentNode.identity
                 : ""
             }</li>
             ${
-              ([PlatformType.lens, PlatformType.farcaster].includes(
-                currentNode.platform as PlatformType
-              ) &&
-                ` <li><span class="text-gray">Address: </span>${
-                  currentNode.address || "Unknown"
-                }</li>`) ||
+              (currentNode.uid &&
+                ` <li><span class="text-gray">${currentNode.platform === PlatformType.farcaster ? "FID" : "UID"}: </span>${currentNode.uid}</li>`) ||
+              ""
+            }
+            ${
+              (currentNode.address &&
+                ` <li><span class="text-gray">Address: </span>${currentNode.address}</li>`) ||
               ""
             }
             <li><span class="text-gray">Platform: </span>${
@@ -301,10 +307,12 @@ const RenderResultGraph = (props) => {
             }</li>
           </ul>`;
         }
-
         return outDiv;
       },
+      offsetX: -5,
+      offsetY: 0,
       fixToNode: [1, 0],
+      trigger: "click",
       itemTypes: ["node"],
     });
 

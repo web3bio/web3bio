@@ -39,15 +39,20 @@ const RenderAccountItem = (props) => {
               <div className="avatar">
                 {profile?.avatar && (
                   <Image
-                    width={18}
-                    height={18}
+                    width={36}
+                    height={36}
                     alt="avatar"
                     src={profile?.avatar}
                     className="avatar-img"
                   />
                 )}
                 <div className="icon bg-pride">
-                  <SVG src="icons/icon-ethereum.svg" width={20} height={20} />
+                  <SVG 
+                    src="icons/icon-ethereum.svg"
+                    fill={"#fff"}
+                    width={20}
+                    height={20} 
+                  />
                 </div>
               </div>
               <div className="content">
@@ -69,120 +74,70 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
             </div>
-            {identity.nft?.length > 0 && (
-              <div className="nfts">
-                {identity.nft.map((nft, idx) => {
-                  return nft.category == "ENS" ? (
-                    <Link
-                      key={`${nft.uuid}-${idx}`}
-                      href={{
-                        pathname: "/",
-                        query: { s: nft.id },
-                      }}
-                      prefetch={false}
-                    >
-                      <div className="label-ens" title={nft.id}>
-                        <SVG
-                          fill={SocialPlatformMapping(PlatformType.ens).color}
-                          src={"/icons/icon-ens.svg"}
-                          width="20"
-                          height="20"
-                          className="icon"
-                        />
-                        <span>{nft.id}</span>
-                      </div>
-                    </Link>
-                  ) : null;
-                })}
+            {(canSkipProfile || (profile && !profile?.error)) && (
+              <div className="actions active">
+                <ModalLink
+                  href={`/${
+                    profile?.identity || identity.displayName || resolvedIdentity
+                  }`}
+                  title="Open ENS (Ethereum Name Service) Profile"
+                  className="btn btn-sm btn-link action"
+                >
+                  <SVG src="icons/icon-open.svg" width={20} height={20} /> <span className="hide-sm">Profile</span>
+                </ModalLink>
               </div>
             )}
           </div>
-          {(canSkipProfile || (profile && !profile?.error)) && (
-            <ModalLink
-              href={`/${
-                profile?.identity || identity.displayName || resolvedIdentity
-              }`}
-              className="social-actions"
-              title="Open ENS (Ethereum Name Service) Profile"
-            >
-              <button className="btn btn-sm btn-link action">
-                <SVG src="icons/icon-open.svg" width={20} height={20} /> <span className="hide-sm">Profile</span>
-              </button>
-            </ModalLink>
+          {identity.nft?.length > 0 && (
+            <div className="nfts">
+              {identity.nft.map((nft) => {
+                return nft.category == "ENS" ? (
+                  <Link
+                    key={`${nft.uuid}`}
+                    href={{
+                      pathname: "/",
+                      query: { s: nft.id },
+                    }}
+                    prefetch={false}
+                  >
+                    <div className="label-ens" title={nft.id}>
+                      <SVG
+                        fill={SocialPlatformMapping(PlatformType.ens).color}
+                        src={"/icons/icon-ens.svg"}
+                        width="20"
+                        height="20"
+                        className="icon"
+                      />
+                      <span>{nft.id}</span>
+                    </div>
+                  </Link>
+                ) : null;
+              })}
+            </div>
           )}
           <RenderSourceFooter sources={sources} />
         </div>
       );
     case PlatformType.lens:
-      return (
-        <div className="social-item lens">
-          <div className="social-main">
-            <div className="social">
-              <div className="avatar">
-                {profile?.avatar && (
-                  <Image
-                    width={18}
-                    height={18}
-                    alt="avatar"
-                    src={profile?.avatar}
-                    className="avatar-img"
-                  />
-                )}
-                <div className="icon">
-                  <SVG
-                    src={SocialPlatformMapping(identity.platform)?.icon || ""}
-                    width={20}
-                    height={20}
-                  />
-                </div>
-              </div>
-              <div className="content">
-                <div className="content-title text-bold">{displayName}</div>
-                <div className="content-subtitle text-gray">
-                  <div className="address">{resolvedIdentity}</div>
-                  <Clipboard
-                    component="div"
-                    className="action"
-                    data-clipboard-text={resolvedIdentity}
-                    onSuccess={onCopySuccess}
-                  >
-                    <SVG src="icons/icon-copy.svg" width={20} height={20} />
-                    {isCopied && <div className="tooltip-copy">COPIED</div>}
-                  </Clipboard>
-                </div>
-              </div>
-            </div>
-          </div>
-          <ModalLink
-            href={`/${resolvedIdentity}`}
-            className="social-actions"
-            title="Open Lens Profile"
-          >
-            <button className="btn btn-sm btn-link action">
-              <SVG src="icons/icon-open.svg" width={20} height={20} /> <span className="hide-sm">Profile</span>
-            </button>
-          </ModalLink>
-          <RenderSourceFooter sources={sources} />
-        </div>
-      );
     case PlatformType.farcaster:
       return (
-        <div className="social-item farcaster">
+        <div className={`social-item ${identity.platform}`}>
           <div className="social-main">
             <div className="social">
               <div className="avatar">
                 {profile?.avatar && (
                   <Image
-                    width={18}
-                    height={18}
+                    width={36}
+                    height={36}
                     alt="avatar"
                     src={profile?.avatar}
                     className="avatar-img"
                   />
                 )}
-                <div className="icon">
+                <div className="icon" style={{background: SocialPlatformMapping(identity.platform).color}}>
                   <SVG
                     src={SocialPlatformMapping(identity.platform)?.icon || ""}
+                    fill={"#fff"}
                     width={20}
                     height={20}
                   />
@@ -192,69 +147,24 @@ const RenderAccountItem = (props) => {
                 <div className="content-title text-bold">{displayName}</div>
                 <div className="content-subtitle text-gray">
                   <div className="address">{resolvedIdentity}</div>
-                  <Clipboard
-                    component="div"
-                    className="action"
-                    data-clipboard-text={resolvedIdentity}
-                    onSuccess={onCopySuccess}
-                  >
-                    <SVG src="icons/icon-copy.svg" width={20} height={20} />
-                    {isCopied && <div className="tooltip-copy">COPIED</div>}
-                  </Clipboard>
+                  {identity.uid && (
+                    <>
+                      <div className="ml-1 mr-1">·</div>
+                      <div className="address" title={`${SocialPlatformMapping(identity.platform)?.label} ${identity.platform === PlatformType.farcaster ? "FID" : "UID"}`}>#{identity.uid}</div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
-          </div>
-
-          <ModalLink
-            href={`/${resolvedIdentity}.farcaster`}
-            className="social-actions"
-            title="Open Farcaster Profile"
-          >
-            <button className="btn btn-sm btn-link action">
-              <SVG src="icons/icon-open.svg" width={20} height={20} /> <span className="hide-sm">Profile</span>
-            </button>
-          </ModalLink>
-          <RenderSourceFooter sources={sources} />
-        </div>
-      );
-    case PlatformType.unstoppableDomains:
-      return (
-        <div className="social-item unstoppabledomains">
-          <div className="social-main">
-            <Link
-              href={{
-                pathname: "/",
-                query: {
-                  s: resolvedIdentity,
-                },
-              }}
-              className="social"
-              prefetch={false}
-            >
-              <div className="icon">
-                <SVG
-                  fill="#000"
-                  src={SocialPlatformMapping(identity.platform)?.icon || ""}
-                  width={20}
-                  height={20}
-                />
-              </div>
-              <div className="title">{displayName}</div>
-            </Link>
-          </div>
-          <div className="social-actions actions">
-            <a
-              className="btn btn-sm btn-link action"
-              href={`${SocialPlatformMapping(identity.platform)?.urlPrefix}${
-                identity.displayName
-              }`}
-              title="Open Unstoppable Domains"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
-            </a>
+            <div className="actions active">
+              <ModalLink 
+                className="btn btn-sm btn-link action"
+                href={`/${identity.platform === PlatformType.farcaster ? resolvedIdentity + ".farcaster" : resolvedIdentity}`}
+                title="Open Profile"
+              >
+                <SVG src="icons/icon-open.svg" width={20} height={20} /> <span className="hide-sm">Profile</span>
+              </ModalLink>
+            </div>
           </div>
           <RenderSourceFooter sources={sources} />
         </div>
@@ -274,7 +184,7 @@ const RenderAccountItem = (props) => {
                     className="avatar-img"
                   />
                 )}
-                <div className="icon">
+                <div className="icon" style={{background: SocialPlatformMapping(identity.platform).color}}>
                   <SVG
                     fill="#fff"
                     src={SocialPlatformMapping(identity.platform)?.icon || ""}
@@ -301,16 +211,16 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
             </div>
-          </div>
-          <div className="social-actions">
-            <ModalLink
-              className="btn btn-sm btn-link action"
-              href={`/${resolvedIdentity}`}
-              title="Open Next.ID Profile page"
-              rel="noopener noreferrer"
-            >
-              <SVG src="icons/icon-open.svg" width={20} height={20} /> <span className="hide-sm">Profile</span>
-            </ModalLink>
+            <div className="actions active">
+              <ModalLink
+                className="btn btn-sm btn-link action"
+                href={`/${resolvedIdentity}`}
+                title="Open Next.ID Profile page"
+                rel="noopener noreferrer"
+              >
+                <SVG src="icons/icon-open.svg" width={20} height={20} /> <span className="hide-sm">Profile</span>
+              </ModalLink>
+            </div>
           </div>
           <RenderSourceFooter sources={sources} />
         </div>
@@ -340,19 +250,19 @@ const RenderAccountItem = (props) => {
               </div>
               <div className="title">{displayName}</div>
             </Link>
-          </div>
-          <div className="social-actions actions">
-            <a
-              className="btn btn-sm btn-link action"
-              href={`${SocialPlatformMapping(identity.platform)?.urlPrefix}${
-                identity.displayName
-              }`}
-              title="Open"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
-            </a>
+            <div className="actions">
+              <a
+                className="btn btn-sm btn-link action"
+                href={`${SocialPlatformMapping(identity.platform)?.urlPrefix}${
+                  identity.displayName
+                }`}
+                title="Open"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
+              </a>
+            </div>
           </div>
           <RenderSourceFooter sources={sources} />
         </div>

@@ -57,7 +57,7 @@ body {
 
 .web3bio-container {
   min-height: 75vh;
-  padding: .5rem;
+  padding: .4rem 0;
   scroll-behavior: smooth;
   width: 100vw;
 }
@@ -98,8 +98,8 @@ body {
 
     .modal-close-icon {
       position: fixed;
-      right: 2rem;
-      top: 2rem;
+      right: 1rem;
+      top: 1rem;
       z-index: 99;
     }
   }

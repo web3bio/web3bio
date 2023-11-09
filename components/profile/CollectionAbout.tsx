@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { formatEther } from "ethers";
+import Markdown from "react-markdown";
 import { formatText } from "../../utils/utils";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
@@ -38,7 +39,9 @@ const CollectionAboutRender = (props) => {
         </div>
         {collection.description && (
           <div className="nft-header-description mt-2 mb-4">
-            {collection.description}
+            <Markdown>
+              {collection.description}
+            </Markdown>
           </div>
         )}
       </div>

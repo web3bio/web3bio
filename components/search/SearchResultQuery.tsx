@@ -31,6 +31,7 @@ export default function SearchResultQuery({
     const resultOwner = {
       identity: {
         uuid: results?.uuid,
+        uid: results?.uid,
         platform: results?.platform,
         identity: results?.identity,
         displayName: results?.displayName,
