@@ -38,6 +38,8 @@ interface Edge {
 let graph = null as any;
 let shiftKeydown = false;
 
+
+
 const registerCss = () => {
   insertCss(`
   .web3bio-tooltip {
@@ -52,7 +54,7 @@ const registerCss = () => {
     padding: 8px 12px;
     pointer-events: none;
     border: 1px solid rgba(0, 0, 0, .25);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 4px 24px rgba(0, 0, 0, .05);
+    box-shadow: 0 0.1rem 1.2rem hsla(0, 0%, 7%, .3);
     border: 0;
   }
   .web3bio-tooltip ul {
@@ -307,8 +309,10 @@ const RenderResultGraph = (props) => {
         }
         return outDiv;
       },
-      offsetX: 10,
-      offsetY: 20,
+      offsetX: -5,
+      offsetY: 0,
+      fixToNode: [1, 0],
+      trigger: "click",
       itemTypes: ["node"],
     });
 

@@ -23,7 +23,7 @@
     "wallet.ts": "^1.0.1"
   },
   "devDependencies": {
-    "@antv/g6": "^4.8.17",
+    "@antv/g6": "^4.8.23",
     "@apollo/client": "^3.6.9",
     "@types/node": "^18.7.14",
     "@types/react": "^18.0.18",
