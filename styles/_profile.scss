@@ -261,6 +261,10 @@
     max-height: calc(100vh - 1rem);
     padding: .5rem;
     width: 100%;
+
+    @supports (height: 100dvh) {
+      max-height: calc(100dvh - .5rem);
+    }
   }
 
   .profile-widget-half {
@@ -296,6 +300,7 @@
     flex-direction: column;
     height: 100%;
     gap: .5rem;
+    overflow: hidden;
     padding: 1rem;
     text-decoration: none;
     transition: all .25s ease-in-out;
@@ -439,6 +444,7 @@
 
     &.active {
       box-shadow: 0 .4rem 1.6rem -.4rem rgba($dark-color, .15), 0 .1rem .2rem rgba($dark-color, .01);
+      height: 100%;
 
       .collection-switcher {
         box-shadow: 0 .4rem .4rem -.2rem rgba($dark-color, .1);
@@ -951,10 +957,15 @@
   height: 100vh;
   justify-content: center;
   left: 0;
+  overscroll-behavior: contain;
   position: fixed;
   top: 0;
   width: 100vw;
   z-index: 199;
+
+  @supports (height: 100dvh) {
+    height: 100dvh;
+  }
 
   .preview-overlay {
     background-position: center;
@@ -963,6 +974,7 @@
     filter: blur(4rem);
     left: -2rem;
     opacity: .5;
+    overscroll-behavior: contain;
     position: fixed;
     right: -2rem;
     top: -2rem;
@@ -981,6 +993,7 @@
     height: 80vh;
     gap: 2rem;
     max-width: $size-xl;
+    overscroll-behavior: contain;
     width: 100%;
 
     @media screen and (max-width: $size-md) {
@@ -988,7 +1001,6 @@
       height: 98vh;
       gap: .5rem;
       overflow-y: auto;
-      overscroll-behavior: contain;
       width: 98vw;
 
       .preview-content {

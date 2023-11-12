@@ -53,6 +53,7 @@ $pride-color-7: #C7F8FF !default;
 body {
   background: $light-color;
   overflow-x: hidden;
+  width: 100vw;
 }
 
 .web3bio-container {
@@ -70,6 +71,7 @@ body {
   left: 0;
   top: 0;
   background: rgba($color: #000000, $alpha: .3);
+  overscroll-behavior: contain;
   right: 0;
   bottom: 0;
   z-index: 100;
@@ -85,6 +87,14 @@ body {
     padding: 2rem;
     scroll-behavior: smooth;
     width: 100%;
+
+    @supports (height: 100dvh) {
+      max-height: calc(100dvh - .5rem);
+    }
+
+    @media screen and (max-width: $size-sm) {
+      padding: .5rem;
+    }
 
     .web3-profile-base {
       top: 0;

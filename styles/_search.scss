@@ -22,7 +22,7 @@
     margin: 1rem 0;
 
     @media screen and (max-width: $size-md) {
-      font-size: 2rem;
+      font-size: 1.6rem;
     }
 
     small {
@@ -255,7 +255,6 @@
       align-items: center;
       display: none;
       margin-left: auto;
-      margin-right: .4rem;
 
       &.active {
         display: flex;
@@ -331,9 +330,13 @@
   flex: 1;
   font-size: .6rem;
   line-height: 1rem;
-  padding: .2rem .2rem .2rem .4rem;
+  padding: .2rem .4rem;
   text-decoration: none;
   transition: all .25s ease-in-out;
+
+  @media screen and (max-width: $size-sm) {
+    padding: .2rem 0;
+  }
 
   .icon {
     align-items: center;

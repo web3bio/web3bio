@@ -500,7 +500,7 @@ const RenderResultGraph = (props) => {
                 Identity Graph for<strong className="ml-1">{title}</strong>
               </span>
             </div>
-            <div className="btn btn-link btn-close" onClick={onClose}>
+            <div className="btn btn-close" onClick={onClose}>
               <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
             </div>
           </div>
