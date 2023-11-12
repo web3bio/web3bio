@@ -66,9 +66,9 @@ const RenderSocialCard = (props) => {
                         src={resolveMediaURL(x.address)}
                         type={x.mime_type}
                         width="auto"
-                        height="100%"
+                        height="auto"
                         placeholder={true}
-                        alt={metadata?.body || "Feed Image"}
+                        alt={"Feed Image"}
                       />
                     </Link>
                      : "")
@@ -100,9 +100,9 @@ const RenderSocialCard = (props) => {
                             type={x.mime_type}
                             key={x.address}
                             width="auto"
-                            height="100%"
+                            height="auto"
                             placeholder={true}
-                            alt={metadata.target?.body}
+                            alt={"Feed Image"}
                           /> : "")
                       )}
                     </div>
