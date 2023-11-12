@@ -88,6 +88,10 @@ body {
     scroll-behavior: smooth;
     width: 100%;
 
+    @supports (height: 100dvh) {
+      max-height: calc(100dvh - .5rem);
+    }
+
     @media screen and (max-width: $size-sm) {
       padding: .5rem;
     }

@@ -67,6 +67,10 @@
 
   &.modal-fullheight {
     max-height: 100vh;
+
+    @supports (height: 100dvh) {
+      max-height: 100dvh;
+    }
   }
 
   .modal-header {
