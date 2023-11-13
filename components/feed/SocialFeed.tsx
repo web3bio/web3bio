@@ -133,7 +133,6 @@ const RenderSocialCard = (props) => {
           </>
         );
       } else {
-        console.log("kkk", action);
         return (
           <>
             <div className="feed-content">
