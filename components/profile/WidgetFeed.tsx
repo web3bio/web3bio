@@ -4,16 +4,10 @@ import useSWRInfinite from "swr/infinite";
 import { ExpandController } from "./ExpandController";
 import { RSS3Fetcher, RSS3_ENDPOINT } from "../apis/rss3";
 import { SocialFeeds } from "./SocialFeeds";
-import { ActivityTag, ActivityType } from "../../utils/activity";
+import { ActivityType, TagsFilterMapping } from "../../utils/activity";
+import FeedFilter from "./FeedFilter";
 
 const FEEDS_PAGE_SIZE = 20;
-
-const tagOptions = {
-  "social": ["social"],
-  "finance": ["transaction", "exchange", "donation", "governance"],
-  "collectibles": ["collectible", "metaverse"],
-  "all": []
-}
 
 const processFeedsData = (data) => {
   if (!data?.[0]?.data?.length) return [];
@@ -27,7 +21,7 @@ const processFeedsData = (data) => {
   return res;
 };
 
-const getURL = (index, address, previous) => {
+const getURL = (index, address, previous, filter) => {
   const cursor = previous?.meta?.cursor;
   if (index !== 0 && !(previous?.result?.length || cursor)) return null;
   const url = RSS3_ENDPOINT + `/data/accounts/activities`;
@@ -37,7 +31,7 @@ const getURL = (index, address, previous) => {
     status: "successful",
     direction: "out",
     cursor,
-    tag: [],
+    tag: TagsFilterMapping[filter].filters,
     type: [
       ActivityType.approval,
       ActivityType.auction,
@@ -65,7 +59,7 @@ const getURL = (index, address, previous) => {
   return [url, data];
 };
 
-function useFeeds({ address, fromServer, initialData }) {
+function useFeeds({ address, fromServer, initialData, filter }) {
   const options = fromServer
     ? {
         initialSize: 1,
@@ -73,7 +67,7 @@ function useFeeds({ address, fromServer, initialData }) {
       }
     : {};
   const { data, error, size, isValidating, setSize } = useSWRInfinite(
-    (index, previous) => getURL(index, address, previous),
+    (index, previous) => getURL(index, address, previous, filter),
     RSS3Fetcher,
     {
       ...options,
@@ -96,11 +90,12 @@ function useFeeds({ address, fromServer, initialData }) {
 
 const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
   const [expand, setExpand] = useState(false);
-
+  const [filter, setFilter] = useState("all");
   const { data, size, setSize, isValidating, isError, hasNextPage } = useFeeds({
     address: profile.address,
     fromServer,
     initialData,
+    filter,
   });
 
   const scrollContainer = useRef(null);
@@ -113,9 +108,10 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
         behavior: "smooth",
       });
     }
+  
   }, [expand]);
 
-  if (!data?.length || isError) return null;
+  if ((!isValidating && !data?.length) || isError) return null;
 
   // if (process.env.NODE_ENV !== "production") {
   //   console.log("Feed Data:", data);
@@ -134,14 +130,7 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
             Activity Feeds
           </h2>
           <div className="widget-action">
-            {/* <select
-              className="form-select select-sm mr-2"
-            >
-              <option value="social">Social feeds</option>
-              <option value="finance">Finance</option>
-              <option value="collectibles">Collectibles</option>
-              <option value="all">All feeds</option>
-            </select> */}
+            <FeedFilter value={filter} onChange={(v) => setFilter(v)} />
             <ExpandController
               expand={expand}
               onToggle={() => {
@@ -150,7 +139,7 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
             />
           </div>
         </div>
-        
+
         <SocialFeeds
           expand={expand}
           parentScrollRef={scrollContainer}
@@ -164,10 +153,13 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
             setSize(size + 1);
           }}
         />
-        {!expand && data?.length > 2 && (
-          <div className="btn-widget-more" onClick={() => {
-            setExpand(true);
-          }}>
+        {!isValidating && !expand && data?.length > 2 && (
+          <div
+            className="btn-widget-more"
+            onClick={() => {
+              setExpand(true);
+            }}
+          >
             <button className="btn btn-block">View more</button>
           </div>
         )}

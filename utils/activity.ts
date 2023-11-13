@@ -6,7 +6,7 @@ export enum ActivityTag {
   social = "social",
   metaverse = "metaverse",
   transaction = "transaction",
-  unknown = 'unknown',
+  unknown = "unknown",
 }
 
 export enum ActivityType {
@@ -44,9 +44,9 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "✅",
     label: "Approval",
     action: {
-      "default": "Approved",
-      "approve": "Approved",
-      "revoke": "Revoked the approval of",
+      default: "Approved",
+      approve: "Approved",
+      revoke: "Revoked the approval of",
     },
     prep: "on",
   },
@@ -55,10 +55,10 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "👨‍⚖",
     label: "Auction",
     action: {
-      "default": "Auctioned",
-      "buy": "Bought",
-      "bid": "Placed a bid for",
-      "finalize": "Finalized a bid for",
+      default: "Auctioned",
+      buy: "Bought",
+      bid: "Placed a bid for",
+      finalize: "Finalized a bid for",
     },
     prep: "",
   },
@@ -67,9 +67,9 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "🌉",
     label: "Bridge",
     action: {
-      "default": "Bridged",
-      "deposit": "Deposited",
-      "withdraw": "Withdrawn",
+      default: "Bridged",
+      deposit: "Deposited",
+      withdraw: "Withdrawn",
     },
     prep: "",
   },
@@ -78,7 +78,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "🔥",
     label: "Burn",
     action: {
-      "default": "Burnt",
+      default: "Burnt",
     },
     prep: "",
   },
@@ -87,7 +87,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "📢",
     label: "Claim",
     action: {
-      "default": "Claimed",
+      default: "Claimed",
     },
     prep: "",
   },
@@ -96,7 +96,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "💬",
     label: "Comment",
     action: {
-      "default": "Commented",
+      default: "Commented",
     },
     prep: "",
   },
@@ -105,7 +105,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "🗑️",
     label: "Delete",
     action: {
-      "default": "Deleted",
+      default: "Deleted",
     },
     prep: "",
   },
@@ -114,7 +114,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "🚀",
     label: "Deploy",
     action: {
-      "default": "Deployed the contract",
+      default: "Deployed the contract",
     },
     prep: "",
   },
@@ -123,7 +123,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "💌",
     label: "Donate",
     action: {
-      "default": "Donated",
+      default: "Donated",
     },
     prep: "to",
   },
@@ -132,12 +132,12 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "🏦",
     label: "Liquidity",
     action: {
-      "default": "Staked",
-      "add": "Staked",
-      "remove": "Unstaked",
-      "withdraw": "Withdrawn",
-      "supply": "Supplied",
-      "borrow": "Borrowed",
+      default: "Staked",
+      add: "Staked",
+      remove: "Unstaked",
+      withdraw: "Withdrawn",
+      supply: "Supplied",
+      borrow: "Borrowed",
     },
     prep: "",
   },
@@ -146,7 +146,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "💸",
     label: "Loan",
     action: {
-      "default": "Loaned",
+      default: "Loaned",
     },
     prep: "to",
   },
@@ -155,8 +155,8 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "🖼️",
     label: "Mint",
     action: {
-      "default": "Minted",
-      "post": "Minted a post",
+      default: "Minted",
+      post: "Minted a post",
     },
     prep: "",
   },
@@ -165,10 +165,10 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "✍🏻",
     label: "Multisig",
     action: {
-      "default": "Signed a multisig transaction",
-      "execution": "Executed a multisig transaction",
-      "add_owner": `Added an owner`,
-      "remove_owner": "Removed an owner",
+      default: "Signed a multisig transaction",
+      execution: "Executed a multisig transaction",
+      add_owner: `Added an owner`,
+      remove_owner: "Removed an owner",
     },
     prep: "",
   },
@@ -177,7 +177,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "📄",
     label: "Post",
     action: {
-      "default": "Published a post",
+      default: "Published a post",
     },
     prep: "to",
   },
@@ -186,9 +186,9 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "👤",
     label: "Profile",
     action: {
-      "default": "",
-      "update": "Updated the profile",
-      "renew": "Renewed the domain",
+      default: "",
+      update: "Updated the profile",
+      renew: "Renewed the domain",
     },
     prep: "",
   },
@@ -197,7 +197,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "📝",
     label: "Propose",
     action: {
-      "default": "",
+      default: "",
     },
     prep: "",
   },
@@ -206,8 +206,8 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "🔮",
     label: "Proxy",
     action: {
-      "default": "",
-      "appoint": "Approved a proxy",
+      default: "",
+      appoint: "Approved a proxy",
     },
     prep: "",
   },
@@ -216,7 +216,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "✍🏻",
     label: "Revise",
     action: {
-      "default": "Saved a revision for an article",
+      default: "Saved a revision for an article",
     },
     prep: "",
   },
@@ -225,7 +225,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "🍬",
     label: "Reward",
     action: {
-      "default": "Rewarded",
+      default: "Rewarded",
     },
     prep: "",
   },
@@ -234,7 +234,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "✨",
     label: "Share",
     action: {
-      "default": "Shared a post",
+      default: "Shared a post",
     },
     prep: "",
   },
@@ -243,9 +243,9 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "🏦",
     label: "Staking",
     action: {
-      "default": "Staked",
-      "claim": "Claimed",
-      "unstake": "Unstaked",
+      default: "Staked",
+      claim: "Claimed",
+      unstake: "Unstaked",
     },
     prep: "",
   },
@@ -254,7 +254,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "💵",
     label: "Swap",
     action: {
-      "default": "Swapped",
+      default: "Swapped",
     },
     prep: "for",
   },
@@ -263,9 +263,9 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "⚖️",
     label: "Trade",
     action: {
-      "default": "Traded",
-      "buy": "Bought",
-      "sell": "Sold",
+      default: "Traded",
+      buy: "Bought",
+      sell: "Sold",
     },
     prep: "",
   },
@@ -274,7 +274,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "💵",
     label: "Transfer",
     action: {
-      "default": "Transferred",
+      default: "Transferred",
     },
     prep: "to",
   },
@@ -283,7 +283,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "👽",
     label: "Unknown",
     action: {
-      "default": "Did something unknown",
+      default: "Did something unknown",
     },
     prep: "",
   },
@@ -292,11 +292,11 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     emoji: "🗳️",
     label: "Vote",
     action: {
-      "default": "Voted",
+      default: "Voted",
     },
     prep: "",
   },
-}
+};
 
 export interface ActivityTypeData {
   key: string;
@@ -305,3 +305,27 @@ export interface ActivityTypeData {
   action: Object;
   prep: string;
 }
+
+export const TagsFilterMapping = {
+  ["social"]: {
+    label: "Social Feeds",
+    filters: [ActivityTag.social],
+  },
+  ["finance"]: {
+    label: "Finance",
+    filters: [
+      ActivityTag.transaction,
+      ActivityTag.exchange,
+      ActivityTag.governance,
+      ActivityTag.donation,
+    ],
+  },
+  ["collectibles"]: {
+    label: "Collectibles",
+    filters: [ActivityTag.collectible, ActivityTag.metaverse],
+  },
+  ["all"]: {
+    label: "All feeds",
+    filters: [],
+  },
+};
