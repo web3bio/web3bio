@@ -56,7 +56,7 @@ const RenderSocialFeeds = (props) => {
             ) || null
         )}
 
-        {expand && isLoadingMore && hasNextPage && (
+        {expand && (isLoadingMore || hasNextPage) && (
           <div
             ref={albumRef}
             style={{
