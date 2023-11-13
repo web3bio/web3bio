@@ -305,7 +305,6 @@
     text-decoration: none;
     transition: all .25s ease-in-out;
     width: 100%;
-    will-change: transition;
 
     .emoji-large {
       font-size: 1.2rem;
@@ -440,21 +439,12 @@
     background: $light-color;
     border-color: lighten($bg-color, 3%);
     overflow: hidden;
+    padding-bottom: .75rem;
     position: relative;
-
-    @supports (height: 100dvh) {
-      height: 16dvh;
-    }
-
-    height: 7.5rem;
 
     &.active {
       box-shadow: 0 .4rem 1.6rem -.4rem rgba($dark-color, .15), 0 .1rem .2rem rgba($dark-color, .01);
-      @supports (height: 100dvh) {
-        height: 100dvh;
-      }
-      height: 100vh;
-      max-height: 100%;
+      height: 100%;
 
       .collection-switcher {
         box-shadow: 0 .4rem .4rem -.2rem rgba($dark-color, .1);
