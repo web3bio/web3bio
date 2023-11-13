@@ -1,6 +1,6 @@
 import { memo } from "react";
 import SVG from "react-inlinesvg";
-import { SocialPlatformMapping } from "../../utils/platform";
+import { SocialPlatformMapping } from "../../utils/utils";
 
 export const RenderSourceFooter = ({sources}) => {
   return (

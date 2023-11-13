@@ -34,10 +34,10 @@
 @import "spectre/utilities";
 
 // Components
-@import "panel";
 @import "graph";
 @import "profile";
 @import "search";
+@import "feed";
 @import "share";
 
 // Variables
@@ -53,11 +53,12 @@ $pride-color-7: #C7F8FF !default;
 body {
   background: $light-color;
   overflow-x: hidden;
+  width: 100vw;
 }
 
 .web3bio-container {
   min-height: 75vh;
-  padding: .5rem;
+  padding: .4rem 0;
   scroll-behavior: smooth;
   width: 100vw;
 }
@@ -70,6 +71,7 @@ body {
   left: 0;
   top: 0;
   background: rgba($color: #000000, $alpha: .3);
+  overscroll-behavior: contain;
   right: 0;
   bottom: 0;
   z-index: 100;
@@ -86,6 +88,14 @@ body {
     scroll-behavior: smooth;
     width: 100%;
 
+    @supports (height: 100dvh) {
+      max-height: calc(100dvh - .5rem);
+    }
+
+    @media screen and (max-width: $size-sm) {
+      padding: .5rem;
+    }
+
     .web3-profile-base {
       top: 0;
     }
@@ -98,8 +108,8 @@ body {
 
     .modal-close-icon {
       position: fixed;
-      right: 2rem;
-      top: 2rem;
+      right: 1rem;
+      top: 1rem;
       z-index: 99;
     }
   }
@@ -206,8 +216,8 @@ body {
 
   h1 {
     font-size: .8rem;
-    font-weight: 900;
-    letter-spacing: -.02rem;
+    font-weight: 700;
+    letter-spacing: -.025rem;
     line-height: .8rem;
     margin: 0;
   }
@@ -248,7 +258,7 @@ body {
 
   .web3bio-content-title {
     font-size: 1.6rem;
-    font-weight: 900;
+    font-weight: 700;
     line-height: 2rem;
 
     @media screen and (max-width: $size-md) {
@@ -311,7 +321,7 @@ body {
 
     h3 {
       font-size: 1rem;
-      font-weight: 800;
+      font-weight: 700;
     }
 
     h4 {
@@ -370,7 +380,7 @@ body {
 
         .name {
           font-size: .8rem;
-          font-weight: 800;
+          font-weight: 700;
           margin-left: .4rem;
         }
       }

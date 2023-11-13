@@ -3,9 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import SVG from "react-inlinesvg";
 import { useSearchParams } from "next/navigation";
 import { DefaultSearchSuffix, fuzzyDomainSuffix } from "../../utils/constants";
-import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import { PlatformType } from "../../utils/platform";
 import { matchQuery } from "../../utils/queries";
-import { handleSearchPlatform } from "../../utils/utils";
+import { handleSearchPlatform, SocialPlatformMapping } from "../../utils/utils";
 
 const isQuerySplit = (query: string) => {
   return query.includes(".") || query.includes("。");
@@ -78,7 +78,7 @@ export default function SearchInput(props) {
     }
   };
   useEffect(() => {
-    if (!query || query.length > 20 || query === searchParams?.get("s")) {
+    if (!query || query.length > 40 || query === searchParams?.get("s")) {
       setSearchList([]);
       return;
     }
@@ -118,21 +118,11 @@ export default function SearchInput(props) {
             });
           }
           if (!isLastDot || cur.label.length > 0) {
-            if (cur.maxLength) {
-              if (label?.length < cur.maxLength) {
-                pre.push({
-                  key: cur.key,
-                  icon: SocialPlatformMapping(cur.key).icon,
-                  label: label,
-                });
-              }
-            } else {
-              pre.push({
-                key: cur.key,
-                icon: SocialPlatformMapping(cur.key).icon,
-                label: label,
-              });
-            }
+            pre.push({
+              key: cur.key,
+              icon: SocialPlatformMapping(cur.key).icon,
+              label: label,
+            });
           }
 
           return pre;

@@ -1,9 +1,9 @@
 {
   "name": "Web3.bio",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
-    "dev": "rimraf .next && next dev",
+    "dev": "next dev",
     "build": "rimraf .next && next build",
     "export": "next export",
     "start": "next start",
@@ -12,15 +12,18 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
     "boring-avatars": "^1.7.0",
+    "geist": "^1.0.0",
+    "next": "^14.0.1",
     "qrcode": "^1.5.3",
     "react-dom": "^18.2.0",
     "react-infinite-scroll-hook": "^4.1.1",
+    "react-markdown": "^9.0.0",
     "react-qrcode-logo": "^2.9.0",
     "underscore": "^1.13.6",
     "wallet.ts": "^1.0.1"
   },
   "devDependencies": {
-    "@antv/g6": "^4.8.17",
+    "@antv/g6": "^4.8.23",
     "@apollo/client": "^3.6.9",
     "@types/node": "^18.7.14",
     "@types/react": "^18.0.18",
@@ -32,14 +35,13 @@
     "ethers": "^6.5.1",
     "graphql": "^15.8.0",
     "lodash": "^4.17.21",
-    "next": "^13.5.4",
     "nextjs-google-analytics": "^2.0.0",
     "react": "^18.2.0",
     "react-clipboard.js": "^2.0.16",
     "react-inlinesvg": "^4.0.4",
     "react-redux": "^8.0.5",
     "react-use": "^17.4.0",
-    "sass": "^1.53.0",
+    "sass": "^1.69.5",
     "swr": "^2.2.0",
     "typescript": "^4.8.2",
     "urlcat": "^2.0.4"

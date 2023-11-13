@@ -1,4 +1,5 @@
-import { PlatformType, SocialPlatformMapping } from "./platform";
+import { PlatformType } from "./platform";
+import { SocialPlatformMapping } from "./utils";
 
 // empty for twitter and farcaster
 export const DefaultSearchSuffix = [
@@ -13,7 +14,6 @@ export const DefaultSearchSuffix = [
   {
     key: PlatformType.twitter,
     label: "",
-    maxLength: 15,
   },
   {
     key: PlatformType.farcaster,

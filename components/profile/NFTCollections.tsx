@@ -1,9 +1,10 @@
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import useInfiniteScroll from "react-infinite-scroll-hook";
-import { resolveMediaURL } from "../../utils/utils";
 import { Empty } from "../shared/Empty";
 import { Loading } from "../shared/Loading";
+import SVG from "react-inlinesvg";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
+import { resolveMediaURL, NetworkMapping } from "../../utils/utils";
 import { CollectionSwitcher } from "./CollectionSwitcher";
 
 const RenderNFTCollections = (props) => {
@@ -135,8 +136,8 @@ const RenderNFTCollections = (props) => {
                       className="collection-logo"
                       src={x.image_url}
                       alt={x.name}
-                      width={"1.2rem"}
-                      height={"1.2rem"}
+                      width={24}
+                      height={24}
                     />
                     <div className="collection-name text-ellipsis">
                       {x.name}
@@ -177,15 +178,31 @@ const RenderNFTCollections = (props) => {
                           }
                         >
                           <div className="nft-item">
-                            <NFTAssetPlayer
-                              className="nft-img-container"
-                              src={mediaURL}
-                              type={type}
-                              alt={x.name + " - " + y.name}
-                              poster={y.previews.image_large_url}
-                              width={"100%"}
-                              height={"100%"}
-                            />
+                            <div className="nft-img-container">
+                              <NFTAssetPlayer
+                                className="img-container"
+                                src={mediaURL}
+                                type={type}
+                                alt={x.name + " - " + y.name}
+                                poster={y.previews.image_large_url}
+                                width={"100%"}
+                                height={"100%"}
+                                placeholder={true}
+                              />
+                              <div
+                                className={`preview-network ${y.chain}`}
+                                title={NetworkMapping(y.chain).label}
+                              >
+                                <SVG
+                                  fill={"#121212"}
+                                  src={NetworkMapping(y.chain).icon || ""}
+                                  className="preview-network-icon"
+                                />
+                                <span className="preview-network-name">
+                                  {NetworkMapping(y.chain).label}
+                                </span>
+                              </div>
+                            </div>
                             <div className="nft-collection-name">{x.name}</div>
                             <div className="nft-name">
                               {y.name || `${x.name} #${y.token_id}`}

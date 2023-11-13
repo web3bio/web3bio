@@ -7,7 +7,7 @@ import { PlatformType } from "../../utils/platform";
 
 const resolveSearchHandle = (identity) => {
   return {
-    [PlatformType.ethereum]: identity.displayName || identity.identity,
+    [PlatformType.ethereum]: identity.identity,
     [PlatformType.farcaster]: identity.identity,
     [PlatformType.lens]: identity.identity,
   }[identity.platform];
@@ -23,12 +23,12 @@ export const fetchProfile = async (identity) => {
         : identity.platform;
     const url =
       process.env.NEXT_PUBLIC_PROFILE_END_POINT +
-      `/profile/${platform.toLowerCase()}/${handle}`;
-    console.time(`Profile api call for ${handle}`);
+      `/ns/${platform.toLowerCase()}/${handle}`;
+    console.time(`Profile API call for ${handle}`);
     const res = await fetch(url, {
       next: { revalidate: 86400 },
     });
-    console.timeEnd(`Profile api call for ${handle}`);
+    console.timeEnd(`Profile API call for ${handle}`);
     return await res.json();
   } catch (e) {
     return null;

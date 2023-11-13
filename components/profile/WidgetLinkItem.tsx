@@ -4,7 +4,7 @@ import { memo, useState } from "react";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { PlatformType } from "../../utils/platform";
-import { SocialPlatformMapping } from "../../utils/platform";
+import { SocialPlatformMapping } from "../../utils/utils";
 
 const WidgetItem = (props) => {
   const onCopySuccess = () => {

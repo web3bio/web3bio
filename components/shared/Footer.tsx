@@ -1,6 +1,7 @@
 "use client";
 import SVG from "react-inlinesvg";
-import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import { PlatformType } from "../../utils/platform";
+import { SocialPlatformMapping } from "../../utils/utils";
 
 export const Footer = () => {
   return (

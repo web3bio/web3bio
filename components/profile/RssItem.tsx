@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function RssItem(props) {
   const { data } = props;
@@ -7,10 +8,12 @@ export default function RssItem(props) {
   return (
     <Link href={data.link} className="rss-item" target={"_blank"}>
       {data.itunes_image && (
-        <img
+        <Image
           src={data.itunes_image}
           className="rss-item-img"
           alt={data.title}
+          height={96}
+          width={200}
         />
       )}
       <div className="rss-item-title">

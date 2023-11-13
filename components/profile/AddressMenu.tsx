@@ -30,7 +30,7 @@ export default function AddressMenu({ profile }) {
           width={20}
           height={20}
           className="action"
-          style={{ transform: "rotate(90deg)" }}
+          style={{transform: "rotate(90deg)",}}
         />
       </div>
       <ul className="menu">

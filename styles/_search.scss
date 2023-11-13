@@ -16,13 +16,13 @@
 
   .form-label {
     font-size: 2.2rem;
-    font-weight: 900;
-    letter-spacing: -.05em;
+    font-weight: 700;
+    letter-spacing: -.025em;
     line-height: 1;
     margin: 1rem 0;
 
     @media screen and (max-width: $size-md) {
-      font-size: 2rem;
+      font-size: 1.6rem;
     }
 
     small {
@@ -157,13 +157,14 @@
   .search-result-body {
     display: flex;
     flex-direction: column;
-    padding: 0 .8rem .8rem .8rem;
+    padding: 0 .4rem .4rem .4rem;
   }
 
   .social-item {
     background: rgba($gray-color, .05);
     border-radius: $border-radius;
     display: flex;
+    flex-direction: column;
     margin-bottom: .2rem;
     position: relative;
     transition: all .2s ease-in;
@@ -204,10 +205,9 @@
     .social-main {
       align-items: center;
       display: flex;
-      flex: 1 1 1rem;
       overflow: hidden;
       padding: .4rem;
-      width: 80%;
+      width: 100%;
 
       .avatar {
         align-items: center;
@@ -229,9 +229,9 @@
           border-radius: .5rem;
 
           & + .icon {
-            bottom: -.7rem;
+            bottom: -.6rem;
             position: absolute;
-            right: -.7rem;
+            right: -.6rem;
             transform: scale(.5);
             z-index: 1;
           }
@@ -251,13 +251,20 @@
       }
     }
 
-    .social-actions {
-      padding: .25rem;
+    .actions {
+      align-items: center;
+      display: none;
+      margin-left: auto;
+
+      &.active {
+        display: flex;
+      }
 
       .action {
         background: rgba($dark-color, .035);
-        font-size: .6rem;
-        height: 100%;
+        height: 1.8rem;
+        line-height: 1.2rem;
+        position: relative;
       }
     }
 
@@ -275,48 +282,13 @@
       right: 0;
       top: -.2rem;
     }
-
-    &.social-web3 {
-      .social-main {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-    }
-
-    &.lens {
-      .icon {
-        background: #6bc674;
-        color: #ecf8ed;
-      }
-    }
-
-    &.farcaster {
-      .icon {
-        background: #8a63d2;
-        color: #fff;
-      }
-    }
-
-    &.spaceid {
-      .icon {
-        background: #71EBAA;
-        color: #fff;
-      }
-    }
-
-    &.nextid {
-      .icon {
-        background: #121212;
-        color: #fff;
-      }
-    }
   }
 
   .nfts {
     display: flex;
     flex-wrap: wrap;
     gap: .1rem;
-    margin-top: .4rem;
+    padding: 0 .8rem .4rem .8rem;
   }
 
   .label-ens {
@@ -337,25 +309,11 @@
     }
 
     .icon {
-      color: #5298FF;
+      color: #3741ba;
       flex: 0 0 .8rem;
       height: 1rem;
       margin-right: .2rem;
       width: 1rem;
-    }
-  }
-
-  .actions {
-    display: none;
-    margin-left: auto;
-    padding: .2rem;
-
-    .action {
-      align-items: center;
-      display: inline-flex;
-      font-size: .55rem;
-      line-height: 1.2rem;
-      position: relative;
     }
   }
 
@@ -372,9 +330,13 @@
   flex: 1;
   font-size: .6rem;
   line-height: 1rem;
-  padding: .1rem .1rem .1rem .3rem;
+  padding: .2rem .4rem;
   text-decoration: none;
   transition: all .25s ease-in-out;
+
+  @media screen and (max-width: $size-sm) {
+    padding: .2rem 0;
+  }
 
   .icon {
     align-items: center;
@@ -402,7 +364,7 @@
   .content-subtitle {
     align-items: center;
     display: flex;
-    font-size: .6rem;
+    font-size: .65rem;
     line-height: 1rem;
     max-width: 80%;
 
