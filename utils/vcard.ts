@@ -28,7 +28,6 @@ const generateVCardData = (profile) => {
 
 export function createVCardString(profile) {
   let vCardString = "";
-  const PHOTO = getFormattedPhoto("PHOTO", profile.avatar, "JPEG");
   const vCard = generateVCardData(profile);
   vCardString += "BEGIN:VCARD\n";
   vCardString += "VERSION:3.0\n";
@@ -36,7 +35,6 @@ export function createVCardString(profile) {
   for (const [key, value] of Object.entries(vCard)) {
     vCardString += `${key}:${value}\n`;
   }
-  vCardString += PHOTO;
   vCardString += "END:VCARD\n";
 
   return vCardString;
@@ -53,27 +51,4 @@ export function fetchAndConvertToBase64(url) {
         reader.readAsDataURL(blob);
       });
     });
-}
-
-function getFormattedPhoto(photoType, url, mediaType, base64?) {
-  const params = base64 ? ";ENCODING=b;TYPE=" : ";TYPE=";
-  var formattedPhoto = photoType + params + mediaType + ":" + e(url) + nl();
-  return formattedPhoto;
-}
-
-function nl() {
-  return "\r\n";
-}
-
-function e(value) {
-  if (value) {
-    if (typeof value !== "string") {
-      value = "" + value;
-    }
-    return value
-      .replace(/\n/g, "\\n")
-      .replace(/,/g, "\\,")
-      .replace(/;/g, "\\;");
-  }
-  return "";
 }
