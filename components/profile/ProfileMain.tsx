@@ -110,7 +110,7 @@ export default function ProfileMain(props) {
             </div>
 
             <div className="profile-badges">
-              {platform == "nextid" && (
+              {platform === PlatformType.nextid && (
                 <Clipboard
                   component="div"
                   className={`platform-badge nextid active c-hand`}
