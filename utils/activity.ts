@@ -189,6 +189,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
       default: "",
       update: "Updated the profile",
       renew: "Renewed the domain",
+      wrap: "Wrapped the domain"
     },
     prep: "",
   },
@@ -307,6 +308,10 @@ export interface ActivityTypeData {
 }
 
 export const TagsFilterMapping = {
+  ["all"]: {
+    label: "All Feeds",
+    filters: [],
+  },
   ["social"]: {
     label: "Social Feeds",
     filters: [ActivityTag.social],
@@ -323,9 +328,5 @@ export const TagsFilterMapping = {
   ["collectibles"]: {
     label: "Collectibles",
     filters: [ActivityTag.collectible, ActivityTag.metaverse],
-  },
-  ["all"]: {
-    label: "All feeds",
-    filters: [],
   },
 };

@@ -131,7 +131,9 @@
         display: flex;
         flex-wrap: nowrap;
         gap: .25rem;
+        margin-bottom: -.25rem;
         overflow: auto hidden;
+        padding-bottom: .25rem;
 
         .feed-content-img {
           align-items: center;
@@ -139,7 +141,8 @@
           flex: 0 0 auto;
           height: 100%;
 
-          .img-responsive {
+          .img-responsive,
+          .video-responsive {
             max-height: 8rem;
             object-fit: cover;
           }
@@ -149,7 +152,8 @@
       .feed-content-img {
         max-width: 16rem;
 
-        .img-responsive {
+        .img-responsive,
+        .video-responsive {
           background: $bg-color;
           border-radius: .4rem;
           box-shadow: 0 .1rem .2rem rgba($dark-color, .15);
@@ -189,13 +193,16 @@
             display: flex;
             flex-wrap: nowrap;
             gap: .25rem;
-            overflow-x: auto;
+            margin-bottom: -.25rem;
+            overflow: auto hidden;
+            padding-bottom: .25rem;
           }
   
           .feed-content-img {
             flex: 0 0 auto;
 
-            .img-responsive {
+            .img-responsive,
+            .video-responsive {
               max-height: 8rem;
             }
           }
