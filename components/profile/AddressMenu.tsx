@@ -1,6 +1,6 @@
 import Link from "next/link";
 import SVG from "react-inlinesvg";
-import { createVCardString } from "../../utils/vcard";
+import { generateVCardData } from "../../utils/vcard";
 
 export default function AddressMenu({ profile }) {
   const createDownloadLink = (data, filename) => {
@@ -13,7 +13,7 @@ export default function AddressMenu({ profile }) {
     return link;
   };
   const downloadVCard = () => {
-    const vCardData = createVCardString(profile);
+    const vCardData = generateVCardData(profile);
     const downloadLink = createDownloadLink(
       vCardData,
       `${profile.displayName}.vcf`
@@ -40,14 +40,6 @@ export default function AddressMenu({ profile }) {
             target="_blank"
           >
             View on Etherscan
-          </Link>
-        </li>
-        <li className="menu-item dropdown-menu-item">
-          <Link
-            href={`https://hoot.it/search/${profile.address}/activities`}
-            target="_blank"
-          >
-            View activities on Hoot
           </Link>
         </li>
         <li className="menu-item dropdown-menu-item">

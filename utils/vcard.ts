@@ -1,54 +1,30 @@
-import { PlatformData, PlatformType } from "./platform";
-import _ from "lodash";
+import { PlatformData } from "./platform";
 
-const generateVCardData = (profile) => {
-  const obj = {
-    FN: profile.displayName,
-    EMAIL: profile.email || "",
-    URL:
-      _.find(
-        profile.links,
-        (x) =>
-          x.platform === PlatformType.website || x.platform === PlatformType.url
-      )?.link || "",
-    ["PHOTO;VALUE=URL"]: profile.avatar,
-    NOTE: profile.description || "",
-    ["X-SOCIALPROFILE;type=Web3bio"]:
-      window.location.origin + "/" + profile.identity,
-  };
+export const generateVCardData = (profile) => {
+  let vCardString = "";
+  vCardString += "BEGIN:VCARD\r\n";
+  vCardString += "VERSION:3.0\r\n";
+  vCardString += `FN:${profile.displayName}\r\n`;
+  vCardString += `EMAIL:${profile.email}\r\n`;
+  vCardString += `NOTE:${profile.description || ""}\r\n`;
+  vCardString += `X-SOCIALPROFILE;type=Web3.bio;x-user=${profile.identity}:https://web3.bio/${profile.identity}\r\n`;
   profile.links.forEach((x) => {
     const platform = PlatformData[x.platform];
-    const prefix = "X-SOCIALPROFILE;" + `type=${platform.label}`;
-    if (platform) {
-      obj[prefix] = x.handle || x.link;
-    }
+    vCardString += `X-SOCIALPROFILE;type=${platform.label};x-user=${x.handle}${x.link ? ":" + x.link : ""}\r\n`;
   });
-  return obj;
+  vCardString += "END:VCARD\r\n";
+  return vCardString;
 };
 
-export function createVCardString(profile) {
-  let vCardString = "";
-  const vCard = generateVCardData(profile);
-  vCardString += "BEGIN:VCARD\n";
-  vCardString += "VERSION:3.0\n";
-
-  for (const [key, value] of Object.entries(vCard)) {
-    vCardString += `${key}:${value}\n`;
-  }
-  vCardString += "END:VCARD\n";
-
-  return vCardString;
-}
-
-export function fetchAndConvertToBase64(url) {
-  return fetch(url)
-    .then((response) => response.blob())
-    .then((blob) => {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(blob);
-      });
-    });
-}
+// export function fetchAndConvertToBase64(url) {
+//   return fetch(url)
+//     .then((response) => response.blob())
+//     .then((blob) => {
+//       return new Promise((resolve, reject) => {
+//         const reader = new FileReader();
+//         reader.onloadend = () => resolve(reader.result);
+//         reader.onerror = reject;
+//         reader.readAsDataURL(blob);
+//       });
+//     });
+// }
