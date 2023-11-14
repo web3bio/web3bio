@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { memo } from "react";
+import { ActivityType } from "../../utils/activity";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 import { ActivityTypeMapping, resolveMediaURL } from "../../utils/utils";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
@@ -13,7 +14,7 @@ const RenderSocialCard = (props) => {
   );
 
   switch (action.type) {
-    case "profile":
+    case ActivityType.profile:
       return (
         <>
           <div className="feed-content">
@@ -44,9 +45,12 @@ const RenderSocialCard = (props) => {
           )}
         </>
       );
-    case "post":
-    case "comment":
-      if (["Farcaster", "Lens"].includes(action.platform) && (metadata.body || metadata.media?.length)) {
+    case ActivityType.post:
+    case ActivityType.comment:
+      if (
+        ["Farcaster", "Lens"].includes(action.platform) &&
+        (metadata.body || metadata.media?.length)
+      ) {
         return (
           <>
             {metadata?.body && (
@@ -147,7 +151,7 @@ const RenderSocialCard = (props) => {
                 </span>
               )}
             </div>
-            {(metadata.body || metadata.media?.length) ? (
+            {metadata.body || metadata.media?.length ? (
               <div className="feed-content">
                 <Link
                   className="feed-target"
@@ -187,11 +191,13 @@ const RenderSocialCard = (props) => {
                   )}
                 </Link>
               </div>
-            ) : ""}
+            ) : (
+              ""
+            )}
           </>
         );
       }
-    case "mint":
+    case ActivityType.mint:
       return (
         <>
           <div className="feed-content">

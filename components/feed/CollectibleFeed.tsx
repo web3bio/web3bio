@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { memo } from "react";
+import { ActivityType } from "../../utils/activity";
 import { ActivityTypeMapping, formatText, resolveMediaURL } from "../../utils/utils";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { RenderIdentity } from "./FeedItem";
@@ -9,7 +10,7 @@ const RenderCollectibleCard = (props) => {
   const metadata = action?.metadata;
   
   switch (action.type) {
-    case ("mint"):
+    case ActivityType.mint:
       return (
         <>
           <div className="feed-content">
