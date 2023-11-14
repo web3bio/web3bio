@@ -36,27 +36,27 @@ const RenderAccount = (props) => {
     )
       return;
     const fetchProfileData = async (arr) => {
-      const promises = arr.map((data) => {
-        if (
-          data.identity &&
-          !profiles.some((x) =>
-            [x.identity, x.address].includes(data.identity.identity)
-          )
-        ) {
-          const res = fetchProfile(data.identity).then((res) => {
-            return {
-              uuid: data.identity.uuid,
-              ...res,
-            };
-          });
-          return res;
-        }
-      });
       try {
-        const results = await Promise.all(promises);
+        const promises = arr.map((data) => {
+          if (
+            data.identity &&
+            !profiles.some((x) =>
+              [x.identity, x.address].includes(data.identity.identity)
+            )
+          ) {
+            return fetchProfile(data.identity).then(x=>({
+              ...x,
+              uuid: data.identity.uuid
+            }));
+          }
+        });
+
+        const fetchResults = await Promise.all(promises).then((resArr) =>
+          resArr.filter((x) => x)
+        );
         await dispatch(
           updateUniversalBatchedProfile({
-            profiles: results.filter((x) => !!x.address),
+            profiles: fetchResults,
           })
         );
       } catch (error) {
@@ -65,9 +65,9 @@ const RenderAccount = (props) => {
         setProfileLoading(false);
       }
     };
-
     fetchProfileData(resultNeighbor);
   }, [graphTitle, resultNeighbor, dispatch, profiles]);
+
   return (
     <>
       <div className="search-result">
@@ -104,17 +104,11 @@ const RenderAccount = (props) => {
               ...cur,
               to: {
                 ...cur.to,
-                profile: _.find(
-                  profiles,
-                  (i) => i.uuid == cur.to.uuid
-                ),
+                profile: _.find(profiles, (i) => i.uuid == cur.to.uuid),
               },
               from: {
                 ...cur.from,
-                profile: _.find(
-                  profiles,
-                  (i) => i.uuid == cur.from.uuid
-                ),
+                profile: _.find(profiles, (i) => i.uuid == cur.from.uuid),
               },
             });
             return pre;
