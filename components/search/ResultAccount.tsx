@@ -66,7 +66,7 @@ const RenderAccount = (props) => {
       }
     };
     fetchProfileData(resultNeighbor);
-  }, [graphTitle, resultNeighbor, dispatch, profiles]);
+  }, [graphTitle, resultNeighbor, dispatch]);
 
   return (
     <>
