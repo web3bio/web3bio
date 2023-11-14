@@ -97,7 +97,7 @@ export default function ProfileMain(props) {
                     className="action"
                   />
                 </Clipboard>
-                <AddressMenu address={data.address} />
+                <AddressMenu profile={data} />
               </div>
               <button
                 className="profile-share btn btn-sm ml-2"
