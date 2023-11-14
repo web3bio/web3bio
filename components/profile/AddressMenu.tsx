@@ -23,7 +23,7 @@ export default function AddressMenu({ address }) {
         </li>
         <li className="menu-item dropdown-menu-item">
           <Link
-            href={`https://hoot.it/search/${address}/activities`}
+            href={`https://hoot.it/${address}`}
             target="_blank"
           >
             View activities on Hoot
