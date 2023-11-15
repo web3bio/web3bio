@@ -1,8 +1,9 @@
 "use client";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
+import Modal from "../../../../components/modal/Modal";
 import { Loading } from "../../../../components/shared/Loading";
-import Modal from "../../../../components/shared/Modal";
+
 export default function LoadingPage() {
   const pathname = usePathname();
   useEffect(() => {
@@ -17,5 +18,4 @@ export default function LoadingPage() {
       </div>
     </Modal>
   );
-  return null;
 }
