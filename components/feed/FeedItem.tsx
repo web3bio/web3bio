@@ -40,32 +40,6 @@ export const RenderToken = (token, key) => {
   );
 };
 
-export const RenderIdentity = (identity, type?) => {
-  console.log(identity, "handle", type);
-
-  const resolvedHandle =
-    typeof identity?.displayName === "string" ? identity.displayName : identity;
-  return (
-    resolvedHandle && (
-      <div className="feed-token">
-        {identity?.avatar && (
-          <Image
-            className="feed-token-icon"
-            src={identity.avatar}
-            alt={identity.displayName}
-            height={20}
-            width={20}
-            loading="lazy"
-          />
-        )}
-        <span className="feed-token-value" title={resolvedHandle}>
-          {formatText(resolvedHandle)}
-        </span>
-      </div>
-    )
-  );
-};
-
 const RenderFeedContent = (props) => {
   const { action, tag, id } = props;
   switch (tag) {

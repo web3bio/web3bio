@@ -1,38 +1,14 @@
-import { memo, useEffect, useRef, useState } from "react";
-import { fetchProfile } from "../../hooks/api/fetchProfile";
-import { useIsInViewport } from "../../hooks/useIsInViewport";
+import { memo } from "react";
 import { ActivityType } from "../../utils/activity";
 import { PlatformType } from "../../utils/platform";
-import { ActivityTypeMapping, debounce } from "../../utils/utils";
-import { RenderToken, RenderIdentity } from "./FeedItem";
+import { ActivityTypeMapping } from "../../utils/utils";
+import { RenderToken } from "./FeedItem";
 import _ from "lodash";
+import RenderProfileBadge from "../profile/RenderProfileBadge";
 
 const RenderTransactionCard = (props) => {
   const { action, id } = props;
   const metadata = action?.metadata;
-  const fetchCheckRef = useRef(null);
-  const isInViewport = useIsInViewport(fetchCheckRef?.current);
-  const [ctx, setCtx] = useState<any>(null);
-  useEffect(() => {
-    const fetchToProfile = async () => {
-      const res = await fetchProfile({
-        platform: PlatformType.ethereum,
-        identity: action.to,
-      });
-
-      setCtx(res);
-    };
-    const throttled = _.throttle(fetchToProfile, 500);
-
-    if (
-      action.type === ActivityType.transfer &&
-      isInViewport &&
-      !ctx &&
-      !ctx?.error
-    ) {
-      throttled();
-    }
-  }, [isInViewport, ctx, action, fetchCheckRef]);
 
   switch (action.type) {
     case ActivityType.liquidity:
@@ -87,7 +63,7 @@ const RenderTransactionCard = (props) => {
               ]
             }
             &nbsp;
-            {RenderIdentity(metadata.owner)}
+            <RenderProfileBadge identity={metadata.owner} />
             {action.platform && (
               <span className="feed-platform">&nbsp;on {action.platform}</span>
             )}
@@ -104,7 +80,7 @@ const RenderTransactionCard = (props) => {
               ]
             }
             &nbsp;
-            {RenderIdentity(metadata.address)}
+            <RenderProfileBadge identity={metadata.address} />
             {action.platform && (
               <span className="feed-platform">&nbsp;on {action.platform}</span>
             )}
@@ -113,7 +89,7 @@ const RenderTransactionCard = (props) => {
       );
     default:
       return (
-        <div ref={fetchCheckRef} className="feed-content">
+        <div className="feed-content">
           {
             ActivityTypeMapping(action.type).action[
               metadata.action || "default"
@@ -127,7 +103,10 @@ const RenderTransactionCard = (props) => {
           {action.to && ActivityTypeMapping(action.type).prep && (
             <>
               &nbsp;{ActivityTypeMapping(action.type).prep}&nbsp;
-              {RenderIdentity(!ctx || ctx.error ? action.to : ctx, action.type)}
+              <RenderProfileBadge
+                identity={action.to}
+                platform={PlatformType.ens}
+              />
             </>
           )}
           {action.platform && (

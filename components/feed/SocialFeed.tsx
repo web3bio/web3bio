@@ -3,8 +3,8 @@ import { memo } from "react";
 import { ActivityType } from "../../utils/activity";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 import { ActivityTypeMapping, resolveMediaURL } from "../../utils/utils";
+import RenderProfileBadge from "../profile/RenderProfileBadge";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { RenderIdentity } from "./FeedItem";
 
 const RenderSocialCard = (props) => {
   const { action } = props;
@@ -24,7 +24,7 @@ const RenderSocialCard = (props) => {
               ]
             }
             &nbsp;
-            {RenderIdentity(metadata.handle)}
+            <RenderProfileBadge identity={metadata.handle} />
             {action.platform && (
               <span className="feed-platform">&nbsp;on {action.platform}</span>
             )}
