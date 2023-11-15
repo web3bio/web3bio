@@ -7,7 +7,7 @@ import _ from "lodash";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
 
 const RenderTransactionCard = (props) => {
-  const { action, id } = props;
+  const { action, id, remoteFetch } = props;
   const metadata = action?.metadata;
 
   switch (action.type) {
@@ -106,7 +106,7 @@ const RenderTransactionCard = (props) => {
               <RenderProfileBadge
                 identity={action.to}
                 platform={PlatformType.ens}
-                remoteFetch
+                remoteFetch={remoteFetch}
               />
             </>
           )}

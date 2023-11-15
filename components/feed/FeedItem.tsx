@@ -16,6 +16,7 @@ import {
   SocialPlatformMapping,
 } from "../../utils/utils";
 import ActionExternalMenu from "./ActionExternalMenu";
+import { TagsFilterMapping } from "../../utils/activity";
 
 export const RenderToken = (token, key) => {
   return (
@@ -41,15 +42,17 @@ export const RenderToken = (token, key) => {
 };
 
 const RenderFeedContent = (props) => {
-  const { action, tag, id } = props;
+  const { action, tag, id, remoteFetch } = props;
   switch (tag) {
     case "social":
       return <SocialCard action={action} />;
     case "exchange":
     case "transaction":
-      return <TransactionCard id={id} action={action} />;
+      return (
+        <TransactionCard remoteFetch={remoteFetch} id={id} action={action} />
+      );
     case "collectible":
-      return <CollectibleCard action={action} />;
+      return <CollectibleCard remoteFetch={remoteFetch} action={action} />;
     default:
       return <DefaultCard action={action} />;
   }
@@ -121,7 +124,14 @@ const RenderFeedItem = (props) => {
             <RenderFeedContent action={action} tag={feed.tag} id={feed.id} />
           ) : (
             actions.map((x, index) => (
-              <RenderFeedContent key={index} action={x} tag={x.tag} />
+              <RenderFeedContent
+                remoteFetch={TagsFilterMapping.finance.filters.includes(
+                  feed.tag
+                )}
+                key={index}
+                action={x}
+                tag={x.tag}
+              />
             ))
           )}
         </div>

@@ -55,23 +55,23 @@ const RenderSocialFeeds = (props) => {
               </div>
             ) || null
         )}
-
-        {expand && (isLoadingMore || hasNextPage) && (
-          <div
-            ref={albumRef}
-            style={{
-              position: "relative",
-              width: "100%",
-              display: "flex",
-              height: "6rem",
-              justifyContent: "center",
-              paddingTop: "2rem",
-            }}
-          >
-            <Loading />
-          </div>
-        )}
       </div>
+
+      {expand && (isLoadingMore || hasNextPage) && (
+        <div
+          ref={albumRef}
+          style={{
+            position: "relative",
+            width: "100%",
+            display: "flex",
+            height: "6rem",
+            justifyContent: "center",
+            paddingTop: "2rem",
+          }}
+        >
+          <Loading />
+        </div>
+      )}
     </div>
   );
 };

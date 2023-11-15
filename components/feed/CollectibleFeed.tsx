@@ -10,7 +10,7 @@ import RenderProfileBadge from "../profile/RenderProfileBadge";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
 const RenderCollectibleCard = (props) => {
-  const { action } = props;
+  const { action,remoteFetch } = props;
   const metadata = action?.metadata;
 
   switch (action.type) {
@@ -96,7 +96,7 @@ const RenderCollectibleCard = (props) => {
             {action.to && ActivityTypeMapping(action.type).prep && (
               <>
                 &nbsp;{ActivityTypeMapping(action.type).prep}&nbsp;
-                <RenderProfileBadge identity={action.to} />
+                <RenderProfileBadge remoteFetch={remoteFetch} identity={action.to} />
               </>
             )}
             {action.platform && (
