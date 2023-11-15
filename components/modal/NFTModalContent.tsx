@@ -1,16 +1,14 @@
-import { memo, useEffect } from "react";
 import Link from "next/link";
 import SVG from "react-inlinesvg";
 import Markdown from "react-markdown";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { CollectionAbout } from "../profile/CollectionAbout";
 import { PlatformType } from "../../utils/platform";
-import { getSocialMediaLink, SocialPlatformMapping, NetworkMapping } from "../../utils/utils";
-
-export const enum NFTModalType {
-  NFT = "nft",
-  POAP = "poap",
-}
+import {
+  getSocialMediaLink,
+  SocialPlatformMapping,
+  NetworkMapping,
+} from "../../utils/utils";
 
 const renderSocialMediaLinks = (_collection) => {
   const renderArr = {
@@ -37,7 +35,12 @@ const renderSocialMediaLinks = (_collection) => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <SVG src={`../${SocialPlatformMapping(key as PlatformType).icon}`} fill="#121212" width={20} height={20} />
+          <SVG
+            src={`../${SocialPlatformMapping(key as PlatformType).icon}`}
+            fill="#121212"
+            width={20}
+            height={20}
+          />
         </Link>
       );
     }
@@ -45,116 +48,8 @@ const renderSocialMediaLinks = (_collection) => {
   return links;
 };
 
-const NFTModalRender = (props) => {
-  const { onClose, asset, type = NFTModalType.NFT } = props;
-
-  useEffect(() => {
-    const keyDownHandler = (event) => {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        onClose();
-      }
-    };
-
-    document.addEventListener("keydown", keyDownHandler);
-    return () => document.removeEventListener("keydown", keyDownHandler);
-  });
-
-  if (type === "poap")
-    return (
-      <>
-        <div id="nft-dialog" className="nft-preview">
-          <div className="preview-container">
-            <div
-              className="preview-overlay"
-              style={{
-                backgroundImage: "url(" + asset.mediaURL + ")",
-              }}
-              onClick={onClose}
-            ></div>
-            <div className="btn btn-close" onClick={onClose}>
-              <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
-            </div>
-            <div className="preview-image preview-image-poap">
-              <NFTAssetPlayer
-                className={"img-container"}
-                type={"image/png"}
-                src={asset.mediaURL}
-                alt={asset.asset.event.name}
-                placeholder={true}
-              />
-            </div>
-            <div className="preview-content">
-              <div className="panel-widget">
-                <div className="panel-widget-content">
-                  <div className="nft-header-collection collection-title mb-4">
-                    <SVG
-                      className="collection-logo"
-                      src="../icons/icon-poap.svg"
-                      width={24}
-                      height={24}
-                      color={"#5E58A5"}
-                    />
-                    <div className="collection-name text-ellipsis" style={{color: "#5E58A5"}}>POAP</div>
-                  </div>
-                  <div className="nft-header-name h4">{asset.asset.event.name}</div>
-                  <div className="nft-header-description mt-2 mb-4">
-                    {asset.asset.event.description}
-                  </div>
-                  {asset.asset.event.event_url && (
-                    <div className="panel-widget-content mt-4">
-                      <Link
-                        href={asset.asset.event.event_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn"
-                      >
-                        <SVG src={`../icons/icon-web.svg`} fill="#121212" width={20} height={20} />
-                        <span className="ml-1">Website</span>
-                      </Link>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className="panel-widget">
-                <div className="panel-widget-title">Attributes</div>
-                <div className="panel-widget-content">
-                  <div className="panel-widget-list">
-                    <div className="widget-list-item">
-                      <div className="list-item-left">Event Start</div>
-                      <div className="list-item-right">
-                        {asset.asset.event.start_date}
-                      </div>
-                    </div>
-                    {(asset.asset.event.city || asset.asset.event.country) && (
-                      <div className="widget-list-item">
-                        <div className="list-item-left">Event Location</div>
-                        <div className="list-item-right">
-                          {asset.asset.event.city} {asset.asset.event.country}
-                        </div>
-                      </div>
-                    )}
-                    <div className="widget-list-item">
-                      <div className="list-item-left">Chain</div>
-                      <div className="list-item-right">
-                        {asset.asset.chain}
-                      </div>
-                    </div>
-                    <div className="widget-list-item">
-                      <div className="list-item-left">POAP Supply</div>
-                      <div className="list-item-right">
-                        {asset.asset.event.supply}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </>
-    );
+export default function NFTModalContentRender(props) {
+  const { onClose, asset } = props;
   if (!asset) return null;
   const _asset = asset.asset;
   const _collection = _asset.collection;
@@ -193,7 +88,7 @@ const NFTModalRender = (props) => {
               alt={asset.collection?.name + _asset.name}
               poster={_asset.previews.image_large_url}
             />
-            
+
             <div
               className={`preview-network ${_asset.chain}`}
               title={NetworkMapping(_asset.chain).label}
@@ -226,7 +121,8 @@ const NFTModalRender = (props) => {
                     </div>
                   </div>
                   <div className="nft-header-name h4">
-                    {_asset.name || `${asset.collection.name} #${_asset.token_id}`}
+                    {_asset.name ||
+                      `${asset.collection.name} #${_asset.token_id}`}
                   </div>
                   <div className="nft-header-description mt-2 mb-4">
                     <Markdown>
@@ -249,7 +145,10 @@ const NFTModalRender = (props) => {
                     <div className="traits-cards">
                       {attributes.map((x, idx) => {
                         return (
-                          <div key={(x.attribute_name || x.trait_type) + idx} className="traits-card">
+                          <div
+                            key={(x.attribute_name || x.trait_type) + idx}
+                            className="traits-card"
+                          >
                             <div className="trait-type">
                               {x.attribute_name || x.trait_type}
                             </div>
@@ -272,6 +171,4 @@ const NFTModalRender = (props) => {
       </div>
     </>
   );
-};
-
-export const NFTModal = memo(NFTModalRender);
+}

@@ -9,6 +9,7 @@ import { Loading } from "../../../../components/shared/Loading";
 import { Error } from "../../../../components/shared/Error";
 import ProfileMain from "../../../../components/profile/ProfileMain";
 import Modal from "../../../../components/modal/Modal";
+import { ModalType } from "../../../../hooks/useModal";
 
 interface ProfileData {
   platform: PlatformType;
@@ -94,5 +95,9 @@ export default function ProfileModal({
       />
     );
   };
-  return <Modal onDismiss={() => router.back()}>{renderModalContent()}</Modal>;
+  return (
+    <Modal modalType={ModalType.common} onDismiss={() => router.back()}>
+      {renderModalContent()}
+    </Modal>
+  );
 }
