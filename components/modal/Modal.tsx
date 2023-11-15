@@ -1,5 +1,4 @@
 import { useCallback, useRef, useEffect } from "react";
-
 import SVG from "react-inlinesvg";
 import { ModalType } from "../../hooks/useModal";
 import MediaModalContent from "./MediaModalContent";
