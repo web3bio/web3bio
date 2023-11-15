@@ -50,26 +50,19 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
 
   return (
     <div ref={ref} className="feed-token">
-      {visible ? (
-        <>
-          {data?.avatar && (
-            <Image
-              className="feed-token-icon"
-              src={data.avatar}
-              alt={data.displayName}
-              height={20}
-              width={20}
-              loading="lazy"
-            />
-          )}
-          <span
-            className="feed-token-value"
-            title={data?.displayName || identity}
-          >
-            {formatText(data?.displayName || identity)}
-          </span>
-        </>
-      ) : null}
+      {data?.avatar && (
+        <Image
+          className="feed-token-icon"
+          src={data.avatar}
+          alt={data.displayName}
+          height={20}
+          width={20}
+          loading="lazy"
+        />
+      )}
+      <span className="feed-token-value" title={data?.displayName || identity}>
+        {formatText(data?.displayName || identity)}
+      </span>
     </div>
   );
 }
