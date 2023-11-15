@@ -55,7 +55,7 @@ export interface AssetPlayerProps {
   src: string;
   width?: number | string;
   height?: number | string;
-  onClick?: () => void;
+  onClick?: (e?) => void;
   alt: string;
   placeholder?: boolean;
   style?: React.CSSProperties;

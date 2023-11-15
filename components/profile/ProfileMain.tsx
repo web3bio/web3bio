@@ -203,6 +203,7 @@ export default function ProfileMain(props) {
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading Activity Feeds...</p>}>
                   <WidgetFeed
+                    openModal={openModal}
                     initialData={[]}
                     fromServer={fromServer}
                     profile={data}

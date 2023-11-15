@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { memo } from "react";
+import { ModalType } from "../../hooks/useModal";
 import { ActivityType } from "../../utils/activity";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 import { ActivityTypeMapping, resolveMediaURL } from "../../utils/utils";
@@ -7,7 +8,7 @@ import RenderProfileBadge from "../profile/RenderProfileBadge";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
 const RenderSocialCard = (props) => {
-  const { action } = props;
+  const { action, openModal } = props;
   const metadata = action?.metadata;
   const checkEmojis = /^(\p{Emoji}\uFE0F|\p{Emoji_Presentation})+$/gu.test(
     metadata?.body
@@ -70,22 +71,24 @@ const RenderSocialCard = (props) => {
               >
                 {metadata.media?.map((x) =>
                   x.mime_type.includes("image") ? (
-                    <Link
-                      className="feed-content-img"
-                      href={resolveMediaURL(x.address)}
-                      target="_blank"
+                    <NFTAssetPlayer
                       key={x.address}
-                    >
-                      <NFTAssetPlayer
-                        className="feed-content-img"
-                        src={resolveMediaURL(x.address)}
-                        type={x.mime_type}
-                        width="auto"
-                        height="auto"
-                        placeholder={true}
-                        alt={"Feed Image"}
-                      />
-                    </Link>
+                      onClick={(e) => {
+                        openModal(ModalType.media, {
+                          type: x.mime_type || "image/png",
+                          url: resolveMediaURL(x.address),
+                        });
+                        e.stopPropagation();
+                        e.preventDefault();
+                      }}
+                      className="feed-content-img"
+                      src={resolveMediaURL(x.address)}
+                      type={x.mime_type}
+                      width="auto"
+                      height="auto"
+                      placeholder={true}
+                      alt={"Feed Image"}
+                    />
                   ) : (
                     ""
                   )
@@ -116,6 +119,14 @@ const RenderSocialCard = (props) => {
                       {metadata.target?.media?.map((x) =>
                         x.mime_type.includes("image") ? (
                           <NFTAssetPlayer
+                            onClick={(e) => {
+                              openModal(ModalType.media, {
+                                type: x.mime_type || "image/png",
+                                url: resolveMediaURL(x.address),
+                              });
+                              e.stopPropagation();
+                              e.preventDefault();
+                            }}
                             className="feed-content-img"
                             src={resolveMediaURL(x.address)}
                             type={x.mime_type}
@@ -174,6 +185,14 @@ const RenderSocialCard = (props) => {
                         x.mime_type.includes("image") ||
                         x.mime_type.includes("video") ? (
                           <NFTAssetPlayer
+                            onClick={(e) => {
+                              openModal(ModalType.media, {
+                                type: x.mime_type || "image/png",
+                                url: resolveMediaURL(x.address),
+                              });
+                              e.stopPropagation();
+                              e.preventDefault();
+                            }}
                             className="feed-content-img"
                             src={resolveMediaURL(x.address)}
                             type={x.mime_type}
@@ -225,6 +244,14 @@ const RenderSocialCard = (props) => {
                   {metadata.media?.map((x) =>
                     x.mime_type.includes("image") ? (
                       <NFTAssetPlayer
+                        onClick={(e) => {
+                          openModal(ModalType.media, {
+                            type: x.mime_type || "image/png",
+                            url: resolveMediaURL(x.address),
+                          });
+                          e.stopPropagation();
+                          e.preventDefault();
+                        }}
                         className="feed-content-img"
                         src={resolveMediaURL(x.address)}
                         type={x.mime_type}
@@ -275,6 +302,14 @@ const RenderSocialCard = (props) => {
                     {metadata.target?.media?.map((x) =>
                       x.mime_type.includes("image") ? (
                         <NFTAssetPlayer
+                          onClick={(e) => {
+                            openModal(ModalType.media, {
+                              type: x.mime_type || "image/png",
+                              url: resolveMediaURL(x.address),
+                            });
+                            e.stopPropagation();
+                            e.preventDefault();
+                          }}
                           className="feed-content-img"
                           src={resolveMediaURL(x.address)}
                           type={x.mime_type}

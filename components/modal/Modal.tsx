@@ -2,6 +2,7 @@ import { useCallback, useRef, useEffect } from "react";
 
 import SVG from "react-inlinesvg";
 import { ModalType } from "../../hooks/useModal";
+import MediaModalContent from "./MediaModalContent";
 import NFTModalContentRender from "./NFTModalContent";
 import PoapsModalContent from "./PoapsModalContent";
 import ShareModalContent from "./ShareModalContent";
@@ -41,6 +42,8 @@ export default function Modal(props) {
         return <PoapsModalContent asset={params} onClose={onDismiss} />;
       case ModalType.share:
         return <ShareModalContent {...params} onClose={onDismiss} />;
+      case ModalType.media:
+        return <MediaModalContent {...params} onClose={onDismiss} />;
       default:
         return children;
     }

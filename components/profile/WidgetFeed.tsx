@@ -88,7 +88,7 @@ function useFeeds({ address, fromServer, initialData, filter }) {
   };
 }
 
-const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
+const RenderWidgetFeed = ({ profile, fromServer, initialData, openModal }) => {
   const [expand, setExpand] = useState(false);
   const [filter, setFilter] = useState("all");
   const { data, size, setSize, isValidating, isError, hasNextPage } = useFeeds({
@@ -108,7 +108,6 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
         behavior: "smooth",
       });
     }
-  
   }, [expand]);
 
   if ((!isValidating && !data?.length) || isError) return null;
@@ -141,6 +140,7 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData }) => {
         </div>
 
         <SocialFeeds
+          openModal={openModal}
           expand={expand}
           parentScrollRef={scrollContainer}
           identity={profile}

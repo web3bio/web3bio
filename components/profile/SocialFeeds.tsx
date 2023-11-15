@@ -14,6 +14,7 @@ const RenderSocialFeeds = (props) => {
     hasNextPage,
     isError,
     expand,
+    openModal
   } = props;
   const [albumRef] = useInfiniteScroll({
     loading: isLoadingMore,
@@ -51,7 +52,7 @@ const RenderSocialFeeds = (props) => {
           (x) =>
             (
               <div key={x.id} className={`feed-item`}>
-                <FeedItem network={network} identity={identity} feed={x} />
+                <FeedItem openModal={openModal} network={network} identity={identity} feed={x} />
               </div>
             ) || null
         )}

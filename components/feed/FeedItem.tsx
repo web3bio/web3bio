@@ -42,10 +42,10 @@ export const RenderToken = (token, key) => {
 };
 
 const RenderFeedContent = (props) => {
-  const { action, tag, id, remoteFetch } = props;
+  const { action, tag, id, remoteFetch, openModal } = props;
   switch (tag) {
     case "social":
-      return <SocialCard action={action} />;
+      return <SocialCard openModal={openModal} action={action} />;
     case "exchange":
     case "transaction":
       return (
@@ -59,7 +59,7 @@ const RenderFeedContent = (props) => {
 };
 
 const RenderFeedItem = (props) => {
-  const { feed, identity } = props;
+  const { feed, identity, openModal } = props;
   const isOwner = isSameAddress(feed.owner, identity.address);
   const platformName = feed.platform?.toLowerCase();
   const networkName = feed.network?.toLowerCase();
@@ -121,7 +121,12 @@ const RenderFeedItem = (props) => {
         </div>
         <div className="feed-item-body">
           {feed.tag === "social" ? (
-            <RenderFeedContent action={action} tag={feed.tag} id={feed.id} />
+            <RenderFeedContent
+              openModal={openModal}
+              action={action}
+              tag={feed.tag}
+              id={feed.id}
+            />
           ) : (
             actions.map((x, index) => (
               <RenderFeedContent
