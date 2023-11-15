@@ -15,9 +15,10 @@ interface RenderProfileBadgeProps {
 export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
   const { parentRef, identity, platform, remoteFetch } = props;
   const [visible, setVisible] = useState(false);
+  const [fetched, setFetched] = useState(false);
   const ref = useRef(null);
   const { data, isValidating, error } = useSWR(
-    remoteFetch && visible && identity && platform
+    !fetched && remoteFetch && visible && identity && platform
       ? process.env.NEXT_PUBLIC_PROFILE_END_POINT +
           `/ns/${platform.toLowerCase()}/${identity}`
       : null,
@@ -41,12 +42,16 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
     if (element) {
       observer.observe(element);
     }
+
+    if (data) {
+      setFetched(true);
+    }
     return () => {
       if (element) {
         observer.unobserve(element);
       }
     };
-  }, [parentRef]);
+  }, [parentRef, data]);
 
   return (
     <div ref={ref} className="feed-token">
