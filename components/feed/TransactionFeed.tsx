@@ -106,6 +106,7 @@ const RenderTransactionCard = (props) => {
               <RenderProfileBadge
                 identity={action.to}
                 platform={PlatformType.ens}
+                remoteFetch
               />
             </>
           )}

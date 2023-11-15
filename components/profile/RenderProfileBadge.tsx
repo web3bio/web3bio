@@ -3,8 +3,16 @@ import useSWR from "swr";
 import { ProfileFetcher } from "../apis/profile";
 import Image from "next/image";
 import { formatText } from "../../utils/utils";
+import { PlatformType } from "../../utils/platform";
 
-export default function RenderProfileBadge(props) {
+interface RenderProfileBadgeProps {
+  identity: string;
+  platform?: PlatformType;
+  remoteFetch?: boolean;
+  parentRef?: Element;
+}
+
+export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
   const { parentRef, identity, platform, remoteFetch } = props;
   const [visible, setVisible] = useState(false);
   const ref = useRef(null);
@@ -37,8 +45,8 @@ export default function RenderProfileBadge(props) {
         observer.unobserve(element);
       }
     };
-  }, []);
-  console.log(visible, "visible");
+  }, [parentRef]);
+
   return (
     <div ref={ref} className="feed-token">
       {visible ? (
