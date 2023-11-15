@@ -13,14 +13,12 @@ import { WidgetRSS } from "./WidgetRSS";
 import { WidgetPOAP } from "./WidgetPoap";
 import { WidgetDegenScore } from "./WidgetDegenScore";
 import { WidgetFeed } from "./WidgetFeed";
-import { NFTModal, NFTModalType } from "./NFTModal";
-import ShareModal from "../shared/ShareModal";
+import { NFTModal, NFTModalType } from "../modal/NFTModal";
+import ShareModal from "../modal/ShareModal";
 import ModalLink from "./ModalLink";
 import AddressMenu from "./AddressMenu";
 import { Avatar } from "../shared/Avatar";
-import { useSelector } from "react-redux";
-import { AppState } from "../../state";
-import { WidgetState } from "../../state/widgets/reducer";
+import useModal from "../../hooks/useModal";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, nfts, fromServer, relations, domain } =
@@ -29,8 +27,9 @@ export default function ProfileMain(props) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [openShare, setOpenShare] = useState(false);
   const [curAsset, setCurAsset] = useState(null);
+  const { isOpen, modalType, closeModal, openModal } = useModal();
   const [dialogType, setDialogType] = useState(NFTModalType.NFT);
-  const widgets = useSelector<AppState, WidgetState>((state) => state.widgets);
+
   const pathName = usePathname();
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
   const onCopySuccess = () => {

@@ -8,7 +8,7 @@ import { PlatformType } from "../../../../utils/platform";
 import { Loading } from "../../../../components/shared/Loading";
 import { Error } from "../../../../components/shared/Error";
 import ProfileMain from "../../../../components/profile/ProfileMain";
-import Modal from "../../../../components/shared/Modal";
+import Modal from "../../../../components/modal/Modal";
 
 interface ProfileData {
   platform: PlatformType;

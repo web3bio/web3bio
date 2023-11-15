@@ -24,7 +24,7 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
     ProfileFetcher,
     { keepPreviousData: true }
   );
-  console.log(remoteFetch,'kkkk')
+
   useEffect(() => {
     const element = ref?.current;
     const options = {

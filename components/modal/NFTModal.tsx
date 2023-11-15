@@ -3,7 +3,7 @@ import Link from "next/link";
 import SVG from "react-inlinesvg";
 import Markdown from "react-markdown";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { CollectionAbout } from "./CollectionAbout";
+import { CollectionAbout } from "../profile/CollectionAbout";
 import { PlatformType } from "../../utils/platform";
 import { getSocialMediaLink, SocialPlatformMapping, NetworkMapping } from "../../utils/utils";
 
