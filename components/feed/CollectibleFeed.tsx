@@ -26,7 +26,7 @@ const RenderCollectibleCard = (props) => {
             }
             &nbsp;
             <span 
-              className="feed-token"
+              className="feed-token c-hand"
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -66,6 +66,17 @@ const RenderCollectibleCard = (props) => {
                 className="feed-target"
                 href={action.related_urls[0]}
                 target="_blank"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  openModal(ModalType.nft, {
+                    remoteFetch: true,
+                    network: network,
+                    standard: metadata.standard,
+                    contractAddress: metadata.contract_address,
+                    tokenId: metadata.id,
+                  });
+                }}
               >
                 <div className="feed-target-name">
                   <strong>{metadata.title}</strong>
@@ -75,17 +86,6 @@ const RenderCollectibleCard = (props) => {
                   <div className={`feed-target-content media-gallery`}>
                     <NFTAssetPlayer
                       className="feed-content-img"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        openModal(ModalType.nft, {
-                          remoteFetch: true,
-                          network: network,
-                          standard: metadata.standard,
-                          contractAddress: metadata.contract_address,
-                          tokenId: metadata.id,
-                        });
-                      }}
                       src={resolveMediaURL(metadata.image_url)}
                       type={"image/png"}
                       width="auto"

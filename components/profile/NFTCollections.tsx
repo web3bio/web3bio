@@ -68,7 +68,7 @@ const RenderNFTCollections = (props) => {
       const scrollContainer = insideScrollContainer.current;
       parentScrollRef.current.scrollIntoView({
         behavior: "smooth",
-        block: "center",
+        block: "start",
       });
 
       if (scrollContainer && data) {

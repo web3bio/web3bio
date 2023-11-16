@@ -145,14 +145,14 @@ body {
 
           opacity: 0;
           position: absolute;
-          top: 2%;
-          right: 2%;
+          top: 1rem;
+          right: 1rem;
           transition: opacity .2s ease;
         }
 
         .modal-preview-image {
           &:hover {
-            &+.external-icon {
+            & + .external-icon {
               opacity: 1;
             }
           }

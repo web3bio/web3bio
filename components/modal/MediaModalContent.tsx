@@ -22,7 +22,7 @@ export default function MediaModalContent(props) {
           target={"_blank"}
           className="btn external-icon"
         >
-          <SVG src={"/icons/icon-open.svg"} width="16" height="16" />
+          <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
         </Link>
       </div>
     </div>

@@ -11,18 +11,19 @@ import {
 } from "../../utils/utils";
 import useSWR from "swr";
 import { SimplehashFetcher, SIMPLEHASH_URL } from "../apis/simplehash";
+import { NetworkData } from "../../utils/network";
 
 const renderSocialMediaLinks = (_collection) => {
   const renderArr = {
-    [PlatformType.website]: _collection.external_url,
-    [PlatformType.twitter]: _collection.twitter_username,
-    [PlatformType.medium]: _collection.medium_username,
-    [PlatformType.telegram]: _collection.telegram_url,
-    [PlatformType.opensea]: _collection.marketplace_pages?.find(
+    [PlatformType.website]: _collection?.external_url,
+    [PlatformType.twitter]: _collection?.twitter_username,
+    [PlatformType.medium]: _collection?.medium_username,
+    [PlatformType.telegram]: _collection?.telegram_url,
+    [PlatformType.opensea]: _collection?.marketplace_pages?.find(
       (x) => x.marketplace_id === PlatformType.opensea
     )?.collection_url,
-    [PlatformType.discord]: _collection.discord_url,
-    [PlatformType.instagram]: _collection.instagram_username,
+    [PlatformType.discord]: _collection?.discord_url,
+    [PlatformType.instagram]: _collection?.instagram_username,
   };
 
   const links = new Array();
@@ -33,7 +34,7 @@ const renderSocialMediaLinks = (_collection) => {
         <Link
           href={getSocialMediaLink(item, key as PlatformType) || ""}
           className="btn"
-          key={key + item}
+          key={key}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -52,10 +53,11 @@ const renderSocialMediaLinks = (_collection) => {
 
 export default function NFTModalContentRender(props) {
   const { onClose, asset } = props;
+  const assetNetwork = asset.network === NetworkData.binance_smart_chain ? "bsc" : asset.network;
   const { data: fetchedAsset, isValidating } = useSWR(
     asset?.remoteFetch
       ? SIMPLEHASH_URL +
-          `/api/v0/nfts/${asset.network}/${asset.contractAddress}/${asset.tokenId}`
+          `/api/v0/nfts/${assetNetwork}/${asset.contractAddress}/${asset.tokenId}`
       : null,
     SimplehashFetcher
   );
@@ -63,14 +65,14 @@ export default function NFTModalContentRender(props) {
   if (!asset || (asset.remoteFetch && !fetchedAsset)) return null;
 
   const _asset = fetchedAsset ? fetchedAsset : asset.asset;
-  const _collection = fetchedAsset
+  const _collection = fetchedAsset.collection
     ? fetchedAsset.collection
     : _asset.collection;
 
   const attributes = _asset.extra_metadata?.attributes || [];
   const mediaURL =
     fetchedAsset?.video_url ||
-    fetchedAsset?.previews.image_large_url ||
+    fetchedAsset?.previews?.image_large_url ||
     fetchedAsset?.image_url ||
     asset.mediaURL;
   return (
@@ -79,14 +81,14 @@ export default function NFTModalContentRender(props) {
         id="nft-dialog"
         className="nft-preview"
         style={{
-          ["--nft-primary-color" as string]: _asset.previews.predominant_color,
+          ["--nft-primary-color" as string]: _asset.previews?.predominant_color || "#000",
         }}
       >
         <div className="preview-container">
           <div
             className="preview-overlay"
             style={{
-              backgroundImage: "url(" + _asset.previews.image_medium_url + ")",
+              backgroundImage: "url(" + _asset.previews?.image_medium_url + ")",
             }}
             onClick={onClose}
           ></div>
@@ -105,7 +107,7 @@ export default function NFTModalContentRender(props) {
               src={mediaURL}
               placeholder={true}
               alt={_collection?.name + _asset.name}
-              poster={_asset.previews.image_large_url}
+              poster={_asset.previews?.image_large_url}
             />
 
             <div
@@ -130,21 +132,21 @@ export default function NFTModalContentRender(props) {
                     <NFTAssetPlayer
                       type={"image/png"}
                       className="collection-logo"
-                      src={_collection.image_url}
-                      alt={_collection.name}
+                      src={_collection?.image_url}
+                      alt={_collection?.name}
                       width={24}
                       height={24}
                     />
                     <div className="collection-name text-ellipsis">
-                      {_collection.name}
+                      {_collection?.name}
                     </div>
                   </div>
                   <div className="nft-header-name h4">
-                    {_asset.name || `${_collection.name} #${_asset.token_id}`}
+                    {_asset.name || `${_collection?.name} #${_asset.token_id}`}
                   </div>
                   <div className="nft-header-description mt-2 mb-4">
                     <Markdown>
-                      {_asset.description || _collection.description}
+                      {_asset.description || _collection?.description}
                     </Markdown>
                   </div>
 

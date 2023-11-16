@@ -104,7 +104,7 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData, openModal }) => {
     if (expand) {
       const anchorElement = document.getElementById("feeds");
       anchorElement?.scrollIntoView({
-        block: "center",
+        block: "start",
         behavior: "smooth",
       });
     }
@@ -129,7 +129,7 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData, openModal }) => {
             Activity Feeds
           </h2>
           <div className="widget-action">
-            <FeedFilter value={filter} onChange={(v) => setFilter(v)} />
+            <FeedFilter value={filter} onChange={(v) => { setFilter(v);setExpand(true);}} />
             <ExpandController
               expand={expand}
               onToggle={() => {
