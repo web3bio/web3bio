@@ -25,7 +25,20 @@ const RenderCollectibleCard = (props) => {
               ]
             }
             &nbsp;
-            <span className="feed-token">
+            <span 
+              className="feed-token"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                openModal(ModalType.nft, {
+                  remoteFetch: true,
+                  network: network,
+                  standard: metadata.standard,
+                  contractAddress: metadata.contract_address,
+                  tokenId: metadata.id,
+                });
+              }}
+            >
               {metadata.image_url && (
                 <NFTAssetPlayer
                   className="feed-token-icon"
@@ -109,8 +122,8 @@ const RenderCollectibleCard = (props) => {
               <>
                 &nbsp;{ActivityTypeMapping(action.type).prep}&nbsp;
                 <RenderProfileBadge
-                  remoteFetch={remoteFetch}
                   identity={action.to}
+                  remoteFetch={remoteFetch}
                 />
               </>
             )}

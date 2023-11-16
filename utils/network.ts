@@ -223,8 +223,8 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
     key: Network.erc1577,
     icon: "icons/icon-ethereum.svg",
     label: "ERC-1577",
-    primaryColor: "#3c3c3d",
-    bgColor: "#ebf3ff",
+    primaryColor: "#3741ba",
+    bgColor: "#ebecf8",
     scanPrefix: "",
   },
 };

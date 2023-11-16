@@ -458,6 +458,7 @@
       margin: 0 -1rem;
       overflow-x: auto;
       padding: 0 1rem;
+      touch-action: pan-y;
 
       .collection-item {
         border-radius: .6rem;
@@ -1264,6 +1265,66 @@
   display: flex;
   height: 6rem;
   width: 16rem;
+}
+
+// Profile Card
+.profile-card {
+  background: $light-color;
+  border-radius: .4rem;
+  box-shadow: 0 .2rem .6rem rgba($dark-color, .2);
+  display: flex;
+  flex-direction: column;
+  padding: .75rem;
+  transition: all .25s ease-in-out;
+  white-space: initial;
+  width: 14rem;
+
+  .profile-card-avatar {
+    height: 2rem;
+
+    .avatar,
+    svg {
+      border-radius: 50%;
+      box-shadow: 0 .1rem .6rem rgba($dark-color, .1);
+      height: 2rem;
+      width: 2rem;
+    }
+  }
+
+  .profile-card-name {
+    font-size: .75rem;
+    font-weight: 700;
+    line-height: 1.25;
+    margin: .5rem 0 .25rem 0;
+  }
+
+  .profile-card-address {
+    align-items: center;
+    color: $gray-color;
+    display: flex;
+    font-size: .65rem;
+
+    &:focus,
+    &:hover {
+      color: $gray-color-dark;
+    }
+  }
+
+  .profile-card-description {
+    display: -webkit-box;
+    font-size: .65rem;
+    margin-top: .25rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .profile-card-action {
+    position: absolute;
+    right: .5rem;
+    top: .5rem;
+  }
 }
 
 // Footer

@@ -2,8 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { ProfileFetcher } from "../apis/profile";
 import Image from "next/image";
+import Link from "next/link";
+import SVG from "react-inlinesvg";
+import Clipboard from "react-clipboard.js";
 import { formatText } from "../../utils/utils";
 import { PlatformType } from "../../utils/platform";
+import { Avatar } from "../shared/Avatar";
 
 interface RenderProfileBadgeProps {
   identity: string;
@@ -13,7 +17,7 @@ interface RenderProfileBadgeProps {
 }
 
 export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
-  const { parentRef, identity, platform, remoteFetch } = props;
+  const { parentRef, identity, platform = PlatformType.ens, remoteFetch } = props;
   const [visible, setVisible] = useState(false);
   const [fetched, setFetched] = useState(false);
   const ref = useRef(null);
@@ -66,8 +70,49 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
         />
       )}
       <span className="feed-token-value" title={data?.displayName || identity}>
-        {formatText(data?.displayName || identity)}
+        {data?.displayName || formatText(identity)}
       </span>
+      {(data && !data?.error) && (
+        <div className="profile-card">
+          <div className="profile-card-action">
+            <Link href={`${process.env.NEXT_PUBLIC_BASE_URL}/${data?.identity}`} target="_blank" className="btn btn-sm">
+              <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
+            </Link>
+          </div>
+          <div className="profile-card-avatar">
+            {(data?.avatar || data?.identity) && (
+              <Avatar
+                src={data?.avatar}
+                identity={data?.identity}
+                className="avatar"
+                alt={`${data?.displayName} Profile Photo`}
+                height={40}
+                width={40}
+              />
+            )}
+          </div>
+          <div className="profile-card-name">
+            {data?.displayName || formatText(identity)}
+          </div>
+          <Clipboard
+            component="div"
+            className="profile-card-address c-hand"
+            data-clipboard-text={data?.address}
+            title="Copy the wallet address"
+          >
+            {formatText(data?.address)}
+            <SVG
+              src="../icons/icon-copy.svg"
+              width={20}
+              height={20}
+              className="action"
+            />
+          </Clipboard>
+          <div className="profile-card-description">
+            {data?.description}
+          </div>
+        </div>
+      )}
     </div>
-  );
+  )
 }
