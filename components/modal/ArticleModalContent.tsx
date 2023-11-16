@@ -10,7 +10,7 @@ export default function ArticleModalContent({ ctx, baseURL }) {
   };
   return (
     <div className="modal-article-container">
-      <Markdown>{"### " + resolveImageWithMarkdown(ctx)}</Markdown>
+      <Markdown>{resolveImageWithMarkdown(ctx)}</Markdown>
     </div>
   );
 }
