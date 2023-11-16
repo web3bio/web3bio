@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { memo } from "react";
+import { ModalType } from "../../hooks/useModal";
 import { ActivityType } from "../../utils/activity";
 import {
   ActivityTypeMapping,
@@ -10,7 +11,7 @@ import RenderProfileBadge from "../profile/RenderProfileBadge";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
 const RenderCollectibleCard = (props) => {
-  const { action,remoteFetch } = props;
+  const { action, remoteFetch, openModal, network } = props;
   const metadata = action?.metadata;
 
   switch (action.type) {
@@ -61,6 +62,17 @@ const RenderCollectibleCard = (props) => {
                   <div className={`feed-target-content media-gallery`}>
                     <NFTAssetPlayer
                       className="feed-content-img"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        openModal(ModalType.nft, {
+                          remoteFetch: true,
+                          network: network,
+                          standard: metadata.standard,
+                          contractAddress: metadata.contract_address,
+                          tokenId: metadata.id,
+                        });
+                      }}
                       src={resolveMediaURL(metadata.image_url)}
                       type={"image/png"}
                       width="auto"
@@ -96,7 +108,10 @@ const RenderCollectibleCard = (props) => {
             {action.to && ActivityTypeMapping(action.type).prep && (
               <>
                 &nbsp;{ActivityTypeMapping(action.type).prep}&nbsp;
-                <RenderProfileBadge remoteFetch={remoteFetch} identity={action.to} />
+                <RenderProfileBadge
+                  remoteFetch={remoteFetch}
+                  identity={action.to}
+                />
               </>
             )}
             {action.platform && (
