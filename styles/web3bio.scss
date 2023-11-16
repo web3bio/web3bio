@@ -116,6 +116,9 @@ body {
       box-sizing: border-box;
       overflow-y: auto;
       border-radius: .5rem;
+      img{
+        width: 100%;
+      }
     }
 
     .modal-preview-container {
