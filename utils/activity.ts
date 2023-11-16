@@ -313,7 +313,7 @@ export const TagsFilterMapping = {
     filters: [],
   },
   ["social"]: {
-    label: "Social Feeds",
+    label: "Social",
     filters: [ActivityTag.social],
   },
   ["finance"]: {

@@ -3,8 +3,8 @@ import { ActivityType } from "../../utils/activity";
 import { PlatformType } from "../../utils/platform";
 import { ActivityTypeMapping } from "../../utils/utils";
 import { RenderToken } from "./FeedItem";
-import _ from "lodash";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
+import _ from "lodash";
 
 const RenderTransactionCard = (props) => {
   const { action, id, remoteFetch } = props;
@@ -63,7 +63,9 @@ const RenderTransactionCard = (props) => {
               ]
             }
             &nbsp;
-            <RenderProfileBadge identity={metadata.owner} />
+            {metadata.owner && (
+              <RenderProfileBadge identity={metadata.owner} remoteFetch={remoteFetch} />
+            )}
             {action.platform && (
               <span className="feed-platform">&nbsp;on {action.platform}</span>
             )}
@@ -80,7 +82,9 @@ const RenderTransactionCard = (props) => {
               ]
             }
             &nbsp;
-            <RenderProfileBadge identity={metadata.address} />
+            {metadata.address && (
+              <RenderProfileBadge identity={metadata.address} remoteFetch={remoteFetch} />
+            )}
             {action.platform && (
               <span className="feed-platform">&nbsp;on {action.platform}</span>
             )}
@@ -105,7 +109,6 @@ const RenderTransactionCard = (props) => {
               &nbsp;{ActivityTypeMapping(action.type).prep}&nbsp;
               <RenderProfileBadge
                 identity={action.to}
-                platform={PlatformType.ens}
                 remoteFetch={remoteFetch}
               />
             </>

@@ -12,7 +12,7 @@
   .profile-share-body {
     flex: 1;
     gap: .2rem;
-    padding: 1rem 0;
+    padding: 0;
   }
 
   .profile-share-footer {
@@ -43,6 +43,7 @@
     border-radius: .5rem;
     flex-direction: column;
     background: rgba($dark-color, .04);
+    padding: .5rem;
 
     @media screen and (max-width: $size-md) {
       min-height: 8rem;

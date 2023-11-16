@@ -225,14 +225,15 @@
         border: .05rem solid $border-color;
         border-radius: .3rem;
         box-shadow: 0 .05rem .2rem rgba($dark-color, .05);
+        cursor: default;
         display: inline-flex;
         flex-wrap: nowrap;
         gap: .2rem;
         height: 1.2rem;
         margin: .05rem 0;
         max-width: 100%;
-        overflow: hidden;
         padding: .1rem .2rem;
+        position: relative;
         text-overflow: ellipsis;
         white-space: nowrap;
         word-break: keep-all;
@@ -260,6 +261,21 @@
           color: $gray-color-dark;
           font-size: 85%;
           line-height: 1.2rem;
+        }
+
+        .profile-card {
+          bottom: 100%;
+          display: none;
+          left: 50%;
+          position: absolute;
+          transform: translateX(-50%);
+        }
+
+        &:focus,
+        &:hover {
+          .profile-card {
+            display: flex;
+          }
         }
       }
     }
