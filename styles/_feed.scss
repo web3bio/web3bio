@@ -186,7 +186,11 @@
         }
 
         .feed-target-content {
-          margin-top: .25rem;
+          display: -webkit-box;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 6;
           word-break: break-word;
           width: 100%;
 
@@ -198,7 +202,7 @@
             overflow: auto hidden;
             padding-bottom: .25rem;
           }
-  
+
           .feed-content-img {
             flex: 0 0 auto;
 
@@ -211,6 +215,7 @@
       }
 
       a.feed-target {
+
         &:focus,
         &:hover {
           border-color: darken($border-color, 2%);
