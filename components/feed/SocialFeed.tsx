@@ -172,7 +172,19 @@ const RenderSocialCard = (props) => {
                   <div className="feed-target-name">
                     <strong>{metadata.title || metadata.handle}</strong>
                   </div>
-                  <div className="feed-target-content">
+                  <div
+                    className="feed-target-content"
+                    onClick={(e) => {
+                      if (metadata.body) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        openModal(ModalType.article, {
+                          ctx: metadata.body,
+                          title: metadata.title,
+                        });
+                      }
+                    }}
+                  >
                     {metadata.summary || metadata.body}
                   </div>
                   {metadata.media?.length > 0 && (

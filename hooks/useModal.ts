@@ -6,6 +6,7 @@ export enum ModalType {
   media = "media",
   share = "share",
   common = "common",
+  article = 'article'
 }
 
 const useModal = () => {

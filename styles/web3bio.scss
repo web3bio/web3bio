@@ -105,6 +105,20 @@ body {
       max-width: 24rem;
     }
 
+    .modal-article-container {
+      width: 100%;
+      height: fit-content;
+      background: #fff;
+      max-width: 70%;
+      min-height: 20vh;
+      max-height: 95vh;
+      margin: auto;
+      padding: 1.25rem;
+      box-sizing: border-box;
+      overflow-y: auto;
+      border-radius: .5rem;
+    }
+
     .modal-preview-container {
       width: 100%;
       height: 100%;
@@ -122,9 +136,10 @@ body {
         }
 
         .external-icon {
-          &:hover{
+          &:hover {
             opacity: 1;
           }
+
           opacity: 0;
           position: absolute;
           top: 2%;
