@@ -1,6 +1,6 @@
 import Link from "next/link";
 import SVG from "react-inlinesvg";
-const domainRegexp = /^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)/;
+export const domainRegexp = /^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)/;
 
 export default function ActionExternalMenu({ links, timestamp }) {
   return (

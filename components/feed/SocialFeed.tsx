@@ -6,6 +6,7 @@ import { resolveIPFS_URL } from "../../utils/ipfs";
 import { ActivityTypeMapping, resolveMediaURL } from "../../utils/utils";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
+import { domainRegexp } from "./ActionExternalMenu";
 
 const RenderSocialCard = (props) => {
   const { action, openModal } = props;
@@ -180,7 +181,11 @@ const RenderSocialCard = (props) => {
                         e.stopPropagation();
                         openModal(ModalType.article, {
                           ctx: metadata.body,
-                          title: metadata.title,
+                          baseURL: `https://${
+                            domainRegexp.exec(
+                              action.content_uri || action.related_urls[0]
+                            )?.[1]
+                          }`,
                         });
                       }
                     }}
