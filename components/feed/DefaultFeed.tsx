@@ -4,23 +4,33 @@ import { ActivityTypeMapping, resolveMediaURL } from "../../utils/utils";
 import { RenderToken } from "./FeedItem";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { isArray } from "@apollo/client/cache/inmemory/helpers";
+import { ActivityType } from "../../utils/activity";
 
 const RenderDefaultCard = (props) => {
-  const { action } = props;
+  const { action, id } = props;
   const metadata = action?.metadata;
 
   switch (action.type) {
-    case ("donate"):
+    case ActivityType.donate:
       return (
         <>
           <div className="feed-content">
-            {ActivityTypeMapping(action.type).action[metadata?.action||"default"]}&nbsp;
-            {RenderToken(metadata?.token)}&nbsp;
+            {
+              ActivityTypeMapping(action.type).action[
+                metadata?.action || "default"
+              ]
+            }
+            &nbsp;
+            {RenderToken(
+              metadata?.token,
+              `${id}_${ActivityType.donate}_${metadata?.token.name}`
+            )}
+            &nbsp;
             {ActivityTypeMapping(action.type).prep}&nbsp;
             <strong>{metadata.title}</strong>
             {action.platform && (
               <span className="feed-platform">&nbsp;on {action.platform}</span>
-            )} 
+            )}
           </div>
           {metadata && (
             <div className="feed-content">
@@ -30,9 +40,7 @@ const RenderDefaultCard = (props) => {
                 target="_blank"
               >
                 <div className="feed-target-name">
-                  <strong>
-                  {metadata.title}
-                  </strong>
+                  <strong>{metadata.title}</strong>
                 </div>
                 <div className="feed-target-content">
                   <NFTAssetPlayer
@@ -44,27 +52,37 @@ const RenderDefaultCard = (props) => {
                     type={"image/png"}
                     alt={metadata.title}
                   />
-                  <div className="feed-target-description">{metadata.description}</div>
+                  <div className="feed-target-description">
+                    {metadata.description}
+                  </div>
                 </div>
               </Link>
             </div>
           )}
         </>
       );
-    case ("vote"):
+    case ActivityType.vote:
       const choices = JSON.parse(metadata?.choice || "[]");
       return (
         <>
           <div className="feed-content">
-            {ActivityTypeMapping(action.type).action[metadata?.action||"default"]}&nbsp;
-            {isArray(choices) ? (
-                choices.map((x) => (
-                  <span className="feed-token" key={x}>{metadata.proposal?.options[x - 1]}</span>
-                )
-              )) : (
-                <span className="feed-token">{metadata.proposal?.options[choices - 1]}</span>
-              )
+            {
+              ActivityTypeMapping(action.type).action[
+                metadata?.action || "default"
+              ]
             }
+            &nbsp;
+            {isArray(choices) ? (
+              choices.map((x) => (
+                <span className="feed-token" key={x}>
+                  {metadata.proposal?.options[x - 1]}
+                </span>
+              ))
+            ) : (
+              <span className="feed-token">
+                {metadata.proposal?.options[choices - 1]}
+              </span>
+            )}
             {action.platform && (
               <span className="feed-platform">&nbsp;on {action.platform}</span>
             )}
@@ -77,12 +95,13 @@ const RenderDefaultCard = (props) => {
                 target="_blank"
               >
                 <div className="feed-target-name">
-                  <strong>
-                  {metadata.proposal?.title}
-                  </strong>
+                  <strong>{metadata.proposal?.title}</strong>
                 </div>
                 <div className="feed-target-content">
-                  {metadata.proposal?.organization.name} <small className="text-gray-dark">({metadata.proposal?.organization.id})</small>
+                  {metadata.proposal?.organization.name}{" "}
+                  <small className="text-gray-dark">
+                    ({metadata.proposal?.organization.id})
+                  </small>
                 </div>
               </Link>
             </div>
@@ -92,7 +111,11 @@ const RenderDefaultCard = (props) => {
     default:
       return (
         <div className="feed-content">
-          {ActivityTypeMapping(action.type).action[metadata?.action||"default"]}
+          {
+            ActivityTypeMapping(action.type).action[
+              metadata?.action || "default"
+            ]
+          }
           {action.platform && (
             <span className="feed-platform">&nbsp;on {action.platform}</span>
           )}

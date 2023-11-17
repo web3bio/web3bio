@@ -65,7 +65,7 @@ export function minus(a: BigNumber.Value, b: BigNumber.Value) {
 }
 
 /** 10 ** n */
-/** @deprecated use scale10 */
+/** deprecated use scale10 */
 export function pow10(n: BigNumber.Value) {
     return new BigNumber(10).pow(n)
 }

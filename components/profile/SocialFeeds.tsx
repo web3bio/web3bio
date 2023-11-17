@@ -14,6 +14,7 @@ const RenderSocialFeeds = (props) => {
     hasNextPage,
     isError,
     expand,
+    openModal
   } = props;
   const [albumRef] = useInfiniteScroll({
     loading: isLoadingMore,
@@ -21,33 +22,57 @@ const RenderSocialFeeds = (props) => {
     onLoadMore: getNext,
     hasNextPage: hasNextPage,
   });
+
+  if (!data?.length && isLoadingMore)
+    return (
+      <Loading
+        styles={
+          expand
+            ? {
+                width: "100%",
+                display: "flex",
+                height: "6rem",
+                justifyContent: "center",
+                padding: "2rem 0",
+              }
+            : {
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%,-50%)",
+              }
+        }
+      />
+    );
   if (!data) return <Empty text="No Social Feeds" />;
   return (
     <div className="widget-feeds-container">
       <div className="feeds-list">
-        {data.map((x) => (
-            <div key={x.id} className={`feed-item`}>
-              <FeedItem network={network} identity={identity} feed={x} />
-            </div>
-          ) ||
-          null
-        )}
-        {expand && (isLoadingMore || hasNextPage) && (
-          <div
-            ref={albumRef}
-            style={{
-              position: "relative",
-              width: "100%",
-              display: "flex",
-              height: "6rem",
-              justifyContent: "center",
-              paddingTop: "2rem",
-            }}
-          >
-            <Loading />
-          </div>
+        {data.map(
+          (x) =>
+            (
+              <div key={x.id} className={`feed-item`}>
+                <FeedItem openModal={openModal} network={network} identity={identity} feed={x} />
+              </div>
+            ) || null
         )}
       </div>
+
+      {expand && (isLoadingMore || hasNextPage) && (
+        <div
+          ref={albumRef}
+          style={{
+            position: "relative",
+            width: "100%",
+            display: "flex",
+            height: "6rem",
+            justifyContent: "center",
+            paddingTop: "2rem",
+          }}
+        >
+          <Loading />
+        </div>
+      )}
     </div>
   );
 };

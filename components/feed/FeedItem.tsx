@@ -7,64 +7,65 @@ import { DefaultCard } from "./DefaultFeed";
 import { TransactionCard } from "./TransactionFeed";
 import { SocialCard } from "./SocialFeed";
 import { CollectibleCard } from "./CollectibleFeed";
-import { 
-  NetworkMapping, 
-  ActivityTypeMapping, 
-  formatValue, 
-  formatText, 
-  isSameAddress, 
-  SocialPlatformMapping 
+import {
+  NetworkMapping,
+  ActivityTypeMapping,
+  formatValue,
+  formatText,
+  isSameAddress,
+  SocialPlatformMapping,
 } from "../../utils/utils";
 import ActionExternalMenu from "./ActionExternalMenu";
+import { TagsFilterMapping } from "../../utils/activity";
 
-export const RenderToken = (token) => {
+export const RenderToken = (token, key) => {
   return (
-    token && <div className="feed-token" key={token.name} title={token.name}>
-      {token.image && (
-        <Image
-          className="feed-token-icon"
-          src={token.image}
-          alt={token.name}
-          height={20}
-          width={20}
-          loading="lazy"
-        />
-      )}
-      <span className="feed-token-value" title={formatValue(token)}>
-        {formatText(formatValue(token))} 
-      </span>
-      <small className="feed-token-meta">{token.symbol}</small>
-    </div>
-  );
-};
-
-export const RenderIdentity = (identity) => {
-  return (
-    identity && <div className="feed-token">
-      <span className="feed-token-value" title={identity}>
-        {formatText(identity)}
-      </span>
-    </div>
+    token && (
+      <div className="feed-token" key={key} title={token.name}>
+        {token.image && (
+          <Image
+            className="feed-token-icon"
+            src={token.image}
+            alt={token.name}
+            height={20}
+            width={20}
+            loading="lazy"
+          />
+        )}
+        <span className="feed-token-value" title={formatValue(token)}>
+          {formatText(formatValue(token))}
+        </span>
+        <small className="feed-token-meta">{token.symbol}</small>
+      </div>
+    )
   );
 };
 
 const RenderFeedContent = (props) => {
-  const { action, tag } = props;
+  const { action, tag, id, openModal, network } = props;
   switch (tag) {
-    case ("social"):
-      return <SocialCard action={action} />;
-    case ("exchange"):
-    case ("transaction"):
-      return <TransactionCard action={action} />;
-    case ("collectible"):
-      return <CollectibleCard action={action} />;
+    case "social":
+      return <SocialCard openModal={openModal} action={action} />;
+    case "exchange":
+    case "transaction":
+      return (
+        <TransactionCard id={id} action={action} />
+      );
+    case "collectible":
+      return (
+        <CollectibleCard
+          network={network}
+          openModal={openModal}
+          action={action}
+        />
+      );
     default:
       return <DefaultCard action={action} />;
   }
 };
 
 const RenderFeedItem = (props) => {
-  const { feed, identity } = props;
+  const { feed, identity, openModal } = props;
   const isOwner = isSameAddress(feed.owner, identity.address);
   const platformName = feed.platform?.toLowerCase();
   const networkName = feed.network?.toLowerCase();
@@ -79,7 +80,7 @@ const RenderFeedItem = (props) => {
           {networkName && platformName !== "lens" ? (
             <div
               className={`feed-icon-platform ${networkName}`}
-              style={{backgroundColor: NetworkMapping(networkName).bgColor,}}
+              style={{ backgroundColor: NetworkMapping(networkName).bgColor }}
               title={NetworkMapping(networkName).label}
             >
               <SVG
@@ -90,7 +91,7 @@ const RenderFeedItem = (props) => {
           ) : (
             <div
               className={`feed-icon-platform ${platformName}`}
-              style={{backgroundColor: NetworkMapping(platformName).bgColor,}}
+              style={{ backgroundColor: NetworkMapping(platformName).bgColor }}
               title={NetworkMapping(platformName).label}
             >
               <SVG
@@ -118,15 +119,30 @@ const RenderFeedItem = (props) => {
             >
               {new Date(feed.timestamp * 1000).toLocaleString()}
             </Link>
-            <ActionExternalMenu links={action?.related_urls||[]} timestamp={feed.timestamp} />
+            <ActionExternalMenu
+              links={action?.related_urls || []}
+              timestamp={feed.timestamp}
+            />
           </div>
         </div>
         <div className="feed-item-body">
           {feed.tag === "social" ? (
-              <RenderFeedContent action={action} tag={feed.tag} />
+            <RenderFeedContent
+              network={feed.network}
+              openModal={openModal}
+              action={action}
+              tag={feed.tag}
+              id={feed.id}
+            />
           ) : (
             actions.map((x, index) => (
-              <RenderFeedContent key={index} action={x} tag={x.tag} />
+              <RenderFeedContent
+                openModal={openModal}
+                network={feed.network}
+                key={index}
+                action={x}
+                tag={x.tag}
+              />
             ))
           )}
         </div>
