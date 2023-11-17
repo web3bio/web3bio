@@ -7,7 +7,7 @@ import RenderProfileBadge from "../profile/RenderProfileBadge";
 import _ from "lodash";
 
 const RenderTransactionCard = (props) => {
-  const { action, id, remoteFetch } = props;
+  const { action, id } = props;
   const metadata = action?.metadata;
 
   switch (action.type) {
@@ -64,7 +64,7 @@ const RenderTransactionCard = (props) => {
             }
             &nbsp;
             {metadata.owner && (
-              <RenderProfileBadge identity={metadata.owner} remoteFetch={remoteFetch} />
+              <RenderProfileBadge identity={metadata.owner} remoteFetch />
             )}
             {action.platform && (
               <span className="feed-platform">&nbsp;on {action.platform}</span>
@@ -83,7 +83,7 @@ const RenderTransactionCard = (props) => {
             }
             &nbsp;
             {metadata.address && (
-              <RenderProfileBadge identity={metadata.address} remoteFetch={remoteFetch} />
+              <RenderProfileBadge identity={metadata.address} remoteFetch />
             )}
             {action.platform && (
               <span className="feed-platform">&nbsp;on {action.platform}</span>
@@ -109,7 +109,7 @@ const RenderTransactionCard = (props) => {
               &nbsp;{ActivityTypeMapping(action.type).prep}&nbsp;
               <RenderProfileBadge
                 identity={action.to}
-                remoteFetch={remoteFetch}
+                remoteFetch
               />
             </>
           )}

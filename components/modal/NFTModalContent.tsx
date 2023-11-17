@@ -53,11 +53,11 @@ const renderSocialMediaLinks = (_collection) => {
 
 export default function NFTModalContentRender(props) {
   const { onClose, asset } = props;
-  const assetNetwork = asset.network === NetworkData.binance_smart_chain ? "bsc" : asset.network;
+  
   const { data: fetchedAsset, isValidating } = useSWR(
     asset?.remoteFetch
       ? SIMPLEHASH_URL +
-          `/api/v0/nfts/${assetNetwork}/${asset.contractAddress}/${asset.tokenId}`
+          `/api/v0/nfts/${asset.network}/${asset.contractAddress}/${asset.tokenId}`
       : null,
     SimplehashFetcher
   );
@@ -65,7 +65,7 @@ export default function NFTModalContentRender(props) {
   if (!asset || (asset.remoteFetch && !fetchedAsset)) return null;
 
   const _asset = fetchedAsset ? fetchedAsset : asset.asset;
-  const _collection = fetchedAsset.collection
+  const _collection = fetchedAsset
     ? fetchedAsset.collection
     : _asset.collection;
 

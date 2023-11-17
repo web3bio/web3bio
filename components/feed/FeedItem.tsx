@@ -42,21 +42,20 @@ export const RenderToken = (token, key) => {
 };
 
 const RenderFeedContent = (props) => {
-  const { action, tag, id, remoteFetch, openModal, network } = props;
+  const { action, tag, id, openModal, network } = props;
   switch (tag) {
     case "social":
       return <SocialCard openModal={openModal} action={action} />;
     case "exchange":
     case "transaction":
       return (
-        <TransactionCard remoteFetch={remoteFetch} id={id} action={action} />
+        <TransactionCard id={id} action={action} />
       );
     case "collectible":
       return (
         <CollectibleCard
           network={network}
           openModal={openModal}
-          remoteFetch={remoteFetch}
           action={action}
         />
       );
@@ -140,9 +139,6 @@ const RenderFeedItem = (props) => {
               <RenderFeedContent
                 openModal={openModal}
                 network={feed.network}
-                remoteFetch={TagsFilterMapping.finance.filters.includes(
-                  feed.tag
-                )}
                 key={index}
                 action={x}
                 tag={x.tag}

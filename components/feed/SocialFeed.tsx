@@ -217,7 +217,7 @@ const RenderSocialCard = (props) => {
                             width="auto"
                             height="100%"
                             placeholder={true}
-                            alt={metadata.body}
+                            alt={"Feed Image"}
                           />
                         ) : (
                           ""
@@ -276,7 +276,7 @@ const RenderSocialCard = (props) => {
                         width="auto"
                         height="100%"
                         placeholder={true}
-                        alt={metadata.body}
+                        alt={"Feed Image"}
                       />
                     ) : (
                       ""
