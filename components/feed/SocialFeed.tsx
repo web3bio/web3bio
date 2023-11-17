@@ -49,19 +49,34 @@ const RenderSocialCard = (props) => {
       );
     case ActivityType.post:
     case ActivityType.comment:
+    case ActivityType.share:
       if (
-        ["Farcaster", "Lens"].includes(action.platform) &&
-        (metadata.body || metadata.media?.length)
+        ["Farcaster", "Lens"].includes(action.platform) ||
+        (metadata.body || metadata.media?.length || metadata.target) &&
+        !metadata.summary
       ) {
         return (
           <>
-            {metadata?.body && (
+            {metadata?.body ? (
               <div
                 className={`feed-content text-large${
                   checkEmojis ? " text-emoji" : ""
                 }`}
               >
                 {metadata?.body}
+              </div>
+            ) : (
+              <div className="feed-content">
+                {
+                  ActivityTypeMapping(action.type).action[
+                    metadata.action || "default"
+                  ]
+                }
+                {action.platform && (
+                  <span className="feed-platform">
+                    &nbsp;on {action.platform}
+                  </span>
+                )}
               </div>
             )}
             {metadata?.media?.length > 0 && (
@@ -148,7 +163,7 @@ const RenderSocialCard = (props) => {
             )}
           </>
         );
-      } else {
+      } else if (metadata.summary) {
         return (
           <>
             <div className="feed-content">
@@ -163,7 +178,7 @@ const RenderSocialCard = (props) => {
                 </span>
               )}
             </div>
-            {metadata.body || metadata.media?.length ? (
+            {metadata.summary ? (
               <div className="feed-content">
                 <Link
                   className="feed-target"
@@ -171,10 +186,10 @@ const RenderSocialCard = (props) => {
                   target="_blank"
                 >
                   <div className="feed-target-name">
-                    <strong>{metadata.title || metadata.handle}</strong>
+                    <strong>{metadata.title}</strong>
                   </div>
                   <div
-                    className="feed-target-content"
+                    className="feed-target-description"
                     onClick={(e) => {
                       if (metadata.body) {
                         e.preventDefault();
@@ -190,41 +205,8 @@ const RenderSocialCard = (props) => {
                       }
                     }}
                   >
-                    {metadata.summary || metadata.body}
+                    {metadata.summary}
                   </div>
-                  {metadata.media?.length > 0 && (
-                    <div
-                      className={`feed-target-content${
-                        metadata.media?.length > 1 ? " media-gallery" : ""
-                      }`}
-                    >
-                      {metadata.media?.map((x) =>
-                        x.mime_type.includes("image") ||
-                        x.mime_type.includes("video") ? (
-                          <NFTAssetPlayer
-                            onClick={(e) => {
-                              openModal(ModalType.media, {
-                                type: x.mime_type || "image/png",
-                                url: resolveMediaURL(x.address),
-                              });
-                              e.stopPropagation();
-                              e.preventDefault();
-                            }}
-                            className="feed-content-img"
-                            src={resolveMediaURL(x.address)}
-                            type={x.mime_type}
-                            key={x.address}
-                            width="auto"
-                            height="100%"
-                            placeholder={true}
-                            alt={"Feed Image"}
-                          />
-                        ) : (
-                          ""
-                        )
-                      )}
-                    </div>
-                  )}
                 </Link>
               </div>
             ) : (
