@@ -58,7 +58,7 @@ export default function AddressMenu({ profile }) {
               downloadVCard();
             }}
           >
-            Export Profile vCard
+            Download Profile vCard
           </Link>
         </li>
       </ul>
