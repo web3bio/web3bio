@@ -16,7 +16,7 @@ export default function AddressMenu({ profile }) {
     const vCardData = generateVCardData(profile);
     const downloadLink = createDownloadLink(
       vCardData,
-      `${profile.displayName}.vcf`
+      `${profile.identity}.vcard`
     );
     document.body.appendChild(downloadLink);
     downloadLink.click();
