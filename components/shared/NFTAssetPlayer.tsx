@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import ImagePlaceholder from "./ImgPlaceholder";
 import Image from "next/image";
 
@@ -34,12 +34,12 @@ const shimmer = (w: number, h: number) => `
     <rect width="${w}" height="${h}" fill="rgba(233,233,233,.5)" />
     <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
     <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1.25s" repeatCount="indefinite"  />
-  </svg>`
+  </svg>`;
 
 const toBase64 = (str: string) =>
-  typeof window === 'undefined'
-    ? Buffer.from(str).toString('base64')
-    : window.btoa(str)
+  typeof window === "undefined"
+    ? Buffer.from(str).toString("base64")
+    : window.btoa(str);
 
 function isImage(type: string) {
   return Object.values(MediaType).includes(type as MediaType);
@@ -55,22 +55,29 @@ export interface AssetPlayerProps {
   src: string;
   width?: number | string;
   height?: number | string;
-  onClick?: () => void;
+  onClick?: (e?) => void;
   alt: string;
-  placeholder? : boolean;
+  placeholder?: boolean;
   style?: React.CSSProperties;
   poster?: string;
 }
 
-function renderImage(props: AssetPlayerProps) {
+function ImageRender(props: AssetPlayerProps) {
   const { width, height, placeholder, src, alt } = props;
   return (
     <Image
       width={typeof width === "number" ? width : 0}
       height={typeof height === "number" ? height : 0}
-      placeholder={placeholder ? `data:image/svg+xml;base64,${toBase64(shimmer(100, 100))}` : "empty"}
+      placeholder={
+        placeholder
+          ? `data:image/svg+xml;base64,${toBase64(shimmer(100, 100))}`
+          : "empty"
+      }
       className="img-responsive"
-      style={{ width: width ? width : "100%", height: height ? height : "auto" }}
+      style={{
+        width: width ? width : "100%",
+        height: height ? height : "auto",
+      }}
       src={src}
       alt={alt}
       loading={"lazy"}
@@ -78,15 +85,18 @@ function renderImage(props: AssetPlayerProps) {
   );
 }
 
-function renderVideo(props: AssetPlayerProps) {
+function VideoRender(props: AssetPlayerProps) {
   const { src, type, poster } = props;
   const videoType = type?.replaceAll(VideoType.QUICKTIME, VideoType.MP4);
-
-  return (
+  const [isError, setIsError] = useState(false);
+  return isError ? (
+    <div>❌ This video is currently not available {src}</div>
+  ) : (
     <video
       className="video-responsive"
       width={"100%"}
       height={"100%"}
+      onError={() => setIsError(true)}
       muted
       autoPlay
       loop
@@ -103,9 +113,17 @@ const RenderNFTAssetPlayer = (props: AssetPlayerProps) => {
 
   function renderContent() {
     if (!props.src) return <ImagePlaceholder alt={props.alt} />;
-    if (isImage(type)) return renderImage(props);
-    if (isVideo(type)) return renderVideo(props);
-    return <ImagePlaceholder alt={props.alt} style={{ width: props.width ? props.width : "100%", height: props.height ? props.height : "auto" }} />;
+    if (isImage(type)) return <ImageRender {...props} />;
+    if (isVideo(type)) return <VideoRender {...props} />;
+    return (
+      <ImagePlaceholder
+        alt={props.alt}
+        style={{
+          width: props.width ? props.width : "100%",
+          height: props.height ? props.height : "auto",
+        }}
+      />
+    );
   }
 
   return (

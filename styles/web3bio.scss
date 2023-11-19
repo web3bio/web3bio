@@ -78,7 +78,6 @@ body {
 
   .web3bio-modal-container {
     position: relative;
-    background: #fff;
     border-radius: 1rem;
     height: 100%;
     max-height: calc(100vh - 1rem);
@@ -104,6 +103,70 @@ body {
       height: auto;
       max-height: calc(100vh - 4rem);
       max-width: 24rem;
+      padding: 2rem;
+    }
+
+    .modal-article-container {
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      max-width: 90%;
+      max-height: 90vh;
+      margin: auto;
+      padding: 1.25rem;
+      box-sizing: border-box;
+      overflow-y: auto;
+      border-radius: .5rem;
+      img{
+        width: 100%;
+      }
+    }
+
+    .modal-preview-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .preview-image-container {
+        position: relative;
+
+        .btn {
+          width: unset;
+          height: unset;
+          padding: .2rem
+        }
+
+        .external-icon {
+          &:hover {
+            opacity: 1;
+          }
+
+          opacity: 0;
+          position: absolute;
+          top: 1rem;
+          right: 1rem;
+          transition: opacity .2s ease;
+        }
+
+        .modal-preview-image {
+          &:hover {
+            & + .external-icon {
+              opacity: 1;
+            }
+          }
+
+          max-height: 95vh;
+          object-fit: contain;
+
+          .video-responsive,
+          .img-responsive {
+            border-radius: .5rem;
+            max-height: 95vh;
+          }
+        }
+      }
     }
 
     .modal-close-icon {
@@ -480,6 +543,7 @@ body {
   0% {
     background-position-x: 0em;
   }
+
   100% {
     background-position-x: 25em;
   }

@@ -131,7 +131,9 @@
         display: flex;
         flex-wrap: nowrap;
         gap: .25rem;
+        margin-bottom: -.25rem;
         overflow: auto hidden;
+        padding-bottom: .25rem;
 
         .feed-content-img {
           align-items: center;
@@ -139,7 +141,8 @@
           flex: 0 0 auto;
           height: 100%;
 
-          .img-responsive {
+          .img-responsive,
+          .video-responsive {
             max-height: 8rem;
             object-fit: cover;
           }
@@ -147,9 +150,11 @@
       }
 
       .feed-content-img {
+        cursor: pointer;
         max-width: 16rem;
 
-        .img-responsive {
+        .img-responsive,
+        .video-responsive {
           background: $bg-color;
           border-radius: .4rem;
           box-shadow: 0 .1rem .2rem rgba($dark-color, .15);
@@ -173,6 +178,7 @@
 
         .feed-target-description {
           display: -webkit-box;
+          margin-top: .25rem;
           text-overflow: ellipsis;
           overflow: hidden;
           padding-right: 1rem;
@@ -182,20 +188,21 @@
 
         .feed-target-content {
           margin-top: .25rem;
-          word-break: break-word;
-          width: 100%;
 
           &.media-gallery {
             display: flex;
             flex-wrap: nowrap;
             gap: .25rem;
-            overflow-x: auto;
+            margin-bottom: -.25rem;
+            overflow: auto hidden;
+            padding-bottom: .25rem;
           }
-  
+
           .feed-content-img {
             flex: 0 0 auto;
 
-            .img-responsive {
+            .img-responsive,
+            .video-responsive {
               max-height: 8rem;
             }
           }
@@ -223,8 +230,8 @@
         height: 1.2rem;
         margin: .05rem 0;
         max-width: 100%;
-        overflow: hidden;
         padding: .1rem .2rem;
+        position: relative;
         text-overflow: ellipsis;
         white-space: nowrap;
         word-break: keep-all;
@@ -252,6 +259,21 @@
           color: $gray-color-dark;
           font-size: 85%;
           line-height: 1.2rem;
+        }
+
+        .profile-card {
+          bottom: 100%;
+          display: none;
+          left: 50%;
+          position: absolute;
+          transform: translateX(-50%);
+        }
+
+        &:focus,
+        &:hover {
+          .profile-card {
+            display: flex;
+          }
         }
       }
     }

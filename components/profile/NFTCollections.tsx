@@ -40,7 +40,6 @@ const RenderNFTCollections = (props) => {
         if (!item) return;
         const itemReact = item.getBoundingClientRect();
         if (itemReact.y <= 250 && itemReact.y + itemReact.height > 250) {
-
           if (activeCollection !== item?.id) {
             setActiveCollection(item?.id);
           }
@@ -69,8 +68,7 @@ const RenderNFTCollections = (props) => {
       const scrollContainer = insideScrollContainer.current;
       parentScrollRef.current.scrollIntoView({
         behavior: "smooth",
-        block: "center",
-        inline: "nearest",
+        block: "start",
       });
 
       if (scrollContainer && data) {
@@ -167,7 +165,8 @@ const RenderNFTCollections = (props) => {
                                 description: y.collection.description,
                                 name: x.name,
                                 id: y.collection.collection_id,
-                                address: y.contract_address || y.collection.address,
+                                address:
+                                  y.contract_address || y.collection.address,
                               },
                               asset: y,
                               mediaURL:

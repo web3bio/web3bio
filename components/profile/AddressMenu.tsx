@@ -1,6 +1,27 @@
 import Link from "next/link";
 import SVG from "react-inlinesvg";
-export default function AddressMenu({ address }) {
+import { generateVCardData } from "../../utils/vcard";
+
+export default function AddressMenu({ profile }) {
+  const createDownloadLink = (data, filename) => {
+    var blob = new Blob([data], { type: "text/vcard" });
+
+    var link = document.createElement("a");
+    link.href = window.URL.createObjectURL(blob);
+    link.download = filename;
+
+    return link;
+  };
+  const downloadVCard = () => {
+    const vCardData = generateVCardData(profile);
+    const downloadLink = createDownloadLink(
+      vCardData,
+      `${profile.identity}.vcard`
+    );
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  };
   return (
     <>
       <div className="btn btn-sm dropdown-toggle" tabIndex={0}>
@@ -15,7 +36,7 @@ export default function AddressMenu({ address }) {
       <ul className="menu">
         <li className="menu-item dropdown-menu-item">
           <Link
-            href={`https://etherscan.io/address/${address}`}
+            href={`https://etherscan.io/address/${profile.address}`}
             target="_blank"
           >
             View on Etherscan
@@ -23,18 +44,21 @@ export default function AddressMenu({ address }) {
         </li>
         <li className="menu-item dropdown-menu-item">
           <Link
-            href={`https://hoot.it/search/${address}/activities`}
+            href={`https://debank.com/profile/${profile.address}`}
             target="_blank"
           >
-            View activities on Hoot
+            View assets on DeBank
           </Link>
         </li>
         <li className="menu-item dropdown-menu-item">
           <Link
-            href={`https://debank.com/profile/${address}`}
-            target="_blank"
+            href="/"
+            onClick={(e) => {
+              e.preventDefault();
+              downloadVCard();
+            }}
           >
-            View assets on DeBank
+            Download Profile vCard
           </Link>
         </li>
       </ul>
