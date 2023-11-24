@@ -37,6 +37,10 @@
   position: sticky;
   top: 2rem;
 
+  @media screen and (max-width: $size-sm) {
+    padding-top: 1.5rem;
+  }
+
   .profile-avatar {
     align-items: center;
     border-radius: 50%;
@@ -258,12 +262,12 @@
   .profile-widget-full {
     aspect-ratio: auto;
     height: auto;
-    max-height: calc(100vh - 1rem);
+    max-height: 100vh;
     padding: .5rem;
     width: 100%;
 
-    @supports (height: 100dvh) {
-      max-height: calc(100dvh - .5rem);
+    @supports (max-height: 100dvh) {
+      max-height: 100dvh;
     }
   }
 
@@ -586,9 +590,10 @@
       position: relative;
       flex: 1 1;
       height: 100%;
+      margin: 0 -1rem;
       overflow-y: auto;
       overscroll-behavior: contain;
-      padding: 0 .5rem;
+      padding: 0 1rem;
 
       .nft-collection-list {
         .nft-collection-item {
