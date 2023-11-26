@@ -50,6 +50,7 @@ const RenderSocialCard = (props) => {
     case ActivityType.post:
     case ActivityType.comment:
     case ActivityType.share:
+    case ActivityType.revise:
       if (
         ["Mirror"].includes(action.platform) || 
         metadata.summary
@@ -68,34 +69,32 @@ const RenderSocialCard = (props) => {
             </div>
             {metadata.body && (
               <div className="feed-content">
-                <Link
-                  className="feed-target"
-                  href={action.related_urls[0]}
-                  target="_blank"
+                <div
+                  className="feed-target c-hand"
+                  onClick={(e) => {
+                    if (metadata.body) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      openModal(ModalType.article, {
+                        title: metadata.title,
+                        content: metadata.body,
+                        baseURL: `https://${
+                          domainRegexp.exec(
+                            action.content_uri || action.related_urls[0]
+                          )?.[1]
+                        }`,
+                        link: action.content_uri,
+                      });
+                    }
+                  }}
                 >
                   <div className="feed-target-name">
                     <strong>{metadata.title}</strong>
                   </div>
-                  <div
-                    className="feed-target-description"
-                    onClick={(e) => {
-                      if (metadata.body) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        openModal(ModalType.article, {
-                          ctx: metadata.body,
-                          baseURL: `https://${
-                            domainRegexp.exec(
-                              action.content_uri || action.related_urls[0]
-                            )?.[1]
-                          }`,
-                        });
-                      }
-                    }}
-                  >
+                  <div className="feed-target-description">
                     {metadata.body}
                   </div>
-                </Link>
+                </div>
               </div>
             )}
             {metadata.target && (
@@ -332,23 +331,7 @@ const RenderSocialCard = (props) => {
                 <div className="feed-target-name">
                   <strong>{metadata.title}</strong>
                 </div>
-                <div
-                  className="feed-target-description"
-                  onClick={(e) => {
-                    if (metadata.body) {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      openModal(ModalType.article, {
-                        ctx: metadata.body,
-                        baseURL: `https://${
-                          domainRegexp.exec(
-                            action.content_uri || action.related_urls[0]
-                          )?.[1]
-                        }`,
-                      });
-                    }
-                  }}
-                >
+                <div className="feed-target-description">
                   {metadata.body}
                 </div>
               </Link>
