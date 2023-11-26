@@ -51,10 +51,100 @@ const RenderSocialCard = (props) => {
     case ActivityType.comment:
     case ActivityType.share:
       if (
-        ["Farcaster", "Lens"].includes(action.platform) ||
-        (metadata.body || metadata.media?.length || metadata.target) &&
-        !metadata.summary
+        ["Mirror"].includes(action.platform) || 
+        metadata.summary
       ) {
+        return (
+          <>
+            <div className="feed-content">
+              {
+                ActivityTypeMapping(action.type).action[
+                  metadata.action || "default"
+                ]
+              }
+              {action.platform && (
+                <span className="feed-platform">&nbsp;on {action.platform}</span>
+              )}
+            </div>
+            {metadata.body && (
+              <div className="feed-content">
+                <Link
+                  className="feed-target"
+                  href={action.related_urls[0]}
+                  target="_blank"
+                >
+                  <div className="feed-target-name">
+                    <strong>{metadata.title}</strong>
+                  </div>
+                  <div
+                    className="feed-target-description"
+                    onClick={(e) => {
+                      if (metadata.body) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        openModal(ModalType.article, {
+                          ctx: metadata.body,
+                          baseURL: `https://${
+                            domainRegexp.exec(
+                              action.content_uri || action.related_urls[0]
+                            )?.[1]
+                          }`,
+                        });
+                      }
+                    }}
+                  >
+                    {metadata.body}
+                  </div>
+                </Link>
+              </div>
+            )}
+            {metadata.target && (
+              <div className="feed-content">
+                <Link
+                  className="feed-target"
+                  href={resolveIPFS_URL(metadata.target_url) || ""}
+                  target="_blank"
+                >
+                  <div className="feed-target-name">
+                    <strong>{metadata.target?.handle}</strong>
+                  </div>
+                  <div className="feed-target-content">
+                    {metadata.target?.body}
+                  </div>
+                  {metadata.target?.media?.length > 0 && (
+                    <div className={`feed-target-content media-gallery`}>
+                      {metadata.target?.media?.map((x) =>
+                        x.mime_type.includes("image") ? (
+                          <NFTAssetPlayer
+                            onClick={(e) => {
+                              openModal(ModalType.media, {
+                                type: x.mime_type || "image/png",
+                                url: resolveMediaURL(x.address),
+                              });
+                              e.stopPropagation();
+                              e.preventDefault();
+                            }}
+                            className="feed-content-img"
+                            src={resolveMediaURL(x.address)}
+                            type={x.mime_type}
+                            key={x.address}
+                            width="auto"
+                            height="100%"
+                            placeholder={true}
+                            alt={metadata.target?.body}
+                          />
+                        ) : (
+                          ""
+                        )
+                      )}
+                    </div>
+                  )}
+                </Link>
+              </div>
+            )}
+          </>
+        );
+      } else {
         return (
           <>
             {metadata?.body ? (
@@ -163,57 +253,6 @@ const RenderSocialCard = (props) => {
             )}
           </>
         );
-      } else if (metadata.summary) {
-        return (
-          <>
-            <div className="feed-content">
-              {
-                ActivityTypeMapping(action.type).action[
-                  metadata.action || "default"
-                ]
-              }
-              {action.platform && (
-                <span className="feed-platform">
-                  &nbsp;on {action.platform}
-                </span>
-              )}
-            </div>
-            {metadata.summary ? (
-              <div className="feed-content">
-                <Link
-                  className="feed-target"
-                  href={action.related_urls[0]}
-                  target="_blank"
-                >
-                  <div className="feed-target-name">
-                    <strong>{metadata.title}</strong>
-                  </div>
-                  <div
-                    className="feed-target-description"
-                    onClick={(e) => {
-                      if (metadata.body) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        openModal(ModalType.article, {
-                          ctx: metadata.body,
-                          baseURL: `https://${
-                            domainRegexp.exec(
-                              action.content_uri || action.related_urls[0]
-                            )?.[1]
-                          }`,
-                        });
-                      }
-                    }}
-                  >
-                    {metadata.summary}
-                  </div>
-                </Link>
-              </div>
-            ) : (
-              ""
-            )}
-          </>
-        );
       }
     case ActivityType.mint:
       return (
@@ -283,6 +322,38 @@ const RenderSocialCard = (props) => {
               <span className="feed-platform">&nbsp;on {action.platform}</span>
             )}
           </div>
+          {metadata.body && (
+            <div className="feed-content">
+              <Link
+                className="feed-target"
+                href={action.related_urls[0]}
+                target="_blank"
+              >
+                <div className="feed-target-name">
+                  <strong>{metadata.title}</strong>
+                </div>
+                <div
+                  className="feed-target-description"
+                  onClick={(e) => {
+                    if (metadata.body) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      openModal(ModalType.article, {
+                        ctx: metadata.body,
+                        baseURL: `https://${
+                          domainRegexp.exec(
+                            action.content_uri || action.related_urls[0]
+                          )?.[1]
+                        }`,
+                      });
+                    }
+                  }}
+                >
+                  {metadata.body}
+                </div>
+              </Link>
+            </div>
+          )}
           {metadata.target && (
             <div className="feed-content">
               <Link
