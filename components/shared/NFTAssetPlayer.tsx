@@ -22,25 +22,6 @@ export enum VideoType {
   QUICKTIME = "video/quicktime",
 }
 
-const shimmer = (w: number, h: number) => `
-  <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <defs>
-      <linearGradient id="g">
-        <stop stop-color="rgba(255,255,255,0)" offset="20%" />
-        <stop stop-color="rgba(255,255,255,.25)" offset="50%" />
-        <stop stop-color="rgba(255,255,255,0)" offset="70%" />
-      </linearGradient>
-    </defs>
-    <rect width="${w}" height="${h}" fill="rgba(233,233,233,.5)" />
-    <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
-    <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1.25s" repeatCount="indefinite"  />
-  </svg>`;
-
-const toBase64 = (str: string) =>
-  typeof window === "undefined"
-    ? Buffer.from(str).toString("base64")
-    : window.btoa(str);
-
 function isImage(type: string) {
   return Object.values(MediaType).includes(type as MediaType);
 }
@@ -64,16 +45,12 @@ export interface AssetPlayerProps {
 
 function ImageRender(props: AssetPlayerProps) {
   const { width, height, placeholder, src, alt } = props;
+  const [loaded, setLoaded] = useState(false);
   return (
     <Image
       width={typeof width === "number" ? width : 0}
       height={typeof height === "number" ? height : 0}
-      placeholder={
-        placeholder
-          ? `data:image/svg+xml;base64,${toBase64(shimmer(100, 100))}`
-          : "empty"
-      }
-      className="img-responsive"
+      className={`img-responsive${(placeholder && !loaded) ? " img-loading" : ""}`}
       style={{
         width: width ? width : "100%",
         height: height ? height : "auto",
@@ -81,6 +58,7 @@ function ImageRender(props: AssetPlayerProps) {
       src={src}
       alt={alt}
       loading={"lazy"}
+      onLoad={()=>setLoaded(true)}
     />
   );
 }
