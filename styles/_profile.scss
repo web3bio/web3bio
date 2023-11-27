@@ -1000,15 +1000,19 @@
     height: 80vh;
     gap: 2rem;
     max-width: $size-xl;
-    overscroll-behavior: contain;
     width: 100%;
 
     @media screen and (max-width: $size-md) {
       flex-direction: column;
-      height: 98vh;
+      height: 100vh;
       gap: .5rem;
       overflow-y: auto;
-      width: 98vw;
+      padding: .5rem;
+      width: 100vw;
+
+      @supports (max-height: 100dvh) {
+        max-height: 100dvh;
+      }
 
       .preview-content {
         max-height: none;
@@ -1016,7 +1020,6 @@
       }
 
       .preview-image {
-
         .img-responsive,
         .video-responsive {
           max-width: 98vw;
@@ -1031,6 +1034,7 @@
         height: 28rem;
         width: 22rem;
         overflow: hidden auto;
+        overscroll-behavior: contain;
       }
     }
   }
@@ -1040,11 +1044,10 @@
     border-radius: .8rem;
     display: flex;
     justify-content: center;
-    margin: auto;
+    margin: 0 auto;
     position: relative;
 
     &.preview-image-poap {
-
       .img-container,
       .img-responsive {
         border-radius: 50%;
