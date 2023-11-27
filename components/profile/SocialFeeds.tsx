@@ -31,7 +31,7 @@ const RenderSocialFeeds = (props) => {
             ? {
                 width: "100%",
                 display: "flex",
-                height: "6rem",
+                height: "100vh",
                 justifyContent: "center",
                 padding: "2rem 0",
               }
