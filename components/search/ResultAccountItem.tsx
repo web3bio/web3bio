@@ -60,12 +60,12 @@ const RenderAccountItem = (props) => {
         uuid: identity.uuid,
       }));
       if (response) {
-        setFetched(true);
         await dispatch(
           updateUniversalBatchedProfile({
             profiles: [response],
           })
         );
+        setFetched(true);
       }
     };
     if (!fetched && identity && visible) {
@@ -294,6 +294,108 @@ const RenderAccountItem = (props) => {
                 className="btn btn-sm btn-link action"
                 href={`/${resolvedIdentity}`}
                 title="Open Next.ID Profile page"
+                rel="noopener noreferrer"
+              >
+                <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
+                <span className="hide-sm">Profile</span>
+              </ModalLink>
+            </div>
+          </div>
+          <RenderSourceFooter sources={sources} />
+        </div>
+      );
+    case PlatformType.dotbit:
+      return (
+        <div ref={ref} className="social-item dotbit">
+          <div className="social-main">
+            <div className="social">
+              <div className="avatar">
+                {profile?.avatar && (
+                  <Image
+                    width={18}
+                    height={18}
+                    alt="avatar"
+                    src={profile?.avatar}
+                    className="avatar-img"
+                  />
+                )}
+                <div
+                  className="icon"
+                  style={{
+                    background: SocialPlatformMapping(identity.platform).color,
+                  }}
+                >
+                  <SVG
+                    fill="#fff"
+                    src={SocialPlatformMapping(identity.platform)?.icon || ""}
+                    width={20}
+                    height={20}
+                  />
+                </div>
+              </div>
+              <div className="content">
+                <div className="content-title text-bold">{displayName}</div>
+                <div className="content-subtitle text-gray">
+                  <div className="address">{resolvedIdentity}</div>
+                </div>
+              </div>
+            </div>
+            <div className="actions active">
+              <ModalLink
+                className="btn btn-sm btn-link action"
+                href={`/${resolvedIdentity}`}
+                title="Open .bit Profile page"
+                rel="noopener noreferrer"
+              >
+                <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
+                <span className="hide-sm">Profile</span>
+              </ModalLink>
+            </div>
+          </div>
+          <RenderSourceFooter sources={sources} />
+        </div>
+      );
+    case PlatformType.unstoppableDomains:
+      return (
+        <div ref={ref} className="social-item unstoppabledomains">
+          <div className="social-main">
+            <div className="social">
+              <div className="avatar">
+                {profile?.avatar && (
+                  <Image
+                    width={18}
+                    height={18}
+                    alt="avatar"
+                    src={profile?.avatar}
+                    className="avatar-img"
+                  />
+                )}
+                <div
+                  className="icon"
+                  style={{
+                    background: SocialPlatformMapping(identity.platform).color,
+                  }}
+                >
+                  <SVG
+                    fill="#fff"
+                    src={SocialPlatformMapping(identity.platform)?.icon || ""}
+                    width={20}
+                    height={20}
+                  />
+                </div>
+              </div>
+              <div className="content">
+                <div className="content-title text-bold">{displayName}</div>
+                <div className="content-subtitle text-gray">
+                  <div className="address">{resolvedIdentity}</div>
+                </div>
+              </div>
+            </div>
+            <div className="actions active">
+              <ModalLink
+                className="btn btn-sm btn-link action"
+                href={`/${resolvedIdentity}`}
+                title="Open UnstoppableDomains Profile page"
                 rel="noopener noreferrer"
               >
                 <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}

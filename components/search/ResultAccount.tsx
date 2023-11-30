@@ -7,19 +7,17 @@ import { regexEns } from "../../utils/regexp";
 import { useSelector } from "react-redux";
 import { AppState } from "../../state";
 import { ProfileInterface } from "../../utils/profile";
-import { PlatformType } from "../../utils/platform";
 
 const RenderAccount = (props) => {
   const { graphData, resultNeighbor, graphTitle } = props;
   const [open, setOpen] = useState(false);
   const cached = useSelector<
     AppState,
-    { [address: string]: Record<PlatformType, ProfileInterface> }
+    { [address: string]: ProfileInterface }
   >((state) => state.universal.profiles);
   const profiles = _.flatten(
-    Object.values(cached).map((x) => Object.values(x))
+    Object.values(cached).map((x) => x)
   );
-
   return (
     <>
       <div className="search-result">
