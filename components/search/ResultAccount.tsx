@@ -1,12 +1,9 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useState } from "react";
 import SVG from "react-inlinesvg";
 import { ResultAccountItem } from "./ResultAccountItem";
-import { fetchProfile } from "../../hooks/api/fetchProfile";
 import { ResultGraph } from "../graph/ResultGraph";
 import _ from "lodash";
 import { regexEns } from "../../utils/regexp";
-import { useDispatch } from "react-redux";
-import { updateUniversalBatchedProfile } from "../../state/universal/actions";
 import { useSelector } from "react-redux";
 import { AppState } from "../../state";
 import { ProfileInterface } from "../../utils/profile";
@@ -15,8 +12,6 @@ import { PlatformType } from "../../utils/platform";
 const RenderAccount = (props) => {
   const { graphData, resultNeighbor, graphTitle } = props;
   const [open, setOpen] = useState(false);
-  const [profileLoading, setProfileLoading] = useState(true);
-  const dispatch = useDispatch();
   const cached = useSelector<
     AppState,
     { [address: string]: Record<PlatformType, ProfileInterface> }
@@ -24,49 +19,6 @@ const RenderAccount = (props) => {
   const profiles = _.flatten(
     Object.values(cached).map((x) => Object.values(x))
   );
-  useEffect(() => {
-    setProfileLoading(true);
-    if (
-      !resultNeighbor?.length ||
-      !resultNeighbor.some((x) => {
-        return [x.identity.displayName, x.identity.identity].includes(
-          graphTitle
-        );
-      })
-    )
-      return;
-    const fetchProfileData = async (arr) => {
-      try {
-        const promises = arr.map((data) => {
-          if (
-            data.identity &&
-            !profiles.some((x) =>
-              [x.identity, x.address].includes(data.identity.identity)
-            )
-          ) {
-            return fetchProfile(data.identity).then(x=>({
-              ...x,
-              uuid: data.identity.uuid
-            }));
-          }
-        });
-
-        const fetchResults = await Promise.all(promises).then((resArr) =>
-          resArr.filter((x) => x)
-        );
-        await dispatch(
-          updateUniversalBatchedProfile({
-            profiles: fetchResults,
-          })
-        );
-      } catch (error) {
-        // do nothing
-      } finally {
-        setProfileLoading(false);
-      }
-    };
-    fetchProfileData(resultNeighbor);
-  }, [graphTitle, resultNeighbor, dispatch]);
 
   return (
     <>
@@ -86,7 +38,6 @@ const RenderAccount = (props) => {
           {resultNeighbor?.map((avatar, idx) => (
             <ResultAccountItem
               canSkipProfile={regexEns.test(avatar.identity.displayName)}
-              profileLoading={profileLoading}
               identity={avatar.identity}
               sources={avatar.sources}
               profile={profiles.find((x) => x?.uuid === avatar.identity.uuid)}
@@ -97,7 +48,6 @@ const RenderAccount = (props) => {
       </div>
       {open && (
         <ResultGraph
-          profileLoading={profileLoading}
           onClose={() => setOpen(false)}
           data={graphData.reduce((pre, cur) => {
             pre.push({

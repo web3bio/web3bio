@@ -16,7 +16,6 @@ import {
   SocialPlatformMapping,
 } from "../../utils/utils";
 import ActionExternalMenu from "./ActionExternalMenu";
-import { TagsFilterMapping } from "../../utils/activity";
 
 export const RenderToken = (token, key) => {
   return (
