@@ -12,13 +12,13 @@ import SearchResultQuery from "./SearchResultQuery";
 export default function HomePage() {
   const [searchFocus, setSearchFocus] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchPlatform, setsearchPlatform] = useState("");
+  const [searchPlatform, setSearchPlatform] = useState("");
   const searchParams = useSearchParams();
   const router = useRouter();
   const handleSubmit = (value, platform?) => {
     setSearchTerm(value);
     router.push(`/?s=${value}${platform ? "&platform=" + platform : ""}`);
-    setsearchPlatform(platform || handleSearchPlatform(value));
+    setSearchPlatform(platform || handleSearchPlatform(value));
     setSearchFocus(true);
   };
   useEffect(() => {
@@ -30,14 +30,14 @@ export default function HomePage() {
       setSearchTerm(searchkeyword);
       if (!searchParams.get("platform")) {
         let searchPlatform = handleSearchPlatform(searchkeyword);
-        setsearchPlatform(searchPlatform);
+        setSearchPlatform(searchPlatform);
       } else {
-        setsearchPlatform(searchParams.get("platform")!.toLowerCase());
+        setSearchPlatform(searchParams.get("platform")!.toLowerCase());
       }
     } else {
       setSearchFocus(false);
       setSearchTerm("");
-      setsearchPlatform("");
+      setSearchPlatform("");
     }
   }, [router, searchParams]);
 
