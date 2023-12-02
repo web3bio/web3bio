@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { PlatformType } from "../../utils/platform";
-import { SocialPlatformMapping, formatText } from "../../utils/utils";
+import { SocialPlatformMapping, formatText, colorMod } from "../../utils/utils";
 import { Error } from "../shared/Error";
 import { RenderWidgetItem } from "./WidgetLinkItem";
 import { WidgetNFT } from "./WidgetNFT";
@@ -116,13 +116,16 @@ export default function ProfileMain(props) {
                   data-clipboard-text={domain}
                   onSuccess={onCopySuccess}
                   title="Copy the Next.ID address"
+                  style={{
+                    ["--badge-primary-color" as string]: SocialPlatformMapping(platform).color || "#000",
+                    ["--badge-bg-color" as string]: colorMod(SocialPlatformMapping(platform)?.color, 5) || "rgba(#000, .04)",
+                  }}
                 >
                   <div className="platform-badge-icon">
                     <SVG
-                      fill={"#ffffff"}
+                      fill={SocialPlatformMapping(platform).color}
                       width={20}
-                      src={"icons/icon-nextid.svg"}
-                      className="text-light"
+                      src={SocialPlatformMapping(platform).icon || ""}
                     />
                     <span className="platform-badge-name">
                       {formatText(domain)}
@@ -145,6 +148,10 @@ export default function ProfileMain(props) {
                     title={`${pageTitle} ${
                       SocialPlatformMapping(x.platform).label
                     }`}
+                    style={{
+                      ["--badge-primary-color" as string]: SocialPlatformMapping(x.platform).color || "#000",
+                      ["--badge-bg-color" as string]: colorMod(SocialPlatformMapping(x.platform)?.color, 10) || "rgba(#000, .04)",
+                    }}
                   >
                     <div className="platform-badge-icon">
                       <SVG
@@ -179,11 +186,13 @@ export default function ProfileMain(props) {
         <div className="column col-8 col-md-12">
           <div className="web3-section-widgets">
             {data?.links?.map((item, idx) => {
-              return (
-                <div key={idx} className="profile-widget-item">
-                  <RenderWidgetItem displayName={pageTitle} item={item} />
-                </div>
-              );
+              if (item.handle) {
+                return (
+                  <div key={idx} className="profile-widget-item">
+                    <RenderWidgetItem displayName={pageTitle} item={item} />
+                  </div>
+                );
+              }
             })}
           </div>
           {data.address && (
