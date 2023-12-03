@@ -9,6 +9,7 @@ import {
   SIMPLEHASH_CHAINS,
   SIMPLEHASH_PAGE_SIZE,
 } from "../apis/simplehash";
+import NFTFilter from "./NFTFilter";
 
 const CURSOR_PARAM = "&cursor=";
 
@@ -48,7 +49,7 @@ export const processNFTsData = (data) => {
   return collections;
 };
 
-const getURL = (index, address, previous) => {
+const getURL = (index, address, previous, filter) => {
   if (
     index !== 0 &&
     previous &&
@@ -58,21 +59,21 @@ const getURL = (index, address, previous) => {
   const cursor = previous?.next_cursor || "";
   return (
     SIMPLEHASH_URL +
-    `/api/v0/nfts/owners_v2?chains=${SIMPLEHASH_CHAINS}&wallet_addresses=${address}&filters=spam_score__lte%3D1${
+    `/api/v0/nfts/owners_v2?chains=${filter || SIMPLEHASH_CHAINS}&wallet_addresses=${address}&filters=spam_score__lte%3D1${
       cursor ? CURSOR_PARAM + cursor : ""
     }&limit=${SIMPLEHASH_PAGE_SIZE}`
   );
 };
 
-function useNFTs({ address, initialData, fromServer }) {
-  const options = fromServer
+function useNFTs({ address, initialData, fromServer, filter }) {
+  const options = fromServer && !filter
     ? {
         initialSize: 1,
         fallbackData: [initialData],
       }
     : {};
   const { data, error, size, isValidating, setSize } = useSWRInfinite(
-    (index, previous) => getURL(index, address, previous),
+    (index, previous) => getURL(index, address, previous, filter),
     SimplehashFetcher,
     {
       ...options,
@@ -99,12 +100,14 @@ const RenderWidgetNFT = ({
   initialData,
   fromServer,
 }) => {
+  const [expand, setExpand] = useState(false);
+  const [filter, setFilter] = useState("");
   const { data, size, setSize, isValidating, isError, hasNextPage } = useNFTs({
     address,
     initialData,
     fromServer,
+    filter,
   });
-  const [expand, setExpand] = useState(false);
   const [firstRender, setFirstRender] = useState(true);
   const [[ref, assetId], setScrollRefAndAssetId] = useState<
     [{ current: HTMLElement | null }, string]
@@ -135,7 +138,7 @@ const RenderWidgetNFT = ({
     setFirstRender(false);
   }, [assetId]);
 
-  if (!data.length || isError) return null;
+  if (firstRender && (!data.length || isError)) return null;
 
   // if (process.env.NODE_ENV !== "production") {
   //   console.log("NFT Data:", data);
@@ -154,6 +157,7 @@ const RenderWidgetNFT = ({
             NFT Collections
           </h2>
           <div className="widget-action">
+            <NFTFilter value={filter} onChange={(v) => { setFilter(v);setExpand(true); }} />
             <ExpandController
               expand={expand}
               onToggle={() => {

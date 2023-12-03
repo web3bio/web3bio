@@ -1,3 +1,5 @@
+import { SIMPLEHASH_CHAINS } from "../components/apis/simplehash";
+
 export enum Network {
   ethereum = "ethereum",
   binance_smart_chain = "binance_smart_chain",
@@ -226,5 +228,44 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
     primaryColor: "#3741ba",
     bgColor: "#ebecf8",
     scanPrefix: "",
+  },
+};
+
+export const NFTFilterMapping = {
+  ["all"]: {
+    label: "All Chains",
+    filters: SIMPLEHASH_CHAINS,
+  },
+  ["ethereum"]: {
+    label: "Ethereum",
+    filters: "ethereum",
+  },
+  ["base"]: {
+    label: "Base",
+    filters: "base",
+  },
+  ["arbitrum"]: {
+    label: "Arbitrum",
+    filters: "arbitrum",
+  },
+  ["scroll"]: {
+    label: "Scroll",
+    filters: "scroll",
+  },
+  ["linea"]: {
+    label: "Linea",
+    filters: "linea",
+  },
+  ["optimism"]: {
+    label: "Optimism",
+    filters: "optimism",
+  },
+  ["zora"]: {
+    label: "Zora",
+    filters: "zora",
+  },
+  ["flow"]: {
+    label: "Flow",
+    filters: "flow",
   },
 };
