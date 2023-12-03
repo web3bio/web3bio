@@ -50,9 +50,14 @@ $pride-color-6: #92C9F9 !default;
 $pride-color-7: #C7F8FF !default;
 
 /*! Web3bio.css | MIT License */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: $light-color;
   overflow-x: hidden;
+  scroll-behavior: smooth;
   width: 100vw;
 }
 

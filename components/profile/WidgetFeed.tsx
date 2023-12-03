@@ -128,7 +128,7 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData, openModal }) => {
             Activity Feeds
           </h2>
           <div className="widget-action">
-            <FeedFilter value={filter} onChange={(v) => { setFilter(v);setExpand(true);}} />
+            <FeedFilter value={filter} onChange={(v) => { setFilter(v);setExpand(true); }} />
             <ExpandController
               expand={expand}
               onToggle={() => {

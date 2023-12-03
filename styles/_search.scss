@@ -192,6 +192,10 @@
       order: -2;
     }
 
+    &:last-child {
+      margin-bottom: 0;
+    }
+
     &.ethereum,
     &.lens,
     &.farcaster {
@@ -386,5 +390,26 @@
 
   .title {
     font-size: .7rem;
+  }
+}
+
+.backtotop { 
+  backface-visibility: hidden;
+  pointer-events: none;
+  position: absolute;
+  top: 12rem;
+  right: .5rem;
+
+  .action-btn {
+    background: rgba($dark-color, .1);
+    bottom: .5rem;
+    pointer-events: all;
+    position: sticky;
+    top: 1rem;
+    z-index: 999; 
+  }
+  
+  @media screen and (min-width: $size-sm) {
+    
   }
 }
