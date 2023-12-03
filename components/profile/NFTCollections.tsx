@@ -92,7 +92,19 @@ const RenderNFTCollections = (props) => {
       });
     }
   };
-  if (!data || !data.length) return <Empty />;
+  if (!isLoadingMore && !data.length) return (
+    <div
+      style={{
+        position: "relative",
+        width: "100%",
+        display: "flex",
+        height: "16rem",
+        justifyContent: "center",
+      }}
+    >
+      <Empty title="No NFTs" text="Please switch to different chains" />
+    </div>
+  );
 
   return (
     <>
@@ -222,7 +234,8 @@ const RenderNFTCollections = (props) => {
                 position: "relative",
                 width: "100%",
                 display: "flex",
-                margin: "1.5rem 0",
+                height: "16rem",
+                padding: "3.2rem 1.6rem",
                 justifyContent: "center",
               }}
             >

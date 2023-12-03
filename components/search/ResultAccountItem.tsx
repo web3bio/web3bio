@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { memo, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { formatText } from "../../utils/utils";
@@ -9,6 +9,10 @@ import { PlatformType } from "../../utils/platform";
 import { SocialPlatformMapping } from "../../utils/utils";
 import { isAddress } from "ethers";
 import ModalLink from "../profile/ModalLink";
+import { useDispatch } from "react-redux";
+import _ from "lodash";
+import { fetchProfile } from "../../hooks/api/fetchProfile";
+import { updateUniversalBatchedProfile } from "../../state/universal/actions";
 
 const RenderAccountItem = (props) => {
   const onCopySuccess = () => {
@@ -17,8 +21,12 @@ const RenderAccountItem = (props) => {
       setIsCopied(false);
     }, 1500);
   };
+  const ref = useRef(null);
   const { identity, sources, profile, canSkipProfile } = props;
   const [isCopied, setIsCopied] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const dispatch = useDispatch();
+  const [fetched, setFetched] = useState(!!profile);
   const resolvedDisplayName = profile?.displayName
     ? profile.displayName
     : identity.displayName || identity.identity;
@@ -30,10 +38,51 @@ const RenderAccountItem = (props) => {
     identity.platform === PlatformType.ethereum
       ? profile?.address || identity.identity
       : identity.identity;
+
+  useEffect(() => {
+    const element = ref?.current;
+    const options = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.6,
+    };
+    const observer = new IntersectionObserver(([entry]) => {
+      setVisible(entry.isIntersecting);
+    }, options);
+
+    if (element) {
+      observer.observe(element);
+    }
+
+    const fetchProfileData = async () => {
+      const response = await fetchProfile(identity).then((x) => ({
+        ...x,
+        uuid: identity.uuid,
+      }));
+      if (response) {
+        await dispatch(
+          updateUniversalBatchedProfile({
+            profiles: [response],
+          })
+        );
+        setFetched(true);
+      }
+    };
+    if (!fetched && identity && visible) {
+      fetchProfileData();
+    }
+
+    return () => {
+      if (element) {
+        observer.unobserve(element);
+      }
+    };
+  }, [fetched, identity, visible, dispatch]);
+
   switch (identity.platform) {
     case PlatformType.ethereum:
       return (
-        <div className="social-item social-web3 ethereum">
+        <div ref={ref} className="social-item social-web3 ethereum">
           <div className="social-main">
             <div className="social">
               <div className="avatar">
@@ -47,11 +96,11 @@ const RenderAccountItem = (props) => {
                   />
                 )}
                 <div className="icon bg-pride">
-                  <SVG 
+                  <SVG
                     src="icons/icon-ethereum.svg"
                     fill={"#fff"}
                     width={20}
-                    height={20} 
+                    height={20}
                   />
                 </div>
               </div>
@@ -78,12 +127,15 @@ const RenderAccountItem = (props) => {
               <div className="actions active">
                 <ModalLink
                   href={`/${
-                    profile?.identity || identity.displayName || resolvedIdentity
+                    profile?.identity ||
+                    identity.displayName ||
+                    resolvedIdentity
                   }`}
                   title="Open ENS (Ethereum Name Service) Profile"
                   className="btn btn-sm btn-link action"
                 >
-                  <SVG src="icons/icon-open.svg" width={20} height={20} /> <span className="hide-sm">Profile</span>
+                  <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
+                  <span className="hide-sm">Profile</span>
                 </ModalLink>
               </div>
             )}
@@ -120,8 +172,10 @@ const RenderAccountItem = (props) => {
       );
     case PlatformType.lens:
     case PlatformType.farcaster:
+    case PlatformType.unstoppableDomains:
+    case PlatformType.dotbit:
       return (
-        <div className={`social-item ${identity.platform}`}>
+        <div ref={ref} className={`social-item ${identity.platform}`}>
           <div className="social-main">
             <div className="social">
               <div className="avatar">
@@ -134,7 +188,12 @@ const RenderAccountItem = (props) => {
                     className="avatar-img"
                   />
                 )}
-                <div className="icon" style={{background: SocialPlatformMapping(identity.platform).color}}>
+                <div
+                  className="icon"
+                  style={{
+                    background: SocialPlatformMapping(identity.platform).color,
+                  }}
+                >
                   <SVG
                     src={SocialPlatformMapping(identity.platform)?.icon || ""}
                     fill={"#fff"}
@@ -150,19 +209,35 @@ const RenderAccountItem = (props) => {
                   {identity.uid && (
                     <>
                       <div className="ml-1 mr-1">·</div>
-                      <div className="address" title={`${SocialPlatformMapping(identity.platform)?.label} ${identity.platform === PlatformType.farcaster ? "FID" : "UID"}`}>#{identity.uid}</div>
+                      <div
+                        className="address"
+                        title={`${
+                          SocialPlatformMapping(identity.platform)?.label
+                        } ${
+                          identity.platform === PlatformType.farcaster
+                            ? "FID"
+                            : "UID"
+                        }`}
+                      >
+                        #{identity.uid}
+                      </div>
                     </>
                   )}
                 </div>
               </div>
             </div>
             <div className="actions active">
-              <ModalLink 
+              <ModalLink
                 className="btn btn-sm btn-link action"
-                href={`/${identity.platform === PlatformType.farcaster ? resolvedIdentity + ".farcaster" : resolvedIdentity}`}
+                href={`/${
+                  identity.platform === PlatformType.farcaster
+                    ? resolvedIdentity + ".farcaster"
+                    : resolvedIdentity
+                }`}
                 title="Open Profile"
               >
-                <SVG src="icons/icon-open.svg" width={20} height={20} /> <span className="hide-sm">Profile</span>
+                <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
+                <span className="hide-sm">Profile</span>
               </ModalLink>
             </div>
           </div>
@@ -171,7 +246,7 @@ const RenderAccountItem = (props) => {
       );
     case PlatformType.nextid:
       return (
-        <div className="social-item nextid">
+        <div ref={ref} className="social-item nextid">
           <div className="social-main">
             <div className="social">
               <div className="avatar">
@@ -184,7 +259,12 @@ const RenderAccountItem = (props) => {
                     className="avatar-img"
                   />
                 )}
-                <div className="icon" style={{background: SocialPlatformMapping(identity.platform).color}}>
+                <div
+                  className="icon"
+                  style={{
+                    background: SocialPlatformMapping(identity.platform).color,
+                  }}
+                >
                   <SVG
                     fill="#fff"
                     src={SocialPlatformMapping(identity.platform)?.icon || ""}
@@ -218,7 +298,8 @@ const RenderAccountItem = (props) => {
                 title="Open Next.ID Profile page"
                 rel="noopener noreferrer"
               >
-                <SVG src="icons/icon-open.svg" width={20} height={20} /> <span className="hide-sm">Profile</span>
+                <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
+                <span className="hide-sm">Profile</span>
               </ModalLink>
             </div>
           </div>
@@ -227,7 +308,7 @@ const RenderAccountItem = (props) => {
       );
     default:
       return (
-        <div className={`social-item ${identity.platform}`}>
+        <div ref={ref} className={`social-item ${identity.platform}`}>
           <div className="social-main">
             <Link
               href={{

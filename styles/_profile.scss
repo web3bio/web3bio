@@ -115,64 +115,38 @@
     display: flex;
     flex-wrap: wrap;
     font-size: .6rem;
-    gap: .2rem;
+    gap: .25rem;
     line-height: 1rem;
     margin-bottom: 1rem;
     margin-top: 1rem;
 
     .platform-badge {
       align-items: center;
-      background: rgba(#121212, .05);
+      background-color: var(--badge-bg-color, rgba($dark-color, .05));
       border: .05rem solid transparent;
+      border-color: var(--badge-bg-color, transparent);
       border-radius: .8rem;
-      box-shadow: 0 .05rem .1rem rgba($dark-color, .05);
+      box-shadow: 0 .05rem .1rem var(--badge-bg-color, rgba($dark-color, .05));
       display: flex;
-      height: 1.5rem;
-      padding: .2rem;
+      height: 1.6rem;
+      padding: .25rem;
       text-decoration: none;
       transition: all .2s ease;
 
       &:focus,
       &:hover {
-        box-shadow: 0 .05rem .1rem rgba($dark-color, .05), 0 .05rem .8rem rgba($dark-color, .05);
+        box-shadow: 0 .05rem .1rem var(--badge-bg-color, rgba($dark-color, .05)), 0 .05rem .8rem rgba($dark-color, .05);
       }
 
-      &.ENS {
-        --badge-primary-color: #5298FF;
-        background: lighten(#5298FF, 30%);
-        border-color: lighten(#5298FF, 28%);
-      }
-
-      &.lens {
-        --badge-primary-color: #6bc674;
-        background: lighten(#6bc674, 35%);
-        border-color: lighten(#6bc674, 33%);
-      }
-
-      &.farcaster {
-        --badge-primary-color: #8465CB;
-        background: lighten(#8465CB, 35%);
-        border-color: lighten(#8465CB, 33%);
-      }
-
-      &.dotbit {
-        --badge-primary-color: #0e7dff;
-        background: lighten(#0e7dff, 45%);
-        border-color: lighten(#0e7dff, 43%);
+      &.ethereum {
+        display: none;
       }
 
       &.nextid {
-        --badge-primary-color: #121212;
-        background: #121212;
         position: relative;
 
         .platform-badge-icon {
-          color: #fff;
           width: unset
-        }
-
-        .platform-badge-name {
-          color: $bg-color;
         }
       }
     }
@@ -964,7 +938,6 @@
   height: 100vh;
   justify-content: center;
   left: 0;
-  overscroll-behavior: contain;
   position: fixed;
   top: 0;
   width: 100vw;
@@ -1057,7 +1030,7 @@
     .img-responsive,
     .video-responsive {
       border-radius: .8rem;
-      box-shadow: 0 .5rem 8rem var(--nft-primary-color);
+      filter: drop-shadow(var(--nft-primary-color) 0 0 4rem);
       height: auto;
       max-height: 80vh;
       max-width: 50vw;
@@ -1196,7 +1169,6 @@
       font-weight: 700;
       letter-spacing: -.025em;
       line-height: 1.25;
-      word-break: break-all;
     }
 
     .nft-header-description {

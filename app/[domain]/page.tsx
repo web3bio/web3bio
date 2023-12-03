@@ -38,6 +38,7 @@ async function fetchDataFromServer(domain: string) {
         PlatformType.lens,
         PlatformType.ethereum,
         PlatformType.dotbit,
+        PlatformType.unstoppableDomains,
         PlatformType.nextid,
       ].includes(platform)
     )

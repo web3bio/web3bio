@@ -16,7 +16,6 @@ import {
   SocialPlatformMapping,
 } from "../../utils/utils";
 import ActionExternalMenu from "./ActionExternalMenu";
-import { TagsFilterMapping } from "../../utils/activity";
 
 export const RenderToken = (token, key) => {
   return (
@@ -131,17 +130,18 @@ const RenderFeedItem = (props) => {
               network={feed.network}
               openModal={openModal}
               action={action}
-              tag={feed.tag}
-              id={feed.id}
+              tag={action.tag}
+              id={action.id}
             />
           ) : (
             actions.map((x, index) => (
-              <RenderFeedContent
-                openModal={openModal}
+              x.tag !== "unknown" && <RenderFeedContent
                 network={feed.network}
-                key={index}
+                openModal={openModal}
                 action={x}
                 tag={x.tag}
+                id={x.id}
+                key={index}
               />
             ))
           )}

@@ -40,7 +40,6 @@ export default function SearchInput(props) {
       setQuery(_value);
     }
     handleSubmit(_value, platfrom);
-    setSearchList([]);
     setActiveIndex(0);
   };
 
@@ -78,7 +77,7 @@ export default function SearchInput(props) {
     }
   };
   useEffect(() => {
-    if (!query || query.length > 40 || query === searchParams?.get("s")) {
+    if (!query || query.length > 40 || query === defaultValue) {
       setSearchList([]);
       return;
     }
@@ -129,7 +128,7 @@ export default function SearchInput(props) {
         }, new Array<SearchListItem>())
       );
     }
-  }, [query, activeIndex, searchParams]);
+  }, [query, searchParams]);
   return (
     <>
       <input
