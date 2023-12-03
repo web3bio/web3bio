@@ -8,7 +8,8 @@ interface ModalLinkProps extends LinkProps {
   title: string;
   skip?: number;
   children?: ReactNode;
-  rel?:string;
+  rel?: string;
+  style?: Object;
 }
 export default function ModalLink(props: ModalLinkProps) {
   const router = useRouter();

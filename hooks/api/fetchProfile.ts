@@ -5,17 +5,18 @@ import {
 } from "../../components/apis/simplehash";
 import { PlatformType } from "../../utils/platform";
 
-const resolveSearchHandle = (identity) => {
-  return {
-    [PlatformType.ethereum]: identity.identity,
-    [PlatformType.farcaster]: identity.identity,
-    [PlatformType.lens]: identity.identity,
-  }[identity.platform];
-};
+const supportedPlatforms = [
+  PlatformType.ethereum,
+  PlatformType.lens,
+  PlatformType.farcaster,
+  PlatformType.dotbit,
+  PlatformType.unstoppableDomains,
+];
+
 export const fetchProfile = async (identity) => {
   try {
-    const handle = resolveSearchHandle(identity);
-    if (!handle) return null;
+    const handle = identity.identity;
+    if (!handle || !supportedPlatforms.includes(identity.platform)) return null;
 
     const platform =
       identity.platform === PlatformType.ethereum

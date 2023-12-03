@@ -1,6 +1,5 @@
 import { memo } from "react";
 import { ActivityType } from "../../utils/activity";
-import { PlatformType } from "../../utils/platform";
 import { ActivityTypeMapping } from "../../utils/utils";
 import { RenderToken } from "./FeedItem";
 import RenderProfileBadge from "../profile/RenderProfileBadge";

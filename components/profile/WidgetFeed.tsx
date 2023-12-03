@@ -33,7 +33,6 @@ const getURL = (index, address, previous, filter) => {
     cursor,
     tag: TagsFilterMapping[filter].filters,
     type: [
-      ActivityType.approval,
       ActivityType.auction,
       ActivityType.bridge,
       ActivityType.claim,
@@ -129,7 +128,7 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData, openModal }) => {
             Activity Feeds
           </h2>
           <div className="widget-action">
-            <FeedFilter value={filter} onChange={(v) => { setFilter(v);setExpand(true);}} />
+            <FeedFilter value={filter} onChange={(v) => { setFilter(v);setExpand(true); }} />
             <ExpandController
               expand={expand}
               onToggle={() => {

@@ -4,7 +4,7 @@ import { memo, useState } from "react";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { PlatformType } from "../../utils/platform";
-import { SocialPlatformMapping } from "../../utils/utils";
+import { SocialPlatformMapping, colorMod } from "../../utils/utils";
 
 const WidgetItem = (props) => {
   const onCopySuccess = () => {
@@ -15,15 +15,6 @@ const WidgetItem = (props) => {
   };
   const {item, displayName} = props;
   const [isCopied, setIsCopied] = useState(false);
-
-  const colorMod = (hex, opacity = 100) => {
-    const tempHex = hex.replace('#', '');
-    const r = parseInt(tempHex.substring(0, 2), 16);
-    const g = parseInt(tempHex.substring(2, 4), 16);
-    const b = parseInt(tempHex.substring(4, 6), 16);
-  
-    return `rgba(${r},${g},${b},${opacity / 100})`;
-  }
 
   switch (item.platform) {
     case PlatformType.twitter:

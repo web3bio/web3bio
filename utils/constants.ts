@@ -40,16 +40,16 @@ export const fuzzyDomainSuffix = [
     label: "lens",
   },
   {
-    key: PlatformType.unstoppableDomains,
-    label: "crypto",
-  },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "dao",
+    key: PlatformType.dotbit,
+    label: "bit",
   },
   {
     key: PlatformType.unstoppableDomains,
     label: "bitcoin",
+  },
+  {
+    key: PlatformType.unstoppableDomains,
+    label: "binanceus",
   },
   {
     key: PlatformType.unstoppableDomains,
@@ -60,8 +60,12 @@ export const fuzzyDomainSuffix = [
     label: "bnb",
   },
   {
-    key: PlatformType.dotbit,
-    label: "bit",
+    key: PlatformType.unstoppableDomains,
+    label: "crypto",
+  },
+  {
+    key: PlatformType.unstoppableDomains,
+    label: "dao",
   },
   {
     key: PlatformType.unstoppableDomains,
@@ -85,15 +89,15 @@ export const fuzzyDomainSuffix = [
   },
   {
     key: PlatformType.unstoppableDomains,
+    label: "kresus",
+  },
+  {
+    key: PlatformType.unstoppableDomains,
     label: "zil",
   },
   {
     key: PlatformType.unstoppableDomains,
     label: "hi",
-  },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "kresus",
   },
   {
     key: PlatformType.unstoppableDomains,
@@ -106,10 +110,6 @@ export const fuzzyDomainSuffix = [
   {
     key: PlatformType.unstoppableDomains,
     label: "manga",
-  },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "binanceus",
   },
   // {
   //   key: "space_id",
