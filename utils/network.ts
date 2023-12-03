@@ -240,9 +240,21 @@ export const NFTFilterMapping = {
     label: "Ethereum",
     filters: "ethereum",
   },
+  ["polygon"]: {
+    label: "Polygon",
+    filters: "polygon",
+  },
+  ["optimism"]: {
+    label: "Optimism",
+    filters: "optimism",
+  },
   ["base"]: {
     label: "Base",
     filters: "base",
+  },
+  ["zora"]: {
+    label: "Zora",
+    filters: "zora",
   },
   ["arbitrum"]: {
     label: "Arbitrum",
@@ -255,14 +267,6 @@ export const NFTFilterMapping = {
   ["linea"]: {
     label: "Linea",
     filters: "linea",
-  },
-  ["optimism"]: {
-    label: "Optimism",
-    filters: "optimism",
-  },
-  ["zora"]: {
-    label: "Zora",
-    filters: "zora",
   },
   ["flow"]: {
     label: "Flow",
