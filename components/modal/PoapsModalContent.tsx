@@ -39,7 +39,7 @@ export default function PoapsModalContent({onClose,asset}) {
                   <div className="collection-name text-ellipsis" style={{color: "#5E58A5"}}>POAP</div>
                 </div>
                 <div className="nft-header-name h4">{asset.asset.event.name}</div>
-                <div className="nft-header-description mt-2 mb-4">
+                <div className="nft-header-description mt-4 mb-4">
                   {asset.asset.event.description}
                 </div>
                 {asset.asset.event.event_url && (

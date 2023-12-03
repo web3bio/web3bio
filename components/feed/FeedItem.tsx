@@ -134,13 +134,14 @@ const RenderFeedItem = (props) => {
               id={action.id}
             />
           ) : (
-            actions.map((x) => (
+            actions.map((x, index) => (
               x.tag !== "unknown" && <RenderFeedContent
                 network={feed.network}
                 openModal={openModal}
                 action={x}
                 tag={x.tag}
                 id={x.id}
+                key={index}
               />
             ))
           )}

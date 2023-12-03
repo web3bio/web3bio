@@ -33,7 +33,6 @@ const getURL = (index, address, previous, filter) => {
     cursor,
     tag: TagsFilterMapping[filter].filters,
     type: [
-      ActivityType.approval,
       ActivityType.auction,
       ActivityType.bridge,
       ActivityType.claim,
