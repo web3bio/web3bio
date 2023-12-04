@@ -8,7 +8,6 @@ import { RenderSourceFooter } from "./SourcesFooter";
 import { PlatformType } from "../../utils/platform";
 import { SocialPlatformMapping } from "../../utils/utils";
 import { isAddress } from "ethers";
-import ModalLink from "../profile/ModalLink";
 import { useDispatch } from "react-redux";
 import _ from "lodash";
 import { fetchProfile } from "../../hooks/api/fetchProfile";
@@ -125,7 +124,8 @@ const RenderAccountItem = (props) => {
             </div>
             {(canSkipProfile || (profile && !profile?.error)) && (
               <div className="actions active">
-                <ModalLink
+                <Link
+                  target={"_blank"}
                   href={`/${
                     profile?.identity ||
                     identity.displayName ||
@@ -136,7 +136,7 @@ const RenderAccountItem = (props) => {
                 >
                   <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
                   <span className="hide-sm">Profile</span>
-                </ModalLink>
+                </Link>
               </div>
             )}
           </div>
@@ -227,7 +227,8 @@ const RenderAccountItem = (props) => {
               </div>
             </div>
             <div className="actions active">
-              <ModalLink
+              <Link
+                target={"_blank"}
                 className="btn btn-sm btn-link action"
                 href={`/${
                   identity.platform === PlatformType.farcaster
@@ -238,7 +239,7 @@ const RenderAccountItem = (props) => {
               >
                 <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
                 <span className="hide-sm">Profile</span>
-              </ModalLink>
+              </Link>
             </div>
           </div>
           <RenderSourceFooter sources={sources} />
@@ -292,7 +293,8 @@ const RenderAccountItem = (props) => {
               </div>
             </div>
             <div className="actions active">
-              <ModalLink
+              <Link
+                target={"_blank"}
                 className="btn btn-sm btn-link action"
                 href={`/${resolvedIdentity}`}
                 title="Open Next.ID Profile page"
@@ -300,7 +302,7 @@ const RenderAccountItem = (props) => {
               >
                 <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
                 <span className="hide-sm">Profile</span>
-              </ModalLink>
+              </Link>
             </div>
           </div>
           <RenderSourceFooter sources={sources} />

@@ -13,7 +13,6 @@ import { WidgetRSS } from "./WidgetRSS";
 import { WidgetPOAP } from "./WidgetPoap";
 import { WidgetDegenScore } from "./WidgetDegenScore";
 import { WidgetFeed } from "./WidgetFeed";
-import ModalLink from "./ModalLink";
 import AddressMenu from "./AddressMenu";
 import { Avatar } from "../shared/Avatar";
 import useModal, { ModalType } from "../../hooks/useModal";
@@ -117,8 +116,11 @@ export default function ProfileMain(props) {
                   onSuccess={onCopySuccess}
                   title="Copy the Next.ID address"
                   style={{
-                    ["--badge-primary-color" as string]: SocialPlatformMapping(platform).color || "#000",
-                    ["--badge-bg-color" as string]: colorMod(SocialPlatformMapping(platform)?.color, 5) || "rgba(#000, .04)",
+                    ["--badge-primary-color" as string]:
+                      SocialPlatformMapping(platform).color || "#000",
+                    ["--badge-bg-color" as string]:
+                      colorMod(SocialPlatformMapping(platform)?.color, 5) ||
+                      "rgba(#000, .04)",
                   }}
                 >
                   <div className="platform-badge-icon">
@@ -138,8 +140,7 @@ export default function ProfileMain(props) {
                   x.platform === PlatformType.farcaster ? ".farcaster" : ""
                 }`;
                 return (
-                  <ModalLink
-                    skip={fromServer ? 1 : 0}
+                  <Link
                     href={`/${relatedPath}`}
                     key={x.platform + idx}
                     className={`platform-badge ${x.platform}${
@@ -149,8 +150,13 @@ export default function ProfileMain(props) {
                       SocialPlatformMapping(x.platform).label
                     }`}
                     style={{
-                      ["--badge-primary-color" as string]: SocialPlatformMapping(x.platform).color || "#000",
-                      ["--badge-bg-color" as string]: colorMod(SocialPlatformMapping(x.platform)?.color, 10) || "rgba(#000, .04)",
+                      ["--badge-primary-color" as string]:
+                        SocialPlatformMapping(x.platform).color || "#000",
+                      ["--badge-bg-color" as string]:
+                        colorMod(
+                          SocialPlatformMapping(x.platform)?.color,
+                          10
+                        ) || "rgba(#000, .04)",
                     }}
                   >
                     <div className="platform-badge-icon">
@@ -161,7 +167,7 @@ export default function ProfileMain(props) {
                       />
                     </div>
                     <span className="platform-badge-name">{x.identity}</span>
-                  </ModalLink>
+                  </Link>
                 );
               })}
             </div>
