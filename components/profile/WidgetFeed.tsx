@@ -108,8 +108,7 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData, openModal }) => {
       });
     }
   }, [expand]);
-
-  if ((!isValidating && !data?.length) || isError) return null;
+  if ((!filter && !isValidating && !data?.length) || isError) return null;
 
   // if (process.env.NODE_ENV !== "production") {
   //   console.log("Feed Data:", data);

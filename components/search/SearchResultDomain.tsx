@@ -30,7 +30,7 @@ export default function RenderResultDomain({
     if (searchTerm && searchPlatform) getQuery();
     if (!data || !data.domain) return;
     const results = data?.domain.owner;
-
+    
     const temp = results?.neighborWithTraversal.reduce(
       (pre, cur) => {
         pre.push({
@@ -102,7 +102,7 @@ export default function RenderResultDomain({
           },
         ]
       : [];
-
+        console.log(resultNeighbor,'kkkk')
   return (
     <ResultAccount
       resultNeighbor={resultNeighbor}

@@ -14,7 +14,7 @@ const RenderSocialFeeds = (props) => {
     hasNextPage,
     isError,
     expand,
-    openModal
+    openModal,
   } = props;
   const [albumRef] = useInfiniteScroll({
     loading: isLoadingMore,
@@ -44,7 +44,9 @@ const RenderSocialFeeds = (props) => {
         }
       />
     );
-  if (!data) return <Empty text="No Social Feeds" />;
+
+  if (!data?.length)
+    return <Empty title="No Social Feeds" text="Please try different filter" />;
   return (
     <div className="widget-feeds-container">
       <div className="feeds-list">
@@ -52,7 +54,12 @@ const RenderSocialFeeds = (props) => {
           (x) =>
             (
               <div key={x.id} className={`feed-item`}>
-                <FeedItem openModal={openModal} network={network} identity={identity} feed={x} />
+                <FeedItem
+                  openModal={openModal}
+                  network={network}
+                  identity={identity}
+                  feed={x}
+                />
               </div>
             ) || null
         )}

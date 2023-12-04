@@ -77,9 +77,9 @@ const RenderAccountItem = (props) => {
       }
     };
   }, [fetched, identity, visible, dispatch]);
-
   switch (identity.platform) {
     case PlatformType.ethereum:
+      if(!isAddress(identity.identity)) return null
       return (
         <div ref={ref} className="social-item social-web3 ethereum">
           <div className="social-main">
