@@ -102,7 +102,6 @@ export default function RenderResultDomain({
           },
         ]
       : [];
-        console.log(resultNeighbor,'kkkk')
   return (
     <ResultAccount
       resultNeighbor={resultNeighbor}
