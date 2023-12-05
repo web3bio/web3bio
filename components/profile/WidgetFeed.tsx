@@ -108,7 +108,8 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData, openModal }) => {
       });
     }
   }, [expand]);
-  if ((!filter && !isValidating && !data?.length) || isError) return null;
+
+  if ((filter === "all" && !data?.length) || isError) return null;
 
   // if (process.env.NODE_ENV !== "production") {
   //   console.log("Feed Data:", data);
@@ -127,7 +128,13 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData, openModal }) => {
             Activity Feeds
           </h2>
           <div className="widget-action">
-            <FeedFilter value={filter} onChange={(v) => { setFilter(v);setExpand(true); }} />
+            <FeedFilter
+              value={filter}
+              onChange={(v) => {
+                setFilter(v);
+                setExpand(true);
+              }}
+            />
             <ExpandController
               expand={expand}
               onToggle={() => {

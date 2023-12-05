@@ -45,8 +45,8 @@ const RenderSocialFeeds = (props) => {
       />
     );
 
-  if (!data?.length)
-    return <Empty title="No Social Feeds" text="Please try different filter" />;
+  if (!isLoadingMore && !data?.length)
+    return <Empty title="No Activities" text="Please try different filter" />;
   return (
     <div className="widget-feeds-container">
       <div className="feeds-list">
