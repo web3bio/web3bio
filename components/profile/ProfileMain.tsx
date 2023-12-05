@@ -70,7 +70,7 @@ export default function ProfileMain(props) {
             } Web3 Profile`}</h1>
             <h2 className="text-assistive">{`Explore ${pageTitle} Web3 identity profiles, social links, NFT collections, Web3 activities, dWebsites, POAPs etc on the Web3.bio profile page.`}</h2>
             <div className="profile-name">{data.displayName}</div>
-            <h3 className="text-assistive">{`${pageTitle}‘s Ethereum wallet address is ${data.address}`}</h3>
+            <h3 className="text-assistive">{`${pageTitle}‘s wallet address is ${data.address}`}</h3>
             <div className="profile-identity">
               <div className="btn-group dropdown">
                 <Clipboard
@@ -78,7 +78,7 @@ export default function ProfileMain(props) {
                   className="btn btn-sm"
                   data-clipboard-text={data.address}
                   onSuccess={onCopySuccess}
-                  title="Copy the Ethereum wallet address"
+                  title="Copy the wallet address"
                 >
                   <span className="profile-label ml-1 mr-1">
                     {formatText(data.address)}

@@ -35,7 +35,6 @@ const RenderAccount = (props) => {
         <div className="search-result-body">
           {resultNeighbor?.map((avatar, idx) => (
             <ResultAccountItem
-              canSkipProfile={regexEns.test(avatar.identity.displayName)}
               identity={avatar.identity}
               sources={avatar.sources}
               profile={profiles.find((x) => x?.uuid === avatar.identity.uuid)}
