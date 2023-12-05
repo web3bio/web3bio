@@ -67,7 +67,14 @@ const RenderAccountItem = (props) => {
         setFetched(true);
       }
     };
-    if (!fetched && identity && visible) {
+    if (
+      !fetched &&
+      (identity?.reverse ||
+        [PlatformType.farcaster, PlatformType.lens].includes(
+          identity.platform
+        )) &&
+      visible
+    ) {
       fetchProfileData();
     }
 
@@ -79,7 +86,7 @@ const RenderAccountItem = (props) => {
   }, [fetched, identity, visible, dispatch]);
   switch (identity.platform) {
     case PlatformType.ethereum:
-      if(!isAddress(identity.identity)) return null
+      if (!isAddress(identity.identity)) return null;
       return (
         <div ref={ref} className="social-item social-web3 ethereum">
           <div className="social-main">
