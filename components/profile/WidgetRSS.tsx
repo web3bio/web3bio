@@ -56,8 +56,8 @@ const RenderWidgetRSS = ({
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!isLoading && data && data?.items?.length) {
-      dispatch(updateRssWidget({ isEmpty: false }));
+    if (!isLoading) {
+      dispatch(updateRssWidget({ isEmpty: !data?.items?.length }));
     }
   }, [data, isLoading, dispatch]);
 

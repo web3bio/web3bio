@@ -1,5 +1,5 @@
 "use client";
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Clipboard from "react-clipboard.js";
@@ -17,21 +17,34 @@ import AddressMenu from "./AddressMenu";
 import { Avatar } from "../shared/Avatar";
 import useModal, { ModalType } from "../../hooks/useModal";
 import Modal from "../modal/Modal";
+import { useSelector } from "react-redux";
+import { AppState } from "../../state";
+import { WidgetState } from "../../state/widgets/reducer";
+
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, nfts, fromServer, relations, domain } =
     props;
   const [isCopied, setIsCopied] = useState(false);
   const { isOpen, modalType, closeModal, openModal, params } = useModal();
-
   const pathName = usePathname();
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
+  const profileWidgetStates = useSelector<AppState, WidgetState>(
+    (state) => state.widgets
+  );
   const onCopySuccess = () => {
     setIsCopied(true);
     setTimeout(() => {
       setIsCopied(false);
     }, 1500);
   };
+  const isEmptyProfile = useCallback(() => {
+    const source = Object.values(profileWidgetStates).map((x) => x.isEmpty);
+    return (
+      source.some((x) => x !== null) &&
+      source.filter((x) => x !== null && x === false).length === 0
+    );
+  }, [profileWidgetStates])();
 
   if (!data || data.error) {
     return (
@@ -201,11 +214,18 @@ export default function ProfileMain(props) {
               }
             })}
           </div>
+          {isEmptyProfile && <div>empty goes here...</div>}
           {data.address && (
             <>
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading NFTs...</p>}>
                   <WidgetNFT
+                    initialExpand={
+                      profileWidgetStates.nft.isEmpty === false &&
+                      Object.values(profileWidgetStates).map(x=>x.isEmpty).filter(
+                        (x) => x === true
+                      ).length === 4
+                    }
                     fromServer={fromServer}
                     onShowDetail={(e, v) => {
                       openModal(ModalType.nft, v);

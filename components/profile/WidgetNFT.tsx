@@ -10,6 +10,8 @@ import {
   SIMPLEHASH_PAGE_SIZE,
 } from "../apis/simplehash";
 import NFTFilter from "./NFTFilter";
+import { updateNFTWidget } from "../../state/widgets/action";
+import { useDispatch } from "react-redux";
 
 const CURSOR_PARAM = "&cursor=";
 
@@ -59,19 +61,22 @@ const getURL = (index, address, previous, filter) => {
   const cursor = previous?.next_cursor || "";
   return (
     SIMPLEHASH_URL +
-    `/api/v0/nfts/owners_v2?chains=${filter || SIMPLEHASH_CHAINS}&wallet_addresses=${address}&filters=spam_score__lte%3D1${
+    `/api/v0/nfts/owners_v2?chains=${
+      filter || SIMPLEHASH_CHAINS
+    }&wallet_addresses=${address}&filters=spam_score__lte%3D1${
       cursor ? CURSOR_PARAM + cursor : ""
     }&limit=${SIMPLEHASH_PAGE_SIZE}`
   );
 };
 
 function useNFTs({ address, initialData, fromServer, filter }) {
-  const options = fromServer && !filter
-    ? {
-        initialSize: 1,
-        fallbackData: [initialData],
-      }
-    : {};
+  const options =
+    fromServer && !filter
+      ? {
+          initialSize: 1,
+          fallbackData: [initialData],
+        }
+      : {};
   const { data, error, size, isValidating, setSize } = useSWRInfinite(
     (index, previous) => getURL(index, address, previous, filter),
     SimplehashFetcher,
@@ -99,8 +104,9 @@ const RenderWidgetNFT = ({
   onShowDetail,
   initialData,
   fromServer,
+  initialExpand,
 }) => {
-  const [expand, setExpand] = useState(false);
+  const [expand, setExpand] = useState(initialExpand);
   const [filter, setFilter] = useState("");
   const { data, size, setSize, isValidating, isError, hasNextPage } = useNFTs({
     address,
@@ -108,12 +114,15 @@ const RenderWidgetNFT = ({
     fromServer,
     filter,
   });
-  const [firstRender, setFirstRender] = useState(true);
+  const dispatch = useDispatch();
   const [[ref, assetId], setScrollRefAndAssetId] = useState<
     [{ current: HTMLElement | null }, string]
   >([{ current: null }, ""]);
+
   const scrollContainer = useRef(null);
+
   useEffect(() => {
+    if (initialExpand && !expand) setExpand(true);
     const scrollToAsset = (assetId) => {
       if (ref) {
         const anchorElement = document.getElementById(assetId);
@@ -128,15 +137,22 @@ const RenderWidgetNFT = ({
     if (expand) {
       scrollToAsset(assetId);
     } else {
-      if (!firstRender) {
-        setExpand(true);
-      }
       setTimeout(() => {
         scrollToAsset(assetId);
       }, 550);
     }
-    setFirstRender(false);
-  }, [assetId]);
+    if (!isValidating) {
+      dispatch(updateNFTWidget({ isEmpty: !data?.length }));
+    }
+  }, [
+    assetId,
+    data?.length,
+    expand,
+    dispatch,
+    isValidating,
+    ref,
+    initialExpand,
+  ]);
 
   if (!filter && (!data.length || isError)) return null;
 
@@ -157,7 +173,13 @@ const RenderWidgetNFT = ({
             NFT Collections
           </h2>
           <div className="widget-action">
-            <NFTFilter value={filter} onChange={(v) => { setFilter(v);setExpand(true); }} />
+            <NFTFilter
+              value={filter}
+              onChange={(v) => {
+                setFilter(v);
+                setExpand(true);
+              }}
+            />
             <ExpandController
               expand={expand}
               onToggle={() => {
@@ -166,7 +188,7 @@ const RenderWidgetNFT = ({
             />
           </div>
         </div>
-        
+
         <NFTCollections
           handleScrollToAsset={(ref, assetId) => {
             setScrollRefAndAssetId([ref, assetId]);

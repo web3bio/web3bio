@@ -3,7 +3,6 @@ import SVG from "react-inlinesvg";
 import { ResultAccountItem } from "./ResultAccountItem";
 import { ResultGraph } from "../graph/ResultGraph";
 import _ from "lodash";
-import { regexEns } from "../../utils/regexp";
 import { useSelector } from "react-redux";
 import { AppState } from "../../state";
 import { ProfileInterface } from "../../utils/profile";

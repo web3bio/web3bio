@@ -44,8 +44,8 @@ const RenderWidgetPOAP = ({
     return null;
   }, [isLoading]);
   useEffect(() => {
-    if (!isLoading && data.length) {
-      dispatch(updatePoapsWidget({ isEmpty: false }));
+    if (!isLoading) {
+      dispatch(updatePoapsWidget({ isEmpty: !data?.length }));
     }
   }, [data, isLoading, dispatch]);
 

@@ -31,8 +31,8 @@ const RenderWidgetDegenScore = ({
   const { data, isLoading } = useDegenInfo(address);
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!isLoading && data?.name) {
-      dispatch(updateDegenWidget({ isEmpty: false }));
+    if (!isLoading) {
+      dispatch(updateDegenWidget({ isEmpty: !data?.name }));
     }
   }, [data, isLoading, dispatch]);
 
