@@ -37,6 +37,7 @@ export default function SearchResultQuery({
         displayName: results?.displayName,
         ownedBy: results?.ownedBy,
         nft: results?.nft,
+        reverse: results?.reverse
       },
     };
     if (results?.neighborWithTraversal) {

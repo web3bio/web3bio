@@ -6,6 +6,8 @@ import { RSS3Fetcher, RSS3_ENDPOINT } from "../apis/rss3";
 import { SocialFeeds } from "./SocialFeeds";
 import { ActivityType, TagsFilterMapping } from "../../utils/activity";
 import FeedFilter from "./FeedFilter";
+import { useDispatch } from "react-redux";
+import { updateFeedsWidget } from "../../state/widgets/action";
 
 const FEEDS_PAGE_SIZE = 20;
 
@@ -96,7 +98,7 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData, openModal }) => {
     initialData,
     filter,
   });
-
+  const dispatch = useDispatch();
   const scrollContainer = useRef(null);
 
   useEffect(() => {
@@ -107,9 +109,12 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData, openModal }) => {
         behavior: "smooth",
       });
     }
-  }, [expand]);
+    if (!isValidating) {
+      dispatch(updateFeedsWidget({ isEmpty: !data?.length }));
+    }
+  }, [expand, isValidating, data?.length, dispatch]);
 
-  if ((!isValidating && !data?.length) || isError) return null;
+  if ((filter === "all" && !data?.length) || isError) return null;
 
   // if (process.env.NODE_ENV !== "production") {
   //   console.log("Feed Data:", data);
@@ -128,7 +133,13 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData, openModal }) => {
             Activity Feeds
           </h2>
           <div className="widget-action">
-            <FeedFilter value={filter} onChange={(v) => { setFilter(v);setExpand(true); }} />
+            <FeedFilter
+              value={filter}
+              onChange={(v) => {
+                setFilter(v);
+                setExpand(true);
+              }}
+            />
             <ExpandController
               expand={expand}
               onToggle={() => {

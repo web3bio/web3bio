@@ -316,6 +316,7 @@
     &.profile-widget-link {
       cursor: pointer;
       overflow: hidden;
+      position: relative;
 
       &:focus,
       &:hover {
@@ -327,6 +328,10 @@
             opacity: 1;
           }
         }
+      }
+
+      .tooltip-copy {
+        bottom: 10%;
       }
     }
 
@@ -368,6 +373,7 @@
     }
 
     .platform-action {
+      display: none;
       margin-top: .5rem;
 
       &.active {
@@ -662,7 +668,7 @@
                 .preview-network-name {
                   color: $dark-color;
                   display: none;
-                  padding: 0 .25rem;
+                  padding: 0 0 0 .25rem;
                 }
 
                 .preview-network-icon {
