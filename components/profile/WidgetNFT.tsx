@@ -136,6 +136,7 @@ const RenderWidgetNFT = ({
     if (expand) {
       scrollToAsset(assetId);
     } else {
+      // firstRender to fix collection click scrollTo
       if (!firstRender) {
         setExpand(true);
       }
