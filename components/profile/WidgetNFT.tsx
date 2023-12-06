@@ -106,6 +106,7 @@ const RenderWidgetNFT = ({
   fromServer,
 }) => {
   const [expand, setExpand] = useState(false);
+  const [firstRender, setFirstRender] = useState(true);
   const [filter, setFilter] = useState("");
   const { data, size, setSize, isValidating, isError, hasNextPage } = useNFTs({
     address,
@@ -135,14 +136,18 @@ const RenderWidgetNFT = ({
     if (expand) {
       scrollToAsset(assetId);
     } else {
+      if (!firstRender) {
+        setExpand(true);
+      }
       setTimeout(() => {
         scrollToAsset(assetId);
       }, 550);
+      setFirstRender(false);
     }
     if (!isValidating) {
       dispatch(updateNFTWidget({ isEmpty: !data?.length }));
     }
-  }, [assetId, data?.length, expand, dispatch, isValidating, ref]);
+  }, [assetId, data?.length, dispatch, isValidating, ref]);
 
   if (!filter && (!data.length || isError)) return null;
 
