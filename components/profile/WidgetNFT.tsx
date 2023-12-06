@@ -104,9 +104,8 @@ const RenderWidgetNFT = ({
   onShowDetail,
   initialData,
   fromServer,
-  initialExpand,
 }) => {
-  const [expand, setExpand] = useState(initialExpand);
+  const [expand, setExpand] = useState(false);
   const [filter, setFilter] = useState("");
   const { data, size, setSize, isValidating, isError, hasNextPage } = useNFTs({
     address,
@@ -122,7 +121,6 @@ const RenderWidgetNFT = ({
   const scrollContainer = useRef(null);
 
   useEffect(() => {
-    if (initialExpand && !expand) setExpand(true);
     const scrollToAsset = (assetId) => {
       if (ref) {
         const anchorElement = document.getElementById(assetId);
@@ -144,15 +142,7 @@ const RenderWidgetNFT = ({
     if (!isValidating) {
       dispatch(updateNFTWidget({ isEmpty: !data?.length }));
     }
-  }, [
-    assetId,
-    data?.length,
-    expand,
-    dispatch,
-    isValidating,
-    ref,
-    initialExpand,
-  ]);
+  }, [assetId, data?.length, expand, dispatch, isValidating, ref]);
 
   if (!filter && (!data.length || isError)) return null;
 

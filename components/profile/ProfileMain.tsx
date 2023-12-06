@@ -21,7 +21,6 @@ import { useSelector } from "react-redux";
 import { AppState } from "../../state";
 import { WidgetState } from "../../state/widgets/reducer";
 
-
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, nfts, fromServer, relations, domain } =
     props;
@@ -220,12 +219,6 @@ export default function ProfileMain(props) {
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading NFTs...</p>}>
                   <WidgetNFT
-                    initialExpand={
-                      profileWidgetStates.nft.isEmpty === false &&
-                      Object.values(profileWidgetStates).map(x=>x.isEmpty).filter(
-                        (x) => x === true
-                      ).length === 4
-                    }
                     fromServer={fromServer}
                     onShowDetail={(e, v) => {
                       openModal(ModalType.nft, v);
