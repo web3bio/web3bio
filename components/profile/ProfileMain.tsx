@@ -7,6 +7,7 @@ import SVG from "react-inlinesvg";
 import { PlatformType } from "../../utils/platform";
 import { SocialPlatformMapping, formatText, colorMod } from "../../utils/utils";
 import { Error } from "../shared/Error";
+import { Empty } from "../shared/Empty";
 import { RenderWidgetItem } from "./WidgetLinkItem";
 import { WidgetNFT } from "./WidgetNFT";
 import { WidgetRSS } from "./WidgetRSS";
@@ -213,7 +214,13 @@ export default function ProfileMain(props) {
               }
             })}
           </div>
-          {isEmptyProfile && <div>empty goes here...</div>}
+          {isEmptyProfile && (
+            <div className="profile-widget-full">
+              <div className="profile-widget">
+                <Empty title="Nothing here" text="No social links, NFTs, Web3 activities or POAPs yet" />
+              </div>
+            </div>
+          )}
           {data.address && (
             <>
               <div className="web3-section-widgets">

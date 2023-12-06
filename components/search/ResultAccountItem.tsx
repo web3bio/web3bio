@@ -119,12 +119,22 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
               <div className="content">
-                <div className="content-title text-bold">{displayName}</div>
-                <div className="content-subtitle text-gray">
-                  <div className="address hide-xs">{resolvedIdentity}</div>
-                  <div className="address show-xs">
-                    {formatText(resolvedIdentity)}
-                  </div>
+                <div className="content-title text-ellipsis text-bold">{displayName}</div>
+                <div className="content-subtitle text-ellipsis text-gray">
+                  { identity.platform === PlatformType.ethereum ?
+                    (
+                      <>
+                        <div className="address hide-xs">{resolvedIdentity}</div>
+                        <div className="address show-xs">
+                          {formatText(resolvedIdentity)}
+                        </div>
+                      </>
+                    ) : (
+                      <div className="address">
+                        {formatText(resolvedIdentity)}
+                      </div>
+                    )
+                  }
                   <Clipboard
                     component="div"
                     className="action"
@@ -159,7 +169,6 @@ const RenderAccountItem = (props) => {
                     <Link
                       target={"_blank"}
                       href={`/${
-                        profile?.identity ||
                         identity.displayName ||
                         resolvedIdentity
                       }`}
