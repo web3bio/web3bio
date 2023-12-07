@@ -138,10 +138,6 @@
         box-shadow: 0 .05rem .1rem var(--badge-bg-color, rgba($dark-color, .05)), 0 .05rem .8rem rgba($dark-color, .05);
       }
 
-      &.ethereum {
-        display: none;
-      }
-
       &.nextid {
         position: relative;
 
@@ -1180,8 +1176,20 @@
     .nft-header-description {
       font-size: .8rem;
 
+      h1,
+      h2,
+      h3 {
+        font-size: .8rem;
+        font-weight: 700;
+        margin-top: 1rem;
+      }
+
       p {
         margin-bottom: .5rem;
+      }
+
+      hr {
+        display: none;
       }
 
       a {

@@ -142,10 +142,10 @@ export default function ProfileMain(props) {
                       width={20}
                       src={SocialPlatformMapping(platform).icon || ""}
                     />
-                    <span className="platform-badge-name">
-                      {formatText(domain)}
-                    </span>
                   </div>
+                  <span className="platform-badge-name">
+                    {formatText(domain)}
+                  </span>
                 </Clipboard>
               )}
               {relations?.map((x, idx) => {
@@ -179,7 +179,9 @@ export default function ProfileMain(props) {
                         src={SocialPlatformMapping(x.platform).icon || ""}
                       />
                     </div>
-                    <span className="platform-badge-name">{x.identity}</span>
+                    <span className="platform-badge-name">
+                      {x.platform === PlatformType.ethereum ? formatText(x.identity) : x.identity}
+                    </span>
                   </Link>
                 );
               })}
