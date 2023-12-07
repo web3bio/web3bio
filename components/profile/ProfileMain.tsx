@@ -41,11 +41,10 @@ export default function ProfileMain(props) {
   const isEmptyProfile = useCallback(() => {
     const source = Object.values(profileWidgetStates).map((x) => x.isEmpty);
     return (
-      source.some((x) => x !== null) &&
-      source.filter((x) => x !== null && x === false).length === 0
+      !source.some((x) => x === null) &&
+      source.filter((x) => x === false).length === 0
     );
   }, [profileWidgetStates])();
-
   if (!data || data.error) {
     return (
       <Error
@@ -180,7 +179,9 @@ export default function ProfileMain(props) {
                       />
                     </div>
                     <span className="platform-badge-name">
-                      {x.platform === PlatformType.ethereum ? formatText(x.identity) : x.identity}
+                      {x.platform === PlatformType.ethereum
+                        ? formatText(x.identity)
+                        : x.identity}
                     </span>
                   </Link>
                 );
@@ -219,7 +220,10 @@ export default function ProfileMain(props) {
           {isEmptyProfile && (
             <div className="profile-widget-full">
               <div className="profile-widget">
-                <Empty title="Nothing here" text="No social links, NFTs, Web3 activities or POAPs yet" />
+                <Empty
+                  title="Nothing here"
+                  text="No social links, NFTs, Web3 activities or POAPs yet"
+                />
               </div>
             </div>
           )}

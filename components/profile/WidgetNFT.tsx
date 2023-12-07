@@ -148,7 +148,7 @@ const RenderWidgetNFT = ({
     if (!isValidating) {
       dispatch(updateNFTWidget({ isEmpty: !data?.length }));
     }
-  }, [assetId, data?.length, dispatch, isValidating, ref]);
+  }, [assetId]);
 
   if (!filter && (!data.length || isError)) return null;
 
@@ -186,8 +186,8 @@ const RenderWidgetNFT = ({
         </div>
 
         <NFTCollections
-          handleScrollToAsset={(ref, assetId) => {
-            setScrollRefAndAssetId([ref, assetId]);
+          handleScrollToAsset={(ref, newVal) => {
+            setScrollRefAndAssetId([ref, newVal]);
           }}
           parentScrollRef={scrollContainer}
           expand={expand}
