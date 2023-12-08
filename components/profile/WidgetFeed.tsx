@@ -30,6 +30,8 @@ const getURL = (index, address, previous, filter) => {
   const data = {
     account: [address],
     limit: FEEDS_PAGE_SIZE,
+    // action_limit here
+    action_limit: 20,
     status: "successful",
     direction: "out",
     cursor,
