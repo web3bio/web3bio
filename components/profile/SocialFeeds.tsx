@@ -1,5 +1,6 @@
 import { memo } from "react";
 import useInfiniteScroll from "react-infinite-scroll-hook";
+import { isSameAddress } from "../../utils/utils";
 import { FeedItem } from "../feed/FeedItem";
 import { Empty } from "../shared/Empty";
 import { Loading } from "../shared/Loading";
@@ -52,7 +53,9 @@ const RenderSocialFeeds = (props) => {
       <div className="feeds-list">
         {data.map(
           (x) =>
-            (
+            (x.actions?.some((x) =>
+              isSameAddress(x.from, identity.address)
+            ) && (
               <div key={x.id} className={`feed-item`}>
                 <FeedItem
                   openModal={openModal}
@@ -61,7 +64,8 @@ const RenderSocialFeeds = (props) => {
                   feed={x}
                 />
               </div>
-            ) || null
+            )) ||
+            null
         )}
       </div>
 

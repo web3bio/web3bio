@@ -224,14 +224,6 @@ export default function ProfileMain(props) {
             })}
           </div>
 
-          {initialLoading && (
-            <div className="profile-widget-full">
-              <div className="profile-widget text-center font-sm mt-4">
-                <Loading  placeholder="Loading widgets..." />
-              </div>
-            </div>
-          )}
-
           {isEmptyProfile && (
             <div className="profile-widget-full">
               <div className="profile-widget">
@@ -292,6 +284,13 @@ export default function ProfileMain(props) {
                 </Suspense>
               </div>
             </>
+          )}
+          {initialLoading && !nfts?.nfts.length && (
+            <div className="profile-widget-full">
+              <div className="profile-widget text-center font-sm mt-4">
+                <Loading placeholder="Loading widgets..." />
+              </div>
+            </div>
           )}
         </div>
       </div>
