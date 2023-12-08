@@ -184,12 +184,13 @@ const resolveSocialMediaLink = (name: string, type: PlatformType) => {
   switch (type) {
     case PlatformType.url:
       return `${name}`;
+    case PlatformType.dns:
     case PlatformType.website:
       return `https://${name}`;
     default:
       return SocialPlatformMapping(type).urlPrefix
         ? SocialPlatformMapping(type).urlPrefix + name
-        : "";
+        : name;
   }
 };
 
