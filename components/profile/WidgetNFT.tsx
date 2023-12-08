@@ -146,7 +146,7 @@ const RenderWidgetNFT = ({
       setFirstRender(false);
     }
     if (!isValidating) {
-      dispatch(updateNFTWidget({ isEmpty: !data?.length }));
+      dispatch(updateNFTWidget({ isEmpty: !data?.length, initLoading: false }));
     }
   }, [assetId]);
 

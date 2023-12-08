@@ -110,7 +110,9 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData, openModal }) => {
       });
     }
     if (!isValidating) {
-      dispatch(updateFeedsWidget({ isEmpty: !data?.length }));
+      dispatch(
+        updateFeedsWidget({ isEmpty: !data?.length, initLoading: false })
+      );
     }
   }, [expand, isValidating, data?.length, dispatch]);
 

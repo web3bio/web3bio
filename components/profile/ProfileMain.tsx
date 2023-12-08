@@ -1,5 +1,5 @@
 "use client";
-import React, { Suspense, useCallback, useEffect, useState } from "react";
+import React, { Suspense, useCallback, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Clipboard from "react-clipboard.js";
@@ -21,6 +21,7 @@ import Modal from "../modal/Modal";
 import { useSelector } from "react-redux";
 import { AppState } from "../../state";
 import { WidgetState } from "../../state/widgets/reducer";
+import { Loading } from "../shared/Loading";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, nfts, fromServer, relations, domain } =
@@ -44,6 +45,11 @@ export default function ProfileMain(props) {
       !source.some((x) => x === null) &&
       source.filter((x) => x === false).length === 0
     );
+  }, [profileWidgetStates])();
+  const initialLoading = useCallback(() => {
+    return Object.values(profileWidgetStates)
+      .map((x) => x.initLoading)
+      .some((x) => !!x);
   }, [profileWidgetStates])();
   if (!data || data.error) {
     return (
@@ -217,6 +223,15 @@ export default function ProfileMain(props) {
               }
             })}
           </div>
+
+          {initialLoading && (
+            <div className="profile-widget-full">
+              <div className="profile-widget text-center font-sm mt-4">
+                <Loading  placeholder="Loading widgets..." />
+              </div>
+            </div>
+          )}
+
           {isEmptyProfile && (
             <div className="profile-widget-full">
               <div className="profile-widget">
