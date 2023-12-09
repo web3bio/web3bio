@@ -1,17 +1,14 @@
 import { createAction } from "@reduxjs/toolkit";
 
-export const updateNFTWidget = createAction<{ isEmpty: boolean }>(
-  "widgets/nft"
-);
-export const updateFeedsWidget = createAction<{ isEmpty: boolean }>(
-  "widgets/feeds"
-);
-export const updatePoapsWidget = createAction<{
+interface UpdateWidgetState {
   isEmpty: boolean;
-}>("widgets/poaps");
-export const updateRssWidget = createAction<{ isEmpty: boolean }>(
-  "widgets/rss"
-);
-export const updateDegenWidget = createAction<{
-  isEmpty: boolean;
-}>("widgets/degen");
+  initLoading: boolean;
+}
+export const updateNFTWidget = createAction<UpdateWidgetState>("widgets/nft");
+export const updateFeedsWidget =
+  createAction<UpdateWidgetState>("widgets/feeds");
+export const updatePoapsWidget =
+  createAction<UpdateWidgetState>("widgets/poaps");
+export const updateRssWidget = createAction<UpdateWidgetState>("widgets/rss");
+export const updateDegenWidget =
+  createAction<UpdateWidgetState>("widgets/degen");

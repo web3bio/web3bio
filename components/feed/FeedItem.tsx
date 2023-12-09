@@ -47,9 +47,7 @@ const RenderFeedContent = (props) => {
       return <SocialCard openModal={openModal} action={action} />;
     case "exchange":
     case "transaction":
-      return (
-        <TransactionCard id={id} action={action} />
-      );
+      return <TransactionCard id={id} action={action} />;
     case "collectible":
       return (
         <CollectibleCard
@@ -134,16 +132,21 @@ const RenderFeedItem = (props) => {
               id={action.id}
             />
           ) : (
-            actions.map((x, index) => (
-              x.tag !== "unknown" && <RenderFeedContent
-                network={feed.network}
-                openModal={openModal}
-                action={x}
-                tag={x.tag}
-                id={x.id}
-                key={index}
-              />
-            ))
+            actions.map((x, index) => {
+              return (
+                x.tag !== "unknown" &&
+                isSameAddress(x.from, identity.address) && (
+                  <RenderFeedContent
+                    network={feed.network}
+                    openModal={openModal}
+                    action={x}
+                    tag={x.tag}
+                    id={x.id}
+                    key={index}
+                  />
+                )
+              );
+            })
           )}
         </div>
       </div>

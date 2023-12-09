@@ -29,9 +29,7 @@ function usePoaps(address: string, fromServer: boolean) {
   };
 }
 
-const RenderWidgetPOAP = ({
-  address, onShowDetail, fromServer
-}) => {
+const RenderWidgetPOAP = ({ address, onShowDetail, fromServer }) => {
   const { data, isLoading } = usePoaps(address, fromServer);
   const dispatch = useDispatch();
   const getBoundaryRender = useCallback(() => {
@@ -45,7 +43,9 @@ const RenderWidgetPOAP = ({
   }, [isLoading]);
   useEffect(() => {
     if (!isLoading) {
-      dispatch(updatePoapsWidget({ isEmpty: !data?.length }));
+      dispatch(
+        updatePoapsWidget({ isEmpty: !data?.length, initLoading: false })
+      );
     }
   }, [data, isLoading, dispatch]);
 
@@ -69,13 +69,14 @@ const RenderWidgetPOAP = ({
             POAPs
           </h2>
           <h3 className="text-assistive">
-            POAP are the bookmarks for your life. Mint the most important memories
-            of your life as digital collectibles (NFTs) forever on the blockchain.
+            POAP are the bookmarks for your life. Mint the most important
+            memories of your life as digital collectibles (NFTs) forever on the
+            blockchain.
           </h3>
           <div className="widget-action">
             <div className="action-icon">
-              <Link 
-                className="btn btn-sm" 
+              <Link
+                className="btn btn-sm"
                 title="More on POAPs"
                 href={`https://app.poap.xyz/scan/${address}`}
                 target={"_blank"}
@@ -85,7 +86,7 @@ const RenderWidgetPOAP = ({
             </div>
           </div>
         </div>
-        
+
         <div className="widget-poap-list noscrollbar">
           {getBoundaryRender() ||
             data.map((x, idx) => {

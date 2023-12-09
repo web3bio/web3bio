@@ -30,6 +30,8 @@ const getURL = (index, address, previous, filter) => {
   const data = {
     account: [address],
     limit: FEEDS_PAGE_SIZE,
+    // todo: check https://docs.rss3.io/reference/postaccountsactivities, action_limit only valid below 10
+    action_limit: 20,
     status: "successful",
     direction: "out",
     cursor,
@@ -110,7 +112,9 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData, openModal }) => {
       });
     }
     if (!isValidating) {
-      dispatch(updateFeedsWidget({ isEmpty: !data?.length }));
+      dispatch(
+        updateFeedsWidget({ isEmpty: !data?.length, initLoading: false })
+      );
     }
   }, [expand, isValidating, data?.length, dispatch]);
 

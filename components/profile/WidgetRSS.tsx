@@ -45,19 +45,15 @@ function useRSS(domain: string, relations, fromServer) {
   };
 }
 
-const RenderWidgetRSS = ({
-  domain, relations, fromServer
-}) => {
-  const { data, isLoading } = useRSS(
-    domain,
-    relations,
-    fromServer
-  );
+const RenderWidgetRSS = ({ domain, relations, fromServer }) => {
+  const { data, isLoading } = useRSS(domain, relations, fromServer);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (!isLoading) {
-      dispatch(updateRssWidget({ isEmpty: !data?.items?.length }));
+      dispatch(
+        updateRssWidget({ isEmpty: !data?.items?.length, initLoading: false })
+      );
     }
   }, [data, isLoading, dispatch]);
 
@@ -80,8 +76,8 @@ const RenderWidgetRSS = ({
           )}
           <div className="widget-action">
             <div className="action-icon">
-              <Link 
-                className="btn btn-sm" 
+              <Link
+                className="btn btn-sm"
                 title="More Articles"
                 href={data.link}
                 target={"_blank"}
@@ -91,7 +87,7 @@ const RenderWidgetRSS = ({
             </div>
           </div>
         </div>
-        
+
         <div className="widget-rss-list noscrollbar">
           {data?.items.map((x, idx) => {
             return <RssItem data={x} key={idx} />;
