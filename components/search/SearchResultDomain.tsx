@@ -56,6 +56,7 @@ export default function RenderResultDomain({ searchTerm, searchPlatform }) {
       },
       ...tranversal,
     ];
+
     if (searchTerm !== resolved.displayName && regexEns.test(searchTerm)) {
       // as sub domain
       temp.unshift({
@@ -69,12 +70,21 @@ export default function RenderResultDomain({ searchTerm, searchPlatform }) {
         },
       });
     }
+    const resolvedTemp = (() => {
+      const index = temp.findIndex(
+        (x) => x.identity.displayName === searchTerm
+      );
+      const newTemp = temp.splice(index, 1);
+      return newTemp.concat(temp);
+    })();
 
     setResultNeighbor(
-      temp.filter(
+      resolvedTemp.filter(
         (ele, index) =>
           index ===
-          temp.findIndex((elem) => elem.identity.uuid == ele.identity.uuid)
+          resolvedTemp.findIndex(
+            (elem) => elem.identity.uuid == ele.identity.uuid
+          )
       )
     );
   }, [data, searchTerm, searchPlatform, getQuery]);
