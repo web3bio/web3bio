@@ -29,7 +29,7 @@ export default function RenderResultDomain({ searchTerm, searchPlatform }) {
     const owner = data?.domain.owner;
     const resolved = data?.domain.resolved;
 
-    const tranversal = resolved?.neighborWithTraversal.reduce((pre, cur) => {
+    const tranversal = resolved?.neighborWithTraversal?.reduce((pre, cur) => {
       pre.push({
         identity: cur.from,
         sources: [cur.source],
@@ -51,13 +51,13 @@ export default function RenderResultDomain({ searchTerm, searchPlatform }) {
           displayName: owner?.displayName,
           reverse: owner?.reverse,
           nft: owner?.nft,
-          isOwner: resolved.identity === owner.identity ? false : true,
+          isOwner: resolved?.identity === owner.identity ? false : true,
         },
       },
-      ...tranversal,
+      ...tranversal || [],
     ];
 
-    if (searchTerm !== resolved.displayName && regexEns.test(searchTerm)) {
+    if (resolved?. displayName && searchTerm !== resolved.displayName && regexEns.test(searchTerm)) {
       // as sub domain
       temp.unshift({
         identity: {
@@ -100,7 +100,7 @@ export default function RenderResultDomain({ searchTerm, searchPlatform }) {
   if (!data?.domain) return <Empty />;
 
   const graphData =
-    data.domain.resolved.neighborWithTraversal.length > 0
+    data?.domain?.resolved?.neighborWithTraversal?.length > 0
       ? data.domain.resolved.neighborWithTraversal
       : resultNeighbor.length > 0
       ? [
