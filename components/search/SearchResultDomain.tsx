@@ -56,10 +56,7 @@ export default function RenderResultDomain({ searchTerm, searchPlatform }) {
       },
       ...tranversal,
     ];
-    if (
-      searchTerm !== temp[0]?.identity?.displayName &&
-      regexEns.test(searchTerm)
-    ) {
+    if (searchTerm !== resolved.displayName && regexEns.test(searchTerm)) {
       // as sub domain
       temp.unshift({
         identity: {
@@ -91,6 +88,7 @@ export default function RenderResultDomain({ searchTerm, searchPlatform }) {
     );
   if (error) return <Error retry={getQuery} text={error} />;
   if (!data?.domain) return <Empty />;
+
   const graphData =
     data.domain.resolved.neighborWithTraversal.length > 0
       ? data.domain.resolved.neighborWithTraversal
