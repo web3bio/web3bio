@@ -30,7 +30,7 @@ export default function RenderResultDomain({
     if (searchTerm && searchPlatform) getQuery();
     if (!data || !data.domain) return;
     const results = data?.domain.owner;
-
+    
     const temp = results?.neighborWithTraversal.reduce(
       (pre, cur) => {
         pre.push({
@@ -53,6 +53,7 @@ export default function RenderResultDomain({
             identity: results?.identity,
             displayName: results?.displayName,
             nft: results?.nft,
+            reverse: results?.reverse
           },
         },
       ]
@@ -68,6 +69,7 @@ export default function RenderResultDomain({
           platform: results?.platform,
           identity: results?.identity,
           displayName: searchTerm,
+          reverse: false,
           nft: [],
         },
       });
@@ -102,7 +104,6 @@ export default function RenderResultDomain({
           },
         ]
       : [];
-
   return (
     <ResultAccount
       resultNeighbor={resultNeighbor}

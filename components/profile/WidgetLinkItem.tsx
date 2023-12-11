@@ -129,10 +129,10 @@ const WidgetItem = (props) => {
                 <div className="platform-title">{SocialPlatformMapping(item.platform)?.label}</div>
                 <div className="platform-handle text-ellipsis">{item.handle}</div>
               </div>
+              {isCopied && <div className="tooltip-copy">COPIED</div>}
               <div className="platform-action">
                 <div className="btn btn-sm">
                   Copy
-                  {isCopied && <div className="tooltip-copy">COPIED</div>}
                 </div>
               </div>
             </Clipboard>

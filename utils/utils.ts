@@ -24,7 +24,7 @@ export const formatText = (string, length?) => {
   if (string.length <= len) {
     return string;
   }
-  if (string.startsWith("0x") && string.length >= 42) {
+  if (string.startsWith("0x") || string.length >= 42) {
     const oriAddr = string,
       chars = length || 4;
     return `${oriAddr.substring(0, chars + 2)}...${oriAddr.substring(
@@ -184,12 +184,13 @@ const resolveSocialMediaLink = (name: string, type: PlatformType) => {
   switch (type) {
     case PlatformType.url:
       return `${name}`;
+    case PlatformType.dns:
     case PlatformType.website:
       return `https://${name}`;
     default:
       return SocialPlatformMapping(type).urlPrefix
         ? SocialPlatformMapping(type).urlPrefix + name
-        : "";
+        : name;
   }
 };
 

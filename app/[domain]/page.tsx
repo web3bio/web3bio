@@ -141,7 +141,10 @@ export default async function ProfilePage({
       fromServer
       domain={domain}
       relations={
-        data?.map((x) => ({ platform: x.platform, identity: x.identity })) || []
+        data?.map((x) => ({
+          platform: x.platform, 
+          identity: x.identity,
+        })) || []
       }
       nfts={{
         ...nfts,

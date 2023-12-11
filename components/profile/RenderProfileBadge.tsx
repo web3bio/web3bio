@@ -29,6 +29,9 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
     ProfileFetcher,
     { keepPreviousData: true }
   );
+  const relatedPath = `${identity}${
+    platform === PlatformType.farcaster ? ".farcaster" : ""
+  }`;
 
   useEffect(() => {
     const element = ref?.current;
@@ -75,7 +78,7 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
       {(data && !data?.error) && (
         <div className="profile-card">
           <div className="profile-card-action">
-            <Link href={`${process.env.NEXT_PUBLIC_BASE_URL}/${data?.identity}`} target="_blank" className="btn btn-sm">
+            <Link href={`${process.env.NEXT_PUBLIC_BASE_URL}/${relatedPath}`} target="_blank" className="btn btn-sm btn-link">
               <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
             </Link>
           </div>

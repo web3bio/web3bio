@@ -138,10 +138,6 @@
         box-shadow: 0 .05rem .1rem var(--badge-bg-color, rgba($dark-color, .05)), 0 .05rem .8rem rgba($dark-color, .05);
       }
 
-      &.ethereum {
-        display: none;
-      }
-
       &.nextid {
         position: relative;
 
@@ -283,7 +279,6 @@
     text-decoration: none;
     transition: all .25s ease-in-out;
     width: 100%;
-
     .emoji-large {
       font-size: 1.2rem;
     }
@@ -316,6 +311,7 @@
     &.profile-widget-link {
       cursor: pointer;
       overflow: hidden;
+      position: relative;
 
       &:focus,
       &:hover {
@@ -327,6 +323,10 @@
             opacity: 1;
           }
         }
+      }
+
+      .tooltip-copy {
+        bottom: 10%;
       }
     }
 
@@ -368,6 +368,7 @@
     }
 
     .platform-action {
+      display: none;
       margin-top: .5rem;
 
       &.active {
@@ -662,7 +663,7 @@
                 .preview-network-name {
                   color: $dark-color;
                   display: none;
-                  padding: 0 .25rem;
+                  padding: 0 0 0 .25rem;
                 }
 
                 .preview-network-icon {
@@ -1174,8 +1175,20 @@
     .nft-header-description {
       font-size: .8rem;
 
+      h1,
+      h2,
+      h3 {
+        font-size: .8rem;
+        font-weight: 700;
+        margin-top: 1rem;
+      }
+
       p {
         margin-bottom: .5rem;
+      }
+
+      hr {
+        display: none;
       }
 
       a {

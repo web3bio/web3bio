@@ -8,7 +8,6 @@ import { RenderSourceFooter } from "./SourcesFooter";
 import { PlatformType } from "../../utils/platform";
 import { SocialPlatformMapping } from "../../utils/utils";
 import { isAddress } from "ethers";
-import ModalLink from "../profile/ModalLink";
 import { useDispatch } from "react-redux";
 import _ from "lodash";
 import { fetchProfile } from "../../hooks/api/fetchProfile";
@@ -22,7 +21,7 @@ const RenderAccountItem = (props) => {
     }, 1500);
   };
   const ref = useRef(null);
-  const { identity, sources, profile, canSkipProfile } = props;
+  const {identity, sources, profile} = props;
   const [isCopied, setIsCopied] = useState(false);
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
@@ -35,9 +34,11 @@ const RenderAccountItem = (props) => {
       ? formatText(resolvedDisplayName)
       : resolvedDisplayName;
   const resolvedIdentity =
-    identity.platform === PlatformType.ethereum
-      ? profile?.address || identity.identity
-      : identity.identity;
+    [PlatformType.unstoppableDomains, PlatformType.dotbit].includes(
+      identity.platform
+    )
+      ? identity.ownedBy.identity
+      : profile?.address || identity.identity;
 
   useEffect(() => {
     const element = ref?.current;
@@ -68,7 +69,14 @@ const RenderAccountItem = (props) => {
         setFetched(true);
       }
     };
-    if (!fetched && identity && visible) {
+    if (
+      !fetched &&
+      (identity?.reverse ||
+        [PlatformType.farcaster, PlatformType.lens].includes(
+          identity.platform
+        )) &&
+      visible
+    ) {
       fetchProfileData();
     }
 
@@ -78,11 +86,12 @@ const RenderAccountItem = (props) => {
       }
     };
   }, [fetched, identity, visible, dispatch]);
-
   switch (identity.platform) {
     case PlatformType.ethereum:
+    case PlatformType.unstoppableDomains:
+    case PlatformType.dotbit:
       return (
-        <div ref={ref} className="social-item social-web3 ethereum">
+        <div ref={ref} className={`social-item ${identity.platform}`}>
           <div className="social-main">
             <div className="social">
               <div className="avatar">
@@ -95,9 +104,14 @@ const RenderAccountItem = (props) => {
                     className="avatar-img"
                   />
                 )}
-                <div className="icon bg-pride">
+                <div
+                  className="icon"
+                  style={{
+                    background: SocialPlatformMapping(identity.platform).color,
+                  }}
+                >
                   <SVG
-                    src="icons/icon-ethereum.svg"
+                    src={SocialPlatformMapping(identity.platform)?.icon || ""}
                     fill={"#fff"}
                     width={20}
                     height={20}
@@ -105,12 +119,22 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
               <div className="content">
-                <div className="content-title text-bold">{displayName}</div>
-                <div className="content-subtitle text-gray">
-                  <div className="address hide-xs">{resolvedIdentity}</div>
-                  <div className="address show-xs">
-                    {formatText(resolvedIdentity)}
-                  </div>
+                <div className="content-title text-ellipsis text-bold">{displayName}</div>
+                <div className="content-subtitle text-ellipsis text-gray">
+                  { identity.platform === PlatformType.ethereum ?
+                    (
+                      <>
+                        <div className="address hide-xs">{resolvedIdentity}</div>
+                        <div className="address show-xs">
+                          {formatText(resolvedIdentity)}
+                        </div>
+                      </>
+                    ) : (
+                      <div className="address">
+                        {formatText(resolvedIdentity)}
+                      </div>
+                    )
+                  }
                   <Clipboard
                     component="div"
                     className="action"
@@ -123,21 +147,39 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
             </div>
-            {(canSkipProfile || (profile && !profile?.error)) && (
-              <div className="actions active">
-                <ModalLink
-                  href={`/${
-                    profile?.identity ||
-                    identity.displayName ||
-                    resolvedIdentity
-                  }`}
-                  title="Open ENS (Ethereum Name Service) Profile"
-                  className="btn btn-sm btn-link action"
-                >
-                  <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
-                  <span className="hide-sm">Profile</span>
-                </ModalLink>
-              </div>
+            { !profile?.error && (
+                profile ? (
+                  <div className="actions active">
+                    <Link
+                      target={"_blank"}
+                      href={`/${
+                        profile?.identity ||
+                        identity.displayName ||
+                        resolvedIdentity
+                      }`}
+                      title="Open Profile"
+                      className="btn btn-sm btn-link action"
+                    >
+                      <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
+                      <span className="hide-sm">Profile</span>
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="actions">
+                    <Link
+                      target={"_blank"}
+                      href={`/${
+                        identity.displayName ||
+                        resolvedIdentity
+                      }`}
+                      title="Open Profile"
+                      className="btn btn-sm btn-link action"
+                    >
+                      <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
+                      <span className="hide-sm">Profile</span>
+                    </Link>
+                  </div>
+                )
             )}
           </div>
           {identity.nft?.length > 0 && (
@@ -172,8 +214,6 @@ const RenderAccountItem = (props) => {
       );
     case PlatformType.lens:
     case PlatformType.farcaster:
-    case PlatformType.unstoppableDomains:
-    case PlatformType.dotbit:
       return (
         <div ref={ref} className={`social-item ${identity.platform}`}>
           <div className="social-main">
@@ -205,10 +245,8 @@ const RenderAccountItem = (props) => {
               <div className="content">
                 <div className="content-title text-bold">{displayName}</div>
                 <div className="content-subtitle text-gray">
-                  <div className="address">{resolvedIdentity}</div>
                   {identity.uid && (
                     <>
-                      <div className="ml-1 mr-1">·</div>
                       <div
                         className="address"
                         title={`${
@@ -221,24 +259,36 @@ const RenderAccountItem = (props) => {
                       >
                         #{identity.uid}
                       </div>
+                      <div className="ml-1 mr-1">{" "}·{" "}</div>
                     </>
                   )}
+                  <div className="address">{identity.identity}</div>
+                  <Clipboard
+                    component="div"
+                    className="action"
+                    data-clipboard-text={identity.identity}
+                    onSuccess={onCopySuccess}
+                  >
+                    <SVG src="icons/icon-copy.svg" width={20} height={20} />
+                    {isCopied && <div className="tooltip-copy">COPIED</div>}
+                  </Clipboard>
                 </div>
               </div>
             </div>
             <div className="actions active">
-              <ModalLink
+              <Link
+                target={"_blank"}
                 className="btn btn-sm btn-link action"
                 href={`/${
                   identity.platform === PlatformType.farcaster
-                    ? resolvedIdentity + ".farcaster"
-                    : resolvedIdentity
+                    ? identity.identity + ".farcaster"
+                    : identity.identity
                 }`}
                 title="Open Profile"
               >
                 <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
                 <span className="hide-sm">Profile</span>
-              </ModalLink>
+              </Link>
             </div>
           </div>
           <RenderSourceFooter sources={sources} />
@@ -292,7 +342,8 @@ const RenderAccountItem = (props) => {
               </div>
             </div>
             <div className="actions active">
-              <ModalLink
+              <Link
+                target={"_blank"}
                 className="btn btn-sm btn-link action"
                 href={`/${resolvedIdentity}`}
                 title="Open Next.ID Profile page"
@@ -300,7 +351,7 @@ const RenderAccountItem = (props) => {
               >
                 <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
                 <span className="hide-sm">Profile</span>
-              </ModalLink>
+              </Link>
             </div>
           </div>
           <RenderSourceFooter sources={sources} />
@@ -335,13 +386,13 @@ const RenderAccountItem = (props) => {
               <a
                 className="btn btn-sm btn-link action"
                 href={`${SocialPlatformMapping(identity.platform)?.urlPrefix}${
-                  identity.displayName
+                  identity.displayName || displayName
                 }`}
                 title="Open"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <SVG src="icons/icon-open.svg" width={20} height={20} /> OPEN
+                <SVG src="icons/icon-open.svg" width={20} height={20} /> Open
               </a>
             </div>
           </div>

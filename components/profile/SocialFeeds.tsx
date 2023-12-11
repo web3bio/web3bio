@@ -1,5 +1,6 @@
 import { memo } from "react";
 import useInfiniteScroll from "react-infinite-scroll-hook";
+import { isSameAddress } from "../../utils/utils";
 import { FeedItem } from "../feed/FeedItem";
 import { Empty } from "../shared/Empty";
 import { Loading } from "../shared/Loading";
@@ -14,7 +15,7 @@ const RenderSocialFeeds = (props) => {
     hasNextPage,
     isError,
     expand,
-    openModal
+    openModal,
   } = props;
   const [albumRef] = useInfiniteScroll({
     loading: isLoadingMore,
@@ -44,17 +45,27 @@ const RenderSocialFeeds = (props) => {
         }
       />
     );
-  if (!data) return <Empty text="No Social Feeds" />;
+
+  if (!isLoadingMore && !data?.length)
+    return <Empty title="No Activities" text="Please try different filter" />;
   return (
     <div className="widget-feeds-container">
       <div className="feeds-list">
         {data.map(
           (x) =>
-            (
+            (x.actions?.some((x) =>
+              isSameAddress(x.from, identity.address)
+            ) && (
               <div key={x.id} className={`feed-item`}>
-                <FeedItem openModal={openModal} network={network} identity={identity} feed={x} />
+                <FeedItem
+                  openModal={openModal}
+                  network={network}
+                  identity={identity}
+                  feed={x}
+                />
               </div>
-            ) || null
+            )) ||
+            null
         )}
       </div>
 

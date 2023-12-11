@@ -1,5 +1,5 @@
 "use client";
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useCallback, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Clipboard from "react-clipboard.js";
@@ -7,33 +7,50 @@ import SVG from "react-inlinesvg";
 import { PlatformType } from "../../utils/platform";
 import { SocialPlatformMapping, formatText, colorMod } from "../../utils/utils";
 import { Error } from "../shared/Error";
+import { Empty } from "../shared/Empty";
 import { RenderWidgetItem } from "./WidgetLinkItem";
 import { WidgetNFT } from "./WidgetNFT";
 import { WidgetRSS } from "./WidgetRSS";
 import { WidgetPOAP } from "./WidgetPoap";
 import { WidgetDegenScore } from "./WidgetDegenScore";
 import { WidgetFeed } from "./WidgetFeed";
-import ModalLink from "./ModalLink";
 import AddressMenu from "./AddressMenu";
 import { Avatar } from "../shared/Avatar";
 import useModal, { ModalType } from "../../hooks/useModal";
 import Modal from "../modal/Modal";
+import { useSelector } from "react-redux";
+import { AppState } from "../../state";
+import { WidgetState } from "../../state/widgets/reducer";
+import { Loading } from "../shared/Loading";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, nfts, fromServer, relations, domain } =
     props;
   const [isCopied, setIsCopied] = useState(false);
   const { isOpen, modalType, closeModal, openModal, params } = useModal();
-
   const pathName = usePathname();
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
+  const profileWidgetStates = useSelector<AppState, WidgetState>(
+    (state) => state.widgets
+  );
   const onCopySuccess = () => {
     setIsCopied(true);
     setTimeout(() => {
       setIsCopied(false);
     }, 1500);
   };
-
+  const isEmptyProfile = useCallback(() => {
+    const source = Object.values(profileWidgetStates).map((x) => x.isEmpty);
+    return (
+      !source.some((x) => x === null) &&
+      source.filter((x) => x === false).length === 0
+    );
+  }, [profileWidgetStates])();
+  const initialLoading = useCallback(() => {
+    return Object.values(profileWidgetStates)
+      .map((x) => x.initLoading)
+      .some((x) => !!x);
+  }, [profileWidgetStates])();
   if (!data || data.error) {
     return (
       <Error
@@ -71,7 +88,7 @@ export default function ProfileMain(props) {
             } Web3 Profile`}</h1>
             <h2 className="text-assistive">{`Explore ${pageTitle} Web3 identity profiles, social links, NFT collections, Web3 activities, dWebsites, POAPs etc on the Web3.bio profile page.`}</h2>
             <div className="profile-name">{data.displayName}</div>
-            <h3 className="text-assistive">{`${pageTitle}‘s Ethereum wallet address is ${data.address}`}</h3>
+            <h3 className="text-assistive">{`${pageTitle}‘s wallet address is ${data.address}`}</h3>
             <div className="profile-identity">
               <div className="btn-group dropdown">
                 <Clipboard
@@ -79,7 +96,7 @@ export default function ProfileMain(props) {
                   className="btn btn-sm"
                   data-clipboard-text={data.address}
                   onSuccess={onCopySuccess}
-                  title="Copy the Ethereum wallet address"
+                  title="Copy the wallet address"
                 >
                   <span className="profile-label ml-1 mr-1">
                     {formatText(data.address)}
@@ -117,8 +134,11 @@ export default function ProfileMain(props) {
                   onSuccess={onCopySuccess}
                   title="Copy the Next.ID address"
                   style={{
-                    ["--badge-primary-color" as string]: SocialPlatformMapping(platform).color || "#000",
-                    ["--badge-bg-color" as string]: colorMod(SocialPlatformMapping(platform)?.color, 5) || "rgba(#000, .04)",
+                    ["--badge-primary-color" as string]:
+                      SocialPlatformMapping(platform).color || "#000",
+                    ["--badge-bg-color" as string]:
+                      colorMod(SocialPlatformMapping(platform)?.color, 5) ||
+                      "rgba(#000, .04)",
                   }}
                 >
                   <div className="platform-badge-icon">
@@ -127,10 +147,10 @@ export default function ProfileMain(props) {
                       width={20}
                       src={SocialPlatformMapping(platform).icon || ""}
                     />
-                    <span className="platform-badge-name">
-                      {formatText(domain)}
-                    </span>
                   </div>
+                  <span className="platform-badge-name">
+                    {formatText(domain)}
+                  </span>
                 </Clipboard>
               )}
               {relations?.map((x, idx) => {
@@ -138,8 +158,7 @@ export default function ProfileMain(props) {
                   x.platform === PlatformType.farcaster ? ".farcaster" : ""
                 }`;
                 return (
-                  <ModalLink
-                    skip={fromServer ? 1 : 0}
+                  <Link
                     href={`/${relatedPath}`}
                     key={x.platform + idx}
                     className={`platform-badge ${x.platform}${
@@ -149,8 +168,13 @@ export default function ProfileMain(props) {
                       SocialPlatformMapping(x.platform).label
                     }`}
                     style={{
-                      ["--badge-primary-color" as string]: SocialPlatformMapping(x.platform).color || "#000",
-                      ["--badge-bg-color" as string]: colorMod(SocialPlatformMapping(x.platform)?.color, 10) || "rgba(#000, .04)",
+                      ["--badge-primary-color" as string]:
+                        SocialPlatformMapping(x.platform).color || "#000",
+                      ["--badge-bg-color" as string]:
+                        colorMod(
+                          SocialPlatformMapping(x.platform)?.color,
+                          10
+                        ) || "rgba(#000, .04)",
                     }}
                   >
                     <div className="platform-badge-icon">
@@ -160,8 +184,12 @@ export default function ProfileMain(props) {
                         src={SocialPlatformMapping(x.platform).icon || ""}
                       />
                     </div>
-                    <span className="platform-badge-name">{x.identity}</span>
-                  </ModalLink>
+                    <span className="platform-badge-name">
+                      {x.platform === PlatformType.ethereum
+                        ? formatText(x.identity)
+                        : x.identity}
+                    </span>
+                  </Link>
                 );
               })}
             </div>
@@ -195,6 +223,17 @@ export default function ProfileMain(props) {
               }
             })}
           </div>
+
+          {isEmptyProfile && (
+            <div className="profile-widget-full">
+              <div className="profile-widget">
+                <Empty
+                  title="Nothing here"
+                  text="No social links, NFTs, Web3 activities or POAPs yet"
+                />
+              </div>
+            </div>
+          )}
           {data.address && (
             <>
               <div className="web3-section-widgets">
@@ -245,6 +284,13 @@ export default function ProfileMain(props) {
                 </Suspense>
               </div>
             </>
+          )}
+          {initialLoading && !nfts?.nfts.length && (
+            <div className="profile-widget-full">
+              <div className="profile-widget text-center font-sm mt-4">
+                <Loading placeholder="Loading widgets..." />
+              </div>
+            </div>
           )}
         </div>
       </div>

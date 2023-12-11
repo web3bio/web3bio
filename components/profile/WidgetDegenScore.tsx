@@ -25,14 +25,12 @@ function useDegenInfo(address: string) {
   };
 }
 
-const RenderWidgetDegenScore = ({
-  address
-}) => {
+const RenderWidgetDegenScore = ({ address }) => {
   const { data, isLoading } = useDegenInfo(address);
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!isLoading && data?.name) {
-      dispatch(updateDegenWidget({ isEmpty: false }));
+    if (!isLoading) {
+      dispatch(updateDegenWidget({ isEmpty: !data?.name, initLoading: false }));
     }
   }, [data, isLoading, dispatch]);
 
@@ -59,7 +57,7 @@ const RenderWidgetDegenScore = ({
           </h3>
           <div className="widget-action">
             <div className="action-icon">
-              <Link 
+              <Link
                 className="btn btn-sm"
                 title="More on DegenScore"
                 href={`https://degenscore.com/beacon/${address}`}

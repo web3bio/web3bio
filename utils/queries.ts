@@ -8,11 +8,13 @@ export const GET_PROFILES_DOMAIN = gql`
       name
       fetcher
       resolved {
+        reverse
         identity
         platform
         displayName
       }
       owner {
+        reverse
         identity
         platform
         displayName
@@ -28,6 +30,7 @@ export const GET_PROFILES_DOMAIN = gql`
             __typename
             source
             from {
+              reverse
               nft(category: ["ENS"], limit: 100, offset: 0) {
                 uuid
                 category
@@ -40,6 +43,7 @@ export const GET_PROFILES_DOMAIN = gql`
               displayName
             }
             to {
+              reverse
               nft(category: ["ENS"], limit: 100, offset: 0) {
                 uuid
                 category
@@ -56,6 +60,7 @@ export const GET_PROFILES_DOMAIN = gql`
             __typename
             source
             from {
+              reverse
               nft(category: ["ENS"], limit: 100, offset: 0) {
                 uuid
                 category
@@ -73,6 +78,7 @@ export const GET_PROFILES_DOMAIN = gql`
               }
             }
             to {
+              reverse
               nft(category: ["ENS"], limit: 100, offset: 0) {
                 uuid
                 category
@@ -104,6 +110,7 @@ export const GET_PROFILES_QUERY = gql`
       displayName
       uuid
       uid
+      reverse
       ownedBy {
         uuid
         platform
@@ -121,6 +128,7 @@ export const GET_PROFILES_QUERY = gql`
         ... on ProofRecord {
           source
           from {
+            reverse
             nft(category: ["ENS"], limit: 100, offset: 0) {
               uuid
               category
@@ -134,6 +142,7 @@ export const GET_PROFILES_QUERY = gql`
             displayName
           }
           to {
+            reverse
             nft(category: ["ENS"], limit: 100, offset: 0) {
               uuid
               category
@@ -150,6 +159,7 @@ export const GET_PROFILES_QUERY = gql`
         ... on HoldRecord {
           source
           from {
+            reverse
             nft(category: ["ENS"], limit: 100, offset: 0) {
               uuid
               category
@@ -167,6 +177,7 @@ export const GET_PROFILES_QUERY = gql`
             }
           }
           to {
+            reverse
             nft(category: ["ENS"], limit: 100, offset: 0) {
               uuid
               category

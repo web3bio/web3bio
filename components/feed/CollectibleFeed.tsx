@@ -15,6 +15,8 @@ const RenderCollectibleCard = (props) => {
   const metadata = action?.metadata;
 
   switch (action.type) {
+    case ActivityType.approval:
+      return (<></>)
     case ActivityType.mint:
       return (
         <>

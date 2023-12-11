@@ -56,7 +56,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function RootLayout({ children, modal }) {
+export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
@@ -65,10 +65,7 @@ export default function RootLayout({ children, modal }) {
       </head>
       <body className={GeistSans.className}>
         <main>
-          <Provider>
-            {children}
-            {modal}
-          </Provider>
+          <Provider>{children}</Provider>
           <GoogleAnalytics />
         </main>
       </body>
