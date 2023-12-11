@@ -21,7 +21,7 @@ const RenderAccountItem = (props) => {
     }, 1500);
   };
   const ref = useRef(null);
-  const {identity, sources, profile} = props;
+  const { identity, sources, profile } = props;
   const [isCopied, setIsCopied] = useState(false);
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
@@ -33,12 +33,12 @@ const RenderAccountItem = (props) => {
     isAddress(resolvedDisplayName) || identity.platform === PlatformType.nextid
       ? formatText(resolvedDisplayName)
       : resolvedDisplayName;
-  const resolvedIdentity =
-    [PlatformType.unstoppableDomains, PlatformType.dotbit].includes(
-      identity.platform
-    )
-      ? identity.ownedBy.identity
-      : profile?.address || identity.identity;
+  const resolvedIdentity = [
+    PlatformType.unstoppableDomains,
+    PlatformType.dotbit,
+  ].includes(identity.platform)
+    ? identity.ownedBy.identity
+    : profile?.address || identity.identity;
 
   useEffect(() => {
     const element = ref?.current;
@@ -91,7 +91,12 @@ const RenderAccountItem = (props) => {
     case PlatformType.unstoppableDomains:
     case PlatformType.dotbit:
       return (
-        <div ref={ref} className={`social-item ${identity.platform}`}>
+        <div
+          ref={ref}
+          className={`social-item ${identity.platform} ${
+            identity.isOwner ? "ml-4" : ""
+          }`}
+        >
           <div className="social-main">
             <div className="social">
               <div className="avatar">
@@ -119,22 +124,22 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
               <div className="content">
-                <div className="content-title text-ellipsis text-bold">{displayName}</div>
+                <div className="content-title text-ellipsis text-bold">
+                  {displayName}
+                </div>
                 <div className="content-subtitle text-ellipsis text-gray">
-                  { identity.platform === PlatformType.ethereum ?
-                    (
-                      <>
-                        <div className="address hide-xs">{resolvedIdentity}</div>
-                        <div className="address show-xs">
-                          {formatText(resolvedIdentity)}
-                        </div>
-                      </>
-                    ) : (
-                      <div className="address">
+                  {identity.platform === PlatformType.ethereum ? (
+                    <>
+                      <div className="address hide-xs">{resolvedIdentity}</div>
+                      <div className="address show-xs">
                         {formatText(resolvedIdentity)}
                       </div>
-                    )
-                  }
+                    </>
+                  ) : (
+                    <div className="address">
+                      {formatText(resolvedIdentity)}
+                    </div>
+                  )}
                   <Clipboard
                     component="div"
                     className="action"
@@ -147,40 +152,36 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
             </div>
-            { !profile?.error && (
-                profile ? (
-                  <div className="actions active">
-                    <Link
-                      target={"_blank"}
-                      href={`/${
-                        profile?.identity ||
-                        identity.displayName ||
-                        resolvedIdentity
-                      }`}
-                      title="Open Profile"
-                      className="btn btn-sm btn-link action"
-                    >
-                      <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
-                      <span className="hide-sm">Profile</span>
-                    </Link>
-                  </div>
-                ) : (
-                  <div className="actions">
-                    <Link
-                      target={"_blank"}
-                      href={`/${
-                        identity.displayName ||
-                        resolvedIdentity
-                      }`}
-                      title="Open Profile"
-                      className="btn btn-sm btn-link action"
-                    >
-                      <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
-                      <span className="hide-sm">Profile</span>
-                    </Link>
-                  </div>
-                )
-            )}
+            {!profile?.error &&
+              (profile ? (
+                <div className="actions active">
+                  <Link
+                    target={"_blank"}
+                    href={`/${
+                      profile?.identity ||
+                      identity.displayName ||
+                      resolvedIdentity
+                    }`}
+                    title="Open Profile"
+                    className="btn btn-sm btn-link action"
+                  >
+                    <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
+                    <span className="hide-sm">Profile</span>
+                  </Link>
+                </div>
+              ) : (
+                <div className="actions">
+                  <Link
+                    target={"_blank"}
+                    href={`/${identity.displayName || resolvedIdentity}`}
+                    title="Open Profile"
+                    className="btn btn-sm btn-link action"
+                  >
+                    <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
+                    <span className="hide-sm">Profile</span>
+                  </Link>
+                </div>
+              ))}
           </div>
           {identity.nft?.length > 0 && (
             <div className="nfts">
@@ -259,7 +260,7 @@ const RenderAccountItem = (props) => {
                       >
                         #{identity.uid}
                       </div>
-                      <div className="ml-1 mr-1">{" "}·{" "}</div>
+                      <div className="ml-1 mr-1"> · </div>
                     </>
                   )}
                   <div className="address">{identity.identity}</div>

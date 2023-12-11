@@ -10,10 +10,7 @@ import { ResultAccount } from "./ResultAccount";
 interface ResultNeighbor {
   identity: string;
 }
-export default function RenderResultDomain({
-  searchTerm,
-  searchPlatform,
-}) {
+export default function RenderResultDomain({ searchTerm, searchPlatform }) {
   const [getQuery, { loading, error, data }] = useLazyQuery(
     GET_PROFILES_DOMAIN,
     {
@@ -29,35 +26,36 @@ export default function RenderResultDomain({
   useEffect(() => {
     if (searchTerm && searchPlatform) getQuery();
     if (!data || !data.domain) return;
-    const results = data?.domain.owner;
-    
-    const temp = results?.neighborWithTraversal.reduce(
-      (pre, cur) => {
-        pre.push({
-          identity: cur.from,
-          sources: [cur.source],
-          __typename: "IdentityWithSource",
-        });
-        pre.push({
-          identity: cur.to,
-          sources: [cur.source],
-          __typename: "IdentityWithSource",
-        });
-        return pre;
-      },
-      [
-        {
-          identity: {
-            uuid: results?.uuid,
-            platform: results?.platform,
-            identity: results?.identity,
-            displayName: results?.displayName,
-            nft: results?.nft,
-            reverse: results?.reverse
-          },
+    const owner = data?.domain.owner;
+    const resolved = data?.domain.resolved;
+
+    const tranversal = resolved?.neighborWithTraversal.reduce((pre, cur) => {
+      pre.push({
+        identity: cur.from,
+        sources: [cur.source],
+        __typename: "IdentityWithSource",
+      });
+      pre.push({
+        identity: cur.to,
+        sources: [cur.source],
+        __typename: "IdentityWithSource",
+      });
+      return pre;
+    }, []);
+    const temp = [
+      {
+        identity: {
+          uuid: owner?.uuid,
+          platform: owner?.platform,
+          identity: owner?.identity,
+          displayName: owner?.displayName,
+          reverse: owner?.reverse,
+          nft: owner?.nft,
+          isOwner: resolved.identity === owner.identity ? false : true,
         },
-      ]
-    );
+      },
+      ...tranversal,
+    ];
     if (
       searchTerm !== temp[0]?.identity?.displayName &&
       regexEns.test(searchTerm)
@@ -66,14 +64,15 @@ export default function RenderResultDomain({
       temp.unshift({
         identity: {
           uuid: undefined,
-          platform: results?.platform,
-          identity: results?.identity,
+          platform: resolved?.platform,
+          identity: resolved?.identity,
           displayName: searchTerm,
           reverse: false,
           nft: [],
         },
       });
     }
+
     setResultNeighbor(
       temp.filter(
         (ele, index) =>
@@ -93,8 +92,8 @@ export default function RenderResultDomain({
   if (error) return <Error retry={getQuery} text={error} />;
   if (!data?.domain) return <Empty />;
   const graphData =
-    data.domain.owner.neighborWithTraversal.length > 0
-      ? data.domain.owner.neighborWithTraversal
+    data.domain.resolved.neighborWithTraversal.length > 0
+      ? data.domain.resolved.neighborWithTraversal
       : resultNeighbor.length > 0
       ? [
           {

@@ -12,13 +12,6 @@ export const GET_PROFILES_DOMAIN = gql`
         identity
         platform
         displayName
-      }
-      owner {
-        reverse
-        identity
-        platform
-        displayName
-        uuid
         nft(category: ["ENS"], limit: 100, offset: 0) {
           uuid
           category
@@ -96,6 +89,19 @@ export const GET_PROFILES_DOMAIN = gql`
               }
             }
           }
+        }
+      }
+      owner {
+        reverse
+        identity
+        platform
+        displayName
+        uuid
+        nft(category: ["ENS"], limit: 100, offset: 0) {
+          uuid
+          category
+          chain
+          id
         }
       }
     }
