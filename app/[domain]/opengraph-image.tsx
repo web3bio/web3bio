@@ -47,12 +47,32 @@ export default async function Image({
           width: 1200,
           gap: "1rem",
           position: "relative",
+          fontFamily: "Inter",
         }}
       >
+        <div
+          style={{
+            display: "flex",
+            backgroundImage: `url(${profile.avatar})`,
+            backgroundRepeat: "no-repeat",
+            backgroundColor: "#fff",
+            backgroundSize: "80% 30%",
+            opacity: 0.15,
+            width: 1200,
+            height: 630,
+            position: "absolute",
+            filter: "blur(8em)",
+            left: 0,
+            top: 0,
+            color: "transparent",
+          }}
+        >
+          invisible
+        </div>
         <img
           style={{
             boxShadow:
-              "inset 0 0 0 .2rem rgba(255,255,255,.1), 0 .4rem 1rem rgba(0, 0, 0, .1)",
+              "inset 0 0 0 0.2rem rgba(255, 255, 255, 0.1), 0 0.4rem 1rem rgba(0, 0, 0, 0.1)",
             borderRadius: "50%",
           }}
           width={120}
