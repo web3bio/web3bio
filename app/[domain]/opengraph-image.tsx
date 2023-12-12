@@ -23,6 +23,13 @@ export default async function Image({
       `/ns/${platform.toLowerCase()}/${params.domain.replace(".farcaster", "")}`
   ).then((res) => res.json());
 
+  const interBold = await fetch(
+    new URL("./fonts/Inter-SemiBold.ttf", import.meta.url)
+  ).then((res) => res.arrayBuffer());
+  const interNormal = await fetch(
+    new URL("./fonts/Inter-Medium.ttf", import.meta.url)
+  ).then((res) => res.arrayBuffer());
+
   if (!profile || profile?.error)
     return new ImageResponse(
       <img src={"https://web3.bio/img/web3bio-social.jpg"} alt="" />,
@@ -31,7 +38,7 @@ export default async function Image({
       }
     );
 
-  const qrcodeUrl = `https://kissapi-qrcode.vercel.app/api/qrcode?chl=https://web3.bio/${params.domain}`;
+  const qrcodeUrl = `https://kissapi-qrcode.vercel.app/api/qrcode?chs=180x180&chl=https://web3.bio/${params.domain}`;
 
   return new ImageResponse(
     (
@@ -47,7 +54,7 @@ export default async function Image({
           width: 1200,
           gap: "1rem",
           position: "relative",
-          fontFamily: "Inter",
+          fontFamily: "inter-normal",
         }}
       >
         <div
@@ -83,9 +90,8 @@ export default async function Image({
 
         <div
           style={{
-            fontFamily: "initial",
+            fontFamily: "inter-bold",
             fontSize: "4rem",
-            fontWeight: 700,
             letterSpacing: "-.05em",
           }}
         >
@@ -122,6 +128,7 @@ export default async function Image({
           <img
             style={{
               borderRadius: "1rem",
+              transform: "translateY(20%)",
             }}
             width={180}
             height={180}
@@ -133,6 +140,18 @@ export default async function Image({
     ),
     {
       ...size,
+      fonts: [
+        {
+          name: "inter-bold",
+          data: interBold,
+          style: "normal",
+        },
+        {
+          name: "inter-normal",
+          data: interNormal,
+          style: "normal",
+        },
+      ],
     }
   );
 }
