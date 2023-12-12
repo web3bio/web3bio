@@ -29,7 +29,7 @@ export default function RenderResultDomain({ searchTerm, searchPlatform }) {
     const owner = data?.domain.owner;
     const resolved = data?.domain.resolved;
 
-    const tranversal = resolved?.neighborWithTraversal?.reduce((pre, cur) => {
+    const traversal = resolved?.neighborWithTraversal?.reduce((pre, cur) => {
       pre.push({
         identity: cur.from,
         sources: [cur.source],
@@ -54,7 +54,7 @@ export default function RenderResultDomain({ searchTerm, searchPlatform }) {
           isOwner: resolved?.identity === owner?.identity ? false : true,
         },
       },
-      ...tranversal || [],
+      ...traversal || [],
     ];
 
     if (resolved?.displayName && searchTerm !== resolved.displayName && regexEns.test(searchTerm)) {

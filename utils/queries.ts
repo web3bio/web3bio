@@ -12,12 +12,6 @@ export const GET_PROFILES_DOMAIN = gql`
         identity
         platform
         displayName
-        nft(category: ["ENS"], limit: 100, offset: 0) {
-          uuid
-          category
-          chain
-          id
-        }
         neighborWithTraversal(depth: 5) {
           ... on ProofRecord {
             __typename
@@ -97,6 +91,12 @@ export const GET_PROFILES_DOMAIN = gql`
         platform
         displayName
         uuid
+        nft(category: ["ENS"], limit: 100, offset: 0) {
+          uuid
+          category
+          chain
+          id
+        }
       }
     }
   }

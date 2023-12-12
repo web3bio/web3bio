@@ -26,10 +26,8 @@ const RenderAccountItem = (props) => {
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
   const [fetched, setFetched] = useState(!!profile);
-  const resolvedDisplayName = profile && !profile?.error ? 
-    profile.displayName === profile.identity ?
-      profile.displayName
-      : `${profile.displayName} (${profile.identity})`
+  const resolvedDisplayName = profile?.displayName
+    ? profile.displayName
     : identity.displayName || identity.identity;
   const displayName =
     isAddress(resolvedDisplayName) || identity.platform === PlatformType.nextid
@@ -132,10 +130,22 @@ const RenderAccountItem = (props) => {
                 <div className="content-subtitle text-gray">
                   {identity.platform === PlatformType.ethereum ? (
                     <>
-                      <div className="address hide-sm">{resolvedIdentity}</div>
-                      <div className="address show-sm">
-                        {formatText(resolvedIdentity)}
-                      </div>
+                      {profile?.displayName === profile?.identity ? (
+                        <>
+                          <div className="address hide-sm">{resolvedIdentity}</div>
+                          <div className="address show-sm">
+                            {formatText(resolvedIdentity)}
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="address">{profile.identity}</div>
+                          <div className="ml-1 mr-1"> · </div>
+                          <div className="address">
+                            {formatText(resolvedIdentity)}
+                          </div>
+                        </>
+                      )}
                     </>
                   ) : (
                     <div className="address">
@@ -266,15 +276,6 @@ const RenderAccountItem = (props) => {
                     </>
                   )}
                   <div className="address">{identity.identity}</div>
-                  <Clipboard
-                    component="div"
-                    className="action"
-                    data-clipboard-text={identity.identity}
-                    onSuccess={onCopySuccess}
-                  >
-                    <SVG src="icons/icon-copy.svg" width={20} height={20} />
-                    {isCopied && <div className="tooltip-copy">COPIED</div>}
-                  </Clipboard>
                 </div>
               </div>
             </div>
