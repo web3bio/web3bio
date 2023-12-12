@@ -26,8 +26,10 @@ const RenderAccountItem = (props) => {
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
   const [fetched, setFetched] = useState(!!profile);
-  const resolvedDisplayName = profile?.displayName
-    ? profile.displayName
+  const resolvedDisplayName = profile && !profile?.error ? 
+    profile.displayName === profile.identity ?
+      profile.displayName
+      : `${profile.displayName} (${profile.identity})`
     : identity.displayName || identity.identity;
   const displayName =
     isAddress(resolvedDisplayName) || identity.platform === PlatformType.nextid
@@ -94,7 +96,7 @@ const RenderAccountItem = (props) => {
         <div
           ref={ref}
           className={`social-item ${identity.platform} ${
-            identity.isOwner ? "ml-4" : ""
+            identity.isOwner ? "social-item-owner" : ""
           }`}
         >
           <div className="social-main">
@@ -127,11 +129,11 @@ const RenderAccountItem = (props) => {
                 <div className="content-title text-ellipsis text-bold">
                   {displayName}
                 </div>
-                <div className="content-subtitle text-ellipsis text-gray">
+                <div className="content-subtitle text-gray">
                   {identity.platform === PlatformType.ethereum ? (
                     <>
-                      <div className="address hide-xs">{resolvedIdentity}</div>
-                      <div className="address show-xs">
+                      <div className="address hide-sm">{resolvedIdentity}</div>
+                      <div className="address show-sm">
                         {formatText(resolvedIdentity)}
                       </div>
                     </>
@@ -166,7 +168,7 @@ const RenderAccountItem = (props) => {
                     className="btn btn-sm btn-link action"
                   >
                     <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
-                    <span className="hide-sm">Profile</span>
+                    <span className="hide-xs">Profile</span>
                   </Link>
                 </div>
               ) : (
@@ -178,7 +180,7 @@ const RenderAccountItem = (props) => {
                     className="btn btn-sm btn-link action"
                   >
                     <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
-                    <span className="hide-sm">Profile</span>
+                    <span className="hide-xs">Profile</span>
                   </Link>
                 </div>
               ))}
@@ -244,7 +246,7 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
               <div className="content">
-                <div className="content-title text-bold">{displayName}</div>
+                <div className="content-title text-bold">{profile?.displayName || identity.displayName || identity.identity}</div>
                 <div className="content-subtitle text-gray">
                   {identity.uid && (
                     <>
@@ -288,7 +290,7 @@ const RenderAccountItem = (props) => {
                 title="Open Profile"
               >
                 <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
-                <span className="hide-sm">Profile</span>
+                <span className="hide-xs">Profile</span>
               </Link>
             </div>
           </div>
@@ -351,7 +353,7 @@ const RenderAccountItem = (props) => {
                 rel="noopener noreferrer"
               >
                 <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
-                <span className="hide-sm">Profile</span>
+                <span className="hide-xs">Profile</span>
               </Link>
             </div>
           </div>
@@ -393,7 +395,8 @@ const RenderAccountItem = (props) => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <SVG src="icons/icon-open.svg" width={20} height={20} /> Open
+                <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
+                <span className="hide-xs">Open</span>
               </a>
             </div>
           </div>

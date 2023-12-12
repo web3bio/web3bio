@@ -97,12 +97,6 @@ export const GET_PROFILES_DOMAIN = gql`
         platform
         displayName
         uuid
-        nft(category: ["ENS"], limit: 100, offset: 0) {
-          uuid
-          category
-          chain
-          id
-        }
       }
     }
   }

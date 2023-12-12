@@ -51,13 +51,13 @@ export default function RenderResultDomain({ searchTerm, searchPlatform }) {
           displayName: owner?.displayName,
           reverse: owner?.reverse,
           nft: owner?.nft,
-          isOwner: resolved?.identity === owner.identity ? false : true,
+          isOwner: resolved?.identity === owner?.identity ? false : true,
         },
       },
       ...tranversal || [],
     ];
 
-    if (resolved?. displayName && searchTerm !== resolved.displayName && regexEns.test(searchTerm)) {
+    if (resolved?.displayName && searchTerm !== resolved.displayName && regexEns.test(searchTerm)) {
       // as sub domain
       temp.unshift({
         identity: {
