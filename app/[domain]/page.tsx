@@ -4,7 +4,6 @@ import { SocialPlatformMapping } from "../../utils/utils";
 import {
   handleSearchPlatform,
   mapLinks,
-  WEB3BIO_OG_ENDPOINT,
 } from "../../utils/utils";
 import { notFound, redirect } from "next/navigation";
 import { Metadata } from "next";
@@ -103,20 +102,10 @@ export async function generateMetadata({
       siteName: "Web3.bio",
       title: pageTitle,
       description: profileDescription,
-      images: [
-        {
-          url: WEB3BIO_OG_ENDPOINT + `api/${profile?.identity ?? ""}`,
-        },
-      ],
     },
     twitter: {
       title: pageTitle,
       description: profileDescription,
-      images: [
-        {
-          url: WEB3BIO_OG_ENDPOINT + `api/${profile?.identity ?? ""}`,
-        },
-      ],
       site: "@web3bio",
       creator: "@web3bio",
     },
