@@ -176,7 +176,7 @@
       transform: translateY(-.05rem);
 
       .actions {
-        display: flex;
+        visibility: visible;
       }
 
       .social-footer {
@@ -261,7 +261,7 @@
 
       .social {
         text-decoration: none;
-        width: 100%;
+        width: 50%;
       }
 
       .title {
@@ -274,11 +274,12 @@
 
     .actions {
       align-items: center;
-      display: none;
+      display: flex;
       margin-left: auto;
+      visibility: hidden;
 
       &.active {
-        display: flex;
+        visibility: visible;
       }
 
       .action {
@@ -348,7 +349,7 @@
   align-items: center;
   border-radius: .2rem;
   display: flex;
-  flex: 1;
+  flex: 1 1 auto;
   font-size: .6rem;
   line-height: 1rem;
   padding: .2rem .4rem;

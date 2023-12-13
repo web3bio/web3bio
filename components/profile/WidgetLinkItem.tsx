@@ -31,7 +31,7 @@ const WidgetItem = (props) => {
           }}
         >
           <div className="platform-icon">
-            <SVG src={`../${SocialPlatformMapping(item.platform)?.icon}`} width={24} height={24} />
+            <SVG src={`../${SocialPlatformMapping(item.platform)?.icon}`} width={20} height={20} />
           </div>
           <div className="platform-content">
             <h3 className="text-assistive">{`${displayName} ${SocialPlatformMapping(item.platform)?.label}`}</h3>
@@ -96,7 +96,7 @@ const WidgetItem = (props) => {
                 className="platform-icon"
                 style={{"background": SocialPlatformMapping(item.platform)?.color}}
               >
-                <SVG src={`../${SocialPlatformMapping(item.platform)?.icon}`} width={24} height={24} />
+                <SVG src={`../${SocialPlatformMapping(item.platform)?.icon}`} width={20} height={20} />
               </div>
               <div className="platform-content">
                 <h3 className="text-assistive">{`${displayName} ${SocialPlatformMapping(item.platform)?.label}`}</h3>
@@ -122,7 +122,7 @@ const WidgetItem = (props) => {
                 className="platform-icon"
                 style={{"background": SocialPlatformMapping(item.platform)?.color}}
               >
-                <SVG src={`../${SocialPlatformMapping(item.platform)?.icon}`} width={24} height={24} />
+                <SVG src={`../${SocialPlatformMapping(item.platform)?.icon}`} width={20} height={20} />
               </div>
               <div className="platform-content">
                 <h3 className="text-assistive">{`${displayName} ${SocialPlatformMapping(item.platform)?.label}`}</h3>
@@ -157,7 +157,7 @@ const WidgetItem = (props) => {
             className="platform-icon"
             style={{"background": SocialPlatformMapping(item.platform)?.color}}
           >
-            <SVG src={`../${SocialPlatformMapping(item.platform)?.icon}`} width={24} height={24} />
+            <SVG src={`../${SocialPlatformMapping(item.platform)?.icon}`} width={20} height={20} />
           </div>
           <div className="platform-content">
             <h3 className="text-assistive">{`${displayName} ${SocialPlatformMapping(item.platform)?.label}`}</h3>
