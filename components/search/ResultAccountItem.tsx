@@ -21,7 +21,7 @@ const RenderAccountItem = (props) => {
     }, 1500);
   };
   const ref = useRef(null);
-  const {identity, sources, profile} = props;
+  const { identity, sources, profile } = props;
   const [isCopied, setIsCopied] = useState(false);
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
@@ -33,12 +33,12 @@ const RenderAccountItem = (props) => {
     isAddress(resolvedDisplayName) || identity.platform === PlatformType.nextid
       ? formatText(resolvedDisplayName)
       : resolvedDisplayName;
-  const resolvedIdentity =
-    [PlatformType.unstoppableDomains, PlatformType.dotbit].includes(
-      identity.platform
-    )
-      ? identity.ownedBy.identity
-      : profile?.address || identity.identity;
+  const resolvedIdentity = [
+    PlatformType.unstoppableDomains,
+    PlatformType.dotbit,
+  ].includes(identity.platform)
+    ? identity.ownedBy.identity
+    : profile?.address || identity.identity;
 
   useEffect(() => {
     const element = ref?.current;
@@ -91,7 +91,12 @@ const RenderAccountItem = (props) => {
     case PlatformType.unstoppableDomains:
     case PlatformType.dotbit:
       return (
-        <div ref={ref} className={`social-item ${identity.platform}`}>
+        <div
+          ref={ref}
+          className={`social-item ${identity.platform} ${
+            identity.isOwner ? "social-item-owner" : ""
+          }`}
+        >
           <div className="social-main">
             <div className="social">
               <div className="avatar">
@@ -119,22 +124,34 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
               <div className="content">
-                <div className="content-title text-ellipsis text-bold">{displayName}</div>
-                <div className="content-subtitle text-ellipsis text-gray">
-                  { identity.platform === PlatformType.ethereum ?
-                    (
-                      <>
-                        <div className="address hide-xs">{resolvedIdentity}</div>
-                        <div className="address show-xs">
-                          {formatText(resolvedIdentity)}
-                        </div>
-                      </>
-                    ) : (
-                      <div className="address">
-                        {formatText(resolvedIdentity)}
-                      </div>
-                    )
-                  }
+                <div className="content-title text-ellipsis text-bold">
+                  {displayName}
+                </div>
+                <div className="content-subtitle text-gray">
+                  {identity.platform === PlatformType.ethereum ? (
+                    <>
+                      {profile?.displayName === profile?.identity ? (
+                        <>
+                          <div className="address hide-sm">{resolvedIdentity}</div>
+                          <div className="address show-sm">
+                            {formatText(resolvedIdentity)}
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="address">{profile.identity}</div>
+                          <div className="ml-1 mr-1"> · </div>
+                          <div className="address">
+                            {formatText(resolvedIdentity)}
+                          </div>
+                        </>
+                      )}
+                    </>
+                  ) : (
+                    <div className="address">
+                      {formatText(resolvedIdentity)}
+                    </div>
+                  )}
                   <Clipboard
                     component="div"
                     className="action"
@@ -147,40 +164,36 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
             </div>
-            { !profile?.error && (
-                profile ? (
-                  <div className="actions active">
-                    <Link
-                      target={"_blank"}
-                      href={`/${
-                        profile?.identity ||
-                        identity.displayName ||
-                        resolvedIdentity
-                      }`}
-                      title="Open Profile"
-                      className="btn btn-sm btn-link action"
-                    >
-                      <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
-                      <span className="hide-sm">Profile</span>
-                    </Link>
-                  </div>
-                ) : (
-                  <div className="actions">
-                    <Link
-                      target={"_blank"}
-                      href={`/${
-                        identity.displayName ||
-                        resolvedIdentity
-                      }`}
-                      title="Open Profile"
-                      className="btn btn-sm btn-link action"
-                    >
-                      <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
-                      <span className="hide-sm">Profile</span>
-                    </Link>
-                  </div>
-                )
-            )}
+            {!profile?.error &&
+              (profile ? (
+                <div className="actions active">
+                  <Link
+                    target={"_blank"}
+                    href={`/${
+                      profile?.identity ||
+                      identity.displayName ||
+                      resolvedIdentity
+                    }`}
+                    title="Open Profile"
+                    className="btn btn-sm btn-link action"
+                  >
+                    <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
+                    <span className="hide-xs">Profile</span>
+                  </Link>
+                </div>
+              ) : (
+                <div className="actions">
+                  <Link
+                    target={"_blank"}
+                    href={`/${identity.displayName || resolvedIdentity}`}
+                    title="Open Profile"
+                    className="btn btn-sm btn-link action"
+                  >
+                    <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
+                    <span className="hide-xs">Profile</span>
+                  </Link>
+                </div>
+              ))}
           </div>
           {identity.nft?.length > 0 && (
             <div className="nfts">
@@ -243,7 +256,7 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
               <div className="content">
-                <div className="content-title text-bold">{displayName}</div>
+                <div className="content-title text-bold">{profile?.displayName || identity.displayName || identity.identity}</div>
                 <div className="content-subtitle text-gray">
                   {identity.uid && (
                     <>
@@ -259,19 +272,10 @@ const RenderAccountItem = (props) => {
                       >
                         #{identity.uid}
                       </div>
-                      <div className="ml-1 mr-1">{" "}·{" "}</div>
+                      <div className="ml-1 mr-1"> · </div>
                     </>
                   )}
                   <div className="address">{identity.identity}</div>
-                  <Clipboard
-                    component="div"
-                    className="action"
-                    data-clipboard-text={identity.identity}
-                    onSuccess={onCopySuccess}
-                  >
-                    <SVG src="icons/icon-copy.svg" width={20} height={20} />
-                    {isCopied && <div className="tooltip-copy">COPIED</div>}
-                  </Clipboard>
                 </div>
               </div>
             </div>
@@ -287,7 +291,7 @@ const RenderAccountItem = (props) => {
                 title="Open Profile"
               >
                 <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
-                <span className="hide-sm">Profile</span>
+                <span className="hide-xs">Profile</span>
               </Link>
             </div>
           </div>
@@ -350,7 +354,7 @@ const RenderAccountItem = (props) => {
                 rel="noopener noreferrer"
               >
                 <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
-                <span className="hide-sm">Profile</span>
+                <span className="hide-xs">Profile</span>
               </Link>
             </div>
           </div>
@@ -392,7 +396,8 @@ const RenderAccountItem = (props) => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <SVG src="icons/icon-open.svg" width={20} height={20} /> Open
+                <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
+                <span className="hide-xs">Open</span>
               </a>
             </div>
           </div>
