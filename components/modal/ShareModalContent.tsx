@@ -1,8 +1,8 @@
 import { useState } from "react";
 import SVG from "react-inlinesvg";
 import Clipboard from "react-clipboard.js";
-import { WEB3BIO_OG_ENDPOINT } from "../../utils/utils";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
+import { PlatformType } from "../../utils/platform";
 
 const shareMap = [
   {
@@ -38,7 +38,11 @@ export default function ShareModalContent(props) {
       setIsCopied(false);
     }, 1500);
   };
-
+  const OGImgUrl =
+    window.location.origin +
+    `/${profile.identity}${
+      profile.platform === PlatformType.farcaster ? ".farcaster" : ""
+    }/opengraph-image`;
   return (
     <>
       <div className="profile-share-header">
@@ -51,7 +55,7 @@ export default function ShareModalContent(props) {
         <div className="profile-card">
           <NFTAssetPlayer
             className="img-responsive"
-            src={WEB3BIO_OG_ENDPOINT + `api/${profile.identity}`}
+            src={OGImgUrl}
             type={"image/png"}
             width="auto"
             height="100%"
