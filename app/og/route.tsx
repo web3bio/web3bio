@@ -1,8 +1,18 @@
+import Image from "next/image";
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
 import { formatText } from "../../utils/utils";
 
 export const runtime = "edge";
+
+const isValidURL = (v) => {
+  try {
+    const url = new URL(v);
+    return !!url;
+  } catch (e) {
+    return false;
+  }
+};
 
 const size = {
   width: 1200,
@@ -11,17 +21,29 @@ const size = {
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const address = searchParams.get("address");
+    const paramAddress = searchParams.get("address");
+    const paramAvatar = searchParams.get("avatar");
+    const paramIdentity = searchParams.get("identity");
+    const paramDisplayName = searchParams.get("displayName");
+    const address =
+      !paramAddress || paramAddress === "null" ? "" : paramAddress;
     const avatarImg =
-      !searchParams.get("avatar") || searchParams.get("avatar") === "null"
+      !paramAvatar || paramAvatar === "null" || !isValidURL(paramAvatar)
         ? ""
-        : searchParams.get("avatar");
-    const identity = searchParams.get("identity");
-    const displayName = searchParams.get("displayName");
-    if (!address)
+        : paramAvatar;
+    const identity =
+      !paramIdentity || paramIdentity === "null" ? "" : paramIdentity;
+    const displayName =
+      !paramDisplayName || paramDisplayName === "null" ? "" : paramDisplayName;
+    const isShowDefault = ![address, avatarImg, identity, displayName].some(
+      (x) => !!x
+    );
+    if (isShowDefault)
       return new ImageResponse(
         <img src={"https://web3.bio/img/web3bio-social.jpg"} alt="" />,
-        { ...size }
+        {
+          ...size,
+        }
       );
     const interBold = await fetch(
       new URL("./fonts/Inter-SemiBold.ttf", import.meta.url)
@@ -91,17 +113,19 @@ export async function GET(request: NextRequest) {
           >
             {displayName}
           </div>
-          <div
-            style={{
-              borderRadius: "4rem",
-              display: "flex",
-              flex: 1,
-              fontSize: "1.5rem",
-              paddingLeft: ".25rem",
-            }}
-          >
-            web3.bio/{identity}
-          </div>
+          {identity && (
+            <div
+              style={{
+                borderRadius: "4rem",
+                display: "flex",
+                flex: 1,
+                fontSize: "1.5rem",
+                paddingLeft: ".25rem",
+              }}
+            >
+              web3.bio/{identity}
+            </div>
+          )}
           <div
             style={{
               display: "flex",
@@ -110,25 +134,29 @@ export async function GET(request: NextRequest) {
               justifyContent: "space-between",
             }}
           >
-            <div
-              style={{
-                fontSize: "1.4rem",
-                color: "rgba(0,0,0,.4)",
-              }}
-            >
-              {formatText(address, 42)}
-            </div>
+            {address && (
+              <div
+                style={{
+                  fontSize: "1.4rem",
+                  color: "rgba(0,0,0,.4)",
+                }}
+              >
+                {formatText(address, 42)}
+              </div>
+            )}
 
-            <img
-              style={{
-                borderRadius: "1rem",
-                transform: "translateY(20%)",
-              }}
-              width={180}
-              height={180}
-              src={qrcodeUrl}
-              alt=""
-            />
+            {identity && (
+              <img
+                style={{
+                  borderRadius: "1rem",
+                  transform: "translateY(20%)",
+                }}
+                width={180}
+                height={180}
+                src={qrcodeUrl}
+                alt=""
+              />
+            )}
           </div>
         </div>
       ),
