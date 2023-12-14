@@ -4,12 +4,10 @@ import { formatText } from "../../utils/utils";
 
 export const runtime = "edge";
 
-export const size = {
+const size = {
   width: 1200,
   height: 630,
 };
-export const contentType = "image/png";
-
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
