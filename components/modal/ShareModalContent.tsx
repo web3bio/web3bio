@@ -38,11 +38,9 @@ export default function ShareModalContent(props) {
       setIsCopied(false);
     }, 1500);
   };
-  const OGImgUrl =
+  const relativeOGURL =
     window.location.origin +
-    `/${profile.identity}${
-      profile.platform === PlatformType.farcaster ? ".farcaster" : ""
-    }/opengraph-image`;
+    `/og?address=${profile?.address}&avatar=${profile?.avatar}&identity=${profile?.identity}&displayName=${profile?.displayName}`;
   return (
     <>
       <div className="profile-share-header">
@@ -55,7 +53,7 @@ export default function ShareModalContent(props) {
         <div className="profile-card">
           <NFTAssetPlayer
             className="img-responsive"
-            src={OGImgUrl}
+            src={relativeOGURL}
             type={"image/png"}
             width="auto"
             height="100%"

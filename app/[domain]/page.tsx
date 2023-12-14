@@ -1,10 +1,7 @@
 import { fetchInitialNFTsData } from "../../hooks/api/fetchProfile";
 import { PlatformType } from "../../utils/platform";
 import { SocialPlatformMapping } from "../../utils/utils";
-import {
-  handleSearchPlatform,
-  mapLinks,
-} from "../../utils/utils";
+import { handleSearchPlatform, mapLinks } from "../../utils/utils";
 import { notFound, redirect } from "next/navigation";
 import { Metadata } from "next";
 import ProfileMain from "../../components/profile/ProfileMain";
@@ -89,6 +86,7 @@ export async function generateMetadata({
     `Explore ${pageTitle} ${
       SocialPlatformMapping(platform!).label
     } Web3 identity profiles, social links, NFT collections, Web3 activities, dWebsites, POAPs etc on the Web3.bio profile page.`;
+  const relativeOGURL = `/og?address=${profile?.address}&avatar=${profile?.avatar}&identity=${profile?.identity}&displayName=${profile?.displayName}`;
   return {
     metadataBase: new URL(baseURL),
     title: pageTitle,
@@ -101,12 +99,22 @@ export async function generateMetadata({
       url: `/${domain}`,
       siteName: "Web3.bio",
       title: pageTitle,
+      images: [
+        {
+          url: relativeOGURL,
+        },
+      ],
       description: profileDescription,
     },
     twitter: {
       title: pageTitle,
       description: profileDescription,
       site: "@web3bio",
+      images: [
+        {
+          url: relativeOGURL,
+        },
+      ],
       creator: "@web3bio",
     },
   };
@@ -131,7 +139,7 @@ export default async function ProfilePage({
       domain={domain}
       relations={
         data?.map((x) => ({
-          platform: x.platform, 
+          platform: x.platform,
           identity: x.identity,
         })) || []
       }
