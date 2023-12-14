@@ -18,7 +18,11 @@ export async function GET(request: NextRequest) {
         : searchParams.get("avatar");
     const identity = searchParams.get("identity");
     const displayName = searchParams.get("displayName");
-
+    if (!address)
+      return new ImageResponse(
+        <img src={"https://web3.bio/img/web3bio-social.jpg"} alt="" />,
+        { ...size }
+      );
     const interBold = await fetch(
       new URL("./fonts/Inter-SemiBold.ttf", import.meta.url)
     ).then((res) => res.arrayBuffer());
