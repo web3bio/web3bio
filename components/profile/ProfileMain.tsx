@@ -90,6 +90,16 @@ export default function ProfileMain(props) {
                 height={180}
                 width={180}
               />
+              {!data?.avatar && fallbackAvatar.source && (
+                <div className="profile-avatar-badge">
+                  <SVG
+                    fill={SocialPlatformMapping(fallbackAvatar.source).color}
+                    width={20}
+                    src={SocialPlatformMapping(fallbackAvatar.source).icon || ""}
+                    title={`Fallback avatar from ${SocialPlatformMapping(fallbackAvatar.source).label}`}
+                  />
+                </div>
+              )}
             </div>
             <h1 className="text-assistive">{`${pageTitle} ${
               SocialPlatformMapping(platform).label
@@ -145,7 +155,7 @@ export default function ProfileMain(props) {
                     ["--badge-primary-color" as string]:
                       SocialPlatformMapping(platform).color || "#000",
                     ["--badge-bg-color" as string]:
-                      colorMod(SocialPlatformMapping(platform)?.color, 5) ||
+                      colorMod(SocialPlatformMapping(platform).color, 5) ||
                       "rgba(#000, .04)",
                   }}
                 >
