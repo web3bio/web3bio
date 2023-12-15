@@ -92,6 +92,8 @@ export function isSameAddress(
 
 export const handleSearchPlatform = (term: string) => {
   switch (true) {
+    case term.endsWith(".farcaster"):
+      return PlatformType.farcaster;
     case regexEns.test(term):
       return PlatformType.ens;
     case regexEth.test(term):
