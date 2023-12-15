@@ -24,8 +24,16 @@ import { WidgetState } from "../../state/widgets/reducer";
 import { Loading } from "../shared/Loading";
 
 export default function ProfileMain(props) {
-  const { data, pageTitle, platform, nfts, fromServer, relations, domain } =
-    props;
+  const {
+    data,
+    pageTitle,
+    platform,
+    nfts,
+    fromServer,
+    relations,
+    domain,
+    fallbackAvatar,
+  } = props;
   const [isCopied, setIsCopied] = useState(false);
   const { isOpen, modalType, closeModal, openModal, params } = useModal();
   const pathName = usePathname();
@@ -75,7 +83,7 @@ export default function ProfileMain(props) {
           <div className="web3-profile-base">
             <div className="profile-avatar">
               <Avatar
-                src={data?.avatar}
+                src={data?.avatar || fallbackAvatar.avatar}
                 identity={data?.identity}
                 className="avatar"
                 alt={`${pageTitle} Profile Photo`}
