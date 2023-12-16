@@ -142,7 +142,7 @@ export default async function ProfilePage({
       domain={domain}
       relations={
         data?.map((x) => ({
-          platform: x.platform, 
+          platform: x.platform,
           identity: x.identity,
         })) || []
       }
@@ -153,6 +153,10 @@ export default async function ProfilePage({
       data={{
         ...data[0],
         links: mapLinks(data),
+      }}
+      fallbackAvatar={{
+        source: data?.find((x) => !!x.avatar)?.platform,
+        avatar: data?.find((x) => !!x.avatar)?.avatar,
       }}
       pageTitle={pageTitle}
       platform={platform}

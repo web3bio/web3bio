@@ -24,8 +24,16 @@ import { WidgetState } from "../../state/widgets/reducer";
 import { Loading } from "../shared/Loading";
 
 export default function ProfileMain(props) {
-  const { data, pageTitle, platform, nfts, fromServer, relations, domain } =
-    props;
+  const {
+    data,
+    pageTitle,
+    platform,
+    nfts,
+    fromServer,
+    relations,
+    domain,
+    fallbackAvatar,
+  } = props;
   const [isCopied, setIsCopied] = useState(false);
   const { isOpen, modalType, closeModal, openModal, params } = useModal();
   const pathName = usePathname();
@@ -75,13 +83,23 @@ export default function ProfileMain(props) {
           <div className="web3-profile-base">
             <div className="profile-avatar">
               <Avatar
-                src={data?.avatar}
+                src={data?.avatar || fallbackAvatar.avatar}
                 identity={data?.identity}
                 className="avatar"
                 alt={`${pageTitle} Profile Photo`}
                 height={180}
                 width={180}
               />
+              {!data?.avatar && fallbackAvatar.source && (
+                <div className="profile-avatar-badge">
+                  <SVG
+                    fill={SocialPlatformMapping(fallbackAvatar.source).color}
+                    width={20}
+                    src={SocialPlatformMapping(fallbackAvatar.source).icon || ""}
+                    title={`Fallback avatar from ${SocialPlatformMapping(fallbackAvatar.source).label}`}
+                  />
+                </div>
+              )}
             </div>
             <h1 className="text-assistive">{`${pageTitle} ${
               SocialPlatformMapping(platform).label
@@ -137,7 +155,7 @@ export default function ProfileMain(props) {
                     ["--badge-primary-color" as string]:
                       SocialPlatformMapping(platform).color || "#000",
                     ["--badge-bg-color" as string]:
-                      colorMod(SocialPlatformMapping(platform)?.color, 5) ||
+                      colorMod(SocialPlatformMapping(platform).color, 5) ||
                       "rgba(#000, .04)",
                   }}
                 >

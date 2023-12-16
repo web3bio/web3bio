@@ -61,10 +61,18 @@ export default function HomePage() {
                 <br />
                 BIO
               </h1>
-              <h2 className="text-assistive">Web3.bio is a platform for Web3 and Web 2.0 Identity Graph search and link in bio profiles. It provides a list of relevant identities when searching for a Twitter handle, Ethereum address, ENS domain, Lens profile, Farcaster account, Unstoppable Domains, and other Web3 identities.</h2>
+              <h2 className="text-assistive">
+                Web3.bio is a platform for Web3 and Web 2.0 Identity Graph
+                search and link in bio profiles. It provides a list of relevant
+                identities when searching for a Twitter handle, Ethereum
+                address, ENS domain, Lens profile, Farcaster account,
+                Unstoppable Domains, and other Web3 identities.
+              </h2>
             </Link>
             <div className="form-label">
-              Web3 Identity Search<br/><small>Discover Web3 Identity Graph and Profiles</small>
+              Web3 Identity Search
+              <br />
+              <small>Discover Web3 Identity Graph and Profiles</small>
             </div>
             <div className="form-input-group">
               <SearchInput
@@ -85,7 +93,11 @@ export default function HomePage() {
               />
             ) : (
               <SearchResultQuery
-                searchTerm={searchTerm}
+                searchTerm={
+                  searchTerm.endsWith(".farcaster")
+                    ? searchTerm.replace(".farcaster", "")
+                    : searchTerm
+                }
                 searchPlatform={searchPlatform}
               />
             )
