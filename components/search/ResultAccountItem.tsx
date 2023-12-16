@@ -93,8 +93,8 @@ const RenderAccountItem = (props) => {
       return (
         <div
           ref={ref}
-          className={`social-item ${identity.platform} ${
-            identity.isOwner ? "social-item-owner" : ""
+          className={`social-item ${identity.platform}${
+            identity.isOwner ? " social-item-owner" : ""
           }`}
         >
           <div className="social-main">

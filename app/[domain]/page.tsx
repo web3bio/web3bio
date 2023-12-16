@@ -151,6 +151,10 @@ export default async function ProfilePage({
         ...data[0],
         links: mapLinks(data),
       }}
+      fallbackAvatar={{
+        source: data?.find((x) => !!x.avatar)?.platform,
+        avatar: data?.find((x) => !!x.avatar)?.avatar,
+      }}
       pageTitle={pageTitle}
       platform={platform}
     />

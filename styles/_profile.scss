@@ -36,6 +36,7 @@
   padding: .5rem .5rem 1rem .5rem;
   position: sticky;
   top: 2rem;
+  z-index: 99;
 
   @media screen and (max-width: $size-sm) {
     padding-top: 1.5rem;
@@ -47,6 +48,7 @@
     display: flex;
     height: 9rem;
     justify-content: center;
+    position: relative;
     width: 9rem;
 
     .avatar {
@@ -55,6 +57,39 @@
       position: relative;
       width: 9rem;
       object-fit: cover;
+    }
+
+    .profile-avatar-badge {
+      align-items: center;
+      backdrop-filter: blur(.5rem);
+      background: rgba($bg-color, .5);
+      border: .05rem solid rgba($bg-color, .25);
+      border-radius: .8rem;
+      bottom: 5%;
+      display: flex;
+      flex-wrap: nowrap;
+      gap: .2rem;
+      height: 1.6rem;
+      justify-content: center;
+      opacity: 0;
+      padding: .25rem;
+      position: absolute;
+      right: 5%;
+      text-decoration: none;
+      transition: all .2s ease;
+      visibility: hidden;
+      white-space: nowrap;
+      word-break: keep-all;
+      width: 1.6rem;
+      z-index: 999;
+    }
+
+    &:focus,
+    &:hover {
+      .profile-avatar-badge {
+        opacity: 1;
+        visibility: visible;
+      }
     }
 
     @media screen and (max-width: $size-md) {
