@@ -36,6 +36,7 @@
   padding: .5rem .5rem 1rem .5rem;
   position: sticky;
   top: 2rem;
+  z-index: 99;
 
   @media screen and (max-width: $size-sm) {
     padding-top: 1.5rem;
