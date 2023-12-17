@@ -45,14 +45,14 @@ export async function GET(request: NextRequest) {
           ...size,
         }
       );
-    const interBold = await fetch(
-      new URL("./fonts/Inter-SemiBold.ttf", import.meta.url)
+    const fontBold = await fetch(
+      new URL("./fonts/Geist-Black.otf", import.meta.url)
     ).then((res) => res.arrayBuffer());
-    const interNormal = await fetch(
-      new URL("./fonts/Inter-Medium.ttf", import.meta.url)
+    const fontNormal = await fetch(
+      new URL("./fonts/Geist-Regular.otf", import.meta.url)
     ).then((res) => res.arrayBuffer());
 
-    const qrcodeUrl = `https://kissapi-qrcode.vercel.app/api/qrcode?chs=180x180&chl=https://web3.bio/${identity}`;
+    const qrcodeUrl = `https://chart.googleapis.com/chart?cht=qr&chs=180x180&chl=https://web3.bio/${identity}`;
 
     return new ImageResponse(
       (
@@ -68,17 +68,18 @@ export async function GET(request: NextRequest) {
             width: 1200,
             gap: "1rem",
             position: "relative",
-            fontFamily: "inter-normal",
+            fontFamily: "font-normal",
           }}
         >
           <div
             style={{
               display: "flex",
-              backgroundImage: avatarImg ? `url(${avatarImg})` : "",
-              backgroundRepeat: "no-repeat",
               backgroundColor: "#fff",
-              backgroundSize: "80% 30%",
-              opacity: 0.15,
+              backgroundImage: avatarImg ? `url(${avatarImg})` : "",
+              backgroundPosition: "0 top",
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "100% 240px",
+              opacity: 0.25,
               width: 1200,
               height: 630,
               position: "absolute",
@@ -88,8 +89,8 @@ export async function GET(request: NextRequest) {
               color: "transparent",
             }}
           >
-            invisible
           </div>
+          
           {avatarImg && (
             <img
               style={{
@@ -106,20 +107,21 @@ export async function GET(request: NextRequest) {
 
           <div
             style={{
-              fontFamily: "inter-bold",
-              fontSize: "4rem",
+              fontFamily: "font-bold",
+              fontSize: "5rem",
               letterSpacing: "-.05em",
             }}
           >
             {displayName}
           </div>
+          
           {identity && (
             <div
               style={{
                 borderRadius: "4rem",
                 display: "flex",
                 flex: 1,
-                fontSize: "1.5rem",
+                fontSize: "2rem",
                 paddingLeft: ".25rem",
               }}
             >
@@ -137,7 +139,7 @@ export async function GET(request: NextRequest) {
             {address && (
               <div
                 style={{
-                  fontSize: "1.4rem",
+                  fontSize: "2rem",
                   color: "rgba(0,0,0,.4)",
                 }}
               >
@@ -148,11 +150,11 @@ export async function GET(request: NextRequest) {
             {identity && (
               <img
                 style={{
-                  borderRadius: "1rem",
+                  background: "transparent",
                   transform: "translateY(20%)",
                 }}
-                width={180}
-                height={180}
+                width={120}
+                height={120}
                 src={qrcodeUrl}
                 alt=""
               />
@@ -164,13 +166,13 @@ export async function GET(request: NextRequest) {
         ...size,
         fonts: [
           {
-            name: "inter-bold",
-            data: interBold,
+            name: "font-bold",
+            data: fontBold,
             style: "normal",
           },
           {
-            name: "inter-normal",
-            data: interNormal,
+            name: "font-normal",
+            data: fontNormal,
             style: "normal",
           },
         ],
