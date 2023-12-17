@@ -134,7 +134,7 @@ export default function ProfileMain(props) {
                 onClick={() =>
                   openModal(ModalType.share, {
                     profile: data,
-                    url: `${baseURL}${pathName?.replace("profile/", "")}`,
+                    url: `${baseURL}${pathName}`,
                   })
                 }
               >

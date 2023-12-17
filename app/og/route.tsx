@@ -98,8 +98,8 @@ export async function GET(request: NextRequest) {
                   "inset 0 0 0 0.2rem rgba(255, 255, 255, 0.1), 0 0.4rem 1rem rgba(0, 0, 0, 0.1)",
                 borderRadius: "50%",
               }}
-              width={120}
-              height={120}
+              width={180}
+              height={180}
               src={avatarImg || ""}
               alt=""
             />
@@ -110,6 +110,7 @@ export async function GET(request: NextRequest) {
               fontFamily: "font-bold",
               fontSize: "5rem",
               letterSpacing: "-.05em",
+              marginTop: "20px",
             }}
           >
             {displayName}
@@ -153,8 +154,8 @@ export async function GET(request: NextRequest) {
                   background: "transparent",
                   transform: "translateY(20%)",
                 }}
-                width={120}
-                height={120}
+                width={140}
+                height={140}
                 src={qrcodeUrl}
                 alt=""
               />

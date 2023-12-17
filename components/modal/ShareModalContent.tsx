@@ -40,7 +40,7 @@ export default function ShareModalContent(props) {
   };
   const relativeOGURL =
     window.location.origin +
-    `/og?address=${profile?.address}&avatar=${profile?.avatar}&identity=${profile?.identity}&displayName=${profile?.displayName}`;
+    `/og?address=${profile?.address}&avatar=${profile?.avatar}&identity=${profile?.platform === PlatformType.farcaster ? `${profile?.identity}.farcaster` : profile?.identity}&displayName=${profile?.displayName}`;
   return (
     <>
       <div className="profile-share-header">
@@ -50,15 +50,16 @@ export default function ShareModalContent(props) {
         </div>
       </div>
       <div className="profile-share-body">
-        <div className="profile-card">
+        <div className="profile-card mb-4">
           <NFTAssetPlayer
             className="img-responsive"
             src={relativeOGURL}
             type={"image/png"}
-            width="auto"
+            width="100%"
             height="100%"
             placeholder={true}
             alt={profile.identity}
+            style={{height: 200}}
           />
         </div>
 
