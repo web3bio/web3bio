@@ -1,6 +1,6 @@
-import Image from "next/image";
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
+import { PlatformType } from "../../utils/platform";
 import { formatText } from "../../utils/utils";
 
 export const runtime = "edge";
@@ -25,6 +25,7 @@ export async function GET(request: NextRequest) {
     const paramAvatar = searchParams.get("avatar");
     const paramIdentity = searchParams.get("identity");
     const paramDisplayName = searchParams.get("displayName");
+    const paramPlatform = searchParams.get("platform");
     const address =
       !paramAddress || paramAddress === "null" ? "" : paramAddress;
     const avatarImg =
@@ -32,7 +33,11 @@ export async function GET(request: NextRequest) {
         ? ""
         : paramAvatar;
     const identity =
-      !paramIdentity || paramIdentity === "null" ? "" : paramIdentity;
+      !paramIdentity || paramIdentity === "null"
+        ? ""
+        : paramPlatform === PlatformType.farcaster
+        ? `${paramIdentity}.farcaster`
+        : paramIdentity;
     const displayName =
       !paramDisplayName || paramDisplayName === "null" ? "" : paramDisplayName;
     const isShowDefault = ![address, avatarImg, identity, displayName].some(
@@ -88,9 +93,8 @@ export async function GET(request: NextRequest) {
               top: 0,
               color: "transparent",
             }}
-          >
-          </div>
-          
+          ></div>
+
           {avatarImg && (
             <img
               style={{
@@ -115,7 +119,7 @@ export async function GET(request: NextRequest) {
           >
             {displayName}
           </div>
-          
+
           {identity && (
             <div
               style={{

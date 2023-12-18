@@ -11,7 +11,6 @@ import {
 } from "../../utils/utils";
 import useSWR from "swr";
 import { SimplehashFetcher, SIMPLEHASH_URL } from "../apis/simplehash";
-import { NetworkData } from "../../utils/network";
 
 const renderSocialMediaLinks = (_collection) => {
   const renderArr = {
