@@ -13,6 +13,8 @@ const isValidURL = (v) => {
   }
 };
 
+let filename = "og.png";
+
 const size = {
   width: 1200,
   height: 630,
@@ -23,7 +25,8 @@ export async function GET(
 ) {
   try {
     const { searchParams } = new URL(request.url);
-    const paramIdentity = params.domain;
+    const identity = params.domain;
+    filename = params.domain + ".png";
     const paramAddress = searchParams.get("address");
     const paramAvatar = searchParams.get("avatar");
     const paramDisplayName = searchParams.get("displayName");
@@ -33,8 +36,6 @@ export async function GET(
       !paramAvatar || paramAvatar === "null" || !isValidURL(paramAvatar)
         ? ""
         : paramAvatar;
-    const identity =
-      !paramIdentity || paramIdentity === "null" ? "" : paramIdentity;
     const displayName =
       !paramDisplayName || paramDisplayName === "null" ? "" : paramDisplayName;
     const isShowDefault = ![address, avatarImg, identity, displayName].some(
@@ -166,6 +167,9 @@ export async function GET(
       ),
       {
         ...size,
+        headers: {
+          "Content-Disposition": "filename=" + filename,
+        },
         fonts: [
           {
             name: "font-bold",
