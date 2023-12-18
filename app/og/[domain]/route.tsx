@@ -1,7 +1,6 @@
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
-import { PlatformType } from "../../utils/platform";
-import { formatText } from "../../utils/utils";
+import { formatText } from "../../../utils/utils";
 
 export const runtime = "edge";
 
@@ -18,14 +17,16 @@ const size = {
   width: 1200,
   height: 630,
 };
-export async function GET(request: NextRequest) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { domain: string } }
+) {
   try {
     const { searchParams } = new URL(request.url);
+    const paramIdentity = params.domain;
     const paramAddress = searchParams.get("address");
     const paramAvatar = searchParams.get("avatar");
-    const paramIdentity = searchParams.get("identity");
     const paramDisplayName = searchParams.get("displayName");
-    const paramPlatform = searchParams.get("platform");
     const address =
       !paramAddress || paramAddress === "null" ? "" : paramAddress;
     const avatarImg =
@@ -33,11 +34,7 @@ export async function GET(request: NextRequest) {
         ? ""
         : paramAvatar;
     const identity =
-      !paramIdentity || paramIdentity === "null"
-        ? ""
-        : paramPlatform === PlatformType.farcaster
-        ? `${paramIdentity}.farcaster`
-        : paramIdentity;
+      !paramIdentity || paramIdentity === "null" ? "" : paramIdentity;
     const displayName =
       !paramDisplayName || paramDisplayName === "null" ? "" : paramDisplayName;
     const isShowDefault = ![address, avatarImg, identity, displayName].some(

@@ -86,7 +86,13 @@ export async function generateMetadata({
     `Explore ${pageTitle} ${
       SocialPlatformMapping(platform!).label
     } Web3 identity profiles, social links, NFT collections, Web3 activities, dWebsites, POAPs etc on the Web3.bio profile page.`;
-  const relativeOGURL = `/og?address=${profile?.address}&avatar=${profile?.avatar}&identity=${profile?.identity}&displayName=${profile?.displayName}&platform=${profile?.platform}`;
+  const relativeOGURL = `/og/${
+    profile?.platform === PlatformType.farcaster
+      ? `${profile?.identity}.farcaster`
+      : profile?.identity
+  }/?address=${profile?.address}&avatar=${profile?.avatar}&displayName=${
+    profile?.displayName
+  }`;
   return {
     metadataBase: new URL(baseURL),
     title: pageTitle,

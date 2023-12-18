@@ -40,7 +40,13 @@ export default function ShareModalContent(props) {
   };
   const relativeOGURL =
     window.location.origin +
-    `/og?address=${profile?.address}&avatar=${profile?.avatar}&identity=${profile?.platform === PlatformType.farcaster ? `${profile?.identity}.farcaster` : profile?.identity}&displayName=${profile?.displayName}`;
+    `/og/${
+      profile?.platform === PlatformType.farcaster
+        ? `${profile?.identity}.farcaster`
+        : profile?.identity
+    }?address=${profile?.address}&avatar=${profile?.avatar}&displayName=${
+      profile?.displayName
+    }`;
   return (
     <>
       <div className="profile-share-header">
@@ -59,7 +65,7 @@ export default function ShareModalContent(props) {
             height="100%"
             placeholder={true}
             alt={profile.identity}
-            style={{height: 200}}
+            style={{ height: 200 }}
           />
         </div>
 
