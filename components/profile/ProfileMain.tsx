@@ -95,8 +95,12 @@ export default function ProfileMain(props) {
                   <SVG
                     fill={SocialPlatformMapping(fallbackAvatar.source).color}
                     width={20}
-                    src={SocialPlatformMapping(fallbackAvatar.source).icon || ""}
-                    title={`Fallback avatar from ${SocialPlatformMapping(fallbackAvatar.source).label}`}
+                    src={
+                      SocialPlatformMapping(fallbackAvatar.source).icon || ""
+                    }
+                    title={`Fallback avatar from ${
+                      SocialPlatformMapping(fallbackAvatar.source).label
+                    }`}
                   />
                 </div>
               )}
@@ -135,6 +139,7 @@ export default function ProfileMain(props) {
                   openModal(ModalType.share, {
                     profile: data,
                     url: `${baseURL}${pathName}`,
+                    avatar: fallbackAvatar.avatar,
                   })
                 }
               >

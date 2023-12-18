@@ -30,7 +30,7 @@ const shareMap = [
 ];
 
 export default function ShareModalContent(props) {
-  const { profile, url, onClose } = props;
+  const { profile, url, onClose, avatar } = props;
   const [isCopied, setIsCopied] = useState(false);
   const onCopySuccess = () => {
     setIsCopied(true);
@@ -44,7 +44,7 @@ export default function ShareModalContent(props) {
       profile?.platform === PlatformType.farcaster
         ? `${profile?.identity}.farcaster`
         : profile?.identity
-    }?address=${profile?.address}&avatar=${profile?.avatar}&displayName=${
+    }?address=${profile?.address}&avatar=${avatar}&displayName=${
       profile?.displayName
     }`;
   return (
