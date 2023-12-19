@@ -20,6 +20,7 @@
     "react-markdown": "^9.0.0",
     "react-qrcode-logo": "^2.9.0",
     "underscore": "^1.13.6",
+    "uuid": "^9.0.1",
     "wallet.ts": "^1.0.1"
   },
   "devDependencies": {
