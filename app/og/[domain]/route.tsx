@@ -34,7 +34,7 @@ export async function GET(
       !paramAddress || paramAddress === "null" ? "" : paramAddress;
     const avatarImg =
       !paramAvatar || paramAvatar === "null" || !isValidURL(paramAvatar)
-        ? ""
+        ? process.env.NEXT_PUBLIC_PROFILE_END_POINT + `/avatar/${identity}`
         : paramAvatar;
     const displayName =
       !paramDisplayName || paramDisplayName === "null" ? "" : paramDisplayName;
