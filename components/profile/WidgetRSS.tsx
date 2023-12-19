@@ -11,23 +11,15 @@ import { PlatformType } from "../../utils/platform";
 import RssItem from "./RssItem";
 
 function getQueryDomain(
-  domain: string,
-  relations: Array<{ platform: PlatformType; identity: string }>
+  domain: string
 ) {
-  const pureDomain = domain.endsWith(".farcaster")
-    ? domain.replace(".farcaster", "")
-    : domain;
-  const platform = handleSearchPlatform(pureDomain);
+  const platform = handleSearchPlatform(domain);
   if ([PlatformType.ens, PlatformType.dotbit].includes(platform))
-    return pureDomain;
-  return (
-    relations.find((x) => x.platform === PlatformType.ens)?.identity ||
-    relations.find((x) => x.platform === PlatformType.dotbit)?.identity
-  );
+    return domain;
 }
 
-function useRSS(domain: string, relations, fromServer) {
-  const queryDomain = getQueryDomain(domain, relations);
+function useRSS(domain: string, fromServer) {
+  const queryDomain = getQueryDomain(domain);
   const fetchUrl = (() => {
     if (!queryDomain) return null;
     return `${RSS_ENDPOINT}rss?query=${queryDomain}&mode=list`;
@@ -45,8 +37,8 @@ function useRSS(domain: string, relations, fromServer) {
   };
 }
 
-const RenderWidgetRSS = ({ domain, relations, fromServer }) => {
-  const { data, isLoading } = useRSS(domain, relations, fromServer);
+const RenderWidgetRSS = ({ domain, fromServer }) => {
+  const { data, isLoading } = useRSS(domain, fromServer);
   const dispatch = useDispatch();
 
   useEffect(() => {
