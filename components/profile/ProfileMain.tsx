@@ -118,11 +118,25 @@ export default function ProfileMain(props) {
                   className="btn btn-sm"
                   data-clipboard-text={data.address}
                   onSuccess={onCopySuccess}
-                  title="Copy the wallet address"
+                  title="Copy this wallet address"
                 >
+                  <SVG
+                    src="../icons/icon-wallet.svg"
+                    width={20}
+                    height={20}
+                    className="action-gray"
+                  />
                   <span className="profile-label ml-1 mr-1">
                     {formatText(data.address)}
                   </span>
+                </Clipboard>
+                <Clipboard
+                  component="div"
+                  className="btn btn-sm"
+                  data-clipboard-text={data.address}
+                  onSuccess={onCopySuccess}
+                  title="Copy this wallet address"
+                >
                   <SVG
                     src="../icons/icon-copy.svg"
                     width={20}

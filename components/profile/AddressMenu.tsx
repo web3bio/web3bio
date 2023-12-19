@@ -39,6 +39,12 @@ export default function AddressMenu({ profile }) {
             href={`https://etherscan.io/address/${profile.address}`}
             target="_blank"
           >
+            <SVG
+              src="../icons/icon-search.svg"
+              width={20}
+              height={20}
+              className="action mr-1"
+            />
             View on Etherscan
           </Link>
         </li>
@@ -47,6 +53,12 @@ export default function AddressMenu({ profile }) {
             href={`https://debank.com/profile/${profile.address}`}
             target="_blank"
           >
+            <SVG
+              src="../icons/icon-wallet.svg"
+              width={20}
+              height={20}
+              className="action mr-1"
+            />
             View assets on DeBank
           </Link>
         </li>
@@ -58,6 +70,12 @@ export default function AddressMenu({ profile }) {
               downloadVCard();
             }}
           >
+            <SVG
+              src="../icons/icon-open.svg"
+              width={20}
+              height={20}
+              className="action mr-1"
+            />
             Download Profile vCard
           </Link>
         </li>

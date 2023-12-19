@@ -12,7 +12,7 @@
     display: block;
     height: 100vh;
     left: 0;
-    opacity: .15;
+    opacity: .05;
     position: fixed;
     top: 0;
     width: 100vw;
@@ -140,7 +140,7 @@
     }
 
     .menu {
-      width: 10rem;
+      width: 12rem;
     }
   }
 
@@ -826,9 +826,28 @@
       display: flex;
       flex-wrap: nowrap;
       gap: .5rem;
-      margin: .5rem -1rem 0 -1rem;
+      margin: 0 -1rem;
       overflow-x: auto;
       padding: 0 1rem;
+
+      .rss-website {
+        border-radius: .4rem;
+        flex: 0 0 14rem;
+        min-height: 5rem;
+        padding: 1rem 1rem 1rem 0;
+        text-decoration: none;
+        width: 14rem;
+
+        .rss-website-title {
+          font-size: .8rem;
+          font-weight: 700;
+          letter-spacing: -.025em;
+        }
+
+        .rss-website-description {
+          font-size: .65rem;
+        }
+      }
 
       .rss-item {
         background: lighten($bg-color, 5%);
@@ -864,12 +883,13 @@
 
         .rss-item-img {
           border-radius: .4rem;
+          box-shadow: 0 .4rem 1.6rem -.4rem rgba($dark-color, .15), 0 .1rem .2rem rgba($dark-color, .01);
           height: 4.8rem;
           margin-bottom: .5rem;
-          object-fit: contain;
+          object-fit: cover;
           width: 100%;
 
-          &+.rss-item-title {
+          & + .rss-item-title {
             font-size: .7rem;
           }
         }

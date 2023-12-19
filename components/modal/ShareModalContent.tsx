@@ -62,10 +62,10 @@ export default function ShareModalContent(props) {
             src={relativeOGURL}
             type={"image/png"}
             width="100%"
-            height="100%"
+            height="auto"
             placeholder={true}
             alt={profile.identity}
-            style={{ height: 200 }}
+            style={{ height: 240 }}
           />
         </div>
 

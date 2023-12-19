@@ -69,26 +69,26 @@ const RenderWidgetRSS = ({ domain, relations, fromServer }) => {
         <div className="profile-widget-header">
           <h2 className="profile-widget-title">
             <span className="emoji-large mr-2">📰 </span>
-            {data.title}
+            Website
           </h2>
           {data.description && (
             <h3 className="text-assistive">{data.description}</h3>
           )}
-          <div className="widget-action">
-            <div className="action-icon">
-              <Link
-                className="btn btn-sm"
-                title="More Articles"
-                href={data.link}
-                target={"_blank"}
-              >
-                <SVG src="icons/icon-open.svg" width={20} height={20} />
-              </Link>
-            </div>
-          </div>
         </div>
 
         <div className="widget-rss-list noscrollbar">
+          <div className="rss-website">
+            <div className="rss-website-title mb-1">{data.title}</div>
+            <div className="rss-website-description mb-4">{data.description}</div>
+            <Link
+              className="btn btn-sm"
+              title="More Articles"
+              href={data.link}
+              target={"_blank"}
+            >
+              More <SVG src="icons/icon-open.svg" width={20} height={20} />
+            </Link>
+          </div>
           {data?.items.map((x, idx) => {
             return <RssItem data={x} key={idx} />;
           })}
