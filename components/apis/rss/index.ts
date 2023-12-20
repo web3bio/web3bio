@@ -1,5 +1,4 @@
 export const RSS_ENDPOINT = "https://contenthash.web3.bio/api/";
-const RSS_MAX_DURATION = 2000;
 
 export const RSSFetcher = async (url) => {
   console.time("RSS API call");
