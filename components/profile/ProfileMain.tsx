@@ -298,10 +298,7 @@ export default function ProfileMain(props) {
               </div>
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading Articles...</p>}>
-                  <WidgetRSS
-                    fromServer={fromServer}
-                    domain={data.identity}
-                  />
+                  <WidgetRSS fromServer={fromServer} domain={data.identity} />
                 </Suspense>
               </div>
               <div className="web3-section-widgets">
