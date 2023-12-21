@@ -6,17 +6,15 @@ import _ from "lodash";
 import { useSelector } from "react-redux";
 import { AppState } from "../../state";
 import { ProfileInterface } from "../../utils/profile";
+import D3ResultGraph from "../graph/D3ResultGraph";
 
 const RenderAccount = (props) => {
   const { graphData, resultNeighbor, graphTitle } = props;
   const [open, setOpen] = useState(false);
-  const cached = useSelector<
-    AppState,
-    { [address: string]: ProfileInterface }
-  >((state) => state.universal.profiles);
-  const profiles = _.flatten(
-    Object.values(cached).map((x) => x)
+  const cached = useSelector<AppState, { [address: string]: ProfileInterface }>(
+    (state) => state.universal.profiles
   );
+  const profiles = _.flatten(Object.values(cached).map((x) => x));
   return (
     <>
       <div className="search-result">
@@ -42,8 +40,28 @@ const RenderAccount = (props) => {
           ))}
         </div>
       </div>
-      {open && (
+      {/* {open && (
         <ResultGraph
+          onClose={() => setOpen(false)}
+          data={graphData.reduce((pre, cur) => {
+            pre.push({
+              ...cur,
+              to: {
+                ...cur.to,
+                profile: _.find(profiles, (i) => i.uuid == cur.to.uuid),
+              },
+              from: {
+                ...cur.from,
+                profile: _.find(profiles, (i) => i.uuid == cur.from.uuid),
+              },
+            });
+            return pre;
+          }, [])}
+          title={graphTitle}
+        />
+      )} */}
+      {open && (
+        <D3ResultGraph
           onClose={() => setOpen(false)}
           data={graphData.reduce((pre, cur) => {
             pre.push({
