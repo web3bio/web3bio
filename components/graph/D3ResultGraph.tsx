@@ -38,7 +38,7 @@ const resolveGraphData = (source) => {
     edges.push({
       source: from.uuid,
       target: to.uuid,
-      label: resolvedPlatform ? resolvedPlatform.label : x.source,
+      label: resolvedPlatform ? resolvedPlatform.key : x.source,
       id: `${from.uuid}-${to.uuid}`,
       isIdentity: true,
     });
@@ -88,6 +88,9 @@ const resolveGraphData = (source) => {
   return { nodes: _nodes, edges: _edges };
 };
 
+const IdentityNodeSize = 50;
+const NFTNodeSize = 15;
+
 export default function D3ResultGraph(props) {
   const { data, onClose, title } = props;
   const [loading, setLoading] = useState(true);
@@ -99,10 +102,6 @@ export default function D3ResultGraph(props) {
     const generateGraph = (_data) => {
       const width = chartContainer?.offsetWidth || 960;
       const height = chartContainer?.offsetHeight || 480;
-      const color = d3.scaleOrdinal(d3.schemeCategory10);
-
-      // The force simulation mutates links and nodes, so create a copy
-      // so that re-evaluating this cell produces the same result.
       const links = _data.links.map((d) => ({ ...d }));
       const nodes = _data.nodes.map((d) => ({ ...d }));
 
@@ -110,10 +109,19 @@ export default function D3ResultGraph(props) {
       const simulation = d3
         .forceSimulation(nodes)
         .force(
-          "link",
-          d3.forceLink(links).id((d) => d.id)
+          "charge",
+          d3
+            .forceManyBody()
+            .strength((d) => (d.isIdentity ? -100 : -50))
+            .distanceMax([2000])
         )
-        .force("charge", d3.forceManyBody())
+        .force(
+          "link",
+          d3
+            .forceLink(links)
+            .id((d) => d.id)
+            .distance((d) => (d.isIdentity ? 300 : 100))
+        )
         .force("center", d3.forceCenter(width / 2, height / 2))
         .on("tick", ticked);
 
@@ -127,34 +135,60 @@ export default function D3ResultGraph(props) {
       // Add a line for each link, and a circle for each node.
       const link = svg
         .append("g")
-        .attr("stroke", "#999")
-        .attr("stroke-opacity", 0.6)
+        .attr("stroke-opacity", 0.3)
         .selectAll()
         .data(links)
         .join("line")
-        .attr("stroke-width", (d) => Math.sqrt(d.value));
+        .attr("stroke", (d) => SocialPlatformMapping(d.label)?.color || "#999")
+        .attr("stroke-width", 1.5);
+      // nodeContainer
 
-      const node = svg
+      const nodeContainer = svg
         .append("g")
-        .attr("stroke", "#fff")
-        .attr("stroke-width", 1.5)
-        .selectAll()
-        .data(nodes)
-        .join("circle")
-        .attr("r", 5)
-        .attr("fill", (d) => color(d.group));
+        .attr("stroke-width", 2)
+        .selectAll(".node")
+        .data(nodes, (d) => d.id)
+        .attr("class", "node")
+        .join("g");
 
-      node.append("title").text((d) => d.id);
+      const circle = nodeContainer
+        .append("circle")
+        .attr("r", (d) => (d.isIdentity ? IdentityNodeSize : NFTNodeSize))
+        .attr("stroke", (d) => SocialPlatformMapping(d.platform).color)
+        .attr("class", "circle")
+        .attr("fill", (d) =>
+          d.isIdentity ? "#fff" : SocialPlatformMapping(PlatformType.ens).color
+        );
 
-      // Add a drag behavior.
-      node.call(
+      const identityBadge = nodeContainer
+        .append("circle")
+        .attr("class", "identity-badge")
+        .attr("r", 16)
+        .attr("fill", (d) => SocialPlatformMapping(d.platform).color)
+        .attr("style", (d) => `display:${d.isIdentity ? "normal" : "none"}`);
+
+      const identityIcon = nodeContainer
+        .append("svg:image")
+        .attr("width", 20)
+        .attr("height", 20)
+        .attr("xlink:href", (d) => SocialPlatformMapping(d.platform).icon)
+        .attr("style", (d) => `display:${d.isIdentity ? "normal" : "none"}`);
+
+      const ensBadge = nodeContainer
+        .append("svg:image")
+        .attr("width", 20)
+        .attr("height", 24)
+        .attr("class", "ens-icon")
+        .attr("xlink:href", SocialPlatformMapping(PlatformType.ens).icon)
+        .attr("style", (d) => `display:${d.isIdentity ? "none" : "normal"}`);
+
+      nodeContainer.call(
         d3
           .drag()
           .on("start", dragstarted)
           .on("drag", dragged)
           .on("end", dragended)
       );
-
       // Set the position attributes of links and nodes each time the simulation ticks.
       function ticked() {
         link
@@ -163,35 +197,38 @@ export default function D3ResultGraph(props) {
           .attr("x2", (d) => d.target.x)
           .attr("y2", (d) => d.target.y);
 
-        node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
+        circle.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
+
+        identityBadge
+          .attr("cx", (d) => d.x + IdentityNodeSize / 2 + 8)
+          .attr("cy", (d) => d.y - IdentityNodeSize / 2 - 8);
+
+        identityIcon
+          .attr("x", (d) => d.x + IdentityNodeSize / 2 - 2)
+          .attr("y", (d) => d.y - IdentityNodeSize / 2 - 18);
+
+        ensBadge
+          // offset half the icon size
+          .attr("x", (d) => d.x - 10)
+          .attr("y", (d) => d.y - 12);
       }
 
-      // Reheat the simulation when drag starts, and fix the subject position.
       function dragstarted(event) {
         if (!event.active) simulation.alphaTarget(0.3).restart();
         event.subject.fx = event.subject.x;
         event.subject.fy = event.subject.y;
       }
 
-      // Update the subject (dragged node) position during drag.
       function dragged(event) {
         event.subject.fx = event.x;
         event.subject.fy = event.y;
       }
 
-      // Restore the target alpha so the simulation cools after dragging ends.
-      // Unfix the subject position now that it’s no longer being dragged.
       function dragended(event) {
         if (!event.active) simulation.alphaTarget(0);
         event.subject.fx = null;
         event.subject.fy = null;
       }
-
-      // When this cell is re-run, stop the previous simulation. (This doesn’t
-      // really matter since the target alpha is zero and the simulation will
-      // stop naturally, but it’s a good practice.)
-      // invalidation.then(() => simulation.stop());
-
       return svg.node();
     };
     if (!chart && chartContainer) {
@@ -203,7 +240,7 @@ export default function D3ResultGraph(props) {
       const svg = d3.select(".svg-canvas");
       svg.selectAll("*").remove();
     };
-  }, [data]);
+  }, [data?.length]);
   return (
     <div
       className="identity-graph-modal"

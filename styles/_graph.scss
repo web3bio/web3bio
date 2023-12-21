@@ -46,6 +46,28 @@
     position: relative;
     width: calc(100vw - 3rem);
 
+    .svg-canvas {
+
+      // circle style goes here
+      .node {
+        cursor: pointer;
+
+        .circle {}
+
+        .identity-icon {
+          width: 16px;
+          height: 16px
+        }
+
+        .ens-icon {
+          width: 20px;
+          height: 24px;
+          transform: translate(-50%, -50%);
+        }
+      }
+
+    }
+
     @media screen and (max-width: $size-sm) {
       @supports (height: 100dvh) {
         height: calc(100dvh - .5rem);
