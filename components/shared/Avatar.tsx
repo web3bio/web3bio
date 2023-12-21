@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { resolveMediaURL } from "../../utils/utils";
 import { AssetPlayerProps } from "./NFTAssetPlayer";
 interface Avatar extends AssetPlayerProps {
   identity?: string;
@@ -16,7 +15,7 @@ export const Avatar = (props: Avatar) => {
         width: width ? width : "100%",
         height: height ? height : "auto",
       }}
-      src={resolveMediaURL(src) || profileAvatarAPIURL}
+      src={src || profileAvatarAPIURL}
       width={Number(width) || 0}
       height={Number(height) || 0}
       alt={alt}

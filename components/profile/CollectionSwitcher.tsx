@@ -30,7 +30,7 @@ const RenderCollectionSwitcher = (props) => {
               alt={item.name}
             />
             {item.assets.length > 1 && (
-              <div className="collection-badge">{item.assets.length}</div>
+              <div className="collection-badge">+{item.assets.length}</div>
             )}
             
             <div className="collection-name text-assistive">NFT Collection: {item.name}</div>

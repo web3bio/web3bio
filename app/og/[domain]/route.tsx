@@ -55,7 +55,7 @@ export async function GET(
       new URL("./fonts/Geist-Regular.otf", import.meta.url)
     ).then((res) => res.arrayBuffer());
 
-    const qrcodeUrl = `https://chart.googleapis.com/chart?cht=qr&chs=180x180&chl=https://web3.bio/${identity}`;
+    const qrcodeUrl = `https://chart.googleapis.com/chart?cht=qr&chs=120x120&chld=L|0&chl=https://web3.bio/${identity}`;
 
     return new ImageResponse(
       (
@@ -82,7 +82,7 @@ export async function GET(
               backgroundPosition: "0 top",
               backgroundRepeat: "no-repeat",
               backgroundSize: "100% 240px",
-              opacity: 0.25,
+              opacity: 0.15,
               width: 1200,
               height: 630,
               position: "absolute",
@@ -154,10 +154,9 @@ export async function GET(
               <img
                 style={{
                   background: "transparent",
-                  transform: "translateY(20%)",
                 }}
-                width={140}
-                height={140}
+                width={120}
+                height={120}
                 src={qrcodeUrl}
                 alt=""
               />

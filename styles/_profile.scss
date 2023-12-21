@@ -595,17 +595,17 @@
           }
 
           .collection-badge {
-            background: rgba($dark-color, .85);
+            background: rgba(lighten($bg-color, 6%), .9);
             border-radius: .35rem;
-            bottom: .05rem;
-            box-shadow: 0 .1rem .4rem rgba($dark-color, .2);
-            color: $gray-color-light;
+            bottom: .15rem;
+            box-shadow: 0 .1rem .2rem rgba($dark-color, .1);
+            color: $gray-color-dark;
             font-size: .6rem;
             line-height: 1rem;
             min-width: 1rem;
             padding: 0 .25rem;
             position: absolute;
-            right: .05rem;
+            right: .15rem;
             text-align: center;
             z-index: 99;
           }
@@ -705,7 +705,7 @@
 
                 &:focus,
                 &:hover {
-                  opacity: .75;
+                  opacity: .95;
 
                   .preview-network-name {
                     display: inline-flex;
@@ -1131,7 +1131,7 @@
 
       &:focus,
       &:hover {
-        opacity: .85;
+        opacity: .95;
 
         .preview-network-name {
           display: inline-flex;
