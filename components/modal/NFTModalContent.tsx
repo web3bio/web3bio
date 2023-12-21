@@ -112,9 +112,10 @@ export default function NFTModalContentRender(props) {
             <div
               className={`preview-network ${_asset.chain}`}
               title={NetworkMapping(_asset.chain).label}
+              style={{backgroundColor: NetworkMapping(_asset.chain).bgColor}}
             >
               <SVG
-                fill={"#121212"}
+                fill={NetworkMapping(_asset.chain).primaryColor}
                 src={NetworkMapping(_asset.chain).icon || ""}
                 className="preview-network-icon"
               />

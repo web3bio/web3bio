@@ -78,7 +78,7 @@ const RenderWidgetRSS = ({ domain, fromServer }) => {
               href={data.link}
               target={"_blank"}
             >
-              More <SVG src="icons/icon-open.svg" width={20} height={20} />
+              <SVG src="icons/icon-open.svg" width={20} height={20} /> More 
             </Link>
           </div>
           {data?.items.map((x, idx) => {
