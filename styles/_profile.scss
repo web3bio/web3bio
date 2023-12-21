@@ -544,6 +544,7 @@
           flex: 0 0;
           height: 3.1rem;
           padding: .25rem;
+          position: relative;
           transition: all .25s ease-in-out;
           width: 3.1rem;
 
@@ -591,6 +592,22 @@
               object-fit: cover;
               width: 2.6rem;
             }
+          }
+
+          .collection-badge {
+            background: rgba($dark-color, .85);
+            border-radius: .35rem;
+            bottom: .05rem;
+            box-shadow: 0 .1rem .4rem rgba($dark-color, .2);
+            color: $gray-color-light;
+            font-size: .6rem;
+            line-height: 1rem;
+            min-width: 1rem;
+            padding: 0 .25rem;
+            position: absolute;
+            right: .05rem;
+            text-align: center;
+            z-index: 99;
           }
         }
       }
