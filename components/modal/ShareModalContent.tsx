@@ -2,7 +2,6 @@ import { useState } from "react";
 import SVG from "react-inlinesvg";
 import Clipboard from "react-clipboard.js";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { PlatformType } from "../../utils/platform";
 
 const shareMap = [
   {
@@ -30,7 +29,8 @@ const shareMap = [
 ];
 
 export default function ShareModalContent(props) {
-  const { profile, url, onClose, avatar } = props;
+  const {profile, path, onClose, avatar} = props;
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio"}${path}`;
   const [isCopied, setIsCopied] = useState(false);
   const onCopySuccess = () => {
     setIsCopied(true);
@@ -40,13 +40,7 @@ export default function ShareModalContent(props) {
   };
   const relativeOGURL =
     window.location.origin +
-    `/og/${
-      profile?.platform === PlatformType.farcaster
-        ? `${profile?.identity}.farcaster`
-        : profile?.identity
-    }?address=${profile?.address}&avatar=${avatar}&displayName=${
-      profile?.displayName
-    }`;
+    `/api/og/?path=${path}&address=${profile?.address}&avatar=${avatar}&displayName=${profile?.displayName}`;
   return (
     <>
       <div className="profile-share-header">

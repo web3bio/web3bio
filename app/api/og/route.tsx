@@ -4,50 +4,36 @@ import { formatText } from "../../../utils/utils";
 
 export const runtime = "edge";
 
-const isValidURL = (v) => {
-  try {
-    const url = new URL(v);
-    return !!url;
-  } catch (e) {
-    return false;
-  }
-};
-
 let filename = "og.png";
 
 const size = {
   width: 1200,
   height: 630,
 };
+
 export async function GET(
   request: NextRequest,
-  { params }: { params: { domain: string } }
 ) {
   try {
-    const { searchParams } = new URL(request.url);
-    const identity = params.domain;
-    filename = params.domain + ".png";
-    const paramAddress = searchParams.get("address");
+    const { searchParams } = request.nextUrl;
+    const path = searchParams.get("path");
+    filename = path + ".png";
+    const address = searchParams.get("address");
+    const displayName = searchParams.get("displayName");
     const paramAvatar = searchParams.get("avatar");
-    const paramDisplayName = searchParams.get("displayName");
-    const address =
-      !paramAddress || paramAddress === "null" ? "" : paramAddress;
     const avatarImg =
-      !paramAvatar || paramAvatar === "null" || !isValidURL(paramAvatar)
-        ? process.env.NEXT_PUBLIC_PROFILE_END_POINT + `/avatar/${identity}`
+      !paramAvatar || paramAvatar === "null"
+        ? process.env.NEXT_PUBLIC_PROFILE_END_POINT + `/avatar/${path}`
         : paramAvatar;
-    const displayName =
-      !paramDisplayName || paramDisplayName === "null" ? "" : paramDisplayName;
-    const isShowDefault = ![address, avatarImg, identity, displayName].some(
+    
+    const isShowDefault = ![address, path, displayName].some(
       (x) => !!x
     );
-    if (isShowDefault)
-      return new ImageResponse(
-        <img src={"https://web3.bio/img/web3bio-social.jpg"} alt="" />,
-        {
-          ...size,
-        }
-      );
+
+    if (isShowDefault) {
+      throw new Error("Params is missing");
+    }
+
     const fontBold = await fetch(
       new URL("./fonts/Geist-Black.otf", import.meta.url)
     ).then((res) => res.arrayBuffer());
@@ -55,7 +41,7 @@ export async function GET(
       new URL("./fonts/Geist-Regular.otf", import.meta.url)
     ).then((res) => res.arrayBuffer());
 
-    const qrcodeUrl = `https://chart.googleapis.com/chart?cht=qr&chs=120x120&chld=L|0&chl=https://web3.bio/${identity}`;
+    const qrcodeUrl = `https://chart.googleapis.com/chart?cht=qr&chs=120x120&chld=L|0&chl=https://web3.bio/${path}`;
 
     return new ImageResponse(
       (
@@ -118,7 +104,7 @@ export async function GET(
             {displayName}
           </div>
 
-          {identity && (
+          {path && (
             <div
               style={{
                 borderRadius: "4rem",
@@ -128,7 +114,7 @@ export async function GET(
                 paddingLeft: ".25rem",
               }}
             >
-              web3.bio/{identity}
+              web3.bio/{path}
             </div>
           )}
           <div
@@ -150,7 +136,7 @@ export async function GET(
               </div>
             )}
 
-            {identity && (
+            {path && (
               <img
                 style={{
                   background: "transparent",
@@ -184,8 +170,9 @@ export async function GET(
       }
     );
   } catch (e) {
+
     return new ImageResponse(
-      <img src={"https://web3.bio/img/web3bio-social.jpg"} alt="" />,
+      <img width={size.width} height={size.height} src={"https://web3.bio/img/web3bio-social.jpg"} />,
       {
         ...size,
       }

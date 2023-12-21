@@ -1,7 +1,6 @@
 "use client";
 import React, { Suspense, useCallback, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { PlatformType } from "../../utils/platform";
@@ -36,8 +35,7 @@ export default function ProfileMain(props) {
   } = props;
   const [isCopied, setIsCopied] = useState(false);
   const { isOpen, modalType, closeModal, openModal, params } = useModal();
-  const pathName = usePathname();
-  const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
+  
   const profileWidgetStates = useSelector<AppState, WidgetState>(
     (state) => state.widgets
   );
@@ -152,7 +150,7 @@ export default function ProfileMain(props) {
                 onClick={() =>
                   openModal(ModalType.share, {
                     profile: data,
-                    url: `${baseURL}${pathName}`,
+                    path: `${domain}`,
                     avatar: fallbackAvatar.avatar,
                   })
                 }

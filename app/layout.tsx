@@ -33,11 +33,6 @@ export async function generateMetadata(): Promise<Metadata> {
         template: "%s - Web3.bio",
       },
       description,
-      images: [
-        {
-          url: "/img/web3bio-social.jpg",
-        },
-      ],
     },
     twitter: {
       title: {
@@ -45,11 +40,6 @@ export async function generateMetadata(): Promise<Metadata> {
         template: "%s - Web3.bio",
       },
       description,
-      images: [
-        {
-          url: "/img/web3bio-social.jpg",
-        },
-      ],
       site: "@web3bio",
       creator: "@web3bio",
     },
