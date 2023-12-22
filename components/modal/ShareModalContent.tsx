@@ -1,7 +1,7 @@
 import { useState } from "react";
+import Image from "next/image";
 import SVG from "react-inlinesvg";
 import Clipboard from "react-clipboard.js";
-import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
 const shareMap = [
   {
@@ -38,9 +38,17 @@ export default function ShareModalContent(props) {
       setIsCopied(false);
     }, 1500);
   };
-  const relativeOGURL =
-    window.location.origin +
-    `/api/og/?path=${path}&address=${profile?.address}&avatar=${avatar}&displayName=${profile?.displayName}`;
+
+  const params = new URLSearchParams();
+    if (path)
+      params.append("path", path);
+    if (profile)
+      params.append("address", profile.address);
+      params.append("displayName", profile.displayName);
+    if(avatar)
+      params.append("avatar", avatar);
+  const relativeOGURL = params.toString() ? `/api/og?${params.toString()}` : "/api/og";
+
   return (
     <>
       <div className="profile-share-header">
@@ -51,15 +59,13 @@ export default function ShareModalContent(props) {
       </div>
       <div className="profile-share-body">
         <div className="profile-card mb-4">
-          <NFTAssetPlayer
+          <Image
             className="img-responsive"
-            src={relativeOGURL}
-            type={"image/png"}
-            width="100%"
-            height="auto"
-            placeholder={true}
+            src={`${relativeOGURL}`}
+            width={0}
+            height={0}
             alt={profile.identity}
-            style={{ height: 240 }}
+            style={{ height: 252, width: 480 }}
           />
         </div>
 

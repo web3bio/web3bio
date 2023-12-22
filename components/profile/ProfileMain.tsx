@@ -82,7 +82,7 @@ export default function ProfileMain(props) {
             <div className="profile-avatar">
               <Avatar
                 src={data?.avatar || fallbackAvatar.avatar}
-                identity={data?.identity}
+                identity={domain}
                 className="avatar"
                 alt={`${pageTitle} Profile Photo`}
                 height={180}

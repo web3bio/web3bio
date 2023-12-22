@@ -57,7 +57,7 @@ export async function GET(
             width: 1200,
             gap: "1rem",
             position: "relative",
-            fontFamily: "font-normal",
+            fontFamily: "geist",
           }}
         >
           <div
@@ -68,9 +68,9 @@ export async function GET(
               backgroundPosition: "0 top",
               backgroundRepeat: "no-repeat",
               backgroundSize: "100% 240px",
-              opacity: 0.15,
+              opacity: 0.1,
               width: 1200,
-              height: 630,
+              height: 240,
               position: "absolute",
               filter: "blur(8em)",
               left: 0,
@@ -82,23 +82,25 @@ export async function GET(
           {avatarImg && (
             <img
               style={{
+                backgroundColor: "#efefef",
                 boxShadow:
                   "inset 0 0 0 0.2rem rgba(255, 255, 255, 0.1), 0 0.4rem 1rem rgba(0, 0, 0, 0.1)",
                 borderRadius: "50%",
+                objectFit: "cover",
               }}
               width={180}
               height={180}
-              src={avatarImg || ""}
+              src={avatarImg}
               alt=""
             />
           )}
 
           <div
             style={{
-              fontFamily: "font-bold",
               fontSize: "5rem",
               letterSpacing: "-.05em",
               marginTop: "20px",
+              fontWeight: "bold",
             }}
           >
             {displayName}
@@ -157,14 +159,16 @@ export async function GET(
         },
         fonts: [
           {
-            name: "font-bold",
+            name: "geist",
             data: fontBold,
-            style: "normal",
+            style: 'normal',
+            weight: 700,
           },
           {
-            name: "font-normal",
+            name: "geist",
             data: fontNormal,
-            style: "normal",
+            style: 'normal',
+            weight: 400,
           },
         ],
       }
