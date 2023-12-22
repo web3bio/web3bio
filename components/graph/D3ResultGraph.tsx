@@ -88,12 +88,13 @@ const resolveGraphData = (source) => {
   return { nodes: _nodes, edges: _edges };
 };
 
-const IdentityNodeSize = 50;
+const IdentityNodeSize = 55;
 const NFTNodeSize = 15;
 
 export default function D3ResultGraph(props) {
   const { data, onClose, title } = props;
   const [loading, setLoading] = useState(true);
+  const [currentNode, setCurrentNode] = useState<any>(null);
   const tooltipContainer = useRef(null);
   const graphContainer = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -104,6 +105,17 @@ export default function D3ResultGraph(props) {
       const height = chartContainer?.offsetHeight || 480;
       const links = _data.links.map((d) => ({ ...d }));
       const nodes = _data.nodes.map((d) => ({ ...d }));
+      const svg = d3
+      .select(".svg-canvas")
+      .attr("width", '100%')
+      .attr("height", '100%')
+      // .attr("viewBox", [0, 0, width, height])
+      // todo: check pan && zoom here
+      // .call(
+      //   d3.zoom().on("zoom", () => {
+      //     svg.attr("transform", d3.event.transform);
+      //   })
+      // )
 
       // Create a simulation with several forces.
       const simulation = d3
@@ -125,44 +137,60 @@ export default function D3ResultGraph(props) {
         .force("center", d3.forceCenter(width / 2, height / 2))
         .on("tick", ticked);
 
-      const svg = d3
-        .select(".svg-canvas")
-        .attr("width", width)
-        .attr("height", height)
-        .attr("viewBox", [0, 0, width, height])
-        .attr("style", "max-width: 100%; height: auto;");
+     
 
       // Add a line for each link, and a circle for each node.
       const link = svg
-        .append("g")
+        .append("svg:g")
         .attr("stroke-opacity", 0.3)
         .selectAll()
         .data(links)
         .join("line")
         .attr("stroke", (d) => SocialPlatformMapping(d.label)?.color || "#999")
         .attr("stroke-width", 1.5);
-      // nodeContainer
 
+      // nodeContainer
       const nodeContainer = svg
         .append("g")
         .attr("stroke-width", 2)
         .selectAll(".node")
         .data(nodes, (d) => d.id)
-        .attr("class", "node")
-        .join("g");
+        .attr("style", "cursor:pointer")
+        .join("g")
+        .on("click", (e, i) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setCurrentNode(i);
+          link
+            .filter((l) => l.source.id === i.id || l.target.id === i.id)
+            .attr("stroke-width", 2);
+          const n = d3.select(this);
+          console.log(n);
+          d3.select(this)
+            .select("circle")
+            .transition()
+            .duration(750)
+            .style("fill", SocialPlatformMapping(i.platform).color)
+            .style("fillOpacity", 0.1);
+        })
+        .call(
+          d3
+            .drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended)
+        );
 
       const circle = nodeContainer
         .append("circle")
         .attr("r", (d) => (d.isIdentity ? IdentityNodeSize : NFTNodeSize))
         .attr("stroke", (d) => SocialPlatformMapping(d.platform).color)
-        .attr("class", "circle")
         .attr("fill", (d) =>
           d.isIdentity ? "#fff" : SocialPlatformMapping(PlatformType.ens).color
         );
-
+      // todo: group add g, not control display
       const identityBadge = nodeContainer
         .append("circle")
-        .attr("class", "identity-badge")
         .attr("r", 16)
         .attr("fill", (d) => SocialPlatformMapping(d.platform).color)
         .attr("style", (d) => `display:${d.isIdentity ? "normal" : "none"}`);
@@ -182,13 +210,23 @@ export default function D3ResultGraph(props) {
         .attr("xlink:href", SocialPlatformMapping(PlatformType.ens).icon)
         .attr("style", (d) => `display:${d.isIdentity ? "none" : "normal"}`);
 
-      nodeContainer.call(
-        d3
-          .drag()
-          .on("start", dragstarted)
-          .on("drag", dragged)
-          .on("end", dragended)
-      );
+      const displayName = nodeContainer
+        .append("text")
+        .style("font-size", 14)
+        .style("font-weight", 400)
+        .text((d) => formatText(d.displayName || d.identity));
+
+      const identity = nodeContainer
+        .append("text")
+        .style("display", (d) => (d.isIdentity ? "normal" : "none"))
+        .style("font-size", 12)
+        .style("font-weight", 300)
+        .text((d) =>
+          d.displayName !== d.identity && d.displayName !== ""
+            ? formatText(d.identity)
+            : ""
+        );
+
       // Set the position attributes of links and nodes each time the simulation ticks.
       function ticked() {
         link
@@ -198,6 +236,15 @@ export default function D3ResultGraph(props) {
           .attr("y2", (d) => d.target.y);
 
         circle.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
+
+        displayName
+          .attr("dx", (d) => d.x)
+          .attr("dy", (d) => (d.isIdentity ? d.y : d.y + NFTNodeSize * 2))
+          .attr("text-anchor", "middle");
+        identity
+          .attr("dx", (d) => d.x)
+          .attr("dy", (d) => (d.isIdentity ? d.y + 14 : 0))
+          .attr("text-anchor", "middle");
 
         identityBadge
           .attr("cx", (d) => d.x + IdentityNodeSize / 2 + 8)
@@ -254,9 +301,75 @@ export default function D3ResultGraph(props) {
           onClick={(e) => {
             e.stopPropagation();
             e.preventDefault();
+            setCurrentNode(null);
           }}
         >
           <svg className="svg-canvas" />
+
+          {currentNode && (
+            <div
+              className="web3bio-tooltip"
+              style={{
+                top: currentNode.y,
+                left: currentNode.x,
+              }}
+            >
+              {currentNode.isIdentity ? (
+                <ul>
+                  <li className="text-large text-bold">
+                    {currentNode.displayName || "-"}
+                  </li>
+                  <li className="mb-1">
+                    {currentNode.identity != currentNode.displayName
+                      ? currentNode.platform === PlatformType.ethereum
+                        ? formatText(currentNode.identity)
+                        : currentNode.identity
+                      : ""}
+                  </li>
+                  {(currentNode.uid && (
+                    <li>
+                      <span className="text-gray">
+                        {currentNode.platform === PlatformType.farcaster
+                          ? "FID"
+                          : "UID"}
+                        :{" "}
+                      </span>
+                      {currentNode.uid}
+                    </li>
+                  )) ||
+                    ""}
+                  {(currentNode.address && (
+                    <li>
+                      <span className="text-gray">Address: </span>
+                      {currentNode.address}
+                    </li>
+                  )) ||
+                    ""}
+                  <li>
+                    <span className="text-gray">Platform: </span>
+                    {SocialPlatformMapping(currentNode.platform as PlatformType)
+                      ?.label ||
+                      currentNode.platform ||
+                      "Unknown"}
+                  </li>
+                </ul>
+              ) : (
+                <ul>
+                  <li className="text-large text-bold mb-1">
+                    {currentNode.identity || ""}
+                  </li>
+                  <li>
+                    <span className="text-gray">Platform: </span>
+                    {currentNode.platform || ""}
+                  </li>
+                  <li>
+                    <span className="text-gray">Owner: </span>
+                    {currentNode.holder || ""}
+                  </li>
+                </ul>
+              )}
+            </div>
+          )}
           <div className="graph-header">
             <div className="graph-title">
               <SVG src={"/icons/icon-view.svg"} width="20" height="20" />
