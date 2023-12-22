@@ -105,6 +105,7 @@ const RenderAccountItem = (props) => {
                     width={36}
                     height={36}
                     alt="avatar"
+                    title="avatar"
                     src={profile?.avatar}
                     className="avatar-img"
                   />

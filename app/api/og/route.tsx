@@ -170,7 +170,6 @@ export async function GET(
       }
     );
   } catch (e) {
-
     return new ImageResponse(
       <img width={size.width} height={size.height} src={"https://web3.bio/img/web3bio-social.jpg"} />,
       {

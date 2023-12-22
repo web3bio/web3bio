@@ -62,10 +62,11 @@ async function fetchDataFromServer(domain: string) {
 }
 
 export async function generateMetadata({
-  params: { domain },
-}: {
-  params: { domain: string };
-}): Promise<Metadata> {
+    params: { domain },
+  }: {
+    params: { domain: string };
+  },
+): Promise<Metadata> {
   const res = await fetchDataFromServer(domain);
   if (!res) {
     if (regexAvatar.test(domain)) {
@@ -87,7 +88,10 @@ export async function generateMetadata({
       SocialPlatformMapping(platform!).label
     } Web3 identity profiles, social links, NFT collections, Web3 activities, dWebsites, POAPs etc on the Web3.bio profile page.`;
   const avatarURL = data?.find((x) => !!x.avatar)?.avatar;
-  const relativeOGURL = `/api/og/?path=${domain}&address=${profile?.address}&avatar=${avatarURL}&displayName=${profile?.displayName}`;
+  const relativeOGURL = domain 
+    ? `/api/og/?path=${domain}&address=${profile?.address}&avatar=${avatarURL}&displayName=${profile?.displayName}`
+    : `/opengraph-image.jpg`;
+  
   return {
     metadataBase: new URL(baseURL),
     title: pageTitle,
@@ -101,9 +105,7 @@ export async function generateMetadata({
       siteName: "Web3.bio",
       title: pageTitle,
       images: [
-        {
-          url: relativeOGURL,
-        },
+        relativeOGURL
       ],
       description: profileDescription,
     },
@@ -112,9 +114,7 @@ export async function generateMetadata({
       description: profileDescription,
       site: "@web3bio",
       images: [
-        {
-          url: relativeOGURL,
-        },
+        relativeOGURL
       ],
       creator: "@web3bio",
     },

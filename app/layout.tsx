@@ -1,15 +1,15 @@
-import { Metadata } from "next";
 import { GeistSans } from "geist/font";
 import GoogleAnalytics from "../components/shared/GoogleAnalytics";
 import Provider from "../components/shared/Provider";
 import "../styles/web3bio.scss";
 
-export async function generateMetadata(): Promise<Metadata> {
+export function generateMetadata() {
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
-  const description =
-    "Web3.bio is a platform for Web3 and Web 2.0 Identity Graph search and link in bio profiles. It provides a list of relevant identities when searching for a Twitter handle, Ethereum address, ENS domain, Lens profile, Farcaster account, Unstoppable Domains, and other Web3 identities.";
   const defaultTitle =
     "Web3.bio - Web3 Identity Graph Search and Link in Bio Profile";
+  const description =
+    "Web3.bio is a platform for Web3 and Web 2.0 Identity Graph search and link in bio profiles. It provides a list of relevant identities when searching for a Twitter handle, Ethereum address, ENS domain, Lens profile, Farcaster account, Unstoppable Domains, and other Web3 identities.";
+  
   return {
     metadataBase: new URL(baseURL),
     robots: "index, follow",
@@ -24,6 +24,8 @@ export async function generateMetadata(): Promise<Metadata> {
     alternates: {
       canonical: `/`,
     },
+    keywords: ["Web3", "Web3.bio", "Web3 DID", "Web3 Identity", "Web3 Identity Search", "Web3 Identity Resolver", "Web3 Identity Graph", "Web3 Social Graph", "Web3 Identity Explorer", "Web3 Profile", "Web3 Profile Explorer", "DID", "DID Search Engine", "DID Explorer", "Web3 Domain Search", "Web3 Domain Explorer", "Web3 Domain WHOIS"],
+    applicationName: "Web3.bio",
     openGraph: {
       type: "website",
       url: `/`,
