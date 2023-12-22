@@ -117,7 +117,7 @@
 }
 
 .global-loading {
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%,-50%);
@@ -157,26 +157,26 @@
   .search-result-body {
     display: flex;
     flex-direction: column;
+    gap: .4rem;
     padding: 0 .4rem .4rem .4rem;
   }
 
   .social-item {
-    background: rgba($gray-color, .05);
+    background: rgba($gray-color, .1);
     border-radius: $border-radius;
     display: flex;
+    flex: 1 1 100%;
     flex-direction: column;
-    margin-bottom: .2rem;
     position: relative;
     transition: all .2s ease-in;
-    width: 100%;
 
     &:focus,
     &:hover {
-      background: rgba($gray-color, .1);
-      transform: translateY(-.1rem);
+      background: rgba($gray-color, .15);
+      transform: translateY(-.05rem);
 
       .actions {
-        display: flex;
+        visibility: visible;
       }
 
       .social-footer {
@@ -192,18 +192,30 @@
       order: -2;
     }
 
-    &:last-child {
-      margin-bottom: 0;
+    &.social-item-owner {
+      margin-left: 2rem;
+
+      .social-main {
+        &::after {
+          border-bottom: .1rem solid rgba($gray-color, .2);
+          border-left: .1rem solid rgba($gray-color, .2);
+          border-bottom-left-radius: .4rem;
+          content: "";
+          display: flex;
+          height: 2rem;
+          left: -.8rem;
+          overflow: hidden;
+          position: absolute;
+          top: -.2rem;
+          width: .8rem;
+        }
+      }
     }
 
     &.ethereum,
     &.lens,
     &.farcaster {
       order: -1;
-    }
-
-    &.nextid {
-      order: 9;
     }
 
     .social-main {
@@ -231,6 +243,7 @@
 
         .avatar-img {
           border-radius: .5rem;
+          object-fit: cover;
 
           & + .icon {
             bottom: -.6rem;
@@ -244,7 +257,7 @@
 
       .social {
         text-decoration: none;
-        width: 100%;
+        width: 50%;
       }
 
       .title {
@@ -257,11 +270,12 @@
 
     .actions {
       align-items: center;
-      display: none;
+      display: flex;
       margin-left: auto;
+      visibility: hidden;
 
       &.active {
-        display: flex;
+        visibility: visible;
       }
 
       .action {
@@ -331,7 +345,7 @@
   align-items: center;
   border-radius: .2rem;
   display: flex;
-  flex: 1;
+  flex: 1 1 auto;
   font-size: .6rem;
   line-height: 1rem;
   padding: .2rem .4rem;

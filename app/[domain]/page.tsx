@@ -1,11 +1,7 @@
 import { fetchInitialNFTsData } from "../../hooks/api/fetchProfile";
 import { PlatformType } from "../../utils/platform";
 import { SocialPlatformMapping } from "../../utils/utils";
-import {
-  handleSearchPlatform,
-  mapLinks,
-  WEB3BIO_OG_ENDPOINT,
-} from "../../utils/utils";
+import { handleSearchPlatform, mapLinks } from "../../utils/utils";
 import { notFound, redirect } from "next/navigation";
 import { Metadata } from "next";
 import ProfileMain from "../../components/profile/ProfileMain";
@@ -66,10 +62,11 @@ async function fetchDataFromServer(domain: string) {
 }
 
 export async function generateMetadata({
-  params: { domain },
-}: {
-  params: { domain: string };
-}): Promise<Metadata> {
+    params: { domain },
+  }: {
+    params: { domain: string };
+  },
+): Promise<Metadata> {
   const res = await fetchDataFromServer(domain);
   if (!res) {
     if (regexAvatar.test(domain)) {
@@ -90,6 +87,18 @@ export async function generateMetadata({
     `Explore ${pageTitle} ${
       SocialPlatformMapping(platform!).label
     } Web3 identity profiles, social links, NFT collections, Web3 activities, dWebsites, POAPs etc on the Web3.bio profile page.`;
+  const avatarURL = data?.find((x) => !!x.avatar)?.avatar;
+
+  const params = new URLSearchParams();
+    if (domain)
+      params.append("path", domain);
+    if (profile)
+      params.append("address", profile.address);
+      params.append("displayName", profile.displayName);
+    if(avatarURL)
+      params.append("avatar", avatarURL);
+  const relativeOGURL = params.toString() ? `/api/og?${params.toString()}` : "/api/og";
+  
   return {
     metadataBase: new URL(baseURL),
     title: pageTitle,
@@ -102,22 +111,18 @@ export async function generateMetadata({
       url: `/${domain}`,
       siteName: "Web3.bio",
       title: pageTitle,
-      description: profileDescription,
       images: [
-        {
-          url: WEB3BIO_OG_ENDPOINT + `api/${profile?.identity ?? ""}`,
-        },
+        relativeOGURL
       ],
+      description: profileDescription,
     },
     twitter: {
       title: pageTitle,
       description: profileDescription,
-      images: [
-        {
-          url: WEB3BIO_OG_ENDPOINT + `api/${profile?.identity ?? ""}`,
-        },
-      ],
       site: "@web3bio",
+      images: [
+        relativeOGURL
+      ],
       creator: "@web3bio",
     },
   };
@@ -142,7 +147,7 @@ export default async function ProfilePage({
       domain={domain}
       relations={
         data?.map((x) => ({
-          platform: x.platform, 
+          platform: x.platform,
           identity: x.identity,
         })) || []
       }
@@ -153,6 +158,10 @@ export default async function ProfilePage({
       data={{
         ...data[0],
         links: mapLinks(data),
+      }}
+      fallbackAvatar={{
+        source: data?.find((x) => !!x.avatar)?.platform,
+        avatar: data?.find((x) => !!x.avatar)?.avatar,
       }}
       pageTitle={pageTitle}
       platform={platform}

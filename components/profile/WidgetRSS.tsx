@@ -11,23 +11,15 @@ import { PlatformType } from "../../utils/platform";
 import RssItem from "./RssItem";
 
 function getQueryDomain(
-  domain: string,
-  relations: Array<{ platform: PlatformType; identity: string }>
+  domain: string
 ) {
-  const pureDomain = domain.endsWith(".farcaster")
-    ? domain.replace(".farcaster", "")
-    : domain;
-  const platform = handleSearchPlatform(pureDomain);
+  const platform = handleSearchPlatform(domain);
   if ([PlatformType.ens, PlatformType.dotbit].includes(platform))
-    return pureDomain;
-  return (
-    relations.find((x) => x.platform === PlatformType.ens)?.identity ||
-    relations.find((x) => x.platform === PlatformType.dotbit)?.identity
-  );
+    return domain;
 }
 
-function useRSS(domain: string, relations, fromServer) {
-  const queryDomain = getQueryDomain(domain, relations);
+function useRSS(domain: string, fromServer) {
+  const queryDomain = getQueryDomain(domain);
   const fetchUrl = (() => {
     if (!queryDomain) return null;
     return `${RSS_ENDPOINT}rss?query=${queryDomain}&mode=list`;
@@ -45,8 +37,8 @@ function useRSS(domain: string, relations, fromServer) {
   };
 }
 
-const RenderWidgetRSS = ({ domain, relations, fromServer }) => {
-  const { data, isLoading } = useRSS(domain, relations, fromServer);
+const RenderWidgetRSS = ({ domain, fromServer }) => {
+  const { data, isLoading } = useRSS(domain, fromServer);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -69,26 +61,26 @@ const RenderWidgetRSS = ({ domain, relations, fromServer }) => {
         <div className="profile-widget-header">
           <h2 className="profile-widget-title">
             <span className="emoji-large mr-2">📰 </span>
-            {data.title}
+            Website
           </h2>
           {data.description && (
             <h3 className="text-assistive">{data.description}</h3>
           )}
-          <div className="widget-action">
-            <div className="action-icon">
-              <Link
-                className="btn btn-sm"
-                title="More Articles"
-                href={data.link}
-                target={"_blank"}
-              >
-                <SVG src="icons/icon-open.svg" width={20} height={20} />
-              </Link>
-            </div>
-          </div>
         </div>
 
         <div className="widget-rss-list noscrollbar">
+          <div className="rss-website">
+            <div className="rss-website-title mb-1">{data.title}</div>
+            <div className="rss-website-description mb-4">{data.description}</div>
+            <Link
+              className="btn btn-sm"
+              title="More Articles"
+              href={data.link}
+              target={"_blank"}
+            >
+              <SVG src="icons/icon-open.svg" width={20} height={20} /> More 
+            </Link>
+          </div>
           {data?.items.map((x, idx) => {
             return <RssItem data={x} key={idx} />;
           })}

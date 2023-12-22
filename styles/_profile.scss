@@ -12,7 +12,7 @@
     display: block;
     height: 100vh;
     left: 0;
-    opacity: .15;
+    opacity: .05;
     position: fixed;
     top: 0;
     width: 100vw;
@@ -36,6 +36,7 @@
   padding: .5rem .5rem 1rem .5rem;
   position: sticky;
   top: 2rem;
+  z-index: 99;
 
   @media screen and (max-width: $size-sm) {
     padding-top: 1.5rem;
@@ -47,6 +48,7 @@
     display: flex;
     height: 9rem;
     justify-content: center;
+    position: relative;
     width: 9rem;
 
     .avatar {
@@ -55,6 +57,39 @@
       position: relative;
       width: 9rem;
       object-fit: cover;
+    }
+
+    .profile-avatar-badge {
+      align-items: center;
+      backdrop-filter: blur(.5rem);
+      background: rgba($bg-color, .5);
+      border: .05rem solid rgba($bg-color, .25);
+      border-radius: .8rem;
+      bottom: 5%;
+      display: flex;
+      flex-wrap: nowrap;
+      gap: .2rem;
+      height: 1.6rem;
+      justify-content: center;
+      opacity: 0;
+      padding: .25rem;
+      position: absolute;
+      right: 5%;
+      text-decoration: none;
+      transition: all .2s ease;
+      visibility: hidden;
+      white-space: nowrap;
+      word-break: keep-all;
+      width: 1.6rem;
+      z-index: 999;
+    }
+
+    &:focus,
+    &:hover {
+      .profile-avatar-badge {
+        opacity: 1;
+        visibility: visible;
+      }
     }
 
     @media screen and (max-width: $size-md) {
@@ -105,7 +140,7 @@
     }
 
     .menu {
-      width: 10rem;
+      width: 12rem;
     }
   }
 
@@ -337,11 +372,11 @@
       box-shadow: inset 0 0 0 .05rem rgba($dark-color, .1), 0 .2rem .4rem rgba($dark-color, .15), 1rem 0 4rem 2rem var(--widget-bg-color);
       color: $light-color;
       display: flex;
-      flex: 0 0 2rem;
-      height: 2rem;
+      flex: 0 0 1.8rem;
+      height: 1.8rem;
       justify-content: center;
       transition: all .25s ease-in-out;
-      width: 2rem;
+      width: 1.8rem;
 
       &.website {
         background: $light-color;
@@ -349,9 +384,9 @@
 
         img {
           border-radius: .3rem;
-          height: 1.4rem;
+          height: 1.2rem;
           position: absolute;
-          width: 1.4rem;
+          width: 1.2rem;
         }
       }
     }
@@ -417,6 +452,7 @@
   .profile-widget-nft {
     background: $light-color;
     border-color: lighten($bg-color, 3%);
+    gap: 0;
     overflow: hidden;
     padding-bottom: .75rem;
     position: relative;
@@ -487,12 +523,12 @@
     }
 
     .collection-switcher {
-      background: $light-color;
       user-select: none;
-      margin: 0 -1rem;
+      margin: .5rem -1rem 0 -1rem;
       overflow: hidden;
 
       .collection-list {
+        background: $light-color;
         display: flex;
         gap: .1rem;
         overflow: auto hidden;
@@ -509,6 +545,7 @@
           flex: 0 0;
           height: 3.1rem;
           padding: .25rem;
+          position: relative;
           transition: all .25s ease-in-out;
           width: 3.1rem;
 
@@ -556,6 +593,22 @@
               object-fit: cover;
               width: 2.6rem;
             }
+          }
+
+          .collection-badge {
+            background: rgba(lighten($bg-color, 6%), .95);
+            border-radius: .35rem;
+            bottom: .15rem;
+            box-shadow: 0 0 0 .05rem rgba($dark-color, .05), 0 .1rem .2rem rgba($dark-color, .1);
+            color: $gray-color-dark;
+            font-size: .6rem;
+            line-height: 1rem;
+            min-width: 1rem;
+            padding: 0 .25rem;
+            position: absolute;
+            right: .15rem;
+            text-align: center;
+            z-index: 99;
           }
         }
       }
@@ -634,26 +687,36 @@
             .nft-img-container {
               margin-bottom: .5rem;
               position: relative;
-              overflow: hidden;
               transition: filter 0.3s ease-out;
               border-radius: .5rem;
 
+              .img-responsive {
+                aspect-ratio: 1 / 1;
+                border-radius: .5rem;
+                box-shadow: 0 .1rem .4rem rgba($dark-color, .05);
+                font-size: 4rem;
+                object-fit: cover;
+                width: 100%;
+                transition: filter 0.3s ease-out;
+              }
+
               .preview-network {
                 align-items: center;
-                background: $bg-color;
+                background: $light-color;
+                border: .05rem solid rgba($dark-color, .05);
                 border-radius: .4rem;
-                bottom: .5rem;
+                bottom: .25rem;
                 display: flex;
                 height: 1.25rem;
-                left: .5rem;
-                opacity: .75;
+                left: .25rem;
+                opacity: .85;
                 padding: .25rem;
                 position: absolute;
                 transition: all .25s ease-in-out;
 
                 &:focus,
                 &:hover {
-                  opacity: .75;
+                  opacity: .95;
 
                   .preview-network-name {
                     display: inline-flex;
@@ -663,7 +726,8 @@
                 .preview-network-name {
                   color: $dark-color;
                   display: none;
-                  padding: 0 0 0 .25rem;
+                  font-size: .6rem;
+                  padding: 0 0 0 .15rem;
                 }
 
                 .preview-network-icon {
@@ -671,25 +735,15 @@
                   width: .75rem;
                 }
               }
-
-              .img-responsive {
-                aspect-ratio: 1 / 1;
-                border-radius: .5rem;
-                box-shadow: 0 .2rem 1rem rgba($dark-color, .15), 0 .05rem .2rem rgba($dark-color, .05);
-                font-size: 4rem;
-                object-fit: cover;
-                width: 100%;
-                transition: filter 0.3s ease-out;
-              }
             }
 
             .nft-collection-name {
               color: $gray-color-dark;
-              font-size: .5rem;
+              font-size: .6rem;
             }
 
             .nft-name {
-              font-size: .75rem;
+              font-size: .8rem;
               font-weight: 700;
               letter-spacing: -.025em;
               text-overflow: ellipsis;
@@ -722,6 +776,24 @@
       overflow-x: auto;
       padding: 0 1rem .2rem 1rem;
 
+      .poap-main {
+        border-radius: .4rem;
+        flex: 0 0 12rem;
+        padding: 0 1rem 0 0;
+        text-decoration: none;
+        width: 12rem;
+
+        .poap-main-title {
+          font-size: .8rem;
+          font-weight: 700;
+          letter-spacing: -.025em;
+        }
+
+        .poap-main-description {
+          font-size: .65rem;
+        }
+      }
+
       .poap-item {
         flex: 0 0 3.2rem;
         height: 3.2rem;
@@ -749,7 +821,7 @@
   .profile-widget-feeds {
     background: $light-color;
     border-color: lighten($bg-color, 3%);
-    height: 16rem;
+    height: 60vh;
     position: relative;
 
     .widget-feeds-container {
@@ -791,9 +863,28 @@
       display: flex;
       flex-wrap: nowrap;
       gap: .5rem;
-      margin: .5rem -1rem 0 -1rem;
+      margin: 0 -1rem;
       overflow-x: auto;
       padding: 0 1rem;
+
+      .rss-website {
+        border-radius: .4rem;
+        flex: 0 0 14rem;
+        min-height: 5rem;
+        padding: 1rem 1rem 1rem 0;
+        text-decoration: none;
+        width: 14rem;
+
+        .rss-website-title {
+          font-size: .8rem;
+          font-weight: 700;
+          letter-spacing: -.025em;
+        }
+
+        .rss-website-description {
+          font-size: .65rem;
+        }
+      }
 
       .rss-item {
         background: lighten($bg-color, 5%);
@@ -829,12 +920,13 @@
 
         .rss-item-img {
           border-radius: .4rem;
+          box-shadow: 0 .4rem 1.6rem -.4rem rgba($dark-color, .15), 0 .1rem .2rem rgba($dark-color, .01);
           height: 4.8rem;
           margin-bottom: .5rem;
-          object-fit: contain;
+          object-fit: cover;
           width: 100%;
 
-          &+.rss-item-title {
+          & + .rss-item-title {
             font-size: .7rem;
           }
         }
@@ -1046,20 +1138,21 @@
 
     .preview-network {
       align-items: center;
-      background: $bg-color;
+      background: $light-color;
+      border: .05rem solid rgba($dark-color, .05);
       border-radius: .5rem;
       bottom: .5rem;
       display: flex;
       height: 1.5rem;
       left: .5rem;
-      opacity: .75;
+      opacity: .85;
       padding: .25rem;
       position: absolute;
       transition: all .25s ease-in-out;
 
       &:focus,
       &:hover {
-        opacity: .85;
+        opacity: .95;
 
         .preview-network-name {
           display: inline-flex;
@@ -1074,7 +1167,7 @@
       .preview-network-name {
         color: $dark-color;
         display: none;
-        padding: 0 .25rem;
+        padding: 0 .15rem;
       }
     }
   }

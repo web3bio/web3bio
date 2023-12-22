@@ -24,7 +24,7 @@ export const formatText = (string, length?) => {
   if (string.length <= len) {
     return string;
   }
-  if (string.startsWith("0x") || string.length >= 42) {
+  if (string.startsWith("0x")) {
     const oriAddr = string,
       chars = length || 4;
     return `${oriAddr.substring(0, chars + 2)}...${oriAddr.substring(
@@ -219,13 +219,13 @@ export const fallbackEmoji = [
 ];
 
 export const colorMod = (hex, opacity = 100) => {
-  const tempHex = hex.replace('#', '');
+  const tempHex = hex.replace("#", "");
   const r = parseInt(tempHex.substring(0, 2), 16);
   const g = parseInt(tempHex.substring(2, 4), 16);
   const b = parseInt(tempHex.substring(4, 6), 16);
 
   return `rgba(${r}, ${g}, ${b}, ${opacity / 100})`;
-}
+};
 
 export const getScanLink = (address: string) => {
   if (!address) return "";

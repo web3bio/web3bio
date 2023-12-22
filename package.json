@@ -11,16 +11,10 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
-    "boring-avatars": "^1.7.0",
     "geist": "^1.0.0",
-    "next": "^14.0.3",
-    "qrcode": "^1.5.3",
-    "react-dom": "^18.2.0",
+    "next": "^14.0.4",
     "react-infinite-scroll-hook": "^4.1.1",
-    "react-markdown": "^9.0.0",
-    "react-qrcode-logo": "^2.9.0",
-    "underscore": "^1.13.6",
-    "wallet.ts": "^1.0.1"
+    "react-markdown": "^9.0.0"
   },
   "devDependencies": {
     "@antv/g6": "^4.8.23",
@@ -28,7 +22,6 @@
     "@types/node": "^18.7.14",
     "@types/react": "^18.0.18",
     "bignumber.js": "^9.1.0",
-    "bn.js": "^5.2.1",
     "date-fns": "^2.29.3",
     "eslint": "8.19.0",
     "eslint-config-next": "^13.5.1",
@@ -44,6 +37,7 @@
     "sass": "^1.69.5",
     "swr": "^2.2.0",
     "typescript": "^4.8.2",
-    "urlcat": "^2.0.4"
+    "urlcat": "^2.0.4",
+    "react-dom": "^18.2.0"
   }
 }

@@ -53,9 +53,9 @@ const RenderWidgetPOAP = ({ address, onShowDetail, fromServer }) => {
     return null;
   }
 
-  // if (process.env.NODE_ENV !== "production") {
-  //   console.log("POAP Data:", data);
-  // }
+  if (process.env.NODE_ENV !== "production") {
+    console.log("POAP Data:", data);
+  }
 
   return (
     <div className="profile-widget-full" id="poap">
@@ -69,9 +69,7 @@ const RenderWidgetPOAP = ({ address, onShowDetail, fromServer }) => {
             POAPs
           </h2>
           <h3 className="text-assistive">
-            POAP are the bookmarks for your life. Mint the most important
-            memories of your life as digital collectibles (NFTs) forever on the
-            blockchain.
+            POAP is a curated ecosystem for the preservation of memories. By checking-in at different events, POAP collectors build a digital scrapbook where each POAP is an anchor to a place and space in time.
           </h3>
           <div className="widget-action">
             <div className="action-icon">
