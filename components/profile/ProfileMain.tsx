@@ -85,8 +85,6 @@ export default function ProfileMain(props) {
                 identity={domain}
                 className="avatar"
                 alt={`${pageTitle} Profile Photo`}
-                height={180}
-                width={180}
               />
               {!data?.avatar && fallbackAvatar.source && (
                 <div className="profile-avatar-badge">
@@ -150,7 +148,7 @@ export default function ProfileMain(props) {
                 onClick={() =>
                   openModal(ModalType.share, {
                     profile: data,
-                    path: `${domain}`,
+                    path: `/${domain}`,
                     avatar: fallbackAvatar.avatar,
                   })
                 }
