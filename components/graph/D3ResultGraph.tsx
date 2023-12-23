@@ -6,6 +6,9 @@ import _ from "lodash";
 import { Loading } from "../shared/Loading";
 import SVG from "react-inlinesvg";
 
+const IdentityNodeSize = 55;
+const NFTNodeSize = 15;
+
 const resolveGraphData = (source) => {
   const nodes = new Array<any>();
   const edges = new Array<any>();
@@ -88,9 +91,6 @@ const resolveGraphData = (source) => {
   return { nodes: _nodes, edges: _edges };
 };
 
-const IdentityNodeSize = 55;
-const NFTNodeSize = 15;
-
 export default function D3ResultGraph(props) {
   const { data, onClose, title } = props;
   const [loading, setLoading] = useState(true);
@@ -105,19 +105,15 @@ export default function D3ResultGraph(props) {
       const height = chartContainer?.offsetHeight || 480;
       const links = _data.links.map((d) => ({ ...d }));
       const nodes = _data.nodes.map((d) => ({ ...d }));
+      const zoom = d3.zoom().on("zoom", (e) => {
+        d3.select(".svg-canvas").attr("transform", e.transform);
+      });
       const svg = d3
-      .select(".svg-canvas")
-      .attr("width", '100%')
-      .attr("height", '100%')
-      // .attr("viewBox", [0, 0, width, height])
-      // todo: check pan && zoom here
-      // .call(
-      //   d3.zoom().on("zoom", () => {
-      //     svg.attr("transform", d3.event.transform);
-      //   })
-      // )
+        .select(".svg-canvas")
+        .attr("width", "100%")
+        .attr("height", "100%")
+        .call(zoom);
 
-      // Create a simulation with several forces.
       const simulation = d3
         .forceSimulation(nodes)
         .force(
@@ -137,42 +133,24 @@ export default function D3ResultGraph(props) {
         .force("center", d3.forceCenter(width / 2, height / 2))
         .on("tick", ticked);
 
-     
-
       // Add a line for each link, and a circle for each node.
       const link = svg
         .append("svg:g")
-        .attr("stroke-opacity", 0.3)
         .selectAll()
         .data(links)
         .join("line")
         .attr("stroke", (d) => SocialPlatformMapping(d.label)?.color || "#999")
-        .attr("stroke-width", 1.5);
+        .attr("stroke-width", 1.5)
+        .attr("stroke-opacity", 0.3);
 
       // nodeContainer
       const nodeContainer = svg
         .append("g")
+        .attr("class", "node")
         .attr("stroke-width", 2)
         .selectAll(".node")
         .data(nodes, (d) => d.id)
-        .attr("style", "cursor:pointer")
         .join("g")
-        .on("click", (e, i) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setCurrentNode(i);
-          link
-            .filter((l) => l.source.id === i.id || l.target.id === i.id)
-            .attr("stroke-width", 2);
-          const n = d3.select(this);
-          console.log(n);
-          d3.select(this)
-            .select("circle")
-            .transition()
-            .duration(750)
-            .style("fill", SocialPlatformMapping(i.platform).color)
-            .style("fillOpacity", 0.1);
-        })
         .call(
           d3
             .drag()
@@ -187,8 +165,26 @@ export default function D3ResultGraph(props) {
         .attr("stroke", (d) => SocialPlatformMapping(d.platform).color)
         .attr("fill", (d) =>
           d.isIdentity ? "#fff" : SocialPlatformMapping(PlatformType.ens).color
-        );
-      // todo: group add g, not control display
+        )
+        .on("click", (e, i) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setCurrentNode(i);
+          link
+            .attr("stroke-width", 1.5)
+            .filter((l) => l.source.id === i.id || l.target.id === i.id)
+            .attr("stroke-width", 3);
+          circle
+            .attr("fill", (d) =>
+              d.isIdentity
+                ? "#fff"
+                : SocialPlatformMapping(PlatformType.ens).color
+            )
+            .filter((l) => l.id === i.id)
+            .attr("fill-opacity", 0.1)
+            .attr("fill", SocialPlatformMapping(i.platform).color || "#fff");
+        });
+
       const identityBadge = nodeContainer
         .append("circle")
         .attr("r", 16)
@@ -227,7 +223,6 @@ export default function D3ResultGraph(props) {
             : ""
         );
 
-      // Set the position attributes of links and nodes each time the simulation ticks.
       function ticked() {
         link
           .attr("x1", (d) => d.source.x)
