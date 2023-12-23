@@ -112,13 +112,13 @@ const RenderFeedItem = (props) => {
             <Link
               href={resolveIPFS_URL(action?.related_urls?.[0]) || ""}
               target="_blank"
-              className="feed-timestamp hide-sm"
+              className="feed-timestamp"
             >
-              {new Date(feed.timestamp * 1000).toLocaleString()}
+              <span className="hide-sm">{new Date(feed.timestamp * 1000).toLocaleString()}</span>
+              <span className="show-sm">{new Date(feed.timestamp * 1000).toLocaleDateString()}</span>
             </Link>
             <ActionExternalMenu
               links={action?.related_urls || []}
-              timestamp={feed.timestamp}
             />
           </div>
         </div>
@@ -135,7 +135,7 @@ const RenderFeedItem = (props) => {
             actions.map((x, index) => {
               return (
                 x.tag !== "unknown" &&
-                isSameAddress(x.from, identity.address) && (
+                (isSameAddress(x.from, identity.address) || isSameAddress(x.to, identity.address)) && (
                   <RenderFeedContent
                     network={feed.network}
                     openModal={openModal}

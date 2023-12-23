@@ -65,6 +65,12 @@ const RenderTransactionCard = (props) => {
             {metadata.owner && (
               <RenderProfileBadge identity={metadata.owner} remoteFetch />
             )}
+            {metadata.vault?.address && (
+            <>
+              on 
+              <RenderProfileBadge identity={metadata.vault.address} remoteFetch />
+            </>
+            )}
             {action.platform && (
               <span className="feed-platform">&nbsp;on {action.platform}</span>
             )}

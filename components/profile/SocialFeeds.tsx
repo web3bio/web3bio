@@ -54,7 +54,7 @@ const RenderSocialFeeds = (props) => {
         {data.map(
           (x) =>
             (x.actions?.some((x) =>
-              isSameAddress(x.from, identity.address)
+              isSameAddress(x.from, identity.address) || isSameAddress(x.to, identity.address)
             ) && (
               <div key={x.id} className={`feed-item`}>
                 <FeedItem
