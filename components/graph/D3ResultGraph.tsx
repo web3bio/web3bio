@@ -111,8 +111,17 @@ export default function D3ResultGraph(props) {
       const svg = d3
         .select(".svg-canvas")
         .attr("width", "100%")
-        .attr("height", "100%")
-        .call(zoom);
+        .attr("height", "100%");
+      // .call(zoom);
+
+      const link = svg
+        .append("g")
+        .selectAll()
+        .data(links)
+        .join("line")
+        .attr("stroke", (d) => SocialPlatformMapping(d.label)?.color || "#999")
+        .attr("stroke-width", 1.5)
+        .attr("stroke-opacity", 0.3);
 
       const simulation = d3
         .forceSimulation(nodes)
@@ -120,8 +129,8 @@ export default function D3ResultGraph(props) {
           "charge",
           d3
             .forceManyBody()
-            .strength((d) => (d.isIdentity ? -100 : -50))
-            .distanceMax([2000])
+            .strength((d) => (d.isIdentity ? -350 : -150))
+            .distanceMax([200])
         )
         .force(
           "link",
@@ -130,18 +139,16 @@ export default function D3ResultGraph(props) {
             .id((d) => d.id)
             .distance((d) => (d.isIdentity ? 300 : 100))
         )
+        .force(
+          "collision",
+          d3
+            .forceCollide()
+            .radius((d) =>
+              d.isIdentity ? IdentityNodeSize * 1.2 : NFTNodeSize * 2
+            )
+        )
         .force("center", d3.forceCenter(width / 2, height / 2))
         .on("tick", ticked);
-
-      // Add a line for each link, and a circle for each node.
-      const link = svg
-        .append("svg:g")
-        .selectAll()
-        .data(links)
-        .join("line")
-        .attr("stroke", (d) => SocialPlatformMapping(d.label)?.color || "#999")
-        .attr("stroke-width", 1.5)
-        .attr("stroke-opacity", 0.3);
 
       // nodeContainer
       const nodeContainer = svg
@@ -151,13 +158,7 @@ export default function D3ResultGraph(props) {
         .selectAll(".node")
         .data(nodes, (d) => d.id)
         .join("g")
-        .call(
-          d3
-            .drag()
-            .on("start", dragstarted)
-            .on("drag", dragged)
-            .on("end", dragended)
-        );
+        .call(d3.drag().on("start", dragstarted).on("drag", dragged));
 
       const circle = nodeContainer
         .append("circle")
@@ -266,11 +267,6 @@ export default function D3ResultGraph(props) {
         event.subject.fy = event.y;
       }
 
-      function dragended(event) {
-        if (!event.active) simulation.alphaTarget(0);
-        event.subject.fx = null;
-        event.subject.fy = null;
-      }
       return svg.node();
     };
     if (!chart && chartContainer) {
