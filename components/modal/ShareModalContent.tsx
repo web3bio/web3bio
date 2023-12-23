@@ -30,7 +30,7 @@ const shareMap = [
 
 export default function ShareModalContent(props) {
   const {profile, path, onClose, avatar} = props;
-  const url = `${process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio"}${path}`;
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio"}/${path}`;
   const [isCopied, setIsCopied] = useState(false);
   const onCopySuccess = () => {
     setIsCopied(true);
@@ -58,14 +58,14 @@ export default function ShareModalContent(props) {
         </div>
       </div>
       <div className="profile-share-body">
-        <div className="profile-card mb-4">
+        <div className="profile-share-card mb-4">
           <Image
             className="img-responsive"
             src={`${relativeOGURL}`}
             width={0}
             height={0}
             alt={profile.identity}
-            style={{ height: 252, width: 480 }}
+            style={{ height: "auto", width: "100%", aspectRatio: "40 / 21" }}
           />
         </div>
 
