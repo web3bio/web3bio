@@ -148,7 +148,7 @@ export default function ProfileMain(props) {
                 onClick={() =>
                   openModal(ModalType.share, {
                     profile: data,
-                    path: `/${domain}`,
+                    path: `${domain}`,
                     avatar: fallbackAvatar.avatar,
                   })
                 }
