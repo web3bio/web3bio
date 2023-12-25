@@ -83,7 +83,7 @@ export async function generateMetadata({
       : `${profile?.displayName} (${profile?.identity})`;
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
   const profileDescription =
-    profile.description ||
+    profile?.description ||
     `Explore ${pageTitle} ${
       SocialPlatformMapping(platform!).label
     } Web3 identity profiles, social links, NFT collections, Web3 activities, dWebsites, POAPs etc on the Web3.bio profile page.`;
@@ -95,6 +95,8 @@ export async function generateMetadata({
     if (profile)
       params.append("address", profile.address);
       params.append("displayName", profile.displayName);
+    if (profile.description)
+      params.append("description", profile.description);
     if(avatarURL)
       params.append("avatar", avatarURL);
   const relativeOGURL = params.toString() ? `/api/og?${params.toString()}` : "/api/og";
