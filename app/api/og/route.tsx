@@ -18,8 +18,10 @@ export async function GET(
     const { searchParams } = request.nextUrl;
     const path = searchParams.get("path");
     filename = path + ".png";
+    const url = `web3.bio/${path}`;
     const address = searchParams.get("address");
     const displayName = searchParams.get("displayName");
+    const description = searchParams.get("description");
     const paramAvatar = searchParams.get("avatar");
     const avatarImg =
       !paramAvatar || paramAvatar === "null"
@@ -48,7 +50,7 @@ export async function GET(
         <div
           style={{
             color: "#000",
-            background: "#fff",
+            backgroundColor: "#fff",
             display: "flex",
             flexDirection: "column",
             letterSpacing: "-.05em",
@@ -64,25 +66,25 @@ export async function GET(
             style={{
               display: "flex",
               backgroundColor: "#fff",
-              backgroundImage: avatarImg ? `url(${avatarImg})` : "",
+              backgroundImage: avatarImg ? `url(${avatarImg})` : "radial-gradient(at 40% 33%, #FBF4EC 0px, rgba(251,244,236,0) 50%), radial-gradient(at 82% 10%, #ECD7C8 0px, rgba(236,215,200,0) 50%), radial-gradient(at 17% -11%, #EEA4BC 0px, rgba(238,164,188,0) 30%), radial-gradient(at 48% 2%, #BE88C4 0px, rgba(190,136,196,0) 50%), radial-gradient(at 39% 67%, #ECD7C8 0px, rgba(236,215,200,0) 50%), radial-gradient(at 96% 158%, #92C9F9 0px, rgba(146,201,249,0) 50%), radial-gradient(at 61% 57%, #C7F8FF 0px, rgba(199,248,255,0) 50%)",
               backgroundPosition: "0 top",
               backgroundRepeat: "no-repeat",
-              backgroundSize: "100% 240px",
-              opacity: 0.1,
+              backgroundSize: "100% 200px",
+              color: "transparent",
+              opacity: .2,
               width: 1200,
-              height: 240,
+              height: 200,
               position: "absolute",
               filter: "blur(8em)",
               left: 0,
               top: 0,
-              color: "transparent",
             }}
           ></div>
 
           {avatarImg && (
             <img
               style={{
-                backgroundColor: "#efefef",
+                backgroundColor: "#f9f9f9",
                 boxShadow:
                   "inset 0 0 0 0.2rem rgba(255, 255, 255, 0.1), 0 0.4rem 1rem rgba(0, 0, 0, 0.1)",
                 borderRadius: "50%",
@@ -97,7 +99,7 @@ export async function GET(
 
           <div
             style={{
-              fontSize: "5rem",
+              fontSize: "60px",
               letterSpacing: "-.05em",
               marginTop: "20px",
               fontWeight: "bold",
@@ -106,39 +108,37 @@ export async function GET(
             {displayName}
           </div>
 
-          {path && (
-            <div
-              style={{
-                borderRadius: "4rem",
-                display: "flex",
-                flex: 1,
-                fontSize: "2rem",
-                paddingLeft: ".25rem",
-              }}
-            >
-              web3.bio/{path}
-            </div>
-          )}
           <div
             style={{
               display: "flex",
-              width: "100%",
-              alignItems: "flex-end",
-              justifyContent: "space-between",
+              fontSize: "30px",
+              flex: 1,
+              height: "120px",
+              lineHeight: 1.5,
+              width: "800px",
             }}
           >
-            {address && (
+            {description ? formatText(description, 160) : formatText(address)}
+          </div>
+
+          {path && (
+            <div
+              style={{
+                display: "flex",
+                width: "100%",
+                alignItems: "flex-end",
+                justifyContent: "space-between",
+              }}
+            >
               <div
                 style={{
-                  fontSize: "2rem",
-                  color: "rgba(0,0,0,.4)",
+                  fontSize: "30px",
+                  color: "rgba(0, 0, 0, .5)",
                 }}
               >
-                {formatText(address, 42)}
+                {url}
               </div>
-            )}
-
-            {path && (
+            
               <img
                 style={{
                   background: "transparent",
@@ -148,8 +148,8 @@ export async function GET(
                 src={qrcodeUrl}
                 alt=""
               />
-            )}
-          </div>
+            </div>
+          )}
         </div>
       ),
       {

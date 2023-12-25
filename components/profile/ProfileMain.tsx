@@ -340,7 +340,15 @@ export default function ProfileMain(props) {
       )}
       {isCopied && (
         <div className="web3bio-toast">
-          <div className="toast">Copied to clipboard</div>
+          <div className="toast">
+            <SVG
+              src="../icons/icon-copy.svg"
+              width={24}
+              height={24}
+              className="action mr-2"
+            />
+            Copied to clipboard
+          </div>
         </div>
       )}
     </>

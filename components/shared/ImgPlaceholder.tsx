@@ -3,7 +3,7 @@ export default function ImagePlaceholder(props) {
   return (
     <div className="img-placeholder img-responsive bg-dark">
       {alt && (
-        <div className="initial text-pride">{alt?.substring(0, 2)}</div>
+        <div className="initial text-pride">{alt?.substring(0, 1)}</div>
       )}
     </div>
   );
