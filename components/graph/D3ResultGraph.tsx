@@ -105,23 +105,45 @@ export default function D3ResultGraph(props) {
       const height = chartContainer?.offsetHeight || 480;
       const links = _data.links.map((d) => ({ ...d }));
       const nodes = _data.nodes.map((d) => ({ ...d }));
-      const zoom = d3.zoom().on("zoom", (e) => {
-        d3.select(".svg-canvas").attr("transform", e.transform);
-      });
+      // const zoom = d3.zoom().on("zoom", (e) => {
+      //   d3.select(".svg-canvas").attr("transform", e.transform);
+      // });
       const svg = d3
         .select(".svg-canvas")
         .attr("width", "100%")
         .attr("height", "100%");
       // .call(zoom);
 
+      // Per-type markers, as they don't inherit styles.
+      svg
+        .append("defs")
+        .selectAll("marker")
+        .data(Array.from(new Set(links.map((d) => d.label))))
+        .join("marker")
+        .attr("id", (d) => `arrow-${d}`)
+        .attr("viewBox", "0 -5 10 10")
+        .attr("refX", (d) => (d ? 72 : 25))
+        .attr("refY", 0)
+        .attr("markerWidth", 6)
+        .attr("markerHeight", 6)
+        .attr("orient", "auto")
+        .append("path")
+        .attr("fill", (d) => (d ? SocialPlatformMapping(d).color : "#cecece"))
+        .attr("d", "M0,-5L10,0L0,5");
+
       const link = svg
         .append("g")
-        .selectAll()
-        .data(links)
-        .join("line")
-        .attr("stroke", (d) => SocialPlatformMapping(d.label)?.color || "#999")
+        .attr("fill", "none")
         .attr("stroke-width", 1.5)
-        .attr("stroke-opacity", 0.3);
+        .attr("stroke-opacity", 0.3)
+        .selectAll("path")
+        .data(links)
+        .join("path")
+        .attr("stroke", (d) => SocialPlatformMapping(d.label)?.color || "#999")
+        .attr("marker-end", (d) => {
+          console.log(d);
+          return `url(#arrow-${d.label})`;
+        });
 
       const simulation = d3
         .forceSimulation(nodes)
@@ -171,10 +193,10 @@ export default function D3ResultGraph(props) {
           e.preventDefault();
           e.stopPropagation();
           setCurrentNode(i);
-          link
-            .attr("stroke-width", 1.5)
-            .filter((l) => l.source.id === i.id || l.target.id === i.id)
-            .attr("stroke-width", 3);
+          // link
+          //   .attr("stroke-width", 1.5)
+          //   .filter((l) => l.source.id === i.id || l.target.id === i.id)
+          //   .attr("stroke-width", 3);
           circle
             .attr("fill", (d) =>
               d.isIdentity
@@ -225,12 +247,11 @@ export default function D3ResultGraph(props) {
         );
 
       function ticked() {
-        link
-          .attr("x1", (d) => d.source.x)
-          .attr("y1", (d) => d.source.y)
-          .attr("x2", (d) => d.target.x)
-          .attr("y2", (d) => d.target.y);
-
+        link.attr(
+          "d",
+          (d) =>
+            `M${d.source.x},${d.source.y}A0,0 0 0,1 ${d.target.x},${d.target.y}`
+        );
         circle.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
 
         displayName
