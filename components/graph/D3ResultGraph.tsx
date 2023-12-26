@@ -109,7 +109,7 @@ function calcTranslationExact(targetDistance, point0, point1) {
     dy: y2_y0,
   };
 }
-const updateNode = (nodeContainer) => {
+const updateNodes = (nodeContainer) => {
   const identityBadge = nodeContainer
     .append("circle")
     .attr("r", 16)
@@ -230,7 +230,51 @@ export default function D3ResultGraph(props) {
         .style("pointer-events", "none")
         .attr("startOffset", "50%")
         .text((d) => (d.label ? SocialPlatformMapping(d.label).label : ""));
+      function dragstarted(event) {
+        if (!event.active) simulation.alphaTarget(0.3).restart();
+        event.subject.fx = event.subject.x;
+        event.subject.fy = event.subject.y;
+        event.subject.fixed = true;
+      }
 
+      function dragged(event) {
+        event.subject.fx = event.x;
+        event.subject.fy = event.y;
+      }
+      const nodeContainer = svg
+        .selectAll(".node")
+        .data(nodes, (d) => d.id)
+        .join("g")
+        .call(d3.drag().on("start", dragstarted).on("drag", dragged));
+      const circle = nodeContainer
+        .append("circle")
+        .attr("class", "node")
+        .attr("stroke-width", 2)
+        .attr("r", (d) => (d.isIdentity ? IdentityNodeSize : NFTNodeSize))
+        .attr("stroke", (d) => SocialPlatformMapping(d.platform).color)
+        .attr("fill", (d) =>
+          d.isIdentity ? "#fff" : SocialPlatformMapping(PlatformType.ens).color
+        )
+
+        .on("click", (e, i) => {
+          e.preventDefault();
+          e.stopPropagation();
+          if (!i.isIdentity) return;
+          setCurrentNode(i);
+          // edgePath
+          //   .attr("stroke-width", 1.5)
+          //   .filter((l) => l.source.id === i.id || l.target.id === i.id)
+          //   .attr("stroke-width", 3);
+          circle
+            .attr("fill", (d) =>
+              d.isIdentity
+                ? "#fff"
+                : SocialPlatformMapping(PlatformType.ens).color
+            )
+            .filter((l) => l.id === i.id)
+            .attr("fill-opacity", 0.1)
+            .attr("fill", SocialPlatformMapping(i.platform).color || "#fff");
+        });
       const simulation = d3
         .forceSimulation(nodes)
         .force(
@@ -255,83 +299,25 @@ export default function D3ResultGraph(props) {
         .force("center", d3.forceCenter(width / 2, height / 2))
         .on("tick", ticked);
 
-      // nodeContainer
-      const nodeContainer = svg
-        .selectAll(".node")
-        .data(nodes, (d) => d.id)
-        .join("g")
-        .call(d3.drag().on("start", dragstarted).on("drag", dragged));
-
-      const circle = nodeContainer
-        .append("circle")
-        .attr("class", "node")
-        .attr("stroke-width", 2)
-        .attr("r", (d) => (d.isIdentity ? IdentityNodeSize : NFTNodeSize))
-        .attr("stroke", (d) => SocialPlatformMapping(d.platform).color)
-        .attr("fill", (d) =>
-          d.isIdentity ? "#fff" : SocialPlatformMapping(PlatformType.ens).color
-        )
-
-        .on("click", (e, i) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setCurrentNode(i);
-          // edgePath
-          //   .attr("stroke-width", 1.5)
-          //   .filter((l) => l.source.id === i.id || l.target.id === i.id)
-          //   .attr("stroke-width", 3);
-          circle
-            .attr("fill", (d) =>
-              d.isIdentity
-                ? "#fff"
-                : SocialPlatformMapping(PlatformType.ens).color
-            )
-            .filter((l) => l.id === i.id)
-            .attr("fill-opacity", 0.1)
-            .attr("fill", SocialPlatformMapping(i.platform).color || "#fff");
-        });
-
       const { displayName, identity, identityBadge, identityIcon, ensBadge } =
-        updateNode(nodeContainer);
+        updateNodes(nodeContainer);
       function ticked() {
-        // link
-        //   .attr("x1", (d) => d.source.x)
-        //   .attr("y1", (d) => d.source.y)
-        //   .attr("x2", (d) => d.target.x)
-        //   .attr("y2", (d) => d.target.y);
-
         edgePath.attr("d", (d) => {
-          var dx = d.target.x - d.source.x,
+          const dx = d.target.x - d.source.x,
             dy = d.target.y - d.source.y,
             dr = Math.sqrt(dx * dx + dy * dy);
-    
-
-          const conincidentLines = false;
-          if (conincidentLines) {
-            return (
-              "M" +
-              d.source.x +
-              "," +
-              d.source.y +
-              "L" +
-              d.target.x +
-              "," +
-              d.target.y
-            );
-          } else {
-            const delta = calcTranslationExact(4, d.source, d.target);
-            var rightwardSign = d.target.x > d.source.x ? 2 : -2;
-            return (
-              "M" +
-              (d.source.x + rightwardSign * delta.dx) +
-              "," +
-              (d.source.y + -rightwardSign * delta.dy) +
-              "L" +
-              (d.target.x + rightwardSign * delta.dx) +
-              "," +
-              (d.target.y + -rightwardSign * delta.dy)
-            );
-          }
+          const delta = calcTranslationExact(4, d.source, d.target);
+          const rightwardSign = d.target.x > d.source.x ? 2 : -2;
+          return (
+            "M" +
+            (d.source.x + rightwardSign * delta.dx) +
+            "," +
+            (d.source.y + -rightwardSign * delta.dy) +
+            "L" +
+            (d.target.x + rightwardSign * delta.dx) +
+            "," +
+            (d.target.y + -rightwardSign * delta.dy)
+          );
         });
 
         circle.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
@@ -357,18 +343,6 @@ export default function D3ResultGraph(props) {
           // offset half the icon size
           .attr("x", (d) => d.x - 10)
           .attr("y", (d) => d.y - 12);
-      }
-
-      function dragstarted(event) {
-        if (!event.active) simulation.alphaTarget(0.3).restart();
-        event.subject.fx = event.subject.x;
-        event.subject.fy = event.subject.y;
-        event.subject.fixed = true;
-      }
-
-      function dragged(event) {
-        event.subject.fx = event.x;
-        event.subject.fy = event.y;
       }
 
       return svg.node();

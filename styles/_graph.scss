@@ -82,13 +82,15 @@
     }
 
     .svg-canvas {
-      .edge-label{
+      .edge-label {
         font-size: 12px;
-        font-weight: 400;
+        font-weight: 600;
       }
+
       // circle style goes here
       .node {
         cursor: pointer;
+
         .identity-icon {
           width: 16px;
           height: 16px
