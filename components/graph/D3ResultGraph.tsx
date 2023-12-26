@@ -186,26 +186,23 @@ export default function D3ResultGraph(props) {
         .join("marker")
         .attr("id", (d) => `arrow-${d}`)
         .attr("viewBox", "0 -5 10 10")
-        .attr("refX", (d) => (d ? 95 : 28))
-        .attr("refY", 0)
+        .attr("refX", (d) => (d ? 64 : 20))
         .attr("markerWidth", 6)
         .attr("markerHeight", 6)
         .attr("orient", "auto")
         .append("path")
-        .attr("fill", (d) => (d ? SocialPlatformMapping(d).color : "#cecece"))
+        .attr("fill", "#cecece")
         .attr("d", "M0,-5L10,0L0,5");
 
       const edgePath = svg
-        .selectAll(".edgepath")
+        .selectAll(".edge-path")
         .data(links)
         .enter()
         .append("path")
         .attr("class", "edge-path")
         .attr("id", (d, i) => "edgepath" + i)
         .attr("stoke-width", 1.5)
-        .attr("stroke", (d) =>
-          d.label ? SocialPlatformMapping(d.label)?.color : "#cecece"
-        )
+        .attr("stroke", (d) => "#cecece")
         .style("pointer-events", "none")
         .attr("marker-end", (d) => `url(#arrow-${d.label})`);
 
@@ -216,12 +213,7 @@ export default function D3ResultGraph(props) {
         .append("text")
         .style("pointer-events", "none")
         .attr("class", "edge-label")
-        .attr("fill", (d) =>
-          d.label ? SocialPlatformMapping(d.label)?.color : "#cecece"
-        )
-        .attr("id", (d, i) => {
-          return "edgelabel" + i;
-        });
+        .attr("fill", (d) => "#cecece");
 
       edgeLabels
         .append("textPath")
@@ -230,11 +222,11 @@ export default function D3ResultGraph(props) {
         .style("pointer-events", "none")
         .attr("startOffset", "50%")
         .text((d) => (d.label ? SocialPlatformMapping(d.label).label : ""));
-      function dragstarted(event) {
+
+      function dragStart(event) {
         if (!event.active) simulation.alphaTarget(0.3).restart();
         event.subject.fx = event.subject.x;
         event.subject.fy = event.subject.y;
-        event.subject.fixed = true;
       }
 
       function dragged(event) {
@@ -245,7 +237,8 @@ export default function D3ResultGraph(props) {
         .selectAll(".node")
         .data(nodes, (d) => d.id)
         .join("g")
-        .call(d3.drag().on("start", dragstarted).on("drag", dragged));
+        .call(d3.drag().on("start", dragStart).on("drag", dragged));
+
       const circle = nodeContainer
         .append("circle")
         .attr("class", "node")

@@ -82,12 +82,18 @@
     }
 
     .svg-canvas {
-      .edge-label {
-        font-size: 12px;
-        font-weight: 600;
+      .edge-path {
+        stroke-width: 1.5;
+        stroke: '#cecece';
+        fill: "#cecece"
       }
 
-      // circle style goes here
+      .edge-label {
+        fill: "#cecece";
+        font-size: 10px;
+        font-weight: 500;
+      }
+
       .node {
         cursor: pointer;
 
