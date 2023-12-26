@@ -91,6 +91,24 @@ const resolveGraphData = (source) => {
   return { nodes: _nodes, edges: _edges };
 };
 
+function calcTranslationExact(targetDistance, point0, point1) {
+  var x1_x0 = point1.x - point0.x,
+    y1_y0 = point1.y - point0.y,
+    x2_x0,
+    y2_y0;
+  if (y1_y0 === 0) {
+    x2_x0 = 0;
+    y2_y0 = targetDistance;
+  } else {
+    var angle = Math.atan(x1_x0 / y1_y0);
+    x2_x0 = -targetDistance * Math.cos(angle);
+    y2_y0 = targetDistance * Math.sin(angle);
+  }
+  return {
+    dx: x2_x0,
+    dy: y2_y0,
+  };
+}
 const updateNode = (nodeContainer) => {
   const identityBadge = nodeContainer
     .append("circle")
@@ -177,15 +195,6 @@ export default function D3ResultGraph(props) {
         .attr("fill", (d) => (d ? SocialPlatformMapping(d).color : "#cecece"))
         .attr("d", "M0,-5L10,0L0,5");
 
-      const link = svg
-        .selectAll(".link")
-        .data(links)
-        .enter()
-        .append("line")
-        .attr("class", "link")
-        .attr("stroke-width", 1.5)
-        .attr("marker-end", (d) => `url(#arrow-${d.label})`);
-
       const edgePath = svg
         .selectAll(".edgepath")
         .data(links)
@@ -193,10 +202,12 @@ export default function D3ResultGraph(props) {
         .append("path")
         .attr("class", "edge-path")
         .attr("id", (d, i) => "edgepath" + i)
+        .attr("stoke-width", 1.5)
         .attr("stroke", (d) =>
           d.label ? SocialPlatformMapping(d.label)?.color : "#cecece"
         )
-        .style("pointer-events", "none");
+        .style("pointer-events", "none")
+        .attr("marker-end", (d) => `url(#arrow-${d.label})`);
 
       const edgeLabels = svg
         .selectAll(".edge-label")
@@ -218,20 +229,20 @@ export default function D3ResultGraph(props) {
         .style("text-anchor", "middle")
         .style("pointer-events", "none")
         .attr("startOffset", "50%")
-        .text((d) => d.label);
+        .text((d) => (d.label ? SocialPlatformMapping(d.label).label : ""));
 
       const simulation = d3
         .forceSimulation(nodes)
         .force(
           "charge",
-          d3.forceManyBody().strength((d) => (d.isIdentity ? -350 : -150))
+          d3.forceManyBody().strength((d) => (d.isIdentity ? -300 : -150))
         )
         .force(
           "link",
           d3
             .forceLink(links)
             .id((d) => d.id)
-            .distance((d) => (d.isIdentity ? 500 : 200))
+            .distance((d) => (d.isIdentity ? 350 : 100))
         )
         .force(
           "collision",
@@ -251,8 +262,6 @@ export default function D3ResultGraph(props) {
         .join("g")
         .call(d3.drag().on("start", dragstarted).on("drag", dragged));
 
-
-
       const circle = nodeContainer
         .append("circle")
         .attr("class", "node")
@@ -262,6 +271,7 @@ export default function D3ResultGraph(props) {
         .attr("fill", (d) =>
           d.isIdentity ? "#fff" : SocialPlatformMapping(PlatformType.ens).color
         )
+
         .on("click", (e, i) => {
           e.preventDefault();
           e.stopPropagation();
@@ -281,32 +291,53 @@ export default function D3ResultGraph(props) {
             .attr("fill", SocialPlatformMapping(i.platform).color || "#fff");
         });
 
-        const { displayName, identity, identityBadge, identityIcon, ensBadge } =
+      const { displayName, identity, identityBadge, identityIcon, ensBadge } =
         updateNode(nodeContainer);
       function ticked() {
-        link
-          .attr("x1", (d) => d.source.x)
-          .attr("y1", (d) => d.source.y)
-          .attr("x2", (d) => d.target.x)
-          .attr("y2", (d) => d.target.y);
+        // link
+        //   .attr("x1", (d) => d.source.x)
+        //   .attr("y1", (d) => d.source.y)
+        //   .attr("x2", (d) => d.target.x)
+        //   .attr("y2", (d) => d.target.y);
 
-        edgePath.attr(
-          "d",
-          (d) => `M${d.source.x} ${d.source.y}L ${d.target.x} ${d.target.y}`
-        );
+        edgePath.attr("d", (d) => {
+          var dx = d.target.x - d.source.x,
+            dy = d.target.y - d.source.y,
+            dr = Math.sqrt(dx * dx + dy * dy);
+          /* return "M" + 
+                d.source.x + "," + 
+                d.source.y + "A" + 
+                dr + "," + dr + " 0 0,1 " + 
+                d.target.x + "," + 
+                d.target.y; */
 
-        // edgeLabels.attr('transform', (d) => {
-        //   if (d.target.x < d.source.x) {
-        //     var bbox = this.getBBox();
-
-        //     d.rx = bbox.x + bbox.width / 2;
-        //     d.ry = bbox.y + bbox.height / 2;
-        //     return 'rotate(180 ' + d.rx + ' ' + d.ry + ')';
-        //   }
-        //   else {
-        //     return 'rotate(0)';
-        //   }
-        // });
+          const conincidentLines = false;
+          if (conincidentLines) {
+            return (
+              "M" +
+              d.source.x +
+              "," +
+              d.source.y +
+              "L" +
+              d.target.x +
+              "," +
+              d.target.y
+            );
+          } else {
+            const delta = calcTranslationExact(4, d.source, d.target);
+            var rightwardSign = d.target.x > d.source.x ? 2 : -2;
+            return (
+              "M" +
+              (d.source.x + rightwardSign * delta.dx) +
+              "," +
+              (d.source.y + -rightwardSign * delta.dy) +
+              "L" +
+              (d.target.x + rightwardSign * delta.dx) +
+              "," +
+              (d.target.y + -rightwardSign * delta.dy)
+            );
+          }
+        });
 
         circle.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
 
@@ -337,6 +368,7 @@ export default function D3ResultGraph(props) {
         if (!event.active) simulation.alphaTarget(0.3).restart();
         event.subject.fx = event.subject.x;
         event.subject.fy = event.subject.y;
+        event.subject.fixed = true;
       }
 
       function dragged(event) {
