@@ -186,10 +186,10 @@ export default function D3ResultGraph(props) {
         .join("marker")
         .attr("id", (d) => `arrow-${d}`)
         .attr("viewBox", "0 -5 10 10")
-        .attr("refX", (d) => (d ? 84 : 28))
+        .attr("refX", (d) => (d ? 95 : 28))
         .attr("refY", 0)
-        .attr("markerWidth", 5)
-        .attr("markerHeight", 5)
+        .attr("markerWidth", 6)
+        .attr("markerHeight", 6)
         .attr("orient", "auto")
         .append("path")
         .attr("fill", (d) => (d ? SocialPlatformMapping(d).color : "#cecece"))
@@ -304,12 +304,7 @@ export default function D3ResultGraph(props) {
           var dx = d.target.x - d.source.x,
             dy = d.target.y - d.source.y,
             dr = Math.sqrt(dx * dx + dy * dy);
-          /* return "M" + 
-                d.source.x + "," + 
-                d.source.y + "A" + 
-                dr + "," + dr + " 0 0,1 " + 
-                d.target.x + "," + 
-                d.target.y; */
+    
 
           const conincidentLines = false;
           if (conincidentLines) {
