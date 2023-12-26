@@ -91,6 +91,53 @@ const resolveGraphData = (source) => {
   return { nodes: _nodes, edges: _edges };
 };
 
+const updateNode = (nodeContainer) => {
+  const identityBadge = nodeContainer
+    .append("circle")
+    .attr("r", 16)
+    .attr("fill", (d) => SocialPlatformMapping(d.platform).color)
+    .attr("style", (d) => `display:${d.isIdentity ? "normal" : "none"}`);
+
+  const identityIcon = nodeContainer
+    .append("svg:image")
+    .attr("width", 20)
+    .attr("height", 20)
+    .attr("xlink:href", (d) => SocialPlatformMapping(d.platform).icon)
+    .attr("style", (d) => `display:${d.isIdentity ? "normal" : "none"}`);
+
+  const ensBadge = nodeContainer
+    .append("svg:image")
+    .attr("width", 20)
+    .attr("height", 24)
+    .attr("class", "ens-icon")
+    .attr("xlink:href", SocialPlatformMapping(PlatformType.ens).icon)
+    .attr("style", (d) => `display:${d.isIdentity ? "none" : "normal"}`);
+
+  const displayName = nodeContainer
+    .append("text")
+    .style("font-size", 14)
+    .style("font-weight", 400)
+    .text((d) => formatText(d.displayName || d.identity));
+
+  const identity = nodeContainer
+    .append("text")
+    .style("display", (d) => (d.isIdentity ? "normal" : "none"))
+    .style("font-size", 12)
+    .style("font-weight", 300)
+    .text((d) =>
+      d.displayName !== d.identity && d.displayName !== ""
+        ? formatText(d.identity)
+        : ""
+    );
+  return {
+    identityBadge,
+    identityIcon,
+    ensBadge,
+    displayName,
+    identity,
+  };
+};
+
 export default function D3ResultGraph(props) {
   const { data, onClose, title } = props;
   const [loading, setLoading] = useState(true);
@@ -101,8 +148,8 @@ export default function D3ResultGraph(props) {
     let chart = null;
     const chartContainer = graphContainer?.current;
     const generateGraph = (_data) => {
-      const width = chartContainer?.offsetWidth || 960;
-      const height = chartContainer?.offsetHeight || 480;
+      const width = chartContainer?.offsetWidth!;
+      const height = chartContainer?.offsetHeight!;
       const links = _data.links.map((d) => ({ ...d }));
       const nodes = _data.nodes.map((d) => ({ ...d }));
       // const zoom = d3.zoom().on("zoom", (e) => {
@@ -114,7 +161,6 @@ export default function D3ResultGraph(props) {
         .attr("height", "100%");
       // .call(zoom);
 
-      // Per-type markers, as they don't inherit styles.
       svg
         .append("defs")
         .selectAll("marker")
@@ -122,44 +168,70 @@ export default function D3ResultGraph(props) {
         .join("marker")
         .attr("id", (d) => `arrow-${d}`)
         .attr("viewBox", "0 -5 10 10")
-        .attr("refX", (d) => (d ? 72 : 25))
+        .attr("refX", (d) => (d ? 84 : 28))
         .attr("refY", 0)
-        .attr("markerWidth", 6)
-        .attr("markerHeight", 6)
+        .attr("markerWidth", 5)
+        .attr("markerHeight", 5)
         .attr("orient", "auto")
         .append("path")
         .attr("fill", (d) => (d ? SocialPlatformMapping(d).color : "#cecece"))
         .attr("d", "M0,-5L10,0L0,5");
 
       const link = svg
-        .append("g")
-        .attr("fill", "none")
-        .attr("stroke-width", 1.5)
-        .attr("stroke-opacity", 0.3)
-        .selectAll("path")
+        .selectAll(".link")
         .data(links)
-        .join("path")
-        .attr("stroke", (d) => SocialPlatformMapping(d.label)?.color || "#999")
-        .attr("marker-end", (d) => {
-          console.log(d);
-          return `url(#arrow-${d.label})`;
+        .enter()
+        .append("line")
+        .attr("class", "link")
+        .attr("stroke-width", 1.5)
+        .attr("marker-end", (d) => `url(#arrow-${d.label})`);
+
+      const edgePath = svg
+        .selectAll(".edgepath")
+        .data(links)
+        .enter()
+        .append("path")
+        .attr("class", "edge-path")
+        .attr("id", (d, i) => "edgepath" + i)
+        .attr("stroke", (d) =>
+          d.label ? SocialPlatformMapping(d.label)?.color : "#cecece"
+        )
+        .style("pointer-events", "none");
+
+      const edgeLabels = svg
+        .selectAll(".edge-label")
+        .data(links)
+        .enter()
+        .append("text")
+        .style("pointer-events", "none")
+        .attr("class", "edge-label")
+        .attr("fill", (d) =>
+          d.label ? SocialPlatformMapping(d.label)?.color : "#cecece"
+        )
+        .attr("id", (d, i) => {
+          return "edgelabel" + i;
         });
+
+      edgeLabels
+        .append("textPath")
+        .attr("xlink:href", (d, i) => "#edgepath" + i)
+        .style("text-anchor", "middle")
+        .style("pointer-events", "none")
+        .attr("startOffset", "50%")
+        .text((d) => d.label);
 
       const simulation = d3
         .forceSimulation(nodes)
         .force(
           "charge",
-          d3
-            .forceManyBody()
-            .strength((d) => (d.isIdentity ? -350 : -150))
-            .distanceMax([200])
+          d3.forceManyBody().strength((d) => (d.isIdentity ? -350 : -150))
         )
         .force(
           "link",
           d3
             .forceLink(links)
             .id((d) => d.id)
-            .distance((d) => (d.isIdentity ? 300 : 100))
+            .distance((d) => (d.isIdentity ? 500 : 200))
         )
         .force(
           "collision",
@@ -174,16 +246,17 @@ export default function D3ResultGraph(props) {
 
       // nodeContainer
       const nodeContainer = svg
-        .append("g")
-        .attr("class", "node")
-        .attr("stroke-width", 2)
         .selectAll(".node")
         .data(nodes, (d) => d.id)
         .join("g")
         .call(d3.drag().on("start", dragstarted).on("drag", dragged));
 
+
+
       const circle = nodeContainer
         .append("circle")
+        .attr("class", "node")
+        .attr("stroke-width", 2)
         .attr("r", (d) => (d.isIdentity ? IdentityNodeSize : NFTNodeSize))
         .attr("stroke", (d) => SocialPlatformMapping(d.platform).color)
         .attr("fill", (d) =>
@@ -193,7 +266,7 @@ export default function D3ResultGraph(props) {
           e.preventDefault();
           e.stopPropagation();
           setCurrentNode(i);
-          // link
+          // edgePath
           //   .attr("stroke-width", 1.5)
           //   .filter((l) => l.source.id === i.id || l.target.id === i.id)
           //   .attr("stroke-width", 3);
@@ -208,50 +281,33 @@ export default function D3ResultGraph(props) {
             .attr("fill", SocialPlatformMapping(i.platform).color || "#fff");
         });
 
-      const identityBadge = nodeContainer
-        .append("circle")
-        .attr("r", 16)
-        .attr("fill", (d) => SocialPlatformMapping(d.platform).color)
-        .attr("style", (d) => `display:${d.isIdentity ? "normal" : "none"}`);
-
-      const identityIcon = nodeContainer
-        .append("svg:image")
-        .attr("width", 20)
-        .attr("height", 20)
-        .attr("xlink:href", (d) => SocialPlatformMapping(d.platform).icon)
-        .attr("style", (d) => `display:${d.isIdentity ? "normal" : "none"}`);
-
-      const ensBadge = nodeContainer
-        .append("svg:image")
-        .attr("width", 20)
-        .attr("height", 24)
-        .attr("class", "ens-icon")
-        .attr("xlink:href", SocialPlatformMapping(PlatformType.ens).icon)
-        .attr("style", (d) => `display:${d.isIdentity ? "none" : "normal"}`);
-
-      const displayName = nodeContainer
-        .append("text")
-        .style("font-size", 14)
-        .style("font-weight", 400)
-        .text((d) => formatText(d.displayName || d.identity));
-
-      const identity = nodeContainer
-        .append("text")
-        .style("display", (d) => (d.isIdentity ? "normal" : "none"))
-        .style("font-size", 12)
-        .style("font-weight", 300)
-        .text((d) =>
-          d.displayName !== d.identity && d.displayName !== ""
-            ? formatText(d.identity)
-            : ""
-        );
-
+        const { displayName, identity, identityBadge, identityIcon, ensBadge } =
+        updateNode(nodeContainer);
       function ticked() {
-        link.attr(
+        link
+          .attr("x1", (d) => d.source.x)
+          .attr("y1", (d) => d.source.y)
+          .attr("x2", (d) => d.target.x)
+          .attr("y2", (d) => d.target.y);
+
+        edgePath.attr(
           "d",
-          (d) =>
-            `M${d.source.x},${d.source.y}A0,0 0 0,1 ${d.target.x},${d.target.y}`
+          (d) => `M${d.source.x} ${d.source.y}L ${d.target.x} ${d.target.y}`
         );
+
+        // edgeLabels.attr('transform', (d) => {
+        //   if (d.target.x < d.source.x) {
+        //     var bbox = this.getBBox();
+
+        //     d.rx = bbox.x + bbox.width / 2;
+        //     d.ry = bbox.y + bbox.height / 2;
+        //     return 'rotate(180 ' + d.rx + ' ' + d.ry + ')';
+        //   }
+        //   else {
+        //     return 'rotate(0)';
+        //   }
+        // });
+
         circle.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
 
         displayName

@@ -82,7 +82,10 @@
     }
 
     .svg-canvas {
-
+      .edge-label{
+        font-size: 12px;
+        font-weight: 400;
+      }
       // circle style goes here
       .node {
         cursor: pointer;
