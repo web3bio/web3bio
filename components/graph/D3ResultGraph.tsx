@@ -178,6 +178,17 @@ export default function D3ResultGraph(props) {
               svg.attr("transform", event.transform);
             })
         )
+        .on("click", (e) => {
+          edgePath.style("stroke-width", 1.5);
+          circle
+            .attr("fill", (d) =>
+              d.isIdentity
+                ? "#fff"
+                : SocialPlatformMapping(PlatformType.ens).color
+            )
+            .attr("fill-opacity", 1);
+          setCurrentNode(null);
+        })
         .append("svg:g");
 
       const generateSimulation = () => {
@@ -216,10 +227,11 @@ export default function D3ResultGraph(props) {
         .join("marker")
         .attr("id", (d) => `arrow-${d.id}`)
         .attr("viewBox", "0 -5 10 10")
+        .attr("markerUnits", "userSpaceOnUse")
         // todo: check is reverse link here, and modify
-        .attr("refX", (d) => (d.target.isIdentity ? 68 : 20))
-        .attr("markerWidth", 5)
-        .attr("markerHeight", 5)
+        .attr("refX", (d) => (d.target.isIdentity ? 80 : 22))
+        .attr("markerWidth", 7)
+        .attr("markerHeight", 7)
         .attr("orient", "auto")
         .append("path")
         .attr("fill", "#cecece")
@@ -278,25 +290,28 @@ export default function D3ResultGraph(props) {
         .on("click", (e, i) => {
           e.preventDefault();
           e.stopPropagation();
+          edgePath.style("stroke-width", 1.5);
+          circle
+            .attr("fill", (d) =>
+              d.isIdentity
+                ? "#fff"
+                : SocialPlatformMapping(PlatformType.ens).color
+            )
+            .attr("fill-opacity", 1);
           if (!i.isIdentity) {
             setCurrentNode(null);
             return;
           }
           setCurrentNode(i);
-          // todo: modify here
-          // edgePath
-          //   .attr("stroke-width", 1.5)
-          //   .filter((l) => l.source.id === i.id || l.target.id === i.id)
-          //   .attr("stroke-width", 3);
-          // circle
-          //   .attr("fill", (d) =>
-          //     d.isIdentity
-          //       ? "#fff"
-          //       : SocialPlatformMapping(PlatformType.ens).color
-          //   )
-          //   .filter((l) => l.id === i.id)
-          //   .attr("fill-opacity", 0.1)
-          //   .attr("fill", SocialPlatformMapping(i.platform).color || "#fff");
+
+          edgePath
+            .filter((l) => l.source.id === i.id || l.target.id === i.id)
+            .style("stroke-width", 3);
+
+          circle
+            .filter((l) => l.id === i.id)
+            .attr("fill-opacity", 0.1)
+            .attr("fill", SocialPlatformMapping(i.platform).color || "#fff");
         });
 
       const { displayName, identity, identityBadge, identityIcon, ensBadge } =
