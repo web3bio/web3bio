@@ -3,7 +3,6 @@ import * as d3 from "d3";
 import { formatText, SocialPlatformMapping } from "../../utils/utils";
 import { PlatformType } from "../../utils/platform";
 import _ from "lodash";
-import { Loading } from "../shared/Loading";
 import SVG from "react-inlinesvg";
 
 const IdentityNodeSize = 50;
@@ -112,7 +111,7 @@ function calcTranslationExact(targetDistance, point0, point1) {
 const updateNodes = (nodeContainer) => {
   const identityBadge = nodeContainer
     .append("circle")
-    .attr('class','identity-badge')
+    .attr("class", "identity-badge")
     .attr("r", 16)
     .attr("fill", (d) => SocialPlatformMapping(d.platform).color)
     .attr("style", (d) => `display:${d.isIdentity ? "normal" : "none"}`);
@@ -152,11 +151,8 @@ const updateNodes = (nodeContainer) => {
   };
 };
 
-const updateEdges = (edge) => {};
-
 export default function D3ResultGraph(props) {
   const { data, onClose, title } = props;
-  const [loading, setLoading] = useState(true);
   const [currentNode, setCurrentNode] = useState<any>(null);
   const tooltipContainer = useRef(null);
   const graphContainer = useRef<HTMLDivElement>(null);
@@ -254,7 +250,10 @@ export default function D3ResultGraph(props) {
         .on("click", (e, i) => {
           e.preventDefault();
           e.stopPropagation();
-          if (!i.isIdentity) return;
+          if (!i.isIdentity) {
+            setCurrentNode(null);
+            return;
+          }
           setCurrentNode(i);
           // edgePath
           //   .attr("stroke-width", 1.5)
@@ -359,7 +358,6 @@ export default function D3ResultGraph(props) {
     if (!chart && chartContainer) {
       const res = resolveGraphData(data);
       chart = generateGraph({ nodes: res.nodes, links: res.edges });
-      setLoading(false);
     }
     return () => {
       const svg = d3.select(".svg-canvas");
@@ -379,10 +377,14 @@ export default function D3ResultGraph(props) {
           onClick={(e) => {
             e.stopPropagation();
             e.preventDefault();
-            setCurrentNode(null);
           }}
         >
-          <svg className="svg-canvas" />
+          <svg
+            onClick={() => {
+              setCurrentNode(null);
+            }}
+            className="svg-canvas"
+          />
 
           {currentNode && (
             <div
@@ -459,11 +461,6 @@ export default function D3ResultGraph(props) {
               <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
             </div>
           </div>
-          {loading && (
-            <div className="loading-mask">
-              <Loading />
-            </div>
-          )}
         </div>
       )}
     </div>
