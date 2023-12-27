@@ -196,7 +196,7 @@ export default function D3ResultGraph(props) {
               .distance((d) => (d.target.isIdentity ? 70 : 10))
           )
           .force("charge", d3.forceManyBody())
-          .force("x", d3.forceX(width / 2).strength(0.25))
+          .force("x", d3.forceX(width / 2).strength(0.5))
           .force("y", d3.forceY(height / 2).strength(1))
           .force(
             "collision",
