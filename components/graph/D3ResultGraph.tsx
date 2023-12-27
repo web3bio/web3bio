@@ -179,14 +179,8 @@ export default function D3ResultGraph(props) {
             })
         )
         .on("click", (e) => {
-          edgePath.style("stroke-width", 1.5);
-          circle
-            .attr("fill", (d) =>
-              d.isIdentity
-                ? "#fff"
-                : SocialPlatformMapping(PlatformType.ens).color
-            )
-            .attr("fill-opacity", 1);
+          edgePath.attr("class", "edge-path");
+          circle.attr("class", "node");
           setCurrentNode(null);
         })
         .append("svg:g");
@@ -290,14 +284,8 @@ export default function D3ResultGraph(props) {
         .on("click", (e, i) => {
           e.preventDefault();
           e.stopPropagation();
-          edgePath.style("stroke-width", 1.5);
-          circle
-            .attr("fill", (d) =>
-              d.isIdentity
-                ? "#fff"
-                : SocialPlatformMapping(PlatformType.ens).color
-            )
-            .attr("fill-opacity", 1);
+          edgePath.attr("class", "edge-path");
+          circle.attr("class", "node");
           if (!i.isIdentity) {
             setCurrentNode(null);
             return;
@@ -306,12 +294,10 @@ export default function D3ResultGraph(props) {
 
           edgePath
             .filter((l) => l.source.id === i.id || l.target.id === i.id)
-            .style("stroke-width", 3);
-
+            .attr("class", "edge-path edge-selected");
           circle
             .filter((l) => l.id === i.id)
-            .attr("fill-opacity", 0.1)
-            .attr("fill", SocialPlatformMapping(i.platform).color || "#fff");
+            .attr("class", "node node-selected");
         });
 
       const { displayName, identity, identityBadge, identityIcon, ensBadge } =
@@ -414,12 +400,11 @@ export default function D3ResultGraph(props) {
           }}
         >
           <svg
-            onClick={() => {
+            onClick={(e) => {
               setCurrentNode(null);
             }}
             className="svg-canvas"
           />
-
           {currentNode && (
             <div
               className="web3bio-tooltip"

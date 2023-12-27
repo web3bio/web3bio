@@ -82,10 +82,19 @@
     }
 
     .svg-canvas {
+      .edge-selected {
+        filter: drop-shadow(3px 5px 7px #cecece)
+      }
+
+      .node-selected {
+        stroke-width: 3;
+        filter: drop-shadow(2px 4px 6px #cecece)
+      }
+
       .edge-path {
         stroke: #cecece;
         fill: transparent;
-        stroke-width:0.8;
+        stroke-width: 0.8;
         pointer-events: none;
       }
 
@@ -99,16 +108,19 @@
       .node {
         cursor: pointer;
       }
-      .identity-badge{
+
+      .identity-badge {
         cursor: pointer;
       }
-      .displayName{
+
+      .displayName {
         fill: #000;
         user-select: none;
         font-size: 12px;
         font-weight: 300;
       }
-      .identity{
+
+      .identity {
         fill: #999;
         user-select: none;
         font-size: 10px;
