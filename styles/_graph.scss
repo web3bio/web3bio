@@ -96,16 +96,33 @@
 
       .node {
         cursor: pointer;
+      }
+      .identity-badge{
+        cursor: pointer;
+      }
+      .displayName{
+        fill: #000;
+        user-select: none;
+        font-size: 14px;
+        font-weight: 400;
+      }
+      .identity{
+        fill: #999;
+        user-select: none;
+        font-size: 12px;
+        font-weight: 400;
+      }
 
-        .identity-icon {
-          width: 16px;
-          height: 16px
-        }
+      .identity-icon {
+        cursor: pointer;
+        width: 20px;
+        height: 20px
+      }
 
-        .ens-icon {
-          width: 20px;
-          height: 24px;
-        }
+      .ens-icon {
+        cursor: pointer;
+        width: 20px;
+        height: 24px;
       }
 
     }

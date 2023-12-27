@@ -6,7 +6,7 @@ import _ from "lodash";
 import { Loading } from "../shared/Loading";
 import SVG from "react-inlinesvg";
 
-const IdentityNodeSize = 55;
+const IdentityNodeSize = 50;
 const NFTNodeSize = 15;
 
 const resolveGraphData = (source) => {
@@ -112,36 +112,32 @@ function calcTranslationExact(targetDistance, point0, point1) {
 const updateNodes = (nodeContainer) => {
   const identityBadge = nodeContainer
     .append("circle")
+    .attr('class','identity-badge')
     .attr("r", 16)
     .attr("fill", (d) => SocialPlatformMapping(d.platform).color)
     .attr("style", (d) => `display:${d.isIdentity ? "normal" : "none"}`);
 
   const identityIcon = nodeContainer
     .append("svg:image")
-    .attr("width", 20)
-    .attr("height", 20)
+    .attr("class", "identity-icon")
     .attr("xlink:href", (d) => SocialPlatformMapping(d.platform).icon)
     .attr("style", (d) => `display:${d.isIdentity ? "normal" : "none"}`);
 
   const ensBadge = nodeContainer
     .append("svg:image")
-    .attr("width", 20)
-    .attr("height", 24)
     .attr("class", "ens-icon")
     .attr("xlink:href", SocialPlatformMapping(PlatformType.ens).icon)
     .attr("style", (d) => `display:${d.isIdentity ? "none" : "normal"}`);
 
   const displayName = nodeContainer
     .append("text")
-    .style("font-size", 14)
-    .style("font-weight", 400)
+    .attr("class", "displayName")
     .text((d) => formatText(d.displayName || d.identity));
 
   const identity = nodeContainer
     .append("text")
+    .attr("class", "identity")
     .style("display", (d) => (d.isIdentity ? "normal" : "none"))
-    .style("font-size", 12)
-    .style("font-weight", 300)
     .text((d) =>
       d.displayName !== d.identity && d.displayName !== ""
         ? formatText(d.identity)
@@ -155,6 +151,8 @@ const updateNodes = (nodeContainer) => {
     identity,
   };
 };
+
+const updateEdges = (edge) => {};
 
 export default function D3ResultGraph(props) {
   const { data, onClose, title } = props;
@@ -179,7 +177,7 @@ export default function D3ResultGraph(props) {
         .attr("height", "100%");
       // .call(zoom);
 
-      svg
+      const marker = svg
         .append("defs")
         .selectAll("marker")
         .data(Array.from(new Set(links.map((d) => d.label))))
@@ -223,21 +221,26 @@ export default function D3ResultGraph(props) {
         .attr("startOffset", "50%")
         .text((d) => (d.label ? SocialPlatformMapping(d.label).label : ""));
 
-      function dragStart(event) {
-        if (!event.active) simulation.alphaTarget(0.3).restart();
-        event.subject.fx = event.subject.x;
-        event.subject.fy = event.subject.y;
-      }
+      const dragged = (event, d) => {
+        function clamp(x, lo, hi) {
+          return x < lo ? lo : x > hi ? hi : x;
+        }
+        d.fx = clamp(event.x, 0, width);
+        d.fy = clamp(event.y, 0, height);
+        nodeContainer.each((o) => {
+          if (o != d) {
+            o.fx = o.x;
+            o.fy = o.y;
+          }
+        });
+        simulation.alpha(1).restart();
+      };
 
-      function dragged(event) {
-        event.subject.fx = event.x;
-        event.subject.fy = event.y;
-      }
       const nodeContainer = svg
         .selectAll(".node")
         .data(nodes, (d) => d.id)
         .join("g")
-        .call(d3.drag().on("start", dragStart).on("drag", dragged));
+        .call(d3.drag().on("drag", dragged));
 
       const circle = nodeContainer
         .append("circle")
@@ -248,7 +251,6 @@ export default function D3ResultGraph(props) {
         .attr("fill", (d) =>
           d.isIdentity ? "#fff" : SocialPlatformMapping(PlatformType.ens).color
         )
-
         .on("click", (e, i) => {
           e.preventDefault();
           e.stopPropagation();
@@ -290,11 +292,11 @@ export default function D3ResultGraph(props) {
             )
         )
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .on("tick", ticked);
+        .stop();
 
       const { displayName, identity, identityBadge, identityIcon, ensBadge } =
         updateNodes(nodeContainer);
-      function ticked() {
+      const ticked = () => {
         edgePath.attr("d", (d) => {
           const dx = d.target.x - d.source.x,
             dy = d.target.y - d.source.y,
@@ -336,8 +338,22 @@ export default function D3ResultGraph(props) {
           // offset half the icon size
           .attr("x", (d) => d.x - 10)
           .attr("y", (d) => d.y - 12);
-      }
-
+      };
+      d3.timeout(() => {
+        for (
+          var i = 0,
+            n = Math.ceil(
+              Math.log(simulation.alphaMin()) /
+                Math.log(1 - simulation.alphaDecay())
+            );
+          i < n;
+          ++i
+        ) {
+          simulation.tick();
+        }
+        ticked();
+        simulation.on("tick", ticked);
+      });
       return svg.node();
     };
     if (!chart && chartContainer) {
