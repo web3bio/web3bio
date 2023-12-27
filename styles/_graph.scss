@@ -84,14 +84,17 @@
     .svg-canvas {
       .edge-path {
         stroke-width: 1.5;
-        stroke: '#cecece';
-        fill: "#cecece"
+        stroke: #cecece;
+        fill: transparent;
+        stroke-width: 1.5;
+        pointer-events: none;
       }
 
       .edge-label {
-        fill: "#cecece";
+        fill: #cecece;
         font-size: 10px;
         font-weight: 500;
+        pointer-events: none;
       }
 
       .node {

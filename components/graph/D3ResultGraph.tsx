@@ -90,8 +90,8 @@ const resolveGraphData = (source) => {
   return { nodes: _nodes, edges: _edges };
 };
 
-function calcTranslationExact(targetDistance, point0, point1) {
-  var x1_x0 = point1.x - point0.x,
+function calcTranslation(targetDistance, point0, point1) {
+  let x1_x0 = point1.x - point0.x,
     y1_y0 = point1.y - point0.y,
     x2_x0,
     y2_y0;
@@ -99,7 +99,7 @@ function calcTranslationExact(targetDistance, point0, point1) {
     x2_x0 = 0;
     y2_y0 = targetDistance;
   } else {
-    var angle = Math.atan(x1_x0 / y1_y0);
+    let angle = Math.atan(x1_x0 / y1_y0);
     x2_x0 = -targetDistance * Math.cos(angle);
     y2_y0 = targetDistance * Math.sin(angle);
   }
@@ -208,16 +208,18 @@ export default function D3ResultGraph(props) {
       };
 
       const simulation = generateSimulation();
+
       const marker = svg
         .append("defs")
         .selectAll("marker")
-        .data(Array.from(new Set(links.map((d) => d.label))))
+        .data(links)
         .join("marker")
-        .attr("id", (d) => `arrow-${d}`)
+        .attr("id", (d) => `arrow-${d.id}`)
         .attr("viewBox", "0 -5 10 10")
-        .attr("refX", (d) => (d ? 60 : 20))
-        .attr("markerWidth", 6)
-        .attr("markerHeight", 6)
+        // todo: check is reverse link here, and modify
+        .attr("refX", (d) => (d.target.isIdentity ? 68 : 20))
+        .attr("markerWidth", 5)
+        .attr("markerHeight", 5)
         .attr("orient", "auto")
         .append("path")
         .attr("fill", "#cecece")
@@ -229,33 +231,24 @@ export default function D3ResultGraph(props) {
         .enter()
         .append("path")
         .attr("class", "edge-path")
-        .attr("id", (d, i) => "edgepath" + i)
-        .attr("stoke-width", 1.5)
-        .attr("stroke", (d) => "#cecece")
-        .style("pointer-events", "none")
-        .attr("marker-end", (d) => `url(#arrow-${d.label})`);
+        .attr("id", (d) => "edgepath" + d.id)
+        .attr("marker-end", (d) => `url(#arrow-${d.id})`);
 
       const edgeLabels = svg
         .selectAll(".edge-label")
         .data(links)
         .enter()
         .append("text")
-        .style("pointer-events", "none")
         .attr("class", "edge-label")
-        .attr("fill", (d) => "#cecece");
-
-      edgeLabels
-        .append("textPath")
-        .attr("xlink:href", (d, i) => "#edgepath" + i)
-        .style("text-anchor", "middle")
-        .style("pointer-events", "none")
-        .attr("startOffset", "50%")
+        .attr("dx", ".5em")
+        .attr("dy", 2)
+        .attr("text-anchor", "middle")
         .text((d) => (d.label ? SocialPlatformMapping(d.label).label : ""));
 
       const dragged = (event, d) => {
-        function clamp(x, lo, hi) {
+        const clamp = (x, lo, hi) => {
           return x < lo ? lo : x > hi ? hi : x;
-        }
+        };
         d.fx = clamp(event.x, 0, width);
         d.fy = clamp(event.y, 0, height);
         nodeContainer.each((o) => {
@@ -290,29 +283,27 @@ export default function D3ResultGraph(props) {
             return;
           }
           setCurrentNode(i);
+          // todo: modify here
           // edgePath
           //   .attr("stroke-width", 1.5)
           //   .filter((l) => l.source.id === i.id || l.target.id === i.id)
           //   .attr("stroke-width", 3);
-          circle
-            .attr("fill", (d) =>
-              d.isIdentity
-                ? "#fff"
-                : SocialPlatformMapping(PlatformType.ens).color
-            )
-            .filter((l) => l.id === i.id)
-            .attr("fill-opacity", 0.1)
-            .attr("fill", SocialPlatformMapping(i.platform).color || "#fff");
+          // circle
+          //   .attr("fill", (d) =>
+          //     d.isIdentity
+          //       ? "#fff"
+          //       : SocialPlatformMapping(PlatformType.ens).color
+          //   )
+          //   .filter((l) => l.id === i.id)
+          //   .attr("fill-opacity", 0.1)
+          //   .attr("fill", SocialPlatformMapping(i.platform).color || "#fff");
         });
 
       const { displayName, identity, identityBadge, identityIcon, ensBadge } =
         updateNodes(nodeContainer);
       const ticked = () => {
         edgePath.attr("d", (d) => {
-          const dx = d.target.x - d.source.x,
-            dy = d.target.y - d.source.y,
-            dr = Math.sqrt(dx * dx + dy * dy);
-          const delta = calcTranslationExact(4, d.source, d.target);
+          const delta = calcTranslation(4, d.source, d.target);
           const rightwardSign = d.target.x > d.source.x ? 2 : -2;
           return (
             "M" +
@@ -345,14 +336,30 @@ export default function D3ResultGraph(props) {
           .attr("x", (d) => d.x + IdentityNodeSize / 2 - 2)
           .attr("y", (d) => d.y - IdentityNodeSize / 2 - 18);
 
-        ensBadge
-          // offset half the icon size
-          .attr("x", (d) => d.x - 9)
-          .attr("y", (d) => d.y - 10);
+        ensBadge.attr("x", (d) => d.x - 9).attr("y", (d) => d.y - 10);
+
+        edgeLabels.attr("transform", (d) => {
+          let transformation = ``;
+
+          const x = (d.source.x + d.target.x) / 2;
+          const y = (d.source.y + d.target.y) / 2;
+          transformation += `translate(${x}, ${y}) `;
+
+          if (d.source.x > d.target.x) {
+            transformation += `rotate(180) `;
+          }
+          const angle = Math.atan2(
+            d.target.y - d.source.y,
+            d.target.x - d.source.x
+          );
+          transformation += `rotate(${(angle * 180) / Math.PI}) `;
+
+          return transformation;
+        });
       };
       d3.timeout(() => {
         for (
-          var i = 0,
+          let i = 0,
             n = Math.ceil(
               Math.log(simulation.alphaMin()) /
                 Math.log(1 - simulation.alphaDecay())
@@ -375,7 +382,7 @@ export default function D3ResultGraph(props) {
       const svg = d3.select(".svg-canvas");
       svg.selectAll("*").remove();
     };
-  }, [data?.length]);
+  }, [data]);
   return (
     <div
       className="identity-graph-modal"
