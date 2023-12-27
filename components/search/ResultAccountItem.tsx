@@ -105,6 +105,7 @@ const RenderAccountItem = (props) => {
                     width={36}
                     height={36}
                     alt="avatar"
+                    title="avatar"
                     src={profile?.avatar}
                     className="avatar-img"
                   />
@@ -177,7 +178,7 @@ const RenderAccountItem = (props) => {
                     title="Open Profile"
                     className="btn btn-sm btn-link action"
                   >
-                    <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
+                    <SVG src="icons/icon-open.svg" width={20} height={20} />
                     <span className="hide-xs">Profile</span>
                   </Link>
                 </div>
@@ -189,7 +190,7 @@ const RenderAccountItem = (props) => {
                     title="Open Profile"
                     className="btn btn-sm btn-link action"
                   >
-                    <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
+                    <SVG src="icons/icon-open.svg" width={20} height={20} />
                     <span className="hide-xs">Profile</span>
                   </Link>
                 </div>
@@ -290,7 +291,7 @@ const RenderAccountItem = (props) => {
                 }`}
                 title="Open Profile"
               >
-                <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
+                <SVG src="icons/icon-open.svg" width={20} height={20} />
                 <span className="hide-xs">Profile</span>
               </Link>
             </div>
@@ -353,7 +354,7 @@ const RenderAccountItem = (props) => {
                 title="Open Next.ID Profile page"
                 rel="noopener noreferrer"
               >
-                <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
+                <SVG src="icons/icon-open.svg" width={20} height={20} />
                 <span className="hide-xs">Profile</span>
               </Link>
             </div>
@@ -396,7 +397,7 @@ const RenderAccountItem = (props) => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
+                <SVG src="icons/icon-open.svg" width={20} height={20} />
                 <span className="hide-xs">Open</span>
               </a>
             </div>

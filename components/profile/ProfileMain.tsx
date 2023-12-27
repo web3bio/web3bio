@@ -1,7 +1,6 @@
 "use client";
 import React, { Suspense, useCallback, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { PlatformType } from "../../utils/platform";
@@ -36,8 +35,7 @@ export default function ProfileMain(props) {
   } = props;
   const [isCopied, setIsCopied] = useState(false);
   const { isOpen, modalType, closeModal, openModal, params } = useModal();
-  const pathName = usePathname();
-  const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
+  
   const profileWidgetStates = useSelector<AppState, WidgetState>(
     (state) => state.widgets
   );
@@ -84,19 +82,21 @@ export default function ProfileMain(props) {
             <div className="profile-avatar">
               <Avatar
                 src={data?.avatar || fallbackAvatar.avatar}
-                identity={data?.identity}
+                identity={domain}
                 className="avatar"
                 alt={`${pageTitle} Profile Photo`}
-                height={180}
-                width={180}
               />
               {!data?.avatar && fallbackAvatar.source && (
                 <div className="profile-avatar-badge">
                   <SVG
                     fill={SocialPlatformMapping(fallbackAvatar.source).color}
                     width={20}
-                    src={SocialPlatformMapping(fallbackAvatar.source).icon || ""}
-                    title={`Fallback avatar from ${SocialPlatformMapping(fallbackAvatar.source).label}`}
+                    src={
+                      SocialPlatformMapping(fallbackAvatar.source).icon || ""
+                    }
+                    title={`Fallback avatar from ${
+                      SocialPlatformMapping(fallbackAvatar.source).label
+                    }`}
                   />
                 </div>
               )}
@@ -114,11 +114,25 @@ export default function ProfileMain(props) {
                   className="btn btn-sm"
                   data-clipboard-text={data.address}
                   onSuccess={onCopySuccess}
-                  title="Copy the wallet address"
+                  title="Copy this wallet address"
                 >
+                  <SVG
+                    src="../icons/icon-wallet.svg"
+                    width={20}
+                    height={20}
+                    className="action-gray"
+                  />
                   <span className="profile-label ml-1 mr-1">
                     {formatText(data.address)}
                   </span>
+                </Clipboard>
+                <Clipboard
+                  component="div"
+                  className="btn btn-sm"
+                  data-clipboard-text={data.address}
+                  onSuccess={onCopySuccess}
+                  title="Copy this wallet address"
+                >
                   <SVG
                     src="../icons/icon-copy.svg"
                     width={20}
@@ -134,7 +148,8 @@ export default function ProfileMain(props) {
                 onClick={() =>
                   openModal(ModalType.share, {
                     profile: data,
-                    url: `${baseURL}${pathName?.replace("profile/", "")}`,
+                    path: `${domain}`,
+                    avatar: fallbackAvatar.avatar,
                   })
                 }
               >
@@ -252,6 +267,7 @@ export default function ProfileMain(props) {
               </div>
             </div>
           )}
+
           {data.address && (
             <>
               <div className="web3-section-widgets">
@@ -278,11 +294,7 @@ export default function ProfileMain(props) {
               </div>
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading Articles...</p>}>
-                  <WidgetRSS
-                    fromServer={fromServer}
-                    relations={relations}
-                    domain={data.identity}
-                  />
+                  <WidgetRSS fromServer={fromServer} domain={data.identity} />
                 </Suspense>
               </div>
               <div className="web3-section-widgets">
@@ -328,7 +340,15 @@ export default function ProfileMain(props) {
       )}
       {isCopied && (
         <div className="web3bio-toast">
-          <div className="toast">Copied to clipboard</div>
+          <div className="toast">
+            <SVG
+              src="../icons/icon-copy.svg"
+              width={24}
+              height={24}
+              className="action mr-2"
+            />
+            Copied to clipboard
+          </div>
         </div>
       )}
     </>

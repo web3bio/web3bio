@@ -1,8 +1,7 @@
 import { useState } from "react";
+import Image from "next/image";
 import SVG from "react-inlinesvg";
 import Clipboard from "react-clipboard.js";
-import { WEB3BIO_OG_ENDPOINT } from "../../utils/utils";
-import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
 const shareMap = [
   {
@@ -30,7 +29,8 @@ const shareMap = [
 ];
 
 export default function ShareModalContent(props) {
-  const { profile, url, onClose } = props;
+  const {profile, path, onClose, avatar} = props;
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio"}/${path}`;
   const [isCopied, setIsCopied] = useState(false);
   const onCopySuccess = () => {
     setIsCopied(true);
@@ -38,6 +38,18 @@ export default function ShareModalContent(props) {
       setIsCopied(false);
     }, 1500);
   };
+
+  const params = new URLSearchParams();
+    if (path)
+      params.append("path", path);
+    if (profile)
+      params.append("address", profile.address);
+      params.append("displayName", profile.displayName);
+    if (profile.description)
+      params.append("description", profile.description);
+    if(avatar)
+      params.append("avatar", avatar);
+  const relativeOGURL = params.toString() ? `/api/og?${params.toString()}` : "/api/og";
 
   return (
     <>
@@ -48,15 +60,14 @@ export default function ShareModalContent(props) {
         </div>
       </div>
       <div className="profile-share-body">
-        <div className="profile-card">
-          <NFTAssetPlayer
+        <div className="profile-share-card mb-4">
+          <Image
             className="img-responsive"
-            src={WEB3BIO_OG_ENDPOINT + `api/${profile.identity}`}
-            type={"image/png"}
-            width="auto"
-            height="100%"
-            placeholder={true}
+            src={`${relativeOGURL}`}
+            width={0}
+            height={0}
             alt={profile.identity}
+            style={{ height: "auto", width: "100%", aspectRatio: "40 / 21" }}
           />
         </div>
 
@@ -98,7 +109,15 @@ export default function ShareModalContent(props) {
 
       {isCopied && (
         <div className="web3bio-toast">
-          <div className="toast">Copied to clipboard</div>
+          <div className="toast">
+            <SVG
+              src="../icons/icon-copy.svg"
+              width={24}
+              height={24}
+              className="action mr-2"
+            />
+            Copied to clipboard
+          </div>
         </div>
       )}
     </>

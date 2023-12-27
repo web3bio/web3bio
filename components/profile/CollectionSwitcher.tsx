@@ -29,6 +29,10 @@ const RenderCollectionSwitcher = (props) => {
               placeholder={true}
               alt={item.name}
             />
+            {item.assets.length > 1 && (
+              <div className="collection-badge">+{item.assets.length}</div>
+            )}
+            
             <div className="collection-name text-assistive">NFT Collection: {item.name}</div>
           </div>
         ))}
@@ -45,7 +49,6 @@ const RenderCollectionSwitcher = (props) => {
               width={52}
               alt={"Load more NFTs"}
             />
-            
           </div>
         )}
       </div>

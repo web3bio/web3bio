@@ -203,9 +203,10 @@ const RenderNFTCollections = (props) => {
                               <div
                                 className={`preview-network ${y.chain}`}
                                 title={NetworkMapping(y.chain).label}
+                                style={{backgroundColor: NetworkMapping(y.chain).bgColor}}
                               >
                                 <SVG
-                                  fill={"#121212"}
+                                  fill={NetworkMapping(y.chain).primaryColor}
                                   src={NetworkMapping(y.chain).icon || ""}
                                   className="preview-network-icon"
                                 />

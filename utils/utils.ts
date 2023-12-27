@@ -24,7 +24,7 @@ export const formatText = (string, length?) => {
   if (string.length <= len) {
     return string;
   }
-  if (string.startsWith("0x") || string.length >= 42) {
+  if (string.startsWith("0x")) {
     const oriAddr = string,
       chars = length || 4;
     return `${oriAddr.substring(0, chars + 2)}...${oriAddr.substring(
@@ -278,5 +278,3 @@ export const mapLinks = (data) => {
   );
   return _.uniqBy(arr, (x) => x.handle?.toLowerCase() && x.platform);
 };
-
-export const WEB3BIO_OG_ENDPOINT = "https://og.web3.bio/";
