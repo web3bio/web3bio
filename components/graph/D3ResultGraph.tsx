@@ -5,8 +5,8 @@ import { PlatformType } from "../../utils/platform";
 import _ from "lodash";
 import SVG from "react-inlinesvg";
 
-const IdentityNodeSize = 50;
-const NFTNodeSize = 15;
+const IdentityNodeSize = 48;
+const NFTNodeSize = 14;
 
 const resolveGraphData = (source) => {
   const nodes = new Array<any>();
@@ -108,6 +108,7 @@ function calcTranslationExact(targetDistance, point0, point1) {
     dy: y2_y0,
   };
 }
+
 const updateNodes = (nodeContainer) => {
   const identityBadge = nodeContainer
     .append("circle")
@@ -164,15 +165,40 @@ export default function D3ResultGraph(props) {
       const height = chartContainer?.offsetHeight!;
       const links = _data.links.map((d) => ({ ...d }));
       const nodes = _data.nodes.map((d) => ({ ...d }));
-      // const zoom = d3.zoom().on("zoom", (e) => {
-      //   d3.select(".svg-canvas").attr("transform", e.transform);
-      // });
+
       const svg = d3
         .select(".svg-canvas")
         .attr("width", "100%")
         .attr("height", "100%");
-      // .call(zoom);
 
+      const generateSimulation = () => {
+        const simulation = d3
+          .forceSimulation(nodes)
+          .force(
+            "link",
+            d3
+              .forceLink(links)
+              .id((d) => d.id)
+              .distance((d) => (d.target.isIdentity ? 70 : 10))
+          )
+          .force("charge", d3.forceManyBody())
+          .force("x", d3.forceX(width / 2).strength(0.25))
+          .force("y", d3.forceY(height / 2).strength(1))
+          .force(
+            "collision",
+            d3
+              .forceCollide()
+              .radius((d) =>
+                d.isIdentity ? IdentityNodeSize * 2.5 : NFTNodeSize * 2
+              )
+          )
+          .force("center", d3.forceCenter(width / 2, height / 2))
+          .stop();
+
+        return simulation;
+      };
+
+      const simulation = generateSimulation();
       const marker = svg
         .append("defs")
         .selectAll("marker")
@@ -180,7 +206,7 @@ export default function D3ResultGraph(props) {
         .join("marker")
         .attr("id", (d) => `arrow-${d}`)
         .attr("viewBox", "0 -5 10 10")
-        .attr("refX", (d) => (d ? 64 : 20))
+        .attr("refX", (d) => (d ? 60 : 20))
         .attr("markerWidth", 6)
         .attr("markerHeight", 6)
         .attr("orient", "auto")
@@ -269,29 +295,6 @@ export default function D3ResultGraph(props) {
             .attr("fill-opacity", 0.1)
             .attr("fill", SocialPlatformMapping(i.platform).color || "#fff");
         });
-      const simulation = d3
-        .forceSimulation(nodes)
-        .force(
-          "charge",
-          d3.forceManyBody().strength((d) => (d.isIdentity ? -300 : -150))
-        )
-        .force(
-          "link",
-          d3
-            .forceLink(links)
-            .id((d) => d.id)
-            .distance((d) => (d.isIdentity ? 350 : 100))
-        )
-        .force(
-          "collision",
-          d3
-            .forceCollide()
-            .radius((d) =>
-              d.isIdentity ? IdentityNodeSize * 1.2 : NFTNodeSize * 2
-            )
-        )
-        .force("center", d3.forceCenter(width / 2, height / 2))
-        .stop();
 
       const { displayName, identity, identityBadge, identityIcon, ensBadge } =
         updateNodes(nodeContainer);
@@ -335,8 +338,8 @@ export default function D3ResultGraph(props) {
 
         ensBadge
           // offset half the icon size
-          .attr("x", (d) => d.x - 10)
-          .attr("y", (d) => d.y - 12);
+          .attr("x", (d) => d.x - 9)
+          .attr("y", (d) => d.y - 10);
       };
       d3.timeout(() => {
         for (
