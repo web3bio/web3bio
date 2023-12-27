@@ -1,7 +1,6 @@
 import { memo, useState } from "react";
 import SVG from "react-inlinesvg";
 import { ResultAccountItem } from "./ResultAccountItem";
-import { ResultGraph } from "../graph/ResultGraph";
 import _ from "lodash";
 import { useSelector } from "react-redux";
 import { AppState } from "../../state";
@@ -40,26 +39,6 @@ const RenderAccount = (props) => {
           ))}
         </div>
       </div>
-      {/* {open && (
-        <ResultGraph
-          onClose={() => setOpen(false)}
-          data={graphData.reduce((pre, cur) => {
-            pre.push({
-              ...cur,
-              to: {
-                ...cur.to,
-                profile: _.find(profiles, (i) => i.uuid == cur.to.uuid),
-              },
-              from: {
-                ...cur.from,
-                profile: _.find(profiles, (i) => i.uuid == cur.from.uuid),
-              },
-            });
-            return pre;
-          }, [])}
-          title={graphTitle}
-        />
-      )} */}
       {open && (
         <D3ResultGraph
           onClose={() => setOpen(false)}
