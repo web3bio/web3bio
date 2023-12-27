@@ -169,7 +169,16 @@ export default function D3ResultGraph(props) {
       const svg = d3
         .select(".svg-canvas")
         .attr("width", "100%")
-        .attr("height", "100%");
+        .attr("height", "100%")
+        .call(
+          d3
+            .zoom()
+            .scaleExtent([1, 10])
+            .on("zoom", (event) => {
+              svg.attr("transform", event.transform);
+            })
+        )
+        .append("svg:g");
 
       const generateSimulation = () => {
         const simulation = d3
