@@ -291,7 +291,7 @@ export default function D3ResultGraph(props) {
             return;
           }
           setCurrentNode(i);
-
+          // todo: modify selected here
           edgePath
             .filter((l) => l.source.id === i.id || l.target.id === i.id)
             .attr("class", "edge-path edge-selected");
