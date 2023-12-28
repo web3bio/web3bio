@@ -42,8 +42,20 @@ export default function PoapsModalContent({onClose,asset}) {
                 <div className="nft-header-description mt-4 mb-4">
                   {asset.asset.event.description}
                 </div>
-                {asset.asset.event.event_url && (
-                  <div className="panel-widget-content mt-4">
+                
+                <div className="btn-group mt-4">
+                  {asset.asset.tokenId && (
+                    <Link
+                      href={`https://collectors.poap.xyz/token/${asset.asset.tokenId}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn"
+                    >
+                      <SVG src={`../icons/icon-poap.svg`} fill="#121212" width={20} height={20} />
+                      <span className="ml-1">POAP</span>
+                    </Link>
+                  )}
+                  {asset.asset.event.event_url && (
                     <Link
                       href={asset.asset.event.event_url}
                       target="_blank"
@@ -53,8 +65,8 @@ export default function PoapsModalContent({onClose,asset}) {
                       <SVG src={`../icons/icon-web.svg`} fill="#121212" width={20} height={20} />
                       <span className="ml-1">Website</span>
                     </Link>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </div>
 

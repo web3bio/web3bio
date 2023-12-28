@@ -355,9 +355,7 @@
         z-index: 99;
 
         .platform-action {
-          .btn {
-            opacity: 1;
-          }
+          opacity: 1;
         }
       }
 
@@ -404,17 +402,13 @@
     }
 
     .platform-action {
-      &.active {
-        .btn {
-          opacity: 1;
-        }
-      }
+      opacity: 0;
+      position: absolute;
+      right: .5rem;
+      top: .5rem;
 
-      .btn {
-        opacity: 0;
-        position: absolute;
-        right: .5rem;
-        top: .5rem;
+      &.active {
+        opacity: 1;
       }
     }
 
@@ -867,7 +861,7 @@
         border-radius: .4rem;
         flex: 0 0 14rem;
         min-height: 5rem;
-        padding: 1rem 1rem 1rem 0;
+        padding: 1rem 1rem .5rem 0;
         text-decoration: none;
         width: 14rem;
 
