@@ -252,6 +252,10 @@ export const NFTFilterMapping = {
     label: "Base",
     filters: "base",
   },
+  ["bsc"]: {
+    label: "BNB Smart Chain",
+    filters: "bsc",
+  },
   ["zora"]: {
     label: "Zora",
     filters: "zora",

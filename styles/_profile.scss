@@ -404,9 +404,6 @@
     }
 
     .platform-action {
-      display: none;
-      margin-top: .5rem;
-
       &.active {
         .btn {
           opacity: 1;
@@ -414,12 +411,10 @@
       }
 
       .btn {
-        background: var(--widget-primary-color, lighten($bg-color, 2%));
-        border: .05rem solid rgba($dark-color, .075);
-        color: $light-color;
         opacity: 0;
-        transition: opacity .2s ease-in-out;
-        position: relative;
+        position: absolute;
+        right: .5rem;
+        top: .5rem;
       }
     }
 
