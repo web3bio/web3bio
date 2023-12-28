@@ -12,7 +12,7 @@ const getNodeRadius = (d) => (d.isIdentity ? IdentityNodeSize : NFTNodeSize);
 const getMarkerRefX = (d) => {
   if (d.isSingle)
     return d.target.isIdentity ? IdentityNodeSize + 30 : NFTNodeSize + 16;
-  return  IdentityNodeSize + 26
+  return IdentityNodeSize + 26;
 };
 
 const resolveGraphData = (source) => {
@@ -147,11 +147,13 @@ const updateNodes = (nodeContainer) => {
   const displayName = nodeContainer
     .append("text")
     .attr("class", "displayName")
+    .attr("id", (d) => d.id)
     .text((d) => formatText(d.displayName || d.identity));
 
   const identity = nodeContainer
     .append("text")
     .attr("class", "identity")
+    .attr("id", (d) => d.id)
     .style("display", (d) => (d.isIdentity ? "normal" : "none"))
     .text((d) =>
       d.displayName !== d.identity && d.displayName !== ""
@@ -181,6 +183,13 @@ export default function D3ResultGraph(props) {
       const links = _data.links.map((d) => ({ ...d }));
       const nodes = _data.nodes.map((d) => ({ ...d }));
 
+      const removeHighlight = () => {
+        setCurrentNode(null);
+        edgePath.attr("class", "edge-path");
+        circle.attr("class", "node");
+        displayName.attr("class", "displayName");
+        identity.attr("class", "identity");
+      };
       const svg = d3
         .select(".svg-canvas")
         .attr("width", "100%")
@@ -193,11 +202,7 @@ export default function D3ResultGraph(props) {
               svg.attr("transform", event.transform);
             })
         )
-        .on("click", (e) => {
-          edgePath.attr("class", "edge-path");
-          circle.attr("class", "node");
-          setCurrentNode(null);
-        })
+        .on("click", removeHighlight)
         .append("svg:g");
 
       const generateSimulation = () => {
@@ -250,7 +255,7 @@ export default function D3ResultGraph(props) {
         .data(links)
         .enter()
         .append("path")
-        .attr("stroke-width", .8)
+        .attr("stroke-width", 0.8)
         .attr("class", "edge-path")
         .attr("id", (d) => "edgepath" + d.id)
         .attr("marker-end", (d) => `url(#arrow-${d.id})`);
@@ -299,20 +304,13 @@ export default function D3ResultGraph(props) {
         .on("click", (e, i) => {
           e.preventDefault();
           e.stopPropagation();
-          edgePath.attr("class", "edge-path");
-          circle.attr("class", "node");
+          removeHighlight();
           if (!i.isIdentity) {
             setCurrentNode(null);
             return;
           }
           setCurrentNode(i);
-          // todo: modify selected here
-          edgePath
-            .filter((l) => l.source.id === i.id || l.target.id === i.id)
-            .attr("class", "edge-path edge-selected");
-          circle
-            .filter((l) => l.id === i.id)
-            .attr("class", "node node-selected");
+          highlightNode(i);
         });
 
       const { displayName, identity, identityBadge, identityIcon, ensBadge } =
@@ -373,6 +371,20 @@ export default function D3ResultGraph(props) {
           return transformation;
         });
       };
+
+      const highlightNode = (i) => {
+        edgePath
+          .filter((l) => l.source.id === i.id || l.target.id === i.id)
+          .attr("class", "edge-path edge-selected");
+        circle.filter((l) => l.id === i.id).attr("class", "node node-selected");
+        displayName
+          .filter((l) => l.id === i.id)
+          .attr("class", "displayName displayName-selected");
+        identity
+          .filter((l) => l.id === i.id)
+          .attr("class", "identity identity-selected");
+      };
+
       d3.timeout(() => {
         for (
           let i = 0,
@@ -390,6 +402,7 @@ export default function D3ResultGraph(props) {
       });
       return svg.node();
     };
+
     if (!chart && chartContainer) {
       const res = resolveGraphData(data);
       chart = generateGraph({ nodes: res.nodes, links: res.edges });

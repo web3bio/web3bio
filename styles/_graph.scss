@@ -84,22 +84,21 @@
     .svg-canvas {
       .edge-selected {
         stroke-width: 2;
-        filter: drop-shadow(3px 5px 7px #cecece)
       }
 
       .node-selected {
         stroke-width: 3;
-        filter: drop-shadow(2px 4px 6px #cecece)
       }
 
       .edge-path {
         stroke: #cecece;
         fill: transparent;
         pointer-events: none;
+
       }
 
       .edge-label {
-        fill: #cecece;
+        fill: #999;
         font-size: 10px;
         font-weight: 400;
         pointer-events: none;
@@ -125,6 +124,14 @@
         user-select: none;
         font-size: 10px;
         font-weight: 300;
+      }
+
+      .identity-selected {
+        font-weight: 500;
+      }
+
+      .displayName-selected {
+        font-weight: 600;
       }
 
       .identity-icon {
