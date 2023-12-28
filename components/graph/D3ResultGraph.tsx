@@ -186,6 +186,7 @@ export default function D3ResultGraph(props) {
       const removeHighlight = () => {
         setCurrentNode(null);
         edgePath.attr("class", "edge-path");
+        maskCircle.attr("opacity", 0);
         circle.attr("class", "node");
         displayName.attr("class", "displayName");
         identity.attr("class", "identity");
@@ -294,22 +295,24 @@ export default function D3ResultGraph(props) {
 
       const circle = nodeContainer
         .append("circle")
-        .attr("class", "node")
         .attr("stroke-width", 2)
         .attr("r", (d) => getNodeRadius(d))
         .attr("stroke", (d) => SocialPlatformMapping(d.platform).color)
         .attr("fill", (d) =>
           d.isIdentity ? "#fff" : SocialPlatformMapping(PlatformType.ens).color
-        )
+        );
+      const maskCircle = nodeContainer
+        .attr("id", (d) => d.id)
+        .append("circle")
+        .attr("class", "node")
+        .attr("fill", (d) => SocialPlatformMapping(d.platform).color)
+        .attr("fill-opacity", 0.1)
+        .attr("opacity", 0)
+        .attr("r", (d) => getNodeRadius(d))
         .on("click", (e, i) => {
           e.preventDefault();
           e.stopPropagation();
           removeHighlight();
-          if (!i.isIdentity) {
-            setCurrentNode(null);
-            return;
-          }
-          setCurrentNode(i);
           highlightNode(i);
         });
 
@@ -332,6 +335,7 @@ export default function D3ResultGraph(props) {
         });
 
         circle.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
+        maskCircle.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
 
         displayName
           .attr("dx", (d) => d.x)
@@ -373,10 +377,13 @@ export default function D3ResultGraph(props) {
       };
 
       const highlightNode = (i) => {
+        setCurrentNode(i);
+        nodeContainer.filter((l) => l.id === i.id).raise();
         edgePath
           .filter((l) => l.source.id === i.id || l.target.id === i.id)
           .attr("class", "edge-path edge-selected");
         circle.filter((l) => l.id === i.id).attr("class", "node node-selected");
+        maskCircle.filter((l) => l.id === i.id).attr("opacity", 1);
         displayName
           .filter((l) => l.id === i.id)
           .attr("class", "displayName displayName-selected");
