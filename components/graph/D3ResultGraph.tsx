@@ -268,7 +268,7 @@ export default function D3ResultGraph(props) {
         .append("text")
         .attr("class", "edge-label")
         .attr("dx", ".5em")
-        .attr("dy", 2)
+        .attr("dy", '-.5em')
         .attr("text-anchor", "middle")
         .text((d) => (d.label ? SocialPlatformMapping(d.label).label : ""));
 
