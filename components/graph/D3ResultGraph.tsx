@@ -8,6 +8,13 @@ import SVG from "react-inlinesvg";
 const IdentityNodeSize = 48;
 const NFTNodeSize = 14;
 
+const getNodeRadius = (d) => (d.isIdentity ? IdentityNodeSize : NFTNodeSize);
+const getMarkerRefX = (d) => {
+  if (d.isSingle)
+    return d.target.isIdentity ? IdentityNodeSize + 30 : NFTNodeSize + 16;
+  return  IdentityNodeSize + 26
+};
+
 const resolveGraphData = (source) => {
   const nodes = new Array<any>();
   const edges = new Array<any>();
@@ -41,7 +48,7 @@ const resolveGraphData = (source) => {
       source: from.uuid,
       target: to.uuid,
       label: resolvedPlatform ? resolvedPlatform.key : x.source,
-      id: `${from.uuid}-${to.uuid}`,
+      id: `${from.uuid},${to.uuid}`,
       isIdentity: true,
     });
     from.nft.forEach((k) => {
@@ -59,7 +66,7 @@ const resolveGraphData = (source) => {
           source: from.uuid,
           target: k.uuid,
           // label: "hold",
-          id: `${from.uuid}-${k.uuid}`,
+          id: `${from.uuid},${k.uuid}`,
         });
       }
     });
@@ -78,8 +85,7 @@ const resolveGraphData = (source) => {
         edges.push({
           source: to.uuid,
           target: k.uuid,
-          // label: "hold",
-          id: `${to.uuid}-${k.uuid}`,
+          id: `${to.uuid},${k.uuid}`,
           isTransferred: true,
         });
       }
@@ -87,7 +93,17 @@ const resolveGraphData = (source) => {
   });
   const _nodes = _.uniqBy(nodes, "id");
   const _edges = _.uniqBy(edges, "id");
-  return { nodes: _nodes, edges: _edges };
+  const isSingleEdge = (d) => {
+    const idArr = d.id.split(",");
+    if (_edges.find((x) => x.id === `${idArr[1]},${idArr[0]}`)) return false;
+    return true;
+  };
+  const resolvedEdges = _edges.map((x) => ({
+    ...x,
+    isSingle: isSingleEdge(x),
+  }));
+
+  return { nodes: _nodes, edges: resolvedEdges };
 };
 
 function calcTranslation(targetDistance, point0, point1) {
@@ -222,10 +238,9 @@ export default function D3ResultGraph(props) {
         .attr("id", (d) => `arrow-${d.id}`)
         .attr("viewBox", "0 -5 10 10")
         .attr("markerUnits", "userSpaceOnUse")
-        // todo: check is reverse link here, and modify
-        .attr("refX", (d) => (d.target.isIdentity ? 80 : 22))
         .attr("markerWidth", 7)
         .attr("markerHeight", 7)
+        .attr("refX", (d) => getMarkerRefX(d))
         .attr("orient", "auto")
         .append("path")
         .attr("fill", "#cecece")
@@ -276,7 +291,7 @@ export default function D3ResultGraph(props) {
         .append("circle")
         .attr("class", "node")
         .attr("stroke-width", 2)
-        .attr("r", (d) => (d.isIdentity ? IdentityNodeSize : NFTNodeSize))
+        .attr("r", (d) => getNodeRadius(d))
         .attr("stroke", (d) => SocialPlatformMapping(d.platform).color)
         .attr("fill", (d) =>
           d.isIdentity ? "#fff" : SocialPlatformMapping(PlatformType.ens).color
@@ -308,13 +323,13 @@ export default function D3ResultGraph(props) {
           const rightwardSign = d.target.x > d.source.x ? 2 : -2;
           return (
             "M" +
-            (d.source.x + rightwardSign * delta.dx) +
+            (d.isSingle ? d.source.x : d.source.x + rightwardSign * delta.dx) +
             "," +
-            (d.source.y + -rightwardSign * delta.dy) +
+            (d.isSingle ? d.source.y : d.source.y + -rightwardSign * delta.dy) +
             "L" +
-            (d.target.x + rightwardSign * delta.dx) +
+            (d.isSingle ? d.target.x : d.target.x + rightwardSign * delta.dx) +
             "," +
-            (d.target.y + -rightwardSign * delta.dy)
+            (d.isSingle ? d.target.y : d.target.y + -rightwardSign * delta.dy)
           );
         });
 
