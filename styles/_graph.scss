@@ -104,6 +104,10 @@
         pointer-events: none;
       }
 
+      .edge-label-selected {
+        fill: #000;
+      }
+
       .node {
         cursor: pointer;
       }

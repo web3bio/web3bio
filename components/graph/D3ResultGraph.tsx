@@ -185,6 +185,7 @@ export default function D3ResultGraph(props) {
 
       const removeHighlight = () => {
         setCurrentNode(null);
+        edgeLabels.attr("class", "edge-label");
         edgePath.attr("class", "edge-path");
         maskCircle.attr("opacity", 0);
         circle.attr("class", "node");
@@ -266,9 +267,10 @@ export default function D3ResultGraph(props) {
         .data(links)
         .enter()
         .append("text")
+        .attr("id", (d) => d.id)
         .attr("class", "edge-label")
         .attr("dx", ".5em")
-        .attr("dy", '-.5em')
+        .attr("dy", "-.5em")
         .attr("text-anchor", "middle")
         .text((d) => (d.label ? SocialPlatformMapping(d.label).label : ""));
 
@@ -379,6 +381,9 @@ export default function D3ResultGraph(props) {
       const highlightNode = (i) => {
         setCurrentNode(i);
         nodeContainer.filter((l) => l.id === i.id).raise();
+        edgeLabels
+          .filter((l) => l.id.includes(i.id))
+          .attr("class", "edge-label edge-label-selected");
         edgePath
           .filter((l) => l.source.id === i.id || l.target.id === i.id)
           .attr("class", "edge-path edge-selected");
