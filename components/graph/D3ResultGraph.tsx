@@ -65,7 +65,6 @@ const resolveGraphData = (source) => {
         edges.push({
           source: from.uuid,
           target: k.uuid,
-          // label: "hold",
           id: `${from.uuid},${k.uuid}`,
         });
       }
@@ -189,7 +188,7 @@ export default function D3ResultGraph(props) {
         .call(
           d3
             .zoom()
-            .scaleExtent([1, 10])
+            .scaleExtent([1, 1])
             .on("zoom", (event) => {
               svg.attr("transform", event.transform);
             })
@@ -209,11 +208,11 @@ export default function D3ResultGraph(props) {
             d3
               .forceLink(links)
               .id((d) => d.id)
-              .distance((d) => (d.target.isIdentity ? 70 : 10))
+              .distance((d) => (d.target.isIdentity ? 60 : 10))
           )
           .force("charge", d3.forceManyBody())
           .force("x", d3.forceX(width / 2).strength(0.5))
-          .force("y", d3.forceY(height / 2).strength(1))
+          .force("y", d3.forceY(height / 2).strength(1.25))
           .force(
             "collision",
             d3
@@ -251,6 +250,7 @@ export default function D3ResultGraph(props) {
         .data(links)
         .enter()
         .append("path")
+        .attr("stroke-width", .8)
         .attr("class", "edge-path")
         .attr("id", (d) => "edgepath" + d.id)
         .attr("marker-end", (d) => `url(#arrow-${d.id})`);

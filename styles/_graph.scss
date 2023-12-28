@@ -83,6 +83,7 @@
 
     .svg-canvas {
       .edge-selected {
+        stroke-width: 2;
         filter: drop-shadow(3px 5px 7px #cecece)
       }
 
@@ -94,7 +95,6 @@
       .edge-path {
         stroke: #cecece;
         fill: transparent;
-        stroke-width: 0.8;
         pointer-events: none;
       }
 
