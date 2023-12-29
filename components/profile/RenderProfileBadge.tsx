@@ -77,7 +77,6 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
       popupStyle={{
         display: showPopup ? "block" : "none",
         position: "absolute",
-        transform: "translateY(-120px)",
       }}
       destroyPopupOnHide
       onPopupVisibleChange={(visible) => setShowPopup(visible)}
