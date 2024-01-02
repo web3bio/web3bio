@@ -44,11 +44,12 @@ const RenderWidgetPhiland = ({ address }) => {
   if (!data || !data?.philandList?.data?.length) return null;
 
   if (process.env.NODE_ENV !== "production") {
-    console.log("Phi Data:", data);
+    console.log("Phi List:", data, "Phi Rank:", rankData);
   }
 
   return (
-    <div className="profile-widget-full" id="rss">
+    <div className="profile-widget-full" id="philand">
+      {/* TODO: className here to modify */}
       <div className="profile-widget profile-widget-rss">
         <div className="profile-widget-header">
           <h2 className="profile-widget-title">
@@ -69,7 +70,7 @@ const RenderWidgetPhiland = ({ address }) => {
             </div>
           </div>
         </div>
-
+        {/* TODO: className here to modify */}
         <div className="widget-rss-list noscrollbar">
           {data?.philandList?.data?.map((x, idx) => (
             <PhilandItem data={x} key={idx} />
