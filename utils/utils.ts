@@ -278,3 +278,11 @@ export const mapLinks = (data) => {
   );
   return _.uniqBy(arr, (x) => x.handle?.toLowerCase() && x.platform);
 };
+
+export const isValidURL = (str) => {
+  try {
+    return !!new URL(str);
+  } catch (e) {
+    return false;
+  }
+};

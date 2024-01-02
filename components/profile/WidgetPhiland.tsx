@@ -4,14 +4,26 @@ import SVG from "react-inlinesvg";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { updatePhilandWidget } from "../../state/widgets/action";
-import RssItem from "./RssItem";
-import { QUERY_PHILAND_LIST } from "../apis/philand";
+import { QUERY_PHILAND_LIST, QUERY_PHILAND_RANK } from "../apis/philand";
 import { useQuery } from "@apollo/client";
+import PhilandItem from "./PhilandItem";
 
 const RenderWidgetPhiland = ({ address }) => {
   const { data, loading, error } = useQuery(QUERY_PHILAND_LIST, {
     variables: {
-      address:address,
+      address,
+    },
+    context: {
+      clientName: "philand",
+    },
+  });
+  const {
+    data: rankData,
+    loading: rankLoading,
+    error: rankError,
+  } = useQuery(QUERY_PHILAND_RANK, {
+    variables: {
+      address,
     },
     context: {
       clientName: "philand",
@@ -23,52 +35,45 @@ const RenderWidgetPhiland = ({ address }) => {
     if (!loading) {
       dispatch(
         updatePhilandWidget({
-          isEmpty: !data?.items?.length,
+          isEmpty: !data?.philandList?.data?.length,
           initLoading: false,
         })
       );
     }
   }, [data, loading, dispatch]);
+  if (!data || !data?.philandList?.data?.length) return null;
 
-  console.log(data, "data");
-
-  if (!data || !data?.items?.length) return null;
-
-  // if (process.env.NODE_ENV !== "production") {
-  //   console.log("RSS Data:", data);
-  // }
+  if (process.env.NODE_ENV !== "production") {
+    console.log("Phi Data:", data);
+  }
 
   return (
     <div className="profile-widget-full" id="rss">
       <div className="profile-widget profile-widget-rss">
         <div className="profile-widget-header">
           <h2 className="profile-widget-title">
-            <span className="emoji-large mr-2">📰 </span>
+            <span className="emoji-large mr-2">🧩 </span>
             Philand
           </h2>
-          {data.description && (
-            <h3 className="text-assistive">{data.description}</h3>
-          )}
+
+          <div className="widget-action">
+            <div className="action-icon">
+              <Link
+                className="btn btn-sm"
+                title="More on Phi Land"
+                href={"https://philand.xyz/"}
+                target={"_blank"}
+              >
+                <SVG src="icons/icon-open.svg" width={20} height={20} />
+              </Link>
+            </div>
+          </div>
         </div>
 
         <div className="widget-rss-list noscrollbar">
-          <div className="rss-website">
-            <div className="rss-website-title mb-1">{data.title}</div>
-            <div className="rss-website-description mb-4">
-              {data.description}
-            </div>
-            <Link
-              className="btn btn-sm"
-              title="More Articles"
-              href={data.link}
-              target={"_blank"}
-            >
-              <SVG src="icons/icon-open.svg" width={20} height={20} /> More
-            </Link>
-          </div>
-          {data?.items.map((x, idx) => {
-            return <RssItem data={x} key={idx} />;
-          })}
+          {data?.philandList?.data?.map((x, idx) => (
+            <PhilandItem data={x} key={idx} />
+          ))}
         </div>
       </div>
     </div>

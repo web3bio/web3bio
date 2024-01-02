@@ -298,11 +298,13 @@ export default function ProfileMain(props) {
                   <WidgetRSS fromServer={fromServer} domain={data.identity} />
                 </Suspense>
               </div>
-              <div className="web3-section-widgets">
-                <Suspense fallback={<p>Loading Philand...</p>}>
-                  <WidgetPhiland address={data.address} />
-                </Suspense>
-              </div>
+              {relations.some((x) => x.platform === PlatformType.ens) && (
+                <div className="web3-section-widgets">
+                  <Suspense fallback={<p>Loading Philand...</p>}>
+                    <WidgetPhiland address={data.address} />
+                  </Suspense>
+                </div>
+              )}
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading DegenScore...</p>}>
                   <WidgetDegenScore address={data.address} />
