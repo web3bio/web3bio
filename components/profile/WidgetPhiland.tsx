@@ -7,8 +7,10 @@ import { updatePhilandWidget } from "../../state/widgets/action";
 import { QUERY_PHILAND_LIST, QUERY_PHILAND_RANK } from "../apis/philand";
 import { useQuery } from "@apollo/client";
 import PhilandItem from "./PhilandItem";
+import _ from "lodash";
+import { isValidURL } from "../../utils/utils";
 
-const RenderWidgetPhiland = ({ address }) => {
+const RenderWidgetPhiland = ({ address, domain }) => {
   const { data, loading, error } = useQuery(QUERY_PHILAND_LIST, {
     variables: {
       address,
@@ -72,7 +74,10 @@ const RenderWidgetPhiland = ({ address }) => {
         </div>
         {/* TODO: className here to modify */}
         <div className="widget-rss-list noscrollbar">
-          {data?.philandList?.data?.map((x, idx) => (
+          {_.sortBy(
+            _.sortBy(data?.philandList?.data, (d) => d.name !== domain),
+            (d) => !isValidURL(d.imageurl)
+          )?.map((x, idx) => (
             <PhilandItem data={x} key={idx} />
           ))}
         </div>

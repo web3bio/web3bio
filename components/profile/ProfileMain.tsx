@@ -301,7 +301,7 @@ export default function ProfileMain(props) {
               {relations.some((x) => x.platform === PlatformType.ens) && (
                 <div className="web3-section-widgets">
                   <Suspense fallback={<p>Loading Phi Land...</p>}>
-                    <WidgetPhiland address={data.address} />
+                    <WidgetPhiland address={data.address} domain={data.identity} />
                   </Suspense>
                 </div>
               )}
