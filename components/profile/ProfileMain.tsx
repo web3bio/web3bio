@@ -21,6 +21,7 @@ import { useSelector } from "react-redux";
 import { AppState } from "../../state";
 import { WidgetState } from "../../state/widgets/reducer";
 import { Loading } from "../shared/Loading";
+import { WidgetPhiland } from "./WidgetPhiland";
 
 export default function ProfileMain(props) {
   const {
@@ -35,7 +36,7 @@ export default function ProfileMain(props) {
   } = props;
   const [isCopied, setIsCopied] = useState(false);
   const { isOpen, modalType, closeModal, openModal, params } = useModal();
-  
+
   const profileWidgetStates = useSelector<AppState, WidgetState>(
     (state) => state.widgets
   );
@@ -295,6 +296,11 @@ export default function ProfileMain(props) {
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading Articles...</p>}>
                   <WidgetRSS fromServer={fromServer} domain={data.identity} />
+                </Suspense>
+              </div>
+              <div className="web3-section-widgets">
+                <Suspense fallback={<p>Loading Philand...</p>}>
+                  <WidgetPhiland address={data.address} />
                 </Suspense>
               </div>
               <div className="web3-section-widgets">

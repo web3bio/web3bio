@@ -1,6 +1,4 @@
 "use client";
-import { ApolloProvider } from "@apollo/client";
-import client from "../../utils/apollo";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -42,7 +40,6 @@ export default function HomePage() {
   }, [router, searchParams]);
 
   return (
-    <ApolloProvider client={client}>
       <div
         className={searchFocus ? "web3bio-search focused" : "web3bio-search"}
       >
@@ -104,6 +101,5 @@ export default function HomePage() {
           ) : null}
         </div>
       </div>
-    </ApolloProvider>
   );
 }
