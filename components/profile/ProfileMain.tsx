@@ -294,23 +294,18 @@ export default function ProfileMain(props) {
                   />
                 </Suspense>
               </div>
-              {relations.some(
-                (x) =>
-                  [PlatformType.ens, PlatformType.dotbit].includes(
-                    x.platform
-                  ) || regexEns.test(data.identity)
-              ) && (
+              {([PlatformType.ens, PlatformType.dotbit].includes(
+                data.platform
+              ) ||
+                regexEns.test(data.identity)) && (
                 <div className="web3-section-widgets">
                   <Suspense fallback={<p>Loading Articles...</p>}>
                     <WidgetRSS fromServer={fromServer} domain={data.identity} />
                   </Suspense>
                 </div>
               )}
-              {relations.some(
-                (x) =>
-                  x.platform === PlatformType.ens ||
-                  regexEns.test(data.identity)
-              ) && (
+              {(data.platform === PlatformType.ens ||
+                regexEns.test(data.identity)) && (
                 <div className="web3-section-widgets">
                   <Suspense fallback={<p>Loading Phi Land...</p>}>
                     <WidgetPhiland
