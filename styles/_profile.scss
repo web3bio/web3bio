@@ -165,10 +165,11 @@
       box-shadow: 0 .05rem .1rem var(--badge-bg-color, rgba($dark-color, .05));
       display: flex;
       height: 1.6rem;
+      max-width: 100%;
       padding: .25rem;
       text-decoration: none;
       transition: all .2s ease;
-
+      
       &:focus,
       &:hover {
         box-shadow: 0 .05rem .1rem var(--badge-bg-color, rgba($dark-color, .05)), 0 .05rem .8rem rgba($dark-color, .05);
@@ -196,7 +197,11 @@
     }
 
     .platform-badge-name {
+      flex: 1 1 auto;
+      overflow: hidden;
       padding: 0 .3rem 0 .1rem;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 

@@ -201,7 +201,7 @@ export default function ProfileMain(props) {
                     }`}
                     title={`${pageTitle} ${
                       SocialPlatformMapping(x.platform).label
-                    }`}
+                    }: ${x.identity}`}
                     style={{
                       ["--badge-primary-color" as string]:
                         SocialPlatformMapping(x.platform).color || "#000",
