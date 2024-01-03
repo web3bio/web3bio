@@ -13,7 +13,8 @@ import { isValidURL } from "../../utils/utils";
 const RenderWidgetPhiland = ({ address, domain }) => {
   const { data, loading, error } = useQuery(QUERY_PHILAND_INFO, {
     variables: {
-      address: domain,
+      address: address,
+      name: domain
     },
     context: {
       clientName: "philand",
