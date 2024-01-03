@@ -259,21 +259,6 @@
           font-size: 85%;
           line-height: 1.2rem;
         }
-
-        .profile-card {
-          bottom: 100%;
-          display: none;
-          left: 50%;
-          position: absolute;
-          transform: translateX(-50%);
-        }
-
-        &:focus,
-        &:hover {
-          .profile-card {
-            display: flex;
-          }
-        }
       }
     }
 
