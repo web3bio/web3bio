@@ -4,28 +4,16 @@ import SVG from "react-inlinesvg";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { updatePhilandWidget } from "../../state/widgets/action";
-import { QUERY_PHILAND_LIST, QUERY_PHILAND_RANK } from "../apis/philand";
+import { QUERY_PHILAND_INFO } from "../apis/philand";
 import { useQuery } from "@apollo/client";
 import PhilandItem from "./PhilandItem";
 import _ from "lodash";
 import { isValidURL } from "../../utils/utils";
 
 const RenderWidgetPhiland = ({ address, domain }) => {
-  const { data, loading, error } = useQuery(QUERY_PHILAND_LIST, {
+  const { data, loading, error } = useQuery(QUERY_PHILAND_INFO, {
     variables: {
-      address,
-    },
-    context: {
-      clientName: "philand",
-    },
-  });
-  const {
-    data: rankData,
-    loading: rankLoading,
-    error: rankError,
-  } = useQuery(QUERY_PHILAND_RANK, {
-    variables: {
-      address,
+      address: domain,
     },
     context: {
       clientName: "philand",
@@ -46,7 +34,12 @@ const RenderWidgetPhiland = ({ address, domain }) => {
   if (!data || !data?.philandList?.data?.length) return null;
 
   if (process.env.NODE_ENV !== "production") {
-    console.log("Phi List:", data, "Phi Rank:", rankData);
+    console.log(
+      "Phi List:",
+      data?.philandList?.data,
+      "Phi Rank:",
+      data?.phiRank?.data
+    );
   }
 
   return (
@@ -75,8 +68,8 @@ const RenderWidgetPhiland = ({ address, domain }) => {
         {/* TODO: className here to modify */}
         <div className="widget-rss-list noscrollbar">
           {_.sortBy(
-            _.sortBy(data?.philandList?.data, (d) => d.name !== domain),
-            (d) => !isValidURL(d.imageurl)
+            data?.philandList?.data.filter((x) => isValidURL(x.imageurl)),
+            (d) => d.name !== domain
           )?.map((x, idx) => (
             <PhilandItem data={x} key={idx} />
           ))}
