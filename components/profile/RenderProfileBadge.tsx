@@ -8,6 +8,7 @@ import Clipboard from "react-clipboard.js";
 import { formatText } from "../../utils/utils";
 import { PlatformType } from "../../utils/platform";
 import { Avatar } from "../shared/Avatar";
+import Trigger from "@rc-component/trigger";
 
 interface RenderProfileBadgeProps {
   identity: string;
@@ -17,8 +18,14 @@ interface RenderProfileBadgeProps {
 }
 
 export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
-  const { parentRef, identity, platform = PlatformType.ens, remoteFetch } = props;
+  const {
+    parentRef,
+    identity,
+    platform = PlatformType.ens,
+    remoteFetch,
+  } = props;
   const [visible, setVisible] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
   const [fetched, setFetched] = useState(false);
   const ref = useRef(null);
   const { data, isValidating, error } = useSWR(
@@ -59,26 +66,27 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
       }
     };
   }, [parentRef, data]);
-
   return (
-    <div ref={ref} className="feed-token">
-      {data?.avatar && (
-        <Image
-          className="feed-token-icon"
-          src={data.avatar}
-          alt={data.displayName}
-          height={20}
-          width={20}
-          loading="lazy"
-        />
-      )}
-      <span className="feed-token-value" title={data?.displayName || identity}>
-        {data?.displayName || formatText(identity)}
-      </span>
-      {(data && !data?.error) && (
+    <Trigger
+      action={["hover", "focus"]}
+      popupVisible={showPopup}
+      popupAlign={{
+        targetOffset: [0, 80],
+      }}
+      popupStyle={{
+        display: showPopup && data ? "block" : "none",
+        position: "absolute",
+      }}
+      autoDestroy
+      onPopupVisibleChange={(visible) => setShowPopup(visible)}
+      popup={
         <div className="profile-card">
           <div className="profile-card-action">
-            <Link href={`${process.env.NEXT_PUBLIC_BASE_URL}/${relatedPath}`} target="_blank" className="btn btn-sm btn-link">
+            <Link
+              href={`${process.env.NEXT_PUBLIC_BASE_URL}/${relatedPath}`}
+              target="_blank"
+              className="btn btn-sm btn-link"
+            >
               <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
             </Link>
           </div>
@@ -111,11 +119,29 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
               className="action"
             />
           </Clipboard>
-          <div className="profile-card-description">
-            {data?.description}
-          </div>
+          <div className="profile-card-description">{data?.description}</div>
         </div>
-      )}
-    </div>
-  )
+      }
+    >
+      <div ref={ref} className="feed-token">
+        {data?.avatar && (
+          <Image
+            className="feed-token-icon"
+            src={data.avatar}
+            alt={data.displayName}
+            height={20}
+            width={20}
+            loading="lazy"
+          />
+        )}
+
+        <span
+          className="feed-token-value"
+          title={data?.displayName || identity}
+        >
+          {data?.displayName || formatText(identity)}
+        </span>
+      </div>
+    </Trigger>
+  );
 }
