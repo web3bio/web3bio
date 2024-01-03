@@ -66,7 +66,6 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
       }
     };
   }, [parentRef, data]);
-
   return (
     <Trigger
       action={["hover", "focus"]}
@@ -75,10 +74,10 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
         targetOffset: [0, 80],
       }}
       popupStyle={{
-        display: showPopup ? "block" : "none",
+        display: showPopup && data ? "block" : "none",
         position: "absolute",
       }}
-      destroyPopupOnHide
+      autoDestroy
       onPopupVisibleChange={(visible) => setShowPopup(visible)}
       popup={
         <div className="profile-card">
