@@ -10,11 +10,11 @@ import PhilandItem from "./PhilandItem";
 import _ from "lodash";
 import { isValidURL } from "../../utils/utils";
 
-const RenderWidgetPhiland = ({ address, domain }) => {
+const RenderWidgetPhiland = ({ address, domain, onShowDetail }) => {
   const { data, loading, error } = useQuery(QUERY_PHILAND_INFO, {
     variables: {
       address: address,
-      name: domain
+      name: domain,
     },
     context: {
       clientName: "philand",
@@ -50,7 +50,7 @@ const RenderWidgetPhiland = ({ address, domain }) => {
         <div className="profile-widget-header">
           <h2 className="profile-widget-title">
             <span className="emoji-large mr-2">🧩 </span>
-            Philand
+            Phi Land
           </h2>
 
           <div className="widget-action">
@@ -72,7 +72,19 @@ const RenderWidgetPhiland = ({ address, domain }) => {
             data?.philandList?.data.filter((x) => isValidURL(x.imageurl)),
             (d) => d.name !== domain
           )?.map((x, idx) => (
-            <PhilandItem data={x} key={idx} />
+            <PhilandItem
+              onShowDetail={(v) =>
+                onShowDetail({
+                  ...v,
+                  links: data?.philandLink?.data?.filter(
+                    (x) => x.title && x.url
+                  ),
+                  rank: data?.phiRank?.data,
+                })
+              }
+              data={x}
+              key={idx}
+            />
           ))}
         </div>
       </div>

@@ -4,10 +4,17 @@ import Image from "next/image";
 import { isValidURL } from "../../utils/utils";
 
 export default function PhilandItem(props) {
-  const { data } = props;
+  const { data, onShowDetail } = props;
 
   return (
-    <Link href={data.landurl || ""} className="rss-item" target={"_blank"}>
+    <div
+      className="rss-item"
+      onClick={() =>
+        onShowDetail({
+          ...data,
+        })
+      }
+    >
       {data.imageurl && isValidURL(data.imageurl) && (
         <Image
           src={data.imageurl}
@@ -18,6 +25,6 @@ export default function PhilandItem(props) {
         />
       )}
       <div className="rss-item-title">{data.name ? data.name : "Untitled"}</div>
-    </Link>
+    </div>
   );
 }

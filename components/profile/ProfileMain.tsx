@@ -22,6 +22,7 @@ import { AppState } from "../../state";
 import { WidgetState } from "../../state/widgets/reducer";
 import { Loading } from "../shared/Loading";
 import { WidgetPhiland } from "./WidgetPhiland";
+import { regexEns } from "../../utils/regexp";
 
 export default function ProfileMain(props) {
   const {
@@ -293,15 +294,35 @@ export default function ProfileMain(props) {
                   />
                 </Suspense>
               </div>
-              <div className="web3-section-widgets">
-                <Suspense fallback={<p>Loading Articles...</p>}>
-                  <WidgetRSS fromServer={fromServer} domain={data.identity} />
-                </Suspense>
-              </div>
-              {relations.some((x) => x.platform === PlatformType.ens) && (
+              {relations.some(
+                (x) =>
+                  [PlatformType.ens, PlatformType.dotbit].includes(
+                    x.platform
+                  ) || regexEns.test(data.identity)
+              ) && (
+                <div className="web3-section-widgets">
+                  <Suspense fallback={<p>Loading Articles...</p>}>
+                    <WidgetRSS fromServer={fromServer} domain={data.identity} />
+                  </Suspense>
+                </div>
+              )}
+              {relations.some(
+                (x) =>
+                  x.platform === PlatformType.ens ||
+                  regexEns.test(data.identity)
+              ) && (
                 <div className="web3-section-widgets">
                   <Suspense fallback={<p>Loading Phi Land...</p>}>
-                    <WidgetPhiland address={data.address} domain={data.identity} />
+                    <WidgetPhiland
+                      onShowDetail={(v) => {
+                        openModal(ModalType.philand, {
+                          profile: data,
+                          data: v,
+                        });
+                      }}
+                      address={data.address}
+                      domain={data.identity}
+                    />
                   </Suspense>
                 </div>
               )}
