@@ -53,9 +53,9 @@ const RenderWidgetPOAP = ({ address, onShowDetail, fromServer }) => {
     return null;
   }
 
-  if (process.env.NODE_ENV !== "production") {
-    console.log("POAP Data:", data);
-  }
+  // if (process.env.NODE_ENV !== "production") {
+  //   console.log("POAP Data:", data);
+  // }
 
   return (
     <div className="profile-widget-full" id="poap">
