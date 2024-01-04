@@ -149,17 +149,16 @@ const updateNodes = (nodeContainer) => {
     .attr("class", "displayName")
     .attr("id", (d) => d.id)
     .text((d) => formatText(d.displayName || d.identity));
-
   const identity = nodeContainer
     .append("text")
     .attr("class", "identity")
     .attr("id", (d) => d.id)
     .style("display", (d) => (d.isIdentity ? "normal" : "none"))
-    .text((d) =>
-      d.displayName !== d.identity && d.displayName !== ""
-        ? formatText(d.identity)
-        : ""
-    );
+    .text((d) => {
+      if (d.displayName === "") return "";
+      if (d.displayName === d.identity) return formatText(d.address);
+      return formatText(d.identity);
+    });
   return {
     identityBadge,
     identityIcon,
@@ -219,7 +218,7 @@ export default function D3ResultGraph(props) {
           )
           .force("charge", d3.forceManyBody())
           .force("x", d3.forceX(width / 2).strength(0.5))
-          .force("y", d3.forceY(height / 2).strength(1.25))
+          .force("y", d3.forceY(height / 2).strength(1.3))
           .force(
             "collision",
             d3
@@ -270,7 +269,7 @@ export default function D3ResultGraph(props) {
         .attr("id", (d) => d.id)
         .attr("class", "edge-label")
         .attr("dx", ".5em")
-        .attr("dy", '3px')
+        .attr("dy", "3px")
         .attr("text-anchor", "middle")
         .text((d) => (d.label ? SocialPlatformMapping(d.label).label : ""));
 
@@ -341,11 +340,21 @@ export default function D3ResultGraph(props) {
 
         displayName
           .attr("dx", (d) => d.x)
-          .attr("dy", (d) => (d.isIdentity ? d.y : d.y + NFTNodeSize * 2))
+          .attr("dy", (d) => {
+            if (!d.isIdentity) return d.y + NFTNodeSize * 2;
+            if (d.address) return d.y;
+            if (
+              d.displayName !== "" &&
+              (d.displayName !== d.identity ||
+                d.platform === PlatformType.ethereum)
+            )
+              return d.y;
+            return d.y + 6;
+          })
           .attr("text-anchor", "middle");
         identity
           .attr("dx", (d) => d.x)
-          .attr("dy", (d) => (d.isIdentity ? d.y + 14 : 0))
+          .attr("dy", (d) => (d.isIdentity ? d.y + 12 : 0))
           .attr("text-anchor", "middle");
 
         identityBadge
