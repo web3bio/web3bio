@@ -342,11 +342,9 @@ export default function D3ResultGraph(props) {
           .attr("dx", (d) => d.x)
           .attr("dy", (d) => {
             if (!d.isIdentity) return d.y + NFTNodeSize * 2;
-            if (d.address) return d.y;
             if (
               d.displayName !== "" &&
-              (d.displayName !== d.identity ||
-                d.platform === PlatformType.ethereum)
+              (d.displayName !== d.identity || d.address)
             )
               return d.y;
             return d.y + 6;
