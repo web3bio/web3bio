@@ -50,7 +50,7 @@ const CollectionAboutRender = (props) => {
           {floorPriceItem && (
             <div className="widget-list-item" key="floorPriceItem">
               <div className="list-item-left">Floor Price</div>
-              <div className="list-item-right">
+              <div className="list-item-right text-bold">
                 {formatEther(BigInt(floorPriceItem?.value))}{" "}
                 {floorPriceItem.payment_token.symbol}
               </div>
@@ -61,7 +61,7 @@ const CollectionAboutRender = (props) => {
               return (
                 <div className="widget-list-item" key={`${x.key}-${idx}`}>
                   <div className="list-item-left">{x.label}</div>
-                  <div className="list-item-right">
+                  <div className="list-item-right text-bold text-uppercase">
                     {collection[x.key]?.toString()}
                   </div>
                 </div>
@@ -71,7 +71,7 @@ const CollectionAboutRender = (props) => {
           {collection.address && (
             <div className="widget-list-item" key="contractAddress">
               <div className="list-item-left">Contract Address</div>
-              <div className="list-item-right">
+              <div className="list-item-right text-bold">
                 <a href={`https://etherscan.io/address/${collection.address}`} target="_blank">
                   {formatText(collection.address)} ↗️
                 </a>
