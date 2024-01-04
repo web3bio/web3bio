@@ -17,68 +17,74 @@ export default function PhilandModalContent({ data, onClose, profile }) {
           <div className="btn btn-close" onClick={onClose}>
             <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
           </div>
-          <div className="preview-image preview-image-poap">
+          <div className="preview-image">
             <NFTAssetPlayer
               className={"img-container"}
               type={"image/png"}
               src={data.imageurl}
               alt={data.name}
-              placeholder={true}
+              placeholder={false}
             />
           </div>
-          <div className="preview-content">
-            <div className="panel-widget">
-              <div className="panel-widget-content">
-                <div
-                  className="nft-header-collection collection-title mb-4"
-                  style={{
-                    gap: ".25rem",
-                    alignItems: "center",
-                  }}
-                >
-                  <SVG
-                    className="collection-logo"
-                    src="../icons/icon-phi.svg"
-                    width={24}
-                    height={32}
-                  />
-                  <div className="collection-name text-ellipsis">Phi Land</div>
+          <div className="preview-main">
+            <div className="preview-content">
+              <div className="panel-widget">
+                <div className="panel-widget-content">
+                  <div
+                    className="nft-header-collection collection-title mb-4"
+                    style={{
+                      gap: ".25rem",
+                      alignItems: "center",
+                    }}
+                  >
+                    <SVG
+                      className="collection-logo"
+                      src="../icons/icon-phi.svg"
+                      fill={"#000"}
+                      width={24}
+                      height={32}
+                    />
+                    <div className="collection-name text-ellipsis">Phi</div>
+                  </div>
+                  <div className="nft-header-name h4">{profile.displayName} - Phi Land</div>
+                  <div className="btn-group mt-4">
+                    <Link
+                      href={`https://land.philand.xyz/${profile.identity}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn"
+                    >
+                      <SVG src={`../icons/icon-phi.svg`} fill="#121212" width={20} height={20} />
+                      <span className="ml-1">Visit Land</span>
+                    </Link>
+                  </div>
                 </div>
-                <div className="nft-header-name h4">{data.name}</div>
-                <div className="nft-header-description mt-4 mb-4">
-                  {profile.description}
-                </div>
-                {data.rank.rank && (
-                  <div className="phi-rank">
-                    <div className="icon">&#127942;</div>
-                    <div className="rank-label">
-                      <strong>{data.rank.rank}</strong> # {data.rank.tokenid}
+              </div>
+
+              {!!data?.links.length && (
+                <div className="panel-widget">
+                  <div className="panel-widget-title">Phi links</div>
+                  <div className="panel-widget-content">
+                    <div className="panel-widget-list">
+                      {data?.links?.map((x) => {
+                        return (
+                          <div key={x.url} className="widget-list-item">
+                            <div className="list-item-left text-bold">{x.title}</div>
+                            <Link
+                              href={x.url}
+                              target="_blank"
+                              className="list-item-right"
+                            >
+                              Link
+                              <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
+                            </Link>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
-                )}
-              </div>
-            </div>
-
-            <div className="panel-widget">
-              <div className="panel-widget-title">Phi Land links</div>
-              <div className="panel-widget-content">
-                <div className="panel-widget-list">
-                  {data.links.map((x) => {
-                    return (
-                      <div key={x.url} className="widget-list-item">
-                        <div className="list-item-left">{x.title}</div>
-                        <Link
-                          href={x.url}
-                          target="_blank"
-                          className="list-item-right"
-                        >
-                          {formatText(x.url, 15)}
-                        </Link>
-                      </div>
-                    );
-                  })}
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>

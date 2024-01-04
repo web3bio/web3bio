@@ -2,18 +2,15 @@
 import { useEffect, memo } from "react";
 import SVG from "react-inlinesvg";
 import Link from "next/link";
+import Image from "next/image";
 import { useDispatch } from "react-redux";
 import { updatePhilandWidget } from "../../state/widgets/action";
 import { QUERY_PHILAND_INFO } from "../apis/philand";
 import { useQuery } from "@apollo/client";
-import PhilandItem from "./PhilandItem";
-import _ from "lodash";
-import { isValidURL } from "../../utils/utils";
 
 const RenderWidgetPhiland = ({ address, domain, onShowDetail }) => {
   const { data, loading, error } = useQuery(QUERY_PHILAND_INFO, {
     variables: {
-      address: address,
       name: domain,
     },
     context: {
@@ -26,66 +23,48 @@ const RenderWidgetPhiland = ({ address, domain, onShowDetail }) => {
     if (!loading) {
       dispatch(
         updatePhilandWidget({
-          isEmpty: !data?.philandList?.data?.length,
+          isEmpty: !data?.philandImage?.imageurl,
           initLoading: false,
         })
       );
     }
   }, [data, loading, dispatch]);
-  if (!data || !data?.philandList?.data?.length) return null;
+  if (!data || !data?.philandImage?.imageurl) return null;
 
   if (process.env.NODE_ENV !== "production") {
-    console.log(
-      "Phi List:",
-      data?.philandList?.data,
-      "Phi Rank:",
-      data?.phiRank?.data
-    );
+    console.log("Phi:", data);
   }
 
   return (
-    <div className="profile-widget-full" id="philand">
-      {/* TODO: className here to modify */}
-      <div className="profile-widget profile-widget-rss">
+    <div className="profile-widget-half" id="philand">
+      <div 
+        className="profile-widget profile-widget-philand" 
+        onClick={() =>
+          onShowDetail({
+            imageurl: data?.philandImage?.imageurl,
+            links: data?.philandLink?.data?.filter(
+              (x) => x.title && x.url
+            ),
+          })
+      }>
         <div className="profile-widget-header">
           <h2 className="profile-widget-title">
-            <span className="emoji-large mr-2">🧩 </span>
+            <span className="emoji-large mr-2">🏝️ </span>
             Phi Land
           </h2>
-
-          <div className="widget-action">
-            <div className="action-icon">
-              <Link
-                className="btn btn-sm"
-                title="More on Phi Land"
-                href={"https://philand.xyz/"}
-                target={"_blank"}
-              >
-                <SVG src="icons/icon-open.svg" width={20} height={20} />
-              </Link>
-            </div>
-          </div>
+          <h3 className="text-assistive">
+            Phi is a new web3 world created from ENS domains & On-Chain Activity, enabling the easy visualization of On-Chain Identities, currently built on Polygon. Virtually interact with crypto protocols from around the Ethereum ecosystem.
+          </h3>
         </div>
-        {/* TODO: className here to modify */}
-        <div className="widget-rss-list noscrollbar">
-          {_.sortBy(
-            data?.philandList?.data.filter((x) => isValidURL(x.imageurl)),
-            (d) => d.name !== domain
-          )?.map((x, idx) => (
-            <PhilandItem
-              onShowDetail={(v) =>
-                onShowDetail({
-                  ...v,
-                  links: data?.philandLink?.data?.filter(
-                    (x) => x.title && x.url
-                  ),
-                  rank: data?.phiRank?.data,
-                })
-              }
-              data={x}
-              key={idx}
-            />
-          ))}
+        <div className="profile-widget-body">
+          <Image
+            className="img-philand"
+            src={data?.philandImage?.imageurl}
+            width={0}
+            height={0}
+            alt={"Phi Land"}
+            style={{ height: "auto", width: "100%" }}
+          />
         </div>
       </div>
     </div>

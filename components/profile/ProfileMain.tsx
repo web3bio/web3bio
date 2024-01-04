@@ -304,28 +304,6 @@ export default function ProfileMain(props) {
                   </Suspense>
                 </div>
               )}
-              {(data.platform === PlatformType.ens ||
-                regexEns.test(data.identity)) && (
-                <div className="web3-section-widgets">
-                  <Suspense fallback={<p>Loading Phi Land...</p>}>
-                    <WidgetPhiland
-                      onShowDetail={(v) => {
-                        openModal(ModalType.philand, {
-                          profile: data,
-                          data: v,
-                        });
-                      }}
-                      address={data.address}
-                      domain={data.identity}
-                    />
-                  </Suspense>
-                </div>
-              )}
-              <div className="web3-section-widgets">
-                <Suspense fallback={<p>Loading DegenScore...</p>}>
-                  <WidgetDegenScore address={data.address} />
-                </Suspense>
-              </div>
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading POAPs...</p>}>
                   <WidgetPOAP
@@ -335,6 +313,26 @@ export default function ProfileMain(props) {
                     }}
                     address={data.address}
                   />
+                </Suspense>
+              </div>
+              <div className="web3-section-widgets">
+                {(data.platform === PlatformType.ens ||
+                  regexEns.test(data.identity)) && (
+                    <Suspense fallback={<p>Loading Phi Land...</p>}>
+                      <WidgetPhiland
+                        onShowDetail={(v) => {
+                          openModal(ModalType.philand, {
+                            profile: data,
+                            data: v,
+                          });
+                        }}
+                        address={data.address}
+                        domain={data.identity}
+                      />
+                    </Suspense>
+                )}
+                <Suspense fallback={<p>Loading DegenScore...</p>}>
+                  <WidgetDegenScore address={data.address} />
                 </Suspense>
               </div>
             </>

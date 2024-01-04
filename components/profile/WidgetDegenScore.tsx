@@ -41,7 +41,7 @@ const RenderWidgetDegenScore = ({ address }) => {
   // }
 
   return (
-    <div className="profile-widget-full" id="degenscore">
+    <div className="profile-widget-half" id="degenscore">
       <div className="profile-widget profile-widget-degenscore">
         <div className="profile-widget-header">
           <h2 className="profile-widget-title">
