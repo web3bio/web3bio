@@ -326,7 +326,6 @@ export default function ProfileMain(props) {
                             data: v,
                           });
                         }}
-                        address={data.address}
                         domain={data.identity}
                       />
                     </Suspense>

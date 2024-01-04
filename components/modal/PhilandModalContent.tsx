@@ -1,7 +1,6 @@
 import SVG from "react-inlinesvg";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import Link from "next/link";
-import { formatText } from "../../utils/utils";
 export default function PhilandModalContent({ data, onClose, profile }) {
   return (
     <>
