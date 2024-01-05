@@ -113,7 +113,6 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     icon: "icons/icon-lens.svg",
     label: "Lens",
     urlPrefix: "https://www.lensfrens.xyz/",
-    ensText: ["lens"],
   },
   [PlatformType.nextid]: {
     key: PlatformType.nextid,
@@ -274,6 +273,7 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     color: "#E84F64",
     label: "Hey",
     urlPrefix: "https://hey.xyz/u/",
+    ensText: ["lens"],
   },
   [PlatformType.facebook]: {
     key: PlatformType.facebook,
