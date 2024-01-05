@@ -236,7 +236,7 @@ export default function D3ResultGraph(props) {
       };
 
       const simulation = generateSimulation();
-      // arrow marker
+      
       svg
         .append("defs")
         .selectAll("marker")
