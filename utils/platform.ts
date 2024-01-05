@@ -112,7 +112,7 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     color: "#6bc674",
     icon: "icons/icon-lens.svg",
     label: "Lens",
-    urlPrefix: "https://hey.xyz/",
+    urlPrefix: "https://www.lensfrens.xyz/",
     ensText: ["lens"],
   },
   [PlatformType.nextid]: {
