@@ -99,6 +99,7 @@ const resolveGraphData = (source) => {
   };
   const resolvedEdges = _edges.map((x) => ({
     ...x,
+    // signle edge should link to the center of node
     isSingle: isSingleEdge(x),
   }));
 
@@ -198,6 +199,7 @@ export default function D3ResultGraph(props) {
         .call(
           d3
             .zoom()
+            // disable zoom
             .scaleExtent([1, 1])
             .on("zoom", (event) => {
               svg.attr("transform", event.transform);
@@ -234,8 +236,8 @@ export default function D3ResultGraph(props) {
       };
 
       const simulation = generateSimulation();
-
-      const marker = svg
+      // arrow marker
+      svg
         .append("defs")
         .selectAll("marker")
         .data(links)
