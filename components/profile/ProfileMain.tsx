@@ -21,6 +21,8 @@ import { useSelector } from "react-redux";
 import { AppState } from "../../state";
 import { WidgetState } from "../../state/widgets/reducer";
 import { Loading } from "../shared/Loading";
+import { WidgetPhiland } from "./WidgetPhiland";
+import { regexEns } from "../../utils/regexp";
 
 export default function ProfileMain(props) {
   const {
@@ -35,7 +37,7 @@ export default function ProfileMain(props) {
   } = props;
   const [isCopied, setIsCopied] = useState(false);
   const { isOpen, modalType, closeModal, openModal, params } = useModal();
-  
+
   const profileWidgetStates = useSelector<AppState, WidgetState>(
     (state) => state.widgets
   );
@@ -199,7 +201,7 @@ export default function ProfileMain(props) {
                     }`}
                     title={`${pageTitle} ${
                       SocialPlatformMapping(x.platform).label
-                    }`}
+                    }: ${x.identity}`}
                     style={{
                       ["--badge-primary-color" as string]:
                         SocialPlatformMapping(x.platform).color || "#000",
@@ -292,16 +294,16 @@ export default function ProfileMain(props) {
                   />
                 </Suspense>
               </div>
-              <div className="web3-section-widgets">
-                <Suspense fallback={<p>Loading Articles...</p>}>
-                  <WidgetRSS fromServer={fromServer} domain={data.identity} />
-                </Suspense>
-              </div>
-              <div className="web3-section-widgets">
-                <Suspense fallback={<p>Loading DegenScore...</p>}>
-                  <WidgetDegenScore address={data.address} />
-                </Suspense>
-              </div>
+              {([PlatformType.ens, PlatformType.dotbit].includes(
+                data.platform
+              ) ||
+                regexEns.test(data.identity)) && (
+                <div className="web3-section-widgets">
+                  <Suspense fallback={<p>Loading Articles...</p>}>
+                    <WidgetRSS fromServer={fromServer} domain={data.identity} />
+                  </Suspense>
+                </div>
+              )}
               <div className="web3-section-widgets">
                 <Suspense fallback={<p>Loading POAPs...</p>}>
                   <WidgetPOAP
@@ -311,6 +313,25 @@ export default function ProfileMain(props) {
                     }}
                     address={data.address}
                   />
+                </Suspense>
+              </div>
+              <div className="web3-section-widgets">
+                {(data.platform === PlatformType.ens ||
+                  regexEns.test(data.identity)) && (
+                    <Suspense fallback={<p>Loading Phi Land...</p>}>
+                      <WidgetPhiland
+                        onShowDetail={(v) => {
+                          openModal(ModalType.philand, {
+                            profile: data,
+                            data: v,
+                          });
+                        }}
+                        domain={data.identity}
+                      />
+                    </Suspense>
+                )}
+                <Suspense fallback={<p>Loading DegenScore...</p>}>
+                  <WidgetDegenScore address={data.address} />
                 </Suspense>
               </div>
             </>

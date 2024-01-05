@@ -39,7 +39,7 @@ const WidgetItem = (props) => {
             <div className="platform-handle text-ellipsis">{item.handle}</div>
           </div>
           <div className="platform-action">
-            <div className="btn btn-sm">Follow</div>
+            <div className="btn btn-sm btn-link"><SVG src="icons/icon-open.svg" width={20} height={20} /></div>
           </div>
         </Link>
       );
@@ -73,7 +73,7 @@ const WidgetItem = (props) => {
             <div className="platform-handle text-ellipsis">{item.handle}</div>
           </div>
           <div className="platform-action">
-            <div className="btn btn-sm">Open</div>
+            <div className="btn btn-sm btn-link"><SVG src="icons/icon-open.svg" width={20} height={20} /></div>
           </div>
         </Link>
       );
@@ -104,7 +104,7 @@ const WidgetItem = (props) => {
                 <div className="platform-handle text-ellipsis">{item.handle}</div>
               </div>
               <div className="platform-action">
-                <div className="btn btn-sm">Open</div>
+                <div className="btn btn-sm btn-link"><SVG src="icons/icon-open.svg" width={20} height={20} /></div>
               </div>
             </Link>
           ) : (
@@ -131,9 +131,7 @@ const WidgetItem = (props) => {
               </div>
               {isCopied && <div className="tooltip-copy">COPIED</div>}
               <div className="platform-action">
-                <div className="btn btn-sm">
-                  Copy
-                </div>
+                <div className="btn btn-sm btn-link"><SVG src="icons/icon-copy.svg" width={20} height={20} /></div>
               </div>
             </Clipboard>
           )
@@ -165,7 +163,7 @@ const WidgetItem = (props) => {
             <div className="platform-handle text-ellipsis">{item.handle}</div>
           </div>
           <div className="platform-action">
-            <div className="btn btn-sm">Open</div>
+            <div className="btn btn-sm btn-link"><SVG src="icons/icon-open.svg" width={20} height={20} /></div>
           </div>
         </Link>
       );
