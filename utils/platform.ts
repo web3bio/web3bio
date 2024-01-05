@@ -34,6 +34,7 @@ export enum PlatformType {
   linkedin = "linkedin",
   dns = "dns",
   tron = "tron",
+  lenster = "lenster",
   hey = "hey",
   facebook = "facebook",
   threads = "threads",
@@ -54,7 +55,7 @@ export enum PlatformType {
   twitter_hexagon = "twitter_hexagon",
   uniswap = "uniswap",
   degenscore = "degenscore",
-  firefly="firefly",
+  firefly = "firefly",
 }
 
 export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
@@ -64,7 +65,7 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     icon: "icons/icon-twitter.svg",
     label: "Twitter",
     urlPrefix: "https://twitter.com/",
-    ensText: ["com.twitter", "vnd.twitter"],
+    ensText: ["com.twitter", "vnd.twitter", "twitter"],
     dotbitText: ["profile.twitter"],
   },
   [PlatformType.ens]: {
@@ -87,6 +88,7 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     icon: "icons/icon-farcaster.svg",
     label: "Farcaster",
     urlPrefix: "https://warpcast.com/",
+    ensText: ["farcaster"],
   },
   [PlatformType.github]: {
     key: PlatformType.github,
@@ -110,7 +112,8 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     color: "#6bc674",
     icon: "icons/icon-lens.svg",
     label: "Lens",
-    urlPrefix: "https://www.lensfrens.xyz/",
+    urlPrefix: "https://hey.xyz/",
+    ensText: ["lens"],
   },
   [PlatformType.nextid]: {
     key: PlatformType.nextid,
@@ -155,25 +158,25 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     color: "#0088cc",
     icon: "icons/icon-telegram.svg",
     label: "Telegram",
-    urlPrefix: "https://t.me/",
     ensText: ["org.telegram", "vnd.telegram", "VND.TELEGRAM"],
     dotbitText: ["profile.telegram"],
+    urlPrefix: "https://t.me/",
   },
   [PlatformType.instagram]: {
     key: PlatformType.instagram,
     color: "#EA3377",
     icon: "icons/icon-instagram.svg",
     label: "Instagram",
-    urlPrefix: "https://www.instagram.com/",
     ensText: ["com.instagram"],
     dotbitText: ["profile.instagram"],
+    urlPrefix: "https://www.instagram.com/",
   },
   [PlatformType.weibo]: {
     key: PlatformType.weibo,
     color: "#df2029",
     label: "Weibo",
-    urlPrefix: "https://weibo.com/",
     dotbitText: ["profile.weibo"],
+    urlPrefix: "https://weibo.com/",
   },
   [PlatformType.dotbit]: {
     key: PlatformType.dotbit,
@@ -240,8 +243,8 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     color: "#195DB4",
     label: "LinkedIn",
     icon: "icons/icon-linkedin.svg",
-    urlPrefix: "https://www.linkedin.com/in/",
     ensText: ["com.linkedin"],
+    urlPrefix: "https://www.linkedin.com/in/",
     dotbitText: ["profile.linkedin"],
   },
   [PlatformType.dns]: {
@@ -257,6 +260,13 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     icon: "icons/icon-tron.svg",
     label: "Tron",
     urlPrefix: "https://tronscan.org/#/address/",
+  },
+  [PlatformType.lenster]: {
+    key: PlatformType.lenster,
+    icon: "icons/icon-lenster.svg",
+    color: "#845EEE",
+    label: "Lenster",
+    urlPrefix: "https://lenster.xyz/u/",
   },
   [PlatformType.hey]: {
     key: PlatformType.hey,
