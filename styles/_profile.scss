@@ -818,7 +818,7 @@
     background: $light-color;
     border-color: lighten($bg-color, 3%);
     height: 100%;
-    max-height: 40vh;
+    max-height: 50vh;
     position: relative;
 
     @media screen and (max-width: $size-sm) {
