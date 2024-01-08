@@ -315,7 +315,11 @@ export default function D3ResultGraph(props) {
           e.preventDefault();
           e.stopPropagation();
           removeHighlight();
-          highlightNode(i);
+          highlightNode({
+            ...i,
+            mouseX: e.offsetX,
+            mouseY: e.offsetY,
+          });
         });
 
       const { displayName, identity, identityBadge, identityIcon, ensBadge } =
@@ -453,71 +457,7 @@ export default function D3ResultGraph(props) {
             }}
             className="svg-canvas"
           />
-          {currentNode && (
-            <div
-              className="web3bio-tooltip"
-              style={{
-                top: currentNode.y,
-                left: currentNode.x,
-              }}
-            >
-              {currentNode.isIdentity ? (
-                <ul>
-                  <li className="text-large text-bold">
-                    {currentNode.displayName || "-"}
-                  </li>
-                  <li className="mb-1">
-                    {currentNode.identity != currentNode.displayName
-                      ? currentNode.platform === PlatformType.ethereum
-                        ? formatText(currentNode.identity)
-                        : currentNode.identity
-                      : ""}
-                  </li>
-                  {(currentNode.uid && (
-                    <li>
-                      <span className="text-gray">
-                        {currentNode.platform === PlatformType.farcaster
-                          ? "FID"
-                          : "UID"}
-                        :{" "}
-                      </span>
-                      {currentNode.uid}
-                    </li>
-                  )) ||
-                    ""}
-                  {((currentNode.address ||
-                    currentNode.platform === PlatformType.ethereum) && (
-                    <li>
-                      <span className="text-gray">Address: </span>
-                      {currentNode.address || currentNode.identity}
-                    </li>
-                  )) ||
-                    ""}
-                  <li>
-                    <span className="text-gray">Platform: </span>
-                    {SocialPlatformMapping(currentNode.platform as PlatformType)
-                      ?.label ||
-                      currentNode.platform ||
-                      "Unknown"}
-                  </li>
-                </ul>
-              ) : (
-                <ul>
-                  <li className="text-large text-bold mb-1">
-                    {currentNode.identity || ""}
-                  </li>
-                  <li>
-                    <span className="text-gray">Platform: </span>
-                    {currentNode.platform || ""}
-                  </li>
-                  <li>
-                    <span className="text-gray">Owner: </span>
-                    {currentNode.holder || ""}
-                  </li>
-                </ul>
-              )}
-            </div>
-          )}
+
           <div className="graph-header">
             <div className="graph-title">
               <SVG src={"/icons/icon-view.svg"} width="20" height="20" />
@@ -529,6 +469,71 @@ export default function D3ResultGraph(props) {
               <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
             </div>
           </div>
+        </div>
+      )}
+      {currentNode && (
+        <div
+          className="web3bio-tooltip"
+          style={{
+            top: currentNode.mouseY,
+            left: currentNode.mouseX,
+          }}
+        >
+          {currentNode.isIdentity ? (
+            <ul>
+              <li className="text-large text-bold">
+                {currentNode.displayName || "-"}
+              </li>
+              <li className="mb-1">
+                {currentNode.identity != currentNode.displayName
+                  ? currentNode.platform === PlatformType.ethereum
+                    ? formatText(currentNode.identity)
+                    : currentNode.identity
+                  : ""}
+              </li>
+              {(currentNode.uid && (
+                <li>
+                  <span className="text-gray">
+                    {currentNode.platform === PlatformType.farcaster
+                      ? "FID"
+                      : "UID"}
+                    :{" "}
+                  </span>
+                  {currentNode.uid}
+                </li>
+              )) ||
+                ""}
+              {((currentNode.address ||
+                currentNode.platform === PlatformType.ethereum) && (
+                <li>
+                  <span className="text-gray">Address: </span>
+                  {currentNode.address || currentNode.identity}
+                </li>
+              )) ||
+                ""}
+              <li>
+                <span className="text-gray">Platform: </span>
+                {SocialPlatformMapping(currentNode.platform as PlatformType)
+                  ?.label ||
+                  currentNode.platform ||
+                  "Unknown"}
+              </li>
+            </ul>
+          ) : (
+            <ul>
+              <li className="text-large text-bold mb-1">
+                {currentNode.identity || ""}
+              </li>
+              <li>
+                <span className="text-gray">Platform: </span>
+                {currentNode.platform || ""}
+              </li>
+              <li>
+                <span className="text-gray">Owner: </span>
+                {currentNode.holder || ""}
+              </li>
+            </ul>
+          )}
         </div>
       )}
     </div>
