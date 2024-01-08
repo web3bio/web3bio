@@ -113,6 +113,13 @@
       width: 100%;
       word-break: break-word;
 
+      .duplicated-tokens {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+        margin: 0.25rem 0;
+      }
+
       &.text-large {
         font-size: .8rem;
       }
@@ -209,6 +216,7 @@
       }
 
       a.feed-target {
+
         &:focus,
         &:hover {
           border-color: darken($border-color, 2%);

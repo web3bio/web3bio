@@ -17,47 +17,45 @@ import {
 } from "../../utils/utils";
 import ActionExternalMenu from "./ActionExternalMenu";
 
-export const RenderToken = (token, key) => {
+export const RenderToken = ({ key, name, symbol, image, value }) => {
   return (
-    token && (
-      <div className="feed-token" key={key} title={token.name}>
-        {token.image && (
-          <Image
-            className="feed-token-icon"
-            src={token.image}
-            alt={token.name}
-            height={20}
-            width={20}
-            loading="lazy"
-          />
-        )}
-        <span className="feed-token-value" title={formatValue(token)}>
-          {formatText(formatValue(token))}
-        </span>
-        <small className="feed-token-meta">{token.symbol}</small>
-      </div>
-    )
+    <div className="feed-token" key={key} title={name}>
+      {image && (
+        <Image
+          className="feed-token-icon"
+          src={resolveIPFS_URL(image)||''}
+          alt={name}
+          height={20}
+          width={20}
+          loading="lazy"
+        />
+      )}
+      <span className="feed-token-value" title={formatValue(name)}>
+        {formatText(formatValue(value))}
+      </span>
+      <small className="feed-token-meta">{symbol}</small>
+    </div>
   );
 };
 
 const RenderFeedContent = (props) => {
-  const { action, tag, id, openModal, network } = props;
+  const { actions, tag, openModal, network, owner } = props;
   switch (tag) {
-    case "social":
-      return <SocialCard openModal={openModal} action={action} />;
+    // case "social":
+    //   return <SocialCard openModal={openModal} actions={actions} />;
     case "exchange":
     case "transaction":
-      return <TransactionCard id={id} action={action} />;
-    case "collectible":
-      return (
-        <CollectibleCard
-          network={network}
-          openModal={openModal}
-          action={action}
-        />
-      );
+      return <TransactionCard owner={owner} actions={actions} />;
+    // case "collectible":
+    //   return (
+    //     <CollectibleCard
+    //       network={network}
+    //       openModal={openModal}
+    //       actions={actions}
+    //     />
+    //   );
     default:
-      return <DefaultCard action={action} />;
+      return <DefaultCard owner={owner} actions={actions} />;
   }
 };
 
@@ -68,7 +66,6 @@ const RenderFeedItem = (props) => {
   const networkName = feed.network?.toLowerCase();
   const actions = feed.actions;
   if (!actions?.length) return null;
-  const action = actions?.[0];
 
   return (
     <>
@@ -111,7 +108,7 @@ const RenderFeedItem = (props) => {
           </div>
           <div className="feed-item-action dropdown dropdown-right">
             <Link
-              href={resolveIPFS_URL(action?.related_urls?.[0]) || ""}
+              href={resolveIPFS_URL(actions?.[0]?.related_urls?.[0]) || ""}
               target="_blank"
               className="feed-timestamp"
             >
@@ -122,36 +119,19 @@ const RenderFeedItem = (props) => {
                 {new Date(feed.timestamp * 1000).toLocaleDateString()}
               </span>
             </Link>
-            <ActionExternalMenu links={action?.related_urls || []} />
+            <ActionExternalMenu
+              links={actions?.[0]?.related_urls.map((x) => resolveIPFS_URL(x))}
+            />
           </div>
         </div>
         <div className="feed-item-body">
-          {feed.tag === "social" ? (
-            <RenderFeedContent
-              network={feed.network}
-              openModal={openModal}
-              action={action}
-              tag={action.tag}
-              id={action.id}
-            />
-          ) : (
-            actions.map((x, index) => {
-              return (
-                x.tag !== "unknown" &&
-                (isSameAddress(x.from, identity.address) ||
-                  isSameAddress(x.to, identity.address)) && (
-                  <RenderFeedContent
-                    network={feed.network}
-                    openModal={openModal}
-                    action={x}
-                    tag={x.tag}
-                    id={x.id}
-                    key={index}
-                  />
-                )
-              );
-            })
-          )}
+          <RenderFeedContent
+            network={feed.network}
+            openModal={openModal}
+            actions={actions}
+            tag={feed.tag}
+            owner={identity.address}
+          />
         </div>
       </div>
     </>
