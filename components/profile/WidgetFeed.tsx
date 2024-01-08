@@ -14,8 +14,21 @@ const FEEDS_PAGE_SIZE = 20;
 const processFeedsData = (data) => {
   if (!data?.[0]?.data?.length) return [];
   const res = new Array();
+  const publicationIds = new Array();
   data.map((x) => {
     x.data?.forEach((i) => {
+      if (i.tag === "social" && i.actions?.length > 0) {
+        i.actions.forEach((j, idx) => {
+          if (j.metadata.publication_id) {
+            if (!publicationIds.includes(j.metadata.publication_id)) {
+              publicationIds.push(j.metadata.publication_id);
+            } else {
+              i.actions.splice(idx, 1);
+            }
+          }
+        });
+      }
+
       res.push(i);
     });
   });

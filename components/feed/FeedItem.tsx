@@ -67,7 +67,8 @@ const RenderFeedItem = (props) => {
   const platformName = feed.platform?.toLowerCase();
   const networkName = feed.network?.toLowerCase();
   const actions = feed.actions;
-  const action = actions[0];
+  if (!actions?.length) return null;
+  const action = actions?.[0];
 
   return (
     <>
@@ -114,12 +115,14 @@ const RenderFeedItem = (props) => {
               target="_blank"
               className="feed-timestamp"
             >
-              <span className="hide-sm">{new Date(feed.timestamp * 1000).toLocaleString()}</span>
-              <span className="show-sm">{new Date(feed.timestamp * 1000).toLocaleDateString()}</span>
+              <span className="hide-sm">
+                {new Date(feed.timestamp * 1000).toLocaleString()}
+              </span>
+              <span className="show-sm">
+                {new Date(feed.timestamp * 1000).toLocaleDateString()}
+              </span>
             </Link>
-            <ActionExternalMenu
-              links={action?.related_urls || []}
-            />
+            <ActionExternalMenu links={action?.related_urls || []} />
           </div>
         </div>
         <div className="feed-item-body">
@@ -135,7 +138,8 @@ const RenderFeedItem = (props) => {
             actions.map((x, index) => {
               return (
                 x.tag !== "unknown" &&
-                (isSameAddress(x.from, identity.address) || isSameAddress(x.to, identity.address)) && (
+                (isSameAddress(x.from, identity.address) ||
+                  isSameAddress(x.to, identity.address)) && (
                   <RenderFeedContent
                     network={feed.network}
                     openModal={openModal}
