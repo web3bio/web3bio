@@ -236,7 +236,6 @@ export default function D3ResultGraph(props) {
       };
 
       const simulation = generateSimulation();
-      
       svg
         .append("defs")
         .selectAll("marker")
@@ -486,10 +485,11 @@ export default function D3ResultGraph(props) {
                     </li>
                   )) ||
                     ""}
-                  {(currentNode.address && (
+                  {((currentNode.address ||
+                    currentNode.platform === PlatformType.ethereum) && (
                     <li>
                       <span className="text-gray">Address: </span>
-                      {currentNode.address}
+                      {currentNode.address || currentNode.identity}
                     </li>
                   )) ||
                     ""}
