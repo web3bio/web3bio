@@ -7,7 +7,7 @@
   right: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, .5);
+  background: rgba($dark-color, .5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -39,7 +39,7 @@
   .graph-container {
     background: #fff;
     border-radius: .4rem;
-    box-shadow: 0 .4rem 2rem rgba(0, 0, 0, .5);
+    box-shadow: 0 .4rem 2rem rgba($dark-color, .5);
     height: calc(100vh - 3rem);
     overflow: hidden;
     overscroll-behavior: contain;
@@ -58,7 +58,7 @@
       user-select: none;
       padding: 8px 12px;
       pointer-events: none;
-      border: 1px solid rgba(0, 0, 0, .25);
+      border: 1px solid rgba($dark-color, .25);
       box-shadow: 0 0.1rem 1.2rem hsla(0, 0%, 7%, .3);
       border: 0;
 
@@ -108,7 +108,7 @@
       }
 
       .edge-label-selected {
-        fill: #000;
+        fill: $dark-color;
       }
 
       .node {
@@ -120,25 +120,25 @@
       }
 
       .displayName {
-        fill: #000;
+        fill: $dark-color;
         user-select: none;
         font-size: 12px;
-        font-weight: 400;
+        font-weight: 500;
       }
 
       .identity {
-        fill: #000;
+        fill: $gray-color;
         user-select: none;
         font-size: 10px;
         font-weight: 400;
       }
 
-      .identity-selected {
+      .displayName-selected {
         font-weight: 500;
       }
 
-      .displayName-selected {
-        font-weight: 600;
+      .identity-selected {
+        font-weight: 400;
       }
 
       .identity-icon {
