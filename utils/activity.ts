@@ -187,9 +187,10 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     label: "Profile",
     action: {
       default: "",
+      delete: "Deleted the record on profile",
       update: "Updated the profile",
       renew: "Renewed the domain",
-      wrap: "Wrapped the domain"
+      wrap: "Wrapped the domain",
     },
     prep: "",
   },

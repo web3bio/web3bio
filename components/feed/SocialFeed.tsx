@@ -60,7 +60,9 @@ const RenderSocialCard = (props) => {
                   <div className="feed-content">
                     {
                       ActivityTypeMapping(action.type).action[
-                        metadata.action || "default"
+                        metadata.key && !metadata?.value
+                          ? "delete"
+                          : metadata.action || "default"
                       ]
                     }
                     &nbsp;
