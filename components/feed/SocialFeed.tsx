@@ -22,7 +22,7 @@ export const getDuplicatedRenew = (actions) => {
         i.type === x.type &&
         i.from === x.from &&
         i.to === x.to &&
-        i.metadata.action === "renew"
+        ["renew", "update"].includes(i.metadata.action)
     );
     if (dupIndex === -1) {
       duplicatedObjects.push({
@@ -68,6 +68,7 @@ const RenderSocialCard = (props) => {
                     &nbsp;
                     <div className="duplicated-items">
                       {(action.duplicatedObjects?.length &&
+                        metadata.action === "renew" &&
                         action.duplicatedObjects.map((x, idx) => (
                           <RenderProfileBadge
                             key={`${action.type}_${x.handle}_${
@@ -85,22 +86,24 @@ const RenderSocialCard = (props) => {
                       </span>
                     )}
                   </div>
-                  {metadata.key && (
-                    <div className="feed-content">
-                      <Link
-                        className="feed-target"
-                        href={`https://web3.bio/${metadata.handle}`}
-                        target="_blank"
-                      >
-                        <div className="feed-target-name">
-                          <strong>{metadata.key}</strong>
+                  {action.duplicatedObjects?.map((x) => {
+                    return (
+                      x.key && (
+                        <div className="feed-content">
+                          <Link
+                            className="feed-target"
+                            href={`https://web3.bio/${x.handle}`}
+                            target="_blank"
+                          >
+                            <div className="feed-target-name">
+                              <strong>{x.key}</strong>
+                            </div>
+                            <div className="feed-target-content">{x.value}</div>
+                          </Link>
                         </div>
-                        <div className="feed-target-content">
-                          {metadata.value}
-                        </div>
-                      </Link>
-                    </div>
-                  )}
+                      )
+                    );
+                  })}
                 </>
               );
             case ActivityType.post:
