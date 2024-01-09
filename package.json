@@ -12,13 +12,14 @@
   "dependencies": {
     "@rc-component/trigger": "^1.18.2",
     "@reduxjs/toolkit": "^1.9.5",
+    "boring-avatars": "^1.7.0",
+    "d3": "^7.8.5",
     "geist": "^1.0.0",
     "next": "^14.0.4",
     "react-infinite-scroll-hook": "^4.1.1",
     "react-markdown": "^9.0.0"
   },
   "devDependencies": {
-    "@antv/g6": "^4.8.23",
     "@apollo/client": "^3.6.9",
     "@types/node": "^18.7.14",
     "@types/react": "^18.0.18",
