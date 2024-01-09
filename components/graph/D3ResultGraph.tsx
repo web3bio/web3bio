@@ -172,8 +172,11 @@ const updateNodes = (nodeContainer) => {
 export default function D3ResultGraph(props) {
   const { data, onClose, title } = props;
   const [currentNode, setCurrentNode] = useState<any>(null);
+  const [hideTooltip, setHideToolTip] = useState(true);
+  const [transform, setTransform] = useState("");
   const tooltipContainer = useRef(null);
   const graphContainer = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     let chart = null;
     const chartContainer = graphContainer?.current;
@@ -184,7 +187,8 @@ export default function D3ResultGraph(props) {
       const nodes = _data.nodes.map((d) => ({ ...d }));
 
       const removeHighlight = () => {
-        setCurrentNode(null);
+        setHideToolTip(true);
+        setCurrentNode(null)
         edgeLabels.attr("class", "edge-label");
         edgePath.attr("class", "edge-path");
         maskCircle.attr("opacity", 0);
@@ -199,10 +203,16 @@ export default function D3ResultGraph(props) {
         .call(
           d3
             .zoom()
-            // disable zoom
             .scaleExtent([1, 1])
-            .on("zoom", (event) => {
-              svg.attr("transform", event.transform);
+            .on("zoom", (e) => {
+              svg.attr("transform", e.transform);
+            })
+            .on("start", () => {
+              setHideToolTip(true);
+            })
+            .on("end", (e) => {
+              setTransform(`translate(${e.transform.x}px,${e.transform.y}px)`);
+              setHideToolTip(false);
             })
         )
         .on("click", removeHighlight)
@@ -288,12 +298,17 @@ export default function D3ResultGraph(props) {
         });
         simulation.alpha(1).restart();
       };
-
       const nodeContainer = svg
         .selectAll(".node")
         .data(nodes, (d) => d.id)
         .join("g")
-        .call(d3.drag().on("drag", dragged));
+        .call(
+          d3
+            .drag()
+            .on("drag", dragged)
+            .on("start", () => setHideToolTip(true))
+            .on("end", () => setHideToolTip(false))
+        );
 
       const circle = nodeContainer
         .append("circle")
@@ -315,11 +330,7 @@ export default function D3ResultGraph(props) {
           e.preventDefault();
           e.stopPropagation();
           removeHighlight();
-          highlightNode({
-            ...i,
-            mouseX: e.offsetX,
-            mouseY: e.offsetY,
-          });
+          highlightNode(i);
         });
 
       const { displayName, identity, identityBadge, identityIcon, ensBadge } =
@@ -391,6 +402,7 @@ export default function D3ResultGraph(props) {
       };
 
       const highlightNode = (i) => {
+        setHideToolTip(false);
         setCurrentNode(i);
         nodeContainer.filter((l) => l.id === i.id).raise();
         edgeLabels
@@ -451,12 +463,7 @@ export default function D3ResultGraph(props) {
             e.preventDefault();
           }}
         >
-          <svg
-            onClick={(e) => {
-              setCurrentNode(null);
-            }}
-            className="svg-canvas"
-          />
+          <svg className="svg-canvas" />
 
           <div className="graph-header">
             <div className="graph-title">
@@ -471,12 +478,13 @@ export default function D3ResultGraph(props) {
           </div>
         </div>
       )}
-      {currentNode && (
+      {currentNode && !hideTooltip && (
         <div
           className="web3bio-tooltip"
           style={{
-            top: currentNode.mouseY,
-            left: currentNode.mouseX,
+            left: currentNode.x,
+            top: currentNode.y,
+            transform: transform,
           }}
         >
           {currentNode.isIdentity ? (
