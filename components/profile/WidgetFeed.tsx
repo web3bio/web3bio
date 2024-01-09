@@ -28,7 +28,7 @@ const processFeedsData = (data) => {
           }
         });
       }
-
+      
       res.push(i);
     });
   });

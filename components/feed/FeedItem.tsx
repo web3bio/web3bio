@@ -23,7 +23,7 @@ export const RenderToken = ({ key, name, symbol, image, value }) => {
       {image && (
         <Image
           className="feed-token-icon"
-          src={resolveIPFS_URL(image)||''}
+          src={resolveIPFS_URL(image) || ""}
           alt={name}
           height={20}
           width={20}
@@ -41,8 +41,10 @@ export const RenderToken = ({ key, name, symbol, image, value }) => {
 const RenderFeedContent = (props) => {
   const { actions, tag, openModal, network, owner } = props;
   switch (tag) {
-    // case "social":
-    //   return <SocialCard openModal={openModal} actions={actions} />;
+    case "social":
+      return (
+        <SocialCard openModal={openModal} actions={actions} owner={owner} />
+      );
     case "exchange":
     case "transaction":
       return <TransactionCard owner={owner} actions={actions} />;

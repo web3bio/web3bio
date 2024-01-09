@@ -5,7 +5,7 @@ import { RenderToken } from "./FeedItem";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
 import _ from "lodash";
 
-const getDuplicatedAction = (actions) => {
+export const getDuplicatedTransfer = (actions) => {
   const _data = JSON.parse(JSON.stringify(actions));
   const duplicatedObjects = new Array();
   _data.forEach((x, idx) => {
@@ -31,7 +31,7 @@ const getDuplicatedAction = (actions) => {
 
 const RenderTransactionCard = (props) => {
   const { actions, owner } = props;
-  const resolvedActions = getDuplicatedAction(actions);
+  const resolvedActions = getDuplicatedTransfer(actions);
 
   return (
     <>
@@ -213,7 +213,7 @@ const RenderTransactionCard = (props) => {
                     ]
                   }
                   &nbsp;
-                  <div className="duplicated-tokens">
+                  <div className="duplicated-items">
                     {action.duplicatedObjects.map((x) => {
                       return RenderToken({
                         key: `${id}_${ActivityType.transfer}_${x.from?.name}`,
