@@ -16,12 +16,12 @@ const RenderDefaultCard = (props) => {
     if (!isSameAddress(action.from, owner) && !isSameAddress(action.to, owner))
       return null;
     const metadata = action?.metadata;
-
+    const id = action?.id;
     switch (action.type) {
       case ActivityType.donate:
         return (
           <>
-            <div className="feed-content">
+            <div key={id} className="feed-content">
               {
                 ActivityTypeMapping(action.type).action[
                   metadata?.action || "default"
@@ -29,7 +29,7 @@ const RenderDefaultCard = (props) => {
               }
               &nbsp;
               {RenderToken({
-                key: `${action.id}_${ActivityType.donate}_${metadata?.token.name}`,
+                key: `${id}_${ActivityType.donate}_${metadata?.token.name}`,
                 name: metadata.token.name,
                 symbol: metadata.token.symbol,
                 image: metadata.token.image,
@@ -80,7 +80,7 @@ const RenderDefaultCard = (props) => {
         const choices = JSON.parse(metadata?.choice || "[]");
         return (
           <>
-            <div className="feed-content">
+            <div key={id} className="feed-content">
               {
                 ActivityTypeMapping(action.type).action[
                   metadata?.action || "default"
@@ -127,7 +127,7 @@ const RenderDefaultCard = (props) => {
         );
       default:
         return (
-          <div className="feed-content">
+          <div key={id} className="feed-content">
             {
               ActivityTypeMapping(action.type).action[
                 metadata?.action || "default"

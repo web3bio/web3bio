@@ -46,137 +46,126 @@ const RenderTransactionCard = (props) => {
           switch (action.type) {
             case ActivityType.liquidity:
               return (
-                <>
-                  <div className="feed-content">
-                    {
-                      ActivityTypeMapping(action.type).action[
-                        metadata.action || "default"
-                      ]
-                    }
-                    &nbsp;
-                    {metadata.tokens.map((x) =>
-                      RenderToken({
-                        key: `${id}_${x.name}_${
-                          ActivityTypeMapping(action.type).prep
-                        }`,
-                        name: x.name,
-                        symbol: x.symbol,
-                        image: x.image,
-                        value: {
-                          value: x.value,
-                          decimals: x.decimals,
-                        },
-                      })
-                    )}{" "}
-                    {ActivityTypeMapping(action.type).prep}
-                    {action.platform && (
-                      <span className="feed-platform">
-                        &nbsp;on {action.platform}
-                      </span>
-                    )}
-                  </div>
-                </>
+                <div key={id} className="feed-content">
+                  {
+                    ActivityTypeMapping(action.type).action[
+                      metadata.action || "default"
+                    ]
+                  }
+                  &nbsp;
+                  {metadata.tokens.map((x) =>
+                    RenderToken({
+                      key: `${id}_${x.name}_${
+                        ActivityTypeMapping(action.type).prep
+                      }`,
+                      name: x.name,
+                      symbol: x.symbol,
+                      image: x.image,
+                      value: {
+                        value: x.value,
+                        decimals: x.decimals,
+                      },
+                    })
+                  )}{" "}
+                  {ActivityTypeMapping(action.type).prep}
+                  {action.platform && (
+                    <span className="feed-platform">
+                      &nbsp;on {action.platform}
+                    </span>
+                  )}
+                </div>
               );
             case ActivityType.swap:
               return (
-                <>
-                  <div className="feed-content">
-                    {
-                      ActivityTypeMapping(action.type).action[
-                        metadata.action || "default"
-                      ]
-                    }
-                    &nbsp;
-                    {RenderToken({
-                      key: `${id}_from_${metadata.from?.name}`,
-                      name: metadata.from,
-                      symbol: metadata.from.symbol,
-                      image: metadata.from.image,
-                      value: {
-                        value: metadata.from.value,
-                        decimals: metadata.from.decimals,
-                      },
-                    })}
-                    &nbsp;{ActivityTypeMapping(action.type).prep}&nbsp;
-                    {RenderToken({
-                      key: `${id}_to_${metadata.to?.name}`,
-                      name: metadata.to.name,
-                      symbol: metadata.to.symbol,
-                      image: metadata.to.image,
-                      value: {
-                        value: metadata.to.value,
-                        decimals: metadata.to.decimals,
-                      },
-                    })}
-                    {action.platform && (
-                      <span className="feed-platform">
-                        &nbsp;on {action.platform}
-                      </span>
-                    )}
-                  </div>
-                </>
+                <div key={id} className="feed-content">
+                  {
+                    ActivityTypeMapping(action.type).action[
+                      metadata.action || "default"
+                    ]
+                  }
+                  &nbsp;
+                  {RenderToken({
+                    key: `${id}_from_${metadata.from?.name}`,
+                    name: metadata.from,
+                    symbol: metadata.from.symbol,
+                    image: metadata.from.image,
+                    value: {
+                      value: metadata.from.value,
+                      decimals: metadata.from.decimals,
+                    },
+                  })}
+                  &nbsp;{ActivityTypeMapping(action.type).prep}&nbsp;
+                  {RenderToken({
+                    key: `${id}_to_${metadata.to?.name}`,
+                    name: metadata.to.name,
+                    symbol: metadata.to.symbol,
+                    image: metadata.to.image,
+                    value: {
+                      value: metadata.to.value,
+                      decimals: metadata.to.decimals,
+                    },
+                  })}
+                  {action.platform && (
+                    <span className="feed-platform">
+                      &nbsp;on {action.platform}
+                    </span>
+                  )}
+                </div>
               );
             case ActivityType.multisig:
               return (
-                <>
-                  <div className="feed-content">
-                    {
-                      ActivityTypeMapping(action.type).action[
-                        metadata.action || "default"
-                      ]
-                    }
-                    &nbsp;
-                    {metadata.owner && (
+                <div key={id} className="feed-content">
+                  {
+                    ActivityTypeMapping(action.type).action[
+                      metadata.action || "default"
+                    ]
+                  }
+                  &nbsp;
+                  {metadata.owner && (
+                    <RenderProfileBadge identity={metadata.owner} remoteFetch />
+                  )}
+                  {metadata.vault?.address && (
+                    <>
+                      on
                       <RenderProfileBadge
-                        identity={metadata.owner}
+                        identity={metadata.vault.address}
                         remoteFetch
                       />
-                    )}
-                    {metadata.vault?.address && (
-                      <>
-                        on
-                        <RenderProfileBadge
-                          identity={metadata.vault.address}
-                          remoteFetch
-                        />
-                      </>
-                    )}
-                    {action.platform && (
-                      <span className="feed-platform">
-                        &nbsp;on {action.platform}
-                      </span>
-                    )}
-                  </div>
-                </>
+                    </>
+                  )}
+                  {action.platform && (
+                    <span className="feed-platform">
+                      &nbsp;on {action.platform}
+                    </span>
+                  )}
+                </div>
               );
             case ActivityType.deploy:
               return (
-                <>
-                  <div className="feed-content">
-                    {
-                      ActivityTypeMapping(action.type).action[
-                        metadata.action || "default"
-                      ]
-                    }
-                    &nbsp;
-                    {metadata.address && (
-                      <RenderProfileBadge
-                        identity={metadata.address}
-                        remoteFetch
-                      />
-                    )}
-                    {action.platform && (
-                      <span className="feed-platform">
-                        &nbsp;on {action.platform}
-                      </span>
-                    )}
-                  </div>
-                </>
+                <div key={id} className="feed-content">
+                  {
+                    ActivityTypeMapping(action.type).action[
+                      metadata.action || "default"
+                    ]
+                  }
+                  &nbsp;
+                  {metadata.address && (
+                    <RenderProfileBadge
+                      identity={metadata.address}
+                      remoteFetch
+                    />
+                  )}
+                  {action.platform && (
+                    <span className="feed-platform">
+                      &nbsp;on {action.platform}
+                    </span>
+                  )}
+                </div>
               );
             case ActivityType.bridge:
               return (
                 <>
-                  <div className="feed-content">
+                  <div key={id} className="feed-content">
                     {
                       ActivityTypeMapping(action.type).action[
                         metadata.action || "default"
@@ -206,7 +195,7 @@ const RenderTransactionCard = (props) => {
               );
             default:
               return (
-                <div className="feed-content">
+                <div key={id} className="feed-content">
                   {
                     ActivityTypeMapping(action.type).action[
                       metadata.action || "default"
@@ -216,7 +205,7 @@ const RenderTransactionCard = (props) => {
                   <div className="duplicated-items">
                     {action.duplicatedObjects.map((x) => {
                       return RenderToken({
-                        key: `${id}_${ActivityType.transfer}_${x.from?.name}`,
+                        key: `${x.id}_${ActivityType.transfer}_${x.name}_${x.value}`,
                         name: x.name,
                         symbol: x.standard === 721 ? x.title : x.symbol,
                         image: x.image || x.image_url,
