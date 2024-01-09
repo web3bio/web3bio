@@ -368,7 +368,7 @@ export default function D3ResultGraph(props) {
           .attr("text-anchor", "middle");
         identity
           .attr("dx", (d) => d.x)
-          .attr("dy", (d) => (d.isIdentity ? d.y + 12 : 0))
+          .attr("dy", (d) => (d.isIdentity ? d.y + 14 : 0))
           .attr("text-anchor", "middle");
 
         identityBadge
@@ -482,8 +482,8 @@ export default function D3ResultGraph(props) {
         <div
           className="web3bio-tooltip"
           style={{
-            left: currentNode.x,
-            top: currentNode.y,
+            left: currentNode.x + (currentNode.isIdentity ? IdentityNodeSize : NFTNodeSize * 2),
+            top: currentNode.y + (currentNode.isIdentity ? IdentityNodeSize : NFTNodeSize * 2),
             transform: transform,
           }}
         >
