@@ -12,36 +12,10 @@ import RenderProfileBadge from "../profile/RenderProfileBadge";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { domainRegexp } from "./ActionExternalMenu";
 
-export const getDuplicatedRenew = (actions, id) => {
-  const _data = JSON.parse(JSON.stringify(actions));
-  const duplicatedObjects = new Array();
-  _data.forEach((x, idx) => {
-    const dupIndex = duplicatedObjects.findIndex(
-      (i) =>
-        i.tag === x.tag &&
-        i.type === x.type &&
-        i.from === x.from &&
-        i.to === x.to &&
-        ["renew", "update"].includes(i.metadata.action)
-    );
-    if (dupIndex === -1) {
-      duplicatedObjects.push({
-        ...x,
-        duplicatedObjects: [x.metadata],
-        action_id: id + idx,
-      });
-    } else {
-      duplicatedObjects[dupIndex].duplicatedObjects.push(x.metadata);
-    }
-  });
-
-  return duplicatedObjects;
-};
 const RenderSocialCard = (props) => {
-  const { actions, openModal, owner, id } = props;
-  const resolvedActions = getDuplicatedRenew(actions, id) as any;
+  const { actions, openModal, owner } = props;
 
-  return resolvedActions.map((action) => {
+  return actions.map((action) => {
     if (!isSameAddress(action.from, owner) && !isSameAddress(action.to, owner))
       return null;
     const metadata = action?.metadata;

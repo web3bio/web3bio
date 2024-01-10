@@ -12,35 +12,9 @@ import RenderProfileBadge from "../profile/RenderProfileBadge";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { RenderToken } from "./FeedItem";
 
-export const getDuplicatedCollections = (actions, id) => {
-  const _data = JSON.parse(JSON.stringify(actions));
-  const duplicatedObjects = new Array();
-  _data.forEach((x, idx) => {
-    const dupIndex = duplicatedObjects.findIndex(
-      (i) =>
-        i.tag === x.tag &&
-        i.type === x.type &&
-        i.from === x.from &&
-        i.to === x.to &&
-        [ActivityType.mint, ActivityType.trade].includes(i.type)
-    );
-    if (dupIndex === -1) {
-      duplicatedObjects.push({
-        ...x,
-        duplicatedObjects: [x.metadata],
-        action_id: id + idx,
-      });
-    } else {
-      duplicatedObjects[dupIndex].duplicatedObjects.push(x.metadata);
-    }
-  });
-
-  return duplicatedObjects;
-};
 const RenderCollectibleCard = (props) => {
-  const { actions, openModal, network, owner, id } = props;
-  const resolvedActions = getDuplicatedCollections(actions, id) as any;
-  return resolvedActions.map((action) => {
+  const { actions, openModal, network, owner } = props;
+  return actions.map((action) => {
     if (!isSameAddress(action.from, owner) && !isSameAddress(action.to, owner))
       return null;
     const metadata = action?.metadata;

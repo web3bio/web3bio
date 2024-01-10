@@ -5,35 +5,9 @@ import { RenderToken } from "./FeedItem";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
 import _ from "lodash";
 
-const getDuplicatedTransfer = (actions, id) => {
-  const _data = JSON.parse(JSON.stringify(actions));
-  const duplicatedObjects = new Array();
-  _data.forEach((x, idx) => {
-    const dupIndex = duplicatedObjects.findIndex(
-      (i) =>
-        i.tag === x.tag &&
-        i.type === x.type &&
-        i.from === x.from &&
-        i.to === x.to
-    );
-    if (dupIndex === -1) {
-      duplicatedObjects.push({
-        ...x,
-        duplicatedObjects: [x.metadata],
-        action_id: id + idx,
-      });
-    } else {
-      duplicatedObjects[dupIndex].duplicatedObjects.push(x.metadata);
-    }
-  });
-
-  return duplicatedObjects;
-};
-
 const RenderTransactionCard = (props) => {
-  const { actions, owner, id } = props;
-  const resolvedActions = getDuplicatedTransfer(actions, id) as any;
-  return resolvedActions.map((action) => {
+  const { actions, owner } = props;
+  return actions.map((action) => {
     if (!isSameAddress(action.from, owner) && !isSameAddress(action.to, owner))
       return null;
     const metadata = action?.metadata;

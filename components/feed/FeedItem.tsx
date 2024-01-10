@@ -16,6 +16,7 @@ import {
   SocialPlatformMapping,
 } from "../../utils/utils";
 import ActionExternalMenu from "./ActionExternalMenu";
+import { ActivityType } from "../../utils/activity";
 
 export const RenderToken = ({ key, name, symbol, image, value }) => {
   return (
@@ -38,29 +39,73 @@ export const RenderToken = ({ key, name, symbol, image, value }) => {
   );
 };
 
+const resolveDuplicatedActions = (
+  actions,
+  id,
+  specificTypes,
+  isMetadataAction?
+) => {
+  const _data = JSON.parse(JSON.stringify(actions));
+  const duplicatedObjects = new Array();
+  _data.forEach((x, idx) => {
+    const dupIndex = duplicatedObjects.findIndex(
+      (i) =>
+        i.tag === x.tag &&
+        i.type === x.type &&
+        i.from === x.from &&
+        i.to === x.to &&
+        specificTypes.includes(isMetadataAction ? i.metadata.action : i.type)
+    );
+    if (dupIndex === -1) {
+      duplicatedObjects.push({
+        ...x,
+        duplicatedObjects: [x.metadata],
+        action_id: id + idx,
+      });
+    } else {
+      duplicatedObjects[dupIndex].duplicatedObjects.push(x.metadata);
+    }
+  });
+
+  return duplicatedObjects;
+};
 const RenderFeedContent = (props) => {
   const { actions, tag, openModal, network, owner, id } = props;
   switch (tag) {
     case "social":
       return (
         <SocialCard
-          id={id}
           openModal={openModal}
-          actions={actions}
           owner={owner}
+          actions={resolveDuplicatedActions(
+            actions,
+            id,
+            ["renew", "update"],
+            true
+          )}
         />
       );
     case "exchange":
     case "transaction":
-      return <TransactionCard id={id} owner={owner} actions={actions} />;
+      return (
+        <TransactionCard
+          id={id}
+          owner={owner}
+          actions={resolveDuplicatedActions(actions, id, [
+            ActivityType.transfer,
+          ])}
+        />
+      );
     case "collectible":
       return (
         <CollectibleCard
-          id={id}
           owner={owner}
           network={network}
           openModal={openModal}
-          actions={actions}
+          actions={resolveDuplicatedActions(actions, id, [
+            ActivityType.mint,
+            ActivityType.trade,
+          ])}
         />
       );
     default:
