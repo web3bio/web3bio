@@ -182,6 +182,32 @@
         transition: all .25s ease-in-out;
         width: 100%;
 
+        &.collection-gallery {
+          height: 100%;
+          display: flex;
+          flex-wrap: nowrap;
+          gap: .25rem;
+          margin-bottom: -.25rem;
+          overflow: auto hidden;
+
+          .feed-content-img {
+            transition: all .5s ease;
+
+            &:hover {
+              &:not(:last-child) {
+                margin-right: 3rem;
+              }
+            }
+
+            &:not(:first-child) {
+              margin-left: -3rem;
+            }
+
+            flex: 0 0 auto;
+            max-width: 10rem;
+          }
+        }
+
         .feed-target-description {
           display: -webkit-box;
           margin-top: .25rem;
@@ -235,7 +261,7 @@
         flex-wrap: nowrap;
         gap: .2rem;
         height: 1.2rem;
-        margin: .05rem 0;
+        margin: .05rem;
         max-width: 100%;
         padding: .1rem .2rem;
         position: relative;

@@ -48,14 +48,15 @@ const RenderFeedContent = (props) => {
     case "exchange":
     case "transaction":
       return <TransactionCard owner={owner} actions={actions} />;
-    // case "collectible":
-    //   return (
-    //     <CollectibleCard
-    //       network={network}
-    //       openModal={openModal}
-    //       actions={actions}
-    //     />
-    //   );
+    case "collectible":
+      return (
+        <CollectibleCard
+          owner={owner}
+          network={network}
+          openModal={openModal}
+          actions={actions}
+        />
+      );
     default:
       return <DefaultCard owner={owner} actions={actions} />;
   }

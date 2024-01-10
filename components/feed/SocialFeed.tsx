@@ -66,7 +66,7 @@ const RenderSocialCard = (props) => {
                       ]
                     }
                     &nbsp;
-                    <div className="duplicated-items">
+                    <>
                       {(action.duplicatedObjects?.length &&
                         metadata.action === "renew" &&
                         action.duplicatedObjects.map((x, idx) => (
@@ -79,7 +79,7 @@ const RenderSocialCard = (props) => {
                         ))) || (
                         <RenderProfileBadge identity={metadata.handle} />
                       )}
-                    </div>
+                    </>
                     {action.platform && (
                       <span className="feed-platform">
                         &nbsp;on {action.platform}

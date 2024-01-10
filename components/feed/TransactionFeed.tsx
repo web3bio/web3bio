@@ -202,7 +202,7 @@ const RenderTransactionCard = (props) => {
                     ]
                   }
                   &nbsp;
-                  <div className="duplicated-items">
+                  <>
                     {action.duplicatedObjects.map((x) => {
                       return RenderToken({
                         key: `${x.id}_${ActivityType.transfer}_${x.name}_${x.value}`,
@@ -215,7 +215,7 @@ const RenderTransactionCard = (props) => {
                         },
                       });
                     })}
-                  </div>
+                  </>
                   {action.to && ActivityTypeMapping(action.type).prep && (
                     <>
                       &nbsp;{ActivityTypeMapping(action.type).prep}&nbsp;
