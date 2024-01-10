@@ -101,7 +101,7 @@ const RenderCollectibleCard = (props) => {
                   action.type == ActivityType.trade &&
                   isValidEthereumAddress(action.from) && (
                     <span>
-                      from{" "}
+                      &nbsp; from{" "}
                       <RenderProfileBadge identity={action.from} remoteFetch />
                     </span>
                   )}
