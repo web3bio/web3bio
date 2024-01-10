@@ -1,3 +1,5 @@
+import { isAddress } from "ethers";
+
 export const regexEns = /.*\.(eth|xyz|app|luxe|kred|art|ceo|club)$/i,
   regexLens = /.*\.lens$/i,
   regexDotbit = /.*\.bit$/i,
@@ -8,3 +10,9 @@ export const regexEns = /.*\.(eth|xyz|app|luxe|kred|art|ceo|club)$/i,
     /.*\.(crypto|888|nft|blockchain|bitcoin|dao|x|klever|hi|zil|kresus|polygon|wallet|binanceus|anime|go|manga|eth)$/i,
   regexSpaceid = /.*\.(bnb|arb)$/i,
   regexAvatar = /^0x[a-f0-9]{66}$/i;
+
+export const isValidEthereumAddress = (address: string) => {
+  if (!isAddress(address)) return false; // invalid ethereum address
+  if (address.match(/^0x0*.$|0x[123468abef]*$|0x0*dead$/i)) return false; // empty & burn address
+  return true;
+};

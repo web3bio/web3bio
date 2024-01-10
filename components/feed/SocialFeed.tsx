@@ -12,7 +12,7 @@ import RenderProfileBadge from "../profile/RenderProfileBadge";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { domainRegexp } from "./ActionExternalMenu";
 
-export const getDuplicatedRenew = (actions) => {
+export const getDuplicatedRenew = (actions, id) => {
   const _data = JSON.parse(JSON.stringify(actions));
   const duplicatedObjects = new Array();
   _data.forEach((x, idx) => {
@@ -28,6 +28,7 @@ export const getDuplicatedRenew = (actions) => {
       duplicatedObjects.push({
         ...x,
         duplicatedObjects: [x.metadata],
+        action_id: id + idx,
       });
     } else {
       duplicatedObjects[dupIndex].duplicatedObjects.push(x.metadata);
@@ -37,310 +38,134 @@ export const getDuplicatedRenew = (actions) => {
   return duplicatedObjects;
 };
 const RenderSocialCard = (props) => {
-  const { actions, openModal, owner } = props;
-  const resolvedActions = getDuplicatedRenew(actions);
-  return (
-    <>
-      {resolvedActions
-        ?.filter(
-          (x) => isSameAddress(x.from, owner) || isSameAddress(x.to, owner)
-        )
-        .map((action) => {
-          const metadata = action?.metadata;
+  const { actions, openModal, owner, id } = props;
+  const resolvedActions = getDuplicatedRenew(actions, id) as any;
 
-          const checkEmojis =
-            /^(\p{Emoji}\uFE0F|\p{Emoji_Presentation})+$/gu.test(
-              metadata?.body
-            );
+  return resolvedActions.map((action) => {
+    if (!isSameAddress(action.from, owner) && !isSameAddress(action.to, owner))
+      return null;
+    const metadata = action?.metadata;
+    const checkEmojis = /^(\p{Emoji}\uFE0F|\p{Emoji_Presentation})+$/gu.test(
+      metadata?.body
+    );
+    const actionId = action?.action_id;
 
-          switch (action.type) {
-            case ActivityType.profile:
-              return (
-                <>
-                  <div className="feed-content">
-                    {
-                      ActivityTypeMapping(action.type).action[
-                        metadata.key && !metadata?.value
-                          ? "delete"
-                          : metadata.action || "default"
-                      ]
-                    }
-                    &nbsp;
-                    <>
-                      {(action.duplicatedObjects?.length &&
-                        metadata.action === "renew" &&
-                        action.duplicatedObjects.map((x, idx) => (
-                          <RenderProfileBadge
-                            key={`${action.type}_${x.handle}_${
-                              x.profile_id + idx
-                            }`}
-                            identity={x.handle}
-                          />
-                        ))) || (
-                        <RenderProfileBadge identity={metadata.handle} />
-                      )}
-                    </>
-                    {action.platform && (
-                      <span className="feed-platform">
-                        &nbsp;on {action.platform}
-                      </span>
-                    )}
-                  </div>
-                  {action.duplicatedObjects?.map((x) => {
-                    return (
-                      x.key && (
-                        <div className="feed-content">
-                          <Link
-                            className="feed-target"
-                            href={`https://web3.bio/${x.handle}`}
-                            target="_blank"
-                          >
-                            <div className="feed-target-name">
-                              <strong>{x.key}</strong>
-                            </div>
-                            <div className="feed-target-content">{x.value}</div>
-                          </Link>
-                        </div>
-                      )
-                    );
-                  })}
-                </>
-              );
-            case ActivityType.post:
-            case ActivityType.comment:
-            case ActivityType.share:
-            case ActivityType.revise:
-              if (["Mirror"].includes(action.platform) || metadata.summary) {
+    const renderContent = (() => {
+      switch (action.type) {
+        case ActivityType.profile:
+          return (
+            <>
+              <div className="feed-content">
+                {
+                  ActivityTypeMapping(action.type).action[
+                    metadata.key && !metadata?.value
+                      ? "delete"
+                      : metadata.action || "default"
+                  ]
+                }
+                &nbsp;
+                {(action.duplicatedObjects?.length &&
+                  metadata.action === "renew" &&
+                  action.duplicatedObjects.map((x) => (
+                    <RenderProfileBadge
+                      key={`${actionId}_${action.type}_${x.handle}_${x.profile_id}`}
+                      identity={x.handle}
+                    />
+                  ))) || <RenderProfileBadge identity={metadata.handle} />}
+                {action.platform && (
+                  <span className="feed-platform">
+                    &nbsp;on {action.platform}
+                  </span>
+                )}
+              </div>
+              {action.duplicatedObjects?.map((x) => {
                 return (
-                  <>
-                    <div className="feed-content">
-                      {
-                        ActivityTypeMapping(action.type).action[
-                          metadata.action || "default"
-                        ]
-                      }
-                      {action.platform && (
-                        <span className="feed-platform">
-                          &nbsp;on {action.platform}
-                        </span>
-                      )}
+                  x.key && (
+                    <div
+                      key={`${actionId}_${x.key}_${x.handle}`}
+                      className="feed-content"
+                    >
+                      <Link
+                        className="feed-target"
+                        href={`https://web3.bio/${x.handle}`}
+                        target="_blank"
+                      >
+                        <div className="feed-target-name">
+                          <strong>{x.key}</strong>
+                        </div>
+                        <div className="feed-target-content">{x.value}</div>
+                      </Link>
                     </div>
-                    {metadata.body && (
-                      <div className="feed-content">
-                        <div
-                          className="feed-target c-hand"
-                          onClick={(e) => {
-                            if (metadata.body) {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              openModal(ModalType.article, {
-                                title: metadata.title,
-                                content: metadata.body,
-                                baseURL: `https://${
-                                  domainRegexp.exec(
-                                    action.content_uri || action.related_urls[0]
-                                  )?.[1]
-                                }`,
-                                link: action.content_uri,
-                              });
-                            }
-                          }}
-                        >
-                          <div className="feed-target-name">
-                            <strong>{metadata.title}</strong>
-                          </div>
-                          <div className="feed-target-description">
-                            {metadata.body}
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                    {metadata.target && (
-                      <div className="feed-content">
-                        <Link
-                          className="feed-target"
-                          href={resolveIPFS_URL(metadata.target_url) || ""}
-                          target="_blank"
-                        >
-                          <div className="feed-target-name">
-                            <strong>{metadata.target?.handle}</strong>
-                          </div>
-                          <div className="feed-target-content">
-                            {metadata.target?.body}
-                          </div>
-                          {metadata.target?.media?.length > 0 && (
-                            <div
-                              className={`feed-target-content media-gallery`}
-                            >
-                              {metadata.target?.media?.map((x) =>
-                                x.mime_type.includes("image") ? (
-                                  <NFTAssetPlayer
-                                    onClick={(e) => {
-                                      openModal(ModalType.media, {
-                                        type: x.mime_type || "image/png",
-                                        url: resolveMediaURL(x.address),
-                                      });
-                                      e.stopPropagation();
-                                      e.preventDefault();
-                                    }}
-                                    className="feed-content-img"
-                                    src={resolveMediaURL(x.address)}
-                                    type={x.mime_type}
-                                    key={x.address}
-                                    width="auto"
-                                    height="100%"
-                                    placeholder={true}
-                                    alt={metadata.target?.body}
-                                  />
-                                ) : (
-                                  ""
-                                )
-                              )}
-                            </div>
-                          )}
-                        </Link>
-                      </div>
-                    )}
-                  </>
+                  )
                 );
-              } else {
-                return (
-                  <>
-                    {metadata?.body ? (
-                      <div
-                        className={`feed-content text-large${
-                          checkEmojis ? " text-emoji" : ""
-                        }`}
-                      >
-                        {metadata?.body}
-                      </div>
-                    ) : (
-                      <div className="feed-content">
-                        {
-                          ActivityTypeMapping(action.type).action[
-                            metadata.action || "default"
-                          ]
-                        }
-                        {action.platform && (
-                          <span className="feed-platform">
-                            &nbsp;on {action.platform}
-                          </span>
-                        )}
-                      </div>
-                    )}
-                    {metadata?.media?.length > 0 && (
-                      <div
-                        className={`feed-content${
-                          metadata.media.length > 1 ? " media-gallery" : ""
-                        }`}
-                      >
-                        {metadata.media?.map((x) =>
-                          x.mime_type.includes("image") ? (
-                            <NFTAssetPlayer
-                              key={x.address}
-                              onClick={(e) => {
-                                openModal(ModalType.media, {
-                                  type: x.mime_type || "image/png",
-                                  url: resolveMediaURL(x.address),
-                                });
-                                e.stopPropagation();
-                                e.preventDefault();
-                              }}
-                              className="feed-content-img"
-                              src={resolveMediaURL(x.address)}
-                              type={x.mime_type}
-                              width="auto"
-                              height="auto"
-                              placeholder={true}
-                              alt={"Feed Image"}
-                            />
-                          ) : (
-                            ""
-                          )
-                        )}
-                      </div>
-                    )}
-                    {metadata.target && (
-                      <div className="feed-content">
-                        <Link
-                          className="feed-target"
-                          href={resolveIPFS_URL(metadata.target_url) || ""}
-                          target="_blank"
-                        >
-                          <div className="feed-target-name">
-                            <strong>{metadata.target?.handle}</strong>
-                          </div>
-                          <div className="feed-target-content">
-                            {metadata.target?.body}
-                          </div>
-                          {metadata.target?.media?.length > 0 && (
-                            <div
-                              className={`feed-target-content${
-                                metadata.target?.media?.length > 1
-                                  ? " media-gallery"
-                                  : ""
-                              }`}
-                            >
-                              {metadata.target?.media?.map((x) =>
-                                x.mime_type.includes("image") ? (
-                                  <NFTAssetPlayer
-                                    onClick={(e) => {
-                                      openModal(ModalType.media, {
-                                        type: x.mime_type || "image/png",
-                                        url: resolveMediaURL(x.address),
-                                      });
-                                      e.stopPropagation();
-                                      e.preventDefault();
-                                    }}
-                                    className="feed-content-img"
-                                    src={resolveMediaURL(x.address)}
-                                    type={x.mime_type}
-                                    key={x.address}
-                                    width="auto"
-                                    height="auto"
-                                    placeholder={true}
-                                    alt={"Feed Image"}
-                                  />
-                                ) : (
-                                  ""
-                                )
-                              )}
-                            </div>
-                          )}
-                        </Link>
-                      </div>
-                    )}
-                  </>
-                );
-              }
-            case ActivityType.mint:
-              return (
-                <>
+              })}
+            </>
+          );
+        case ActivityType.post:
+        case ActivityType.comment:
+        case ActivityType.share:
+        case ActivityType.revise:
+          if (["Mirror"].includes(action.platform) || metadata.summary) {
+            return (
+              <>
+                <div className="feed-content">
+                  {
+                    ActivityTypeMapping(action.type).action[
+                      metadata.action || "default"
+                    ]
+                  }
+                  {action.platform && (
+                    <span className="feed-platform">
+                      &nbsp;on {action.platform}
+                    </span>
+                  )}
+                </div>
+                {metadata.body && (
                   <div className="feed-content">
-                    {ActivityTypeMapping(action.type).action["post"]}
-                    {action.platform && (
-                      <span className="feed-platform">
-                        &nbsp;on {action.platform}
-                      </span>
-                    )}
+                    <div
+                      className="feed-target c-hand"
+                      onClick={(e) => {
+                        if (metadata.body) {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          openModal(ModalType.article, {
+                            title: metadata.title,
+                            content: metadata.body,
+                            baseURL: `https://${
+                              domainRegexp.exec(
+                                action.content_uri || action.related_urls[0]
+                              )?.[1]
+                            }`,
+                            link: action.content_uri,
+                          });
+                        }
+                      }}
+                    >
+                      <div className="feed-target-name">
+                        <strong>{metadata.title}</strong>
+                      </div>
+                      <div className="feed-target-description">
+                        {metadata.body}
+                      </div>
+                    </div>
                   </div>
+                )}
+                {metadata.target && (
                   <div className="feed-content">
                     <Link
                       className="feed-target"
-                      href={action.related_urls[0]}
+                      href={resolveIPFS_URL(metadata.target_url) || ""}
                       target="_blank"
                     >
                       <div className="feed-target-name">
-                        <strong>{metadata.handle}</strong>
+                        <strong>{metadata.target?.handle}</strong>
                       </div>
-                      <div className="feed-target-content">{metadata.body}</div>
-                      {metadata.media?.length > 0 && (
-                        <div
-                          className={`feed-target-content${
-                            metadata.media?.length > 1 ? " media-gallery" : ""
-                          }`}
-                        >
-                          {metadata.media?.map((x) =>
+                      <div className="feed-target-content">
+                        {metadata.target?.body}
+                      </div>
+                      {metadata.target?.media?.length > 0 && (
+                        <div className={`feed-target-content media-gallery`}>
+                          {metadata.target?.media?.map((x) =>
                             x.mime_type.includes("image") ? (
                               <NFTAssetPlayer
                                 onClick={(e) => {
@@ -358,7 +183,7 @@ const RenderSocialCard = (props) => {
                                 width="auto"
                                 height="100%"
                                 placeholder={true}
-                                alt={"Feed Image"}
+                                alt={metadata.target?.body}
                               />
                             ) : (
                               ""
@@ -368,11 +193,21 @@ const RenderSocialCard = (props) => {
                       )}
                     </Link>
                   </div>
-                </>
-              );
-            default:
-              return (
-                <>
+                )}
+              </>
+            );
+          } else {
+            return (
+              <>
+                {metadata?.body ? (
+                  <div
+                    className={`feed-content text-large${
+                      checkEmojis ? " text-emoji" : ""
+                    }`}
+                  >
+                    {metadata?.body}
+                  </div>
+                ) : (
                   <div className="feed-content">
                     {
                       ActivityTypeMapping(action.type).action[
@@ -385,72 +220,234 @@ const RenderSocialCard = (props) => {
                       </span>
                     )}
                   </div>
-                  {metadata.body && (
-                    <div className="feed-content">
-                      <Link
-                        className="feed-target"
-                        href={action.related_urls[0]}
-                        target="_blank"
-                      >
-                        <div className="feed-target-name">
-                          <strong>{metadata.title}</strong>
+                )}
+                {metadata?.media?.length > 0 && (
+                  <div
+                    className={`feed-content${
+                      metadata.media.length > 1 ? " media-gallery" : ""
+                    }`}
+                  >
+                    {metadata.media?.map((x) =>
+                      x.mime_type.includes("image") ? (
+                        <NFTAssetPlayer
+                          key={x.address}
+                          onClick={(e) => {
+                            openModal(ModalType.media, {
+                              type: x.mime_type || "image/png",
+                              url: resolveMediaURL(x.address),
+                            });
+                            e.stopPropagation();
+                            e.preventDefault();
+                          }}
+                          className="feed-content-img"
+                          src={resolveMediaURL(x.address)}
+                          type={x.mime_type}
+                          width="auto"
+                          height="auto"
+                          placeholder={true}
+                          alt={"Feed Image"}
+                        />
+                      ) : (
+                        ""
+                      )
+                    )}
+                  </div>
+                )}
+                {metadata.target && (
+                  <div className="feed-content">
+                    <Link
+                      className="feed-target"
+                      href={resolveIPFS_URL(metadata.target_url) || ""}
+                      target="_blank"
+                    >
+                      <div className="feed-target-name">
+                        <strong>{metadata.target?.handle}</strong>
+                      </div>
+                      <div className="feed-target-content">
+                        {metadata.target?.body}
+                      </div>
+                      {metadata.target?.media?.length > 0 && (
+                        <div
+                          className={`feed-target-content${
+                            metadata.target?.media?.length > 1
+                              ? " media-gallery"
+                              : ""
+                          }`}
+                        >
+                          {metadata.target?.media?.map((x) =>
+                            x.mime_type.includes("image") ? (
+                              <NFTAssetPlayer
+                                onClick={(e) => {
+                                  openModal(ModalType.media, {
+                                    type: x.mime_type || "image/png",
+                                    url: resolveMediaURL(x.address),
+                                  });
+                                  e.stopPropagation();
+                                  e.preventDefault();
+                                }}
+                                className="feed-content-img"
+                                src={resolveMediaURL(x.address)}
+                                type={x.mime_type}
+                                key={x.address}
+                                width="auto"
+                                height="auto"
+                                placeholder={true}
+                                alt={"Feed Image"}
+                              />
+                            ) : (
+                              ""
+                            )
+                          )}
                         </div>
-                        <div className="feed-target-description">
-                          {metadata.body}
-                        </div>
-                      </Link>
-                    </div>
-                  )}
-                  {metadata.target && (
-                    <div className="feed-content">
-                      <Link
-                        className="feed-target"
-                        href={resolveIPFS_URL(metadata.target_url) || ""}
-                        target="_blank"
-                      >
-                        <div className="feed-target-name">
-                          <strong>{metadata.target?.handle}</strong>
-                        </div>
-                        <div className="feed-target-content">
-                          {metadata.target?.body}
-                        </div>
-                        {metadata.target?.media?.length > 0 && (
-                          <div className={`feed-target-content media-gallery`}>
-                            {metadata.target?.media?.map((x) =>
-                              x.mime_type.includes("image") ? (
-                                <NFTAssetPlayer
-                                  onClick={(e) => {
-                                    openModal(ModalType.media, {
-                                      type: x.mime_type || "image/png",
-                                      url: resolveMediaURL(x.address),
-                                    });
-                                    e.stopPropagation();
-                                    e.preventDefault();
-                                  }}
-                                  className="feed-content-img"
-                                  src={resolveMediaURL(x.address)}
-                                  type={x.mime_type}
-                                  key={x.address}
-                                  width="auto"
-                                  height="100%"
-                                  placeholder={true}
-                                  alt={metadata.target?.body}
-                                />
-                              ) : (
-                                ""
-                              )
-                            )}
-                          </div>
-                        )}
-                      </Link>
-                    </div>
-                  )}
-                </>
-              );
+                      )}
+                    </Link>
+                  </div>
+                )}
+              </>
+            );
           }
-        })}
-    </>
-  );
+        case ActivityType.mint:
+          return (
+            <>
+              <div className="feed-content">
+                {ActivityTypeMapping(action.type).action["post"]}
+                {action.platform && (
+                  <span className="feed-platform">
+                    &nbsp;on {action.platform}
+                  </span>
+                )}
+              </div>
+              <div className="feed-content">
+                <Link
+                  className="feed-target"
+                  href={action.related_urls[0]}
+                  target="_blank"
+                >
+                  <div className="feed-target-name">
+                    <strong>{metadata.handle}</strong>
+                  </div>
+                  <div className="feed-target-content">{metadata.body}</div>
+                  {metadata.media?.length > 0 && (
+                    <div
+                      className={`feed-target-content${
+                        metadata.media?.length > 1 ? " media-gallery" : ""
+                      }`}
+                    >
+                      {metadata.media?.map((x) =>
+                        x.mime_type.includes("image") ? (
+                          <NFTAssetPlayer
+                            onClick={(e) => {
+                              openModal(ModalType.media, {
+                                type: x.mime_type || "image/png",
+                                url: resolveMediaURL(x.address),
+                              });
+                              e.stopPropagation();
+                              e.preventDefault();
+                            }}
+                            className="feed-content-img"
+                            src={resolveMediaURL(x.address)}
+                            type={x.mime_type}
+                            key={x.address}
+                            width="auto"
+                            height="100%"
+                            placeholder={true}
+                            alt={"Feed Image"}
+                          />
+                        ) : (
+                          ""
+                        )
+                      )}
+                    </div>
+                  )}
+                </Link>
+              </div>
+            </>
+          );
+        default:
+          return (
+            <>
+              <div className="feed-content">
+                {
+                  ActivityTypeMapping(action.type).action[
+                    metadata.action || "default"
+                  ]
+                }
+                {action.platform && (
+                  <span className="feed-platform">
+                    &nbsp;on {action.platform}
+                  </span>
+                )}
+              </div>
+              {metadata.body && (
+                <div className="feed-content">
+                  <Link
+                    className="feed-target"
+                    href={action.related_urls[0]}
+                    target="_blank"
+                  >
+                    <div className="feed-target-name">
+                      <strong>{metadata.title}</strong>
+                    </div>
+                    <div className="feed-target-description">
+                      {metadata.body}
+                    </div>
+                  </Link>
+                </div>
+              )}
+              {metadata.target && (
+                <div className="feed-content">
+                  <Link
+                    className="feed-target"
+                    href={resolveIPFS_URL(metadata.target_url) || ""}
+                    target="_blank"
+                  >
+                    <div className="feed-target-name">
+                      <strong>{metadata.target?.handle}</strong>
+                    </div>
+                    <div className="feed-target-content">
+                      {metadata.target?.body}
+                    </div>
+                    {metadata.target?.media?.length > 0 && (
+                      <div className={`feed-target-content media-gallery`}>
+                        {metadata.target?.media?.map((x) =>
+                          x.mime_type.includes("image") ? (
+                            <NFTAssetPlayer
+                              onClick={(e) => {
+                                openModal(ModalType.media, {
+                                  type: x.mime_type || "image/png",
+                                  url: resolveMediaURL(x.address),
+                                });
+                                e.stopPropagation();
+                                e.preventDefault();
+                              }}
+                              className="feed-content-img"
+                              src={resolveMediaURL(x.address)}
+                              type={x.mime_type}
+                              key={x.address}
+                              width="auto"
+                              height="100%"
+                              placeholder={true}
+                              alt={metadata.target?.body}
+                            />
+                          ) : (
+                            ""
+                          )
+                        )}
+                      </div>
+                    )}
+                  </Link>
+                </div>
+              )}
+            </>
+          );
+      }
+    })();
+    return (
+      <div key={actionId} className="item-body">
+        {renderContent}
+      </div>
+    );
+  });
 };
 
 export const SocialCard = memo(RenderSocialCard);

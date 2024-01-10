@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { memo } from "react";
 import { ModalType } from "../../hooks/useModal";
 import { ActivityType } from "../../utils/activity";
+import { isValidEthereumAddress } from "../../utils/regexp";
 import {
   ActivityTypeMapping,
   formatText,
@@ -10,8 +10,9 @@ import {
 } from "../../utils/utils";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
+import { RenderToken } from "./FeedItem";
 
-export const getDuplicatedRenew = (actions) => {
+export const getDuplicatedCollections = (actions, id) => {
   const _data = JSON.parse(JSON.stringify(actions));
   const duplicatedObjects = new Array();
   _data.forEach((x, idx) => {
@@ -20,12 +21,14 @@ export const getDuplicatedRenew = (actions) => {
         i.tag === x.tag &&
         i.type === x.type &&
         i.from === x.from &&
-        i.to === x.to
+        i.to === x.to &&
+        [ActivityType.mint, ActivityType.trade].includes(i.type)
     );
     if (dupIndex === -1) {
       duplicatedObjects.push({
         ...x,
         duplicatedObjects: [x.metadata],
+        action_id: id + idx,
       });
     } else {
       duplicatedObjects[dupIndex].duplicatedObjects.push(x.metadata);
@@ -35,72 +38,81 @@ export const getDuplicatedRenew = (actions) => {
   return duplicatedObjects;
 };
 const RenderCollectibleCard = (props) => {
-  const { actions, openModal, network, owner } = props;
-  const resolvedActions = getDuplicatedRenew(actions);
-  return (
-    <>
-      {resolvedActions
-        ?.filter(
-          (x) => isSameAddress(x.from, owner) || isSameAddress(x.to, owner)
-        )
-        .map((action, idx) => {
-          const metadata = action?.metadata;
-          const collections = action?.duplicatedObjects;
-          switch (action.type) {
-            case ActivityType.approval:
-              return <></>;
-            case ActivityType.mint:
-              return (
-                <>
-                  <div className="feed-content">
-                    {
-                      ActivityTypeMapping(action.type).action[
-                        metadata.action || "default"
-                      ]
-                    }
-                    &nbsp;
-                    {collections.map((x, cIdx) => {
-                      return (
-                        <span
-                          key={`${cIdx}_preview`}
-                          className="feed-token c-hand"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            openModal(ModalType.nft, {
-                              remoteFetch: true,
-                              network: network,
-                              standard: x.standard,
-                              contractAddress: x.contract_address,
-                              tokenId: x.id,
-                            });
-                          }}
-                        >
-                          {x.image_url && (
-                            <NFTAssetPlayer
-                              className="feed-token-icon"
-                              src={resolveMediaURL(x.image_url)}
-                              type={"image/png"}
-                              width={20}
-                              height={20}
-                              alt={x.title}
-                            />
-                          )}
-                          {x.title || x.name}
-                          {x.id && (
-                            <small className="feed-token-meta">{`#${formatText(
-                              x.id
-                            )}`}</small>
-                          )}
-                        </span>
-                      );
-                    })}
-                    {action.platform && (
-                      <span className="feed-platform">
-                        &nbsp;on {action.platform}
-                      </span>
-                    )}
-                  </div>
+  const { actions, openModal, network, owner, id } = props;
+  const resolvedActions = getDuplicatedCollections(actions, id) as any;
+  return resolvedActions.map((action) => {
+    if (!isSameAddress(action.from, owner) && !isSameAddress(action.to, owner))
+      return null;
+    const metadata = action?.metadata;
+    const collections = action?.duplicatedObjects;
+    const actionId = action?.action_id;
+    const renderContent = (() => {
+      switch (action.type) {
+        case ActivityType.approval:
+          return <></>;
+        case ActivityType.trade:
+        case ActivityType.mint:
+          return (
+            <>
+              <div className="feed-content">
+                {
+                  ActivityTypeMapping(action.type).action[
+                    metadata.action || "default"
+                  ]
+                }
+                &nbsp;
+                {collections.map((x, cIdx) => {
+                  return (
+                    <span
+                      key={`${cIdx}_preview`}
+                      className="feed-token c-hand"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        openModal(ModalType.nft, {
+                          remoteFetch: true,
+                          network: network,
+                          standard: x.standard,
+                          contractAddress: x.contract_address,
+                          tokenId: x.id,
+                        });
+                      }}
+                    >
+                      {x.image_url && (
+                        <NFTAssetPlayer
+                          className="feed-token-icon"
+                          src={resolveMediaURL(x.image_url)}
+                          type={"image/png"}
+                          width={20}
+                          height={20}
+                          alt={x.title}
+                        />
+                      )}
+                      {x.title || x.name}
+                      {x.id && (
+                        <small className="feed-token-meta">{`#${formatText(
+                          x.id
+                        )}`}</small>
+                      )}
+                    </span>
+                  );
+                })}
+                {action.from &&
+                  action.type == ActivityType.trade &&
+                  isValidEthereumAddress(action.from) && (
+                    <span>
+                      from{" "}
+                      <RenderProfileBadge identity={action.from} remoteFetch />
+                    </span>
+                  )}
+                {action.platform && (
+                  <span className="feed-platform">
+                    &nbsp;on {action.platform}
+                  </span>
+                )}
+              </div>
+              {collections.some((x) => x.image_url) &&
+                action.type === ActivityType.mint && (
                   <div className="feed-content">
                     <div className="feed-target collection-gallery">
                       {collections.map((x, cIdx) => {
@@ -130,42 +142,61 @@ const RenderCollectibleCard = (props) => {
                       })}
                     </div>
                   </div>
+                )}
+            </>
+          );
+
+        default:
+          return (
+            <div className="feed-content">
+              {
+                ActivityTypeMapping(action.type).action[
+                  metadata.action || "default"
+                ]
+              }
+              &nbsp;
+              {action.tag === "collectible" ? (
+                <span className="feed-token">
+                  {metadata.title || metadata.name}
+                  {metadata.id && (
+                    <small className="feed-token-meta">{`#${formatText(
+                      metadata.id
+                    )}`}</small>
+                  )}
+                </span>
+              ) : (
+                RenderToken({
+                  key: `${action.type}_${metadata.symbol}_${metadata.value}_${action.to}}`,
+                  name: metadata.name,
+                  symbol: metadata.symbol,
+                  image: metadata.image,
+                  value: {
+                    value: metadata.value,
+                    decimals: metadata.decimals,
+                  },
+                })
+              )}
+              {action.to && ActivityTypeMapping(action.type).prep && (
+                <>
+                  &nbsp;{ActivityTypeMapping(action.type).prep}&nbsp;
+                  <RenderProfileBadge identity={action.to} remoteFetch />
                 </>
-              );
-            default:
-              return (
-                <div className="feed-content">
-                  {
-                    ActivityTypeMapping(action.type).action[
-                      metadata.action || "default"
-                    ]
-                  }
-                  &nbsp;
-                  <span className="feed-token">
-                    {metadata.title || metadata.name}
-                    {metadata.id && (
-                      <small className="feed-token-meta">{`#${formatText(
-                        metadata.id
-                      )}`}</small>
-                    )}
-                  </span>
-                  {action.to && ActivityTypeMapping(action.type).prep && (
-                    <>
-                      &nbsp;{ActivityTypeMapping(action.type).prep}&nbsp;
-                      <RenderProfileBadge identity={action.to} remoteFetch />
-                    </>
-                  )}
-                  {action.platform && (
-                    <span className="feed-platform">
-                      &nbsp;on {action.platform}
-                    </span>
-                  )}
-                </div>
-              );
-          }
-        })}
-    </>
-  );
+              )}
+              {action.platform && (
+                <span className="feed-platform">
+                  &nbsp;on {action.platform}
+                </span>
+              )}
+            </div>
+          );
+      }
+    })();
+    return (
+      <div key={actionId} className="feed-item-body">
+        {renderContent}
+      </div>
+    );
+  });
 };
 
 export const CollectibleCard = memo(RenderCollectibleCard);

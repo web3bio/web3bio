@@ -39,18 +39,24 @@ export const RenderToken = ({ key, name, symbol, image, value }) => {
 };
 
 const RenderFeedContent = (props) => {
-  const { actions, tag, openModal, network, owner } = props;
+  const { actions, tag, openModal, network, owner, id } = props;
   switch (tag) {
     case "social":
       return (
-        <SocialCard openModal={openModal} actions={actions} owner={owner} />
+        <SocialCard
+          id={id}
+          openModal={openModal}
+          actions={actions}
+          owner={owner}
+        />
       );
     case "exchange":
     case "transaction":
-      return <TransactionCard owner={owner} actions={actions} />;
+      return <TransactionCard id={id} owner={owner} actions={actions} />;
     case "collectible":
       return (
         <CollectibleCard
+          id={id}
           owner={owner}
           network={network}
           openModal={openModal}
@@ -58,7 +64,7 @@ const RenderFeedContent = (props) => {
         />
       );
     default:
-      return <DefaultCard owner={owner} actions={actions} />;
+      return <DefaultCard id={id} owner={owner} actions={actions} />;
   }
 };
 
@@ -127,15 +133,14 @@ const RenderFeedItem = (props) => {
             />
           </div>
         </div>
-        <div className="feed-item-body">
-          <RenderFeedContent
-            network={feed.network}
-            openModal={openModal}
-            actions={actions}
-            tag={feed.tag}
-            owner={identity.address}
-          />
-        </div>
+        <RenderFeedContent
+          network={feed.network}
+          openModal={openModal}
+          id={feed.id}
+          actions={actions}
+          tag={feed.tag}
+          owner={identity.address}
+        />
       </div>
     </>
   );
