@@ -3,14 +3,17 @@ import { memo } from "react";
 import { ModalType } from "../../hooks/useModal";
 import { ActivityType } from "../../utils/activity";
 import { resolveIPFS_URL } from "../../utils/ipfs";
-import { ActivityTypeMapping, resolveMediaURL } from "../../utils/utils";
+import {
+  ActivityTypeMapping,
+  formatText,
+  resolveMediaURL,
+} from "../../utils/utils";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { domainRegexp } from "./ActionExternalMenu";
 
 const RenderSocialCard = (props) => {
   const { actions, openModal } = props;
-
   return actions.map((action) => {
     const metadata = action?.metadata;
     const checkEmojis = /^(\p{Emoji}\uFE0F|\p{Emoji_Presentation})+$/gu.test(
@@ -47,6 +50,7 @@ const RenderSocialCard = (props) => {
                 )}
               </div>
               {action.duplicatedObjects?.map((x) => {
+                console.log(action, "kkk");
                 return (
                   x.key && (
                     <div
@@ -55,13 +59,21 @@ const RenderSocialCard = (props) => {
                     >
                       <Link
                         className="feed-target"
-                        href={`https://web3.bio/${x.handle}`}
+                        href={
+                          action.related_urls?.[0] ||
+                          `https://web3.bio/${x.handle}`
+                        }
                         target="_blank"
                       >
                         <div className="feed-target-name">
                           <strong>{x.key}</strong>
                         </div>
                         <div className="feed-target-content">{x.value}</div>
+                        {action.from && (
+                          <div className="feed-target-address">
+                            by {formatText(action.from)}
+                          </div>
+                        )}
                       </Link>
                     </div>
                   )

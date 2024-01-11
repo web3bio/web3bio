@@ -8,6 +8,7 @@ import FeedFilter from "./FeedFilter";
 import { useDispatch } from "react-redux";
 import { updateFeedsWidget } from "../../state/widgets/action";
 import { ActivityFeeds } from "./ActivityFeeds";
+import { PlatformType } from "../../utils/platform";
 
 const FEEDS_PAGE_SIZE = 20;
 
@@ -15,9 +16,13 @@ const processFeedsData = (data) => {
   if (!data?.[0]?.data?.length) return [];
   const res = new Array();
   const publicationIds = new Array();
-  data.map((x) => {
+  const updateRecords = new Array();
+  JSON.parse(JSON.stringify(data)).map((x) => {
     x.data?.forEach((i) => {
-      if (i.tag === "social" && i.actions?.length > 0) {
+      if (
+        i.tag === TagsFilterMapping.social.filters[0] &&
+        i.actions?.length > 0
+      ) {
         i.actions.forEach((j, idx) => {
           if (j.metadata.publication_id) {
             if (!publicationIds.includes(j.metadata.publication_id)) {
@@ -26,9 +31,26 @@ const processFeedsData = (data) => {
               i.actions.splice(idx, 1);
             }
           }
+          if (
+            j.metadata.action === "update" &&
+            j.platform === PlatformType.ens
+          ) {
+            if (
+              !updateRecords.find(
+                (x) => x.key === j.metadata.key && x.value === j.metadata.value
+              )
+            ) {
+              updateRecords.push({
+                key: j.metadata.key,
+                value: j.metadata.value || "",
+              });
+            } else {
+              i.actions.splice(idx, 1);
+            }
+          }
         });
       }
-      
+
       res.push(i);
     });
   });
@@ -93,7 +115,6 @@ function useFeeds({ address, fromServer, initialData, filter }) {
       revalidateOnReconnect: false,
     }
   );
-
   return {
     hasNextPage: !!data?.[data.length - 1]?.meta?.cursor,
     data: processFeedsData(data),

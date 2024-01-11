@@ -171,6 +171,7 @@
       }
 
       .feed-target {
+        position: relative;
         border: .05rem solid $border-color;
         border-radius: .4rem;
         box-shadow: 0 .1rem .4rem rgba($dark-color, .05);
@@ -238,6 +239,13 @@
               max-height: 8rem;
             }
           }
+        }
+        .feed-target-address{
+          position: absolute;
+          bottom: .25rem;
+          right: .5rem;
+          font-size: .5rem;
+          color: #999;
         }
       }
 

@@ -70,7 +70,7 @@ const resolveDuplicatedActions = (
   return duplicatedObjects;
 };
 const RenderFeedContent = (props) => {
-  const { actions, tag, openModal, network, owner, id } = props;
+  const { actions, tag, openModal, network, id } = props;
   switch (tag) {
     case "social":
       return (
@@ -181,7 +181,6 @@ const RenderFeedItem = (props) => {
           id={feed.id}
           actions={actions}
           tag={feed.tag}
-          owner={identity.address}
         />
       </div>
     </>
