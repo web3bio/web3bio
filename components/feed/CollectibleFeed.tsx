@@ -31,7 +31,7 @@ const RenderCollectibleCard = (props) => {
                     metadata.action || "default"
                   ]
                 }
-                &nbsp;
+                {" "}
                 {collections.map((x, cIdx) => {
                   return (
                     <span
@@ -72,46 +72,45 @@ const RenderCollectibleCard = (props) => {
                   action.type == ActivityType.trade &&
                   isValidEthereumAddress(action.from) && (
                     <span>
-                      &nbsp; from{" "}
+                      {" "} from{" "}
                       <RenderProfileBadge identity={action.from} remoteFetch />
                     </span>
                   )}
                 {action.platform && (
                   <span className="feed-platform">
-                    &nbsp;on {action.platform}
+                    {" "}on {action.platform}
                   </span>
                 )}
               </div>
               {collections.some((x) => x.image_url) &&
                 action.type === ActivityType.mint && (
                   <div className="feed-content media-gallery">
-                    
-                        {collections.map((x, cIdx) => {
-                          return (
-                            x.image_url && (
-                              <NFTAssetPlayer
-                                key={`${cIdx}_image`}
-                                onClick={(e) => {
-                                  openModal(ModalType.nft, {
-                                    remoteFetch: true,
-                                    network: network,
-                                    standard: x.standard,
-                                    contractAddress: x.contract_address,
-                                    tokenId: x.id,
-                                  });
-                                }}
-                                className="feed-content-img"
-                                src={resolveMediaURL(x.image_url)}
-                                type={"image/png"}
-                                width="auto"
-                                height="100%"
-                                placeholder={true}
-                                alt={x.title}
-                              />
-                            )
-                          );
-                        })}
-                      </div>
+                    {collections.map((x, cIdx) => {
+                      return (
+                        x.image_url && (
+                          <NFTAssetPlayer
+                            key={`${cIdx}_image`}
+                            onClick={(e) => {
+                              openModal(ModalType.nft, {
+                                remoteFetch: true,
+                                network: network,
+                                standard: x.standard,
+                                contractAddress: x.contract_address,
+                                tokenId: x.id,
+                              });
+                            }}
+                            className="feed-content-img"
+                            src={resolveMediaURL(x.image_url)}
+                            type={"image/png"}
+                            width="auto"
+                            height="100%"
+                            placeholder={true}
+                            alt={x.title}
+                          />
+                        )
+                      );
+                    })}
+                  </div>
                 )}
             </>
           );
@@ -124,7 +123,7 @@ const RenderCollectibleCard = (props) => {
                   metadata.action || "default"
                 ]
               }
-              &nbsp;
+              {" "}
               {action.tag === "collectible" ? (
                 <span className="feed-token">
                   {metadata.title || metadata.name}
@@ -148,13 +147,13 @@ const RenderCollectibleCard = (props) => {
               )}
               {action.to && ActivityTypeMapping(action.type).prep && (
                 <>
-                  &nbsp;{ActivityTypeMapping(action.type).prep}&nbsp;
+                  {" "}{ActivityTypeMapping(action.type).prep}{" "}
                   <RenderProfileBadge identity={action.to} remoteFetch />
                 </>
               )}
               {action.platform && (
                 <span className="feed-platform">
-                  &nbsp;on {action.platform}
+                  {" "}on {action.platform}
                 </span>
               )}
             </div>

@@ -22,7 +22,7 @@ const RenderDefaultCard = (props) => {
                     metadata?.action || "default"
                   ]
                 }
-                &nbsp;
+                {" "}
                 {RenderToken({
                   key: `${actionId}_${ActivityType.donate}_${metadata?.token.name}`,
                   name: metadata.token.name,
@@ -33,12 +33,12 @@ const RenderDefaultCard = (props) => {
                     decimals: metadata.token.decimals,
                   },
                 })}
-                &nbsp;
-                {ActivityTypeMapping(action.type).prep}&nbsp;
+                {" "}
+                {ActivityTypeMapping(action.type).prep}{" "}
                 <strong>{metadata.title}</strong>
                 {action.platform && (
                   <span className="feed-platform">
-                    &nbsp;on {action.platform}
+                    {" "}on {action.platform}
                   </span>
                 )}
               </div>
@@ -81,7 +81,7 @@ const RenderDefaultCard = (props) => {
                     metadata?.action || "default"
                   ]
                 }
-                &nbsp;
+                {" "}
                 {isArray(choices) ? (
                   choices.map((x) => (
                     <span className="feed-token" key={x}>
@@ -95,7 +95,7 @@ const RenderDefaultCard = (props) => {
                 )}
                 {action.platform && (
                   <span className="feed-platform">
-                    &nbsp;on {action.platform}
+                    {" "}on {action.platform}
                   </span>
                 )}
               </div>
@@ -130,7 +130,7 @@ const RenderDefaultCard = (props) => {
               }
               {action.platform && (
                 <span className="feed-platform">
-                  &nbsp;on {action.platform}
+                  {" "}on {action.platform}
                 </span>
               )}
             </div>

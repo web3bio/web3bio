@@ -68,9 +68,9 @@ const RenderSocialCard = (props) => {
                           <strong>{x.key}</strong>
                         </div>
                         <div className="feed-target-content">{x.value}</div>
-                        {action.from && (
+                        {x.handle && (
                           <div className="feed-target-address">
-                            by {formatText(action.from)}
+                            {x.handle}
                           </div>
                         )}
                       </Link>

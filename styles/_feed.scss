@@ -216,17 +216,17 @@
             }
           }
         }
-        .feed-target-address{
-          position: absolute;
+
+        .feed-target-address {
           bottom: .25rem;
+          color: $gray-color;
+          font-size: .7rem;
+          position: absolute;
           right: .5rem;
-          font-size: .5rem;
-          color: #999;
         }
       }
 
       a.feed-target {
-
         &:focus,
         &:hover {
           border-color: darken($border-color, 2%);
