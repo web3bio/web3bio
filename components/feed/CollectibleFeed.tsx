@@ -60,7 +60,7 @@ const RenderCollectibleCard = (props) => {
                         />
                       )}
                       {x.title || x.name}
-                      {x.id && (
+                      {x.id && !x.title && (
                         <small className="feed-token-meta">{`#${formatText(
                           x.id
                         )}`}</small>
@@ -84,35 +84,34 @@ const RenderCollectibleCard = (props) => {
               </div>
               {collections.some((x) => x.image_url) &&
                 action.type === ActivityType.mint && (
-                  <div className="feed-content">
-                    <div className="feed-target collection-gallery">
-                      {collections.map((x, cIdx) => {
-                        return (
-                          x.image_url && (
-                            <NFTAssetPlayer
-                              key={`${cIdx}_image`}
-                              onClick={(e) => {
-                                openModal(ModalType.nft, {
-                                  remoteFetch: true,
-                                  network: network,
-                                  standard: x.standard,
-                                  contractAddress: x.contract_address,
-                                  tokenId: x.id,
-                                });
-                              }}
-                              className="feed-content-img"
-                              src={resolveMediaURL(x.image_url)}
-                              type={"image/png"}
-                              width="auto"
-                              height="100%"
-                              placeholder={true}
-                              alt={x.title}
-                            />
-                          )
-                        );
-                      })}
-                    </div>
-                  </div>
+                  <div className="feed-content media-gallery">
+                    
+                        {collections.map((x, cIdx) => {
+                          return (
+                            x.image_url && (
+                              <NFTAssetPlayer
+                                key={`${cIdx}_image`}
+                                onClick={(e) => {
+                                  openModal(ModalType.nft, {
+                                    remoteFetch: true,
+                                    network: network,
+                                    standard: x.standard,
+                                    contractAddress: x.contract_address,
+                                    tokenId: x.id,
+                                  });
+                                }}
+                                className="feed-content-img"
+                                src={resolveMediaURL(x.image_url)}
+                                type={"image/png"}
+                                width="auto"
+                                height="100%"
+                                placeholder={true}
+                                alt={x.title}
+                              />
+                            )
+                          );
+                        })}
+                      </div>
                 )}
             </>
           );
@@ -129,7 +128,7 @@ const RenderCollectibleCard = (props) => {
               {action.tag === "collectible" ? (
                 <span className="feed-token">
                   {metadata.title || metadata.name}
-                  {metadata.id && (
+                  {metadata.id && !metadata.title && (
                     <small className="feed-token-meta">{`#${formatText(
                       metadata.id
                     )}`}</small>
