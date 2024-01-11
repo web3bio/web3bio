@@ -1,15 +1,13 @@
 import { memo } from "react";
 import { ActivityType } from "../../utils/activity";
-import { ActivityTypeMapping, isSameAddress } from "../../utils/utils";
+import { ActivityTypeMapping } from "../../utils/utils";
 import { RenderToken } from "./FeedItem";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
 import _ from "lodash";
 
 const RenderTransactionCard = (props) => {
-  const { actions, owner } = props;
+  const { actions } = props;
   return actions.map((action) => {
-    if (!isSameAddress(action.from, owner) && !isSameAddress(action.to, owner))
-      return null;
     const metadata = action?.metadata;
     const actionId = action.action_id;
     const renderContent = (() => {

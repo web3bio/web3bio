@@ -5,7 +5,6 @@ import { isValidEthereumAddress } from "../../utils/regexp";
 import {
   ActivityTypeMapping,
   formatText,
-  isSameAddress,
   resolveMediaURL,
 } from "../../utils/utils";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
@@ -13,10 +12,8 @@ import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { RenderToken } from "./FeedItem";
 
 const RenderCollectibleCard = (props) => {
-  const { actions, openModal, network, owner } = props;
+  const { actions, openModal, network } = props;
   return actions.map((action) => {
-    if (!isSameAddress(action.from, owner) && !isSameAddress(action.to, owner))
-      return null;
     const metadata = action?.metadata;
     const collections = action?.duplicatedObjects;
     const actionId = action?.action_id;

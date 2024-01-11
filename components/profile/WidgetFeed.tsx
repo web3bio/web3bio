@@ -3,11 +3,11 @@ import { memo, useEffect, useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { ExpandController } from "./ExpandController";
 import { RSS3Fetcher, RSS3_ENDPOINT } from "../apis/rss3";
-import { SocialFeeds } from "./SocialFeeds";
 import { ActivityType, TagsFilterMapping } from "../../utils/activity";
 import FeedFilter from "./FeedFilter";
 import { useDispatch } from "react-redux";
 import { updateFeedsWidget } from "../../state/widgets/action";
+import { ActivityFeeds } from "./ActivityFeeds";
 
 const FEEDS_PAGE_SIZE = 20;
 
@@ -166,7 +166,7 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData, openModal }) => {
           </div>
         </div>
 
-        <SocialFeeds
+        <ActivityFeeds
           openModal={openModal}
           expand={expand}
           parentScrollRef={scrollContainer}

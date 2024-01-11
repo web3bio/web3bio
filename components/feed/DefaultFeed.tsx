@@ -1,20 +1,14 @@
 import Link from "next/link";
 import { memo } from "react";
-import {
-  ActivityTypeMapping,
-  isSameAddress,
-  resolveMediaURL,
-} from "../../utils/utils";
+import { ActivityTypeMapping, resolveMediaURL } from "../../utils/utils";
 import { RenderToken } from "./FeedItem";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { isArray } from "@apollo/client/cache/inmemory/helpers";
 import { ActivityType } from "../../utils/activity";
 
 const RenderDefaultCard = (props) => {
-  const { actions, owner, id } = props;
+  const { actions, id } = props;
   return actions?.map((action, idx) => {
-    if (!isSameAddress(action.from, owner) && !isSameAddress(action.to, owner))
-      return null;
     const metadata = action?.metadata;
     const actionId = id + idx;
     const renderContent = (() => {

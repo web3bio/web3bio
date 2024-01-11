@@ -1,11 +1,12 @@
 import { memo } from "react";
 import useInfiniteScroll from "react-infinite-scroll-hook";
+import { ActivityTag } from "../../utils/activity";
 import { isSameAddress } from "../../utils/utils";
 import { FeedItem } from "../feed/FeedItem";
 import { Empty } from "../shared/Empty";
 import { Loading } from "../shared/Loading";
 
-const RenderSocialFeeds = (props) => {
+const RenderActivityFeeds = (props) => {
   const {
     identity,
     data,
@@ -51,22 +52,27 @@ const RenderSocialFeeds = (props) => {
   return (
     <div className="widget-feeds-container">
       <div className="feeds-list">
-        {data.map(
-          (x) =>
-            (x.actions?.some((x) =>
-              isSameAddress(x.from, identity.address) || isSameAddress(x.to, identity.address)
-            ) && (
-              <div key={x.id} className={`feed-item`}>
-                <FeedItem
-                  openModal={openModal}
-                  network={network}
-                  identity={identity}
-                  feed={x}
-                />
-              </div>
-            )) ||
-            null
-        )}
+        {data
+          .filter(
+            (x) =>
+              x.tag !== ActivityTag.transaction ||
+              isSameAddress(x.from, identity.address) ||
+              isSameAddress(x.to, identity.address)
+          )
+          .map((x) => {
+            return (
+              x?.actions?.length > 0 && (
+                <div key={x.id} className={`feed-item`}>
+                  <FeedItem
+                    openModal={openModal}
+                    network={network}
+                    identity={identity}
+                    feed={x}
+                  />
+                </div>
+              )
+            );
+          })}
       </div>
 
       {expand && (isLoadingMore || hasNextPage) && (
@@ -88,4 +94,4 @@ const RenderSocialFeeds = (props) => {
   );
 };
 
-export const SocialFeeds = memo(RenderSocialFeeds);
+export const ActivityFeeds = memo(RenderActivityFeeds);
