@@ -53,12 +53,15 @@ const RenderActivityFeeds = (props) => {
     <div className="widget-feeds-container">
       <div className="feeds-list">
         {data
-          .filter(
-            (x) =>
-              x.tag !== ActivityTag.transaction ||
-              isSameAddress(x.from, identity.address) ||
-              isSameAddress(x.to, identity.address)
-          )
+          .filter((x) => {
+            if (
+              x.tag === ActivityTag.transaction &&
+              !isSameAddress(x.from, identity.address) &&
+              !isSameAddress(x.to, identity.address)
+            )
+              return false;
+            return true;
+          })
           .map((x) => {
             return (
               x?.actions?.length > 0 && (
