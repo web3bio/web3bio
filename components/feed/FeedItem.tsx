@@ -115,7 +115,7 @@ const RenderFeedItem = (props) => {
   const isOwner = isSameAddress(feed.owner, identity.address);
   const platformName = feed.platform?.toLowerCase();
   const networkName = feed.network?.toLowerCase();
-  const actions = feed.actions;
+  const actions = feed.actions?.filter((x) => x);
   if (!actions?.length) return null;
 
   return (

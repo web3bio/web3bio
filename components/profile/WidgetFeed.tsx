@@ -28,7 +28,7 @@ const processFeedsData = (data) => {
             if (!publicationIds.includes(j.metadata.publication_id)) {
               publicationIds.push(j.metadata.publication_id);
             } else {
-              i.actions.splice(idx, 1);
+              i.actions[idx] = null;
             }
           }
           if (
@@ -45,7 +45,7 @@ const processFeedsData = (data) => {
                 value: j.metadata.value || "",
               });
             } else {
-              i.actions.splice(idx, 1);
+              i.actions[idx] = null;
             }
           }
         });
@@ -54,7 +54,6 @@ const processFeedsData = (data) => {
       res.push(i);
     });
   });
-
   return res;
 };
 

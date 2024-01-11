@@ -64,7 +64,8 @@ const RenderActivityFeeds = (props) => {
           })
           .map((x) => {
             return (
-              x?.actions?.length > 0 && (
+              x?.actions?.length > 0 &&
+              x.actions?.some((x) => x) && (
                 <div key={x.id} className={`feed-item`}>
                   <FeedItem
                     openModal={openModal}

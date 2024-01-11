@@ -50,7 +50,6 @@ const RenderSocialCard = (props) => {
                 )}
               </div>
               {action.duplicatedObjects?.map((x) => {
-                console.log(action, "kkk");
                 return (
                   x.key && (
                     <div
