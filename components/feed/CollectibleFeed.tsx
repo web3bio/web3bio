@@ -20,7 +20,7 @@ const RenderCollectibleCard = (props) => {
     const renderContent = (() => {
       switch (action.type) {
         case ActivityType.approval:
-          return <></>;
+          return null;
         case ActivityType.trade:
         case ActivityType.mint:
           return (

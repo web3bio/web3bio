@@ -1,19 +1,21 @@
 import { memo } from "react";
 import { ActivityType } from "../../utils/activity";
-import { ActivityTypeMapping } from "../../utils/utils";
+import { ActivityTypeMapping, isSameAddress } from "../../utils/utils";
 import { RenderToken } from "./FeedItem";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
 import _ from "lodash";
 
 const RenderTransactionCard = (props) => {
-  const { actions } = props;
+  const { actions, owner } = props;
   return actions.map((action) => {
     const metadata = action?.metadata;
     const actionId = action.action_id;
     const renderContent = (() => {
+      if (!isSameAddress(action.from, owner) && !isSameAddress(action.to, owner))
+        return null;
       switch (action.type) {
         case ActivityType.approval:
-          return <></>;
+          return null;
         case ActivityType.liquidity:
           return (
             <div className="feed-content">
