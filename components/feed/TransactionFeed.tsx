@@ -12,6 +12,8 @@ const RenderTransactionCard = (props) => {
     const actionId = action.action_id;
     const renderContent = (() => {
       switch (action.type) {
+        case ActivityType.approval:
+          return <></>;
         case ActivityType.liquidity:
           return (
             <div className="feed-content">
