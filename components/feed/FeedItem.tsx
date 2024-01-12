@@ -70,7 +70,7 @@ const resolveDuplicatedActions = (
   return duplicatedObjects;
 };
 const RenderFeedContent = (props) => {
-  const { actions, tag, openModal, network, id, owner } = props;
+  const { actions, tag, openModal, network, id } = props;
   switch (tag) {
     case "social":
       return (
@@ -89,7 +89,6 @@ const RenderFeedContent = (props) => {
       return (
         <TransactionCard
           id={id}
-          owner={owner}
           actions={resolveDuplicatedActions(actions, id, [
             ActivityType.transfer,
           ])}
@@ -182,7 +181,6 @@ const RenderFeedItem = (props) => {
           id={feed.id}
           actions={actions}
           tag={feed.tag}
-          owner={identity.address}
         />
       </div>
     </>

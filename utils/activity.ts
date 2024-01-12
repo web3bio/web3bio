@@ -138,6 +138,8 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
       withdraw: "Withdrawn",
       supply: "Supplied",
       borrow: "Borrowed",
+      repay: "Repaid",
+      collect: "Received",
     },
     prep: "",
   },

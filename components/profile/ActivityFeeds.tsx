@@ -56,8 +56,7 @@ const RenderActivityFeeds = (props) => {
           .filter((x) => {
             if (
               x.tag === ActivityTag.transaction &&
-              !isSameAddress(x.from, identity.address) &&
-              !isSameAddress(x.to, identity.address)
+              !isSameAddress(x.from, identity.address)
             )
               return false;
             return true;
