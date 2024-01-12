@@ -7,7 +7,12 @@ import _ from "lodash";
 
 const RenderTransactionCard = (props) => {
   const { actions } = props;
-  return actions.map((action) => {
+  const sortedActions = _.sortBy(
+    actions,
+    (x) => x.type !== ActivityType.multisig && x.metadata.action !== "execution"
+  );
+
+  return sortedActions.map((action) => {
     const metadata = action?.metadata;
     const actionId = action.action_id;
     const renderContent = (() => {
