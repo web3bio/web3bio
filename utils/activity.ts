@@ -169,8 +169,9 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     action: {
       default: "Signed a multisig transaction",
       execution: "Executed a multisig transaction",
-      add_owner: `Added an owner`,
+      add_owner: "Added an owner",
       remove_owner: "Removed an owner",
+      create: "Created a multisig",
     },
     prep: "",
   },
