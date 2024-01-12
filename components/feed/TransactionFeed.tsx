@@ -9,7 +9,7 @@ const RenderTransactionCard = (props) => {
   const { actions } = props;
   const sortedActions = _.sortBy(
     actions,
-    (x) => x.type !== ActivityType.multisig && x.metadata.action !== "execution"
+    (x) => x.type !== ActivityType.multisig || x.metadata.action !== "execution"
   );
 
   return sortedActions.map((action) => {
