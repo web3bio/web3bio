@@ -1,12 +1,14 @@
 import { memo } from "react";
 import { ActivityType } from "../../utils/activity";
-import { ActivityTypeMapping } from "../../utils/utils";
+import { ActivityTypeMapping, formatText, resolveMediaURL } from "../../utils/utils";
+import { ModalType } from "../../hooks/useModal";
 import { RenderToken } from "./FeedItem";
+import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
 import _ from "lodash";
 
 const RenderTransactionCard = (props) => {
-  const { actions } = props;
+  const { actions, openModal, network } = props;
   const sortedActions = _.sortBy(
     actions,
     (x) => x.type !== ActivityType.multisig || x.metadata.action !== "execution"
@@ -175,18 +177,53 @@ const RenderTransactionCard = (props) => {
               }
               &nbsp;
               {action.duplicatedObjects.map((x, idx) => {
-                return RenderToken({
-                  key: `${actionId + idx}_${ActivityType.transfer}_${x.name}_${
-                    x.value
-                  }`,
-                  name: x.name,
-                  symbol: x.standard === 721 ? x.title : x.symbol,
-                  image: x.image || x.image_url,
-                  value: {
-                    value: x.value,
-                    decimals: x.decimals,
-                  },
-                });
+                return (
+                  x.contract_address && x.standard ? 
+                    <span
+                      key={`${idx}_preview`}
+                      className="feed-token c-hand"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        openModal(ModalType.nft, {
+                          remoteFetch: true,
+                          network: network,
+                          standard: x.standard,
+                          contractAddress: x.contract_address,
+                          tokenId: x.id,
+                        });
+                      }}
+                    >
+                      {x.image_url && (
+                        <NFTAssetPlayer
+                          className="feed-token-icon"
+                          src={resolveMediaURL(x.image_url)}
+                          type={"image/png"}
+                          width={20}
+                          height={20}
+                          alt={x.title}
+                        />
+                      )}
+                      {x.title || x.name}
+                      {x.id && !x.title && (
+                        <small className="feed-token-meta">{`#${formatText(
+                          x.id
+                        )}`}</small>
+                      )}
+                    </span>
+                  : RenderToken({
+                    key: `${actionId + idx}_${ActivityType.transfer}_${x.name}_${
+                      x.value
+                    }`,
+                    name: x.name,
+                    symbol: x.symbol,
+                    image: x.image,
+                    value: {
+                      value: x.value,
+                      decimals: x.decimals,
+                    },
+                  })
+                )
               })}
               {action.to && ActivityTypeMapping(action.type).prep && (
                 <>
@@ -204,7 +241,7 @@ const RenderTransactionCard = (props) => {
       }
     })();
     return (
-      <div className="feed-item-body" key={actionId}>
+      <div className={`feed-item-body ${action.type}`} key={actionId}>
         {renderContent}
       </div>
     );

@@ -79,6 +79,10 @@
       display: flex;
       flex-direction: column;
       width: 100%;
+
+      &.multisig {
+
+      }
     }
 
     .feed-item-action {
@@ -247,7 +251,8 @@
         gap: .2rem;
         height: 1.2rem;
         margin: .05rem;
-        max-width: 100%;
+        max-width: 50%;
+        overflow: hidden;
         padding: .1rem .2rem;
         position: relative;
         text-overflow: ellipsis;
@@ -278,6 +283,8 @@
           color: $gray-color-dark;
           font-size: 90%;
           line-height: 1.2rem;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
       }
     }

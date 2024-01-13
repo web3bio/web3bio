@@ -89,6 +89,8 @@ const RenderFeedContent = (props) => {
       return (
         <TransactionCard
           id={id}
+          network={network}
+          openModal={openModal}
           actions={resolveDuplicatedActions(actions, id, [
             ActivityType.transfer,
           ])}
