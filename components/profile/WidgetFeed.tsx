@@ -83,7 +83,6 @@ const getURL = (index, address, previous, filter) => {
       ActivityType.post,
       ActivityType.profile,
       ActivityType.propose,
-      ActivityType.revise,
       ActivityType.reward,
       ActivityType.share,
       ActivityType.staking,

@@ -178,7 +178,7 @@ const RenderTransactionCard = (props) => {
               &nbsp;
               {action.duplicatedObjects.map((x, idx) => {
                 return (
-                  x.contract_address && x.standard ? 
+                  x.contract_address && (x.standard === 721 || x.standard === 1155) ? 
                     <span
                       key={`${idx}_preview`}
                       className="feed-token c-hand"
@@ -204,7 +204,9 @@ const RenderTransactionCard = (props) => {
                           alt={x.title}
                         />
                       )}
-                      {x.title || x.name}
+                      <span className="feed-token-value">
+                        {x.title || x.name}
+                      </span>
                       {x.id && !x.title && (
                         <small className="feed-token-meta">{`#${formatText(
                           x.id

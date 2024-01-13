@@ -117,13 +117,6 @@
       width: 100%;
       word-break: break-word;
 
-      .duplicated-items {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.25rem;
-        margin: 0.25rem 0;
-      }
-
       &.text-large {
         font-size: .8rem;
       }
@@ -257,11 +250,13 @@
         position: relative;
         text-overflow: ellipsis;
         white-space: nowrap;
-        word-break: keep-all;
         cursor: pointer;
 
         .feed-token-value {
           font-weight: 600;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
 
         .feed-token-icon {
@@ -283,8 +278,6 @@
           color: $gray-color-dark;
           font-size: 90%;
           line-height: 1.2rem;
-          overflow: hidden;
-          text-overflow: ellipsis;
         }
       }
     }

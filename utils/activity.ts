@@ -271,6 +271,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
       default: "Traded",
       buy: "Bought",
       sell: "Sold",
+      offer: "Made an offer for",
     },
     prep: "",
   },

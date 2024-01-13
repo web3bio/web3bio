@@ -134,7 +134,6 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
             loading="lazy"
           />
         )}
-
         <span
           className="feed-token-value"
           title={data?.displayName || identity}

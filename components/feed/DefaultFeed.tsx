@@ -22,7 +22,7 @@ const RenderDefaultCard = (props) => {
                     metadata?.action || "default"
                   ]
                 }
-                {" "}
+                &nbsp;
                 {RenderToken({
                   key: `${actionId}_${ActivityType.donate}_${metadata?.token.name}`,
                   name: metadata.token.name,
@@ -33,12 +33,13 @@ const RenderDefaultCard = (props) => {
                     decimals: metadata.token.decimals,
                   },
                 })}
-                {" "}
-                {ActivityTypeMapping(action.type).prep}{" "}
+                &nbsp;
+                {ActivityTypeMapping(action.type).prep}
+                &nbsp;
                 <strong>{metadata.title}</strong>
                 {action.platform && (
                   <span className="feed-platform">
-                    {" "}on {action.platform}
+                    &nbsp;on {action.platform}
                   </span>
                 )}
               </div>
@@ -81,7 +82,7 @@ const RenderDefaultCard = (props) => {
                     metadata?.action || "default"
                   ]
                 }
-                {" "}
+                &nbsp;
                 {isArray(choices) ? (
                   choices.map((x) => (
                     <span className="feed-token" key={x}>
@@ -95,7 +96,7 @@ const RenderDefaultCard = (props) => {
                 )}
                 {action.platform && (
                   <span className="feed-platform">
-                    {" "}on {action.platform}
+                    &nbsp;on {action.platform}
                   </span>
                 )}
               </div>
@@ -110,7 +111,7 @@ const RenderDefaultCard = (props) => {
                       <strong>{metadata.proposal?.title}</strong>
                     </div>
                     <div className="feed-target-content">
-                      {metadata.proposal?.organization.name}{" "}
+                      {metadata.proposal?.organization.name}&nbsp;
                       <small className="text-gray-dark">
                         ({metadata.proposal?.organization.id})
                       </small>
@@ -130,7 +131,7 @@ const RenderDefaultCard = (props) => {
               }
               {action.platform && (
                 <span className="feed-platform">
-                  {" "}on {action.platform}
+                  &nbsp;on {action.platform}
                 </span>
               )}
             </div>

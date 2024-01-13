@@ -31,7 +31,7 @@ const RenderCollectibleCard = (props) => {
                     metadata.action || "default"
                   ]
                 }
-                {" "}
+                &nbsp;
                 {collections.map((x, cIdx) => {
                   return (
                     <span
@@ -59,7 +59,9 @@ const RenderCollectibleCard = (props) => {
                           alt={x.title}
                         />
                       )}
-                      {x.title || x.name}
+                      <span className="feed-token-value">
+                        {x.title || x.name}
+                      </span>
                       {x.id && !x.title && (
                         <small className="feed-token-meta">{`#${formatText(
                           x.id
@@ -68,17 +70,9 @@ const RenderCollectibleCard = (props) => {
                     </span>
                   );
                 })}
-                {action.from &&
-                  action.type == ActivityType.trade &&
-                  isValidEthereumAddress(action.from) && (
-                    <span>
-                      {" "} from{" "}
-                      <RenderProfileBadge identity={action.from} remoteFetch />
-                    </span>
-                  )}
                 {action.platform && (
                   <span className="feed-platform">
-                    {" "}on {action.platform}
+                    &nbsp;on {action.platform}
                   </span>
                 )}
               </div>
@@ -123,7 +117,7 @@ const RenderCollectibleCard = (props) => {
                   metadata.action || "default"
                 ]
               }
-              {" "}
+              &nbsp;
               {action.tag === "collectible" ? (
                 <span className="feed-token">
                   {metadata.title || metadata.name}
@@ -147,13 +141,13 @@ const RenderCollectibleCard = (props) => {
               )}
               {action.to && ActivityTypeMapping(action.type).prep && (
                 <>
-                  {" "}{ActivityTypeMapping(action.type).prep}{" "}
+                  &nbsp;{ActivityTypeMapping(action.type).prep}&nbsp;
                   <RenderProfileBadge identity={action.to} remoteFetch />
                 </>
               )}
               {action.platform && (
                 <span className="feed-platform">
-                  {" "}on {action.platform}
+                  &nbsp;on {action.platform}
                 </span>
               )}
             </div>

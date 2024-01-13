@@ -195,7 +195,7 @@ const RenderSocialCard = (props) => {
                     }
                     {action.platform && (
                       <span className="feed-platform">
-                        &nbsp;on {action.platform}
+                        &nbsp; 
                       </span>
                     )}
                   </div>
