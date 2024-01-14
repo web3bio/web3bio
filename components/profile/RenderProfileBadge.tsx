@@ -71,7 +71,8 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
       action={["hover", "focus"]}
       popupVisible={showPopup}
       popupAlign={{
-        targetOffset: [0, 80],
+        points: ['bc', 'tc'],
+        offset: [0, -3]
       }}
       popupStyle={{
         display: showPopup && data ? "block" : "none",
@@ -123,7 +124,7 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
         </div>
       }
     >
-      <div ref={ref} className="feed-token">
+      <div ref={ref} className="feed-token c-hand">
         {data?.avatar && (
           <Image
             className="feed-token-icon"

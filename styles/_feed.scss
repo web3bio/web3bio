@@ -244,13 +244,12 @@
         gap: .2rem;
         height: 1.2rem;
         margin: .05rem;
-        max-width: 50%;
+        max-width: $size-md;
         overflow: hidden;
         padding: .1rem .2rem;
         position: relative;
         text-overflow: ellipsis;
         white-space: nowrap;
-        cursor: pointer;
 
         .feed-token-value {
           font-weight: 600;
