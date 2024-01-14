@@ -3,23 +3,57 @@ import { memo, useEffect, useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { ExpandController } from "./ExpandController";
 import { RSS3Fetcher, RSS3_ENDPOINT } from "../apis/rss3";
-import { SocialFeeds } from "./SocialFeeds";
 import { ActivityType, TagsFilterMapping } from "../../utils/activity";
 import FeedFilter from "./FeedFilter";
 import { useDispatch } from "react-redux";
 import { updateFeedsWidget } from "../../state/widgets/action";
+import { ActivityFeeds } from "./ActivityFeeds";
+import { PlatformType } from "../../utils/platform";
 
 const FEEDS_PAGE_SIZE = 20;
 
 const processFeedsData = (data) => {
   if (!data?.[0]?.data?.length) return [];
   const res = new Array();
-  data.map((x) => {
+  const publicationIds = new Array();
+  const updateRecords = new Array();
+  JSON.parse(JSON.stringify(data)).map((x) => {
     x.data?.forEach((i) => {
+      if (
+        i.tag === TagsFilterMapping.social.filters[0] &&
+        i.actions?.length > 0
+      ) {
+        i.actions.forEach((j, idx) => {
+          if (j.metadata.publication_id) {
+            if (!publicationIds.includes(j.metadata.publication_id)) {
+              publicationIds.push(j.metadata.publication_id);
+            } else {
+              i.actions[idx] = null;
+            }
+          }
+          if (
+            j.metadata.action === "update" &&
+            j.platform === PlatformType.ens
+          ) {
+            if (
+              !updateRecords.find(
+                (x) => x.key === j.metadata.key && x.value === j.metadata.value
+              )
+            ) {
+              updateRecords.push({
+                key: j.metadata.key,
+                value: j.metadata.value || "",
+              });
+            } else {
+              i.actions[idx] = null;
+            }
+          }
+        });
+      }
+
       res.push(i);
     });
   });
-
   return res;
 };
 
@@ -49,7 +83,6 @@ const getURL = (index, address, previous, filter) => {
       ActivityType.post,
       ActivityType.profile,
       ActivityType.propose,
-      ActivityType.revise,
       ActivityType.reward,
       ActivityType.share,
       ActivityType.staking,
@@ -80,7 +113,6 @@ function useFeeds({ address, fromServer, initialData, filter }) {
       revalidateOnReconnect: false,
     }
   );
-
   return {
     hasNextPage: !!data?.[data.length - 1]?.meta?.cursor,
     data: processFeedsData(data),
@@ -153,7 +185,7 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData, openModal }) => {
           </div>
         </div>
 
-        <SocialFeeds
+        <ActivityFeeds
           openModal={openModal}
           expand={expand}
           parentScrollRef={scrollContainer}

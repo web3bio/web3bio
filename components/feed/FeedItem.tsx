@@ -16,48 +16,99 @@ import {
   SocialPlatformMapping,
 } from "../../utils/utils";
 import ActionExternalMenu from "./ActionExternalMenu";
+import { ActivityType } from "../../utils/activity";
 
-export const RenderToken = (token, key) => {
+export const RenderToken = ({ key, name, symbol, image, value }) => {
   return (
-    token && (
-      <div className="feed-token" key={key} title={token.name}>
-        {token.image && (
-          <Image
-            className="feed-token-icon"
-            src={token.image}
-            alt={token.name}
-            height={20}
-            width={20}
-            loading="lazy"
-          />
-        )}
-        <span className="feed-token-value" title={formatValue(token)}>
-          {formatText(formatValue(token))}
-        </span>
-        <small className="feed-token-meta">{token.symbol}</small>
-      </div>
-    )
+    <div className="feed-token" key={key} title={name}>
+      {image && (
+        <Image
+          className="feed-token-icon"
+          src={resolveIPFS_URL(image) || ""}
+          alt={name}
+          height={20}
+          width={20}
+          loading="lazy"
+        />
+      )}
+      <span className="feed-token-value" title={formatValue(name)}>
+        {formatText(formatValue(value))}
+      </span>
+      {symbol && <small className="feed-token-meta">{symbol}</small>}
+    </div>
   );
 };
 
+const resolveDuplicatedActions = (
+  actions,
+  id,
+  specificTypes,
+  isMetadataAction?
+) => {
+  const _data = JSON.parse(JSON.stringify(actions));
+  const duplicatedObjects = new Array();
+  _data.forEach((x, idx) => {
+    const dupIndex = duplicatedObjects.findIndex(
+      (i) =>
+        i.tag === x.tag &&
+        i.type === x.type &&
+        i.from === x.from &&
+        i.to === x.to &&
+        specificTypes.includes(isMetadataAction ? i.metadata.action : i.type)
+    );
+    if (dupIndex === -1) {
+      duplicatedObjects.push({
+        ...x,
+        duplicatedObjects: [x.metadata],
+        action_id: id + idx,
+      });
+    } else {
+      duplicatedObjects[dupIndex].duplicatedObjects.push(x.metadata);
+    }
+  });
+
+  return duplicatedObjects;
+};
 const RenderFeedContent = (props) => {
-  const { action, tag, id, openModal, network } = props;
+  const { actions, tag, openModal, network, id } = props;
   switch (tag) {
     case "social":
-      return <SocialCard openModal={openModal} action={action} />;
+      return (
+        <SocialCard
+          openModal={openModal}
+          actions={resolveDuplicatedActions(
+            actions,
+            id,
+            ["renew", "update"],
+            true
+          )}
+        />
+      );
     case "exchange":
     case "transaction":
-      return <TransactionCard id={id} action={action} />;
+      return (
+        <TransactionCard
+          id={id}
+          network={network}
+          openModal={openModal}
+          actions={resolveDuplicatedActions(actions, id, [
+            ActivityType.transfer,
+          ])}
+        />
+      );
     case "collectible":
       return (
         <CollectibleCard
           network={network}
           openModal={openModal}
-          action={action}
+          actions={resolveDuplicatedActions(actions, id, [
+            ActivityType.mint,
+            ActivityType.trade,
+          ])}
         />
       );
     default:
-      return <DefaultCard action={action} />;
+      return <DefaultCard id={id} actions={actions} />;
   }
 };
 
@@ -66,8 +117,8 @@ const RenderFeedItem = (props) => {
   const isOwner = isSameAddress(feed.owner, identity.address);
   const platformName = feed.platform?.toLowerCase();
   const networkName = feed.network?.toLowerCase();
-  const actions = feed.actions;
-  const action = actions[0];
+  const actions = feed.actions?.filter((x) => x);
+  if (!actions?.length) return null;
 
   return (
     <>
@@ -110,45 +161,29 @@ const RenderFeedItem = (props) => {
           </div>
           <div className="feed-item-action dropdown dropdown-right">
             <Link
-              href={resolveIPFS_URL(action?.related_urls?.[0]) || ""}
+              href={resolveIPFS_URL(actions?.[0]?.related_urls?.[0]) || ""}
               target="_blank"
               className="feed-timestamp"
             >
-              <span className="hide-sm">{new Date(feed.timestamp * 1000).toLocaleString()}</span>
-              <span className="show-sm">{new Date(feed.timestamp * 1000).toLocaleDateString()}</span>
+              <span className="hide-sm">
+                {new Date(feed.timestamp * 1000).toLocaleString()}
+              </span>
+              <span className="show-sm">
+                {new Date(feed.timestamp * 1000).toLocaleDateString()}
+              </span>
             </Link>
             <ActionExternalMenu
-              links={action?.related_urls || []}
+              links={actions?.[0]?.related_urls.map((x) => resolveIPFS_URL(x))}
             />
           </div>
         </div>
-        <div className="feed-item-body">
-          {feed.tag === "social" ? (
-            <RenderFeedContent
-              network={feed.network}
-              openModal={openModal}
-              action={action}
-              tag={action.tag}
-              id={action.id}
-            />
-          ) : (
-            actions.map((x, index) => {
-              return (
-                x.tag !== "unknown" &&
-                (isSameAddress(x.from, identity.address) || isSameAddress(x.to, identity.address)) && (
-                  <RenderFeedContent
-                    network={feed.network}
-                    openModal={openModal}
-                    action={x}
-                    tag={x.tag}
-                    id={x.id}
-                    key={index}
-                  />
-                )
-              );
-            })
-          )}
-        </div>
+        <RenderFeedContent
+          network={feed.network}
+          openModal={openModal}
+          id={feed.id}
+          actions={actions}
+          tag={feed.tag}
+        />
       </div>
     </>
   );

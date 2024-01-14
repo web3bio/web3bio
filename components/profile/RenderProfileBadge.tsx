@@ -85,7 +85,7 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
             <Link
               href={`${process.env.NEXT_PUBLIC_BASE_URL}/${relatedPath}`}
               target="_blank"
-              className="btn btn-sm btn-link"
+              className="btn btn-sm"
             >
               <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
             </Link>
@@ -134,7 +134,6 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
             loading="lazy"
           />
         )}
-
         <span
           className="feed-token-value"
           title={data?.displayName || identity}
