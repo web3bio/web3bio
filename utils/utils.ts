@@ -1,5 +1,5 @@
 import { BigNumber } from "bignumber.js";
-import { resolveIPFS_URL } from "./ipfs";
+import { isIPFS_Resource, resolveIPFS_URL } from "./ipfs";
 import { pow10 } from "./number";
 import { PlatformType, PlatformData } from "./platform";
 import { Network, NetworkData } from "./network";
@@ -134,11 +134,17 @@ export function debounce(func, timeout = 300) {
 
 export const resolveMediaURL = (url) => {
   if (!url) return null;
-  return url.startsWith("data:") || url.startsWith("https:")
-    ? url
-    : url.startsWith("ar://")
-    ? url.replaceAll("ar://", ArweaveAssetPrefix)
-    : resolveIPFS_URL(url);
+
+  switch (!!url) {
+    case url.startsWith("data:") || url.startsWith("https:"):
+      return url;
+    case url.startsWith("ar://"):
+      return url.replaceAll("ar://", ArweaveAssetPrefix);
+    case isIPFS_Resource(url) || url.includes("ipfs:"):
+      return resolveIPFS_URL(url);
+    default:
+      return url;
+  }
 };
 
 export const SocialPlatformMapping = (platform: PlatformType) => {
@@ -277,4 +283,12 @@ export const mapLinks = (data) => {
     }, [])
   );
   return _.uniqBy(arr, (x) => x.handle?.toLowerCase() && x.platform);
+};
+
+export const isValidURL = (str) => {
+  try {
+    return !!new URL(str);
+  } catch (e) {
+    return false;
+  }
 };

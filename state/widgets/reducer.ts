@@ -5,6 +5,7 @@ import {
   updatePoapsWidget,
   updateRssWidget,
   updateFeedsWidget,
+  updatePhilandWidget,
 } from "./action";
 
 export interface WidgetState {
@@ -33,6 +34,11 @@ export interface WidgetState {
     initLoading?: boolean;
     position?: string;
   };
+  philand?: {
+    isEmpty: boolean | null;
+    initLoading?: boolean;
+    position?: string;
+  };
 }
 
 export const initialState: WidgetState = {
@@ -53,6 +59,10 @@ export const initialState: WidgetState = {
     initLoading: true,
   },
   feeds: {
+    isEmpty: null,
+    initLoading: true,
+  },
+  philand: {
     isEmpty: null,
     initLoading: true,
   },
@@ -105,6 +115,16 @@ export default createReducer(initialState, (builder) =>
       (state, { payload: { isEmpty, initLoading } }) => {
         state.feeds = {
           ...state.feeds,
+          isEmpty,
+          initLoading,
+        };
+      }
+    )
+    .addCase(
+      updatePhilandWidget,
+      (state, { payload: { isEmpty, initLoading } }) => {
+        state.philand = {
+          ...state.philand,
           isEmpty,
           initLoading,
         };

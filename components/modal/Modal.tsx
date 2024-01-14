@@ -4,6 +4,7 @@ import { ModalType } from "../../hooks/useModal";
 import ArticleModalContent from "./ArticleModalContent";
 import MediaModalContent from "./MediaModalContent";
 import NFTModalContentRender from "./NFTModalContent";
+import PhilandModalContent from "./PhilandModalContent";
 import PoapsModalContent from "./PoapsModalContent";
 import ShareModalContent from "./ShareModalContent";
 
@@ -40,6 +41,8 @@ export default function Modal(props) {
         return <NFTModalContentRender asset={params} onClose={onDismiss} />;
       case ModalType.poaps:
         return <PoapsModalContent asset={params} onClose={onDismiss} />;
+      case ModalType.philand:
+        return <PhilandModalContent {...params} onClose={onDismiss} />;
       case ModalType.share:
         return <ShareModalContent {...params} onClose={onDismiss} />;
       case ModalType.media:

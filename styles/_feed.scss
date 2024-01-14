@@ -79,6 +79,10 @@
       display: flex;
       flex-direction: column;
       width: 100%;
+
+      &.multisig {
+
+      }
     }
 
     .feed-item-action {
@@ -164,6 +168,7 @@
       }
 
       .feed-target {
+        position: relative;
         border: .05rem solid $border-color;
         border-radius: .4rem;
         box-shadow: 0 .1rem .4rem rgba($dark-color, .05);
@@ -186,7 +191,9 @@
         }
 
         .feed-target-content {
-          margin-top: .25rem;
+          &:not(:first-child) {
+            margin-top: .25rem;
+          }
 
           &.media-gallery {
             display: flex;
@@ -205,6 +212,14 @@
               max-height: 8rem;
             }
           }
+        }
+
+        .feed-target-address {
+          color: $gray-color;
+          font-size: .7rem;
+          position: absolute;
+          right: .5rem;
+          top: .25rem;
         }
       }
 
@@ -225,18 +240,22 @@
         box-shadow: 0 .05rem .2rem rgba($dark-color, .05);
         display: inline-flex;
         flex-wrap: nowrap;
+        font-size: .7rem;
         gap: .2rem;
         height: 1.2rem;
-        margin: .05rem 0;
-        max-width: 100%;
+        margin: .05rem;
+        max-width: $size-md;
+        overflow: hidden;
         padding: .1rem .2rem;
         position: relative;
         text-overflow: ellipsis;
         white-space: nowrap;
-        word-break: keep-all;
 
         .feed-token-value {
           font-weight: 600;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
 
         .feed-token-icon {
@@ -256,23 +275,8 @@
 
         .feed-token-meta {
           color: $gray-color-dark;
-          font-size: 85%;
+          font-size: 90%;
           line-height: 1.2rem;
-        }
-
-        .profile-card {
-          bottom: 100%;
-          display: none;
-          left: 50%;
-          position: absolute;
-          transform: translateX(-50%);
-        }
-
-        &:focus,
-        &:hover {
-          .profile-card {
-            display: flex;
-          }
         }
       }
     }

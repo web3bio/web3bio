@@ -165,10 +165,11 @@
       box-shadow: 0 .05rem .1rem var(--badge-bg-color, rgba($dark-color, .05));
       display: flex;
       height: 1.6rem;
+      max-width: 100%;
       padding: .25rem;
       text-decoration: none;
       transition: all .2s ease;
-
+      
       &:focus,
       &:hover {
         box-shadow: 0 .05rem .1rem var(--badge-bg-color, rgba($dark-color, .05)), 0 .05rem .8rem rgba($dark-color, .05);
@@ -196,7 +197,11 @@
     }
 
     .platform-badge-name {
+      flex: 1 1 auto;
+      overflow: hidden;
       padding: 0 .3rem 0 .1rem;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 
@@ -315,6 +320,7 @@
     text-decoration: none;
     transition: all .25s ease-in-out;
     width: 100%;
+
     .emoji-large {
       font-size: 1.2rem;
     }
@@ -355,9 +361,7 @@
         z-index: 99;
 
         .platform-action {
-          .btn {
-            opacity: 1;
-          }
+          opacity: 1;
         }
       }
 
@@ -404,22 +408,13 @@
     }
 
     .platform-action {
-      display: none;
-      margin-top: .5rem;
+      opacity: 0;
+      position: absolute;
+      right: .5rem;
+      top: .5rem;
 
       &.active {
-        .btn {
-          opacity: 1;
-        }
-      }
-
-      .btn {
-        background: var(--widget-primary-color, lighten($bg-color, 2%));
-        border: .05rem solid rgba($dark-color, .075);
-        color: $light-color;
-        opacity: 0;
-        transition: opacity .2s ease-in-out;
-        position: relative;
+        opacity: 1;
       }
     }
 
@@ -822,8 +817,13 @@
   .profile-widget-feeds {
     background: $light-color;
     border-color: lighten($bg-color, 3%);
-    height: 60vh;
+    height: 100%;
+    max-height: 50vh;
     position: relative;
+
+    @media screen and (max-width: $size-sm) {
+      max-height: 60vh;
+    }
 
     .widget-feeds-container {
       overflow: hidden;
@@ -832,6 +832,7 @@
     &.active {
       box-shadow: 0 .4rem 1.6rem -.4rem rgba($dark-color, .15), 0 .1rem .2rem rgba($dark-color, .01);
       height: 100%;
+      max-height: none;
 
       .widget-feeds-container {
         overflow-y: auto;
@@ -872,7 +873,7 @@
         border-radius: .4rem;
         flex: 0 0 14rem;
         min-height: 5rem;
-        padding: 1rem 1rem 1rem 0;
+        padding: 1rem 1rem .5rem 0;
         text-decoration: none;
         width: 14rem;
 
@@ -927,10 +928,34 @@
           object-fit: cover;
           width: 100%;
 
-          & + .rss-item-title {
+          &+.rss-item-title {
             font-size: .7rem;
           }
         }
+      }
+    }
+  }
+
+  // Phi Widget
+  .profile-widget-philand {
+    background: #FDECCD;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+
+    &:hover {
+      box-shadow: 0 .4rem 1.6rem -.4rem rgba($dark-color, .15), 0 .1rem .2rem rgba($dark-color, .01);
+      cursor: pointer;
+    }
+
+    .profile-widget-body {
+      align-items: center;
+      display: flex;
+      height: 6rem;
+
+      .img-philand {
+        position: absolute;
+        right: -2rem;
       }
     }
   }
@@ -942,8 +967,8 @@
 
     .profile-widget-title {
       .label {
-        background: #a855f7;
-        box-shadow: inset 0 0 .25rem rgba($dark-color, .15), 0 .1rem .4rem rgba(#a855f7, .5);
+        background: darken(#a855f7, 25%);
+        box-shadow: inset 0 0 .25rem rgba($dark-color, .15);
         color: #fff;
       }
     }
@@ -1087,6 +1112,7 @@
       }
 
       .preview-image {
+
         .img-responsive,
         .video-responsive {
           max-width: 98vw;
@@ -1115,6 +1141,7 @@
     position: relative;
 
     &.preview-image-poap {
+
       .img-container,
       .img-responsive {
         border-radius: 50%;
@@ -1217,8 +1244,6 @@
             align-items: center;
             display: flex;
             font-size: .8rem;
-            font-weight: 700;
-            text-transform: uppercase;
 
             .icon-platform {
               display: flex;
@@ -1229,6 +1254,28 @@
 
           &:not(:first-child) {
             border-top: .05rem solid rgba($dark-color, 0.025);
+          }
+        }
+      }
+
+      .panel-widget-content {
+        .phi-rank {
+          width: fit-content;
+          align-items: center;
+          background: linear-gradient(124.2deg, #fff9d6 8%, #ffe2ba 34%, #f0a87c 74%, #f2a0b7 95%);
+          border-radius: .8rem;
+          display: flex;
+          gap: .25rem;
+          padding: .2rem .4rem .2rem .4rem;
+
+          .rank-label {
+          
+              border-radius: 1rem;
+              font-size: .6rem;
+              font-weight: 700;
+              line-height: .8rem;
+              height: .8rem;
+              text-shadow: rgba($dark-color, .95);
           }
         }
       }
