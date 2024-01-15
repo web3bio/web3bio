@@ -349,6 +349,7 @@ export default function ProfileMain(props) {
       <div className="web3bio-badge">
         <Link
           href="/?utm_source=profile"
+          prefetch={false}
           target="_parent"
           className="btn btn-primary"
           title="Web3.bio - Web3 Identity Graph Search and Link in Bio Profile"
