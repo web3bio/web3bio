@@ -194,8 +194,9 @@ export default function ProfileMain(props) {
                 }`;
                 return (
                   <Link
+                    key={x.platform + idx}  
                     href={`/${relatedPath}`}
-                    key={x.platform + idx}
+                    prefetch={false}
                     className={`platform-badge ${x.platform}${
                       idx === 0 ? " active" : ""
                     }`}
