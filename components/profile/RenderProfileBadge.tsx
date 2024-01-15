@@ -85,6 +85,7 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
           <div className="profile-card-action">
             <Link
               href={`${process.env.NEXT_PUBLIC_BASE_URL}/${relatedPath}`}
+              prefetch={false}
               target="_blank"
               className="btn btn-sm"
             >

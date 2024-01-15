@@ -23,6 +23,7 @@ export enum Network {
   zora = "zora",
   mastodon = "mastodon",
   lens = "lens",
+  linea = "linea",
   snapshot = "snapshot",
   erc1577 = "erc1577",
 }
@@ -212,6 +213,14 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
     primaryColor: "#6bc674",
     bgColor: "#d9f1dc",
     scanPrefix: "https://momoka.lens.xyz/",
+  },
+  [Network.linea]: {
+    key: Network.linea,
+    icon: "icons/icon-linea.svg",
+    label: "Linea",
+    primaryColor: "#000000",
+    bgColor: "#efefef",
+    scanPrefix: "https://lineascan.build/",
   },
   [Network.snapshot]: {
     key: Network.snapshot,

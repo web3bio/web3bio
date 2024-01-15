@@ -194,8 +194,9 @@ export default function ProfileMain(props) {
                 }`;
                 return (
                   <Link
+                    key={x.platform + idx}  
                     href={`/${relatedPath}`}
-                    key={x.platform + idx}
+                    prefetch={false}
                     className={`platform-badge ${x.platform}${
                       idx === 0 ? " active" : ""
                     }`}
@@ -348,6 +349,7 @@ export default function ProfileMain(props) {
       <div className="web3bio-badge">
         <Link
           href="/?utm_source=profile"
+          prefetch={false}
           target="_parent"
           className="btn btn-primary"
           title="Web3.bio - Web3 Identity Graph Search and Link in Bio Profile"
