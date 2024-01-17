@@ -59,6 +59,7 @@ export default function ProfileMain(props) {
       .map((x) => x.initLoading)
       .some((x) => !!x);
   }, [profileWidgetStates])();
+  console.log(profileWidgetStates,'initialLoading')
   if (!data || data.error) {
     return (
       <Error
@@ -281,7 +282,7 @@ export default function ProfileMain(props) {
                       openModal(ModalType.nft, v);
                     }}
                     address={data.address}
-                    initialData={nfts || []}
+                    initialData={[]}
                   />
                 </Suspense>
               </div>

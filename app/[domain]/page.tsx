@@ -47,13 +47,13 @@ async function fetchDataFromServer(domain: string) {
     );
     if (response.status === 404) return null;
     const data = await response.json();
-    const remoteNFTs = data[0].address
-      ? await fetchInitialNFTsData(data[0].address)
-      : {};
+    // const remoteNFTs = data[0].address
+    //   ? await fetchInitialNFTsData(data[0].address)
+    //   : {};
     return {
       data,
       platform,
-      nfts: remoteNFTs,
+      // nfts: remoteNFTs,
     };
   } catch (e) {
     console.log(e, "ERROR");
@@ -62,11 +62,10 @@ async function fetchDataFromServer(domain: string) {
 }
 
 export async function generateMetadata({
-    params: { domain },
-  }: {
-    params: { domain: string };
-  },
-): Promise<Metadata> {
+  params: { domain },
+}: {
+  params: { domain: string };
+}): Promise<Metadata> {
   const res = await fetchDataFromServer(domain);
   if (!res) {
     if (regexAvatar.test(domain)) {
@@ -90,17 +89,15 @@ export async function generateMetadata({
   const avatarURL = data?.find((x) => !!x.avatar)?.avatar;
 
   const params = new URLSearchParams();
-    if (domain)
-      params.append("path", domain);
-    if (profile)
-      params.append("address", profile.address);
-      params.append("displayName", profile.displayName);
-    if (profile.description)
-      params.append("description", profile.description);
-    if(avatarURL)
-      params.append("avatar", avatarURL);
-  const relativeOGURL = params.toString() ? `/api/og?${params.toString()}` : "/api/og";
-  
+  if (domain) params.append("path", domain);
+  if (profile) params.append("address", profile.address);
+  params.append("displayName", profile.displayName);
+  if (profile.description) params.append("description", profile.description);
+  if (avatarURL) params.append("avatar", avatarURL);
+  const relativeOGURL = params.toString()
+    ? `/api/og?${params.toString()}`
+    : "/api/og";
+
   return {
     metadataBase: new URL(baseURL),
     title: pageTitle,
@@ -113,18 +110,14 @@ export async function generateMetadata({
       url: `/${domain}`,
       siteName: "Web3.bio",
       title: pageTitle,
-      images: [
-        relativeOGURL
-      ],
+      images: [relativeOGURL],
       description: profileDescription,
     },
     twitter: {
       title: pageTitle,
       description: profileDescription,
       site: "@web3bio",
-      images: [
-        relativeOGURL
-      ],
+      images: [relativeOGURL],
       creator: "@web3bio",
     },
   };
@@ -137,7 +130,7 @@ export default async function ProfilePage({
 }) {
   const serverData = await fetchDataFromServer(domain);
   if (!serverData) notFound();
-  const { data, nfts, platform } = serverData;
+  const { data, platform } = serverData;
   const profile = data[0];
   const pageTitle =
     profile.identity == profile.displayName
@@ -154,8 +147,7 @@ export default async function ProfilePage({
         })) || []
       }
       nfts={{
-        ...nfts,
-        nfts: mapNFTs(nfts.nfts),
+        nfts: [],
       }}
       data={{
         ...data[0],

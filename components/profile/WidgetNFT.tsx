@@ -59,6 +59,7 @@ const getURL = (index, address, previous, filter) => {
   )
     return null;
   const cursor = previous?.next_cursor || "";
+
   return (
     SIMPLEHASH_URL +
     `/api/v0/nfts/owners_v2?chains=${
@@ -70,13 +71,12 @@ const getURL = (index, address, previous, filter) => {
 };
 
 function useNFTs({ address, initialData, fromServer, filter }) {
-  const options =
-    fromServer && !filter
-      ? {
-          initialSize: 1,
-          fallbackData: [initialData],
-        }
-      : {};
+  const options = fromServer
+    ? {
+        initialSize: 1,
+        fallbackData: [initialData],
+      }
+    : {};
   const { data, error, size, isValidating, setSize } = useSWRInfinite(
     (index, previous) => getURL(index, address, previous, filter),
     SimplehashFetcher,
@@ -84,7 +84,7 @@ function useNFTs({ address, initialData, fromServer, filter }) {
       ...options,
       suspense: !fromServer,
       revalidateOnFocus: false,
-      revalidateOnMount: false,
+      revalidateOnMount: true,
       revalidateOnReconnect: false,
     }
   );
@@ -142,13 +142,14 @@ const RenderWidgetNFT = ({
       }
       setTimeout(() => {
         scrollToAsset(assetId);
+        setScrollRefAndAssetId([ref, ""]);
       }, 550);
       setFirstRender(false);
     }
     if (!isValidating) {
       dispatch(updateNFTWidget({ isEmpty: !data?.length, initLoading: false }));
     }
-  }, [assetId]);
+  }, [assetId,isValidating]);
 
   if (!filter && (!data.length || isError)) return null;
 
