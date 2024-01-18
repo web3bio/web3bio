@@ -415,3 +415,17 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     urlPrefix: "https://firefly.land/",
   },
 };
+
+export const shouldPlatformFetch = (platform?: PlatformType | null)=>{
+  if(!platform) return false
+  if([
+    PlatformType.ens,
+    PlatformType.ethereum,
+    PlatformType.farcaster,
+    PlatformType.lens,
+    PlatformType.unstoppableDomains,
+    PlatformType.dotbit,
+    PlatformType.nextid
+  ].includes(platform)) return true
+  return false
+}

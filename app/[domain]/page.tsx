@@ -1,5 +1,5 @@
-import { fetchInitialNFTsData } from "../../hooks/api/fetchProfile";
-import { PlatformType } from "../../utils/platform";
+// import { fetchInitialNFTsData } from "../../hooks/api/fetchProfile";
+import { shouldPlatformFetch } from "../../utils/platform";
 import { SocialPlatformMapping } from "../../utils/utils";
 import { handleSearchPlatform, mapLinks } from "../../utils/utils";
 import { notFound, redirect } from "next/navigation";
@@ -27,18 +27,7 @@ async function fetchDataFromServer(domain: string) {
   if (!domain) return null;
   try {
     const platform = handleSearchPlatform(domain);
-    if (
-      ![
-        PlatformType.ens,
-        PlatformType.farcaster,
-        PlatformType.lens,
-        PlatformType.ethereum,
-        PlatformType.dotbit,
-        PlatformType.unstoppableDomains,
-        PlatformType.nextid,
-      ].includes(platform)
-    )
-      return null;
+    if (!shouldPlatformFetch(platform)) return null;
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${domain}`,
       {
