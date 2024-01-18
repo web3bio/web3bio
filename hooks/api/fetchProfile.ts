@@ -6,6 +6,7 @@ import {
 import { PlatformType } from "../../utils/platform";
 
 const supportedPlatforms = [
+  PlatformType.ens,
   PlatformType.ethereum,
   PlatformType.lens,
   PlatformType.farcaster,

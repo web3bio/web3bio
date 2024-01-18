@@ -123,33 +123,33 @@ const RenderWidgetNFT = ({
 
   useEffect(() => {
     const scrollToAsset = (assetId) => {
-      if (ref) {
-        const anchorElement = document.getElementById(assetId);
-        if (!anchorElement) return;
-        const top = anchorElement.offsetTop;
-        ref.current?.scrollTo({
-          top,
-          behavior: "smooth",
-        });
-      }
+      if (!expand) setExpand(true);
+      setTimeout(
+        () => {
+          if (ref) {
+            const anchorElement = document.getElementById(assetId);
+            if (!anchorElement) return;
+            const top = anchorElement.offsetTop;
+            ref.current?.scrollTo({
+              top,
+              behavior: "smooth",
+            });
+          }
+          setScrollRefAndAssetId([ref, ""]);
+        },
+        expand ? 100 : 550
+      );
     };
-    if (expand) {
+    if (assetId) {
       scrollToAsset(assetId);
-    } else {
-      // firstRender to fix collection click scrollTo
-      if (!firstRender) {
-        setExpand(true);
-      }
-      setTimeout(() => {
-        scrollToAsset(assetId);
-        setScrollRefAndAssetId([ref, ""]);
-      }, 550);
-      setFirstRender(false);
     }
+  }, [assetId]);
+
+  useEffect(() => {
     if (!isValidating) {
       dispatch(updateNFTWidget({ isEmpty: !data?.length, initLoading: false }));
     }
-  }, [assetId,isValidating]);
+  }, [isValidating]);
 
   if (!filter && (!data.length || isError)) return null;
 

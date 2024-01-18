@@ -59,7 +59,7 @@ export default function ProfileMain(props) {
       .map((x) => x.initLoading)
       .some((x) => !!x);
   }, [profileWidgetStates])();
-  console.log(profileWidgetStates,'initialLoading')
+  
   if (!data || data.error) {
     return (
       <Error
