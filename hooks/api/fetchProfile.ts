@@ -3,21 +3,14 @@ import {
   SIMPLEHASH_CHAINS,
   SIMPLEHASH_PAGE_SIZE,
 } from "../../components/apis/simplehash";
-import { PlatformType } from "../../utils/platform";
+import { PlatformType, shouldPlatformFetch } from "../../utils/platform";
 
-const supportedPlatforms = [
-  PlatformType.ens,
-  PlatformType.ethereum,
-  PlatformType.lens,
-  PlatformType.farcaster,
-  PlatformType.dotbit,
-  PlatformType.unstoppableDomains,
-];
+
 
 export const fetchProfile = async (identity) => {
   try {
     const handle = identity.identity;
-    if (!handle || !supportedPlatforms.includes(identity.platform)) return null;
+    if (!handle || !shouldPlatformFetch(identity.platform)) return null;
 
     const platform =
       identity.platform === PlatformType.ethereum

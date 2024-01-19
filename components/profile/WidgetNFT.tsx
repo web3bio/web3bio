@@ -71,12 +71,13 @@ const getURL = (index, address, previous, filter) => {
 };
 
 function useNFTs({ address, initialData, fromServer, filter }) {
-  const options = fromServer
-    ? {
-        initialSize: 1,
-        fallbackData: [initialData],
-      }
-    : {};
+  const options =
+    fromServer && !filter
+      ? {
+          initialSize: 1,
+          fallbackData: [initialData],
+        }
+      : {};
   const { data, error, size, isValidating, setSize } = useSWRInfinite(
     (index, previous) => getURL(index, address, previous, filter),
     SimplehashFetcher,

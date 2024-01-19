@@ -1,4 +1,4 @@
-// import { fetchInitialNFTsData } from "../../hooks/api/fetchProfile";
+import { fetchInitialNFTsData } from "../../hooks/api/fetchProfile";
 import { shouldPlatformFetch } from "../../utils/platform";
 import { SocialPlatformMapping } from "../../utils/utils";
 import { handleSearchPlatform, mapLinks } from "../../utils/utils";
