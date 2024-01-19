@@ -297,7 +297,7 @@ export default function ProfileMain(props) {
               <div className="web3-section-widgets">
                 <Suspense
                   fallback={
-                    <LoadingSkeleton type={WidgetTypes.feeds} height={375} />
+                    <LoadingSkeleton type={WidgetTypes.feeds} height={370} />
                   }
                 >
                   <WidgetFeed
@@ -311,7 +311,7 @@ export default function ProfileMain(props) {
               <div className="web3-section-widgets">
                 <Suspense
                   fallback={
-                    <LoadingSkeleton type={WidgetTypes.poaps} height={105} />
+                    <LoadingSkeleton type={WidgetTypes.poaps} height={150} />
                   }
                 >
                   <WidgetPOAP
