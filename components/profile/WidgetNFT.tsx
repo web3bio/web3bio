@@ -77,6 +77,9 @@ function useNFTs({ address, filter }) {
     (index, previous) => getURL(index, address, previous, filter),
     SimplehashFetcher,
     {
+      suspense: true,
+      // todo: check here
+      // fallbackData:[],
       revalidateOnFocus: false,
       revalidateOnMount: true,
       revalidateOnReconnect: false,
