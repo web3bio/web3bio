@@ -1,12 +1,6 @@
-import { Suspense } from "react";
-import LoadingPage from "./loading";
 
 export default function DomainLayout({ children }) {
-  return (
-    <div className="web3-profile container grid-xl">
-      <Suspense fallback={<LoadingPage />}>{children}</Suspense>
-    </div>
-  );
+  return <div className="web3-profile container grid-xl">{children}</div>;
 }
 
 export const runtime = "edge";

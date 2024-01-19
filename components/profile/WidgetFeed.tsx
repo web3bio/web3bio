@@ -9,6 +9,8 @@ import { useDispatch } from "react-redux";
 import { updateFeedsWidget } from "../../state/widgets/action";
 import { ActivityFeeds } from "./ActivityFeeds";
 import { PlatformType } from "../../utils/platform";
+import { WidgetTypes } from "../../utils/profile";
+import LoadingSkeleton from "./LoadingSkeleton";
 
 const FEEDS_PAGE_SIZE = 20;
 
@@ -95,18 +97,11 @@ const getURL = (index, address, previous, filter) => {
   return [url, data];
 };
 
-function useFeeds({ address, fromServer, initialData, filter }) {
-  const options = fromServer
-    ? {
-        initialSize: 1,
-        fallbackData: [initialData],
-      }
-    : {};
+function useFeeds({ address, filter }) {
   const { data, error, size, isValidating, setSize } = useSWRInfinite(
     (index, previous) => getURL(index, address, previous, filter),
     RSS3Fetcher,
     {
-      suspense: true,
       revalidateOnFocus: false,
       revalidateOnMount: true,
       revalidateOnReconnect: false,
@@ -122,13 +117,15 @@ function useFeeds({ address, fromServer, initialData, filter }) {
   };
 }
 
-const RenderWidgetFeed = ({ profile, fromServer, initialData, openModal }) => {
+const RenderWidgetFeed = ({
+  profile,
+  openModal,
+  isLoading,
+}) => {
   const [expand, setExpand] = useState(false);
   const [filter, setFilter] = useState("all");
   const { data, size, setSize, isValidating, isError, hasNextPage } = useFeeds({
     address: profile.address,
-    fromServer,
-    initialData,
     filter,
   });
   const dispatch = useDispatch();
@@ -149,6 +146,8 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData, openModal }) => {
     }
   }, [expand, isValidating, data?.length, dispatch]);
 
+  if (isLoading)
+    return <LoadingSkeleton type={WidgetTypes.feeds} height={370} />;
   if ((filter === "all" && !data?.length) || isError) return null;
 
   // if (process.env.NODE_ENV !== "production") {

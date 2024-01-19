@@ -1,22 +1,21 @@
 "use client";
-import { memo, useCallback, useEffect } from "react";
+import { memo, useEffect } from "react";
 import Link from "next/link";
 import useSWR from "swr";
-import { Loading } from "../shared/Loading";
 import SVG from "react-inlinesvg";
 import { POAPFetcher, POAP_ENDPOINT } from "../apis/poap";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { useDispatch } from "react-redux";
 import { updatePoapsWidget } from "../../state/widgets/action";
+import { WidgetTypes } from "../../utils/profile";
+import LoadingSkeleton from "./LoadingSkeleton";
 
-function usePoaps(address: string, fromServer: boolean) {
+function usePoaps(address: string) {
   const { data, error, isValidating } = useSWR(
     `${POAP_ENDPOINT}${address}`,
     POAPFetcher,
     {
-      suspense: true,
-      // fallbackData: [],
       revalidateOnFocus: false,
       revalidateOnMount: true,
       revalidateOnReconnect: true,
@@ -24,31 +23,25 @@ function usePoaps(address: string, fromServer: boolean) {
   );
   return {
     data: data || [],
-    isLoading: isValidating,
+    isValidating: isValidating,
     isError: error,
   };
 }
 
-const RenderWidgetPOAP = ({ address, onShowDetail, fromServer }) => {
-  const { data, isLoading } = usePoaps(address, fromServer);
+const RenderWidgetPOAP = ({ address, onShowDetail, isLoading }) => {
+  const { data, isValidating } = usePoaps(address);
   const dispatch = useDispatch();
-  const getBoundaryRender = useCallback(() => {
-    if (isLoading)
-      return (
-        <div className="widget-loading">
-          <Loading />
-        </div>
-      );
-    return null;
-  }, [isLoading]);
+
   useEffect(() => {
-    if (!isLoading) {
+    if (!isValidating) {
       dispatch(
         updatePoapsWidget({ isEmpty: !data?.length, initLoading: false })
       );
     }
-  }, [data, isLoading, dispatch]);
+  }, [data, isValidating, dispatch]);
 
+  if (isLoading)
+    return <LoadingSkeleton type={WidgetTypes.feeds} height={150} />;
   if (!data || !data.length) {
     return null;
   }
@@ -69,7 +62,9 @@ const RenderWidgetPOAP = ({ address, onShowDetail, fromServer }) => {
             POAPs
           </h2>
           <h3 className="text-assistive">
-            POAP is a curated ecosystem for the preservation of memories. By checking-in at different events, POAP collectors build a digital scrapbook where each POAP is an anchor to a place and space in time.
+            POAP is a curated ecosystem for the preservation of memories. By
+            checking-in at different events, POAP collectors build a digital
+            scrapbook where each POAP is an anchor to a place and space in time.
           </h3>
           <div className="widget-action">
             <div className="action-icon">
@@ -86,36 +81,35 @@ const RenderWidgetPOAP = ({ address, onShowDetail, fromServer }) => {
         </div>
 
         <div className="widget-poap-list noscrollbar">
-          {getBoundaryRender() ||
-            data.map((x, idx) => {
-              return (
-                <div
-                  key={idx}
-                  className="poap-item c-hand"
-                  onClick={(e) => {
-                    onShowDetail({
-                      collection: {
-                        url: "",
-                        name: "",
-                      },
-                      address: x.owner,
-                      tokenId: x.tokenId,
-                      asset: x,
-                      mediaURL: resolveIPFS_URL(x.event.image_url),
-                    });
-                  }}
-                >
-                  <NFTAssetPlayer
-                    className="img-container"
-                    src={`${resolveIPFS_URL(x.event.image_url)}?size=small`}
-                    alt={x.event.name}
-                    height={64}
-                    width={64}
-                    placeholder={true}
-                  />
-                </div>
-              );
-            })}
+          {data.map((x, idx) => {
+            return (
+              <div
+                key={idx}
+                className="poap-item c-hand"
+                onClick={(e) => {
+                  onShowDetail({
+                    collection: {
+                      url: "",
+                      name: "",
+                    },
+                    address: x.owner,
+                    tokenId: x.tokenId,
+                    asset: x,
+                    mediaURL: resolveIPFS_URL(x.event.image_url),
+                  });
+                }}
+              >
+                <NFTAssetPlayer
+                  className="img-container"
+                  src={`${resolveIPFS_URL(x.event.image_url)}?size=small`}
+                  alt={x.event.name}
+                  height={64}
+                  width={64}
+                  placeholder={true}
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

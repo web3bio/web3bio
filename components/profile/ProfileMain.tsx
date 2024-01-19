@@ -279,49 +279,29 @@ export default function ProfileMain(props) {
           {(data.address && (
             <>
               <div className="web3-section-widgets">
-                <Suspense
-                  fallback={
-                    <LoadingSkeleton type={WidgetTypes.nft} height={150} />
-                  }
-                >
-                  <WidgetNFT
-                    fromServer={fromServer}
-                    onShowDetail={(e, v) => {
-                      openModal(ModalType.nft, v);
-                    }}
-                    address={data.address}
-                    initialData={[]}
-                  />
-                </Suspense>
+                <WidgetNFT
+                  isLoading={profileWidgetStates.nft.initLoading}
+                  onShowDetail={(e, v) => {
+                    openModal(ModalType.nft, v);
+                  }}
+                  address={data.address}
+                />
               </div>
               <div className="web3-section-widgets">
-                <Suspense
-                  fallback={
-                    <LoadingSkeleton type={WidgetTypes.feeds} height={370} />
-                  }
-                >
-                  <WidgetFeed
-                    openModal={openModal}
-                    initialData={[]}
-                    fromServer={fromServer}
-                    profile={data}
-                  />
-                </Suspense>
+                <WidgetFeed
+                  isLoading={profileWidgetStates.feeds?.initLoading}
+                  openModal={openModal}
+                  profile={data}
+                />
               </div>
               <div className="web3-section-widgets">
-                <Suspense
-                  fallback={
-                    <LoadingSkeleton type={WidgetTypes.poaps} height={150} />
-                  }
-                >
-                  <WidgetPOAP
-                    fromServer={fromServer}
-                    onShowDetail={(v) => {
-                      openModal(ModalType.poaps, v);
-                    }}
-                    address={data.address}
-                  />
-                </Suspense>
+                <WidgetPOAP
+                  isLoading={profileWidgetStates.feeds?.initLoading}
+                  onShowDetail={(v) => {
+                    openModal(ModalType.poaps, v);
+                  }}
+                  address={data.address}
+                />
               </div>
 
               {isBasicLoadingFinished && (

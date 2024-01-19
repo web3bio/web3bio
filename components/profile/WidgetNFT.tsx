@@ -12,6 +12,8 @@ import {
 import NFTFilter from "./NFTFilter";
 import { updateNFTWidget } from "../../state/widgets/action";
 import { useDispatch } from "react-redux";
+import LoadingSkeleton from "./LoadingSkeleton";
+import { WidgetTypes } from "../../utils/profile";
 
 const CURSOR_PARAM = "&cursor=";
 
@@ -70,19 +72,11 @@ const getURL = (index, address, previous, filter) => {
   );
 };
 
-function useNFTs({ address, initialData, fromServer, filter }) {
-  const options =
-    fromServer && !filter
-      ? {
-          initialSize: 1,
-          fallbackData: [initialData],
-        }
-      : {};
+function useNFTs({ address, filter }) {
   const { data, error, size, isValidating, setSize } = useSWRInfinite(
     (index, previous) => getURL(index, address, previous, filter),
     SimplehashFetcher,
     {
-      suspense: true,
       revalidateOnFocus: false,
       revalidateOnMount: true,
       revalidateOnReconnect: false,
@@ -99,18 +93,12 @@ function useNFTs({ address, initialData, fromServer, filter }) {
   };
 }
 
-export default function WidgetNFT({
-  address,
-  onShowDetail,
-  initialData,
-  fromServer,
-}) {
+export default function WidgetNFT({ address, onShowDetail, isLoading }) {
   const [expand, setExpand] = useState(false);
   const [filter, setFilter] = useState("");
   const { data, size, setSize, isValidating, isError, hasNextPage } = useNFTs({
     address,
-    initialData,
-    fromServer,
+
     filter,
   });
   const dispatch = useDispatch();
@@ -149,6 +137,8 @@ export default function WidgetNFT({
       dispatch(updateNFTWidget({ isEmpty: !data?.length, initLoading: false }));
     }
   }, [isValidating]);
+
+  if (isLoading) return <LoadingSkeleton type={WidgetTypes.nft} height={150} />;
 
   if (!filter && (!data.length || isError)) return null;
 
