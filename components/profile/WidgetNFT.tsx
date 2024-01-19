@@ -83,6 +83,8 @@ function useNFTs({ address, initialData, fromServer, filter }) {
     SimplehashFetcher,
     {
       suspense: true,
+      // todo: check here
+      // fallbackData:[],
       revalidateOnFocus: false,
       revalidateOnMount: true,
       revalidateOnReconnect: false,
