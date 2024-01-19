@@ -106,8 +106,7 @@ function useFeeds({ address, fromServer, initialData, filter }) {
     (index, previous) => getURL(index, address, previous, filter),
     RSS3Fetcher,
     {
-      ...options,
-      suspense: !fromServer,
+      suspense: true,
       revalidateOnFocus: false,
       revalidateOnMount: true,
       revalidateOnReconnect: false,

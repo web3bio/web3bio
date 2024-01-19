@@ -15,7 +15,7 @@ import { useDispatch } from "react-redux";
 
 const CURSOR_PARAM = "&cursor=";
 
-export const processNFTsData = (data) => {
+const processNFTsData = (data) => {
   if (!data?.length) return [];
   const uniqueValues = new Set();
   const assets = new Array();
@@ -82,8 +82,7 @@ function useNFTs({ address, initialData, fromServer, filter }) {
     (index, previous) => getURL(index, address, previous, filter),
     SimplehashFetcher,
     {
-      ...options,
-      suspense: !fromServer,
+      suspense: true,
       revalidateOnFocus: false,
       revalidateOnMount: true,
       revalidateOnReconnect: false,
@@ -100,14 +99,13 @@ function useNFTs({ address, initialData, fromServer, filter }) {
   };
 }
 
-const RenderWidgetNFT = ({
+export default function WidgetNFT({
   address,
   onShowDetail,
   initialData,
   fromServer,
-}) => {
+}) {
   const [expand, setExpand] = useState(false);
-  const [firstRender, setFirstRender] = useState(true);
   const [filter, setFilter] = useState("");
   const { data, size, setSize, isValidating, isError, hasNextPage } = useNFTs({
     address,
@@ -213,6 +211,4 @@ const RenderWidgetNFT = ({
       </div>
     </div>
   );
-};
-
-export const WidgetNFT = memo(RenderWidgetNFT);
+}

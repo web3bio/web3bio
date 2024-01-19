@@ -15,8 +15,8 @@ function usePoaps(address: string, fromServer: boolean) {
     `${POAP_ENDPOINT}${address}`,
     POAPFetcher,
     {
-      suspense: !fromServer,
-      fallbackData: [],
+      suspense: true,
+      // fallbackData: [],
       revalidateOnFocus: false,
       revalidateOnMount: true,
       revalidateOnReconnect: true,
