@@ -1,5 +1,5 @@
 "use client";
-import { memo, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { ExpandController } from "./ExpandController";
 import { NFTCollections } from "./NFTCollections";
@@ -70,21 +70,12 @@ const getURL = (index, address, previous, filter) => {
   );
 };
 
-function useNFTs({ address, initialData, fromServer, filter }) {
-  const options =
-    fromServer && !filter
-      ? {
-          initialSize: 1,
-          fallbackData: [initialData],
-        }
-      : {};
+function useNFTs({ address, filter }) {
   const { data, error, size, isValidating, setSize } = useSWRInfinite(
     (index, previous) => getURL(index, address, previous, filter),
     SimplehashFetcher,
     {
       suspense: true,
-      // todo: check here
-      // fallbackData:[],
       revalidateOnFocus: false,
       revalidateOnMount: true,
       revalidateOnReconnect: false,
@@ -101,18 +92,11 @@ function useNFTs({ address, initialData, fromServer, filter }) {
   };
 }
 
-export default function WidgetNFT({
-  address,
-  onShowDetail,
-  initialData,
-  fromServer,
-}) {
+export default function WidgetNFT({ address, onShowDetail }) {
   const [expand, setExpand] = useState(false);
   const [filter, setFilter] = useState("");
   const { data, size, setSize, isValidating, isError, hasNextPage } = useNFTs({
     address,
-    initialData,
-    fromServer,
     filter,
   });
   const dispatch = useDispatch();

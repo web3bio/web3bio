@@ -1,5 +1,5 @@
 "use client";
-import React, { Suspense, useCallback, useState } from "react";
+import React, { Suspense, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
@@ -9,9 +9,9 @@ import { Error } from "../shared/Error";
 import { Empty } from "../shared/Empty";
 import { RenderWidgetItem } from "./WidgetLinkItem";
 import { WidgetRSS } from "./WidgetRSS";
-import { WidgetPOAP } from "./WidgetPoap";
+import WidgetPOAP from "./WidgetPoap";
 import { WidgetDegenScore } from "./WidgetDegenScore";
-import { WidgetFeed } from "./WidgetFeed";
+import WidgetFeed from "./WidgetFeed";
 import AddressMenu from "./AddressMenu";
 import { Avatar } from "../shared/Avatar";
 import useModal, { ModalType } from "../../hooks/useModal";
@@ -38,10 +38,13 @@ export default function ProfileMain(props) {
   } = props;
   const [isCopied, setIsCopied] = useState(false);
   const { isOpen, modalType, closeModal, openModal, params } = useModal();
-
+  const [mounted, setMounted] = useState(false);
   const profileWidgetStates = useSelector<AppState, WidgetState>(
     (state) => state.widgets
   );
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   const onCopySuccess = () => {
     setIsCopied(true);
     setTimeout(() => {
@@ -276,7 +279,7 @@ export default function ProfileMain(props) {
               </div>
             </div>
           )}
-          {(data.address && (
+          {(data.address && mounted && (
             <>
               <div className="web3-section-widgets">
                 <Suspense
@@ -285,12 +288,10 @@ export default function ProfileMain(props) {
                   }
                 >
                   <WidgetNFT
-                    fromServer={fromServer}
                     onShowDetail={(e, v) => {
                       openModal(ModalType.nft, v);
                     }}
                     address={data.address}
-                    initialData={[]}
                   />
                 </Suspense>
               </div>
@@ -300,12 +301,7 @@ export default function ProfileMain(props) {
                     <LoadingSkeleton type={WidgetTypes.feeds} height={370} />
                   }
                 >
-                  <WidgetFeed
-                    openModal={openModal}
-                    initialData={[]}
-                    fromServer={fromServer}
-                    profile={data}
-                  />
+                  <WidgetFeed openModal={openModal} profile={data} />
                 </Suspense>
               </div>
               <div className="web3-section-widgets">
@@ -315,7 +311,6 @@ export default function ProfileMain(props) {
                   }
                 >
                   <WidgetPOAP
-                    fromServer={fromServer}
                     onShowDetail={(v) => {
                       openModal(ModalType.poaps, v);
                     }}
