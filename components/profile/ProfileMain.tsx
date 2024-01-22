@@ -31,7 +31,6 @@ export default function ProfileMain(props) {
     pageTitle,
     platform,
     nfts,
-    fromServer,
     relations,
     domain,
     fallbackAvatar,
@@ -326,11 +325,15 @@ export default function ProfileMain(props) {
                   ) ||
                     regexEns.test(data.identity)) && (
                     <div className="web3-section-widgets">
-                      <Suspense fallback={<p>Loading Articles...</p>}>
-                        <WidgetRSS
-                          fromServer={fromServer}
-                          domain={data.identity}
-                        />
+                      <Suspense
+                        fallback={
+                          <LoadingSkeleton
+                            type={WidgetTypes.rss}
+                            height={150}
+                          />
+                        }
+                      >
+                        <WidgetRSS domain={data.identity} />
                       </Suspense>
                     </div>
                   )}

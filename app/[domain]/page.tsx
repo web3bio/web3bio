@@ -1,4 +1,4 @@
-import { fetchInitialNFTsData } from "../../hooks/api/fetchProfile";
+// import { fetchInitialNFTsData } from "../../hooks/api/fetchProfile";
 import { shouldPlatformFetch } from "../../utils/platform";
 import { SocialPlatformMapping } from "../../utils/utils";
 import { handleSearchPlatform, mapLinks } from "../../utils/utils";
@@ -7,21 +7,21 @@ import { Metadata } from "next";
 import ProfileMain from "../../components/profile/ProfileMain";
 import { regexAvatar } from "../../utils/regexp";
 
-function mapNFTs(nfts) {
-  if (!nfts) return [];
-  return nfts.map((x) => ({
-    image_url: x.image_url,
-    previews: x.previews,
-    token_id: x.token_id,
-    collection: x.collection,
-    video_url: x.video_url,
-    audio_url: x.audio_url,
-    video_properties: x.video_properties,
-    image_properties: x.image_properties,
-    chain: x.chain,
-    extra_metadata: x.extra_metadata,
-  }));
-}
+// function mapNFTs(nfts) {
+//   if (!nfts) return [];
+//   return nfts.map((x) => ({
+//     image_url: x.image_url,
+//     previews: x.previews,
+//     token_id: x.token_id,
+//     collection: x.collection,
+//     video_url: x.video_url,
+//     audio_url: x.audio_url,
+//     video_properties: x.video_properties,
+//     image_properties: x.image_properties,
+//     chain: x.chain,
+//     extra_metadata: x.extra_metadata,
+//   }));
+// }
 
 async function fetchDataFromServer(domain: string) {
   if (!domain) return null;
@@ -36,6 +36,7 @@ async function fetchDataFromServer(domain: string) {
     );
     if (response.status === 404) return null;
     const data = await response.json();
+
     // const remoteNFTs = data[0].address
     //   ? await fetchInitialNFTsData(data[0].address)
     //   : {};
@@ -127,7 +128,6 @@ export default async function ProfilePage({
       : `${profile.displayName} (${profile.identity})`;
   return (
     <ProfileMain
-      fromServer
       domain={domain}
       relations={
         data?.map((x) => ({

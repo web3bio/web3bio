@@ -49,7 +49,19 @@ export default function LoadingSkeleton(props) {
           </div>
         );
       case WidgetTypes.rss:
-        return <div>rss loading state</div>;
+        return (
+          <div className="profile-widget profile-widget-rss">
+            <div className="profile-widget-header">
+              <h2 className="profile-widget-title">
+                <span className="emoji-large mr-2">📰 </span>
+                Loading Website...
+              </h2>
+            </div>
+            <div className="profile-widget-loading-content">
+              <Loading />
+            </div>
+          </div>
+        );
       case WidgetTypes.degen:
         return <div>degen loading state</div>;
       case WidgetTypes.phi:
