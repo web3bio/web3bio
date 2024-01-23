@@ -52,7 +52,7 @@ export default function WalletProvider({
 }) {
   return (
     <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains}>{children}</RainbowKitProvider>
+      <RainbowKitProvider locale="en-US" chains={chains}>{children}</RainbowKitProvider>
     </WagmiConfig>
   );
 }
