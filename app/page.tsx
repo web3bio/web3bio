@@ -2,6 +2,7 @@ import IndexPageRender from "../components/search/IndexPage";
 import { Footer } from "../components/shared/Footer";
 import { PlatformData } from "../utils/platform";
 import { handleSearchPlatform } from "../utils/utils";
+import WalletButton from "../components/shared/WalletButton";
 
 export async function generateMetadata({ searchParams }) {
   const searchTerm = searchParams?.s;
@@ -57,6 +58,7 @@ export default function HomePage({}) {
   return (
     <>
       <div className="web3bio-container">
+        <WalletButton />
         <div className="web3bio-cover flare"></div>
         <IndexPageRender />
       </div>

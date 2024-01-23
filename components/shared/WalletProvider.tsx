@@ -19,7 +19,10 @@ const { chains, publicClient } = configureChains(
   [publicProvider()]
 );
 
-const walletsOptions = { chains, projectId: "your_project_id" };
+const walletsOptions = {
+  chains,
+  projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_ID || "",
+};
 const wallets = [
   okxWallet({ ...walletsOptions }),
   metaMaskWallet({ ...walletsOptions, shimDisconnect: true }),
@@ -52,7 +55,9 @@ export default function WalletProvider({
 }) {
   return (
     <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider locale="en-US" chains={chains}>{children}</RainbowKitProvider>
+      <RainbowKitProvider locale="en-US" chains={chains}>
+        {children}
+      </RainbowKitProvider>
     </WagmiConfig>
   );
 }

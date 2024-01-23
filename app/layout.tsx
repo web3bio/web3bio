@@ -3,7 +3,6 @@ import ApolloProvider from "../components/shared/ApolloProvider";
 import GoogleAnalytics from "../components/shared/GoogleAnalytics";
 import ReduxProvider from "../components/shared/ReduxProvider";
 import WalletProvider from "../components/shared/WalletProvider";
-import WalletButton from "../components/shared/WalletButton";
 import "../styles/web3bio.scss";
 import "@rainbow-me/rainbowkit/styles.css";
 
@@ -82,7 +81,6 @@ export default function RootLayout({ children }) {
           <ReduxProvider>
             <ApolloProvider>
               <WalletProvider>
-                <WalletButton />
                 {children}
               </WalletProvider>
             </ApolloProvider>
