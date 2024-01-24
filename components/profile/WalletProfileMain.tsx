@@ -1,21 +1,21 @@
 "use client";
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { PlatformType } from "../../utils/platform";
 import { SocialPlatformMapping, formatText, colorMod } from "../../utils/utils";
 import { Error } from "../shared/Error";
-import AddressMenu from "./AddressMenu";
 import { Avatar } from "../shared/Avatar";
 import useModal, { ModalType } from "../../hooks/useModal";
 import Modal from "../modal/Modal";
 import { useRouter } from "next/navigation";
+import WalletButton from "../shared/WalletButton";
 
 export default function WalletProfileMain(props) {
-  const { data, pageTitle, domain } =
-    props;
+  const { data, pageTitle, domain } = props;
   const [isCopied, setIsCopied] = useState(false);
+  const [curProfile, setCurProfile] = useState(data[0]);
   const { isOpen, modalType, closeModal, openModal, params } = useModal();
   const router = useRouter();
 
@@ -26,8 +26,10 @@ export default function WalletProfileMain(props) {
     }, 1500);
   };
 
-  const curProfile = data[0];
-  const avatarProfile = data?.find(x=>x.avatar)
+  const avatarProfile = curProfile.avatar
+    ? curProfile
+    : data?.find((x) => x.avatar);
+
   if (!curProfile || curProfile.error) {
     return (
       <Error
@@ -47,6 +49,7 @@ export default function WalletProfileMain(props) {
               : "none",
         }}
       ></div>
+      <WalletButton />
       <div className="columns">
         <div className="column col-4 col-md-12">
           <div className="web3-profile-base">
@@ -57,16 +60,17 @@ export default function WalletProfileMain(props) {
                 className="avatar"
                 alt={`${pageTitle} Profile Photo`}
               />
-              {avatarProfile &&  (
-                <div className="profile-avatar-badge">
+              {avatarProfile && (
+                <div
+                  className="profile-avatar-badge"
+                  style={{ opacity: 1, visibility: "visible" }}
+                >
                   <SVG
-                    fill={SocialPlatformMapping(avatarProfile.platform).color}
+                    fill={SocialPlatformMapping(curProfile.platform).color}
                     width={20}
-                    src={
-                      SocialPlatformMapping(avatarProfile.platform).icon || ""
-                    }
+                    src={SocialPlatformMapping(curProfile.platform).icon || ""}
                     title={`Fallback avatar from ${
-                      SocialPlatformMapping(avatarProfile.platform).label
+                      SocialPlatformMapping(curProfile.platform).label
                     }`}
                   />
                 </div>
@@ -111,8 +115,8 @@ export default function WalletProfileMain(props) {
                     className="action"
                   />
                 </Clipboard>
-                <AddressMenu profile={curProfile} />
               </div>
+
               <button
                 className="profile-share btn btn-sm ml-2"
                 title="Share this profile"
@@ -139,17 +143,22 @@ export default function WalletProfileMain(props) {
                   title="Copy the Next.ID address"
                   style={{
                     ["--badge-primary-color" as string]:
-                      SocialPlatformMapping(curProfile.platform).color || "#000",
+                      SocialPlatformMapping(curProfile.platform).color ||
+                      "#000",
                     ["--badge-bg-color" as string]:
-                      colorMod(SocialPlatformMapping(curProfile.platform).color, 5) ||
-                      "rgba(#000, .04)",
+                      colorMod(
+                        SocialPlatformMapping(curProfile.platform).color,
+                        5
+                      ) || "rgba(#000, .04)",
                   }}
                 >
                   <div className="platform-badge-icon">
                     <SVG
                       fill={SocialPlatformMapping(curProfile.platform).color}
                       width={20}
-                      src={SocialPlatformMapping(curProfile.platform).icon || ""}
+                      src={
+                        SocialPlatformMapping(curProfile.platform).icon || ""
+                      }
                     />
                   </div>
                   <span className="platform-badge-name">
@@ -158,14 +167,10 @@ export default function WalletProfileMain(props) {
                 </Clipboard>
               )}
               {data?.map((x, idx) => {
-                const relatedPath = `${x.identity}${
-                  x.platform === PlatformType.farcaster ? ".farcaster" : ""
-                }`;
                 return (
-                  <Link
+                  <div
                     key={x.platform + idx}
-                    href={`/${relatedPath}`}
-                    prefetch={false}
+                    onClick={() => setCurProfile(x)}
                     className={`platform-badge ${x.platform}${
                       idx === 0 ? " active" : ""
                     }`}
@@ -194,7 +199,7 @@ export default function WalletProfileMain(props) {
                         ? formatText(x.identity)
                         : x.identity}
                     </span>
-                  </Link>
+                  </div>
                 );
               })}
             </div>

@@ -35,12 +35,7 @@ export default function WalletProfilePage() {
   }, [address, router, isLoading]);
 
   return (
-    <div
-      className="web3bio-container"
-      style={{
-        height: "100vh",
-      }}
-    >
+    <>
       {/* <div className="web3bio-cover flare"></div> */}
       {!authed ||
         (isLoading && (
@@ -49,6 +44,6 @@ export default function WalletProfilePage() {
             <p className="mt-4">{text}</p>
           </div>
         )) || <WalletProfileMain data={data} />}
-    </div>
+    </>
   );
 }

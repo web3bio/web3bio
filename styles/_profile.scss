@@ -157,6 +157,8 @@
     margin-top: 1rem;
 
     .platform-badge {
+      cursor: pointer;
+      color: rgba($dark-color, .9);
       align-items: center;
       background-color: var(--badge-bg-color, rgba($dark-color, .05));
       border: .05rem solid transparent;
