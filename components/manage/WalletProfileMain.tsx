@@ -11,6 +11,7 @@ import useModal, { ModalType } from "../../hooks/useModal";
 import Modal from "../modal/Modal";
 import { useRouter } from "next/navigation";
 import WalletButton from "../shared/WalletButton";
+import WidgetDomainManagement from "./WidgetDomainManagement";
 
 export default function WalletProfileMain(props) {
   const { data, pageTitle, domain } = props;
@@ -166,7 +167,7 @@ export default function WalletProfileMain(props) {
                   </span>
                 </Clipboard>
               )}
-              {data?.map((x, idx) => {
+              {/* {data?.map((x, idx) => {
                 return (
                   <div
                     key={x.platform + idx}
@@ -201,7 +202,7 @@ export default function WalletProfileMain(props) {
                     </span>
                   </div>
                 );
-              })}
+              })} */}
             </div>
 
             {curProfile.description && (
@@ -221,7 +222,9 @@ export default function WalletProfileMain(props) {
             )}
           </div>
         </div>
-        <div className="column col-8 col-md-12">right side</div>
+        <div className="column col-8 col-md-12">
+          <WidgetDomainManagement setCurProfile={setCurProfile} data={data} />
+        </div>
       </div>
       <div className="web3bio-badge">
         <Link

@@ -5,7 +5,7 @@ import { useAccount } from "wagmi";
 import { Loading } from "../../components/shared/Loading";
 import useSWR from "swr";
 import { ProfileFetcher } from "../../components/apis/profile";
-import WalletProfileMain from "../../components/profile/WalletProfileMain";
+import WalletProfileMain from "../../components/manage/WalletProfileMain";
 
 export default function WalletProfilePage() {
   const { address } = useAccount();
