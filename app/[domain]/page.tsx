@@ -90,7 +90,7 @@ export async function generateMetadata({
 
   return {
     metadataBase: new URL(baseURL),
-    title: pageTitle,
+    title: pageTitle + ` ${SocialPlatformMapping(platform!).label} Profile`,
     description: profileDescription,
     alternates: {
       canonical: `/${domain}`,
@@ -99,12 +99,12 @@ export async function generateMetadata({
       type: "website",
       url: `/${domain}`,
       siteName: "Web3.bio",
-      title: pageTitle,
+      title: pageTitle + ` ${SocialPlatformMapping(platform!).label} Profile`,
       images: [relativeOGURL],
       description: profileDescription,
     },
     twitter: {
-      title: pageTitle,
+      title: pageTitle + ` Web3 Profile`,
       description: profileDescription,
       site: "@web3bio",
       images: [relativeOGURL],

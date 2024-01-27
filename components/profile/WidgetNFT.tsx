@@ -20,7 +20,7 @@ const processNFTsData = (data) => {
   const uniqueValues = new Set();
   const assets = new Array();
   for (const obj of data) {
-    const nfts = obj.nfts;
+    const nfts = obj?.nfts;
     if (!nfts) {
       continue;
     }

@@ -1,5 +1,4 @@
 import { WidgetTypes } from "../../utils/profile";
-import { Loading } from "../shared/Loading";
 
 export default function LoadingSkeleton(props) {
   const { type, height } = props;
@@ -7,67 +6,135 @@ export default function LoadingSkeleton(props) {
     switch (type) {
       case WidgetTypes.nft:
         return (
-          <div className="profile-widget profile-widget-nft">
+          <div className={`profile-widget profile-widget-loading ${type}`}>
             <div className="profile-widget-header">
               <h2 className="profile-widget-title">
                 <span className="emoji-large mr-2">🖼 </span>
-                Loading Collections
+                NFT Collections
               </h2>
             </div>
-
-            <div className="profile-widget-loading-content">
-              <Loading />
+            <div className="profile-widget-body">
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
             </div>
           </div>
         );
       case WidgetTypes.poaps:
         return (
-          <div className="profile-widget profile-widget-poap">
+          <div className={`profile-widget profile-widget-loading ${type}`}>
             <div className="profile-widget-header">
               <h2 className="profile-widget-title">
                 <span className="emoji-large mr-2">🔮 </span>
-                Loading Poaps...
+                POAPs
               </h2>
             </div>
-            <div className="profile-widget-loading-content">
-              <Loading />
+            <div className="profile-widget-body">
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
             </div>
           </div>
         );
       case WidgetTypes.feeds:
         return (
-          <div className="profile-widget profile-widget-feeds">
+          <div className={`profile-widget profile-widget-loading ${type}`}>
             <div className="profile-widget-header">
               <h2 className="profile-widget-title">
                 <span className="emoji-large mr-2">🌈 </span>
-                Loading Feeds...
+                Activity Feeds
               </h2>
             </div>
-            <div className="profile-widget-loading-content">
-              <Loading />
+            <div className="profile-widget-body">
+              <div className="widget-feeds-container">
+                <div className="feeds-list">
+                  <div className={`feed-item`}>
+                    <div className="feed-item-icon img-loading"></div>
+                    <div className="feed-item-content">
+                      <div className="feed-item-name">
+                        <div className="feed-item-text img-loading">vitalik.eth</div>
+                      </div>
+                      <div className="item-body">
+                        <div className="feed-content">
+                          <div className="feed-item-text img-loading">Make Ethereum Cypherpunk Again</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className={`feed-item`}>
+                    <div className="feed-item-icon img-loading"></div>
+                    <div className="feed-item-content">
+                      <div className="feed-item-name">
+                        <div className="feed-item-text img-loading">vitalik.eth</div>
+                      </div>
+                      <div className="item-body">
+                        <div className="feed-content">
+                          <div className="feed-item-text img-loading">Exit games for EVM validiums: the return of Plasma</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className={`feed-item`}>
+                    <div className="feed-item-icon img-loading"></div>
+                    <div className="feed-item-content">
+                      <div className="feed-item-name">
+                        <div className="feed-item-text img-loading">vitalik.eth</div>
+                      </div>
+                      <div className="item-body">
+                        <div className="feed-content">
+                          <div className="feed-item-text img-loading">Should Ethereum be okay with enshrining more things in the protocol?</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         );
-      case WidgetTypes.rss:
+      default:
         return (
-          <div className="profile-widget profile-widget-rss">
+          <div className={`profile-widget profile-widget-loading ${type}`}>
             <div className="profile-widget-header">
               <h2 className="profile-widget-title">
-                <span className="emoji-large mr-2">📰 </span>
-                Loading Website...
+                <span className="emoji-large mr-2">🔮 </span>
+                POAPs
               </h2>
             </div>
-            <div className="profile-widget-loading-content">
-              <Loading />
+            <div className="profile-widget-body">
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
+              <div className="img-loading"></div>
             </div>
           </div>
         );
-      case WidgetTypes.degen:
-        return <div>degen loading state</div>;
-      case WidgetTypes.phi:
-        return <div>phi loading state</div>;
-      default:
-        return <div>Loading state</div>;
     }
   })();
   return (

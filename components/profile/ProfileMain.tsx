@@ -273,7 +273,7 @@ export default function ProfileMain(props) {
               <div className="profile-widget">
                 <Empty
                   title="Nothing here"
-                  text="No social links, NFTs, Web3 activities or POAPs yet"
+                  text="No NFTs, Web3 activities or POAPs yet"
                 />
               </div>
             </div>
@@ -283,7 +283,7 @@ export default function ProfileMain(props) {
               <div className="web3-section-widgets">
                 <Suspense
                   fallback={
-                    <LoadingSkeleton type={WidgetTypes.nft} height={150} />
+                    <LoadingSkeleton type={WidgetTypes.nft} />
                   }
                 >
                   <WidgetNFT
@@ -297,7 +297,7 @@ export default function ProfileMain(props) {
               <div className="web3-section-widgets">
                 <Suspense
                   fallback={
-                    <LoadingSkeleton type={WidgetTypes.feeds} height={370} />
+                    <LoadingSkeleton type={WidgetTypes.feeds} />
                   }
                 >
                   <WidgetFeed openModal={openModal} profile={data} />
@@ -306,7 +306,7 @@ export default function ProfileMain(props) {
               <div className="web3-section-widgets">
                 <Suspense
                   fallback={
-                    <LoadingSkeleton type={WidgetTypes.poaps} height={150} />
+                    <LoadingSkeleton type={WidgetTypes.poaps} />
                   }
                 >
                   <WidgetPOAP
@@ -372,7 +372,7 @@ export default function ProfileMain(props) {
           className="btn btn-primary"
           title="Web3.bio - Web3 Identity Graph Search and Link in Bio Profile"
         >
-          <div className="badge-emoji mr-2">👋</div>Made with{" "}
+          <div className="badge-emoji mr-1">🖖</div>Made with{" "}
           <strong className="text-pride animated-pride ml-1">Web3.bio</strong>
         </Link>
       </div>
