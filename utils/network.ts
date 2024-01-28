@@ -30,6 +30,7 @@ export enum Network {
 
 export interface NetworkMetaData {
   key: string;
+  chainId?: number;
   icon: string;
   label: string;
   primaryColor: string;
@@ -40,6 +41,7 @@ export interface NetworkMetaData {
 export const NetworkData: { [key in Network]: NetworkMetaData } = {
   [Network.ethereum]: {
     key: Network.ethereum,
+    chainId: 1,
     icon: "icons/icon-ethereum.svg",
     label: "Ethereum",
     primaryColor: "#3741ba",
@@ -48,6 +50,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
   },
   [Network.polygon]: {
     key: Network.polygon,
+    chainId: 137,
     icon: "icons/icon-polygon.svg",
     label: "Polygon",
     primaryColor: "#7a4add",
@@ -56,6 +59,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
   },
   [Network.avalanche]: {
     key: Network.avalanche,
+    chainId: 43114,
     icon: "icons/icon-avalanche.svg",
     label: "Avalanche",
     primaryColor: "#e84142",
@@ -72,6 +76,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
   },
   [Network.arbitrum]: {
     key: Network.arbitrum,
+    chainId: 42161,
     icon: "icons/icon-arbitrum.svg",
     label: "Arbitrum",
     primaryColor: "#2949d4",
@@ -80,6 +85,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
   },
   [Network.arbitrum_one]: {
     key: Network.arbitrum_one,
+    chainId: 42161,
     icon: "icons/icon-arbitrum.svg",
     label: "Arbitrum One",
     primaryColor: "#2949d4",
@@ -88,6 +94,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
   },
   [Network.arbitrum_nova]: {
     key: Network.arbitrum_nova,
+    chainId: 42170,
     icon: "icons/icon-arbitrum.svg",
     label: "Arbitrum Nova",
     primaryColor: "#ee7c31",
@@ -104,6 +111,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
   },
   [Network.binance_smart_chain]: {
     key: Network.binance_smart_chain,
+    chainId: 56,
     icon: "icons/icon-bsc.svg",
     label: "BNB Chain",
     primaryColor: "#f0b90b",
@@ -112,6 +120,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
   },
   [Network.base]: {
     key: Network.base,
+    chainId: 8453,
     icon: "icons/icon-base.svg",
     label: "Base",
     primaryColor: "#2151f5",
@@ -128,6 +137,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
   },
   [Network.conflux]: {
     key: Network.conflux,
+    chainId: 1030,
     icon: "icons/icon-conflux.svg",
     label: "Conflux",
     primaryColor: "#1e1e2b",
@@ -136,6 +146,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
   },
   [Network.crossbell]: {
     key: Network.crossbell,
+    chainId: 3737,
     icon: "icons/icon-crossbell.svg",
     label: "Crossbell",
     primaryColor: "#f7d16a",
@@ -144,6 +155,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
   },
   [Network.fantom]: {
     key: Network.fantom,
+    chainId: 250,
     icon: "icons/icon-fantom.svg",
     label: "Fantom",
     primaryColor: "#0810ef",
@@ -160,6 +172,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
   },
   [Network.optimism]: {
     key: Network.optimism,
+    chainId: 10,
     icon: "icons/icon-optimism.svg",
     label: "Optimism",
     primaryColor: "#ea3431",
@@ -168,6 +181,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
   },
   [Network.zksync_era]: {
     key: Network.zksync_era,
+    chainId: 324,
     icon: "icons/icon-zksync.svg",
     label: "zkSync Era",
     primaryColor: "#3567f6",
@@ -176,6 +190,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
   },
   [Network.gnosis]: {
     key: Network.gnosis,
+    chainId: 100,
     icon: "icons/icon-gnosis.svg",
     label: "Gnosis",
     primaryColor: "#1c352a",
@@ -184,6 +199,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
   },
   [Network.scroll]: {
     key: Network.scroll,
+    chainId: 534352,
     icon: "icons/icon-scroll.svg",
     label: "Scroll",
     primaryColor: "#b78544",
@@ -192,6 +208,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
   },
   [Network.zora]: {
     key: Network.zora,
+    chainId: 7777777,
     icon: "icons/icon-zora.svg",
     label: "Zora",
     primaryColor: "#141414",
@@ -208,6 +225,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
   },
   [Network.lens]: {
     key: Network.lens,
+    chainId: 137,
     icon: "icons/icon-lens.svg",
     label: "Lens",
     primaryColor: "#6bc674",
