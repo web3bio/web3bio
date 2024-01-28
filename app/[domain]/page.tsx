@@ -75,7 +75,7 @@ export async function generateMetadata({
     profile?.description ||
     `Explore ${pageTitle} ${
       SocialPlatformMapping(platform!).label
-    } Web3 identity profiles, social links, NFT collections, Web3 activities, dWebsites, POAPs etc on the Web3.bio profile page.`;
+    } profile, connected identities, social links, NFT collections, Web3 activities, dWebsites, POAPs etc on the Web3.bio profile page.`;
   const avatarURL = data?.find((x) => !!x.avatar)?.avatar;
 
   const params = new URLSearchParams();
@@ -104,7 +104,7 @@ export async function generateMetadata({
       description: profileDescription,
     },
     twitter: {
-      title: pageTitle + ` Web3 Profile`,
+      title: pageTitle + ` ${SocialPlatformMapping(platform!).label} Profile`,
       description: profileDescription,
       site: "@web3bio",
       images: [relativeOGURL],
