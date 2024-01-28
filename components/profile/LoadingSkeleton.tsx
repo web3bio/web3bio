@@ -1,7 +1,7 @@
 import { WidgetTypes } from "../../utils/profile";
 
 export default function LoadingSkeleton(props) {
-  const { type, height } = props;
+  const { type } = props;
   const renderContent = (() => {
     switch (type) {
       case WidgetTypes.nft:
@@ -138,12 +138,7 @@ export default function LoadingSkeleton(props) {
     }
   })();
   return (
-    <div
-      className="profile-widget-full"
-      style={{
-        height: height,
-      }}
-    >
+    <div className="profile-widget-full">
       {renderContent}
     </div>
   );

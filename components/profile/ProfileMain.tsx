@@ -8,9 +8,8 @@ import { SocialPlatformMapping, formatText, colorMod } from "../../utils/utils";
 import { Error } from "../shared/Error";
 import { Empty } from "../shared/Empty";
 import { RenderWidgetItem } from "./WidgetLinkItem";
-import { WidgetRSS } from "./WidgetRSS";
+import WidgetNFT from "./WidgetNFT";
 import WidgetPOAP from "./WidgetPoap";
-import { WidgetDegenScore } from "./WidgetDegenScore";
 import WidgetFeed from "./WidgetFeed";
 import AddressMenu from "./AddressMenu";
 import { Avatar } from "../shared/Avatar";
@@ -19,11 +18,12 @@ import Modal from "../modal/Modal";
 import { useSelector } from "react-redux";
 import { AppState } from "../../state";
 import { WidgetState } from "../../state/widgets/reducer";
+import { WidgetDegenScore } from "./WidgetDegenScore";
+import { WidgetRSS } from "./WidgetRSS";
 import { WidgetPhiland } from "./WidgetPhiland";
 import { regexEns } from "../../utils/regexp";
 import LoadingSkeleton from "./LoadingSkeleton";
 import { WidgetTypes } from "../../utils/profile";
-import WidgetNFT from "./WidgetNFT";
 
 export default function ProfileMain(props) {
   const {
@@ -327,10 +327,7 @@ export default function ProfileMain(props) {
                     <div className="web3-section-widgets">
                       <Suspense
                         fallback={
-                          <LoadingSkeleton
-                            type={WidgetTypes.rss}
-                            height={150}
-                          />
+                          <LoadingSkeleton type={WidgetTypes.rss} />
                         }
                       >
                         <WidgetRSS domain={data.identity} />
