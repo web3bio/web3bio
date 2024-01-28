@@ -3,7 +3,6 @@ import ApolloProvider from "../components/shared/ApolloProvider";
 import GoogleAnalytics from "../components/shared/GoogleAnalytics";
 import ReduxProvider from "../components/shared/ReduxProvider";
 import "../styles/web3bio.scss";
-import client from "../utils/apollo";
 
 export function generateMetadata() {
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";

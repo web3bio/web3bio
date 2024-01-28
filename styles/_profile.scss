@@ -350,6 +350,66 @@
       }
     }
 
+    &.profile-widget-loading {
+      background: lighten($bg-color, 5%);
+      border: .05rem solid rgba($dark-color, .01);
+      border-radius: .8rem;
+      box-shadow: 0 .1rem .2rem rgba($dark-color, .01);
+      width: 100%;
+
+      .profile-widget-title {
+        filter: grayscale(1);
+        opacity: .1;
+      }
+    
+      &.nft {
+        .profile-widget-body {
+          align-items: center;
+          display: flex;
+          gap: .5rem;
+          overflow: auto hidden;
+          padding: 0.25rem 0 0 0;
+        }
+
+        .img-loading {
+          border-radius: .4rem;
+          flex: 0 0 3.1rem;
+          height: 3.1rem;
+          width: 3.1rem;
+        }
+      }
+
+      &.feeds {
+        height: 50vh;
+
+        .feed-item-text {
+          border-radius: .4rem;
+          color: transparent;
+          display: inline-flex;
+          height: 1rem;
+        }
+      }
+
+      &.poaps {
+        .profile-widget-body {
+          align-items: center;
+          display: flex;
+          flex-wrap: nowrap;
+          gap: .5rem;
+          overflow: auto hidden;
+          padding: 0;
+        }
+
+        .img-loading {
+          border-radius: 1.6rem;
+          flex: 0 0 3.2rem;
+          height: 3.2rem;
+          margin-bottom: .2rem;
+          width: 3.2rem;
+        }
+      }
+    }
+
     &.profile-widget-link {
       cursor: pointer;
       overflow: hidden;
@@ -421,6 +481,7 @@
     .profile-widget-header {
       align-items: center;
       display: flex;
+      height: 1.5rem;
     }
 
     .profile-widget-footer {

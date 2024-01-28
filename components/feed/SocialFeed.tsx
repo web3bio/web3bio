@@ -5,7 +5,6 @@ import { ActivityType } from "../../utils/activity";
 import { resolveIPFS_URL } from "../../utils/ipfs";
 import {
   ActivityTypeMapping,
-  formatText,
   resolveMediaURL,
 } from "../../utils/utils";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
