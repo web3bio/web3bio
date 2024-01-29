@@ -364,7 +364,7 @@
         filter: grayscale(1);
         opacity: .1;
       }
-    
+
       &.nft {
         .profile-widget-body {
           align-items: center;
@@ -1562,44 +1562,10 @@
   display: flex;
   flex-direction: column;
   gap: .5rem;
-  color: $gray-color-dark;
   margin-top: 2rem;
+  box-shadow: none !important;
 
-
-  .domain-item {
-    position: relative;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    background-color: var(--badge-bg-color, rgba($dark-color, .05));
-    border: .05rem solid transparent;
-    border-color: var(--badge-bg-color, transparent);
-    border-radius: .8rem;
-    box-shadow: 0 .05rem .1rem var(--badge-bg-color, rgba($dark-color, .05));
-    text-decoration: none;
-    transition: all .2s ease;
-    padding: .5rem 1rem;
-    box-sizing: border-box;
-
-    &:focus,
-    &:hover {
-      box-shadow: 0 .05rem .1rem var(--badge-bg-color, rgba($dark-color, .05)), 0 .05rem .8rem rgba($dark-color, .05);
-    }
-
-    .domain-icon {
-      margin-right: 1rem;
-    }
-
-    .domain-name {
-      color: rgba($dark-color, .9);
-      font-size: .7rem;
-    }
-
-    .domain-expire-date {
-      position: absolute;
-      font-size: .5rem;
-      right: 1rem;
-      bottom: .5rem;
-    }
+  .social-item {
+    background: rgba(171, 171, 171, 0.07);
   }
 }

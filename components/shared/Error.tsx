@@ -4,11 +4,12 @@ import { fallbackEmoji } from "../../utils/utils";
 interface ErrorProps {
   msg?: string;
   text?: ApolloError;
+  buttonText?: string;
   retry?: () => void;
 }
 
 export const Error = (props: ErrorProps) => {
-  const { text, retry, msg } = props;
+  const { text, retry, msg, buttonText = "Try again" } = props;
   const [emoji, setEmoji] = useState("");
   useEffect(() => {
     setEmoji(fallbackEmoji[Math.floor(Math.random() * fallbackEmoji.length)]);
@@ -25,7 +26,7 @@ export const Error = (props: ErrorProps) => {
         "Please try again"
       )}
       <button className="btn btn-primary mt-4" onClick={retry}>
-        Try again
+        {buttonText}
       </button>
     </div>
   );

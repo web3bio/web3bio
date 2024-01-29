@@ -16,7 +16,7 @@ import WidgetDomainManagement from "./WidgetDomainManagement";
 export default function WalletProfileMain(props) {
   const { data, pageTitle, domain } = props;
   const [isCopied, setIsCopied] = useState(false);
-  const [curProfile, setCurProfile] = useState(data[0]);
+  const [curProfile, setCurProfile] = useState(data?.[0] || data);
   const { isOpen, modalType, closeModal, openModal, params } = useModal();
   const router = useRouter();
 
@@ -27,18 +27,21 @@ export default function WalletProfileMain(props) {
     }, 1500);
   };
 
-  const avatarProfile = curProfile.avatar
-    ? curProfile
-    : data?.find((x) => x.avatar);
-
   if (!curProfile || curProfile.error) {
     return (
       <Error
+        buttonText="Back"
         retry={() => router.push("/")}
-        msg={"No profile found in ${address}, click Back to home page"}
+        msg={`No profile found in ${formatText(
+          curProfile?.address
+        )}, click Back to home page`}
       />
     );
   }
+
+  const avatarProfile = curProfile?.avatar
+    ? curProfile
+    : data?.find((x) => x.avatar);
   return (
     <>
       <div

@@ -21,7 +21,7 @@ const RenderAccountItem = (props) => {
     }, 1500);
   };
   const ref = useRef(null);
-  const { identity, sources, profile } = props;
+  const { identity, sources, profile, resolvedIdentity, disableAction } = props;
   const [isCopied, setIsCopied] = useState(false);
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
@@ -33,12 +33,6 @@ const RenderAccountItem = (props) => {
     isAddress(resolvedDisplayName) || identity.platform === PlatformType.nextid
       ? formatText(resolvedDisplayName)
       : resolvedDisplayName;
-  const resolvedIdentity = [
-    PlatformType.unstoppableDomains,
-    PlatformType.dotbit,
-  ].includes(identity.platform)
-    ? identity.ownedBy.identity
-    : profile?.address || identity.identity;
 
   useEffect(() => {
     const element = ref?.current;
@@ -87,6 +81,7 @@ const RenderAccountItem = (props) => {
     };
   }, [fetched, identity, visible, dispatch]);
   switch (identity.platform) {
+    case PlatformType.ens:
     case PlatformType.ethereum:
     case PlatformType.unstoppableDomains:
     case PlatformType.dotbit:
@@ -133,7 +128,9 @@ const RenderAccountItem = (props) => {
                     <>
                       {profile?.displayName === profile?.identity ? (
                         <>
-                          <div className="address hide-sm">{resolvedIdentity}</div>
+                          <div className="address hide-sm">
+                            {resolvedIdentity}
+                          </div>
                           <div className="address show-sm">
                             {formatText(resolvedIdentity)}
                           </div>
@@ -165,7 +162,8 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
             </div>
-            {!profile?.error &&
+            {!disableAction &&
+              !profile?.error &&
               (profile ? (
                 <div className="actions active">
                   <Link
@@ -257,7 +255,11 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
               <div className="content">
-                <div className="content-title text-bold">{profile?.displayName || identity.displayName || identity.identity}</div>
+                <div className="content-title text-bold">
+                  {profile?.displayName ||
+                    identity.displayName ||
+                    identity.identity}
+                </div>
                 <div className="content-subtitle text-gray">
                   {identity.uid && (
                     <>
@@ -280,21 +282,23 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
             </div>
-            <div className="actions active">
-              <Link
-                target={"_blank"}
-                className="btn btn-sm btn-link action"
-                href={`/${
-                  identity.platform === PlatformType.farcaster
-                    ? identity.identity + ".farcaster"
-                    : identity.identity
-                }`}
-                title="Open Profile"
-              >
-                <SVG src="icons/icon-open.svg" width={20} height={20} />
-                <span className="hide-xs">Profile</span>
-              </Link>
-            </div>
+            {!disableAction && (
+              <div className="actions active">
+                <Link
+                  target={"_blank"}
+                  className="btn btn-sm btn-link action"
+                  href={`/${
+                    identity.platform === PlatformType.farcaster
+                      ? identity.identity + ".farcaster"
+                      : identity.identity
+                  }`}
+                  title="Open Profile"
+                >
+                  <SVG src="icons/icon-open.svg" width={20} height={20} />
+                  <span className="hide-xs">Profile</span>
+                </Link>
+              </div>
+            )}
           </div>
           <RenderSourceFooter sources={sources} />
         </div>
@@ -346,19 +350,21 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
             </div>
-            <div className="actions active">
-              <Link
-                target={"_blank"}
-                className="btn btn-sm btn-link action"
-                href={`/${resolvedIdentity}`}
-                prefetch={false}
-                title="Open Next.ID Profile page"
-                rel="noopener noreferrer"
-              >
-                <SVG src="icons/icon-open.svg" width={20} height={20} />
-                <span className="hide-xs">Profile</span>
-              </Link>
-            </div>
+            {!disableAction && (
+              <div className="actions active">
+                <Link
+                  target={"_blank"}
+                  className="btn btn-sm btn-link action"
+                  href={`/${resolvedIdentity}`}
+                  prefetch={false}
+                  title="Open Next.ID Profile page"
+                  rel="noopener noreferrer"
+                >
+                  <SVG src="icons/icon-open.svg" width={20} height={20} />
+                  <span className="hide-xs">Profile</span>
+                </Link>
+              </div>
+            )}
           </div>
           <RenderSourceFooter sources={sources} />
         </div>
@@ -388,20 +394,22 @@ const RenderAccountItem = (props) => {
               </div>
               <div className="title">{displayName}</div>
             </Link>
-            <div className="actions">
-              <a
-                className="btn btn-sm btn-link action"
-                href={`${SocialPlatformMapping(identity.platform)?.urlPrefix}${
-                  identity.displayName || displayName
-                }`}
-                title="Open"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <SVG src="icons/icon-open.svg" width={20} height={20} />
-                <span className="hide-xs">Open</span>
-              </a>
-            </div>
+            {!disableAction && (
+              <div className="actions">
+                <a
+                  className="btn btn-sm btn-link action"
+                  href={`${
+                    SocialPlatformMapping(identity.platform)?.urlPrefix
+                  }${identity.displayName || displayName}`}
+                  title="Open"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <SVG src="icons/icon-open.svg" width={20} height={20} />
+                  <span className="hide-xs">Open</span>
+                </a>
+              </div>
+            )}
           </div>
           <RenderSourceFooter sources={sources} />
         </div>

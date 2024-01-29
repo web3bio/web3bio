@@ -32,8 +32,7 @@ export default function WalletProfilePage() {
         setText("Fetching data from Web3.bio...");
       }
     }
-  }, [address, router, isLoading]);
-
+  }, [address, router, isLoading, data]);
   return (
     <>
       {!authed || isLoading ? (
