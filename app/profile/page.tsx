@@ -36,14 +36,14 @@ export default function WalletProfilePage() {
 
   return (
     <>
-      {/* <div className="web3bio-cover flare"></div> */}
-      {!authed ||
-        (isLoading && (
-          <div className="web3-profile container grid-xl global-loading">
-            <Loading />
-            <p className="mt-4">{text}</p>
-          </div>
-        )) || <WalletProfileMain data={data} />}
+      {!authed || isLoading ? (
+        <div className="web3-profile container grid-xl global-loading">
+          <Loading />
+          <p className="mt-4">{text}</p>
+        </div>
+      ) : (
+        <WalletProfileMain data={data} />
+      )}
     </>
   );
 }
