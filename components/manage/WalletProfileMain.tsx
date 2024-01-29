@@ -14,7 +14,7 @@ import WalletButton from "../shared/WalletButton";
 import WidgetDomainManagement from "./WidgetDomainManagement";
 
 export default function WalletProfileMain(props) {
-  const { data, pageTitle, domain } = props;
+  const { data, domain } = props;
   const [isCopied, setIsCopied] = useState(false);
   const [curProfile, setCurProfile] = useState(data?.[0] || data);
   const { isOpen, modalType, closeModal, openModal, params } = useModal();
@@ -42,6 +42,10 @@ export default function WalletProfileMain(props) {
   const avatarProfile = curProfile?.avatar
     ? curProfile
     : data?.find((x) => x.avatar);
+  const pageTitle =
+    curProfile.identity == curProfile.displayName
+      ? `${curProfile.displayName}`
+      : `${curProfile.displayName} (${curProfile.identity})`;
   return (
     <>
       <div
@@ -126,8 +130,8 @@ export default function WalletProfileMain(props) {
                 title="Share this profile"
                 onClick={() =>
                   openModal(ModalType.share, {
-                    profile: data,
-                    path: `${domain}`,
+                    profile: curProfile,
+                    path: `${curProfile.identity}`,
                     avatar: avatarProfile.avatar,
                   })
                 }

@@ -21,7 +21,14 @@ const RenderAccountItem = (props) => {
     }, 1500);
   };
   const ref = useRef(null);
-  const { identity, sources, profile, resolvedIdentity, disableAction } = props;
+  const {
+    identity,
+    sources,
+    profile,
+    resolvedIdentity,
+    disableAction,
+    onClick,
+  } = props;
   const [isCopied, setIsCopied] = useState(false);
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
@@ -87,6 +94,7 @@ const RenderAccountItem = (props) => {
     case PlatformType.dotbit:
       return (
         <div
+          onClick={onClick}
           ref={ref}
           className={`social-item ${identity.platform}${
             identity.isOwner ? " social-item-owner" : ""
@@ -227,7 +235,11 @@ const RenderAccountItem = (props) => {
     case PlatformType.lens:
     case PlatformType.farcaster:
       return (
-        <div ref={ref} className={`social-item ${identity.platform}`}>
+        <div
+          onClick={onClick}
+          ref={ref}
+          className={`social-item ${identity.platform}`}
+        >
           <div className="social-main">
             <div className="social">
               <div className="avatar">
@@ -305,7 +317,7 @@ const RenderAccountItem = (props) => {
       );
     case PlatformType.nextid:
       return (
-        <div ref={ref} className="social-item nextid">
+        <div onClick={onClick} ref={ref} className="social-item nextid">
           <div className="social-main">
             <div className="social">
               <div className="avatar">
@@ -371,7 +383,11 @@ const RenderAccountItem = (props) => {
       );
     default:
       return (
-        <div ref={ref} className={`social-item ${identity.platform}`}>
+        <div
+          onClick={onClick}
+          ref={ref}
+          className={`social-item ${identity.platform}`}
+        >
           <div className="social-main">
             <Link
               href={{

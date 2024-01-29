@@ -7,7 +7,7 @@ export default function WidgetDomainManagement(props) {
       {data?.map((x, idx) => {
         return (
           <ResultAccountItem
-            onClick={setCurProfile}
+            onClick={()=>setCurProfile(x)}
             resolvedIdentity={x.identity}
             identity={{
               identity: x.identity,
