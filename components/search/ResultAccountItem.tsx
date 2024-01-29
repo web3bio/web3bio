@@ -175,7 +175,6 @@ const RenderAccountItem = (props) => {
                       identity.displayName ||
                       resolvedIdentity
                     }`}
-                    prefetch={false}
                     title="Open Profile"
                     className="btn btn-sm btn-link action"
                   >
@@ -188,7 +187,6 @@ const RenderAccountItem = (props) => {
                   <Link
                     target={"_blank"}
                     href={`/${identity.displayName || resolvedIdentity}`}
-                    prefetch={false}
                     title="Open Profile"
                     className="btn btn-sm btn-link action"
                   >
@@ -291,7 +289,6 @@ const RenderAccountItem = (props) => {
                     ? identity.identity + ".farcaster"
                     : identity.identity
                 }`}
-                prefetch={false}
                 title="Open Profile"
               >
                 <SVG src="icons/icon-open.svg" width={20} height={20} />

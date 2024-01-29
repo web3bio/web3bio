@@ -204,7 +204,6 @@ export default function ProfileMain(props) {
                   <Link
                     key={x.platform + idx}
                     href={`/${relatedPath}`}
-                    prefetch={false}
                     className={`platform-badge ${x.platform}${
                       idx === 0 ? " active" : ""
                     }`}
