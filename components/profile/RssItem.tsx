@@ -7,9 +7,9 @@ export default function RssItem(props) {
 
   return (
     <Link href={data.link} className="rss-item" target={"_blank"}>
-      {data.itunes_image && (
+      {data.thumbnail && (
         <Image
-          src={data.itunes_image}
+          src={data.thumbnail}
           className="rss-item-img"
           alt={data.title}
           height={96}

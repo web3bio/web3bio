@@ -1,5 +1,5 @@
 "use client";
-import { memo, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { ExpandController } from "./ExpandController";
 import { RSS3Fetcher, RSS3_ENDPOINT } from "../apis/rss3";
@@ -95,19 +95,12 @@ const getURL = (index, address, previous, filter) => {
   return [url, data];
 };
 
-function useFeeds({ address, fromServer, initialData, filter }) {
-  const options = fromServer
-    ? {
-        initialSize: 1,
-        fallbackData: [initialData],
-      }
-    : {};
+function useFeeds({ address, filter }) {
   const { data, error, size, isValidating, setSize } = useSWRInfinite(
     (index, previous) => getURL(index, address, previous, filter),
     RSS3Fetcher,
     {
-      ...options,
-      suspense: !fromServer,
+      suspense: true,
       revalidateOnFocus: false,
       revalidateOnMount: true,
       revalidateOnReconnect: false,
@@ -123,13 +116,11 @@ function useFeeds({ address, fromServer, initialData, filter }) {
   };
 }
 
-const RenderWidgetFeed = ({ profile, fromServer, initialData, openModal }) => {
+export default function WidgetFeed({ profile, openModal }) {
   const [expand, setExpand] = useState(false);
   const [filter, setFilter] = useState("all");
   const { data, size, setSize, isValidating, isError, hasNextPage } = useFeeds({
     address: profile.address,
-    fromServer,
-    initialData,
     filter,
   });
   const dispatch = useDispatch();
@@ -217,6 +208,4 @@ const RenderWidgetFeed = ({ profile, fromServer, initialData, openModal }) => {
       </div>
     </div>
   );
-};
-
-export const WidgetFeed = memo(RenderWidgetFeed);
+}

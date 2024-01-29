@@ -5,7 +5,7 @@
   pointer-events: none;
   position: relative;
   &::after {
-    animation: loading 750ms infinite cubic-bezier(0.5, 0, 0.5, 1);
+    animation: loading 750ms infinite cubic-bezier(.5, .25, .5, 1);
     border: $border-width-lg solid $dark-color;
     border-radius: 50%;
     border-right-color: transparent;
