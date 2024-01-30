@@ -55,7 +55,7 @@ const resolveGraphData = (source) => {
     edges.push({
       source: x.source,
       target: x.target,
-      label: resolvedPlatform ? resolvedPlatform.key : x.source,
+      label: x.label? x.label : resolvedPlatform ? resolvedPlatform.key : x.source,
       id: `${x.source}*${x.target}`,
       isIdentity: true,
     });

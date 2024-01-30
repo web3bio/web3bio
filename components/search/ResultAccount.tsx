@@ -8,8 +8,9 @@ import { ProfileInterface } from "../../utils/profile";
 import D3ResultGraph from "../graph/D3ResultGraph";
 
 const RenderAccount = (props) => {
-  const { graphData, resultNeighbor, graphTitle } = props;
+  const { graphData, resultNeighbor, graphTitle, socialGraphData } = props;
   const [open, setOpen] = useState(false);
+  const [socialGraph, setSocialGraph] = useState(false);
   const cached = useSelector<AppState, { [address: string]: ProfileInterface }>(
     (state) => state.universal.profiles
   );
@@ -22,6 +23,15 @@ const RenderAccount = (props) => {
           <div className="search-result-text text-gray">
             Identity Graph results:
           </div>
+          {socialGraphData.vertices.length > 0 && (
+            <div
+              className="btn btn-link btn-sm"
+              onClick={() => setSocialGraph(true)}
+            >
+              <SVG src={"/icons/icon-view.svg"} width={20} height={20} />{" "}
+              SocialGraph
+            </div>
+          )}
           {graphData.vertices.length > 0 && (
             <div className="btn btn-link btn-sm" onClick={() => setOpen(true)}>
               <SVG src={"/icons/icon-view.svg"} width={20} height={20} />{" "}
@@ -52,8 +62,15 @@ const RenderAccount = (props) => {
               };
               pre.push(cur);
               return pre;
-            },[]),
+            }, []),
           }}
+          title={graphTitle}
+        />
+      )}
+      {socialGraph && (
+        <D3ResultGraph
+          onClose={() => setSocialGraph(false)}
+          data={socialGraphData}
           title={graphTitle}
         />
       )}

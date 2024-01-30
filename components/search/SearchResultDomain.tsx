@@ -5,6 +5,7 @@ import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
 import { Loading } from "../shared/Loading";
 import { ResultAccount } from "./ResultAccount";
+import { PlatformType } from "../../utils/platform";
 
 interface ResultNeighbor {
   identity: string;
@@ -38,13 +39,55 @@ export default function RenderResultDomain({ searchTerm, searchPlatform }) {
   if (error) return <Error retry={getQuery} text={error} />;
   if (!data) return <Empty />;
   const socialGraphData = (() => {
-    return [];
+    // todo: check this, temp static generation
+    const nodes = new Array();
+    const edges = new Array();
+    data.socialFollows.follower.topology.forEach((x) => {
+      nodes.push({
+        identity: x.originalSource,
+        id: x.source,
+        platform: PlatformType.lens
+      });
+      nodes.push({
+        identity: x.originalTarget,
+        id: x.target,
+        platform: PlatformType.lens
+      });
+      edges.push({
+        source: x.source,
+        target: x.target,
+        label: "followed by",
+        dataSource: x.dataSource,
+      });
+    });
+    data.socialFollows.following.topology.forEach((x) => {
+      nodes.push({
+        identity: x.originalSource,
+        id: x.source,
+        platform: PlatformType.lens
+      });
+      nodes.push({
+        identity: x.originalTarget,
+        id: x.target,
+        platform: PlatformType.lens
+      });
+      edges.push({
+        source: x.source,
+        target: x.target,
+        label: "following",
+        dataSource: x.dataSource,
+      });
+    });
+    return {
+      vertices: nodes,
+      edges: edges,
+    };
   })();
 
   return (
     <ResultAccount
       resultNeighbor={resultNeighbor}
-      socialGraph={socialGraphData}
+      socialGraphData={socialGraphData}
       graphData={data.socialFollows.identityGraph}
       graphTitle={searchTerm}
     />
