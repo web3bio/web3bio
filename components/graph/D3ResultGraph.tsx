@@ -18,83 +18,56 @@ const getMarkerRefX = (d) => {
 const resolveGraphData = (source) => {
   const nodes = new Array<any>();
   const edges = new Array<any>();
-  source.forEach((x) => {
-    const from = x.from;
-    const to = x.to;
-    const resolvedPlatform = SocialPlatformMapping(x.source);
+  source.vertices.forEach((x) => {
+    const resolvedPlatform = SocialPlatformMapping(x.platform);
     nodes.push({
-      id: to.uuid,
-      label: formatText(to.displayName ?? to.identity),
-      platform: to.platform,
-      source: x.source,
-      displayName: to.profile?.displayName || to.displayName,
-      identity: to.profile?.identity || to.identity,
-      uid: to.uid,
-      address: to.profile?.address || to.ownedBy?.identity,
+      id: x.id,
+      label: formatText(x.displayName || x.identity),
+      platform: resolvedPlatform.key || x.platform,
+      displayName: x.profile?.displayName || x.displayName,
+      identity: x.profile?.identity || x.identity,
+      uid: x.uid,
+      address: x.profile?.address || x.ownedBy?.identity,
       isIdentity: true,
     });
-    nodes.push({
-      id: from.uuid,
-      label: formatText(from.displayName ?? from.identity),
-      platform: from.platform,
-      source: x.source,
-      displayName: from.profile?.displayName || from.displayName,
-      identity: from.profile?.identity || from.identity,
-      uid: from.uid,
-      address: from.profile?.address || from.ownedBy?.identity,
-      isIdentity: true,
-    });
+
+    // from.nft.forEach((k) => {
+    //   if (k.category === PlatformType.ens) {
+    //     nodes.push({
+    //       id: k.uuid,
+    //       label: formatText(k.id, 15),
+    //       category: k.category,
+    //       chain: k.chain,
+    //       holder: from.identity,
+    //       identity: k.id,
+    //       platform: PlatformType.ens,
+    //     });
+    //     edges.push({
+    //       source: from.uuid,
+    //       target: k.uuid,
+    //       id: `${from.uuid},${k.uuid}`,
+    //     });
+    //   }
+    // });
+  });
+  source.edges.forEach((x) => {
+    const resolvedPlatform = SocialPlatformMapping(x.dataSource);
     edges.push({
-      source: from.uuid,
-      target: to.uuid,
+      source: x.source,
+      target: x.target,
       label: resolvedPlatform ? resolvedPlatform.key : x.source,
-      id: `${from.uuid},${to.uuid}`,
+      id: `${x.source}*${x.target}`,
       isIdentity: true,
-    });
-    from.nft.forEach((k) => {
-      if (k.category === PlatformType.ens) {
-        nodes.push({
-          id: k.uuid,
-          label: formatText(k.id, 15),
-          category: k.category,
-          chain: k.chain,
-          holder: from.identity,
-          identity: k.id,
-          platform: PlatformType.ens,
-        });
-        edges.push({
-          source: from.uuid,
-          target: k.uuid,
-          id: `${from.uuid},${k.uuid}`,
-        });
-      }
-    });
-    to.nft.forEach((k) => {
-      if (k.category === PlatformType.ens) {
-        nodes.push({
-          id: k.uuid,
-          label: formatText(k.id, 15),
-          category: k.category,
-          chain: k.chain,
-          holder: to.identity,
-          identity: k.id,
-          platform: PlatformType.ens,
-          isTransferred: true,
-        });
-        edges.push({
-          source: to.uuid,
-          target: k.uuid,
-          id: `${to.uuid},${k.uuid}`,
-          isTransferred: true,
-        });
-      }
     });
   });
   const _nodes = _.uniqBy(nodes, "id");
   const _edges = _.uniqBy(edges, "id");
   const isSingleEdge = (d) => {
-    const idArr = d.id.split(",");
-    if (_edges.find((x) => x.id === `${idArr[1]},${idArr[0]}`)) return false;
+    if (
+      _edges.find((x) => d.source === x.target) &&
+      _edges.find((x) => d.target === x.source)
+    )
+      return false;
     return true;
   };
   const resolvedEdges = _edges.map((x) => ({
@@ -188,7 +161,7 @@ export default function D3ResultGraph(props) {
 
       const removeHighlight = () => {
         setHideToolTip(true);
-        setCurrentNode(null)
+        setCurrentNode(null);
         edgeLabels.attr("class", "edge-label");
         edgePath.attr("class", "edge-path");
         maskCircle.attr("opacity", 0);
@@ -482,8 +455,12 @@ export default function D3ResultGraph(props) {
         <div
           className="web3bio-tooltip"
           style={{
-            left: currentNode.x + (currentNode.isIdentity ? IdentityNodeSize : NFTNodeSize * 2),
-            top: currentNode.y + (currentNode.isIdentity ? IdentityNodeSize : NFTNodeSize * 2),
+            left:
+              currentNode.x +
+              (currentNode.isIdentity ? IdentityNodeSize : NFTNodeSize * 2),
+            top:
+              currentNode.y +
+              (currentNode.isIdentity ? IdentityNodeSize : NFTNodeSize * 2),
             transform: transform,
           }}
         >

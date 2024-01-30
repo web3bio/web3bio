@@ -14,6 +14,7 @@ const RenderAccount = (props) => {
     (state) => state.universal.profiles
   );
   const profiles = _.flatten(Object.values(cached).map((x) => x));
+
   return (
     <>
       <div className="search-result">
@@ -21,7 +22,7 @@ const RenderAccount = (props) => {
           <div className="search-result-text text-gray">
             Identity Graph results:
           </div>
-          {graphData.length > 0 && (
+          {graphData.vertices.length > 0 && (
             <div className="btn btn-link btn-sm" onClick={() => setOpen(true)}>
               <SVG src={"/icons/icon-view.svg"} width={20} height={20} />{" "}
               Visualize
@@ -31,10 +32,10 @@ const RenderAccount = (props) => {
         <div className="search-result-body">
           {resultNeighbor?.map((avatar, idx) => (
             <ResultAccountItem
-              identity={avatar.identity}
-              sources={avatar.sources}
-              profile={profiles.find((x) => x?.uuid === avatar.identity.uuid)}
-              key={avatar.identity.uuid + idx}
+              identity={avatar}
+              sources={["nextid"]}
+              profile={profiles.find((x) => x?.uuid === avatar.uuid)}
+              key={avatar.id + idx}
             />
           ))}
         </div>
@@ -42,20 +43,17 @@ const RenderAccount = (props) => {
       {open && (
         <D3ResultGraph
           onClose={() => setOpen(false)}
-          data={graphData.reduce((pre, cur) => {
-            pre.push({
-              ...cur,
-              to: {
-                ...cur.to,
-                profile: _.find(profiles, (i) => i.uuid == cur.to.uuid),
-              },
-              from: {
-                ...cur.from,
-                profile: _.find(profiles, (i) => i.uuid == cur.from.uuid),
-              },
-            });
-            return pre;
-          }, [])}
+          data={{
+            ...graphData,
+            vertices: graphData.vertices.reduce((pre, cur) => {
+              cur = {
+                ...cur,
+                profile: profiles?.find((i) => i.uuid === cur.uuid),
+              };
+              pre.push(cur);
+              return pre;
+            },[]),
+          }}
           title={graphTitle}
         />
       )}
