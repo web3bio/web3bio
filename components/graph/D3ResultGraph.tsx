@@ -28,7 +28,7 @@ const resolveGraphData = (source) => {
       identity: x.profile?.identity || x.identity,
       uid: x.uid,
       address: x.profile?.address || x.ownedBy?.identity,
-      isIdentity: true,
+      isIdentity: x.platform === "ens" ? false : true,
     });
   });
   source.edges.forEach((x) => {
@@ -42,7 +42,6 @@ const resolveGraphData = (source) => {
         ? resolvedPlatform.key
         : x.source,
       id: `${x.source}*${x.target}`,
-      isIdentity: true,
     });
   });
   const _nodes = _.uniqBy(nodes, "id");
@@ -128,7 +127,7 @@ const updateNodes = (nodeContainer) => {
 };
 
 export default function D3ResultGraph(props) {
-  const { data, onClose, title } = props;
+  const { data, onClose, title, expandIdentity, back, graphType } = props;
   const [currentNode, setCurrentNode] = useState<any>(null);
   const [hideTooltip, setHideToolTip] = useState(true);
   const [transform, setTransform] = useState("");
@@ -136,6 +135,7 @@ export default function D3ResultGraph(props) {
   const graphContainer = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // different graph with graphType
     let chart = null;
     const chartContainer = graphContainer?.current;
     const generateGraph = (_data) => {
@@ -289,8 +289,14 @@ export default function D3ResultGraph(props) {
           e.stopPropagation();
           removeHighlight();
           highlightNode(i);
+        })
+        .on("dblclick", (e, i) => {
+          if (graphType === 1) return;
+          e.preventDefault();
+          e.stopPropagation();
+          removeHighlight();
+          expandIdentity(i);
         });
-
       const { displayName, identity, identityBadge, identityIcon, ensBadge } =
         updateNodes(nodeContainer);
       const ticked = () => {
@@ -427,11 +433,23 @@ export default function D3ResultGraph(props) {
             <div className="graph-title">
               <SVG src={"/icons/icon-view.svg"} width="20" height="20" />
               <span className="ml-2">
-                Identity Graph for<strong className="ml-1">{title}</strong>
+                {graphType === 0 ? "Social Graph" : "Identity Graph"} for
+                <strong className="ml-1">{title}</strong>
               </span>
             </div>
-            <div className="btn btn-close" onClick={onClose}>
-              <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
+            <div
+              className="btn btn-close"
+              onClick={graphType === 0 ? onClose : back}
+            >
+              <SVG
+                src={
+                  graphType === 0
+                    ? "/icons/icon-close.svg"
+                    : "/icons/icon-open.svg"
+                }
+                width="20"
+                height="20"
+              />
             </div>
           </div>
         </div>
