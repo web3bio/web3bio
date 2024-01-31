@@ -102,7 +102,7 @@ import { gql } from "@apollo/client";
 //   }
 // `;
 
-export const GET_PROFILES_DOMAIN = gql`
+export const GET_PROFILE_SOCIAL_GRAPH = gql`
   query {
     socialFollows(platform: "lens", identity: "sujiyan.lens") {
       identityGraph {
@@ -172,103 +172,8 @@ export const GET_PROFILES_DOMAIN = gql`
     }
   }
 `;
-export const GET_PROFILES_QUERY = gql`
-  query GET_PROFILES_QUERY($platform: String, $identity: String) {
-    identity(platform: $platform, identity: $identity) {
-      platform
-      identity
-      displayName
-      uuid
-      uid
-      reverse
-      ownedBy {
-        uuid
-        platform
-        identity
-        displayName
-      }
-      nft(category: ["ENS"], limit: 100, offset: 0) {
-        uuid
-        category
-        chain
-        address
-        id
-      }
-      neighborWithTraversal(depth: 5) {
-        ... on ProofRecord {
-          source
-          from {
-            reverse
-            nft(category: ["ENS"], limit: 100, offset: 0) {
-              uuid
-              category
-              chain
-              id
-            }
-            uuid
-            uid
-            platform
-            identity
-            displayName
-          }
-          to {
-            reverse
-            nft(category: ["ENS"], limit: 100, offset: 0) {
-              uuid
-              category
-              chain
-              id
-            }
-            uuid
-            uid
-            platform
-            identity
-            displayName
-          }
-        }
-        ... on HoldRecord {
-          source
-          from {
-            reverse
-            nft(category: ["ENS"], limit: 100, offset: 0) {
-              uuid
-              category
-              chain
-              id
-            }
-            uuid
-            uid
-            platform
-            identity
-            displayName
-            ownedBy {
-              platform
-              identity
-            }
-          }
-          to {
-            reverse
-            nft(category: ["ENS"], limit: 100, offset: 0) {
-              uuid
-              category
-              chain
-              id
-            }
-            uuid
-            uid
-            platform
-            identity
-            displayName
-            ownedBy {
-              platform
-              identity
-            }
-          }
-        }
-      }
-    }
-  }
-`;
+
+export const GET_PROFILE_IDENTITY_GRAPH = ``
 
 export function matchQuery(query) {
   if (!query) return "";

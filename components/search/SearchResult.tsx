@@ -1,6 +1,6 @@
 import { useLazyQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
-import { GET_PROFILES_DOMAIN } from "../../utils/queries";
+import { GET_PROFILE_SOCIAL_GRAPH } from "../../utils/queries";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
 import { Loading } from "../shared/Loading";
@@ -10,9 +10,9 @@ import { PlatformType } from "../../utils/platform";
 interface ResultNeighbor {
   identity: string;
 }
-export default function RenderResultDomain({ searchTerm, searchPlatform }) {
+export default function SearchResult({ searchTerm, searchPlatform }) {
   const [getQuery, { loading, error, data }] = useLazyQuery(
-    GET_PROFILES_DOMAIN,
+    GET_PROFILE_SOCIAL_GRAPH,
     {
       variables: {
         platform: searchPlatform,
@@ -46,12 +46,12 @@ export default function RenderResultDomain({ searchTerm, searchPlatform }) {
       nodes.push({
         identity: x.originalSource,
         id: x.source,
-        platform: PlatformType.lens
+        platform: PlatformType.lens,
       });
       nodes.push({
         identity: x.originalTarget,
         id: x.target,
-        platform: PlatformType.lens
+        platform: PlatformType.lens,
       });
       edges.push({
         source: x.source,
@@ -64,12 +64,12 @@ export default function RenderResultDomain({ searchTerm, searchPlatform }) {
       nodes.push({
         identity: x.originalSource,
         id: x.source,
-        platform: PlatformType.lens
+        platform: PlatformType.lens,
       });
       nodes.push({
         identity: x.originalTarget,
         id: x.target,
-        platform: PlatformType.lens
+        platform: PlatformType.lens,
       });
       edges.push({
         source: x.source,

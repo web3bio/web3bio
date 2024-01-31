@@ -23,21 +23,16 @@ const RenderAccount = (props) => {
           <div className="search-result-text text-gray">
             Identity Graph results:
           </div>
-          {socialGraphData.vertices.length > 0 && (
+          {/* {socialGraphData.vertices.length > 0 && ( */}
             <div
               className="btn btn-link btn-sm"
               onClick={() => setSocialGraph(true)}
             >
               <SVG src={"/icons/icon-view.svg"} width={20} height={20} />{" "}
-              SocialGraph
+              Social Graph
             </div>
-          )}
-          {graphData.vertices.length > 0 && (
-            <div className="btn btn-link btn-sm" onClick={() => setOpen(true)}>
-              <SVG src={"/icons/icon-view.svg"} width={20} height={20} />{" "}
-              Visualize
-            </div>
-          )}
+          {/* )} */}
+      
         </div>
         <div className="search-result-body">
           {resultNeighbor?.map((avatar, idx) => (
