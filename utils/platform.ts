@@ -9,7 +9,7 @@ type SocialPlatform = {
 };
 
 export enum PlatformType {
-  ens = "ENS",
+  ens = "ens",
   dotbit = "dotbit",
   lens = "lens",
   ethereum = "ethereum",

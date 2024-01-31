@@ -67,6 +67,7 @@ const RenderAccount = (props) => {
         edges: data.queryIdentityGraph[0].edges,
       });
       setGraphType(1);
+      setGraphId('')
     }
   }, [graphId, data, queryIdentityGraph]);
   return (
