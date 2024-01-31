@@ -108,72 +108,79 @@ export const GET_PROFILE_SOCIAL_GRAPH = gql`
       identityGraph {
         graphId
         vertices {
+        id
+        uid
+        uuid
+        identity
+        platform
+        displayName
+      }
+      edges {
+        source
+        target
+        dataSource
+      }
+      }
+      followingTopology(hop: 2) {
+        dataSource
+        source
+        target
+        originalSource {
           id
           uid
-          uuid
-          identity
           platform
+          identity
           displayName
         }
-        edges {
-          source
-          target
-          dataSource
+        originalTarget {
+          id
+          uid
+          platform
+          identity
+          displayName
         }
       }
-
-      follower(hop: 1) {
-        list {
-          graphId
-          vertices {
-            id
-            identity
-            platform
-            displayName
-          }
-          edges {
-            dataSource
-            source
-            target
-          }
+      followerTopology(hop: 2) {
+        dataSource
+        source
+        target
+        originalSource {
+          id
+          uid
+          platform
+          identity
+          displayName
         }
-        topology {
-          dataSource
-          source
-          target
-          originalSource
-          originalTarget
-        }
-      }
-
-      following(hop: 1) {
-        list {
-          graphId
-          vertices {
-            id
-            identity
-            platform
-            displayName
-          }
-          edges {
-            dataSource
-            source
-            target
-          }
-        }
-        topology {
-          dataSource
-          source
-          target
-          originalSource
-          originalTarget
+        originalTarget {
+          id
+          uid
+          platform
+          identity
+          displayName
         }
       }
     }
   }
 `;
 
-export const GET_PROFILE_IDENTITY_GRAPH = ``
+export const GET_PROFILE_IDENTITY_GRAPH = gql`
+  query ($graphId: String) {
+    queryIdentityGraph(filter: { byGraphId: [$graphId] }) {
+      graphId
+      vertices {
+        id
+        platform
+        identity
+        displayName
+      }
+      edges {
+        source
+        target
+        dataSource
+      }
+    }
+  }
+`;
 
 export function matchQuery(query) {
   if (!query) return "";

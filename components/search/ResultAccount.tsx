@@ -6,15 +6,46 @@ import { useSelector } from "react-redux";
 import { AppState } from "../../state";
 import { ProfileInterface } from "../../utils/profile";
 import D3ResultGraph from "../graph/D3ResultGraph";
+import { PlatformType } from "../../utils/platform";
 
+// 0: socialGraph 1: identityGraph
 const RenderAccount = (props) => {
-  const { graphData, resultNeighbor, graphTitle, socialGraphData } = props;
+  const { identityGraph, graphTitle, socialGraph } = props;
   const [open, setOpen] = useState(false);
-  const [socialGraph, setSocialGraph] = useState(false);
+  const [graphType, setGraphType] = useState(0);
+
   const cached = useSelector<AppState, { [address: string]: ProfileInterface }>(
     (state) => state.universal.profiles
   );
   const profiles = _.flatten(Object.values(cached).map((x) => x));
+  const graphData =
+    graphType === 0
+      ? socialGraph
+      : {
+          nodes: identityGraph.vertices,
+          edges: identityGraph.edges,
+        };
+
+  const resolvedListData = (() => {
+    if (!identityGraph) return [];
+    const _resolved = identityGraph.vertices.filter(
+      (x) => x.platform !== PlatformType.ens.toLocaleLowerCase()
+    );
+    identityGraph.vertices
+      .filter((x) => x.platform === PlatformType.ens.toLocaleLowerCase())
+      .forEach((x) => {
+        const connection = identityGraph.edges.find((i) => i.target === x.id);
+        if (connection) {
+          let idx = _resolved.findIndex((i) => i.id === connection.source);
+          _resolved[idx] = {
+            ..._resolved[idx],
+            nfts: _resolved[idx].nfts ? [..._resolved[idx].nfts] : [],
+          };
+          _resolved[idx].nfts.push(x);
+        }
+      });
+    return _resolved;
+  })();
 
   return (
     <>
@@ -24,18 +55,14 @@ const RenderAccount = (props) => {
             Identity Graph results:
           </div>
           {/* {socialGraphData.vertices.length > 0 && ( */}
-            <div
-              className="btn btn-link btn-sm"
-              onClick={() => setSocialGraph(true)}
-            >
-              <SVG src={"/icons/icon-view.svg"} width={20} height={20} />{" "}
-              Social Graph
-            </div>
+          <div className="btn btn-link btn-sm" onClick={() => setOpen(true)}>
+            <SVG src={"/icons/icon-view.svg"} width={20} height={20} /> Social
+            Graph
+          </div>
           {/* )} */}
-      
         </div>
         <div className="search-result-body">
-          {resultNeighbor?.map((avatar, idx) => (
+          {resolvedListData.map((avatar, idx) => (
             <ResultAccountItem
               identity={avatar}
               sources={["nextid"]}
@@ -48,24 +75,7 @@ const RenderAccount = (props) => {
       {open && (
         <D3ResultGraph
           onClose={() => setOpen(false)}
-          data={{
-            ...graphData,
-            vertices: graphData.vertices.reduce((pre, cur) => {
-              cur = {
-                ...cur,
-                profile: profiles?.find((i) => i.uuid === cur.uuid),
-              };
-              pre.push(cur);
-              return pre;
-            }, []),
-          }}
-          title={graphTitle}
-        />
-      )}
-      {socialGraph && (
-        <D3ResultGraph
-          onClose={() => setSocialGraph(false)}
-          data={socialGraphData}
+          data={graphData}
           title={graphTitle}
         />
       )}

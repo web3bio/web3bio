@@ -1,6 +1,9 @@
 import { useLazyQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
-import { GET_PROFILE_SOCIAL_GRAPH } from "../../utils/queries";
+import {
+  GET_PROFILE_IDENTITY_GRAPH,
+  GET_PROFILE_SOCIAL_GRAPH,
+} from "../../utils/queries";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
 import { Loading } from "../shared/Loading";
@@ -10,8 +13,13 @@ import { PlatformType } from "../../utils/platform";
 interface ResultNeighbor {
   identity: string;
 }
+interface IdentityGraph {
+  graphId: string;
+  vertices: any[];
+  edges: any[];
+}
 export default function SearchResult({ searchTerm, searchPlatform }) {
-  const [getQuery, { loading, error, data }] = useLazyQuery(
+  const [querySocialGraph, { loading, error, data }] = useLazyQuery(
     GET_PROFILE_SOCIAL_GRAPH,
     {
       variables: {
@@ -20,15 +28,40 @@ export default function SearchResult({ searchTerm, searchPlatform }) {
       },
     }
   );
-  const [resultNeighbor, setResultNeighbor] = useState<Array<ResultNeighbor>>(
-    []
-  );
-  useEffect(() => {
-    if (searchTerm && searchPlatform) getQuery();
-    if (!data) return;
-    setResultNeighbor(data.socialFollows.identityGraph.vertices);
-  }, [data, searchTerm, searchPlatform, getQuery]);
 
+  const [identityGraph, setIdentityGraph] = useState<any>(null);
+  const [socialGraph, setSocialGraph] = useState<any>(null);
+  useEffect(() => {
+    if (searchTerm && searchPlatform) querySocialGraph();
+    if (!data) return;
+    setIdentityGraph(data.socialFollows.identityGraph);
+    const _socialGraph = {
+      nodes: new Array(),
+      edges: new Array(),
+    };
+    data.socialFollows.followingTopology.forEach((x) => {
+      _socialGraph.nodes.push(x.originalTarget);
+      _socialGraph.edges.push({
+        source: x.source,
+        target: x.target,
+        dataSource: x.dataSource,
+        type: "following",
+      });
+      _socialGraph.nodes.push(x.originSource);
+    });
+    data.socialFollows.followerTopology.forEach((x) => {
+      _socialGraph.nodes.push(x.originalTarget);
+      _socialGraph.edges.push({
+        source: x.source,
+        target: x.target,
+        dataSource: x.dataSource,
+        type: "followed by",
+      });
+      _socialGraph.nodes.push(x.originSource);
+    });
+    setSocialGraph(_socialGraph);
+  }, [data, searchPlatform, searchTerm, querySocialGraph]);
+ 
   if (loading)
     return (
       <Loading
@@ -36,59 +69,13 @@ export default function SearchResult({ searchTerm, searchPlatform }) {
         retry={() => window.location.reload()}
       />
     );
-  if (error) return <Error retry={getQuery} text={error} />;
+  if (error) return <Error retry={querySocialGraph} text={error} />;
   if (!data) return <Empty />;
-  const socialGraphData = (() => {
-    // todo: check this, temp static generation
-    const nodes = new Array();
-    const edges = new Array();
-    data.socialFollows.follower.topology.forEach((x) => {
-      nodes.push({
-        identity: x.originalSource,
-        id: x.source,
-        platform: PlatformType.lens,
-      });
-      nodes.push({
-        identity: x.originalTarget,
-        id: x.target,
-        platform: PlatformType.lens,
-      });
-      edges.push({
-        source: x.source,
-        target: x.target,
-        label: "followed by",
-        dataSource: x.dataSource,
-      });
-    });
-    data.socialFollows.following.topology.forEach((x) => {
-      nodes.push({
-        identity: x.originalSource,
-        id: x.source,
-        platform: PlatformType.lens,
-      });
-      nodes.push({
-        identity: x.originalTarget,
-        id: x.target,
-        platform: PlatformType.lens,
-      });
-      edges.push({
-        source: x.source,
-        target: x.target,
-        label: "following",
-        dataSource: x.dataSource,
-      });
-    });
-    return {
-      vertices: nodes,
-      edges: edges,
-    };
-  })();
 
   return (
     <ResultAccount
-      resultNeighbor={resultNeighbor}
-      socialGraphData={socialGraphData}
-      graphData={data.socialFollows.identityGraph}
+      identityGraph={identityGraph}
+      socialGraph={socialGraph}
       graphTitle={searchTerm}
     />
   );

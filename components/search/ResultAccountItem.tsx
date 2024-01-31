@@ -71,10 +71,10 @@ const RenderAccountItem = (props) => {
     };
     if (
       !fetched &&
-      (identity?.reverse ||
-        [PlatformType.farcaster, PlatformType.lens].includes(
-          identity.platform
-        )) &&
+      // (identity?.reverse ||
+      //   [PlatformType.farcaster, PlatformType.lens].includes(
+      //     identity.platform
+      //   )) &&
       visible
     ) {
       fetchProfileData();
@@ -133,7 +133,9 @@ const RenderAccountItem = (props) => {
                     <>
                       {profile?.displayName === profile?.identity ? (
                         <>
-                          <div className="address hide-sm">{resolvedIdentity}</div>
+                          <div className="address hide-sm">
+                            {resolvedIdentity}
+                          </div>
                           <div className="address show-sm">
                             {formatText(resolvedIdentity)}
                           </div>
@@ -198,15 +200,17 @@ const RenderAccountItem = (props) => {
                 </div>
               ))}
           </div>
-          {identity.nft?.length > 0 && (
+
+          {identity.nfts?.length > 0 && (
             <div className="nfts">
-              {identity.nft.map((nft) => {
-                return nft.category == "ENS" ? (
+              {identity.nfts.map((nft) => {
+                return nft.platform == "ens" &&
+                  nft.displayName !== identity.displayName ? (
                   <Link
                     key={`${nft.uuid}`}
                     href={{
                       pathname: "/",
-                      query: { s: nft.id },
+                      query: { s: nft.identity },
                     }}
                     prefetch={false}
                   >
@@ -218,7 +222,7 @@ const RenderAccountItem = (props) => {
                         height="20"
                         className="icon"
                       />
-                      <span>{nft.id}</span>
+                      <span>{nft.identity}</span>
                     </div>
                   </Link>
                 ) : null;
@@ -259,7 +263,11 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
               <div className="content">
-                <div className="content-title text-bold">{profile?.displayName || identity.displayName || identity.identity}</div>
+                <div className="content-title text-bold">
+                  {profile?.displayName ||
+                    identity.displayName ||
+                    identity.identity}
+                </div>
                 <div className="content-subtitle text-gray">
                   {identity.uid && (
                     <>
