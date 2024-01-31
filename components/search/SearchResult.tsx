@@ -1,14 +1,10 @@
 import { useLazyQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
-import {
-  GET_PROFILE_IDENTITY_GRAPH,
-  GET_PROFILE_SOCIAL_GRAPH,
-} from "../../utils/queries";
+import { GET_PROFILE_SOCIAL_GRAPH } from "../../utils/queries";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
 import { Loading } from "../shared/Loading";
 import { ResultAccount } from "./ResultAccount";
-import { PlatformType } from "../../utils/platform";
 
 interface ResultNeighbor {
   identity: string;
@@ -40,28 +36,42 @@ export default function SearchResult({ searchTerm, searchPlatform }) {
       edges: new Array(),
     };
     data.socialFollows.followingTopology.forEach((x) => {
-      _socialGraph.nodes.push(x.originalTarget);
+      _socialGraph.nodes.push({
+        ...x.originalSource,
+        id: x.source,
+      });
+
+      _socialGraph.nodes.push({
+        ...x.originalTarget,
+        id: x.target,
+      });
       _socialGraph.edges.push({
         source: x.source,
         target: x.target,
         dataSource: x.dataSource,
-        type: "following",
+        label: "following",
       });
-      _socialGraph.nodes.push(x.originSource);
     });
     data.socialFollows.followerTopology.forEach((x) => {
-      _socialGraph.nodes.push(x.originalTarget);
+      _socialGraph.nodes.push({
+        ...x.originalSource,
+        id: x.source,
+      });
+
+      _socialGraph.nodes.push({
+        ...x.originalTarget,
+        id: x.target,
+      });
       _socialGraph.edges.push({
         source: x.source,
         target: x.target,
         dataSource: x.dataSource,
-        type: "followed by",
+        label: "followed by",
       });
-      _socialGraph.nodes.push(x.originSource);
     });
     setSocialGraph(_socialGraph);
   }, [data, searchPlatform, searchTerm, querySocialGraph]);
- 
+
   if (loading)
     return (
       <Loading

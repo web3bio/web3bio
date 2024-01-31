@@ -121,7 +121,7 @@ export const GET_PROFILE_SOCIAL_GRAPH = gql`
         dataSource
       }
       }
-      followingTopology(hop: 2) {
+      followingTopology(hop: 1) {
         dataSource
         source
         target
@@ -140,7 +140,7 @@ export const GET_PROFILE_SOCIAL_GRAPH = gql`
           displayName
         }
       }
-      followerTopology(hop: 2) {
+      followerTopology(hop: 1) {
         dataSource
         source
         target

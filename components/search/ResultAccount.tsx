@@ -46,7 +46,7 @@ const RenderAccount = (props) => {
       });
     return _resolved;
   })();
-
+  console.log(graphData,'kkkk')
   return (
     <>
       <div className="search-result">

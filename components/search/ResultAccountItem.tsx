@@ -96,6 +96,9 @@ const RenderAccountItem = (props) => {
           className={`social-item ${identity.platform}${
             identity.isOwner ? " social-item-owner" : ""
           }`}
+          style={{
+            order: identity.nfts ? -2 : 0,
+          }}
         >
           <div className="social-main">
             <div className="social">
@@ -131,7 +134,7 @@ const RenderAccountItem = (props) => {
                 <div className="content-subtitle text-gray">
                   {identity.platform === PlatformType.ethereum ? (
                     <>
-                      {profile?.displayName === profile?.identity ? (
+                      {/* {profile?.displayName === profile?.identity ? (
                         <>
                           <div className="address hide-sm">
                             {resolvedIdentity}
@@ -142,13 +145,21 @@ const RenderAccountItem = (props) => {
                         </>
                       ) : (
                         <>
-                          <div className="address">{profile.identity}</div>
+                          <div className="address">{profile.displayName}</div>
                           <div className="ml-1 mr-1"> · </div>
                           <div className="address">
                             {formatText(resolvedIdentity)}
                           </div>
                         </>
-                      )}
+                      )} */}
+                      <>
+                        <div className="address hide-sm">
+                          {resolvedIdentity}
+                        </div>
+                        <div className="address show-sm">
+                          {formatText(resolvedIdentity)}
+                        </div>
+                      </>
                     </>
                   ) : (
                     <div className="address">

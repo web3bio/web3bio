@@ -18,7 +18,7 @@ const getMarkerRefX = (d) => {
 const resolveGraphData = (source) => {
   const nodes = new Array<any>();
   const edges = new Array<any>();
-  source.vertices.forEach((x) => {
+  source.nodes.forEach((x) => {
     const resolvedPlatform = SocialPlatformMapping(x.platform);
     nodes.push({
       id: x.id,
@@ -30,32 +30,17 @@ const resolveGraphData = (source) => {
       address: x.profile?.address || x.ownedBy?.identity,
       isIdentity: true,
     });
-
-    // from.nft.forEach((k) => {
-    //   if (k.category === PlatformType.ens) {
-    //     nodes.push({
-    //       id: k.uuid,
-    //       label: formatText(k.id, 15),
-    //       category: k.category,
-    //       chain: k.chain,
-    //       holder: from.identity,
-    //       identity: k.id,
-    //       platform: PlatformType.ens,
-    //     });
-    //     edges.push({
-    //       source: from.uuid,
-    //       target: k.uuid,
-    //       id: `${from.uuid},${k.uuid}`,
-    //     });
-    //   }
-    // });
   });
   source.edges.forEach((x) => {
     const resolvedPlatform = SocialPlatformMapping(x.dataSource);
     edges.push({
       source: x.source,
       target: x.target,
-      label: x.label? x.label : resolvedPlatform ? resolvedPlatform.key : x.source,
+      label: x.label
+        ? x.label
+        : resolvedPlatform
+        ? resolvedPlatform.key
+        : x.source,
       id: `${x.source}*${x.target}`,
       isIdentity: true,
     });
