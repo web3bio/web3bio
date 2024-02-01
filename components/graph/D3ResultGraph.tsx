@@ -4,6 +4,8 @@ import { formatText, SocialPlatformMapping } from "../../utils/utils";
 import { PlatformType } from "../../utils/platform";
 import _ from "lodash";
 import SVG from "react-inlinesvg";
+import { current } from "@reduxjs/toolkit";
+import { GraphType } from "../search/ResultAccount";
 
 const IdentityNodeSize = 48;
 const NFTNodeSize = 14;
@@ -195,7 +197,7 @@ export default function D3ResultGraph(props) {
             d3
               .forceCollide()
               .radius((d) =>
-                d.isIdentity ? IdentityNodeSize * 2.5 : NFTNodeSize * 2
+                d.isIdentity ? IdentityNodeSize * 2 : NFTNodeSize * 4
               )
           )
           .force("center", d3.forceCenter(width / 2, height / 2))
@@ -361,7 +363,7 @@ export default function D3ResultGraph(props) {
       };
 
       const highlightNode = (i) => {
-        setHideToolTip(false);
+        if (hideTooltip) setHideToolTip(false);
         setCurrentNode(i);
         nodeContainer.filter((l) => l.id === i.id).raise();
         edgeLabels
@@ -428,17 +430,20 @@ export default function D3ResultGraph(props) {
             <div className="graph-title">
               <SVG src={"/icons/icon-view.svg"} width="20" height="20" />
               <span className="ml-2">
-                {graphType === 0 ? "Social Graph" : "Identity Graph"} for
+                {graphType === GraphType.socialGraph
+                  ? "Social Graph"
+                  : "Identity Graph"}{" "}
+                for
                 <strong className="ml-1">{title}</strong>
               </span>
             </div>
             <div
               className="btn btn-close"
-              onClick={graphType === 0 ? onClose : back}
+              onClick={graphType === GraphType.socialGraph ? onClose : back}
             >
               <SVG
                 src={
-                  graphType === 0
+                  graphType === GraphType.socialGraph
                     ? "/icons/icon-close.svg"
                     : "/icons/icon-open.svg"
                 }
@@ -521,12 +526,13 @@ export default function D3ResultGraph(props) {
               </li>
             </ul>
           )}
-          {graphType === 0 && (
+          {graphType === GraphType.socialGraph && (
             <div
               className="btn"
               onClick={(e) => {
                 setHideToolTip(true);
                 expandIdentity(currentNode);
+                setCurrentNode(null);
               }}
             >
               Expand

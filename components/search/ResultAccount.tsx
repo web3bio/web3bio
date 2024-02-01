@@ -10,11 +10,16 @@ import { PlatformType } from "../../utils/platform";
 import { useLazyQuery } from "@apollo/client";
 import { GET_PROFILE_IDENTITY_GRAPH } from "../../utils/queries";
 
+export const enum GraphType {
+  socialGraph = 0,
+  identityGraph = 1,
+}
+
 // 0: socialGraph 1: identityGraph
 const RenderAccount = (props) => {
   const { identityGraph, graphTitle, socialGraph } = props;
   const [open, setOpen] = useState(false);
-  const [graphType, setGraphType] = useState(0);
+  const [graphType, setGraphType] = useState(GraphType.socialGraph);
   const [graphId, setGraphId] = useState("");
   const [title, setTitle] = useState(graphTitle);
 
@@ -36,7 +41,8 @@ const RenderAccount = (props) => {
     (state) => state.universal.profiles
   );
   const profiles = _.flatten(Object.values(cached).map((x) => x));
-  const graphData = graphType === 0 ? socialGraph : identityGraphData;
+  const graphData =
+    graphType === GraphType.socialGraph ? socialGraph : identityGraphData;
 
   const resolvedListData = (() => {
     if (!identityGraph) return [];
