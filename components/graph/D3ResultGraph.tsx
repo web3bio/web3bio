@@ -291,13 +291,6 @@ export default function D3ResultGraph(props) {
           e.stopPropagation();
           removeHighlight();
           highlightNode(i);
-        })
-        .on("dblclick", (e, i) => {
-          if (graphType === 1) return;
-          e.preventDefault();
-          e.stopPropagation();
-          removeHighlight();
-          expandIdentity(i);
         });
       const { displayName, identity, identityBadge, identityIcon, ensBadge } =
         updateNodes(nodeContainer);
@@ -468,6 +461,10 @@ export default function D3ResultGraph(props) {
               (currentNode.isIdentity ? IdentityNodeSize : NFTNodeSize * 2),
             transform: transform,
           }}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
         >
           {currentNode.isIdentity ? (
             <ul>
@@ -523,6 +520,17 @@ export default function D3ResultGraph(props) {
                 {currentNode.holder || ""}
               </li>
             </ul>
+          )}
+          {graphType === 0 && (
+            <div
+              className="btn"
+              onClick={(e) => {
+                setHideToolTip(true);
+                expandIdentity(currentNode);
+              }}
+            >
+              Expand
+            </div>
           )}
         </div>
       )}

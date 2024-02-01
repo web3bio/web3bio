@@ -48,7 +48,6 @@
     text-align: left;
     user-select: none;
     padding: 8px 12px;
-    pointer-events: none;
     border: 1px solid rgba($dark-color, .25);
     box-shadow: 0 0.1rem 1.2rem hsla(0, 0%, 7%, .3);
     border: 0;
@@ -70,7 +69,17 @@
         }
       }
     }
+
+    .btn {
+      background: $dark-color;
+      color: $light-color;
+      font-size: .5rem;
+      height: unset;
+      padding: 0.1rem 0.4rem;
+      margin-top: 0.25rem
+    }
   }
+
   .graph-container {
     background: #fff;
     border-radius: .4rem;
