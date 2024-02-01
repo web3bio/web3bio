@@ -6,20 +6,11 @@ import SVG from "react-inlinesvg";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { updateRssWidget } from "../../state/widgets/action";
-import { handleSearchPlatform } from "../../utils/utils";
-import { PlatformType } from "../../utils/platform";
 import RssItem from "./RssItem";
 
-function getQueryDomain(domain: string) {
-  const platform = handleSearchPlatform(domain);
-  if ([PlatformType.ens, PlatformType.dotbit].includes(platform)) return domain;
-}
-
 function useRSS(domain: string) {
-  const queryDomain = getQueryDomain(domain);
   const fetchUrl = (() => {
-    if (!queryDomain) return null;
-    return `${RSS_ENDPOINT}rss?query=${queryDomain}&mode=list`;
+    return `${RSS_ENDPOINT}rss?query=${domain}&mode=list`;
   })();
   const { data, error, isValidating } = useSWR(fetchUrl, RSSFetcher, {
     suspense: true,
