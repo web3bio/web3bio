@@ -41,14 +41,21 @@ const RenderAccount = (props) => {
   const resolvedListData = (() => {
     if (!identityGraph) return [];
     const _resolved = identityGraph.vertices.filter(
-      (x) => x.platform !== PlatformType.ens.toLocaleLowerCase()
+      (x) => x.platform !== PlatformType.ens
     );
     identityGraph.vertices
-      .filter((x) => x.platform === PlatformType.ens.toLocaleLowerCase())
+      .filter((x) => x.platform === PlatformType.ens)
       .forEach((x) => {
-        const connection = identityGraph.edges.find((i) => i.target === x.id);
-        if (connection) {
-          let idx = _resolved.findIndex((i) => i.id === connection.source);
+        const connection = identityGraph.edges.find(
+          (i) => i.target === x.id || i.source === x.id
+        );
+        const isDuplicated = _resolved
+          .filter((x) => x.platform === PlatformType.ethereum)
+          .find((i) => i.displayName === x.identity);
+        if (connection && !isDuplicated) {
+          let idx = _resolved.findIndex(
+            (i) => i.id === connection.source || i.id === connection.target
+          );
           _resolved[idx] = {
             ..._resolved[idx],
             nfts: _resolved[idx].nfts ? [..._resolved[idx].nfts] : [],
@@ -67,7 +74,7 @@ const RenderAccount = (props) => {
         edges: data.queryIdentityGraph[0].edges,
       });
       setGraphType(1);
-      setGraphId('')
+      setGraphId("");
     }
   }, [graphId, data, queryIdentityGraph]);
   return (

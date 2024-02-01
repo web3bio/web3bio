@@ -14,6 +14,7 @@ export const GET_PROFILE_SOCIAL_GRAPH = gql`
         displayName
       }
       edges {
+        edgeType
         source
         target
         dataSource
@@ -72,6 +73,7 @@ export const GET_PROFILE_IDENTITY_GRAPH = gql`
         displayName
       }
       edges {
+        edgeType
         source
         target
         dataSource

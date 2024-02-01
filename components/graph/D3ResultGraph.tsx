@@ -10,9 +10,9 @@ const NFTNodeSize = 14;
 
 const getNodeRadius = (d) => (d.isIdentity ? IdentityNodeSize : NFTNodeSize);
 const getMarkerRefX = (d) => {
-  if (d.isSingle)
-    return d.target.isIdentity ? IdentityNodeSize + 30 : NFTNodeSize + 16;
-  return IdentityNodeSize + 26;
+  return d.target.isIdentity
+    ? IdentityNodeSize + (d.isSingle ? 30 : 26)
+    : NFTNodeSize + (d.isSingle ? 16 : 8);
 };
 
 const resolveGraphData = (source) => {
@@ -28,19 +28,16 @@ const resolveGraphData = (source) => {
       identity: x.profile?.identity || x.identity,
       uid: x.uid,
       address: x.profile?.address || x.ownedBy?.identity,
-      isIdentity: x.platform === "ens" ? false : true,
+      isIdentity: x.platform === PlatformType.ens ? false : true,
     });
   });
   source.edges.forEach((x) => {
     const resolvedPlatform = SocialPlatformMapping(x.dataSource);
+
     edges.push({
       source: x.source,
       target: x.target,
-      label: x.label
-        ? x.label
-        : resolvedPlatform
-        ? resolvedPlatform.key
-        : x.source,
+      label: resolvedPlatform ? resolvedPlatform.label : x.dataSource,
       id: `${x.source}*${x.target}`,
     });
   });
@@ -204,6 +201,7 @@ export default function D3ResultGraph(props) {
       };
 
       const simulation = generateSimulation();
+      // marker
       svg
         .append("defs")
         .selectAll("marker")
@@ -240,7 +238,7 @@ export default function D3ResultGraph(props) {
         .attr("dx", ".5em")
         .attr("dy", "3px")
         .attr("text-anchor", "middle")
-        .text((d) => (d.label ? SocialPlatformMapping(d.label).label : ""));
+        .text((d) => (d.target.isIdentity ? d.label : ""));
 
       const dragged = (event, d) => {
         const clamp = (x, lo, hi) => {
