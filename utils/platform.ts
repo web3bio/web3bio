@@ -9,6 +9,7 @@ type SocialPlatform = {
 };
 
 export enum PlatformType {
+  // todo: check this uppercase with rs 
   ens = "ens",
   dotbit = "dotbit",
   lens = "lens",
