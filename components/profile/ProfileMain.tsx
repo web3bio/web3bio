@@ -1,5 +1,5 @@
 "use client";
-import React, { Suspense, useCallback, useState } from "react";
+import React, { Suspense, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
@@ -8,11 +8,9 @@ import { SocialPlatformMapping, formatText, colorMod } from "../../utils/utils";
 import { Error } from "../shared/Error";
 import { Empty } from "../shared/Empty";
 import { RenderWidgetItem } from "./WidgetLinkItem";
-import { WidgetNFT } from "./WidgetNFT";
-import { WidgetRSS } from "./WidgetRSS";
-import { WidgetPOAP } from "./WidgetPoap";
-import { WidgetDegenScore } from "./WidgetDegenScore";
-import { WidgetFeed } from "./WidgetFeed";
+import WidgetNFT from "./WidgetNFT";
+import WidgetPOAP from "./WidgetPoap";
+import WidgetFeed from "./WidgetFeed";
 import AddressMenu from "./AddressMenu";
 import { Avatar } from "../shared/Avatar";
 import useModal, { ModalType } from "../../hooks/useModal";
@@ -20,27 +18,25 @@ import Modal from "../modal/Modal";
 import { useSelector } from "react-redux";
 import { AppState } from "../../state";
 import { WidgetState } from "../../state/widgets/reducer";
-import { Loading } from "../shared/Loading";
+import { WidgetDegenScore } from "./WidgetDegenScore";
+import { WidgetRSS } from "./WidgetRSS";
 import { WidgetPhiland } from "./WidgetPhiland";
 import { regexEns } from "../../utils/regexp";
+import LoadingSkeleton from "./LoadingSkeleton";
+import { WidgetTypes } from "../../utils/profile";
 
 export default function ProfileMain(props) {
-  const {
-    data,
-    pageTitle,
-    platform,
-    nfts,
-    fromServer,
-    relations,
-    domain,
-    fallbackAvatar,
-  } = props;
+  const { data, pageTitle, platform, nfts, relations, domain, fallbackAvatar } =
+    props;
   const [isCopied, setIsCopied] = useState(false);
   const { isOpen, modalType, closeModal, openModal, params } = useModal();
-
+  const [mounted, setMounted] = useState(false);
   const profileWidgetStates = useSelector<AppState, WidgetState>(
     (state) => state.widgets
   );
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   const onCopySuccess = () => {
     setIsCopied(true);
     setTimeout(() => {
@@ -48,17 +44,18 @@ export default function ProfileMain(props) {
     }, 1500);
   };
   const isEmptyProfile = useCallback(() => {
-    const source = Object.values(profileWidgetStates).map((x) => x.isEmpty);
+    const source = Object.values(profileWidgetStates).filter((x) => x.loaded);
+    return source.length >= 4 && source.every((x) => x.isEmpty);
+  }, [profileWidgetStates])();
+
+  const isBasicLoadingFinished = useCallback(() => {
     return (
-      !source.some((x) => x === null) &&
-      source.filter((x) => x === false).length === 0
+      !profileWidgetStates.nft.initLoading &&
+      !profileWidgetStates.poaps?.initLoading &&
+      !profileWidgetStates.feeds?.initLoading
     );
   }, [profileWidgetStates])();
-  const initialLoading = useCallback(() => {
-    return Object.values(profileWidgetStates)
-      .map((x) => x.initLoading)
-      .some((x) => !!x);
-  }, [profileWidgetStates])();
+
   if (!data || data.error) {
     return (
       <Error
@@ -67,6 +64,7 @@ export default function ProfileMain(props) {
       />
     );
   }
+
   return (
     <>
       <div
@@ -194,9 +192,8 @@ export default function ProfileMain(props) {
                 }`;
                 return (
                   <Link
-                    key={x.platform + idx}  
+                    key={x.platform + idx}
                     href={`/${relatedPath}`}
-                    prefetch={false}
                     className={`platform-badge ${x.platform}${
                       idx === 0 ? " active" : ""
                     }`}
@@ -265,50 +262,35 @@ export default function ProfileMain(props) {
               <div className="profile-widget">
                 <Empty
                   title="Nothing here"
-                  text="No social links, NFTs, Web3 activities or POAPs yet"
+                  text="No NFTs, Web3 activities or POAPs yet"
                 />
               </div>
             </div>
           )}
-
-          {data.address && (
+          {(data.address && mounted && (
             <>
               <div className="web3-section-widgets">
-                <Suspense fallback={<p>Loading NFTs...</p>}>
+                <Suspense fallback={<LoadingSkeleton type={WidgetTypes.nft} />}>
                   <WidgetNFT
-                    fromServer={fromServer}
                     onShowDetail={(e, v) => {
                       openModal(ModalType.nft, v);
                     }}
                     address={data.address}
-                    initialData={nfts || []}
                   />
                 </Suspense>
               </div>
               <div className="web3-section-widgets">
-                <Suspense fallback={<p>Loading Activity Feeds...</p>}>
-                  <WidgetFeed
-                    openModal={openModal}
-                    initialData={[]}
-                    fromServer={fromServer}
-                    profile={data}
-                  />
+                <Suspense
+                  fallback={<LoadingSkeleton type={WidgetTypes.feeds} />}
+                >
+                  <WidgetFeed openModal={openModal} profile={data} />
                 </Suspense>
               </div>
-              {([PlatformType.ens, PlatformType.dotbit].includes(
-                data.platform
-              ) ||
-                regexEns.test(data.identity)) && (
-                <div className="web3-section-widgets">
-                  <Suspense fallback={<p>Loading Articles...</p>}>
-                    <WidgetRSS fromServer={fromServer} domain={data.identity} />
-                  </Suspense>
-                </div>
-              )}
               <div className="web3-section-widgets">
-                <Suspense fallback={<p>Loading POAPs...</p>}>
+                <Suspense
+                  fallback={<LoadingSkeleton type={WidgetTypes.poaps} />}
+                >
                   <WidgetPOAP
-                    fromServer={fromServer}
                     onShowDetail={(v) => {
                       openModal(ModalType.poaps, v);
                     }}
@@ -316,34 +298,47 @@ export default function ProfileMain(props) {
                   />
                 </Suspense>
               </div>
-              <div className="web3-section-widgets">
-                {(data.platform === PlatformType.ens ||
-                  regexEns.test(data.identity)) && (
-                    <Suspense fallback={<p>Loading Phi Land...</p>}>
-                      <WidgetPhiland
-                        onShowDetail={(v) => {
-                          openModal(ModalType.philand, {
-                            profile: data,
-                            data: v,
-                          });
-                        }}
-                        domain={data.identity}
-                      />
+
+              {isBasicLoadingFinished && (
+                <>
+                  {([PlatformType.ens, PlatformType.dotbit].includes(
+                    data.platform
+                  ) ||
+                    regexEns.test(data.identity)) &&
+                    data.contenthash && (
+                      <div className="web3-section-widgets">
+                        <Suspense
+                          fallback={<LoadingSkeleton type={WidgetTypes.rss} />}
+                        >
+                          <WidgetRSS domain={data.identity} />
+                        </Suspense>
+                      </div>
+                    )}
+
+                  <div className="web3-section-widgets">
+                    {(data.platform === PlatformType.ens ||
+                      regexEns.test(data.identity)) && (
+                      <Suspense fallback={<p>Loading Phi Land...</p>}>
+                        <WidgetPhiland
+                          onShowDetail={(v) => {
+                            openModal(ModalType.philand, {
+                              profile: data,
+                              data: v,
+                            });
+                          }}
+                          domain={data.identity}
+                        />
+                      </Suspense>
+                    )}
+                    <Suspense fallback={<p>Loading DegenScore...</p>}>
+                      <WidgetDegenScore address={data.address} />
                     </Suspense>
-                )}
-                <Suspense fallback={<p>Loading DegenScore...</p>}>
-                  <WidgetDegenScore address={data.address} />
-                </Suspense>
-              </div>
+                  </div>
+                </>
+              )}
             </>
-          )}
-          {initialLoading && !nfts?.nfts.length && (
-            <div className="profile-widget-full">
-              <div className="profile-widget text-center font-sm mt-4">
-                <Loading placeholder="Loading widgets..." />
-              </div>
-            </div>
-          )}
+          )) ||
+            null}
         </div>
       </div>
       <div className="web3bio-badge">
@@ -354,7 +349,7 @@ export default function ProfileMain(props) {
           className="btn btn-primary"
           title="Web3.bio - Web3 Identity Graph Search and Link in Bio Profile"
         >
-          <div className="badge-emoji mr-2">👋</div>Made with{" "}
+          <div className="badge-emoji mr-1">🖖</div>Made with{" "}
           <strong className="text-pride animated-pride ml-1">Web3.bio</strong>
         </Link>
       </div>

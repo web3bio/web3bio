@@ -6,26 +6,14 @@ import SVG from "react-inlinesvg";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { updateRssWidget } from "../../state/widgets/action";
-import { handleSearchPlatform } from "../../utils/utils";
-import { PlatformType } from "../../utils/platform";
 import RssItem from "./RssItem";
 
-function getQueryDomain(
-  domain: string
-) {
-  const platform = handleSearchPlatform(domain);
-  if ([PlatformType.ens, PlatformType.dotbit].includes(platform))
-    return domain;
-}
-
-function useRSS(domain: string, fromServer) {
-  const queryDomain = getQueryDomain(domain);
+function useRSS(domain: string) {
   const fetchUrl = (() => {
-    if (!queryDomain) return null;
-    return `${RSS_ENDPOINT}rss?query=${queryDomain}&mode=list`;
+    return `${RSS_ENDPOINT}rss?query=${domain}&mode=list`;
   })();
   const { data, error, isValidating } = useSWR(fetchUrl, RSSFetcher, {
-    suspense: !fromServer,
+    suspense: true,
     revalidateOnFocus: false,
     revalidateOnMount: true,
     revalidateOnReconnect: true,
@@ -37,8 +25,8 @@ function useRSS(domain: string, fromServer) {
   };
 }
 
-const RenderWidgetRSS = ({ domain, fromServer }) => {
-  const { data, isLoading } = useRSS(domain, fromServer);
+const RenderWidgetRSS = ({ domain }) => {
+  const { data, isLoading } = useRSS(domain);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -71,14 +59,16 @@ const RenderWidgetRSS = ({ domain, fromServer }) => {
         <div className="widget-rss-list noscrollbar">
           <div className="rss-website">
             <div className="rss-website-title mb-1">{data.title}</div>
-            <div className="rss-website-description mb-4">{data.description}</div>
+            <div className="rss-website-description mb-4">
+              {data.description}
+            </div>
             <Link
               className="btn btn-sm"
               title="More Articles"
               href={data.link}
               target={"_blank"}
             >
-              <SVG src="icons/icon-open.svg" width={20} height={20} /> More 
+              <SVG src="icons/icon-open.svg" width={20} height={20} /> More
             </Link>
           </div>
           {data?.items.map((x, idx) => {
