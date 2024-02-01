@@ -32,22 +32,27 @@ export const initialState: WidgetState = {
   poaps: {
     isEmpty: null,
     initLoading: true,
+    loaded: false,
   },
   rss: {
     isEmpty: null,
     initLoading: true,
+    loaded: false,
   },
   degen: {
     isEmpty: null,
     initLoading: true,
+    loaded: false,
   },
   feeds: {
     isEmpty: null,
     initLoading: true,
+    loaded: false,
   },
   philand: {
     isEmpty: null,
     initLoading: true,
+    loaded: false,
   },
 };
 
