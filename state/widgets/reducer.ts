@@ -8,43 +8,26 @@ import {
   updatePhilandWidget,
 } from "./action";
 
+interface WidgetStateDetail {
+  isEmpty?: boolean | null;
+  initLoading?: boolean;
+  position?: string;
+  loaded?: boolean | null;
+}
 export interface WidgetState {
-  nft: {
-    isEmpty?: boolean | null;
-    initLoading?: boolean;
-    position?: string;
-  };
-  poaps?: {
-    isEmpty: boolean | null;
-    initLoading?: boolean;
-    position?: string;
-  };
-  feeds?: {
-    isEmpty: boolean | null;
-    initLoading?: boolean;
-    position?: string;
-  };
-  degen?: {
-    isEmpty: boolean | null;
-    initLoading?: boolean;
-    position?: string;
-  };
-  rss?: {
-    isEmpty: boolean | null;
-    initLoading?: boolean;
-    position?: string;
-  };
-  philand?: {
-    isEmpty: boolean | null;
-    initLoading?: boolean;
-    position?: string;
-  };
+  nft: WidgetStateDetail;
+  poaps?: WidgetStateDetail;
+  feeds?: WidgetStateDetail;
+  degen?: WidgetStateDetail;
+  rss?: WidgetStateDetail;
+  philand?: WidgetStateDetail;
 }
 
 export const initialState: WidgetState = {
   nft: {
     isEmpty: null,
     initLoading: true,
+    loaded: false,
   },
   poaps: {
     isEmpty: null,
@@ -77,6 +60,7 @@ export default createReducer(initialState, (builder) =>
           ...state.nft,
           isEmpty,
           initLoading,
+          loaded: true,
         };
       }
     )
@@ -87,6 +71,7 @@ export default createReducer(initialState, (builder) =>
           ...state.poaps,
           isEmpty,
           initLoading,
+          loaded: true,
         };
       }
     )
@@ -97,6 +82,7 @@ export default createReducer(initialState, (builder) =>
           ...state.rss,
           isEmpty,
           initLoading,
+          loaded: true,
         };
       }
     )
@@ -107,6 +93,7 @@ export default createReducer(initialState, (builder) =>
           ...state.degen,
           isEmpty,
           initLoading,
+          loaded: true,
         };
       }
     )
@@ -117,6 +104,7 @@ export default createReducer(initialState, (builder) =>
           ...state.feeds,
           isEmpty,
           initLoading,
+          loaded: true,
         };
       }
     )
@@ -127,6 +115,7 @@ export default createReducer(initialState, (builder) =>
           ...state.philand,
           isEmpty,
           initLoading,
+          loaded: true,
         };
       }
     )
