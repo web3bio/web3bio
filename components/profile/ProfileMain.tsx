@@ -26,15 +26,8 @@ import LoadingSkeleton from "./LoadingSkeleton";
 import { WidgetTypes } from "../../utils/profile";
 
 export default function ProfileMain(props) {
-  const {
-    data,
-    pageTitle,
-    platform,
-    nfts,
-    relations,
-    domain,
-    fallbackAvatar,
-  } = props;
+  const { data, pageTitle, platform, nfts, relations, domain, fallbackAvatar } =
+    props;
   const [isCopied, setIsCopied] = useState(false);
   const { isOpen, modalType, closeModal, openModal, params } = useModal();
   const [mounted, setMounted] = useState(false);
@@ -51,11 +44,8 @@ export default function ProfileMain(props) {
     }, 1500);
   };
   const isEmptyProfile = useCallback(() => {
-    const source = Object.values(profileWidgetStates).map((x) => x.isEmpty);
-    return (
-      !source.some((x) => x === null) &&
-      source.filter((x) => x === false).length === 0
-    );
+    const source = Object.values(profileWidgetStates).filter((x) => x.loaded);
+    return source.length >= 4 && source.every((x) => x.isEmpty);
   }, [profileWidgetStates])();
 
   const isBasicLoadingFinished = useCallback(() => {
@@ -204,7 +194,6 @@ export default function ProfileMain(props) {
                   <Link
                     key={x.platform + idx}
                     href={`/${relatedPath}`}
-                    prefetch={false}
                     className={`platform-badge ${x.platform}${
                       idx === 0 ? " active" : ""
                     }`}
@@ -281,11 +270,7 @@ export default function ProfileMain(props) {
           {(data.address && mounted && (
             <>
               <div className="web3-section-widgets">
-                <Suspense
-                  fallback={
-                    <LoadingSkeleton type={WidgetTypes.nft} />
-                  }
-                >
+                <Suspense fallback={<LoadingSkeleton type={WidgetTypes.nft} />}>
                   <WidgetNFT
                     onShowDetail={(e, v) => {
                       openModal(ModalType.nft, v);
@@ -296,18 +281,14 @@ export default function ProfileMain(props) {
               </div>
               <div className="web3-section-widgets">
                 <Suspense
-                  fallback={
-                    <LoadingSkeleton type={WidgetTypes.feeds} />
-                  }
+                  fallback={<LoadingSkeleton type={WidgetTypes.feeds} />}
                 >
                   <WidgetFeed openModal={openModal} profile={data} />
                 </Suspense>
               </div>
               <div className="web3-section-widgets">
                 <Suspense
-                  fallback={
-                    <LoadingSkeleton type={WidgetTypes.poaps} />
-                  }
+                  fallback={<LoadingSkeleton type={WidgetTypes.poaps} />}
                 >
                   <WidgetPOAP
                     onShowDetail={(v) => {
@@ -323,17 +304,16 @@ export default function ProfileMain(props) {
                   {([PlatformType.ens, PlatformType.dotbit].includes(
                     data.platform
                   ) ||
-                    regexEns.test(data.identity)) && (
-                    <div className="web3-section-widgets">
-                      <Suspense
-                        fallback={
-                          <LoadingSkeleton type={WidgetTypes.rss} />
-                        }
-                      >
-                        <WidgetRSS domain={data.identity} />
-                      </Suspense>
-                    </div>
-                  )}
+                    regexEns.test(data.identity)) &&
+                    data.contenthash && (
+                      <div className="web3-section-widgets">
+                        <Suspense
+                          fallback={<LoadingSkeleton type={WidgetTypes.rss} />}
+                        >
+                          <WidgetRSS domain={data.identity} />
+                        </Suspense>
+                      </div>
+                    )}
 
                   <div className="web3-section-widgets">
                     {(data.platform === PlatformType.ens ||
