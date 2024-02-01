@@ -37,7 +37,11 @@ const resolveGraphData = (source) => {
     edges.push({
       source: x.source,
       target: x.target,
-      label: resolvedPlatform ? resolvedPlatform.label : x.dataSource,
+      label: x.label
+        ? x.label
+        : resolvedPlatform
+        ? resolvedPlatform.label
+        : x.dataSource,
       id: `${x.source}*${x.target}`,
     });
   });
