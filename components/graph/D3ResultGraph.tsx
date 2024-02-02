@@ -4,7 +4,6 @@ import { formatText, SocialPlatformMapping } from "../../utils/utils";
 import { PlatformType } from "../../utils/platform";
 import _ from "lodash";
 import SVG from "react-inlinesvg";
-import { current } from "@reduxjs/toolkit";
 import { GraphType } from "../search/ResultAccount";
 
 const IdentityNodeSize = 48;
