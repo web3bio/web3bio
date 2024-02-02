@@ -129,7 +129,7 @@ const updateNodes = (nodeContainer) => {
 };
 
 export default function D3ResultGraph(props) {
-  const { data, onClose, title, expandIdentity, onBack, graphType } = props;
+  const { data, onClose, title, expandIdentity, onBack, graphType, disableBack } = props;
   const [currentNode, setCurrentNode] = useState<any>(null);
   const [hideTooltip, setHideToolTip] = useState(true);
   const [transform, setTransform] = useState("");
@@ -477,7 +477,7 @@ export default function D3ResultGraph(props) {
               </span>
             </div>
             <div className="btn-close">
-              {graphType === GraphType.identityGraph && (
+              {graphType === GraphType.identityGraph && !disableBack && (
                 <div className="btn" onClick={onBack}>
                   <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
                   Back

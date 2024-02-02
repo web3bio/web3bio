@@ -15,34 +15,23 @@ export const enum GraphType {
   identityGraph = 1,
 }
 
-// 0: socialGraph 1: identityGraph
 const RenderAccount = (props) => {
   const { identityGraph, graphTitle, socialGraph } = props;
   const [open, setOpen] = useState(false);
-  const [graphType, setGraphType] = useState(GraphType.socialGraph);
-  const [graphId, setGraphId] = useState("");
-  const [title, setTitle] = useState(graphTitle);
 
-  const [identityGraphData, setIdentityGraphData] = useState({
-    nodes: identityGraph?.vertices,
-    edges: identityGraph?.edges,
-  });
-
-  const [queryIdentityGraph, { loading, error, data }] = useLazyQuery(
-    GET_PROFILE_IDENTITY_GRAPH,
-    {
-      variables: {
-        graphId: graphId,
-      },
-    }
-  );
+  // const [queryIdentityGraph, { loading, error, data }] = useLazyQuery(
+  //   GET_PROFILE_IDENTITY_GRAPH,
+  //   {
+  //     variables: {
+  //       graphId: graphId,
+  //     },
+  //   }
+  // );
 
   const cached = useSelector<AppState, { [address: string]: ProfileInterface }>(
     (state) => state.universal.profiles
   );
   const profiles = _.flatten(Object.values(cached).map((x) => x));
-  const graphData =
-    graphType === GraphType.socialGraph ? socialGraph : identityGraphData;
 
   const resolvedListData = (() => {
     if (!identityGraph) return [];
@@ -71,18 +60,18 @@ const RenderAccount = (props) => {
       });
     return _resolved;
   })();
-  useEffect(() => {
-    if (graphId) {
-      queryIdentityGraph();
-      if (!data || !data?.queryIdentityGraph?.length) return;
-      setIdentityGraphData({
-        nodes: data.queryIdentityGraph[0].vertices,
-        edges: data.queryIdentityGraph[0].edges,
-      });
-      setGraphType(1);
-      setGraphId("");
-    }
-  }, [graphId, data, queryIdentityGraph]);
+  // useEffect(() => {
+  //   if (graphId) {
+  //     queryIdentityGraph();
+  //     if (!data || !data?.queryIdentityGraph?.length) return;
+  //     setIdentityGraphData({
+  //       nodes: data.queryIdentityGraph[0].vertices,
+  //       edges: data.queryIdentityGraph[0].edges,
+  //     });
+  //     setGraphType(1);
+  //     setGraphId("");
+  //   }
+  // }, [graphId, data, queryIdentityGraph]);
   return (
     <>
       <div className="search-result">
@@ -90,10 +79,10 @@ const RenderAccount = (props) => {
           <div className="search-result-text text-gray">
             Identity Graph results:
           </div>
-          {socialGraph?.nodes.length > 0 && (
+          {identityGraph?.vertices.length > 0 && (
             <div className="btn btn-link btn-sm" onClick={() => setOpen(true)}>
-              <SVG src={"/icons/icon-view.svg"} width={20} height={20} /> Social
-              Graph
+              <SVG src={"/icons/icon-view.svg"} width={20} height={20} />{" "}
+              Identity Graph
             </div>
           )}
         </div>
@@ -110,21 +99,25 @@ const RenderAccount = (props) => {
       </div>
       {open && (
         <D3ResultGraph
-          graphType={graphType}
-          expandIdentity={(identity) => {
-            setGraphId(identity.id);
-            setTitle(identity.displayName);
-          }}
-          onBack={() => {
-            setGraphType(GraphType.socialGraph);
-            setTitle(graphTitle);
-          }}
+          graphType={GraphType.identityGraph}
+          // expandIdentity={(identity) => {
+          //   setGraphId(identity.id);
+          //   setTitle(identity.displayName);
+          // }}
+          // onBack={() => {
+          //   setGraphType(GraphType.socialGraph);
+          //   setTitle(graphTitle);
+          // }}
           onClose={() => {
-            setGraphType(0);
+            // setGraphType(0);
             setOpen(false);
           }}
-          data={graphData}
-          title={title}
+          disableBack
+          data={{
+            nodes: identityGraph?.vertices,
+            edges: identityGraph?.edges,
+          }}
+          title={graphTitle}
         />
       )}
     </>
