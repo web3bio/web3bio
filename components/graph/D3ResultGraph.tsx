@@ -130,7 +130,7 @@ const updateNodes = (nodeContainer) => {
 };
 
 export default function D3ResultGraph(props) {
-  const { data, onClose, title, expandIdentity, back, graphType } = props;
+  const { data, onClose, title, expandIdentity, onBack, graphType } = props;
   const [currentNode, setCurrentNode] = useState<any>(null);
   const [hideTooltip, setHideToolTip] = useState(true);
   const [transform, setTransform] = useState("");
@@ -159,8 +159,9 @@ export default function D3ResultGraph(props) {
       };
       const svg = d3
         .select(".svg-canvas")
-        .attr("width", "100%")
-        .attr("height", "100%")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("viewBox", [0, 0, width, height])
         .call(
           d3
             .zoom()
@@ -179,6 +180,42 @@ export default function D3ResultGraph(props) {
         .on("click", removeHighlight)
         .append("svg:g");
 
+      const zoomAndExpand = (e, d) => {
+        setCurrentNode(null);
+        setHideToolTip(true);
+        if (graphType === GraphType.identityGraph) {
+          return;
+        }
+        svg.call(transition);
+        function transition() {
+          let currentTransform = [width / 2, height / 2, height];
+          const i = d3.interpolateZoom(currentTransform, [
+            d.x,
+            d.y,
+            (d.isIdentity ? IdentityNodeSize : NFTNodeSize) * 3,
+          ]);
+
+          svg
+            .transition()
+            .duration(i.duration)
+            .attrTween(
+              "transform",
+              () => (t) => transform((currentTransform = i(t)))
+            )
+            .on("end", () => {
+              expandIdentity(d);
+            })
+            .style("opacity", 0);
+        }
+
+        function transform([x, y, r]) {
+          return `
+            translate(${width / 2}, ${height / 2})
+            scale(${height / r})
+            translate(${-x}, ${-y})
+          `;
+        }
+      };
       const generateSimulation = () => {
         const simulation = d3
           .forceSimulation(nodes)
@@ -293,6 +330,9 @@ export default function D3ResultGraph(props) {
           e.stopPropagation();
           removeHighlight();
           highlightNode(i);
+        })
+        .on("dblclick", (e, i) => {
+          zoomAndExpand(e, i);
         });
       const { displayName, identity, identityBadge, identityIcon, ensBadge } =
         updateNodes(nodeContainer);
@@ -437,19 +477,16 @@ export default function D3ResultGraph(props) {
                 <strong className="ml-1">{title}</strong>
               </span>
             </div>
-            <div
-              className="btn btn-close"
-              onClick={graphType === GraphType.socialGraph ? onClose : back}
-            >
-              <SVG
-                src={
-                  graphType === GraphType.socialGraph
-                    ? "/icons/icon-close.svg"
-                    : "/icons/icon-open.svg"
-                }
-                width="20"
-                height="20"
-              />
+            <div className="btn-close">
+              {graphType === GraphType.identityGraph && (
+                <div className="btn" onClick={onBack}>
+                  <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
+                  Back
+                </div>
+              )}
+              <div className="btn" onClick={onClose}>
+                <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
+              </div>
             </div>
           </div>
         </div>
@@ -529,7 +566,7 @@ export default function D3ResultGraph(props) {
           {graphType === GraphType.socialGraph && (
             <div
               className="btn"
-              onClick={(e) => {
+              onClick={() => {
                 setHideToolTip(true);
                 expandIdentity(currentNode);
                 setCurrentNode(null);

@@ -115,11 +115,14 @@ const RenderAccount = (props) => {
             setGraphId(identity.id);
             setTitle(identity.displayName);
           }}
-          back={() => {
-            setGraphType(0);
+          onBack={() => {
+            setGraphType(GraphType.socialGraph);
             setTitle(graphTitle);
           }}
-          onClose={() => setOpen(false)}
+          onClose={() => {
+            setGraphType(0);
+            setOpen(false);
+          }}
           data={graphData}
           title={title}
         />
