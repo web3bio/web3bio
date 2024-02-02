@@ -4,7 +4,12 @@ import Link from "next/link";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { PlatformType } from "../../utils/platform";
-import { SocialPlatformMapping, formatText, colorMod } from "../../utils/utils";
+import {
+  SocialPlatformMapping,
+  formatText,
+  colorMod,
+  handleSearchPlatform,
+} from "../../utils/utils";
 import { Error } from "../shared/Error";
 import { Empty } from "../shared/Empty";
 import { RenderWidgetItem } from "./WidgetLinkItem";
@@ -24,6 +29,13 @@ import { WidgetPhiland } from "./WidgetPhiland";
 import { regexEns } from "../../utils/regexp";
 import LoadingSkeleton from "./LoadingSkeleton";
 import { WidgetTypes } from "../../utils/profile";
+import { GraphType } from "../search/ResultAccount";
+import D3ResultGraph from "../graph/D3ResultGraph";
+import {
+  GET_PROFILE_IDENTITY_GRAPH,
+  GET_PROFILE_SOCIAL_GRAPH,
+} from "../../utils/queries";
+import { useLazyQuery } from "@apollo/client";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, nfts, relations, domain, fallbackAvatar } =
@@ -31,12 +43,100 @@ export default function ProfileMain(props) {
   const [isCopied, setIsCopied] = useState(false);
   const { isOpen, modalType, closeModal, openModal, params } = useModal();
   const [mounted, setMounted] = useState(false);
+  const [showGraph, setShowGraph] = useState(false);
+  const [graphType, setGraphType] = useState(GraphType.socialGraph);
+  const [graphId, setGraphId] = useState("");
+  const [title, setTitle] = useState(domain);
   const profileWidgetStates = useSelector<AppState, WidgetState>(
     (state) => state.widgets
   );
+
+  const [socialGraph, setSocialGraph] = useState<any>(null);
+  const [identityGraph, setIdentityGraph] = useState<any>(null);
+  const [
+    querySocialGraph,
+    {
+      loading: socialGraphLoading,
+      error: socialGraphError,
+      data: socialGraphData,
+    },
+  ] = useLazyQuery(GET_PROFILE_SOCIAL_GRAPH, {
+    variables: {
+      platform: platform,
+      identity: domain,
+    },
+  });
+  const [queryIdentityGraph, { loading, error, data: identityGraphData }] =
+    useLazyQuery(GET_PROFILE_IDENTITY_GRAPH, {
+      variables: {
+        graphId: graphId,
+      },
+    });
   useEffect(() => {
     setMounted(true);
   }, []);
+  // social graph
+  useEffect(() => {
+    if (mounted && domain && platform) querySocialGraph();
+    if (!socialGraphData) return;
+    setIdentityGraph({
+      nodes: socialGraphData.socialFollows.identityGraph.vertices,
+      edges: socialGraphData.socialFollows.identityGraph.edges,
+    });
+    const _socialGraph = {
+      nodes: new Array(),
+      edges: new Array(),
+    };
+    socialGraphData.socialFollows.followingTopology.forEach((x) => {
+      _socialGraph.nodes.push({
+        ...x.originalSource,
+        id: x.source,
+      });
+
+      _socialGraph.nodes.push({
+        ...x.originalTarget,
+        id: x.target,
+      });
+      _socialGraph.edges.push({
+        source: x.source,
+        target: x.target,
+        dataSource: x.dataSource,
+        label: "following",
+      });
+    });
+    socialGraphData.socialFollows.followerTopology.forEach((x) => {
+      _socialGraph.nodes.push({
+        ...x.originalSource,
+        id: x.source,
+      });
+
+      _socialGraph.nodes.push({
+        ...x.originalTarget,
+        id: x.target,
+      });
+      _socialGraph.edges.push({
+        source: x.source,
+        target: x.target,
+        dataSource: x.dataSource,
+        label: "followed by",
+      });
+    });
+    setSocialGraph(_socialGraph);
+  }, [socialGraphData, platform, domain, querySocialGraph, mounted]);
+  // identity graph
+  useEffect(() => {
+    if (graphId) {
+      queryIdentityGraph();
+      if (!identityGraphData || !identityGraphData?.queryIdentityGraph?.length)
+        return;
+      setIdentityGraph({
+        nodes: identityGraphData.queryIdentityGraph[0].vertices,
+        edges: identityGraphData.queryIdentityGraph[0].edges,
+      });
+      setGraphType(1);
+      setGraphId("");
+    }
+  }, [graphId, identityGraphData, queryIdentityGraph]);
   const onCopySuccess = () => {
     setIsCopied(true);
     setTimeout(() => {
@@ -67,6 +167,27 @@ export default function ProfileMain(props) {
 
   return (
     <>
+      {showGraph && (
+        <D3ResultGraph
+          graphType={graphType}
+          expandIdentity={(identity) => {
+            setGraphId(identity.id);
+            setTitle(identity.displayName);
+          }}
+          onBack={() => {
+            setGraphType(GraphType.socialGraph);
+            setTitle(domain);
+          }}
+          onClose={() => {
+            setGraphType(0);
+            setShowGraph(false);
+          }}
+          data={
+            graphType === GraphType.socialGraph ? socialGraph : identityGraph
+          }
+          title={title}
+        />
+      )}
       <div
         className="web3bio-custom"
         style={{
@@ -242,6 +363,15 @@ export default function ProfileMain(props) {
                 <a href={`mailto:${data.email}`}>{data.email}</a>
               </div>
             )}
+            {
+              <div
+                className="btn btn-link btn-sm"
+                onClick={() => setShowGraph(true)}
+              >
+                <SVG src={"/icons/icon-view.svg"} width={20} height={20} />{" "}
+                Social Graph for {domain}
+              </div>
+            }
           </div>
         </div>
         <div className="column col-8 col-md-12">
