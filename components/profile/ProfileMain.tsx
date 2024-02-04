@@ -33,7 +33,7 @@ import { useLazyQuery } from "@apollo/client";
 import { GraphType } from "../../utils/graph";
 
 export default function ProfileMain(props) {
-  const { data, pageTitle, platform, nfts, relations, domain, fallbackAvatar } =
+  const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
     props;
   const [isCopied, setIsCopied] = useState(false);
   const { isOpen, modalType, closeModal, openModal, params } = useModal();
@@ -41,7 +41,7 @@ export default function ProfileMain(props) {
   const [showGraph, setShowGraph] = useState(false);
   const [graphType, setGraphType] = useState(GraphType.socialGraph);
   const [graphId, setGraphId] = useState("");
-  const [title, setTitle] = useState(domain);
+  const [title, setTitle] = useState(data.displayName || domain);
   const profileWidgetStates = useSelector<AppState, WidgetState>(
     (state) => state.widgets
   );
@@ -171,7 +171,7 @@ export default function ProfileMain(props) {
           }}
           onBack={() => {
             setGraphType(GraphType.socialGraph);
-            setTitle(domain);
+            setTitle(data.displayName || domain);
           }}
           onClose={() => {
             setGraphType(0);
@@ -364,7 +364,7 @@ export default function ProfileMain(props) {
                 onClick={() => setShowGraph(true)}
               >
                 <SVG src={"/icons/icon-view.svg"} width={20} height={20} />{" "}
-                Social Graph for {domain}
+                Social Graph for {data.displayName || domain}`
               </div>
             }
           </div>
