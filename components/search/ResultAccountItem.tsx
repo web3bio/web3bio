@@ -134,24 +134,6 @@ const RenderAccountItem = (props) => {
                 <div className="content-subtitle text-gray">
                   {identity.platform === PlatformType.ethereum ? (
                     <>
-                      {/* {profile?.displayName === profile?.identity ? (
-                        <>
-                          <div className="address hide-sm">
-                            {resolvedIdentity}
-                          </div>
-                          <div className="address show-sm">
-                            {formatText(resolvedIdentity)}
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <div className="address">{profile.displayName}</div>
-                          <div className="ml-1 mr-1"> · </div>
-                          <div className="address">
-                            {formatText(resolvedIdentity)}
-                          </div>
-                        </>
-                      )} */}
                       <>
                         <div className="address hide-sm">
                           {resolvedIdentity}
@@ -223,7 +205,14 @@ const RenderAccountItem = (props) => {
                       }}
                       prefetch={false}
                     >
-                      <div className="label-ens" title={nft.id}>
+                      <div
+                        className="label-ens"
+                        title={nft.id}
+                        style={{
+                          order:
+                            identity.displayName === nft.identity ? 0 : "unset",
+                        }}
+                      >
                         <SVG
                           fill={SocialPlatformMapping(PlatformType.ens).color}
                           src={"/icons/icon-ens.svg"}
