@@ -1,24 +1,24 @@
 import { gql } from "@apollo/client";
 
 export const GET_PROFILE_SOCIAL_GRAPH = gql`
-  query {
-    socialFollows(platform: "lens", identity: "sujiyan.lens") {
+  query ($platform: String, $identity: String) {
+    socialFollows(platform: $platform, identity: $identity) {
       identityGraph {
         graphId
         vertices {
-        id
-        uid
-        uuid
-        identity
-        platform
-        displayName
-      }
-      edges {
-        edgeType
-        source
-        target
-        dataSource
-      }
+          id
+          uid
+          uuid
+          identity
+          platform
+          displayName
+        }
+        edges {
+          edgeType
+          source
+          target
+          dataSource
+        }
       }
       followingTopology(hop: 1) {
         dataSource

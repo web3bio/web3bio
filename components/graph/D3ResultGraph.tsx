@@ -4,7 +4,7 @@ import { formatText, SocialPlatformMapping } from "../../utils/utils";
 import { PlatformType } from "../../utils/platform";
 import _ from "lodash";
 import SVG from "react-inlinesvg";
-import { GraphType } from "../search/ResultAccount";
+import { GraphType } from "../../utils/graph";
 
 const IdentityNodeSize = 48;
 const NFTNodeSize = 14;
@@ -129,7 +129,15 @@ const updateNodes = (nodeContainer) => {
 };
 
 export default function D3ResultGraph(props) {
-  const { data, onClose, title, expandIdentity, onBack, graphType, disableBack } = props;
+  const {
+    data,
+    onClose,
+    title,
+    expandIdentity,
+    onBack,
+    graphType,
+    disableBack,
+  } = props;
   const [currentNode, setCurrentNode] = useState<any>(null);
   const [hideTooltip, setHideToolTip] = useState(true);
   const [transform, setTransform] = useState("");

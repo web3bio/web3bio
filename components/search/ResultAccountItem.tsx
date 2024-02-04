@@ -97,7 +97,7 @@ const RenderAccountItem = (props) => {
             identity.isOwner ? " social-item-owner" : ""
           }`}
           style={{
-            order: identity.nfts ? -2 : 0,
+            order: identity.nfts?.length > 0 ? -identity.nfts.length : 3,
           }}
         >
           <div className="social-main">
@@ -213,28 +213,29 @@ const RenderAccountItem = (props) => {
           {identity.nfts?.length > 0 && (
             <div className="nfts">
               {identity.nfts.map((nft) => {
-                return nft.platform == "ens" &&
-                  nft.displayName !== identity.displayName ? (
-                  <Link
-                    key={`${nft.uuid}`}
-                    href={{
-                      pathname: "/",
-                      query: { s: nft.identity },
-                    }}
-                    prefetch={false}
-                  >
-                    <div className="label-ens" title={nft.id}>
-                      <SVG
-                        fill={SocialPlatformMapping(PlatformType.ens).color}
-                        src={"/icons/icon-ens.svg"}
-                        width="20"
-                        height="20"
-                        className="icon"
-                      />
-                      <span>{nft.identity}</span>
-                    </div>
-                  </Link>
-                ) : null;
+                return (
+                  nft.platform == PlatformType.ens && (
+                    <Link
+                      key={`${nft.uuid}`}
+                      href={{
+                        pathname: "/",
+                        query: { s: nft.identity },
+                      }}
+                      prefetch={false}
+                    >
+                      <div className="label-ens" title={nft.id}>
+                        <SVG
+                          fill={SocialPlatformMapping(PlatformType.ens).color}
+                          src={"/icons/icon-ens.svg"}
+                          width="20"
+                          height="20"
+                          className="icon"
+                        />
+                        <span>{nft.identity}</span>
+                      </div>
+                    </Link>
+                  )
+                );
               })}
             </div>
           )}

@@ -6,14 +6,6 @@ import { Error } from "../shared/Error";
 import { Loading } from "../shared/Loading";
 import { ResultAccount } from "./ResultAccount";
 
-interface ResultNeighbor {
-  identity: string;
-}
-interface IdentityGraph {
-  graphId: string;
-  vertices: any[];
-  edges: any[];
-}
 export default function SearchResult({ searchTerm, searchPlatform }) {
   const [querySocialGraph, { loading, error, data }] = useLazyQuery(
     GET_PROFILE_SOCIAL_GRAPH,
@@ -26,50 +18,14 @@ export default function SearchResult({ searchTerm, searchPlatform }) {
   );
 
   const [identityGraph, setIdentityGraph] = useState<any>(null);
-  const [socialGraph, setSocialGraph] = useState<any>(null);
   useEffect(() => {
     if (searchTerm && searchPlatform) querySocialGraph();
     if (!data) return;
-    setIdentityGraph(data.socialFollows.identityGraph);
-    const _socialGraph = {
-      nodes: new Array(),
-      edges: new Array(),
-    };
-    data.socialFollows.followingTopology.forEach((x) => {
-      _socialGraph.nodes.push({
-        ...x.originalSource,
-        id: x.source,
-      });
-
-      _socialGraph.nodes.push({
-        ...x.originalTarget,
-        id: x.target,
-      });
-      _socialGraph.edges.push({
-        source: x.source,
-        target: x.target,
-        dataSource: x.dataSource,
-        label: "following",
-      });
+    setIdentityGraph({
+      nodes: data?.socialFollows.identityGraph.vertices || [],
+      edges:data?.socialFollows.identityGraph.edges || []
     });
-    data.socialFollows.followerTopology.forEach((x) => {
-      _socialGraph.nodes.push({
-        ...x.originalSource,
-        id: x.source,
-      });
-
-      _socialGraph.nodes.push({
-        ...x.originalTarget,
-        id: x.target,
-      });
-      _socialGraph.edges.push({
-        source: x.source,
-        target: x.target,
-        dataSource: x.dataSource,
-        label: "followed by",
-      });
-    });
-    setSocialGraph(_socialGraph);
+   
   }, [data, searchPlatform, searchTerm, querySocialGraph]);
 
   if (loading)
@@ -85,7 +41,6 @@ export default function SearchResult({ searchTerm, searchPlatform }) {
   return (
     <ResultAccount
       identityGraph={identityGraph}
-      socialGraph={socialGraph}
       graphTitle={searchTerm}
     />
   );

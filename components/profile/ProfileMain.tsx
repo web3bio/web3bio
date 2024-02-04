@@ -4,12 +4,7 @@ import Link from "next/link";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { PlatformType } from "../../utils/platform";
-import {
-  SocialPlatformMapping,
-  formatText,
-  colorMod,
-  handleSearchPlatform,
-} from "../../utils/utils";
+import { SocialPlatformMapping, formatText, colorMod } from "../../utils/utils";
 import { Error } from "../shared/Error";
 import { Empty } from "../shared/Empty";
 import { RenderWidgetItem } from "./WidgetLinkItem";
@@ -29,13 +24,13 @@ import { WidgetPhiland } from "./WidgetPhiland";
 import { regexEns } from "../../utils/regexp";
 import LoadingSkeleton from "./LoadingSkeleton";
 import { WidgetTypes } from "../../utils/profile";
-import { GraphType } from "../search/ResultAccount";
 import D3ResultGraph from "../graph/D3ResultGraph";
 import {
   GET_PROFILE_IDENTITY_GRAPH,
   GET_PROFILE_SOCIAL_GRAPH,
 } from "../../utils/queries";
 import { useLazyQuery } from "@apollo/client";
+import { GraphType } from "../../utils/graph";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, nfts, relations, domain, fallbackAvatar } =
