@@ -5,6 +5,7 @@ import { PlatformType } from "../../utils/platform";
 import _ from "lodash";
 import SVG from "react-inlinesvg";
 import { GraphType } from "../../utils/graph";
+import { Empty } from "../shared/Empty";
 
 const IdentityNodeSize = 48;
 const NFTNodeSize = 14;
@@ -145,6 +146,7 @@ export default function D3ResultGraph(props) {
   const graphContainer = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if(!data) return
     // different graph with graphType
     let chart = null;
     const chartContainer = graphContainer?.current;
@@ -462,42 +464,40 @@ export default function D3ResultGraph(props) {
       ref={tooltipContainer}
       onClick={onClose}
     >
-      {data && (
-        <div
-          className="graph-container"
-          ref={graphContainer}
-          onClick={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
-          }}
-        >
-          <svg className="svg-canvas" />
+      <div
+        className="graph-container"
+        ref={graphContainer}
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+      >
+        {(data && <svg className="svg-canvas" />) || <Empty title={'No social graph found'} />}
 
-          <div className="graph-header">
-            <div className="graph-title">
-              <SVG src={"/icons/icon-view.svg"} width="20" height="20" />
-              <span className="ml-2">
-                {graphType === GraphType.socialGraph
-                  ? "Social Graph"
-                  : "Identity Graph"}{" "}
-                for
-                <strong className="ml-1">{title}</strong>
-              </span>
-            </div>
-            <div className="btn-close">
-              {graphType === GraphType.identityGraph && !disableBack && (
-                <div className="btn" onClick={onBack}>
-                  <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
-                  Back
-                </div>
-              )}
-              <div className="btn" onClick={onClose}>
-                <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
+        <div className="graph-header">
+          <div className="graph-title">
+            <SVG src={"/icons/icon-view.svg"} width="20" height="20" />
+            <span className="ml-2">
+              {graphType === GraphType.socialGraph
+                ? "Social Graph"
+                : "Identity Graph"}{" "}
+              for
+              <strong className="ml-1">{title}</strong>
+            </span>
+          </div>
+          <div className="btn-close">
+            {graphType === GraphType.identityGraph && !disableBack && (
+              <div className="btn" onClick={onBack}>
+                <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
+                Back
               </div>
+            )}
+            <div className="btn" onClick={onClose}>
+              <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
             </div>
           </div>
         </div>
-      )}
+      </div>
       {currentNode && !hideTooltip && (
         <div
           className="web3bio-tooltip"
