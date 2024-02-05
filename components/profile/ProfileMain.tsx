@@ -51,9 +51,8 @@ export default function ProfileMain(props) {
   const [
     querySocialGraph,
     {
-      loading: socialGraphLoading,
-      error: socialGraphError,
       data: socialGraphData,
+      error: socialGraphError
     },
   ] = useLazyQuery(GET_PROFILE_SOCIAL_GRAPH, {
     variables: {
@@ -162,7 +161,7 @@ export default function ProfileMain(props) {
 
   return (
     <>
-      {showGraph && (
+      {showGraph && !socialGraphError && (
         <D3ResultGraph
           graphType={graphType}
           expandIdentity={(identity) => {
