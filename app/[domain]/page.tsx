@@ -88,6 +88,17 @@ export async function generateMetadata({
     ? `/api/og?${params.toString()}`
     : "/api/og";
 
+  console.log(data);
+
+  const fcMetadata: Record<string, string> = {
+    "fc:frame": "vNext",
+    "fc:frame:image": relativeOGURL,
+  };
+  [data]
+    .filter((o) => o.identity !== "")
+    .map((x, index) => {
+      fcMetadata[`fc:frame:button:${index + 1}`] = x.identity;
+    });
   return {
     metadataBase: new URL(baseURL),
     title: pageTitle + ` ${SocialPlatformMapping(platform!).label} Profile`,
@@ -109,6 +120,9 @@ export async function generateMetadata({
       site: "@web3bio",
       images: [relativeOGURL],
       creator: "@web3bio",
+    },
+    other: {
+      ...fcMetadata,
     },
   };
 }
