@@ -48,24 +48,21 @@ export default function ProfileMain(props) {
 
   const [socialGraph, setSocialGraph] = useState<any>(null);
   const [identityGraph, setIdentityGraph] = useState<any>(null);
-  const [
-    querySocialGraph,
+  const [querySocialGraph, { data: socialGraphData, error: socialGraphError }] =
+    useLazyQuery(GET_PROFILE_SOCIAL_GRAPH, {
+      variables: {
+        platform: platform,
+        identity: domain,
+      },
+    });
+  const [queryIdentityGraph, { data: identityGraphData }] = useLazyQuery(
+    GET_PROFILE_IDENTITY_GRAPH,
     {
-      data: socialGraphData,
-      error: socialGraphError
-    },
-  ] = useLazyQuery(GET_PROFILE_SOCIAL_GRAPH, {
-    variables: {
-      platform: platform,
-      identity: domain,
-    },
-  });
-  const [queryIdentityGraph, { loading, error, data: identityGraphData }] =
-    useLazyQuery(GET_PROFILE_IDENTITY_GRAPH, {
       variables: {
         graphId: graphId,
       },
-    });
+    }
+  );
   useEffect(() => {
     setMounted(true);
   }, []);
