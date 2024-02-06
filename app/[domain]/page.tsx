@@ -94,7 +94,7 @@ export async function generateMetadata({
   };
 
   data
-    .splice(0, 2)
+    .splice(0, 3)
     .filter((o) => o.identity !== "")
     .map((x, index) => {
       fcMetadata[`fc:frame:button:${index + 1}`] = x.identity;
