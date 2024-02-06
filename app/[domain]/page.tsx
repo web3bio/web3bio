@@ -94,7 +94,7 @@ export async function generateMetadata({
     "fc:frame": "vNext",
     "fc:frame:image": relativeOGURL,
   };
-  [data]
+  data
     .filter((o) => o.identity !== "")
     .map((x, index) => {
       fcMetadata[`fc:frame:button:${index + 1}`] = x.identity;
