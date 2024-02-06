@@ -88,17 +88,25 @@ export async function generateMetadata({
     ? `/api/og?${params.toString()}`
     : "/api/og";
 
-  console.log(data);
-
   const fcMetadata: Record<string, string> = {
     "fc:frame": "vNext",
     "fc:frame:image": relativeOGURL,
   };
+
   data
+    .splice(0, 2)
     .filter((o) => o.identity !== "")
     .map((x, index) => {
       fcMetadata[`fc:frame:button:${index + 1}`] = x.identity;
+      fcMetadata[`fc:frame:button:${index + 1}:content`] = "post_redirect";
     });
+  if (data.length === 0 || data.length > 3) {
+    fcMetadata["fc:frame:post_url"] = `${baseURL}/${domain}`;
+    fcMetadata[`fc:frame:button:${(data.length = 0 ? 1 : 4)}`] = "More";
+    fcMetadata[`fc:frame:button:${(data.length = 0 ? 1 : 4)}:content`] =
+      "post_redirect";
+  }
+
   return {
     metadataBase: new URL(baseURL),
     title: pageTitle + ` ${SocialPlatformMapping(platform!).label} Profile`,
