@@ -90,7 +90,7 @@ export async function generateMetadata({
 
   const fcMetadata: Record<string, string> = {
     "fc:frame": "vNext",
-    "fc:frame:image": relativeOGURL,
+    "fc:frame:image": `${baseURL}${relativeOGURL}`,
   };
 
   data
