@@ -100,9 +100,9 @@ export async function generateMetadata({
       fcMetadata[`fc:frame:button:${index + 1}`] = x.identity;
       fcMetadata[`fc:frame:button:${index + 1}:content`] = "post_redirect";
     });
-  
+  fcMetadata["fc:frame:post_url"] = `${baseURL}/api/frame`;
+
   if (data.length === 0 || data.length > 3) {
-    fcMetadata["fc:frame:post_url"] = `${baseURL}/${domain}`;
     fcMetadata[`fc:frame:button:${(data.length = 0 ? 1 : 4)}`] = "More";
     fcMetadata[`fc:frame:button:${(data.length = 0 ? 1 : 4)}:content`] =
       "post_redirect";
