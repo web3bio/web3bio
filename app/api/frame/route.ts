@@ -30,9 +30,7 @@ async function getResponse(req: NextRequest) {
   return await respondWithRedirect(redirectURL);
 }
 
-export async function POST(req: NextRequest) {
-  return getResponse(req);
-}
+
 
 const respondWithRedirect = (redirectURL) => {
   const internalRedirectURL = new URL(`${baseURL}/redirect`);
@@ -45,5 +43,8 @@ const respondWithRedirect = (redirectURL) => {
   });
 };
 
+export async function POST(req: NextRequest) {
+  return getResponse(req);
+}
+
 export const dynamic = "force-dynamic";
-export const runtime = "edge";
