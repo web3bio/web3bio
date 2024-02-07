@@ -94,12 +94,7 @@ export async function generateMetadata({
     "fc:frame": "vNext",
     "fc:frame:image": `${baseURL}${relativeOGURL}`,
   };
-  const defaultIdx = (data.length = 0 ? 1 : data.length + 1);
-  fcMetadata[`fc:frame:button:${defaultIdx}`] = "More";
-  fcMetadata[`fc:frame:button:${defaultIdx}:action`] = "link";
-  fcMetadata[`fc:frame:button:${defaultIdx}:target`] = `${baseURL}/${domain}`;
-
-  data
+  JSON.parse(JSON.stringify(data))
     .splice(0, 3)
     .filter((o) => o.identity !== "")
     .map((x, index) => {
@@ -112,6 +107,11 @@ export async function generateMetadata({
         `fc:frame:button:${index + 1}:target`
       ] = `${baseURL}/${resolvedIdentity}`;
     });
+
+  const defaultIdx = data.length + 1;
+  fcMetadata[`fc:frame:button:${defaultIdx}`] = "More";
+  fcMetadata[`fc:frame:button:${defaultIdx}:action`] = "link";
+  fcMetadata[`fc:frame:button:${defaultIdx}:target`] = `${baseURL}/${domain}`;
 
   return {
     metadataBase: new URL(baseURL),
