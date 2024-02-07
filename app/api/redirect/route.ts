@@ -8,7 +8,3 @@ export default async function GET(req) {
     },
   });
 }
-
-export const config = {
-  path: "/redirect",
-};
