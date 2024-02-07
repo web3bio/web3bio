@@ -94,21 +94,24 @@ export async function generateMetadata({
   const fcMetadata: Record<string, string> = {
     "fc:frame": "vNext",
     "fc:frame:image": `${baseURL}${relativeOGURL}`,
-    "fc:frame:post_url": `${baseURL}/api/frame?domain=${profile.identity}`,
   };
-  const lastIdx = data.length + 1;
-  fcMetadata[`fc:frame:button:${(data.length = 0 ? 1 : lastIdx)}`] = "More";
-  fcMetadata[`fc:frame:button:${(data.length = 0 ? 1 : lastIdx)}:content`] =
-    "post_redirect";
+  const defaultIdx = (data.length = 0 ? 1 : data.length + 1);
+  fcMetadata[`fc:frame:button:${defaultIdx}`] = "More";
+  fcMetadata[`fc:frame:button:${defaultIdx}:action`] = "link";
+  fcMetadata[`fc:frame:button:${defaultIdx}:target`] = `${baseURL}/${domain}`;
 
   data
     .splice(0, 3)
     .filter((o) => o.identity !== "")
     .map((x, index) => {
-      fcMetadata[`fc:frame:button:${index + 1}`] = `${x.identity}${
+      const resolvedIdentity = `${x.identity}${
         x.platform === PlatformType.farcaster ? ".farcaster" : ""
       }`;
-      fcMetadata[`fc:frame:button:${index + 1}:content`] = "post_redirect";
+      fcMetadata[`fc:frame:button:${index + 1}`] = resolvedIdentity;
+      fcMetadata[`fc:frame:button:${index + 1}:action`] = "link";
+      fcMetadata[
+        `fc:frame:button:${defaultIdx}:target`
+      ] = `${baseURL}/${resolvedIdentity}`;
     });
 
   return {

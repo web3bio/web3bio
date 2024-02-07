@@ -1,8 +1,6 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-// const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
-const baseURL =
-  "https://web3bio-git-chore-fcframe-initial-expand-web3bio.vercel.app";
+const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
 const profileEndpoint =
   process.env.NEXT_PUBLIC_PROFILE_END_POINT || "https://api.web3.bio";
 
@@ -11,7 +9,7 @@ async function getResponse(req: NextRequest) {
   const defaultDomain = searchParams.get("domain");
   let profiles = new Array();
 
-  if (!defaultDomain) return await respondWithRedirect(baseURL);
+  if (!defaultDomain) return respondWithRedirect(baseURL);
   const data = await req.json();
   const buttonId = data.untrustedData?.buttonIndex || 0;
   const domain = data.untrustedData?.url?.split("/")?.[3] || defaultDomain;
@@ -21,7 +19,7 @@ async function getResponse(req: NextRequest) {
     );
   } catch (e) {
     console.error(e);
-    return await respondWithRedirect(baseURL);
+    return respondWithRedirect(baseURL);
   }
 
   const redirectURL =
@@ -29,16 +27,14 @@ async function getResponse(req: NextRequest) {
       ? defaultDomain || ""
       : profiles[buttonId - 1].identity;
 
-  return await respondWithRedirect(redirectURL);
+  return respondWithRedirect(redirectURL);
 }
 
 const respondWithRedirect = (redirectURL) => {
-  const internalRedirectURL = new URL(`${baseURL}/redirect`);
-  internalRedirectURL.searchParams.set("redirectURL", redirectURL);
-  return new Response(`<div>redirect to ${redirectURL}</div>`, {
+  return NextResponse.json(`<p>redirecting to ${redirectURL}</p>`, {
     status: 302,
     headers: {
-      Location: internalRedirectURL.toString(),
+      Location: redirectURL.toString(),
     },
   });
 };
