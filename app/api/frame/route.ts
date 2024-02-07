@@ -1,17 +1,15 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
 const profileEndpoint =
   process.env.NEXT_PUBLIC_PROFILE_END_POINT || "https://api.web3.bio";
 
-const defaultBack = () => NextResponse.redirect(baseURL, { status: 302 });
-
-async function getResponse(req: NextRequest): Promise<NextResponse> {
+async function getResponse(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
   const defaultDomain = searchParams.get("domain");
   let profiles = new Array();
 
-  if (!defaultDomain) return defaultBack();
+  if (!defaultDomain) return await respondWithRedirect(baseURL);
   const data = await req.json();
   const buttonId = data.untrustedData?.buttonIndex || 0;
   const domain = data.untrustedData?.url?.split("/")?.[3] || defaultDomain;
@@ -21,21 +19,31 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     );
   } catch (e) {
     console.error(e);
-    defaultBack();
+    return await respondWithRedirect(baseURL);
   }
 
   const redirectURL =
     baseURL + "/" + !profiles?.length || buttonId === profiles?.length
       ? defaultDomain || ""
       : profiles[buttonId - 1].identity;
-  const headers = new Headers();
-  headers.set("Location", redirectURL);
-  return NextResponse.redirect(redirectURL, { headers, status: 302 });
+
+  return await respondWithRedirect(redirectURL);
 }
 
-export async function POST(req: NextRequest): Promise<Response> {
+export async function POST(req: NextRequest) {
   return getResponse(req);
 }
+
+const respondWithRedirect = (redirectURL) => {
+  const internalRedirectURL = new URL(`${baseURL}/redirect`);
+  internalRedirectURL.searchParams.set("redirectURL", redirectURL);
+  return new Response(`<div>redirect to ${redirectURL}</div>`, {
+    status: 302,
+    headers: {
+      Location: internalRedirectURL.toString(),
+    },
+  });
+};
 
 export const dynamic = "force-dynamic";
 export const runtime = "edge";
