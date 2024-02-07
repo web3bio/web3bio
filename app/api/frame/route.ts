@@ -1,6 +1,8 @@
 import { NextRequest } from "next/server";
 
-const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
+// const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
+const baseURL =
+  "https://web3bio-git-chore-fcframe-initial-expand-web3bio.vercel.app";
 const profileEndpoint =
   process.env.NEXT_PUBLIC_PROFILE_END_POINT || "https://api.web3.bio";
 
@@ -29,8 +31,6 @@ async function getResponse(req: NextRequest) {
 
   return await respondWithRedirect(redirectURL);
 }
-
-
 
 const respondWithRedirect = (redirectURL) => {
   const internalRedirectURL = new URL(`${baseURL}/redirect`);
