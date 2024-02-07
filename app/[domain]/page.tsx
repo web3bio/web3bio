@@ -1,5 +1,5 @@
 // import { fetchInitialNFTsData } from "../../hooks/api/fetchProfile";
-import { shouldPlatformFetch } from "../../utils/platform";
+import { PlatformType, shouldPlatformFetch } from "../../utils/platform";
 import { SocialPlatformMapping } from "../../utils/utils";
 import { handleSearchPlatform, mapLinks } from "../../utils/utils";
 import { notFound, redirect } from "next/navigation";
@@ -94,21 +94,22 @@ export async function generateMetadata({
   const fcMetadata: Record<string, string> = {
     "fc:frame": "vNext",
     "fc:frame:image": `${baseURL}${relativeOGURL}`,
-    "fc:frame:post_url": `${baseURL}/api/frame`,
+    "fc:frame:post_url": `${baseURL}/api/frame?domain=${profile.identity}`,
   };
   const lastIdx = data.length + 1;
   fcMetadata[`fc:frame:button:${(data.length = 0 ? 1 : lastIdx)}`] = "More";
   fcMetadata[`fc:frame:button:${(data.length = 0 ? 1 : lastIdx)}:content`] =
     "post_redirect";
-  if (data?.length > 0) {
-    data
-      .splice(0, 3)
-      .filter((o) => o.identity !== "")
-      .map((x, index) => {
-        fcMetadata[`fc:frame:button:${index + 1}`] = x.identity;
-        fcMetadata[`fc:frame:button:${index + 1}:content`] = "post_redirect";
-      });
-  }
+
+  data
+    .splice(0, 3)
+    .filter((o) => o.identity !== "")
+    .map((x, index) => {
+      fcMetadata[`fc:frame:button:${index + 1}`] = `${x.identity}${
+        x.platform === PlatformType.farcaster ? ".farcaster" : ""
+      }`;
+      fcMetadata[`fc:frame:button:${index + 1}:content`] = "post_redirect";
+    });
 
   return {
     metadataBase: new URL(baseURL),
