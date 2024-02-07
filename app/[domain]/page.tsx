@@ -72,7 +72,7 @@ export async function generateMetadata({
       : `${profile?.displayName} (${profile?.identity})`;
   // const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
   // todo: for test
-  const baseURL = 'https://web3bio-git-chore-fcframe-initial-expand-web3bio.vercel.app';
+   const baseURL = 'https://web3bio-git-chore-fcframe-initial-expand-web3bio.vercel.app';
   const profileDescription =
     profile?.description ||
     `Explore ${pageTitle} ${
@@ -104,11 +104,10 @@ export async function generateMetadata({
     });
   fcMetadata["fc:frame:post_url"] = `${baseURL}/api/frame`;
 
-  if (data.length === 0 || data.length > 3) {
-    fcMetadata[`fc:frame:button:${(data.length = 0 ? 1 : 4)}`] = "More";
-    fcMetadata[`fc:frame:button:${(data.length = 0 ? 1 : 4)}:content`] =
+
+    fcMetadata[`fc:frame:button:${(data.length = 0 ? 1 : data.length)}`] = "More";
+    fcMetadata[`fc:frame:button:${(data.length = 0 ? 1 : data.length)}:content`] =
       "post_redirect";
-  }
 
   return {
     metadataBase: new URL(baseURL),
