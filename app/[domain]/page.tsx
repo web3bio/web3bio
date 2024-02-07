@@ -70,10 +70,9 @@ export async function generateMetadata({
     profile?.identity == profile?.displayName
       ? `${profile?.displayName}`
       : `${profile?.displayName} (${profile?.identity})`;
-  // const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
-  // todo: for test
-  const baseURL =
-    "https://web3bio-git-chore-fcframe-initial-expand-web3bio.vercel.app";
+
+  const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
+
   const profileDescription =
     profile?.description ||
     `Explore ${pageTitle} ${
@@ -110,7 +109,7 @@ export async function generateMetadata({
       fcMetadata[`fc:frame:button:${index + 1}`] = resolvedIdentity;
       fcMetadata[`fc:frame:button:${index + 1}:action`] = "link";
       fcMetadata[
-        `fc:frame:button:${defaultIdx}:target`
+        `fc:frame:button:${index + 1}:target`
       ] = `${baseURL}/${resolvedIdentity}`;
     });
 
