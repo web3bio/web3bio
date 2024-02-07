@@ -1,19 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
-
+const profileEndpoint =
+  process.env.NEXT_PUBLIC_PROFILE_END_POINT || "https://api.web3.bio";
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   const searchParams = req.nextUrl.searchParams;
   const defaultDomain = searchParams.get("domain");
 
   if (!defaultDomain) return NextResponse.redirect(baseURL, { status: 302 });
-  
+
   const data = await req.json();
   const buttonId = data.untrustedData.buttonIndex;
   const domain = data.untrustedData.url.split("/")[3];
-  const profiles = await fetch(
-    `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${domain}`
-  ).then((res) => res.json());
+  const profiles = await fetch(`${profileEndpoint}/profile/${domain}`).then(
+    (res) => res.json()
+  );
   const redirectURL =
     baseURL + "/" + !profiles || buttonId === profiles?.length
       ? defaultDomain || ""
