@@ -15,17 +15,17 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   const data = await req.json();
   const buttonId = data.untrustedData?.buttonIndex || 0;
   const domain = data.untrustedData?.url?.split("/")?.[3] || defaultDomain;
-  try {
-    profiles = await fetch(`${profileEndpoint}/profile/${domain}`).then((res) =>
-      res.json()
-    );
-  } catch (e) {
-    console.error(e);
-    defaultBack();
-  }
+  //   try {
+  //     profiles = await fetch(`${profileEndpoint}/profile/${domain}`).then((res) =>
+  //       res.json()
+  //     );
+  //   } catch (e) {
+  //     console.error(e);
+  //     defaultBack();
+  //   }
 
   const redirectURL =
-    baseURL + "/" + !profiles || buttonId === profiles?.length
+    baseURL + "/" + !profiles?.length || buttonId === profiles?.length
       ? defaultDomain || ""
       : profiles[buttonId - 1].identity;
   const headers = new Headers();
