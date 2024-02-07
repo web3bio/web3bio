@@ -4,7 +4,7 @@ const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
 const profileEndpoint =
   process.env.NEXT_PUBLIC_PROFILE_END_POINT || "https://api.web3.bio";
 
-const defaultBack = () => NextResponse.redirect(baseURL);
+const defaultBack = () => NextResponse.redirect(baseURL, { status: 302 });
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   const searchParams = req.nextUrl.searchParams;
@@ -30,16 +30,12 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       : profiles[buttonId - 1].identity;
   const headers = new Headers();
   headers.set("Location", redirectURL);
-  return NextResponse.redirect(redirectURL, { headers });
+  return NextResponse.redirect(redirectURL, { headers, status: 302 });
 }
 
 export async function POST(req: NextRequest): Promise<Response> {
   return getResponse(req);
 }
-export async function GET(req: NextRequest): Promise<Response> {
-  return NextResponse.json({
-    success:'success'
-  })
-}
 
 export const dynamic = "force-dynamic";
+export const runtime = "edge";
