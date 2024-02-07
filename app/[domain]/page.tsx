@@ -72,7 +72,8 @@ export async function generateMetadata({
       : `${profile?.displayName} (${profile?.identity})`;
   // const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
   // todo: for test
-   const baseURL = 'https://web3bio-git-chore-fcframe-initial-expand-web3bio.vercel.app';
+  const baseURL =
+    "https://web3bio-git-chore-fcframe-initial-expand-web3bio.vercel.app";
   const profileDescription =
     profile?.description ||
     `Explore ${pageTitle} ${
@@ -93,21 +94,21 @@ export async function generateMetadata({
   const fcMetadata: Record<string, string> = {
     "fc:frame": "vNext",
     "fc:frame:image": `${baseURL}${relativeOGURL}`,
+    "fc:frame:post_url": `${baseURL}/api/frame`,
   };
-
-  data
-    .splice(0, 3)
-    .filter((o) => o.identity !== "")
-    .map((x, index) => {
-      fcMetadata[`fc:frame:button:${index + 1}`] = x.identity;
-      fcMetadata[`fc:frame:button:${index + 1}:content`] = "post_redirect";
-    });
-  fcMetadata["fc:frame:post_url"] = `${baseURL}/api/frame`;
-
-
-    fcMetadata[`fc:frame:button:${(data.length = 0 ? 1 : data.length)}`] = "More";
-    fcMetadata[`fc:frame:button:${(data.length = 0 ? 1 : data.length)}:content`] =
-      "post_redirect";
+  const lastIdx = data.length + 1;
+  fcMetadata[`fc:frame:button:${(data.length = 0 ? 1 : lastIdx)}`] = "More";
+  fcMetadata[`fc:frame:button:${(data.length = 0 ? 1 : lastIdx)}:content`] =
+    "post_redirect";
+  if (data?.length > 0) {
+    data
+      .splice(0, 3)
+      .filter((o) => o.identity !== "")
+      .map((x, index) => {
+        fcMetadata[`fc:frame:button:${index + 1}`] = x.identity;
+        fcMetadata[`fc:frame:button:${index + 1}:content`] = "post_redirect";
+      });
+  }
 
   return {
     metadataBase: new URL(baseURL),
