@@ -72,7 +72,7 @@ export async function generateMetadata({
       : `${profile?.displayName} (${profile?.identity})`;
   // const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
   // todo: for test
-  const baseURL = 'https://web3bio-git-chore-fcframe-initial-expand-web3bio.vercel.app/';
+  const baseURL = 'https://web3bio-git-chore-fcframe-initial-expand-web3bio.vercel.app';
   const profileDescription =
     profile?.description ||
     `Explore ${pageTitle} ${
