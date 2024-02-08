@@ -357,10 +357,13 @@ export default function ProfileMain(props) {
             {
               <div
                 className="btn btn-link btn-sm"
-                onClick={() => setShowGraph(true)}
+                onClick={() => {
+                  setGraphType(GraphType.socialGraph)
+                  setShowGraph(true)
+                }}
               >
                 <SVG src={"/icons/icon-view.svg"} width={20} height={20} />{" "}
-                Social Graph for {data.displayName || domain}`
+                Social Graph for {data.displayName || domain}
               </div>
             }
           </div>

@@ -146,7 +146,7 @@ export default function D3ResultGraph(props) {
   const graphContainer = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if(!data) return
+    if (!data) return;
     // different graph with graphType
     let chart = null;
     const chartContainer = graphContainer?.current;
@@ -206,15 +206,18 @@ export default function D3ResultGraph(props) {
 
           svg
             .transition()
+            .delay(500)
             .duration(i.duration)
             .attrTween(
               "transform",
               () => (t) => transform((currentTransform = i(t)))
             )
+            // .attr("opacity", 0)
             .on("end", () => {
-              expandIdentity(d);
-            })
-            .style("opacity", 0);
+              setTimeout(() => {
+                expandIdentity(d);
+              }, 300);
+            });
         }
 
         function transform([x, y, r]) {
@@ -472,7 +475,9 @@ export default function D3ResultGraph(props) {
           e.preventDefault();
         }}
       >
-        {(data && <svg className="svg-canvas" />) || <Empty title={'No social graph found'} />}
+        {(data && <svg className="svg-canvas" />) || (
+          <Empty title={"No social graph found"} />
+        )}
 
         <div className="graph-header">
           <div className="graph-title">
