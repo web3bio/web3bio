@@ -101,7 +101,7 @@ export async function generateMetadata({
       const resolvedIdentity = `${x.identity}${
         x.platform === PlatformType.farcaster ? ".farcaster" : ""
       }`;
-      fcMetadata[`fc:frame:button:${index + 1}`] = resolvedIdentity;
+      fcMetadata[`fc:frame:button:${index + 1}`] = SocialPlatformMapping(x.platform).label;
       fcMetadata[`fc:frame:button:${index + 1}:action`] = "link";
       fcMetadata[
         `fc:frame:button:${index + 1}:target`
