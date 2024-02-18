@@ -101,14 +101,16 @@ export async function generateMetadata({
       const resolvedIdentity = `${x.identity}${
         x.platform === PlatformType.farcaster ? ".farcaster" : ""
       }`;
-      fcMetadata[`fc:frame:button:${index + 1}`] = SocialPlatformMapping(x.platform).label;
+      fcMetadata[`fc:frame:button:${index + 1}`] = SocialPlatformMapping(
+        x.platform
+      ).label;
       fcMetadata[`fc:frame:button:${index + 1}:action`] = "link";
       fcMetadata[
         `fc:frame:button:${index + 1}:target`
       ] = `${baseURL}/${resolvedIdentity}`;
     });
 
-  const defaultIdx = data.length + 1;
+  const defaultIdx = data.length > 3 ? 4 : data.length + 1;
   fcMetadata[`fc:frame:button:${defaultIdx}`] = "🌐 🖼 🌈 More";
   fcMetadata[`fc:frame:button:${defaultIdx}:action`] = "link";
   fcMetadata[`fc:frame:button:${defaultIdx}:target`] = `${baseURL}/${domain}`;
