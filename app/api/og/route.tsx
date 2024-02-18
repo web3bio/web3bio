@@ -3,7 +3,6 @@ import { NextRequest } from "next/server";
 import { formatText } from "../../../utils/utils";
 
 export const runtime = "edge";
-
 let filename = "og.png";
 
 const size = {
@@ -21,16 +20,15 @@ export async function GET(request: NextRequest) {
     const displayName = searchParams.get("displayName");
     const description = searchParams.get("description");
     const paramAvatar = searchParams.get("avatar");
-    const avatarImg = await (async () => {
-      if (!paramAvatar || paramAvatar === "null")
-        return process.env.NEXT_PUBLIC_PROFILE_END_POINT + `/avatar/${path}`;
-      try {
-        await fetch(paramAvatar);
-        return paramAvatar;
-      } catch (e) {
-        return process.env.NEXT_PUBLIC_PROFILE_END_POINT + `/avatar/${path}`;
-      }
-    })();
+    const avatarImg =
+      !paramAvatar || paramAvatar === "null"
+        ? process.env.NEXT_PUBLIC_PROFILE_END_POINT + `/avatar/${path}`
+        : paramAvatar;
+    const avatarImageData = avatarImg.includes(".webp")
+      ? avatarImg
+      : await fetch(new URL(avatarImg, import.meta.url)).then((res) =>
+          res.arrayBuffer()
+        );
 
     const isShowDefault = ![address, path, displayName].some((x) => !!x);
 
@@ -85,7 +83,7 @@ export async function GET(request: NextRequest) {
             }}
           ></div>
 
-          {avatarImg && (
+          {avatarImageData && (
             <img
               style={{
                 backgroundColor: "#f9f9f9",
@@ -96,8 +94,8 @@ export async function GET(request: NextRequest) {
               }}
               width={180}
               height={180}
-              src={avatarImg}
-              alt=""
+              src={avatarImageData as string}
+              alt={path || ""}
             />
           )}
 
