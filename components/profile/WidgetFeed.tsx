@@ -127,6 +127,9 @@ export default function WidgetFeed({ profile, openModal }) {
   const scrollContainer = useRef(null);
 
   useEffect(() => {
+    if (window.location.hash && window.location.hash === "#feeds" && !expand) {
+      setExpand(true);
+    }
     if (expand) {
       const anchorElement = document.getElementById("feeds");
       anchorElement?.scrollIntoView({
