@@ -107,6 +107,9 @@ export default function WidgetNFT({ address, onShowDetail }) {
   const scrollContainer = useRef(null);
 
   useEffect(() => {
+    if (window.location.hash && window.location.hash === "#nft" && !expand) {
+      setExpand(true);
+    }
     const scrollToAsset = (assetId) => {
       if (!expand) setExpand(true);
       setTimeout(
