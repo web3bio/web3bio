@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
 import { formatText } from "../../../utils/utils";
@@ -87,7 +86,7 @@ export async function GET(request: NextRequest) {
           ></div>
 
           {avatarImg && (
-            <Image
+            <img
               style={{
                 backgroundColor: "#f9f9f9",
                 boxShadow:
@@ -144,7 +143,7 @@ export async function GET(request: NextRequest) {
                 {url}
               </div>
 
-              <Image
+              <img
                 style={{
                   background: "transparent",
                 }}
@@ -181,10 +180,9 @@ export async function GET(request: NextRequest) {
   } catch (e) {
     return new ImageResponse(
       (
-        <Image
+        <img
           width={size.width}
           height={size.height}
-          alt="Web3.bio"
           src={"https://web3.bio/img/web3bio-social.jpg"}
         />
       ),
