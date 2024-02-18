@@ -11,9 +11,7 @@ const size = {
   height: 630,
 };
 
-export async function GET(
-  request: NextRequest,
-) {
+export async function GET(request: NextRequest) {
   try {
     const { searchParams } = request.nextUrl;
     const path = searchParams.get("path");
@@ -23,14 +21,18 @@ export async function GET(
     const displayName = searchParams.get("displayName");
     const description = searchParams.get("description");
     const paramAvatar = searchParams.get("avatar");
-    const avatarImg =
-      !paramAvatar || paramAvatar === "null"
-        ? process.env.NEXT_PUBLIC_PROFILE_END_POINT + `/avatar/${path}`
-        : paramAvatar;
-    
-    const isShowDefault = ![address, path, displayName].some(
-      (x) => !!x
-    );
+    const avatarImg = await (async () => {
+      if (!paramAvatar || paramAvatar === "null")
+        return process.env.NEXT_PUBLIC_PROFILE_END_POINT + `/avatar/${path}`;
+      try {
+        await fetch(paramAvatar);
+        return paramAvatar;
+      } catch (e) {
+        return process.env.NEXT_PUBLIC_PROFILE_END_POINT + `/avatar/${path}`;
+      }
+    })();
+
+    const isShowDefault = ![address, path, displayName].some((x) => !!x);
 
     if (isShowDefault) {
       throw new Error("Params is missing");
@@ -66,12 +68,14 @@ export async function GET(
             style={{
               display: "flex",
               backgroundColor: "#fff",
-              backgroundImage: avatarImg ? `url(${avatarImg})` : "radial-gradient(at 40% 33%, #FBF4EC 0px, rgba(251,244,236,0) 50%), radial-gradient(at 82% 10%, #ECD7C8 0px, rgba(236,215,200,0) 50%), radial-gradient(at 17% -11%, #EEA4BC 0px, rgba(238,164,188,0) 30%), radial-gradient(at 48% 2%, #BE88C4 0px, rgba(190,136,196,0) 50%), radial-gradient(at 39% 67%, #ECD7C8 0px, rgba(236,215,200,0) 50%), radial-gradient(at 96% 158%, #92C9F9 0px, rgba(146,201,249,0) 50%), radial-gradient(at 61% 57%, #C7F8FF 0px, rgba(199,248,255,0) 50%)",
+              backgroundImage: avatarImg
+                ? `url(${avatarImg})`
+                : "radial-gradient(at 40% 33%, #FBF4EC 0px, rgba(251,244,236,0) 50%), radial-gradient(at 82% 10%, #ECD7C8 0px, rgba(236,215,200,0) 50%), radial-gradient(at 17% -11%, #EEA4BC 0px, rgba(238,164,188,0) 30%), radial-gradient(at 48% 2%, #BE88C4 0px, rgba(190,136,196,0) 50%), radial-gradient(at 39% 67%, #ECD7C8 0px, rgba(236,215,200,0) 50%), radial-gradient(at 96% 158%, #92C9F9 0px, rgba(146,201,249,0) 50%), radial-gradient(at 61% 57%, #C7F8FF 0px, rgba(199,248,255,0) 50%)",
               backgroundPosition: "0 top",
               backgroundRepeat: "no-repeat",
               backgroundSize: "100% 200px",
               color: "transparent",
-              opacity: .2,
+              opacity: 0.2,
               width: 1200,
               height: 200,
               position: "absolute",
@@ -138,7 +142,7 @@ export async function GET(
               >
                 {url}
               </div>
-            
+
               <img
                 style={{
                   background: "transparent",
@@ -161,13 +165,13 @@ export async function GET(
           {
             name: "geist",
             data: fontBold,
-            style: 'normal',
+            style: "normal",
             weight: 700,
           },
           {
             name: "geist",
             data: fontNormal,
-            style: 'normal',
+            style: "normal",
             weight: 400,
           },
         ],
@@ -175,7 +179,13 @@ export async function GET(
     );
   } catch (e) {
     return new ImageResponse(
-      <img width={size.width} height={size.height} src={"https://web3.bio/img/web3bio-social.jpg"} />,
+      (
+        <img
+          width={size.width}
+          height={size.height}
+          src={"https://web3.bio/img/web3bio-social.jpg"}
+        />
+      ),
       {
         ...size,
       }
