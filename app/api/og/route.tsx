@@ -3,7 +3,7 @@ import { NextRequest } from "next/server";
 import { formatText } from "../../../utils/utils";
 
 export const runtime = "edge";
-export const maxDuration = 34;
+export const maxDuration = 45;
 let filename = "og.png";
 
 const size = {
