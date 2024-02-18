@@ -141,7 +141,7 @@ export default function D3ResultGraph(props) {
   } = props;
   const [currentNode, setCurrentNode] = useState<any>(null);
   const [hideTooltip, setHideToolTip] = useState(true);
-  const [transform, setTransform] = useState("");
+  const [transform, setTransform] = useState([0, 0]);
   const tooltipContainer = useRef(null);
   const graphContainer = useRef<HTMLDivElement>(null);
 
@@ -182,7 +182,7 @@ export default function D3ResultGraph(props) {
               setHideToolTip(true);
             })
             .on("end", (e) => {
-              setTransform(`translate(${e.transform.x}px,${e.transform.y}px)`);
+              setTransform([e.transform.x, e.transform.y]);
               setHideToolTip(false);
             })
         )
@@ -197,7 +197,12 @@ export default function D3ResultGraph(props) {
         }
         svg.call(transition);
         function transition() {
-          let currentTransform = [width / 2, height / 2, height];
+   
+          let currentTransform = [
+            width / 2 - transform[0],
+            height / 2 - transform[1],
+            height,
+          ];
           const i = d3.interpolateZoom(currentTransform, [
             d.x,
             d.y,
@@ -210,7 +215,7 @@ export default function D3ResultGraph(props) {
             .duration(i.duration)
             .attrTween(
               "transform",
-              () => (t) => transform((currentTransform = i(t)))
+              () => (t) => zoomTo((currentTransform = i(t)))
             )
             // .attr("opacity", 0)
             .on("end", () => {
@@ -220,7 +225,7 @@ export default function D3ResultGraph(props) {
             });
         }
 
-        function transform([x, y, r]) {
+        function zoomTo([x, y, r]) {
           return `
             translate(${width / 2}, ${height / 2})
             scale(${height / r})
@@ -513,7 +518,7 @@ export default function D3ResultGraph(props) {
             top:
               currentNode.y +
               (currentNode.isIdentity ? IdentityNodeSize : NFTNodeSize * 2),
-            transform: transform,
+            transform: `translate(${transform[0]}px,${transform[1]}px)`,
           }}
           onClick={(e) => {
             e.preventDefault();
