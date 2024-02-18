@@ -3,6 +3,7 @@ import { NextRequest } from "next/server";
 import { formatText } from "../../../utils/utils";
 
 export const runtime = "edge";
+export const maxDuration = 34;
 let filename = "og.png";
 
 const size = {
@@ -24,11 +25,6 @@ export async function GET(request: NextRequest) {
       !paramAvatar || paramAvatar === "null"
         ? process.env.NEXT_PUBLIC_PROFILE_END_POINT + `/avatar/${path}`
         : paramAvatar;
-    const avatarImageData = avatarImg.includes(".webp")
-      ? avatarImg
-      : await fetch(new URL(avatarImg, import.meta.url)).then((res) =>
-          res.arrayBuffer()
-        );
 
     const isShowDefault = ![address, path, displayName].some((x) => !!x);
 
@@ -83,7 +79,7 @@ export async function GET(request: NextRequest) {
             }}
           ></div>
 
-          {avatarImageData && (
+          {avatarImg && (
             <img
               style={{
                 backgroundColor: "#f9f9f9",
@@ -94,7 +90,7 @@ export async function GET(request: NextRequest) {
               }}
               width={180}
               height={180}
-              src={avatarImageData as string}
+              src={avatarImg}
               alt={path || ""}
             />
           )}
