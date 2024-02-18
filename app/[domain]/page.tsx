@@ -109,7 +109,7 @@ export async function generateMetadata({
     });
 
   const defaultIdx = data.length + 1;
-  fcMetadata[`fc:frame:button:${defaultIdx}`] = "More";
+  fcMetadata[`fc:frame:button:${defaultIdx}`] = "🌐 🖼 🌈 More";
   fcMetadata[`fc:frame:button:${defaultIdx}:action`] = "link";
   fcMetadata[`fc:frame:button:${defaultIdx}:target`] = `${baseURL}/${domain}`;
 
