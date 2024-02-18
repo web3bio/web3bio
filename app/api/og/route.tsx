@@ -4,6 +4,7 @@ import { formatText } from "../../../utils/utils";
 
 export const runtime = "edge";
 export const maxDuration = 45;
+export const dynamic = 'force-dynamic'
 let filename = "og.png";
 
 const size = {
