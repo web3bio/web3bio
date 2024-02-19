@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { ProfileFetcher } from "../apis/profile";
-import Image from "next/image";
 import Link from "next/link";
 import SVG from "react-inlinesvg";
 import Clipboard from "react-clipboard.js";
@@ -15,6 +14,8 @@ interface RenderProfileBadgeProps {
   platform?: PlatformType;
   remoteFetch?: boolean;
   parentRef?: Element;
+  hideAvatar?: boolean;
+  offset?: Array<number>
 }
 
 export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
@@ -23,6 +24,8 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
     identity,
     platform = PlatformType.ens,
     remoteFetch,
+    hideAvatar = false,
+    offset,
   } = props;
   const [visible, setVisible] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -37,7 +40,7 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
     { keepPreviousData: true }
   );
   const relatedPath = `${identity}${
-    platform === PlatformType.farcaster ? ".farcaster" : ""
+    platform.toLowerCase() === PlatformType.farcaster ? ".farcaster" : ""
   }`;
 
   useEffect(() => {
@@ -71,12 +74,13 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
       action={["hover", "focus"]}
       popupVisible={showPopup}
       popupAlign={{
-        points: ['bc', 'tc'],
-        offset: [0, -3]
+        points: ["bc", "tc"],
+        offset: offset || [0, -5],
       }}
       popupStyle={{
         display: showPopup && data ? "block" : "none",
         position: "absolute",
+        zIndex: 9999,
       }}
       autoDestroy
       onPopupVisibleChange={(visible) => setShowPopup(visible)}
@@ -126,19 +130,18 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
       }
     >
       <div ref={ref} className="feed-token c-hand">
-        {data?.avatar && (
-          <Image
+        {data?.avatar && !hideAvatar && (
+          <Avatar
             className="feed-token-icon"
             src={data.avatar}
             alt={data.displayName}
             height={20}
             width={20}
-            loading="lazy"
           />
         )}
         <span
           className="feed-token-value"
-          title={data?.displayName || identity}
+          title={data?.displayName ? `${data?.displayName} (${identity})` : identity}
         >
           {data?.displayName || formatText(identity)}
         </span>
