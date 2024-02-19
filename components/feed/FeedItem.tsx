@@ -157,18 +157,16 @@ const RenderFeedItem = (props) => {
       <div className="feed-item-content">
         <div className="feed-item-header">
           <div className="feed-item-name">
-            <strong>
-              {(feed.tag === "social" && (
-                <RenderProfileBadge
-                  hideAvatar
-                  platform={identity.platform}
-                  offset={[50, -5]}
-                  identity={identity.identity}
-                  remoteFetch
-                />
-              )) ||
-                feedOwner}
-            </strong>
+            {(
+              <RenderProfileBadge
+                hideAvatar
+                platform={identity.platform}
+                offset={[50, -5]}
+                identity={identity.identity}
+                remoteFetch
+              />
+            ) ||
+              feedOwner}
           </div>
           <div className="feed-item-action dropdown dropdown-right">
             <Link

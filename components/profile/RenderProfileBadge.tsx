@@ -40,7 +40,7 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
     { keepPreviousData: true }
   );
   const relatedPath = `${identity}${
-    platform === PlatformType.farcaster ? ".farcaster" : ""
+    platform.toLowerCase() === PlatformType.farcaster ? ".farcaster" : ""
   }`;
 
   useEffect(() => {
@@ -80,6 +80,7 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
       popupStyle={{
         display: showPopup && data ? "block" : "none",
         position: "absolute",
+        zIndex: 9999,
       }}
       autoDestroy
       onPopupVisibleChange={(visible) => setShowPopup(visible)}
@@ -140,7 +141,7 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
         )}
         <span
           className="feed-token-value"
-          title={data?.displayName || identity}
+          title={data?.displayName ? `${data?.displayName} (${identity})` : identity}
         >
           {data?.displayName || formatText(identity)}
         </span>

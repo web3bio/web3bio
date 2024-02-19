@@ -67,7 +67,7 @@ const RenderSocialCard = (props) => {
                         target="_blank"
                       >
                         <div className="feed-target-name">
-                          <strong>{x.key}</strong>
+                          {x.key}
                         </div>
                         <div className="feed-target-content">{x.value}</div>
                         {x.handle && (
@@ -119,7 +119,7 @@ const RenderSocialCard = (props) => {
                       }}
                     >
                       <div className="feed-target-name">
-                        <strong>{metadata.title}</strong>
+                        {metadata.title}
                       </div>
                       <div className="feed-target-description">
                         {metadata.body}
@@ -135,13 +135,11 @@ const RenderSocialCard = (props) => {
                       target="_blank"
                     >
                       <div className="feed-target-name">
-                        <strong>
-                          <RenderProfileBadge
-                            platform={platform}
-                            identity={metadata.target?.handle}
-                            remoteFetch
-                          />
-                        </strong>
+                        <RenderProfileBadge
+                          platform={platform}
+                          identity={metadata.target?.handle}
+                          remoteFetch
+                        />
                       </div>
                       <div className="feed-target-content">
                         {metadata.target?.body}
@@ -240,13 +238,11 @@ const RenderSocialCard = (props) => {
                       target="_blank"
                     >
                       <div className="feed-target-name">
-                        <strong>
-                          <RenderProfileBadge
-                            platform={platform}
-                            identity={metadata.target?.handle}
-                            remoteFetch
-                          />
-                        </strong>
+                        <RenderProfileBadge
+                          platform={platform}
+                          identity={metadata.target?.handle}
+                          remoteFetch
+                        />
                       </div>
                       <div className="feed-target-content">
                         {metadata.target?.body}
@@ -307,7 +303,7 @@ const RenderSocialCard = (props) => {
                   target="_blank"
                 >
                   <div className="feed-target-name">
-                    <strong>{metadata.handle}</strong>
+                    {metadata.handle}
                   </div>
                   <div className="feed-target-content">{metadata.body}</div>
                   {metadata.media?.length > 0 && (
@@ -367,7 +363,7 @@ const RenderSocialCard = (props) => {
                     target="_blank"
                   >
                     <div className="feed-target-name">
-                      <strong>{metadata.title}</strong>
+                      {metadata.title}
                     </div>
                     <div className="feed-target-description">
                       {metadata.body}
@@ -383,13 +379,11 @@ const RenderSocialCard = (props) => {
                     target="_blank"
                   >
                     <div className="feed-target-name">
-                      <strong>
-                        <RenderProfileBadge
-                          platform={platform}
-                          identity={metadata.target?.handle}
-                          remoteFetch
-                        />
-                      </strong>
+                      <RenderProfileBadge
+                        platform={platform}
+                        identity={metadata.target?.handle}
+                        remoteFetch
+                      />
                     </div>
                     <div className="feed-target-content">
                       {metadata.target?.body}
