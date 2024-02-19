@@ -131,13 +131,12 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
     >
       <div ref={ref} className="feed-token c-hand">
         {data?.avatar && !hideAvatar && (
-          <Image
+          <Avatar
             className="feed-token-icon"
             src={data.avatar}
             alt={data.displayName}
             height={20}
             width={20}
-            loading="lazy"
           />
         )}
         <span

@@ -16,7 +16,7 @@ import {
   SocialPlatformMapping,
 } from "../../utils/utils";
 import ActionExternalMenu from "./ActionExternalMenu";
-import { ActivityType, TagsFilterMapping } from "../../utils/activity";
+import { ActivityType } from "../../utils/activity";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
 
 export const RenderToken = ({ key, name, symbol, image, value }) => {
@@ -123,6 +123,7 @@ const RenderFeedItem = (props) => {
   const feedOwner = isOwner
     ? identity.displayName || formatText(identity.address)
     : formatText(feed.from);
+
   return (
     <>
       <div className="feed-item-icon">
@@ -160,8 +161,9 @@ const RenderFeedItem = (props) => {
               {(feed.tag === "social" && (
                 <RenderProfileBadge
                   hideAvatar
+                  platform={identity.platform}
                   offset={[50, -5]}
-                  identity={feedOwner}
+                  identity={identity.identity}
                   remoteFetch
                 />
               )) ||

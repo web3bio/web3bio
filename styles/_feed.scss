@@ -80,9 +80,7 @@
       flex-direction: column;
       width: 100%;
 
-      &.multisig {
-
-      }
+      &.multisig {}
     }
 
     .feed-item-action {
@@ -180,6 +178,12 @@
         transition: all .25s ease-in-out;
         width: 100%;
 
+        .feed-token {
+          background: transparent;
+          box-shadow: none;
+          border: none;
+        }
+
         .feed-target-description {
           display: -webkit-box;
           margin-top: .25rem;
@@ -224,6 +228,7 @@
       }
 
       a.feed-target {
+
         &:focus,
         &:hover {
           border-color: darken($border-color, 2%);

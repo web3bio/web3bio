@@ -3,10 +3,7 @@ import { memo } from "react";
 import { ModalType } from "../../hooks/useModal";
 import { ActivityType } from "../../utils/activity";
 import { resolveIPFS_URL } from "../../utils/ipfs";
-import {
-  ActivityTypeMapping,
-  resolveMediaURL,
-} from "../../utils/utils";
+import { ActivityTypeMapping, resolveMediaURL } from "../../utils/utils";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { domainRegexp } from "./ActionExternalMenu";
@@ -19,7 +16,7 @@ const RenderSocialCard = (props) => {
       metadata?.body
     );
     const actionId = action?.action_id;
-
+    const platform = action?.platform;
     const renderContent = (() => {
       switch (action.type) {
         case ActivityType.profile:
@@ -40,12 +37,16 @@ const RenderSocialCard = (props) => {
                     <RenderProfileBadge
                       key={`${actionId}_${action.type}_${x.handle}_${x.profile_id}`}
                       identity={x.handle}
+                      platform={platform}
                     />
-                  ))) || <RenderProfileBadge identity={metadata.handle} />}
-                {action.platform && (
-                  <span className="feed-platform">
-                    &nbsp;on {action.platform}
-                  </span>
+                  ))) || (
+                  <RenderProfileBadge
+                    platform={platform}
+                    identity={metadata.handle}
+                  />
+                )}
+                {platform && (
+                  <span className="feed-platform">&nbsp;on {platform}</span>
                 )}
               </div>
               {action.duplicatedObjects?.map((x) => {
@@ -68,9 +69,7 @@ const RenderSocialCard = (props) => {
                         </div>
                         <div className="feed-target-content">{x.value}</div>
                         {x.handle && (
-                          <div className="feed-target-address">
-                            {x.handle}
-                          </div>
+                          <div className="feed-target-address">{x.handle}</div>
                         )}
                       </Link>
                     </div>
@@ -83,7 +82,7 @@ const RenderSocialCard = (props) => {
         case ActivityType.comment:
         case ActivityType.share:
         case ActivityType.revise:
-          if (["Mirror"].includes(action.platform) || metadata.summary) {
+          if (["Mirror"].includes(platform) || metadata.summary) {
             return (
               <>
                 <div className="feed-content">
@@ -92,10 +91,8 @@ const RenderSocialCard = (props) => {
                       metadata.action || "default"
                     ]
                   }
-                  {action.platform && (
-                    <span className="feed-platform">
-                      &nbsp;on {action.platform}
-                    </span>
+                  {platform && (
+                    <span className="feed-platform">&nbsp;on {platform}</span>
                   )}
                 </div>
                 {metadata.body && (
@@ -136,7 +133,12 @@ const RenderSocialCard = (props) => {
                       target="_blank"
                     >
                       <div className="feed-target-name">
-                        <strong>{metadata.target?.handle}</strong>
+                        <strong>
+                          <RenderProfileBadge
+                            identity={metadata.target?.handle}
+                            remoteFetch
+                          />
+                        </strong>
                       </div>
                       <div className="feed-target-content">
                         {metadata.target?.body}
@@ -192,11 +194,7 @@ const RenderSocialCard = (props) => {
                         metadata.action || "default"
                       ]
                     }
-                    {action.platform && (
-                      <span className="feed-platform">
-                        &nbsp; 
-                      </span>
-                    )}
+                    {platform && <span className="feed-platform">&nbsp;</span>}
                   </div>
                 )}
                 {metadata?.media?.length > 0 && (
@@ -239,7 +237,12 @@ const RenderSocialCard = (props) => {
                       target="_blank"
                     >
                       <div className="feed-target-name">
-                        <strong>{metadata.target?.handle}</strong>
+                        <strong>
+                          <RenderProfileBadge
+                            identity={metadata.target?.handle}
+                            remoteFetch
+                          />
+                        </strong>
                       </div>
                       <div className="feed-target-content">
                         {metadata.target?.body}
@@ -289,10 +292,8 @@ const RenderSocialCard = (props) => {
             <>
               <div className="feed-content">
                 {ActivityTypeMapping(action.type).action["post"]}
-                {action.platform && (
-                  <span className="feed-platform">
-                    &nbsp;on {action.platform}
-                  </span>
+                {platform && (
+                  <span className="feed-platform">&nbsp;on {platform}</span>
                 )}
               </div>
               <div className="feed-content">
@@ -350,10 +351,8 @@ const RenderSocialCard = (props) => {
                     metadata.action || "default"
                   ]
                 }
-                {action.platform && (
-                  <span className="feed-platform">
-                    &nbsp;on {action.platform}
-                  </span>
+                {platform && (
+                  <span className="feed-platform">&nbsp;on {platform}</span>
                 )}
               </div>
               {metadata.body && (
@@ -380,7 +379,13 @@ const RenderSocialCard = (props) => {
                     target="_blank"
                   >
                     <div className="feed-target-name">
-                      <strong>{metadata.target?.handle}</strong>
+                      <strong>
+                        <RenderProfileBadge
+                          platform={platform}
+                          identity={metadata.target?.handle}
+                          remoteFetch
+                        />
+                      </strong>
                     </div>
                     <div className="feed-target-content">
                       {metadata.target?.body}
