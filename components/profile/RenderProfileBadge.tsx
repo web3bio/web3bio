@@ -15,6 +15,8 @@ interface RenderProfileBadgeProps {
   platform?: PlatformType;
   remoteFetch?: boolean;
   parentRef?: Element;
+  hideAvatar?: boolean;
+  offset?: Array<number>
 }
 
 export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
@@ -23,6 +25,8 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
     identity,
     platform = PlatformType.ens,
     remoteFetch,
+    hideAvatar = false,
+    offset,
   } = props;
   const [visible, setVisible] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -71,8 +75,8 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
       action={["hover", "focus"]}
       popupVisible={showPopup}
       popupAlign={{
-        points: ['bc', 'tc'],
-        offset: [0, -3]
+        points: ["bc", "tc"],
+        offset: offset || [0, -5],
       }}
       popupStyle={{
         display: showPopup && data ? "block" : "none",
@@ -126,7 +130,7 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
       }
     >
       <div ref={ref} className="feed-token c-hand">
-        {data?.avatar && (
+        {data?.avatar && !hideAvatar && (
           <Image
             className="feed-token-icon"
             src={data.avatar}
