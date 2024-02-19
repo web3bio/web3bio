@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { ProfileFetcher } from "../apis/profile";
-import Image from "next/image";
 import Link from "next/link";
 import SVG from "react-inlinesvg";
 import Clipboard from "react-clipboard.js";

@@ -38,11 +38,13 @@ const RenderSocialCard = (props) => {
                       key={`${actionId}_${action.type}_${x.handle}_${x.profile_id}`}
                       identity={x.handle}
                       platform={platform}
+                      remoteFetch
                     />
                   ))) || (
                   <RenderProfileBadge
                     platform={platform}
                     identity={metadata.handle}
+                    remoteFetch
                   />
                 )}
                 {platform && (
@@ -135,6 +137,7 @@ const RenderSocialCard = (props) => {
                       <div className="feed-target-name">
                         <strong>
                           <RenderProfileBadge
+                            platform={platform}
                             identity={metadata.target?.handle}
                             remoteFetch
                           />
@@ -239,6 +242,7 @@ const RenderSocialCard = (props) => {
                       <div className="feed-target-name">
                         <strong>
                           <RenderProfileBadge
+                            platform={platform}
                             identity={metadata.target?.handle}
                             remoteFetch
                           />
