@@ -5,9 +5,9 @@ import _ from "lodash";
 import { useSelector } from "react-redux";
 import { AppState } from "../../state";
 import { ProfileInterface } from "../../utils/profile";
-import D3ResultGraph from "../graph/D3ResultGraph";
 import { PlatformType } from "../../utils/platform";
 import { GraphType } from "../../utils/graph";
+import D3IdentityGraph from "../graph/D3IdentityGraph";
 
 const RenderAccount = (props) => {
   const { identityGraph, graphTitle } = props;
@@ -18,14 +18,13 @@ const RenderAccount = (props) => {
   const profiles = _.flatten(Object.values(cached).map((x) => x));
   const resolvedListData = (() => {
     if (!identityGraph) return [];
-    const _identityGraph = JSON.parse(JSON.stringify(identityGraph))
+    const _identityGraph = JSON.parse(JSON.stringify(identityGraph));
     const _resolved = _identityGraph.nodes.filter(
       (x) => x.platform !== PlatformType.ens
     );
     _identityGraph.nodes
       .filter((x) => x.platform === PlatformType.ens)
       .forEach((x) => {
-
         const connection = _identityGraph.edges.find(
           (i) => i.target === x.id || i.source === x.id
         );
@@ -70,7 +69,7 @@ const RenderAccount = (props) => {
         </div>
       </div>
       {open && (
-        <D3ResultGraph
+        <D3IdentityGraph
           graphType={GraphType.identityGraph}
           onClose={() => {
             setOpen(false);

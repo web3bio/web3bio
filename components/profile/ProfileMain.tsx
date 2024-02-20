@@ -24,7 +24,7 @@ import { WidgetPhiland } from "./WidgetPhiland";
 import { regexEns } from "../../utils/regexp";
 import LoadingSkeleton from "./LoadingSkeleton";
 import { WidgetTypes } from "../../utils/profile";
-import D3ResultGraph from "../graph/D3ResultGraph";
+import D3SocialGraph from "../graph/D3SocialGraph";
 import {
   GET_PROFILE_IDENTITY_GRAPH,
   GET_PROFILE_SOCIAL_GRAPH,
@@ -159,7 +159,7 @@ export default function ProfileMain(props) {
   return (
     <>
       {showGraph && !socialGraphError && (
-        <D3ResultGraph
+        <D3SocialGraph
           graphType={graphType}
           expandIdentity={(identity) => {
             setGraphId(identity.id);
@@ -358,8 +358,8 @@ export default function ProfileMain(props) {
               <div
                 className="btn btn-link btn-sm"
                 onClick={() => {
-                  setGraphType(GraphType.socialGraph)
-                  setShowGraph(true)
+                  setGraphType(GraphType.socialGraph);
+                  setShowGraph(true);
                 }}
               >
                 <SVG src={"/icons/icon-view.svg"} width={20} height={20} />{" "}

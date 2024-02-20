@@ -129,7 +129,7 @@ const updateNodes = (nodeContainer) => {
   };
 };
 
-export default function D3ResultGraph(props) {
+export default function D3IdentityGraph(props) {
   const {
     data,
     onClose,
@@ -197,7 +197,6 @@ export default function D3ResultGraph(props) {
         }
         svg.call(transition);
         function transition() {
-   
           let currentTransform = [
             width / 2 - transform[0],
             height / 2 - transform[1],
