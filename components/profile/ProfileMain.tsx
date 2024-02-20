@@ -25,12 +25,8 @@ import { regexEns } from "../../utils/regexp";
 import LoadingSkeleton from "./LoadingSkeleton";
 import { WidgetTypes } from "../../utils/profile";
 import D3SocialGraph from "../graph/D3SocialGraph";
-import {
-  GET_PROFILE_IDENTITY_GRAPH,
-  GET_PROFILE_SOCIAL_GRAPH,
-} from "../../utils/queries";
+import { GET_PROFILE_SOCIAL_GRAPH } from "../../utils/queries";
 import { useLazyQuery } from "@apollo/client";
-import { GraphType } from "../../utils/graph";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
@@ -39,15 +35,11 @@ export default function ProfileMain(props) {
   const { isOpen, modalType, closeModal, openModal, params } = useModal();
   const [mounted, setMounted] = useState(false);
   const [showGraph, setShowGraph] = useState(false);
-  const [graphType, setGraphType] = useState(GraphType.socialGraph);
-  const [graphId, setGraphId] = useState("");
-  const [title, setTitle] = useState(data.displayName || domain);
   const profileWidgetStates = useSelector<AppState, WidgetState>(
     (state) => state.widgets
   );
 
   const [socialGraph, setSocialGraph] = useState<any>(null);
-  const [identityGraph, setIdentityGraph] = useState<any>(null);
   const [querySocialGraph, { data: socialGraphData, error: socialGraphError }] =
     useLazyQuery(GET_PROFILE_SOCIAL_GRAPH, {
       variables: {
@@ -55,14 +47,7 @@ export default function ProfileMain(props) {
         identity: domain,
       },
     });
-  const [queryIdentityGraph, { data: identityGraphData }] = useLazyQuery(
-    GET_PROFILE_IDENTITY_GRAPH,
-    {
-      variables: {
-        graphId: graphId,
-      },
-    }
-  );
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -70,64 +55,47 @@ export default function ProfileMain(props) {
   useEffect(() => {
     if (mounted && domain && platform) querySocialGraph();
     if (!socialGraphData) return;
-    setIdentityGraph({
-      nodes: socialGraphData.socialFollows.identityGraph.vertices,
-      edges: socialGraphData.socialFollows.identityGraph.edges,
-    });
-    const _socialGraph = {
-      nodes: new Array(),
-      edges: new Array(),
-    };
-    socialGraphData.socialFollows.followingTopology.forEach((x) => {
-      _socialGraph.nodes.push({
-        ...x.originalSource,
-        id: x.source,
-      });
+    // const _socialGraph = {
+    //   nodes: new Array(),
+    //   edges: new Array(),
+    // };
+    // socialGraphData.socialFollows.followingTopology.forEach((x) => {
+    //   _socialGraph.nodes.push({
+    //     ...x.originalSource,
+    //     id: x.source,
+    //   });
 
-      _socialGraph.nodes.push({
-        ...x.originalTarget,
-        id: x.target,
-      });
-      _socialGraph.edges.push({
-        source: x.source,
-        target: x.target,
-        dataSource: x.dataSource,
-        label: "following",
-      });
-    });
-    socialGraphData.socialFollows.followerTopology.forEach((x) => {
-      _socialGraph.nodes.push({
-        ...x.originalSource,
-        id: x.source,
-      });
+    //   _socialGraph.nodes.push({
+    //     ...x.originalTarget,
+    //     id: x.target,
+    //   });
+    //   _socialGraph.edges.push({
+    //     source: x.source,
+    //     target: x.target,
+    //     dataSource: x.dataSource,
+    //     label: "following",
+    //   });
+    // });
+    // socialGraphData.socialFollows.followerTopology.forEach((x) => {
+    //   _socialGraph.nodes.push({
+    //     ...x.originalSource,
+    //     id: x.source,
+    //   });
 
-      _socialGraph.nodes.push({
-        ...x.originalTarget,
-        id: x.target,
-      });
-      _socialGraph.edges.push({
-        source: x.source,
-        target: x.target,
-        dataSource: x.dataSource,
-        label: "followed by",
-      });
-    });
-    setSocialGraph(_socialGraph);
+    //   _socialGraph.nodes.push({
+    //     ...x.originalTarget,
+    //     id: x.target,
+    //   });
+    //   _socialGraph.edges.push({
+    //     source: x.source,
+    //     target: x.target,
+    //     dataSource: x.dataSource,
+    //     label: "followed by",
+    //   });
+    // });
+    // setSocialGraph(_socialGraph);
   }, [socialGraphData, platform, domain, querySocialGraph, mounted]);
-  // identity graph
-  useEffect(() => {
-    if (graphId) {
-      queryIdentityGraph();
-      if (!identityGraphData || !identityGraphData?.queryIdentityGraph?.length)
-        return;
-      setIdentityGraph({
-        nodes: identityGraphData.queryIdentityGraph[0].vertices,
-        edges: identityGraphData.queryIdentityGraph[0].edges,
-      });
-      setGraphType(1);
-      setGraphId("");
-    }
-  }, [graphId, identityGraphData, queryIdentityGraph]);
+
   const onCopySuccess = () => {
     setIsCopied(true);
     setTimeout(() => {
@@ -160,23 +128,11 @@ export default function ProfileMain(props) {
     <>
       {showGraph && !socialGraphError && (
         <D3SocialGraph
-          graphType={graphType}
-          expandIdentity={(identity) => {
-            setGraphId(identity.id);
-            setTitle(identity.displayName);
-          }}
-          onBack={() => {
-            setGraphType(GraphType.socialGraph);
-            setTitle(data.displayName || domain);
-          }}
-          onClose={() => {
-            setGraphType(0);
+          onDismiss={() => {
             setShowGraph(false);
           }}
-          data={
-            graphType === GraphType.socialGraph ? socialGraph : identityGraph
-          }
-          title={title}
+          data={socialGraphData}
+          title={data.displayName || domain}
         />
       )}
       <div
@@ -358,7 +314,6 @@ export default function ProfileMain(props) {
               <div
                 className="btn btn-link btn-sm"
                 onClick={() => {
-                  setGraphType(GraphType.socialGraph);
                   setShowGraph(true);
                 }}
               >
