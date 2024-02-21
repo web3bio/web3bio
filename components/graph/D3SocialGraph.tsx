@@ -12,7 +12,7 @@ const enum GraphView {
   initial = 1,
   platform = 2,
   action = 3,
-  identity = 3,
+  identity = 4,
 }
 
 const updateNodes = (nodeContainer) => {
@@ -115,42 +115,6 @@ export default function D3SocialGraph(props) {
         .on("click", removeHighlight)
         .append("svg:g");
 
-      const zoomAndExpand = (e, d) => {
-        setCurrentNode(null);
-        setHideToolTip(true);
-        svg.call(transition);
-        function transition() {
-          let currentTransform = [
-            width / 2 - transform[0],
-            height / 2 - transform[1],
-            height,
-          ];
-          const i = d3.interpolateZoom(currentTransform, [d.x, d.y, 20 * 3]);
-
-          svg
-            .transition()
-            .delay(500)
-            .duration(i.duration)
-            .attrTween(
-              "transform",
-              () => (t) => zoomTo((currentTransform = i(t)))
-            );
-          // .attr("opacity", 0)
-          // .on("end", () => {
-          //   setTimeout(() => {
-          //     expandIdentity(d);
-          //   }, 300);
-          // });
-        }
-
-        function zoomTo([x, y, r]) {
-          return `
-            translate(${width / 2}, ${height / 2})
-            scale(${height / r})
-            translate(${-x}, ${-y})
-          `;
-        }
-      };
       const generateSimulation = () => {
         const simulation = d3
           .forceSimulation(nodes)
@@ -236,8 +200,8 @@ export default function D3SocialGraph(props) {
           d3
             .drag()
             .on("drag", dragged)
-            // .on("start", () => setHideToolTip(true))
-            // .on("end", () => setHideToolTip(false))
+            .on("start", () => setHideToolTip(true))
+            .on("end", () => setHideToolTip(false))
         );
 
       const circle = nodeContainer
@@ -261,9 +225,7 @@ export default function D3SocialGraph(props) {
           removeHighlight();
           highlightNode(i);
         });
-      // .on("dblclick", (e, i) => {
-      //   zoomAndExpand(e, i);
-      // });
+
       const { displayName, identity, identityBadge, identityIcon } =
         updateNodes(nodeContainer);
       const ticked = () => {
@@ -393,7 +355,7 @@ export default function D3SocialGraph(props) {
               {graphView === GraphView.identity && (
                 <div
                   className="btn"
-                  onClick={() => setGraphView(GraphView.action)}
+                  onClick={() => setGraphView(GraphView.initial)}
                 >
                   <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
                   Back
@@ -405,92 +367,84 @@ export default function D3SocialGraph(props) {
             </div>
           </div>
         </div>
-        {/* {currentNode && !hideTooltip && (
-    <div
-      className="web3bio-tooltip"
-      style={{
-        left:
-          currentNode.x +
-          (currentNode.isIdentity ? IdentityNodeSize : NFTNodeSize * 2),
-        top:
-          currentNode.y +
-          (currentNode.isIdentity ? IdentityNodeSize : NFTNodeSize * 2),
-        transform: `translate(${transform[0]}px,${transform[1]}px)`,
-      }}
-      onClick={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-      }}
-    >
-      {currentNode.isIdentity ? (
-        <ul>
-          <li className="text-large text-bold">
-            {currentNode.displayName || "-"}
-          </li>
-          <li className="mb-1">
-            {currentNode.identity != currentNode.displayName
-              ? currentNode.platform === PlatformType.ethereum
-                ? formatText(currentNode.identity)
-                : currentNode.identity
-              : ""}
-          </li>
-          {(currentNode.uid && (
-            <li>
-              <span className="text-gray">
-                {currentNode.platform === PlatformType.farcaster
-                  ? "FID"
-                  : "UID"}
-                :{" "}
-              </span>
-              {currentNode.uid}
-            </li>
-          )) ||
-            ""}
-          {((currentNode.address ||
-            currentNode.platform === PlatformType.ethereum) && (
-            <li>
-              <span className="text-gray">Address: </span>
-              {currentNode.address || currentNode.identity}
-            </li>
-          )) ||
-            ""}
-          <li>
-            <span className="text-gray">Platform: </span>
-            {SocialPlatformMapping(currentNode.platform as PlatformType)
-              ?.label ||
-              currentNode.platform ||
-              "Unknown"}
-          </li>
-        </ul>
-      ) : (
-        <ul>
-          <li className="text-large text-bold mb-1">
-            {currentNode.identity || ""}
-          </li>
-          <li>
-            <span className="text-gray">Platform: </span>
-            {currentNode.platform || ""}
-          </li>
-          <li>
-            <span className="text-gray">Owner: </span>
-            {currentNode.holder || ""}
-          </li>
-        </ul>
-      )}
-      {graphType === GraphType.socialGraph && (
-        <div
-          className="btn"
-          onClick={() => {
-            setHideToolTip(true);
-            expandIdentity(currentNode);
-            setCurrentNode(null);
-          }}
-        >
-          Expand
-        </div>
-      )}
-    </div>
-  )} */}
+        {currentNode && !hideTooltip && (
+          <div
+            className="web3bio-tooltip"
+            style={{
+              left: currentNode.x + SocialGraphNodeSize * 2,
+              top: currentNode.y + currentNode.x + SocialGraphNodeSize * 2,
+              transform: `translate(${transform[0]}px,${transform[1]}px)`,
+            }}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+          >
+            {!currentNode.cluster ? (
+              <ul>
+                <li className="text-large text-bold">
+                  {currentNode.displayName || "-"}
+                </li>
+                <li className="mb-1">
+                  {currentNode.identity != currentNode.displayName
+                    ? currentNode.platform === PlatformType.ethereum
+                      ? formatText(currentNode.identity)
+                      : currentNode.identity
+                    : ""}
+                </li>
+                {(currentNode.uid && (
+                  <li>
+                    <span className="text-gray">
+                      {currentNode.platform === PlatformType.farcaster
+                        ? "FID"
+                        : "UID"}
+                      :{" "}
+                    </span>
+                    {currentNode.uid}
+                  </li>
+                )) ||
+                  ""}
+                {((currentNode.address ||
+                  currentNode.platform === PlatformType.ethereum) && (
+                  <li>
+                    <span className="text-gray">Address: </span>
+                    {currentNode.address || currentNode.identity}
+                  </li>
+                )) ||
+                  ""}
+                <li>
+                  <span className="text-gray">Platform: </span>
+                  {SocialPlatformMapping(currentNode.platform as PlatformType)
+                    ?.label ||
+                    currentNode.platform ||
+                    "Unknown"}
+                </li>
+              </ul>
+            ) : (
+              <ul>
+                <li>
+                  <span className="text-gray">Platform: </span>
+                  {currentNode.platform || ""}
+                </li>
+                <li>
+                  <span className="text-gray">Owner: </span>
+                  {currentNode.label || ""}
+                </li>
+              </ul>
+            )}
+            {graphView === GraphView.initial && (
+              <div
+                className="btn"
+                onClick={() => {
+                  setHideToolTip(true);
+                  setCurrentNode(null);
+                }}
+              >
+                Expand
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </>
   );

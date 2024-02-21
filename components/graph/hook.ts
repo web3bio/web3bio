@@ -71,6 +71,7 @@ export const useInitialPackingSocialGraphData = (data) => {
         target: _nodes.find((i) => i.platform === x.platform)?.id,
         platform: x.platform,
         label: x.platform,
+        id: `${x.id}*${_nodes.find((i) => i.platform === x.platform)?.id}`,
       });
     }
   });
