@@ -61,6 +61,7 @@ export const useInitialPackingSocialGraphData = (data) => {
         displayName: `items:${cur.children.length}`,
         platform: cur.platform,
         amount: cur.children.length,
+        parent: cur.id,
         cluster: true,
       });
     }
@@ -89,5 +90,25 @@ export const useIdentitySocialGraphData = (data) => {
   return {
     nodes: data.queryIdentityGraph?.[0]?.vertices || [],
     edges: data.queryIdentityGraph?.[0]?.edges || [],
+  };
+};
+
+export const usePlatformSocialGraphData = (data) => {
+  if (!data || !data.children?.length) return { nodes: [], edges: [] };
+  const _data = JSON.parse(JSON.stringify(data));
+  const _nodes = [..._data.children.map((x) => x)];
+  const _edges = [
+    ...data.children.map((x) => ({
+      source: x.id,
+      target: data.id,
+      type: x.type,
+      id: `${x.id}*${data.id}`,
+    })),
+  ];
+  delete _data.children;
+  _nodes.push(data);
+  return {
+    nodes: _nodes,
+    edges: _edges,
   };
 };

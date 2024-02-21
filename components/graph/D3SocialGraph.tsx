@@ -5,6 +5,7 @@ import SVG from "react-inlinesvg";
 import {
   useIdentitySocialGraphData,
   useInitialPackingSocialGraphData,
+  usePlatformSocialGraphData,
 } from "./hook";
 import { formatText, SocialPlatformMapping } from "../../utils/utils";
 import { PlatformType } from "../../utils/platform";
@@ -59,6 +60,7 @@ export default function D3SocialGraph(props) {
   const [currentNode, setCurrentNode] = useState<any>(null);
   const [graphView, setGraphView] = useState(GraphView.initial);
   const [graphId, setGraphId] = useState("");
+  const [clusterParent, setClusterParent] = useState<any>(null);
   const [hideTooltip, setHideToolTip] = useState(true);
   const [transform, setTransform] = useState([0, 0]);
   const [queryIdentityGraph, { data: remoteIdentityGraphData }] = useLazyQuery(
@@ -72,11 +74,12 @@ export default function D3SocialGraph(props) {
   const graphContainer = useRef<HTMLDivElement>(null);
   const initialGraphData = useInitialPackingSocialGraphData(data);
   const identityGraphData = useIdentitySocialGraphData(remoteIdentityGraphData);
-  console.log(identityGraphData,'identityGraph')
-  
+  const platformGraphData = usePlatformSocialGraphData(clusterParent);
+
   useEffect(() => {
     const graphData = {
       [GraphView.initial]: initialGraphData,
+      [GraphView.platform]: platformGraphData,
     }[graphView];
 
     if (!graphData) return;
@@ -371,6 +374,15 @@ export default function D3SocialGraph(props) {
                 </span>
               </div>
               <div className="btn-close">
+                {graphView === GraphView.platform && (
+                  <div
+                    className="btn"
+                    onClick={() => setGraphView(GraphView.initial)}
+                  >
+                    <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
+                    Back
+                  </div>
+                )}
                 <div className="btn" onClick={onDismiss}>
                   <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
                 </div>
@@ -449,6 +461,12 @@ export default function D3SocialGraph(props) {
                     setHideToolTip(true);
                     setCurrentNode(null);
                     if (currentNode.cluster) {
+                      setClusterParent(
+                        initialGraphData.nodes.find(
+                          (x) => x.id === currentNode?.parent
+                        )
+                      );
+                      setGraphView(GraphView.platform);
                     }
                     if (!currentNode.cluster && currentNode.children?.length) {
                       setGraphId(currentNode.graphId);
