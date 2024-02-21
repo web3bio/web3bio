@@ -56,7 +56,7 @@ export const useInitialPackingSocialGraphData = (data) => {
     if (cur.children?.length) {
       pre.push({
         id: cur.id + ",social",
-        label: cur.children.length,
+        displayName: cur.children.length,
         platform: cur.platform,
         cluster: true,
       });
@@ -67,9 +67,10 @@ export const useInitialPackingSocialGraphData = (data) => {
   _nodes.forEach((x) => {
     if (x.children) {
       edges.push({
-        source: x.graphId,
-        target: _nodes.find((i) => i.platform === x.platform)?.graphId,
+        source: x.id,
+        target: _nodes.find((i) => i.platform === x.platform)?.id,
         platform: x.platform,
+        label: x.platform
       });
     }
   });

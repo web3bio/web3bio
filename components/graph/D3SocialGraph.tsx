@@ -1,13 +1,12 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Empty } from "../shared/Empty";
 import * as d3 from "d3";
 import SVG from "react-inlinesvg";
-import D3IdentityGraph from "./D3IdentityGraph";
 import { useInitialPackingSocialGraphData } from "./hook";
-import { useLazyQuery } from "@apollo/client";
-import { GET_PROFILE_IDENTITY_GRAPH } from "../../utils/queries";
 import { formatText, SocialPlatformMapping } from "../../utils/utils";
 import { PlatformType } from "../../utils/platform";
+
+const SocialGraphNodeSize = 50;
 
 const enum GraphView {
   initial = 1,
@@ -21,26 +20,18 @@ const updateNodes = (nodeContainer) => {
     .append("circle")
     .attr("class", "identity-badge")
     .attr("r", 16)
-    .attr("fill", (d) => SocialPlatformMapping(d.platform).color)
-    .attr("style", (d) => `display:${d.isIdentity ? "normal" : "none"}`);
+    .attr("fill", (d) => SocialPlatformMapping(d.platform).color);
 
   const identityIcon = nodeContainer
     .append("svg:image")
     .attr("class", "identity-icon")
-    .attr("xlink:href", (d) => SocialPlatformMapping(d.platform).icon)
-    .attr("style", (d) => `display:${d.isIdentity ? "normal" : "none"}`);
-
-  const ensBadge = nodeContainer
-    .append("svg:image")
-    .attr("class", "ens-icon")
-    .attr("xlink:href", SocialPlatformMapping(PlatformType.ens).icon)
-    .attr("style", (d) => `display:${d.isIdentity ? "none" : "normal"}`);
+    .attr("xlink:href", (d) => SocialPlatformMapping(d.platform).icon);
 
   const displayName = nodeContainer
     .append("text")
     .attr("class", "displayName")
     .attr("id", (d) => d.id)
-    .text((d) => formatText(d.displayName || d.identity));
+    .text((d) => d.displayName || d.identity);
   const identity = nodeContainer
     .append("text")
     .attr("class", "identity")
@@ -54,7 +45,6 @@ const updateNodes = (nodeContainer) => {
   return {
     identityBadge,
     identityIcon,
-    ensBadge,
     displayName,
     identity,
   };
@@ -83,6 +73,7 @@ export default function D3SocialGraph(props) {
     }[graphView];
 
     if (!graphData) return;
+
     let chart = null;
     const chartContainer = graphContainer?.current;
     const generateGraph = (_data) => {
@@ -168,14 +159,14 @@ export default function D3SocialGraph(props) {
             d3
               .forceLink(edges)
               .id((d) => d.id)
-              .distance(45)
+              .distance(20)
           )
           .force("charge", d3.forceManyBody())
-          .force("x", d3.forceX(width / 2).strength(0.5))
-          .force("y", d3.forceY(height / 2).strength(1.3))
+          .force("x", d3.forceX(width / 2).strength(1.5))
+          .force("y", d3.forceY(height / 2).strength(1))
           .force(
             "collision",
-            d3.forceCollide().radius((d) => 20)
+            d3.forceCollide().radius((d) => 100)
           )
           .force("center", d3.forceCenter(width / 2, height / 2))
           .stop();
@@ -195,7 +186,7 @@ export default function D3SocialGraph(props) {
         .attr("markerUnits", "userSpaceOnUse")
         .attr("markerWidth", 7)
         .attr("markerHeight", 7)
-        .attr("refX", (d) => 50)
+        .attr("refX", (d) => SocialGraphNodeSize+32)
         .attr("orient", "auto")
         .append("path")
         .attr("fill", "#cecece")
@@ -221,7 +212,7 @@ export default function D3SocialGraph(props) {
         .attr("dx", ".5em")
         .attr("dy", "3px")
         .attr("text-anchor", "middle")
-        .text((d) => (d.target.isIdentity ? d.label : ""));
+        .text((d) => d.label);
 
       const dragged = (event, d) => {
         const clamp = (x, lo, hi) => {
@@ -252,11 +243,10 @@ export default function D3SocialGraph(props) {
       const circle = nodeContainer
         .append("circle")
         .attr("stroke-width", 2)
-        .attr("r", (d) => 40)
+        .attr("r", SocialGraphNodeSize)
         .attr("stroke", (d) => SocialPlatformMapping(d.platform).color)
-        .attr("fill", (d) =>
-          d.isIdentity ? "#fff" : SocialPlatformMapping(PlatformType.ens).color
-        );
+        .attr("fill", "#fff");
+
       const maskCircle = nodeContainer
         .attr("id", (d) => d.id)
         .append("circle")
@@ -264,22 +254,22 @@ export default function D3SocialGraph(props) {
         .attr("fill", (d) => SocialPlatformMapping(d.platform).color)
         .attr("fill-opacity", 0.1)
         .attr("opacity", 0)
-        .attr("r", (d) => 40)
+        .attr("r", (d) => SocialGraphNodeSize)
         .on("click", (e, i) => {
           e.preventDefault();
           e.stopPropagation();
           removeHighlight();
           highlightNode(i);
-        })
-        .on("dblclick", (e, i) => {
-          zoomAndExpand(e, i);
         });
-      const { displayName, identity, identityBadge, identityIcon, ensBadge } =
+      // .on("dblclick", (e, i) => {
+      //   zoomAndExpand(e, i);
+      // });
+      const { displayName, identity, identityBadge, identityIcon } =
         updateNodes(nodeContainer);
       const ticked = () => {
-        edgePath.attr("d", (d) => {
-          const rightwardSign = d.target.x > d.source.x ? 2 : -2;
-          return (
+        edgePath.attr(
+          "d",
+          (d) =>
             "M" +
             d.source.x +
             "," +
@@ -288,22 +278,14 @@ export default function D3SocialGraph(props) {
             d.target.x +
             "," +
             d.target.y
-          );
-        });
+        );
 
         circle.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
         maskCircle.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
 
         displayName
           .attr("dx", (d) => d.x)
-          .attr("dy", (d) => {
-            if (
-              d.displayName !== "" &&
-              (d.displayName !== d.identity || d.address)
-            )
-              return d.y;
-            return d.y + 6;
-          })
+          .attr("dy", (d) => d.y)
           .attr("text-anchor", "middle");
         identity
           .attr("dx", (d) => d.x)
@@ -317,8 +299,6 @@ export default function D3SocialGraph(props) {
         identityIcon
           .attr("x", (d) => d.x + 60 / 2 - 2)
           .attr("y", (d) => d.y - 60 / 2 - 18);
-
-        ensBadge.attr("x", (d) => d.x - 9).attr("y", (d) => d.y - 10);
 
         edgeLabels.attr("transform", (d) => {
           let transformation = ``;
@@ -385,7 +365,7 @@ export default function D3SocialGraph(props) {
       const svg = d3.select(".svg-canvas");
       svg.selectAll("*").remove();
     };
-  }, [initialGraphData]);
+  }, [initialGraphData, graphView]);
   return (
     <>
       <div className="identity-graph-modal">
