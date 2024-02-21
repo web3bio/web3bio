@@ -17,6 +17,7 @@ import {
 } from "../../utils/utils";
 import ActionExternalMenu from "./ActionExternalMenu";
 import { ActivityType } from "../../utils/activity";
+import RenderProfileBadge from "../profile/RenderProfileBadge";
 
 export const RenderToken = ({ key, name, symbol, image, value }) => {
   return (
@@ -119,6 +120,9 @@ const RenderFeedItem = (props) => {
   const networkName = feed.network?.toLowerCase();
   const actions = feed.actions?.filter((x) => x);
   if (!actions?.length) return null;
+  const feedOwner = isOwner
+    ? identity.displayName || formatText(identity.address)
+    : formatText(feed.from);
 
   return (
     <>
@@ -153,11 +157,16 @@ const RenderFeedItem = (props) => {
       <div className="feed-item-content">
         <div className="feed-item-header">
           <div className="feed-item-name">
-            <strong>
-              {isOwner
-                ? identity.displayName || formatText(identity.address)
-                : formatText(feed.from)}
-            </strong>
+            {(
+              <RenderProfileBadge
+                hideAvatar
+                platform={identity.platform}
+                offset={[50, -5]}
+                identity={identity.identity}
+                remoteFetch
+              />
+            ) ||
+              feedOwner}
           </div>
           <div className="feed-item-action dropdown dropdown-right">
             <Link
