@@ -6,6 +6,14 @@ const enum SocialActionType {
   transferOut = 3,
   transferIn = 4,
 }
+
+const SocialActionEdgeLabelMap = {
+  [SocialActionType.follow]: "Followed",
+  [SocialActionType.followedBy]: "Followed by",
+  [SocialActionType.transferOut]: "Transfer out to",
+  [SocialActionType.transferIn]: "Get transfer in",
+};
+
 export const useInitialPackingSocialGraphData = (data) => {
   const nodes = new Array();
   const edges = new Array();
@@ -96,12 +104,13 @@ export const useIdentitySocialGraphData = (data) => {
 export const usePlatformSocialGraphData = (data) => {
   if (!data || !data.children?.length) return { nodes: [], edges: [] };
   const _data = JSON.parse(JSON.stringify(data));
-  const _nodes = [..._data.children.map((x) => x)];
+  const _nodes = [..._.uniqBy(_data.children, (i) => i.id).map((x) => x)];
   const _edges = [
     ...data.children.map((x) => ({
-      source: x.id,
-      target: data.id,
+      source: x.type === SocialActionType.follow ? x.id : data.id,
+      target: x.type === SocialActionType.follow ? data.id : x.id,
       type: x.type,
+      label: SocialActionEdgeLabelMap[x.type],
       id: `${x.id}*${data.id}`,
     })),
   ];

@@ -83,7 +83,6 @@ export default function D3SocialGraph(props) {
     }[graphView];
 
     if (!graphData) return;
-
     let chart = null;
     const chartContainer = graphContainer?.current;
     const generateGraph = (_data) => {
@@ -331,7 +330,7 @@ export default function D3SocialGraph(props) {
     };
 
     if (!chart && chartContainer) {
-      chart = generateGraph(initialGraphData);
+      chart = generateGraph(graphData);
     }
     return () => {
       const svg = d3.select(".svg-canvas");
@@ -468,7 +467,7 @@ export default function D3SocialGraph(props) {
                       );
                       setGraphView(GraphView.platform);
                     }
-                    if (!currentNode.cluster && currentNode.children?.length) {
+                    if (currentNode.graphId) {
                       setGraphId(currentNode.graphId);
                       queryIdentityGraph();
                       setGraphTitle(
