@@ -495,7 +495,7 @@ export default function D3IdentityGraph(props) {
             </span>
           </div>
           <div className="btn-close">
-            {graphType === GraphType.identityGraph && !disableBack && (
+            {!disableBack && (
               <div className="btn" onClick={onBack}>
                 <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
                 Back

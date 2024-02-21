@@ -70,7 +70,6 @@ const RenderAccount = (props) => {
       </div>
       {open && (
         <D3IdentityGraph
-          graphType={GraphType.identityGraph}
           onClose={() => {
             setOpen(false);
           }}

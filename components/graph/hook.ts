@@ -18,6 +18,7 @@ export const useInitialPackingSocialGraphData = (data) => {
     ) {
       nodes.push({
         ...x.originalTarget,
+        graphId: x.target,
         children: [],
       });
     }
@@ -39,6 +40,7 @@ export const useInitialPackingSocialGraphData = (data) => {
     ) {
       nodes.push({
         ...x.originalSource,
+        graphId: x.source,
         children: [],
       });
     }
@@ -58,6 +60,7 @@ export const useInitialPackingSocialGraphData = (data) => {
         id: cur.id + ",social",
         displayName: `items:${cur.children.length}`,
         platform: cur.platform,
+        amount: cur.children.length,
         cluster: true,
       });
     }
@@ -78,5 +81,13 @@ export const useInitialPackingSocialGraphData = (data) => {
   return {
     nodes: _nodes,
     edges,
+  };
+};
+
+export const useIdentitySocialGraphData = (data) => {
+  if (!data) return { nodes: [], edges: [] };
+  return {
+    nodes: data.queryIdentityGraph?.[0]?.vertices || [],
+    edges: data.queryIdentityGraph?.[0]?.edges || [],
   };
 };
