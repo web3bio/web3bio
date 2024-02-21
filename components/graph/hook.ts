@@ -56,7 +56,7 @@ export const useInitialPackingSocialGraphData = (data) => {
     if (cur.children?.length) {
       pre.push({
         id: cur.id + ",social",
-        displayName: cur.children.length,
+        displayName: `items:${cur.children.length}`,
         platform: cur.platform,
         cluster: true,
       });
@@ -70,7 +70,7 @@ export const useInitialPackingSocialGraphData = (data) => {
         source: x.id,
         target: _nodes.find((i) => i.platform === x.platform)?.id,
         platform: x.platform,
-        label: x.platform
+        label: x.platform,
       });
     }
   });

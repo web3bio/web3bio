@@ -19,7 +19,7 @@ const updateNodes = (nodeContainer) => {
   const identityBadge = nodeContainer
     .append("circle")
     .attr("class", "identity-badge")
-    .attr("r", 16)
+    .attr("r", 18)
     .attr("fill", (d) => SocialPlatformMapping(d.platform).color);
 
   const identityIcon = nodeContainer
@@ -36,7 +36,6 @@ const updateNodes = (nodeContainer) => {
     .append("text")
     .attr("class", "identity")
     .attr("id", (d) => d.id)
-    .style("display", (d) => (d.isIdentity ? "normal" : "none"))
     .text((d) => {
       if (d.displayName === "") return "";
       if (d.displayName === d.identity) return formatText(d.address);
@@ -67,6 +66,7 @@ export default function D3SocialGraph(props) {
   //   );
   const graphContainer = useRef<HTMLDivElement>(null);
   const initialGraphData = useInitialPackingSocialGraphData(data);
+
   useEffect(() => {
     const graphData = {
       [GraphView.initial]: initialGraphData,
@@ -186,7 +186,7 @@ export default function D3SocialGraph(props) {
         .attr("markerUnits", "userSpaceOnUse")
         .attr("markerWidth", 7)
         .attr("markerHeight", 7)
-        .attr("refX", (d) => SocialGraphNodeSize+32)
+        .attr("refX", (d) => SocialGraphNodeSize + 32)
         .attr("orient", "auto")
         .append("path")
         .attr("fill", "#cecece")
@@ -236,8 +236,8 @@ export default function D3SocialGraph(props) {
           d3
             .drag()
             .on("drag", dragged)
-            .on("start", () => setHideToolTip(true))
-            .on("end", () => setHideToolTip(false))
+            // .on("start", () => setHideToolTip(true))
+            // .on("end", () => setHideToolTip(false))
         );
 
       const circle = nodeContainer
