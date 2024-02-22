@@ -159,11 +159,11 @@ const RenderFeedItem = (props) => {
           <div className="feed-item-name">
             {(
               <RenderProfileBadge
-                hideAvatar
                 platform={identity.platform}
                 offset={[50, -5]}
                 identity={identity.identity}
                 remoteFetch
+                fullProfile
               />
             ) ||
               feedOwner}

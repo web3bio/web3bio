@@ -82,6 +82,10 @@
         border: none;
         height: 1rem;
         padding: 0;
+
+        .avatar {
+          display: none;
+        }
       }
     }
 
@@ -191,7 +195,7 @@
           box-shadow: none;
           border: none;
           height: 1rem;
-          padding: 0;
+          padding: 0 .1rem;
         }
 
         .feed-target-name {
@@ -283,6 +287,10 @@
         white-space: nowrap;
       }
 
+      .avatar {
+        margin-left: -.1rem;
+      }
+
       .feed-token-icon {
         border-radius: .25rem;
         flex: 0 0 1rem;
@@ -301,6 +309,7 @@
       .feed-token-meta {
         color: $gray-color-dark;
         font-size: 90%;
+        font-weight: 400;
         line-height: 1.2rem;
       }
     }

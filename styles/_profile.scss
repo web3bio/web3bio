@@ -1469,10 +1469,11 @@
   box-shadow: 0 .2rem .6rem rgba($dark-color, .2);
   display: flex;
   flex-direction: column;
+  max-width: 16rem;
+  min-width: 15rem;
   padding: .75rem;
   transition: all .25s ease-in-out;
   white-space: initial;
-  width: 14rem;
 
   .profile-card-avatar {
     height: 2rem;
@@ -1486,18 +1487,34 @@
     }
   }
 
-  .profile-card-name {
-    font-size: .75rem;
-    font-weight: 700;
-    line-height: 1.25;
-    margin: .5rem 0 .25rem 0;
+  .profile-card-header {
+    display: flex;
   }
 
-  .profile-card-address {
+  .profile-card-aside {
+    display: flex;
+    flex-direction: column;
+    padding-left: .5rem;
+  }
+
+  .profile-card-name {
+    font-size: .65rem;
+    font-weight: 700;
+    line-height: 1.25;
+    margin: 0 0 .25rem 0;
+  }
+
+  .profile-card-meta {
     align-items: center;
     color: $gray-color;
     display: flex;
     font-size: .65rem;
+  }
+
+  .profile-card-address {
+    align-items: center;
+    display: flex;
+    margin-left: .25rem;
 
     &:focus,
     &:hover {
@@ -1516,9 +1533,7 @@
   }
 
   .profile-card-action {
-    position: absolute;
-    right: .5rem;
-    top: .5rem;
+    margin-top: .5rem;
   }
 }
 

@@ -14,7 +14,7 @@ interface RenderProfileBadgeProps {
   platform?: PlatformType;
   remoteFetch?: boolean;
   parentRef?: Element;
-  hideAvatar?: boolean;
+  fullProfile?: boolean;
   offset?: Array<number>
 }
 
@@ -24,7 +24,7 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
     identity,
     platform = PlatformType.ens,
     remoteFetch,
-    hideAvatar = false,
+    fullProfile = false,
     offset,
   } = props;
   const [visible, setVisible] = useState(false);
@@ -86,55 +86,64 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
       onPopupVisibleChange={(visible) => setShowPopup(visible)}
       popup={
         <div className="profile-card">
+          <div className="profile-card-header">
+            <div className="profile-card-avatar">
+              {(data?.avatar || data?.identity) && (
+                <Avatar
+                  src={data?.avatar}
+                  identity={data?.identity}
+                  className="avatar"
+                  alt={`${data?.displayName} Profile Photo`}
+                  height={40}
+                  width={40}
+                />
+              )}
+            </div>
+            <div className="profile-card-aside">
+              <div className="profile-card-name">
+                {data?.displayName || formatText(identity)}
+              </div>
+              <div className="profile-card-meta">
+                {data?.identity === data?.address ? "" : data?.identity}
+                {" · "}
+                <Clipboard
+                  component="div"
+                  className="profile-card-address c-hand"
+                  data-clipboard-text={data?.address}
+                  title="Copy the wallet address"
+                >
+                  {formatText(data?.address)}
+                  <SVG
+                    src="../icons/icon-copy.svg"
+                    width={18}
+                    height={18}
+                    className="action"
+                  />
+                </Clipboard>
+              </div>
+              <div className="profile-card-description">{data?.description}</div>
+            </div>
+          </div>
           <div className="profile-card-action">
             <Link
               href={`${process.env.NEXT_PUBLIC_BASE_URL}/${relatedPath}`}
               prefetch={false}
               target="_blank"
-              className="btn btn-sm"
+              className="btn btn-sm btn-block"
             >
-              <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
+              View Profile
             </Link>
           </div>
-          <div className="profile-card-avatar">
-            {(data?.avatar || data?.identity) && (
-              <Avatar
-                src={data?.avatar}
-                identity={data?.identity}
-                className="avatar"
-                alt={`${data?.displayName} Profile Photo`}
-                height={40}
-                width={40}
-              />
-            )}
-          </div>
-          <div className="profile-card-name">
-            {data?.displayName || formatText(identity)}
-          </div>
-          <Clipboard
-            component="div"
-            className="profile-card-address c-hand"
-            data-clipboard-text={data?.address}
-            title="Copy the wallet address"
-          >
-            {formatText(data?.address)}
-            <SVG
-              src="../icons/icon-copy.svg"
-              width={20}
-              height={20}
-              className="action"
-            />
-          </Clipboard>
-          <div className="profile-card-description">{data?.description}</div>
         </div>
       }
     >
       <div ref={ref} className="feed-token c-hand">
-        {data?.avatar && !hideAvatar && (
+        {data?.identity && (
           <Avatar
             className="feed-token-icon"
-            src={data.avatar}
-            alt={data.displayName}
+            src={data?.avatar}
+            alt={data?.displayName}
+            identity={data?.identity}
             height={20}
             width={20}
           />
@@ -145,6 +154,11 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
         >
           {data?.displayName || formatText(identity)}
         </span>
+        {data?.identity && fullProfile && (
+          <span className="feed-token-meta">
+            {data?.identity === data?.displayName ? "" : data?.identity}
+          </span>
+        )}
       </div>
     </Trigger>
   );
