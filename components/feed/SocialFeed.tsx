@@ -39,12 +39,14 @@ const RenderSocialCard = (props) => {
                       identity={x.handle}
                       platform={platform}
                       remoteFetch
+                      fullProfile
                     />
                   ))) || (
                   <RenderProfileBadge
                     platform={platform}
                     identity={metadata.handle}
                     remoteFetch
+                    fullProfile
                   />
                 )}
                 {platform && (
@@ -139,6 +141,7 @@ const RenderSocialCard = (props) => {
                           platform={platform}
                           identity={metadata.target?.handle}
                           remoteFetch
+                          fullProfile
                         />
                       </div>
                       <div className="feed-target-content">
@@ -242,6 +245,7 @@ const RenderSocialCard = (props) => {
                           platform={platform}
                           identity={metadata.target?.handle}
                           remoteFetch
+                          fullProfile
                         />
                       </div>
                       <div className="feed-target-content">
@@ -383,6 +387,7 @@ const RenderSocialCard = (props) => {
                         platform={platform}
                         identity={metadata.target?.handle}
                         remoteFetch
+                        fullProfile
                       />
                     </div>
                     <div className="feed-target-content">
