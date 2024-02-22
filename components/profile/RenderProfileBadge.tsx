@@ -104,8 +104,7 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
                 {data?.displayName || formatText(identity)}
               </div>
               <div className="profile-card-meta">
-                {data?.identity === data?.address ? "" : data?.identity}
-                {" · "}
+                {data?.identity === data?.address ? "" : `${data?.identity} ·`}
                 <Clipboard
                   component="div"
                   className="profile-card-address c-hand"
