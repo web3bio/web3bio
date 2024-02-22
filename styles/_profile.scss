@@ -1508,8 +1508,10 @@
     align-items: center;
     color: $gray-color;
     display: flex;
+    flex-wrap: wrap;
     font-size: .65rem;
     gap: .25rem;
+    word-break: keep-all;
   }
 
   .profile-card-address {
