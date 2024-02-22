@@ -27,6 +27,7 @@ import { WidgetTypes } from "../../utils/profile";
 import D3SocialGraph from "../graph/D3SocialGraph";
 import { GET_PROFILE_SOCIAL_GRAPH } from "../../utils/queries";
 import { useLazyQuery } from "@apollo/client";
+import { Loading } from "../shared/Loading";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
@@ -39,14 +40,19 @@ export default function ProfileMain(props) {
     (state) => state.widgets
   );
 
-  const [socialGraph, setSocialGraph] = useState<any>(null);
-  const [querySocialGraph, { data: socialGraphData, error: socialGraphError }] =
-    useLazyQuery(GET_PROFILE_SOCIAL_GRAPH, {
-      variables: {
-        platform: platform,
-        identity: domain,
-      },
-    });
+  const [
+    querySocialGraph,
+    {
+      data: socialGraphData,
+      error: socialGraphError,
+      loading: socialGraphLoading,
+    },
+  ] = useLazyQuery(GET_PROFILE_SOCIAL_GRAPH, {
+    variables: {
+      platform: platform,
+      identity: domain.replace(".farcaster", ""),
+    },
+  });
 
   useEffect(() => {
     setMounted(true);
@@ -54,46 +60,6 @@ export default function ProfileMain(props) {
   // social graph
   useEffect(() => {
     if (mounted && domain && platform) querySocialGraph();
-    if (!socialGraphData) return;
-    // const _socialGraph = {
-    //   nodes: new Array(),
-    //   edges: new Array(),
-    // };
-    // socialGraphData.socialFollows.followingTopology.forEach((x) => {
-    //   _socialGraph.nodes.push({
-    //     ...x.originalSource,
-    //     id: x.source,
-    //   });
-
-    //   _socialGraph.nodes.push({
-    //     ...x.originalTarget,
-    //     id: x.target,
-    //   });
-    //   _socialGraph.edges.push({
-    //     source: x.source,
-    //     target: x.target,
-    //     dataSource: x.dataSource,
-    //     label: "following",
-    //   });
-    // });
-    // socialGraphData.socialFollows.followerTopology.forEach((x) => {
-    //   _socialGraph.nodes.push({
-    //     ...x.originalSource,
-    //     id: x.source,
-    //   });
-
-    //   _socialGraph.nodes.push({
-    //     ...x.originalTarget,
-    //     id: x.target,
-    //   });
-    //   _socialGraph.edges.push({
-    //     source: x.source,
-    //     target: x.target,
-    //     dataSource: x.dataSource,
-    //     label: "followed by",
-    //   });
-    // });
-    // setSocialGraph(_socialGraph);
   }, [socialGraphData, platform, domain, querySocialGraph, mounted]);
 
   const onCopySuccess = () => {
@@ -310,7 +276,11 @@ export default function ProfileMain(props) {
                 <a href={`mailto:${data.email}`}>{data.email}</a>
               </div>
             )}
-            {
+            {socialGraphLoading ? (
+              <div className="btn btn-link btn-sm">
+                <Loading />
+              </div>
+            ) : socialGraphData ? (
               <div
                 className="btn btn-link btn-sm"
                 onClick={() => {
@@ -320,7 +290,7 @@ export default function ProfileMain(props) {
                 <SVG src={"/icons/icon-view.svg"} width={20} height={20} />{" "}
                 Social Graph for {data.displayName || domain}
               </div>
-            }
+            ) : null}
           </div>
         </div>
         <div className="column col-8 col-md-12">

@@ -10,7 +10,8 @@ import { resolveIdentityGraphData } from "./hook";
 const IdentityNodeSize = 48;
 const NFTNodeSize = 14;
 
-const getNodeRadius = (d) => (d.isIdentity ? IdentityNodeSize : NFTNodeSize);
+const getNodeRadius = (isIdentity) =>
+  isIdentity ? IdentityNodeSize : NFTNodeSize;
 const getMarkerRefX = (d) => {
   return d.target.isIdentity
     ? IdentityNodeSize + (d.isSingle ? 30 : 26)
@@ -90,7 +91,6 @@ export default function D3IdentityGraph(props) {
 
   useEffect(() => {
     if (!data) return;
-    // different graph with graphType
     let chart = null;
     const chartContainer = graphContainer?.current;
     const generateGraph = (_data) => {
@@ -228,7 +228,7 @@ export default function D3IdentityGraph(props) {
       const circle = nodeContainer
         .append("circle")
         .attr("stroke-width", 2)
-        .attr("r", (d) => getNodeRadius(d))
+        .attr("r", (d) => getNodeRadius(d.isIdentity))
         .attr("stroke", (d) => SocialPlatformMapping(d.platform).color)
         .attr("fill", (d) =>
           d.isIdentity ? "#fff" : SocialPlatformMapping(PlatformType.ens).color
@@ -240,7 +240,7 @@ export default function D3IdentityGraph(props) {
         .attr("fill", (d) => SocialPlatformMapping(d.platform).color)
         .attr("fill-opacity", 0.1)
         .attr("opacity", 0)
-        .attr("r", (d) => getNodeRadius(d))
+        .attr("r", (d) => getNodeRadius(d.isIdentity))
         .on("click", (e, i) => {
           e.preventDefault();
           e.stopPropagation();
@@ -378,7 +378,7 @@ export default function D3IdentityGraph(props) {
         }}
       >
         {(data && <svg className="svg-canvas" />) || (
-          <Empty title={"No social graph found"} />
+          <Empty title={"No Identity graph found"} />
         )}
 
         <div className="graph-header">

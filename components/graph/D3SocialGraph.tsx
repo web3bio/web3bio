@@ -63,6 +63,7 @@ export default function D3SocialGraph(props) {
   const [graphId, setGraphId] = useState("");
   const [clusterParent, setClusterParent] = useState<any>(null);
   const [hideTooltip, setHideToolTip] = useState(true);
+  const [graphData, setGraphData] = useState(null);
   const [transform, setTransform] = useState([0, 0]);
   const [queryIdentityGraph, { data: remoteIdentityGraphData }] = useLazyQuery(
     GET_PROFILE_IDENTITY_GRAPH,
@@ -78,11 +79,15 @@ export default function D3SocialGraph(props) {
   const platformGraphData = usePlatformSocialGraphData(clusterParent);
 
   useEffect(() => {
-    const graphData = {
-      [GraphView.initial]: initialGraphData,
-      [GraphView.platform]: platformGraphData,
-    }[graphView];
+    setGraphData(
+      {
+        [GraphView.initial]: initialGraphData,
+        [GraphView.platform]: platformGraphData,
+      }[graphView]
+    );
+  }, [graphView]);
 
+  useEffect(() => {
     if (!graphData) return;
     let chart = null;
     const chartContainer = graphContainer?.current;
@@ -342,7 +347,7 @@ export default function D3SocialGraph(props) {
       const svg = d3.select(".svg-canvas");
       svg.selectAll("*").remove();
     };
-  }, [graphView, identityGraphData, platformGraphData]);
+  }, [graphView, graphData]);
 
   const expandGraph = (node?) => {
     setHideToolTip(true);
