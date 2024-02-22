@@ -342,11 +342,10 @@ export default function D3SocialGraph(props) {
       const svg = d3.select(".svg-canvas");
       svg.selectAll("*").remove();
     };
-  }, [graphView]);
+  }, [graphView, identityGraphData, platformGraphData]);
 
   const expandGraph = (node?) => {
     setHideToolTip(true);
-    console.log(node,'kkk',currentNode)
     const _node = node || currentNode;
     if (_node.cluster) {
       setClusterParent(

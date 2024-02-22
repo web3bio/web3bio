@@ -4,8 +4,8 @@ import { formatText, SocialPlatformMapping } from "../../utils/utils";
 import { PlatformType } from "../../utils/platform";
 import _ from "lodash";
 import SVG from "react-inlinesvg";
-import { GraphType } from "../../utils/graph";
 import { Empty } from "../shared/Empty";
+import { resolveIdentityGraphData } from "./hook";
 
 const IdentityNodeSize = 48;
 const NFTNodeSize = 14;
@@ -15,55 +15,6 @@ const getMarkerRefX = (d) => {
   return d.target.isIdentity
     ? IdentityNodeSize + (d.isSingle ? 30 : 26)
     : NFTNodeSize + (d.isSingle ? 16 : 8);
-};
-
-const resolveGraphData = (source) => {
-  const nodes = new Array<any>();
-  const edges = new Array<any>();
-  source.nodes.forEach((x) => {
-    const resolvedPlatform = SocialPlatformMapping(x.platform);
-    nodes.push({
-      id: x.id,
-      label: formatText(x.displayName || x.identity),
-      platform: resolvedPlatform.key || x.platform,
-      displayName: x.profile?.displayName || x.displayName,
-      identity: x.profile?.identity || x.identity,
-      uid: x.uid,
-      address: x.profile?.address || x.ownedBy?.identity,
-      isIdentity: x.platform === PlatformType.ens ? false : true,
-    });
-  });
-  source.edges.forEach((x) => {
-    const resolvedPlatform = SocialPlatformMapping(x.dataSource);
-
-    edges.push({
-      source: x.source,
-      target: x.target,
-      label: x.label
-        ? x.label
-        : resolvedPlatform
-        ? resolvedPlatform.label
-        : x.dataSource,
-      id: `${x.source}*${x.target}`,
-    });
-  });
-  const _nodes = _.uniqBy(nodes, "id");
-  const _edges = _.uniqBy(edges, "id");
-  const isSingleEdge = (d) => {
-    if (
-      _edges.find((x) => d.source === x.target) &&
-      _edges.find((x) => d.target === x.source)
-    )
-      return false;
-    return true;
-  };
-  const resolvedEdges = _edges.map((x) => ({
-    ...x,
-    // signle edge should link to the center of node
-    isSingle: isSingleEdge(x),
-  }));
-
-  return { nodes: _nodes, edges: resolvedEdges };
 };
 
 export function calcTranslation(targetDistance, point0, point1) {
@@ -404,7 +355,7 @@ export default function D3IdentityGraph(props) {
     };
 
     if (!chart && chartContainer) {
-      const res = resolveGraphData(data);
+      const res = resolveIdentityGraphData(data);
       chart = generateGraph({ nodes: res.nodes, links: res.edges });
     }
     return () => {
@@ -523,7 +474,6 @@ export default function D3IdentityGraph(props) {
               </li>
             </ul>
           )}
-    
         </div>
       )}
     </div>
