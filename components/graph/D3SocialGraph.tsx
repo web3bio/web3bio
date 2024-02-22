@@ -233,6 +233,9 @@ export default function D3SocialGraph(props) {
           e.stopPropagation();
           removeHighlight();
           highlightNode(i);
+        })
+        .on("dblclick", (e, i) => {
+          expandGraph(i);
         });
 
       const { displayName, identity, identityBadge, identityIcon } =
@@ -338,6 +341,23 @@ export default function D3SocialGraph(props) {
     };
   }, [graphView]);
 
+  const expandGraph = (node?) => {
+    setHideToolTip(true);
+    const _node = node || currentNode;
+    if (_node.cluster) {
+      setClusterParent(
+        initialGraphData.nodes.find((x) => x.id === _node?.parent)
+      );
+      setGraphView(GraphView.platform);
+    }
+    if (_node.graphId) {
+      setGraphId(_node.graphId);
+      queryIdentityGraph();
+      setGraphTitle(`${_node.displayName}(${_node.platform})`);
+      setGraphView(GraphView.identity);
+    }
+    setCurrentNode(null)
+  };
   return (
     <>
       {(graphView === GraphView.identity && identityGraphData && (
@@ -345,6 +365,7 @@ export default function D3SocialGraph(props) {
           onBack={() => {
             setGraphTitle(title);
             setGraphView(GraphView.initial);
+            setCurrentNode(null);
           }}
           onClose={onDismiss}
           data={identityGraphData}
@@ -376,7 +397,10 @@ export default function D3SocialGraph(props) {
                 {graphView === GraphView.platform && (
                   <div
                     className="btn"
-                    onClick={() => setGraphView(GraphView.initial)}
+                    onClick={() => {
+                      setGraphView(GraphView.initial);
+                      setCurrentNode(null);
+                    }}
                   >
                     <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
                     Back
@@ -454,29 +478,7 @@ export default function D3SocialGraph(props) {
                 </ul>
               )}
               {graphView === GraphView.initial && (
-                <div
-                  className="btn"
-                  onClick={() => {
-                    setHideToolTip(true);
-                    setCurrentNode(null);
-                    if (currentNode.cluster) {
-                      setClusterParent(
-                        initialGraphData.nodes.find(
-                          (x) => x.id === currentNode?.parent
-                        )
-                      );
-                      setGraphView(GraphView.platform);
-                    }
-                    if (currentNode.graphId) {
-                      setGraphId(currentNode.graphId);
-                      queryIdentityGraph();
-                      setGraphTitle(
-                        `${currentNode.displayName}(${currentNode.platform})`
-                      );
-                      setGraphView(GraphView.identity);
-                    }
-                  }}
-                >
+                <div className="btn" onClick={() => expandGraph()}>
                   Expand
                 </div>
               )}
