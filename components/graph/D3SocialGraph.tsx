@@ -11,7 +11,7 @@ import { formatText, SocialPlatformMapping } from "../../utils/utils";
 import { PlatformType } from "../../utils/platform";
 import { useLazyQuery } from "@apollo/client";
 import { GET_PROFILE_IDENTITY_GRAPH } from "../../utils/queries";
-import D3IdentityGraph from "./D3IdentityGraph";
+import D3IdentityGraph, { calcTranslation } from "./D3IdentityGraph";
 
 const SocialGraphNodeSize = 50;
 
@@ -54,6 +54,7 @@ const updateNodes = (nodeContainer) => {
     identity,
   };
 };
+
 export default function D3SocialGraph(props) {
   const { data, onDismiss, title } = props;
   const [graphTitle, setGraphTitle] = useState(title);
@@ -88,9 +89,9 @@ export default function D3SocialGraph(props) {
     const generateGraph = (_data) => {
       const width = chartContainer?.offsetWidth!;
       const height = chartContainer?.offsetHeight!;
-      const edges = _data.edges.map((d) => ({ ...d }));
-      const nodes = _data.nodes.map((d) => ({ ...d }));
 
+      const nodes = _data.nodes.map((d) => ({ ...d }));
+      const edges = _data.edges.map((d) => ({ ...d }));
       const removeHighlight = () => {
         setHideToolTip(true);
         setCurrentNode(null);
@@ -159,7 +160,7 @@ export default function D3SocialGraph(props) {
         .attr("markerUnits", "userSpaceOnUse")
         .attr("markerWidth", 7)
         .attr("markerHeight", 7)
-        .attr("refX", (d) => SocialGraphNodeSize + 32)
+        .attr("refX", (d) => SocialGraphNodeSize + (d.isSingle ? 30 : 26))
         .attr("orient", "auto")
         .append("path")
         .attr("fill", "#cecece")
@@ -241,18 +242,20 @@ export default function D3SocialGraph(props) {
       const { displayName, identity, identityBadge, identityIcon } =
         updateNodes(nodeContainer);
       const ticked = () => {
-        edgePath.attr(
-          "d",
-          (d) =>
+        edgePath.attr("d", (d) => {
+          const delta = calcTranslation(4, d.source, d.target);
+          const rightwardSign = d.target.x > d.source.x ? 3 : -3;
+          return (
             "M" +
-            d.source.x +
+            (d.isSingle ? d.source.x : d.source.x + rightwardSign * delta.dx) +
             "," +
-            d.source.y +
+            (d.isSingle ? d.source.y : d.source.y + -rightwardSign * delta.dy) +
             "L" +
-            d.target.x +
+            (d.isSingle ? d.target.x : d.target.x + rightwardSign * delta.dx) +
             "," +
-            d.target.y
-        );
+            (d.isSingle ? d.target.y : d.target.y + -rightwardSign * delta.dy)
+          );
+        });
 
         circle.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
         maskCircle.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
@@ -343,6 +346,7 @@ export default function D3SocialGraph(props) {
 
   const expandGraph = (node?) => {
     setHideToolTip(true);
+    console.log(node,'kkk',currentNode)
     const _node = node || currentNode;
     if (_node.cluster) {
       setClusterParent(
@@ -356,7 +360,7 @@ export default function D3SocialGraph(props) {
       setGraphTitle(`${_node.displayName}(${_node.platform})`);
       setGraphView(GraphView.identity);
     }
-    setCurrentNode(null)
+    setCurrentNode(null);
   };
   return (
     <>
@@ -477,7 +481,7 @@ export default function D3SocialGraph(props) {
                   </li>
                 </ul>
               )}
-              {graphView === GraphView.initial && (
+              {graphView !== GraphView.identity && (
                 <div className="btn" onClick={() => expandGraph()}>
                   Expand
                 </div>

@@ -3,13 +3,15 @@ const enum SocialActionType {
   // todo: expand action type
   follow = 1,
   followedBy = 2,
-  transferOut = 3,
-  transferIn = 4,
+  followedEach = 3,
+  transferOut = 5,
+  transferIn = 6,
 }
 
 const SocialActionEdgeLabelMap = {
   [SocialActionType.follow]: "Followed",
   [SocialActionType.followedBy]: "Followed by",
+  [SocialActionType.followedEach]: "Followed Each",
   [SocialActionType.transferOut]: "Transfer out to",
   [SocialActionType.transferIn]: "Get transfer in",
 };
@@ -35,6 +37,7 @@ export const useInitialPackingSocialGraphData = (data) => {
     if (parent) {
       parent.children.push({
         ...x.originalSource,
+        graphId: x.source,
         type: SocialActionType.followedBy,
       });
     }
@@ -57,6 +60,7 @@ export const useInitialPackingSocialGraphData = (data) => {
     if (parent) {
       parent.children.push({
         ...x.originalTarget,
+        graphId: x.target,
         type: SocialActionType.follow,
       });
     }
@@ -101,6 +105,15 @@ export const useIdentitySocialGraphData = (data) => {
   };
 };
 
+const isSingleEdge = (data, d) => {
+  if (
+    data.find((x) => d.source === x.target) &&
+    data.find((x) => d.target === x.source)
+  )
+    return false;
+  return true;
+};
+
 export const usePlatformSocialGraphData = (data) => {
   if (!data || !data.children?.length) return { nodes: [], edges: [] };
   const _data = JSON.parse(JSON.stringify(data));
@@ -116,8 +129,15 @@ export const usePlatformSocialGraphData = (data) => {
   ];
   delete _data.children;
   _nodes.push(data);
+  const resolvedEdges = _edges.map((d) => ({
+    ...d,
+    isSingle: isSingleEdge(_edges, d),
+    label: isSingleEdge(_edges, d)
+      ? d.label
+      : SocialActionEdgeLabelMap[SocialActionType.followedEach],
+  }));
   return {
     nodes: _nodes,
-    edges: _edges,
+    edges: resolvedEdges,
   };
 };

@@ -66,7 +66,7 @@ const resolveGraphData = (source) => {
   return { nodes: _nodes, edges: resolvedEdges };
 };
 
-function calcTranslation(targetDistance, point0, point1) {
+export function calcTranslation(targetDistance, point0, point1) {
   let x1_x0 = point1.x - point0.x,
     y1_y0 = point1.y - point0.y,
     x2_x0,
@@ -130,15 +130,7 @@ const updateNodes = (nodeContainer) => {
 };
 
 export default function D3IdentityGraph(props) {
-  const {
-    data,
-    onClose,
-    title,
-    expandIdentity,
-    onBack,
-    graphType,
-    disableBack,
-  } = props;
+  const { data, onClose, title, onBack, disableBack } = props;
   const [currentNode, setCurrentNode] = useState<any>(null);
   const [hideTooltip, setHideToolTip] = useState(true);
   const [transform, setTransform] = useState([0, 0]);
@@ -189,49 +181,6 @@ export default function D3IdentityGraph(props) {
         .on("click", removeHighlight)
         .append("svg:g");
 
-      const zoomAndExpand = (e, d) => {
-        setCurrentNode(null);
-        setHideToolTip(true);
-        if (graphType === GraphType.identityGraph) {
-          return;
-        }
-        svg.call(transition);
-        function transition() {
-          let currentTransform = [
-            width / 2 - transform[0],
-            height / 2 - transform[1],
-            height,
-          ];
-          const i = d3.interpolateZoom(currentTransform, [
-            d.x,
-            d.y,
-            (d.isIdentity ? IdentityNodeSize : NFTNodeSize) * 3,
-          ]);
-
-          svg
-            .transition()
-            .delay(500)
-            .duration(i.duration)
-            .attrTween(
-              "transform",
-              () => (t) => zoomTo((currentTransform = i(t)))
-            )
-            // .attr("opacity", 0)
-            .on("end", () => {
-              setTimeout(() => {
-                expandIdentity(d);
-              }, 300);
-            });
-        }
-
-        function zoomTo([x, y, r]) {
-          return `
-            translate(${width / 2}, ${height / 2})
-            scale(${height / r})
-            translate(${-x}, ${-y})
-          `;
-        }
-      };
       const generateSimulation = () => {
         const simulation = d3
           .forceSimulation(nodes)
@@ -346,10 +295,8 @@ export default function D3IdentityGraph(props) {
           e.stopPropagation();
           removeHighlight();
           highlightNode(i);
-        })
-        .on("dblclick", (e, i) => {
-          zoomAndExpand(e, i);
         });
+
       const { displayName, identity, identityBadge, identityIcon, ensBadge } =
         updateNodes(nodeContainer);
       const ticked = () => {
@@ -487,10 +434,7 @@ export default function D3IdentityGraph(props) {
           <div className="graph-title">
             <SVG src={"/icons/icon-view.svg"} width="20" height="20" />
             <span className="ml-2">
-              {graphType === GraphType.socialGraph
-                ? "Social Graph"
-                : "Identity Graph"}{" "}
-              for
+              Identity Graph for
               <strong className="ml-1">{title}</strong>
             </span>
           </div>
@@ -579,18 +523,7 @@ export default function D3IdentityGraph(props) {
               </li>
             </ul>
           )}
-          {graphType === GraphType.socialGraph && (
-            <div
-              className="btn"
-              onClick={() => {
-                setHideToolTip(true);
-                expandIdentity(currentNode);
-                setCurrentNode(null);
-              }}
-            >
-              Expand
-            </div>
-          )}
+    
         </div>
       )}
     </div>
