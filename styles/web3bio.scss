@@ -69,22 +69,50 @@ body {
   width: 100vw;
 
 }
-.wallet-btn{
+
+.wallet-btn {
   position: absolute;
   top: 1rem;
   right: 1rem;
   z-index: 10;
-  .wallet-container{
+
+  .connect-btn {
+    transition: all .5s ease;
+    background: $dark-color;
+    font-size: .6rem;
+    font-weight: 600;
+    color: #fff;
+    padding: .4rem .8rem;
+    border-radius: .45rem;
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0.1rem 1.2rem hsla(0, 0%, 7%, .3);
+    }
+  }
+
+  .wrong-network {
+    background: #F0415E;
+
+    &:hover {
+      box-shadow: 0 0.1rem 1.2rem rgba(#F0415E, .25);
+    }
+  }
+
+  .wallet-container {
     display: flex;
     align-items: center;
     gap: .75rem;
-    .chainIcon{
+
+    .chainIcon {
       width: auto;
     }
-    .dropdown{
-      .menu{
+
+    .dropdown {
+      .menu {
         left: unset;
-        right:0
+        right: 0
       }
     }
   }
@@ -148,7 +176,7 @@ body {
       margin: auto;
       padding: 2rem 4rem;
       box-sizing: border-box;
-      overflow-y: auto; 
+      overflow-y: auto;
 
       border-radius: .5rem;
 
@@ -164,7 +192,7 @@ body {
         height: auto;
         max-width: 100%;
       }
-      
+
       h1 {
         font-size: 1.2rem;
         font-weight: 700;
@@ -203,6 +231,7 @@ body {
       }
 
       .preview-image {
+
         .img-responsive,
         .video-responsive {
           max-height: 90vh;

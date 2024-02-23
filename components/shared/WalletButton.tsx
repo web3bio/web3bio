@@ -14,7 +14,7 @@ export default function WalletButton(props) {
               {(() => {
                 if (!connected) {
                   return (
-                    <div onClick={openConnectModal} className="btn">
+                    <div onClick={openConnectModal} className="connect-btn">
                       Connect Wallet
                     </div>
                   );
@@ -22,7 +22,7 @@ export default function WalletButton(props) {
 
                 if (chain.unsupported) {
                   return (
-                    <div onClick={openChainModal} className="btn">
+                    <div onClick={openChainModal} className="connect-btn wrong-network">
                       Wrong network
                     </div>
                   );
