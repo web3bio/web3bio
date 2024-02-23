@@ -74,6 +74,20 @@ body {
   top: 1rem;
   right: 1rem;
   z-index: 10;
+  .wallet-container{
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    .chainIcon{
+      width: auto;
+    }
+    .dropdown{
+      .menu{
+        left: unset;
+        right:0
+      }
+    }
+  }
 }
 
 .web3bio-mask-cover {
