@@ -55,7 +55,7 @@ export default function WalletProvider({
 }) {
   return (
     <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider locale="en-US" chains={chains}>
+      <RainbowKitProvider modalSize="compact" locale="en-US" chains={chains}>
         {children}
       </RainbowKitProvider>
     </WagmiConfig>
