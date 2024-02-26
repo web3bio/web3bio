@@ -56,6 +56,7 @@ export enum PlatformType {
   uniswap = "uniswap",
   degenscore = "degenscore",
   firefly = "firefly",
+  solana = "solana",
 }
 
 export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
@@ -414,18 +415,28 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     label: "Firefly",
     urlPrefix: "https://firefly.land/",
   },
+  [PlatformType.solana]: {
+    key: PlatformType.solana,
+    icon: "",
+    color: "#000000",
+    label: "Solana",
+    urlPrefix: "https://solscan.io/",
+  },
 };
 
-export const shouldPlatformFetch = (platform?: PlatformType | null)=>{
-  if(!platform) return false
-  if([
-    PlatformType.ens,
-    PlatformType.ethereum,
-    PlatformType.farcaster,
-    PlatformType.lens,
-    PlatformType.unstoppableDomains,
-    PlatformType.dotbit,
-    PlatformType.nextid
-  ].includes(platform)) return true
-  return false
-}
+export const shouldPlatformFetch = (platform?: PlatformType | null) => {
+  if (!platform) return false;
+  if (
+    [
+      PlatformType.ens,
+      PlatformType.ethereum,
+      PlatformType.farcaster,
+      PlatformType.lens,
+      PlatformType.unstoppableDomains,
+      PlatformType.dotbit,
+      PlatformType.nextid,
+    ].includes(platform)
+  )
+    return true;
+  return false;
+};

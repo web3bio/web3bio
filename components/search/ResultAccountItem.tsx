@@ -90,6 +90,7 @@ const RenderAccountItem = (props) => {
     case PlatformType.ethereum:
     case PlatformType.unstoppableDomains:
     case PlatformType.dotbit:
+    case PlatformType.solana:
       return (
         <div
           ref={ref}
