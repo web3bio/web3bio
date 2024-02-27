@@ -4,6 +4,7 @@ export const regexEns = /.*\.(eth|xyz|app|luxe|kred|art|ceo|club)$/i,
   regexLens = /.*\.lens$/i,
   regexDotbit = /.*\.bit$/i,
   regexEth = /^0x[a-fA-F0-9]{40}$/i,
+  regexSolana = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/i,
   regexTwitter = /^[A-Za-z0-9_]{1,15}$/i,
   regexFarcaster = /^[A-Za-z0-9_-]{1,61}(?:|\.eth)(?:|\.farcaster)$/i,
   regexUnstoppableDomains =
