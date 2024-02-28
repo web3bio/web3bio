@@ -75,14 +75,24 @@
       justify-content: space-between;
     }
 
+    .feed-item-name {
+      .feed-token {
+        background: transparent;
+        box-shadow: none;
+        border: none;
+        height: 1rem;
+        padding: 0;
+
+        .avatar {
+          display: none;
+        }
+      }
+    }
+
     .feed-item-body {
       display: flex;
       flex-direction: column;
       width: 100%;
-
-      &.multisig {
-
-      }
     }
 
     .feed-item-action {
@@ -180,6 +190,20 @@
         transition: all .25s ease-in-out;
         width: 100%;
 
+        .feed-token {
+          background: transparent;
+          box-shadow: none;
+          border: none;
+          height: 1rem;
+          padding: 0 .1rem;
+        }
+
+        .feed-target-name {
+          font-weight: 700;
+          height: 1rem;
+          margin-bottom: .5rem;
+        }
+
         .feed-target-description {
           display: -webkit-box;
           margin-top: .25rem;
@@ -231,59 +255,63 @@
           text-decoration: none;
         }
       }
-
-      .feed-token {
-        align-items: center;
-        background: lighten($bg-color, 6%);
-        border: .05rem solid $border-color;
-        border-radius: .3rem;
-        box-shadow: 0 .05rem .2rem rgba($dark-color, .05);
-        display: inline-flex;
-        flex-wrap: nowrap;
-        font-size: .7rem;
-        gap: .2rem;
-        height: 1.2rem;
-        margin: .05rem;
-        max-width: $size-md;
-        overflow: hidden;
-        padding: .1rem .2rem;
-        position: relative;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-
-        .feed-token-value {
-          font-weight: 600;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-
-        .feed-token-icon {
-          border-radius: .25rem;
-          flex: 0 0 1rem;
-          height: 1rem;
-          margin-left: -.1rem;
-          width: 1rem;
-
-          .img-responsive {
-            border-radius: .25rem;
-            height: 1rem;
-            object-fit: cover;
-            width: 1rem;
-          }
-        }
-
-        .feed-token-meta {
-          color: $gray-color-dark;
-          font-size: 90%;
-          line-height: 1.2rem;
-        }
-      }
     }
 
     .feed-meta {
       color: $gray-color;
       font-size: .7rem;
+    }
+
+    .feed-token {
+      align-items: center;
+      background: lighten($bg-color, 6%);
+      border: .05rem solid $border-color;
+      border-radius: .3rem;
+      box-shadow: 0 .05rem .2rem rgba($dark-color, .05);
+      display: inline-flex;
+      flex-wrap: nowrap;
+      font-size: .7rem;
+      gap: .2rem;
+      height: 1.2rem;
+      margin: .05rem;
+      max-width: $size-md;
+      padding: .1rem .2rem;
+      position: relative;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      .feed-token-value {
+        font-weight: 600;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .avatar {
+        margin-left: -.1rem;
+      }
+
+      .feed-token-icon {
+        border-radius: .25rem;
+        flex: 0 0 1rem;
+        height: 1rem;
+        margin-left: -.1rem;
+        width: 1rem;
+
+        .img-responsive {
+          border-radius: .25rem;
+          height: 1rem;
+          object-fit: cover;
+          width: 1rem;
+        }
+      }
+
+      .feed-token-meta {
+        color: $gray-color-dark;
+        font-size: 90%;
+        font-weight: 400;
+        line-height: 1.2rem;
+      }
     }
   }
 }

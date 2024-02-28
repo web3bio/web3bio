@@ -115,8 +115,8 @@ export default function LoadingSkeleton(props) {
           <div className={`profile-widget profile-widget-loading ${type}`}>
             <div className="profile-widget-header">
               <h2 className="profile-widget-title">
-                <span className="emoji-large mr-2">🔮 </span>
-                POAPs
+                <span className="emoji-large mr-2">🌐 </span>
+                Loading
               </h2>
             </div>
             <div className="profile-widget-body">

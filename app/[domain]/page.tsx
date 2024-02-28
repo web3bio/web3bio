@@ -1,5 +1,5 @@
 // import { fetchInitialNFTsData } from "../../hooks/api/fetchProfile";
-import { shouldPlatformFetch } from "../../utils/platform";
+import { PlatformType, shouldPlatformFetch } from "../../utils/platform";
 import { SocialPlatformMapping } from "../../utils/utils";
 import { handleSearchPlatform, mapLinks } from "../../utils/utils";
 import { notFound, redirect } from "next/navigation";
@@ -70,7 +70,9 @@ export async function generateMetadata({
     profile?.identity == profile?.displayName
       ? `${profile?.displayName}`
       : `${profile?.displayName} (${profile?.identity})`;
+
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
+
   const profileDescription =
     profile?.description ||
     `Explore ${pageTitle} ${
@@ -87,6 +89,31 @@ export async function generateMetadata({
   const relativeOGURL = params.toString()
     ? `/api/og?${params.toString()}`
     : "/api/og";
+
+  const fcMetadata: Record<string, string> = {
+    "fc:frame": "vNext",
+    "fc:frame:image": `${baseURL}${relativeOGURL}`,
+  };
+  JSON.parse(JSON.stringify(data))
+    .splice(0, 3)
+    .filter((o) => o.identity !== "")
+    .map((x, index) => {
+      const resolvedIdentity = `${x.identity}${
+        x.platform === PlatformType.farcaster ? ".farcaster" : ""
+      }`;
+      fcMetadata[`fc:frame:button:${index + 1}`] = SocialPlatformMapping(
+        x.platform
+      ).label;
+      fcMetadata[`fc:frame:button:${index + 1}:action`] = "link";
+      fcMetadata[
+        `fc:frame:button:${index + 1}:target`
+      ] = `${baseURL}/${resolvedIdentity}`;
+    });
+
+  const defaultIdx = data.length > 3 ? 4 : data.length + 1;
+  fcMetadata[`fc:frame:button:${defaultIdx}`] = "🌐 🖼 🌈 More";
+  fcMetadata[`fc:frame:button:${defaultIdx}:action`] = "link";
+  fcMetadata[`fc:frame:button:${defaultIdx}:target`] = `${baseURL}/${domain}`;
 
   return {
     metadataBase: new URL(baseURL),
@@ -109,6 +136,9 @@ export async function generateMetadata({
       site: "@web3bio",
       images: [relativeOGURL],
       creator: "@web3bio",
+    },
+    other: {
+      ...fcMetadata,
     },
   };
 }

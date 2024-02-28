@@ -51,7 +51,7 @@ const RenderDefaultCard = (props) => {
                     target="_blank"
                   >
                     <div className="feed-target-name">
-                      <strong>{metadata.title}</strong>
+                      {metadata.title}
                     </div>
                     <div className="feed-target-content">
                       <NFTAssetPlayer
@@ -108,7 +108,7 @@ const RenderDefaultCard = (props) => {
                     target="_blank"
                   >
                     <div className="feed-target-name">
-                      <strong>{metadata.proposal?.title}</strong>
+                      {metadata.proposal?.title}
                     </div>
                     <div className="feed-target-content">
                       {metadata.proposal?.organization.name}&nbsp;

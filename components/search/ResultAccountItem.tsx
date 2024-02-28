@@ -318,8 +318,9 @@ const RenderAccountItem = (props) => {
         </div>
       );
     case PlatformType.nextid:
+    case PlatformType.solana:
       return (
-        <div onClick={onClick} ref={ref} className="social-item nextid">
+        <div ref={ref} className={`social-item ${identity.platform}`}>
           <div className="social-main">
             <div className="social">
               <div className="avatar">
@@ -339,7 +340,6 @@ const RenderAccountItem = (props) => {
                   }}
                 >
                   <SVG
-                    fill="#fff"
                     src={SocialPlatformMapping(identity.platform)?.icon || ""}
                     width={20}
                     height={20}
@@ -364,21 +364,31 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
             </div>
-            {!disableAction && (
-              <div className="actions active">
-                <Link
-                  target={"_blank"}
-                  className="btn btn-sm btn-link action"
-                  href={`/${resolvedIdentity}`}
-                  prefetch={false}
-                  title="Open Next.ID Profile page"
-                  rel="noopener noreferrer"
-                >
-                  <SVG src="icons/icon-open.svg" width={20} height={20} />
-                  <span className="hide-xs">Profile</span>
-                </Link>
-              </div>
-            )}
+            <div
+              className={`actions ${
+                identity.platform === PlatformType.nextid ? "actions" : ""
+              }`}
+            >
+              <Link
+                target={"_blank"}
+                className="btn btn-sm btn-link action"
+                href={`/${resolvedIdentity}`}
+                prefetch={false}
+                title={`${
+                  identity.platform === PlatformType.nextid
+                    ? "Open Next.ID Profile page"
+                    : "Open"
+                }`}
+                rel="noopener noreferrer"
+              >
+                <SVG src="icons/icon-open.svg" width={20} height={20} />
+                <span className="hide-xs">
+                  {identity.platform === PlatformType.nextid
+                    ? "Profile"
+                    : "Open"}
+                </span>
+              </Link>
+            </div>
           </div>
           <RenderSourceFooter sources={sources} />
         </div>
@@ -414,7 +424,7 @@ const RenderAccountItem = (props) => {
             </Link>
             {!disableAction && (
               <div className="actions">
-                <a
+                <Link
                   className="btn btn-sm btn-link action"
                   href={`${
                     SocialPlatformMapping(identity.platform)?.urlPrefix
@@ -425,7 +435,7 @@ const RenderAccountItem = (props) => {
                 >
                   <SVG src="icons/icon-open.svg" width={20} height={20} />
                   <span className="hide-xs">Open</span>
-                </a>
+                </Link>
               </div>
             )}
           </div>

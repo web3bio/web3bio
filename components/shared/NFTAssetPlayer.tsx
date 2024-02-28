@@ -9,6 +9,7 @@ export enum MediaType {
   SVG = "image/svg",
   GIF = "image/gif",
   WEBP = "image/webp",
+  HEIC = "image/heic",
   HTML = "text/html",
   GLTF_BINARY = "model/gltf-binary",
   GLTF_JSON = "model/gltf+json",

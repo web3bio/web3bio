@@ -127,6 +127,9 @@ export default function WidgetFeed({ profile, openModal }) {
   const scrollContainer = useRef(null);
 
   useEffect(() => {
+    if (window.location.hash && window.location.hash === "#feeds" && !expand) {
+      setExpand(true);
+    }
     if (expand) {
       const anchorElement = document.getElementById("feeds");
       anchorElement?.scrollIntoView({
@@ -197,7 +200,7 @@ export default function WidgetFeed({ profile, openModal }) {
               setExpand(true);
             }}
           >
-            <button className="btn btn-block">View more</button>
+            <button className="btn btn-block">View More</button>
           </div>
         )}
         {expand && (
