@@ -28,6 +28,7 @@ const RenderAccountItem = (props) => {
     resolvedIdentity,
     disableAction,
     onClick,
+    customAction,
   } = props;
   const [isCopied, setIsCopied] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -170,37 +171,38 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
             </div>
-            {!disableAction &&
-              !profile?.error &&
-              (profile ? (
-                <div className="actions active">
-                  <Link
-                    target={"_blank"}
-                    href={`/${
-                      profile?.identity ||
-                      identity.displayName ||
-                      resolvedIdentity
-                    }`}
-                    title="Open Profile"
-                    className="btn btn-sm btn-link action"
-                  >
-                    <SVG src="icons/icon-open.svg" width={20} height={20} />
-                    <span className="hide-xs">Profile</span>
-                  </Link>
-                </div>
-              ) : (
-                <div className="actions">
-                  <Link
-                    target={"_blank"}
-                    href={`/${identity.displayName || resolvedIdentity}`}
-                    title="Open Profile"
-                    className="btn btn-sm btn-link action"
-                  >
-                    <SVG src="icons/icon-open.svg" width={20} height={20} />
-                    <span className="hide-xs">Profile</span>
-                  </Link>
-                </div>
-              ))}
+            {(customAction && customAction()) ||
+              (!disableAction &&
+                !profile?.error &&
+                (profile ? (
+                  <div className="actions active">
+                    <Link
+                      target={"_blank"}
+                      href={`/${
+                        profile?.identity ||
+                        identity.displayName ||
+                        resolvedIdentity
+                      }`}
+                      title="Open Profile"
+                      className="btn btn-sm btn-link action"
+                    >
+                      <SVG src="icons/icon-open.svg" width={20} height={20} />
+                      <span className="hide-xs">Profile</span>
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="actions">
+                    <Link
+                      target={"_blank"}
+                      href={`/${identity.displayName || resolvedIdentity}`}
+                      title="Open Profile"
+                      className="btn btn-sm btn-link action"
+                    >
+                      <SVG src="icons/icon-open.svg" width={20} height={20} />
+                      <span className="hide-xs">Profile</span>
+                    </Link>
+                  </div>
+                )))}
           </div>
           {identity.nft?.length > 0 && (
             <div className="nfts">
