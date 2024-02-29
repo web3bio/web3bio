@@ -9,7 +9,7 @@ export default function IndexPageListener({ inputRef }) {
       }
     };
 
-    const debounced = _.debounce(onKeyDown, 200, { maxWait: 500 });
+    const debounced = _.debounce(onKeyDown, 500, { maxWait: 500 });
 
     if (inputRef?.current) {
       document.body.addEventListener("keydown", debounced);

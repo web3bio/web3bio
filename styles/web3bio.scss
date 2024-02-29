@@ -79,6 +79,7 @@ body {
   right: 0;
   bottom: 0;
   z-index: 100;
+  backdrop-filter: blur(.3rem);
 
   .web3bio-modal-container {
     position: relative;
@@ -117,13 +118,15 @@ body {
         padding: 1.5rem;
       }
     }
-    .modal-search-container{
+
+    .modal-search-container {
       position: absolute;
       top: 30%;
       left: 50%;
       width: 80%;
-      transform: translate(-50%,-50%);
+      transform: translate(-50%, -50%);
     }
+
     .modal-article-container {
       width: 100%;
       height: 100%;
@@ -132,7 +135,7 @@ body {
       margin: auto;
       padding: 2rem 4rem;
       box-sizing: border-box;
-      overflow-y: auto; 
+      overflow-y: auto;
 
       border-radius: .5rem;
 
@@ -148,7 +151,7 @@ body {
         height: auto;
         max-width: 100%;
       }
-      
+
       h1 {
         font-size: 1.2rem;
         font-weight: 700;
@@ -187,6 +190,7 @@ body {
       }
 
       .preview-image {
+
         .img-responsive,
         .video-responsive {
           max-height: 90vh;
