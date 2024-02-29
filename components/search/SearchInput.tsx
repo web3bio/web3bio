@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import SVG from "react-inlinesvg";
 import { useSearchParams } from "next/navigation";
 import { DefaultSearchSuffix, fuzzyDomainSuffix } from "../../utils/constants";
@@ -17,12 +17,11 @@ type SearchListItem = {
   icon?: string;
 };
 export default function SearchInput(props) {
-  const { defaultValue, handleSubmit } = props;
+  const { defaultValue, handleSubmit, inputRef } = props;
   const [query, setQuery] = useState(defaultValue);
   const [searchList, setSearchList] = useState<SearchListItem[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const searchParams = useSearchParams();
-  const inputRef = useRef(null);
   const emitSubmit = (e, value?) => {
     const platfrom = (() => {
       if (!value) return "";
