@@ -24,6 +24,7 @@ import { WidgetPhiland } from "./WidgetPhiland";
 import { regexEns } from "../../utils/regexp";
 import LoadingSkeleton from "./LoadingSkeleton";
 import { WidgetTypes } from "../../utils/profile";
+import Web3bioBadge from "./ProfileFooter";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, nfts, relations, domain, fallbackAvatar } =
@@ -341,18 +342,7 @@ export default function ProfileMain(props) {
             null}
         </div>
       </div>
-      <div className="web3bio-badge">
-        <Link
-          href="/?utm_source=profile"
-          prefetch={false}
-          target="_parent"
-          className="btn btn-primary"
-          title="Web3.bio - Web3 Identity Graph Search and Link in Bio Profile"
-        >
-          <div className="badge-emoji mr-1">🖖</div>Made with{" "}
-          <strong className="text-pride animated-pride ml-1">Web3.bio</strong>
-        </Link>
-      </div>
+      <Web3bioBadge domain={domain} />
       {isOpen && (
         <Modal params={params} onDismiss={closeModal} modalType={modalType} />
       )}
