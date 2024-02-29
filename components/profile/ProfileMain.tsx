@@ -24,7 +24,7 @@ import { WidgetPhiland } from "./WidgetPhiland";
 import { regexEns } from "../../utils/regexp";
 import LoadingSkeleton from "./LoadingSkeleton";
 import { WidgetTypes } from "../../utils/profile";
-import Web3bioBadge from "./Web3bioBadge";
+import Web3bioBadge from "./ProfileFooter";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, nfts, relations, domain, fallbackAvatar } =
