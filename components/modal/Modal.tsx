@@ -6,6 +6,7 @@ import MediaModalContent from "./MediaModalContent";
 import NFTModalContentRender from "./NFTModalContent";
 import PhilandModalContent from "./PhilandModalContent";
 import PoapsModalContent from "./PoapsModalContent";
+import SearchModalContent from "./SearchModalContent";
 import ShareModalContent from "./ShareModalContent";
 
 export default function Modal(props) {
@@ -48,7 +49,9 @@ export default function Modal(props) {
       case ModalType.media:
         return <MediaModalContent {...params} onClose={onDismiss} />;
       case ModalType.article:
-        return <ArticleModalContent {...params} />;
+        return <ArticleModalContent {...params} onClose={onDismiss} />;
+      case ModalType.search:
+        return <SearchModalContent {...params} onClose={onDismiss} />
       default:
         return children;
     }
@@ -57,9 +60,7 @@ export default function Modal(props) {
     <div ref={overlay} className="web3bio-mask-cover" onClick={onClick}>
       <div
         ref={wrapper}
-        className={`web3bio-modal-container ${
-          modalType === ModalType.share ? "web3bio-share-container" : ""
-        }`}
+        className={`web3bio-modal-container modal-${modalType}-container`}
         style={{
           background: [ModalType.common, ModalType.share].includes(modalType)
             ? "#fff"
