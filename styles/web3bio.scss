@@ -117,7 +117,13 @@ body {
         padding: 1.5rem;
       }
     }
-
+    .modal-search-container{
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      width: 80%;
+      transform: translate(-50%,-50%);
+    }
     .modal-article-container {
       width: 100%;
       height: 100%;

@@ -6,6 +6,7 @@ import MediaModalContent from "./MediaModalContent";
 import NFTModalContentRender from "./NFTModalContent";
 import PhilandModalContent from "./PhilandModalContent";
 import PoapsModalContent from "./PoapsModalContent";
+import SearchModalContent from "./SearchModalContent";
 import ShareModalContent from "./ShareModalContent";
 
 export default function Modal(props) {
@@ -48,7 +49,9 @@ export default function Modal(props) {
       case ModalType.media:
         return <MediaModalContent {...params} onClose={onDismiss} />;
       case ModalType.article:
-        return <ArticleModalContent {...params} />;
+        return <ArticleModalContent {...params} onClose={onDismiss} />;
+      case ModalType.search:
+        return <SearchModalContent {...params} onClose={onDismiss} />
       default:
         return children;
     }
