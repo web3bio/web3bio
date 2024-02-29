@@ -29,3 +29,15 @@
     transform: translateY(0);
   }
 }
+
+@keyframes bounce-in {
+  0% {
+    transform: scale(.95);
+  }
+  30% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

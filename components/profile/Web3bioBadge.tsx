@@ -40,8 +40,9 @@ export default function Web3bioBadge(props) {
           <div className="badge-emoji mr-1">🖖</div>Made with{" "}
           <strong className="text-pride animated-pride ml-1">Web3.bio</strong>
         </Link>
-        <div
-          className={"btn btn-primary btn-search"}
+        <button
+          className={"btn btn-search"}
+          title="Try it out – press CMD+K (macOS) or CTRL+K (Windows) to search Web3 identities"
           onClick={() =>
             openModal(ModalType.search, {
               domain,
@@ -54,7 +55,7 @@ export default function Web3bioBadge(props) {
             height={24}
             className="icon"
           />
-        </div>
+        </button>
       </div>
     </>
   );

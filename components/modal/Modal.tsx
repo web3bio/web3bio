@@ -60,9 +60,7 @@ export default function Modal(props) {
     <div ref={overlay} className="web3bio-mask-cover" onClick={onClick}>
       <div
         ref={wrapper}
-        className={`web3bio-modal-container ${
-          modalType === ModalType.share ? "web3bio-share-container" : ""
-        }`}
+        className={`web3bio-modal-container modal-${modalType}-container`}
         style={{
           background: [ModalType.common, ModalType.share].includes(modalType)
             ? "#fff"
