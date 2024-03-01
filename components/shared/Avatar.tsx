@@ -20,6 +20,7 @@ export const Avatar = (props: Avatar) => {
       height={Number(height) || 0}
       alt={alt}
       loading={"lazy"}
+      itemProp="image"
     />
   );
 };
