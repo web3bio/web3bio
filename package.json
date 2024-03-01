@@ -15,7 +15,7 @@
     "boring-avatars": "^1.7.0",
     "d3": "^7.8.5",
     "geist": "^1.0.0",
-    "next": "^14.1.0",
+    "next": "^14.1.1",
     "react-infinite-scroll-hook": "^4.1.1",
     "react-markdown": "^9.0.0"
   },

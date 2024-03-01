@@ -1,11 +1,12 @@
 import Image from "next/image";
 import { AssetPlayerProps } from "./NFTAssetPlayer";
 interface Avatar extends AssetPlayerProps {
-  identity?: string;
+  identity?: string,
+  itemProp?: string;
 }
 
 export const Avatar = (props: Avatar) => {
-  const { src, width, height, alt, identity } = props;
+  const { src, width, height, alt, identity, itemProp } = props;
   const profileAvatarAPIURL =
     process.env.NEXT_PUBLIC_PROFILE_END_POINT + `/avatar/${identity}`;
   return (
@@ -20,6 +21,7 @@ export const Avatar = (props: Avatar) => {
       height={Number(height) || 0}
       alt={alt}
       loading={"lazy"}
+      itemProp={itemProp}
     />
   );
 };
