@@ -86,6 +86,7 @@ export default function ProfileMain(props) {
                 identity={domain}
                 className="avatar"
                 alt={`${pageTitle} Profile Photo`}
+                itemProp="image"
               />
               {!data?.avatar && fallbackAvatar.source && (
                 <div className="profile-avatar-badge">
