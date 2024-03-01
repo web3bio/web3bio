@@ -7,7 +7,8 @@ export enum ModalType {
   share = "share",
   common = "common",
   article = 'article',
-  philand = 'philand'
+  philand = 'philand',
+  search = 'search'
 }
 
 const useModal = () => {

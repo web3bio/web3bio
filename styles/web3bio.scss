@@ -146,10 +146,11 @@ body {
   justify-content: center;
   left: 0;
   top: 0;
-  background: rgba($color: #000000, $alpha: .3);
+  background: rgba($dark-color, .5);
   right: 0;
   bottom: 0;
   z-index: 100;
+  backdrop-filter: blur(.2rem);
 
   .web3bio-modal-container {
     position: relative;
@@ -177,7 +178,7 @@ body {
       top: 0;
     }
 
-    &.web3bio-share-container {
+    &.modal-share-container {
       height: auto;
       max-height: calc(100vh - 4rem);
       max-width: 28rem;
@@ -186,6 +187,19 @@ body {
 
       @media screen and (max-width: $size-sm) {
         padding: 1.5rem;
+      }
+    }
+
+    &.modal-search-container {
+      padding-top: 15vh;
+
+      .web3bio-search {
+        margin: auto;
+        max-width: 30rem;
+        
+        .form-input-group {
+          animation: bounce-in .2s cubic-bezier(.5, .25, .5, 1) 1;
+        }
       }
     }
 

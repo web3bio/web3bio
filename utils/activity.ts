@@ -236,7 +236,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
   },
   [ActivityType.share]: {
     key: ActivityType.share,
-    emoji: "✨",
+    emoji: "🔁",
     label: "Share",
     action: {
       default: "Shared a post",
