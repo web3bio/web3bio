@@ -174,42 +174,6 @@ export default function WalletProfileMain(props) {
                   </span>
                 </Clipboard>
               )}
-              {/* {data?.map((x, idx) => {
-                return (
-                  <div
-                    key={x.platform + idx}
-                    onClick={() => setCurProfile(x)}
-                    className={`platform-badge ${x.platform}${
-                      idx === 0 ? " active" : ""
-                    }`}
-                    title={`${pageTitle} ${
-                      SocialPlatformMapping(x.platform).label
-                    }: ${x.identity}`}
-                    style={{
-                      ["--badge-primary-color" as string]:
-                        SocialPlatformMapping(x.platform).color || "#000",
-                      ["--badge-bg-color" as string]:
-                        colorMod(
-                          SocialPlatformMapping(x.platform)?.color,
-                          10
-                        ) || "rgba(#000, .04)",
-                    }}
-                  >
-                    <div className="platform-badge-icon">
-                      <SVG
-                        fill={SocialPlatformMapping(x.platform).color}
-                        width={20}
-                        src={SocialPlatformMapping(x.platform).icon || ""}
-                      />
-                    </div>
-                    <span className="platform-badge-name">
-                      {x.platform === PlatformType.ethereum
-                        ? formatText(x.identity)
-                        : x.identity}
-                    </span>
-                  </div>
-                );
-              })} */}
             </div>
 
             {curProfile.description && (

@@ -79,13 +79,14 @@ export default function ProfileMain(props) {
       ></div>
       <div className="columns">
         <div className="column col-4 col-md-12">
-          <div className="web3-profile-base">
+          <div className="web3-profile-base" itemProp="mainEntity" itemType="https://schema.org/Person" itemScope>
             <div className="profile-avatar">
               <Avatar
                 src={data?.avatar || fallbackAvatar.avatar}
                 identity={domain}
                 className="avatar"
                 alt={`${pageTitle} Profile Photo`}
+                itemProp="image"
               />
               {!data?.avatar && fallbackAvatar.source && (
                 <div className="profile-avatar-badge">
@@ -104,9 +105,10 @@ export default function ProfileMain(props) {
             </div>
             <h1 className="text-assistive">{`${pageTitle} ${
               SocialPlatformMapping(platform).label
-            } Web3 Profile`}</h1>
+            } Profile`}</h1>
             <h2 className="text-assistive">{`Explore ${pageTitle} Web3 identity profiles, social links, NFT collections, Web3 activities, dWebsites, POAPs etc on the Web3.bio profile page.`}</h2>
-            <div className="profile-name">{data.displayName}</div>
+            <div className="profile-name" itemProp="name">{data.displayName}</div>
+            <meta itemProp="identifier" content={data.identity} />
             <h3 className="text-assistive">{`${pageTitle}‘s wallet address is ${data.address}`}</h3>
             <div className="profile-identity">
               <div className="btn-group dropdown">
@@ -210,6 +212,7 @@ export default function ProfileMain(props) {
                           10
                         ) || "rgba(#000, .04)",
                     }}
+                    itemProp="sameAs"
                   >
                     <div className="platform-badge-icon">
                       <SVG
@@ -218,7 +221,7 @@ export default function ProfileMain(props) {
                         src={SocialPlatformMapping(x.platform).icon || ""}
                       />
                     </div>
-                    <span className="platform-badge-name">
+                    <span className="platform-badge-name" itemProp="alternateName">
                       {x.platform === PlatformType.ethereum
                         ? formatText(x.identity)
                         : x.identity}
@@ -229,7 +232,7 @@ export default function ProfileMain(props) {
             </div>
 
             {data.description && (
-              <h2 className="profile-description">{data.description}</h2>
+              <h2 className="profile-description" itemProp="description">{data.description}</h2>
             )}
             {data.location && (
               <div className="profile-location">
