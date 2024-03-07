@@ -52,30 +52,21 @@ const RenderActivityFeeds = (props) => {
   return (
     <div className="widget-feeds-container">
       <div className="feeds-list">
-        {data
-          .filter((x) => {
-            if (
-              x.tag === ActivityTag.transaction &&
-              !isSameAddress(x.from, identity.address)
+        {data.map((x) => {
+          return (
+            x?.actions?.length > 0 &&
+            x.actions?.some((x) => x) && (
+              <div key={x.id} className={`feed-item`}>
+                <FeedItem
+                  openModal={openModal}
+                  network={network}
+                  identity={identity}
+                  feed={x}
+                />
+              </div>
             )
-              return false;
-            return true;
-          })
-          .map((x) => {
-            return (
-              x?.actions?.length > 0 &&
-              x.actions?.some((x) => x) && (
-                <div key={x.id} className={`feed-item`}>
-                  <FeedItem
-                    openModal={openModal}
-                    network={network}
-                    identity={identity}
-                    feed={x}
-                  />
-                </div>
-              )
-            );
-          })}
+          );
+        })}
       </div>
 
       {expand && (isLoadingMore || hasNextPage) && (
