@@ -12,11 +12,13 @@ export const GET_PROFILES_DOMAIN = gql`
         identity
         platform
         displayName
+        expiredAt
         neighborWithTraversal(depth: 5) {
           ... on ProofRecord {
             __typename
             source
             from {
+              expiredAt
               reverse
               nft(category: ["ENS"], limit: 100, offset: 0) {
                 uuid
@@ -30,6 +32,7 @@ export const GET_PROFILES_DOMAIN = gql`
               displayName
             }
             to {
+              expiredAt
               reverse
               nft(category: ["ENS"], limit: 100, offset: 0) {
                 uuid
@@ -47,6 +50,7 @@ export const GET_PROFILES_DOMAIN = gql`
             __typename
             source
             from {
+              expiredAt
               reverse
               nft(category: ["ENS"], limit: 100, offset: 0) {
                 uuid
@@ -65,6 +69,7 @@ export const GET_PROFILES_DOMAIN = gql`
               }
             }
             to {
+              expiredAt
               reverse
               nft(category: ["ENS"], limit: 100, offset: 0) {
                 uuid
@@ -111,18 +116,14 @@ export const GET_PROFILES_QUERY = gql`
       uuid
       uid
       reverse
-      ownedBy {
-        uuid
-        platform
-        identity
-        displayName
-      }
+      expiredAt
       nft(category: ["ENS"], limit: 100, offset: 0) {
         uuid
         category
         chain
         address
         id
+        expiredAt
       }
       neighborWithTraversal(depth: 5) {
         ... on ProofRecord {
@@ -134,6 +135,7 @@ export const GET_PROFILES_QUERY = gql`
               category
               chain
               id
+              expiredAt
             }
             uuid
             uid
@@ -148,6 +150,7 @@ export const GET_PROFILES_QUERY = gql`
               category
               chain
               id
+              expiredAt
             }
             uuid
             uid
