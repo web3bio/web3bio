@@ -123,19 +123,18 @@ export const GET_PROFILES_QUERY = gql`
         chain
         address
         id
-        expiredAt
       }
       neighborWithTraversal(depth: 5) {
         ... on ProofRecord {
           source
           from {
             reverse
+            expiredAt
             nft(category: ["ENS"], limit: 100, offset: 0) {
               uuid
               category
               chain
               id
-              expiredAt
             }
             uuid
             uid
@@ -145,12 +144,12 @@ export const GET_PROFILES_QUERY = gql`
           }
           to {
             reverse
+            expiredAt
             nft(category: ["ENS"], limit: 100, offset: 0) {
               uuid
               category
               chain
               id
-              expiredAt
             }
             uuid
             uid
@@ -163,6 +162,7 @@ export const GET_PROFILES_QUERY = gql`
           source
           from {
             reverse
+            expiredAt
             nft(category: ["ENS"], limit: 100, offset: 0) {
               uuid
               category
@@ -181,6 +181,7 @@ export const GET_PROFILES_QUERY = gql`
           }
           to {
             reverse
+            expiredAt
             nft(category: ["ENS"], limit: 100, offset: 0) {
               uuid
               category
