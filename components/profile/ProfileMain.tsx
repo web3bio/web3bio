@@ -79,7 +79,12 @@ export default function ProfileMain(props) {
       ></div>
       <div className="columns">
         <div className="column col-4 col-md-12">
-          <div className="web3-profile-base" itemProp="mainEntity" itemType="https://schema.org/Person" itemScope>
+          <div
+            className="web3-profile-base"
+            itemProp="mainEntity"
+            itemType="https://schema.org/Person"
+            itemScope
+          >
             <div className="profile-avatar">
               <Avatar
                 src={data?.avatar || fallbackAvatar.avatar}
@@ -103,50 +108,58 @@ export default function ProfileMain(props) {
                 </div>
               )}
             </div>
-            <h1 className="text-assistive">{`${pageTitle} ${
-              SocialPlatformMapping(platform).label
-            } Profile`}</h1>
-            <h2 className="text-assistive">{`Explore ${pageTitle} Web3 identity profiles, social links, NFT collections, Web3 activities, dWebsites, POAPs etc on the Web3.bio profile page.`}</h2>
-            <div className="profile-name" itemProp="name">{data.displayName}</div>
+            <h1 className="text-assistive">
+              {`${pageTitle} ${SocialPlatformMapping(platform).label} Profile`}
+            </h1>
+            <h2 className="text-assistive">
+              {`Explore ${pageTitle} ${SocialPlatformMapping(platform).label} Web3 profiles, social links, NFT collections, Web3 activities, dWebsites, POAPs etc on the Web3.bio profile page. `}
+              {`${pageTitle}‘s wallet address is ${data.address}`}
+              <meta itemProp="identifier" content={data.identity} />
+            </h2>
+            <div className="profile-name" itemProp="name">
+              {data.displayName}
+            </div>
             <meta itemProp="identifier" content={data.identity} />
             <h3 className="text-assistive">{`${pageTitle}‘s wallet address is ${data.address}`}</h3>
             <div className="profile-identity">
-              <div className="btn-group dropdown">
-                <Clipboard
-                  component="div"
-                  className="btn btn-sm"
-                  data-clipboard-text={data.address}
-                  onSuccess={onCopySuccess}
-                  title="Copy this wallet address"
-                >
-                  <SVG
-                    src="../icons/icon-wallet.svg"
-                    width={20}
-                    height={20}
-                    className="action-gray"
-                  />
-                  <span className="profile-label ml-1 mr-1">
-                    {formatText(data.address)}
-                  </span>
-                </Clipboard>
-                <Clipboard
-                  component="div"
-                  className="btn btn-sm"
-                  data-clipboard-text={data.address}
-                  onSuccess={onCopySuccess}
-                  title="Copy this wallet address"
-                >
-                  <SVG
-                    src="../icons/icon-copy.svg"
-                    width={20}
-                    height={20}
-                    className="action"
-                  />
-                </Clipboard>
-                <AddressMenu profile={data} />
-              </div>
+              {data.address && (
+                <div className="btn-group dropdown">
+                  <Clipboard
+                    component="div"
+                    className="btn btn-sm"
+                    data-clipboard-text={data.address}
+                    onSuccess={onCopySuccess}
+                    title="Copy this wallet address"
+                  >
+                    <SVG
+                      src="../icons/icon-wallet.svg"
+                      width={20}
+                      height={20}
+                      className="action-gray"
+                    />
+                    <span className="profile-label ml-1 mr-1">
+                      {formatText(data.address)}
+                    </span>
+                  </Clipboard>
+                  <Clipboard
+                    component="div"
+                    className="btn btn-sm"
+                    data-clipboard-text={data.address}
+                    onSuccess={onCopySuccess}
+                    title="Copy this wallet address"
+                  >
+                    <SVG
+                      src="../icons/icon-copy.svg"
+                      width={20}
+                      height={20}
+                      className="action"
+                    />
+                  </Clipboard>
+                  <AddressMenu profile={data} />
+                </div>
+              )}
               <button
-                className="profile-share btn btn-sm ml-2"
+                className={`profile-share btn btn-sm ${data.address && "ml-2"}`}
                 title="Share this profile"
                 onClick={() =>
                   openModal(ModalType.share, {
@@ -221,7 +234,10 @@ export default function ProfileMain(props) {
                         src={SocialPlatformMapping(x.platform).icon || ""}
                       />
                     </div>
-                    <span className="platform-badge-name" itemProp="alternateName">
+                    <span
+                      className="platform-badge-name"
+                      itemProp="alternateName"
+                    >
                       {x.platform === PlatformType.ethereum
                         ? formatText(x.identity)
                         : x.identity}
@@ -232,7 +248,9 @@ export default function ProfileMain(props) {
             </div>
 
             {data.description && (
-              <h2 className="profile-description" itemProp="description">{data.description}</h2>
+              <h2 className="profile-description" itemProp="description">
+                {data.description}
+              </h2>
             )}
             {data.location && (
               <div className="profile-location">

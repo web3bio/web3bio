@@ -16,7 +16,7 @@ export default createReducer(initialState, (builder) =>
   builder.addCase(
     updateUniversalBatchedProfile,
     (state, { payload: { profiles } }) => {
-      profiles.map((x) => x.address && (state.profiles[x.uuid] = x));
+      profiles.map((x) => x.identity && (state.profiles[x.uuid] = x));
     }
   )
 );

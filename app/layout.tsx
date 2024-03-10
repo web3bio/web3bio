@@ -2,7 +2,9 @@ import { GeistSans } from "geist/font";
 import ApolloProvider from "../components/shared/ApolloProvider";
 import GoogleAnalytics from "../components/shared/GoogleAnalytics";
 import ReduxProvider from "../components/shared/ReduxProvider";
+import WalletProvider from "../components/shared/WalletProvider";
 import "../styles/web3bio.scss";
+import "@rainbow-me/rainbowkit/styles.css";
 
 export function generateMetadata() {
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
@@ -77,7 +79,11 @@ export default function RootLayout({ children }) {
       <body className={GeistSans.className}>
         <main>
           <ReduxProvider>
-            <ApolloProvider>{children}</ApolloProvider>
+            <ApolloProvider>
+              <WalletProvider>
+                {children}
+              </WalletProvider>
+            </ApolloProvider>
           </ReduxProvider>
           <GoogleAnalytics />
         </main>
