@@ -145,6 +145,7 @@
     }
   }
 
+
   .profile-badges {
     align-items: center;
     color: $gray-color-dark;
@@ -157,6 +158,8 @@
     margin-top: 1rem;
 
     .platform-badge {
+      cursor: pointer;
+      color: rgba($dark-color, .9);
       align-items: center;
       background-color: var(--badge-bg-color, rgba($dark-color, .05));
       border: .05rem solid transparent;
@@ -1576,5 +1579,18 @@
     .badge-emoji {
       transform: scale(1.5) rotate(-10deg);
     }
+  }
+}
+
+.domain-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  margin-top: 2rem;
+  box-shadow: none !important;
+
+  .social-item {
+    background: rgba(171, 171, 171, 0.07);
   }
 }
