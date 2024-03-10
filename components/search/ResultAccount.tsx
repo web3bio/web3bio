@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import { AppState } from "../../state";
 import { ProfileInterface } from "../../utils/profile";
 import D3ResultGraph from "../graph/D3ResultGraph";
-import { PlatformType } from "../../utils/platform";
 
 const RenderAccount = (props) => {
   const { graphData, resultNeighbor, graphTitle } = props;
@@ -30,28 +29,14 @@ const RenderAccount = (props) => {
           )}
         </div>
         <div className="search-result-body">
-          {resultNeighbor?.map((avatar, idx) => {
-            const profile = profiles.find(
-              (x) => x?.uuid === avatar.identity.uuid
-            );
-            const identity = avatar.identity;
-            return (
-              <ResultAccountItem
-                resolvedIdentity={
-                  [
-                    PlatformType.unstoppableDomains,
-                    PlatformType.dotbit,
-                  ].includes(avatar.identity.platform)
-                    ? identity.ownedBy.identity
-                    : profile?.address || identity.identity
-                }
-                identity={identity}
-                sources={avatar.sources}
-                profile={profile}
-                key={avatar.identity.uuid + idx}
-              />
-            );
-          })}
+          {resultNeighbor?.map((avatar, idx) => (
+            <ResultAccountItem
+              identity={avatar.identity}
+              sources={avatar.sources}
+              profile={profiles.find((x) => x?.uuid === avatar.identity.uuid)}
+              key={avatar.identity.uuid + idx}
+            />
+          ))}
         </div>
       </div>
       {open && (

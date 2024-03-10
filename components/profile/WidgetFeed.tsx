@@ -3,13 +3,12 @@ import { useEffect, useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { ExpandController } from "./ExpandController";
 import { RSS3Fetcher, RSS3_ENDPOINT } from "../apis/rss3";
-import { ActivityTag, ActivityType, TagsFilterMapping } from "../../utils/activity";
+import { ActivityType, TagsFilterMapping } from "../../utils/activity";
 import FeedFilter from "./FeedFilter";
 import { useDispatch } from "react-redux";
 import { updateFeedsWidget } from "../../state/widgets/action";
 import { ActivityFeeds } from "./ActivityFeeds";
 import { PlatformType } from "../../utils/platform";
-import { isSameAddress } from "../../utils/utils";
 
 const FEEDS_PAGE_SIZE = 20;
 
@@ -124,7 +123,6 @@ export default function WidgetFeed({ profile, openModal }) {
     address: profile.address,
     filter,
   });
-
   const dispatch = useDispatch();
   const scrollContainer = useRef(null);
 
@@ -145,20 +143,13 @@ export default function WidgetFeed({ profile, openModal }) {
       );
     }
   }, [expand, isValidating, data?.length, dispatch]);
-  const resolvedData = data?.filter((x) => {
-    if (
-      x.tag === ActivityTag.transaction &&
-      !isSameAddress(x.from, profile.address)
-    )
-      return false;
-    return true;
-  });
-  if ((filter === "all" && !resolvedData?.length) || isError) return null;
+
+  if ((filter === "all" && !data?.length) || isError) return null;
 
   // if (process.env.NODE_ENV !== "production") {
   //   console.log("Feed Data:", data);
   // }
-  
+
   return (
     <div ref={scrollContainer} className="profile-widget-full" id="feeds">
       <div
@@ -193,7 +184,7 @@ export default function WidgetFeed({ profile, openModal }) {
           expand={expand}
           parentScrollRef={scrollContainer}
           identity={profile}
-          data={resolvedData}
+          data={data}
           isLoadingMore={isValidating}
           hasNextPage={hasNextPage}
           isError={isError}
@@ -202,7 +193,7 @@ export default function WidgetFeed({ profile, openModal }) {
             setSize(size + 1);
           }}
         />
-        {!isValidating && !expand && resolvedData?.length > 2 && (
+        {!isValidating && !expand && data?.length > 2 && (
           <div
             className="btn-widget-more"
             onClick={() => {
