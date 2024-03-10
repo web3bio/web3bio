@@ -108,10 +108,14 @@ export default function ProfileMain(props) {
                 </div>
               )}
             </div>
-            <h1 className="text-assistive">{`${pageTitle} ${
-              SocialPlatformMapping(platform).label
-            } Profile`}</h1>
-            <h2 className="text-assistive">{`Explore ${pageTitle} Web3 identity profiles, social links, NFT collections, Web3 activities, dWebsites, POAPs etc on the Web3.bio profile page.`}</h2>
+            <h1 className="text-assistive">
+              {`${pageTitle} ${SocialPlatformMapping(platform).label} Profile`}
+            </h1>
+            <h2 className="text-assistive">
+              {`Explore ${pageTitle} ${SocialPlatformMapping(platform).label} Web3 profiles, social links, NFT collections, Web3 activities, dWebsites, POAPs etc on the Web3.bio profile page. `}
+              {`${pageTitle}‘s wallet address is ${data.address}`}
+              <meta itemProp="identifier" content={data.identity} />
+            </h2>
             <div className="profile-name" itemProp="name">
               {data.displayName}
             </div>

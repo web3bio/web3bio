@@ -20,7 +20,6 @@ export default function WidgetDomainManagement(props) {
               platform: x.platform,
               displayName: x.displayName,
             }}
-            sources={["Universal Profile API"]}
             profile={x}
             key={idx + x}
             customAction={
@@ -29,7 +28,7 @@ export default function WidgetDomainManagement(props) {
                     return (
                       <div className="actions active">
                         <Link
-                          title="Open Profile"
+                          title="Extend the Domain"
                           className="btn btn-sm action"
                           href={
                             x.platform === PlatformType.ens

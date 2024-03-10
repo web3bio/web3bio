@@ -75,9 +75,6 @@ export default function WalletButton(props) {
                           alt={account.address}
                         />
                         {account.displayName}
-                        {account.displayBalance
-                          ? ` (${account.displayBalance})`
-                          : ""}
                         <SVG
                           src="../icons/icon-more.svg"
                           width={20}
@@ -112,17 +109,14 @@ export default function WalletButton(props) {
                         </Clipboard>
 
                         <li className="menu-item dropdown-menu-item">
-                          <Link
-                            href={`https://debank.com/profile/${account.address}`}
-                            target="_blank"
-                          >
+                          <Link href={`/profile`}>
                             <SVG
                               src="../icons/icon-wallet.svg"
                               width={20}
                               height={20}
                               className="action mr-1"
                             />
-                            View assets on DeBank
+                            Manage Identities
                           </Link>
                         </li>
                         <li className="menu-item dropdown-menu-item">
