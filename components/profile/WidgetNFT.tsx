@@ -12,6 +12,7 @@ import {
 import NFTFilter from "./NFTFilter";
 import { updateNFTWidget } from "../../state/widgets/action";
 import { useDispatch } from "react-redux";
+import { PlatformType } from "../../utils/platform";
 
 const CURSOR_PARAM = "&cursor=";
 
@@ -92,11 +93,13 @@ function useNFTs({ address, filter }) {
   };
 }
 
-export default function WidgetNFT({ address, onShowDetail }) {
-  const [expand, setExpand] = useState(false);
+export default function WidgetNFT({ profile, onShowDetail }) {
+  const [expand, setExpand] = useState(
+    !!(profile?.platform === PlatformType.solana)
+  );
   const [filter, setFilter] = useState("");
   const { data, size, setSize, isValidating, isError, hasNextPage } = useNFTs({
-    address,
+    address: profile?.address,
     filter,
   });
   const dispatch = useDispatch();

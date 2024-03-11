@@ -294,10 +294,10 @@ export default function ProfileMain(props) {
               <div className="web3-section-widgets">
                 <Suspense fallback={<LoadingSkeleton type={WidgetTypes.nft} />}>
                   <WidgetNFT
+                    profile={data}
                     onShowDetail={(e, v) => {
                       openModal(ModalType.nft, v);
                     }}
-                    address={data.address}
                   />
                 </Suspense>
               </div>

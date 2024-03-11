@@ -8,8 +8,6 @@ export default function WidgetDomainManagement(props) {
   return (
     <div className="domain-list search-result">
       {data?.map((x, idx) => {
-        console.log(x.expiredAt, new Date().getTime(), "kkkk");
-
         return (
           <ResultAccountItem
             onClick={() => setCurProfile(x)}

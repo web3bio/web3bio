@@ -26,6 +26,7 @@ export enum Network {
   linea = "linea",
   snapshot = "snapshot",
   erc1577 = "erc1577",
+  solana = "solana",
 }
 
 export interface NetworkMetaData {
@@ -206,11 +207,20 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
     bgColor: "#f1e7db",
     scanPrefix: "https://scrollscan.com/",
   },
+  [Network.solana]: {
+    key: Network.solana,
+    chainId: 534352,
+    primaryColor: "#9945FF",
+    icon: "icons/icon-solana.svg",
+    label: "Solana",
+    bgColor: "#ffffff",
+    scanPrefix: "https://solscan.io/",
+  },
   [Network.zora]: {
     key: Network.zora,
-    chainId: 7777777,
     icon: "icons/icon-zora.svg",
-    label: "Zora",
+    label: "Solana",
+
     primaryColor: "#141414",
     bgColor: "#efefef",
     scanPrefix: "https://explorer.zora.energy/",
