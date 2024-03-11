@@ -111,6 +111,11 @@ export const fuzzyDomainSuffix = [
     key: PlatformType.unstoppableDomains,
     label: "manga",
   },
+  {
+    key: PlatformType.solana,
+    label: "sol",
+    icon: SocialPlatformMapping(PlatformType.solana).icon,
+  },
   // {
   //   key: "space_id",
   //   label: "arb",
