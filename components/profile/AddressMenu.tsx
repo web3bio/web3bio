@@ -2,7 +2,6 @@ import Link from "next/link";
 import SVG from "react-inlinesvg";
 import { generateVCardData } from "../../utils/vcard";
 import { NetworkMapping } from "../../utils/utils";
-import { PlatformType } from "../../utils/platform";
 import { NetworkData } from "../../utils/network";
 
 const createDownloadLink = (data, filename) => {
@@ -55,20 +54,23 @@ export default function AddressMenu({ profile }) {
             View on {NetworkMapping(network).scanLabel}
           </Link>
         </li>
-        <li className="menu-item dropdown-menu-item">
-          <Link
-            href={`https://debank.com/profile/${profile.address}`}
-            target="_blank"
-          >
-            <SVG
-              src="../icons/icon-wallet.svg"
-              width={20}
-              height={20}
-              className="action mr-1"
-            />
-            View assets on DeBank
-          </Link>
-        </li>
+        {
+          profile.platform !== NetworkData.solana.key && 
+          <li className="menu-item dropdown-menu-item">
+            <Link
+              href={`https://debank.com/profile/${profile.address}`}
+              target="_blank"
+            >
+              <SVG
+                src="../icons/icon-wallet.svg"
+                width={20}
+                height={20}
+                className="action mr-1"
+              />
+              View assets on DeBank
+            </Link>
+          </li>
+        }
         <li className="menu-item dropdown-menu-item">
           <Link
             href="/"
