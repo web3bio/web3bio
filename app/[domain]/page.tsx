@@ -7,43 +7,22 @@ import { Metadata } from "next";
 import ProfileMain from "../../components/profile/ProfileMain";
 import { regexAvatar } from "../../utils/regexp";
 
-// function mapNFTs(nfts) {
-//   if (!nfts) return [];
-//   return nfts.map((x) => ({
-//     image_url: x.image_url,
-//     previews: x.previews,
-//     token_id: x.token_id,
-//     collection: x.collection,
-//     video_url: x.video_url,
-//     audio_url: x.audio_url,
-//     video_properties: x.video_properties,
-//     image_properties: x.image_properties,
-//     chain: x.chain,
-//     extra_metadata: x.extra_metadata,
-//   }));
-// }
-
 async function fetchDataFromServer(domain: string) {
   if (!domain) return null;
   try {
     const platform = handleSearchPlatform(domain);
     if (!shouldPlatformFetch(platform)) return null;
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile/${domain}`,
-      {
-        next: { revalidate: 86400 },
-      }
-    );
+    const url = `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile${
+      platform === PlatformType.solana ? "/solana/" : ""
+    }/${domain}`;
+    const response = await fetch(url, {
+      next: { revalidate: 86400 },
+    });
     if (response.status === 404) return null;
     const data = await response.json();
-
-    // const remoteNFTs = data[0].address
-    //   ? await fetchInitialNFTsData(data[0].address)
-    //   : {};
     return {
-      data,
+      data: platform === PlatformType.solana ? [data] : data,
       platform,
-      // nfts: remoteNFTs,
     };
   } catch (e) {
     console.log(e, "ERROR");

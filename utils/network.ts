@@ -26,6 +26,7 @@ export enum Network {
   linea = "linea",
   snapshot = "snapshot",
   erc1577 = "erc1577",
+  solana = "solana",
 }
 
 export interface NetworkMetaData {
@@ -36,6 +37,7 @@ export interface NetworkMetaData {
   primaryColor: string;
   bgColor: string;
   scanPrefix: string;
+  scanLabel?: string;
 }
 
 export const NetworkData: { [key in Network]: NetworkMetaData } = {
@@ -46,7 +48,8 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
     label: "Ethereum",
     primaryColor: "#3741ba",
     bgColor: "#ebecf8",
-    scanPrefix: "https://etherscan.io/",
+    scanPrefix: "https://etherscan.io/address/",
+    scanLabel: "Etherscan.io",
   },
   [Network.polygon]: {
     key: Network.polygon,
@@ -206,11 +209,21 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
     bgColor: "#f1e7db",
     scanPrefix: "https://scrollscan.com/",
   },
+  [Network.solana]: {
+    key: Network.solana,
+    chainId: 534352,
+    primaryColor: "#9945FF",
+    icon: "icons/icon-solana.svg",
+    label: "Solana",
+    bgColor: "#ffffff",
+    scanPrefix: "https://solscan.io/account/",
+    scanLabel: "Solscan.io",
+  },
   [Network.zora]: {
     key: Network.zora,
-    chainId: 7777777,
     icon: "icons/icon-zora.svg",
     label: "Zora",
+
     primaryColor: "#141414",
     bgColor: "#efefef",
     scanPrefix: "https://explorer.zora.energy/",

@@ -13,6 +13,8 @@ import {
   regexUnstoppableDomains,
   regexSpaceid,
   regexFarcaster,
+  regexSolana,
+  regexSns,
 } from "./regexp";
 import _ from "lodash";
 
@@ -104,6 +106,10 @@ export const handleSearchPlatform = (term: string) => {
       return PlatformType.space_id;
     case regexDotbit.test(term):
       return PlatformType.dotbit;
+    case regexSns.test(term):
+      return PlatformType.solana;
+    case regexSolana.test(term):
+      return PlatformType.solana;
     case regexTwitter.test(term):
       return PlatformType.twitter;
     case regexFarcaster.test(term):

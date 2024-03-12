@@ -76,7 +76,7 @@ const RenderAccountItem = (props) => {
     if (
       !fetched &&
       (identity?.reverse ||
-        [PlatformType.farcaster, PlatformType.lens].includes(
+        [PlatformType.farcaster, PlatformType.lens, PlatformType.solana].includes(
           identity.platform
         )) &&
       visible
