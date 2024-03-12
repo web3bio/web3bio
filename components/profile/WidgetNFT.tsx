@@ -13,6 +13,7 @@ import NFTFilter from "./NFTFilter";
 import { updateNFTWidget } from "../../state/widgets/action";
 import { useDispatch } from "react-redux";
 import { PlatformType } from "../../utils/platform";
+import { NetworkData } from "../../utils/network";
 
 const CURSOR_PARAM = "&cursor=";
 
@@ -52,7 +53,7 @@ const processNFTsData = (data) => {
   return collections;
 };
 
-const getURL = (index, address, previous, filter) => {
+const getURL = (index, address, previous, filter, network) => {
   if (
     index !== 0 &&
     previous &&
@@ -65,15 +66,15 @@ const getURL = (index, address, previous, filter) => {
     SIMPLEHASH_URL +
     `/api/v0/nfts/owners_v2?chains=${
       filter || SIMPLEHASH_CHAINS
-    }&wallet_addresses=${address}&filters=spam_score__lte%3D1${
-      cursor ? CURSOR_PARAM + cursor : ""
-    }&limit=${SIMPLEHASH_PAGE_SIZE}`
+    }&wallet_addresses=${address}&filters=spam_score__lte%3D${
+      network === NetworkData.solana.key ? "100" : "1"
+    }${cursor ? CURSOR_PARAM + cursor : ""}&limit=${SIMPLEHASH_PAGE_SIZE}`
   );
 };
 
-function useNFTs({ address, filter }) {
+function useNFTs({ address, filter, network }) {
   const { data, error, size, isValidating, setSize } = useSWRInfinite(
-    (index, previous) => getURL(index, address, previous, filter),
+    (index, previous) => getURL(index, address, previous, filter, network),
     SimplehashFetcher,
     {
       suspense: true,
@@ -101,6 +102,7 @@ export default function WidgetNFT({ profile, onShowDetail }) {
   const { data, size, setSize, isValidating, isError, hasNextPage } = useNFTs({
     address: profile?.address,
     filter,
+    network: profile.platform,
   });
   const dispatch = useDispatch();
   const [[ref, assetId], setScrollRefAndAssetId] = useState<

@@ -1,6 +1,9 @@
 import Link from "next/link";
 import SVG from "react-inlinesvg";
 import { generateVCardData } from "../../utils/vcard";
+import { NetworkMapping } from "../../utils/utils";
+import { PlatformType } from "../../utils/platform";
+import { NetworkData } from "../../utils/network";
 
 const createDownloadLink = (data, filename) => {
   var blob = new Blob([data], { type: "text/vcard" });
@@ -22,6 +25,10 @@ export const downloadVCard = (_profile) => {
   document.body.removeChild(downloadLink);
 };
 export default function AddressMenu({ profile }) {
+  const network =
+    profile.platform === NetworkData.solana.key
+      ? profile.platform
+      : NetworkData.ethereum.key;
   return (
     <>
       <div className="btn btn-sm dropdown-toggle" tabIndex={0}>
@@ -36,7 +43,7 @@ export default function AddressMenu({ profile }) {
       <ul className="menu">
         <li className="menu-item dropdown-menu-item">
           <Link
-            href={`https://etherscan.io/address/${profile.address}`}
+            href={NetworkMapping(network).scanPrefix + profile.address}
             target="_blank"
           >
             <SVG
@@ -45,7 +52,7 @@ export default function AddressMenu({ profile }) {
               height={20}
               className="action mr-1"
             />
-            View on Etherscan
+            View on {NetworkMapping(network).scanLabel}
           </Link>
         </li>
         <li className="menu-item dropdown-menu-item">
