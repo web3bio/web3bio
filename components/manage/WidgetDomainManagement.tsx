@@ -21,7 +21,7 @@ export default function WidgetDomainManagement(props) {
             profile={x}
             key={idx + x}
             customAction={
-              x.expiredAt * 1000 <= new Date().getTime()
+              !x.expiredAt || x.expiredAt * 1000 <= new Date().getTime()
                 ? () => {
                     return (
                       <div className="actions active">

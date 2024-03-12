@@ -12,13 +12,13 @@ export const GET_PROFILES_DOMAIN = gql`
         identity
         platform
         displayName
-        expiredAt
+        # expiredAt
         neighborWithTraversal(depth: 5) {
           ... on ProofRecord {
             __typename
             source
             from {
-              expiredAt
+              # expiredAt
               reverse
               nft(category: ["ENS"], limit: 100, offset: 0) {
                 uuid
@@ -32,7 +32,7 @@ export const GET_PROFILES_DOMAIN = gql`
               displayName
             }
             to {
-              expiredAt
+              # expiredAt
               reverse
               nft(category: ["ENS"], limit: 100, offset: 0) {
                 uuid
@@ -50,7 +50,7 @@ export const GET_PROFILES_DOMAIN = gql`
             __typename
             source
             from {
-              expiredAt
+              # expiredAt
               reverse
               nft(category: ["ENS"], limit: 100, offset: 0) {
                 uuid
@@ -69,7 +69,7 @@ export const GET_PROFILES_DOMAIN = gql`
               }
             }
             to {
-              expiredAt
+              # expiredAt
               reverse
               nft(category: ["ENS"], limit: 100, offset: 0) {
                 uuid
@@ -116,7 +116,7 @@ export const GET_PROFILES_QUERY = gql`
       uuid
       uid
       reverse
-      expiredAt
+      # expiredAt
       nft(category: ["ENS"], limit: 100, offset: 0) {
         uuid
         category
@@ -129,7 +129,7 @@ export const GET_PROFILES_QUERY = gql`
           source
           from {
             reverse
-            expiredAt
+            # expiredAt
             nft(category: ["ENS"], limit: 100, offset: 0) {
               uuid
               category
@@ -144,7 +144,7 @@ export const GET_PROFILES_QUERY = gql`
           }
           to {
             reverse
-            expiredAt
+            # expiredAt
             nft(category: ["ENS"], limit: 100, offset: 0) {
               uuid
               category
@@ -162,7 +162,7 @@ export const GET_PROFILES_QUERY = gql`
           source
           from {
             reverse
-            expiredAt
+            # expiredAt
             nft(category: ["ENS"], limit: 100, offset: 0) {
               uuid
               category
@@ -181,7 +181,7 @@ export const GET_PROFILES_QUERY = gql`
           }
           to {
             reverse
-            expiredAt
+            # expiredAt
             nft(category: ["ENS"], limit: 100, offset: 0) {
               uuid
               category
