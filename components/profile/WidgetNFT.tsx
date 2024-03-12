@@ -67,7 +67,7 @@ const getURL = (index, address, previous, filter, network) => {
     `/api/v0/nfts/owners_v2?chains=${
       filter || SIMPLEHASH_CHAINS
     }&wallet_addresses=${address}&filters=spam_score__lte%3D${
-      network === NetworkData.solana.key ? "100" : "1"
+      network === NetworkData.solana.key ? "99" : "1"
     }${cursor ? CURSOR_PARAM + cursor : ""}&limit=${SIMPLEHASH_PAGE_SIZE}`
   );
 };
