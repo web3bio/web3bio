@@ -22,9 +22,12 @@ export default function WalletButton(props) {
 
   useEffect(() => {
     if (avatar?.current) {
-      avatar.current.onload = () => {
-        setAvatarLoading(false);
-      };
+      if (avatarLoading) {
+        if (avatar.current.complete) setAvatarLoading(false);
+        avatar.current.onload = () => {
+          setAvatarLoading(false);
+        };
+      }
     }
     const onKeyDown = (e) => {
       // cmd/ctrl + i
@@ -36,7 +39,7 @@ export default function WalletButton(props) {
     };
     document.body.addEventListener("keydown", onKeyDown);
     return () => document.body.removeEventListener("keydown", onKeyDown);
-  }, [show, avatarLoading]);
+  }, [show, avatar?.current]);
 
   return (
     <div
