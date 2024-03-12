@@ -57,6 +57,11 @@ export enum PlatformType {
   degenscore = "degenscore",
   firefly = "firefly",
   solana = "solana",
+  mstdnjp = "mstdnjp",
+  lobsters = "lobsters",
+  hackernews = "hackernews",
+  crossbell = "crossbell",
+  minds = "minds",
 }
 
 export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
@@ -420,6 +425,41 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     icon: "icons/icon-solana.svg",
     label: "Solana",
     urlPrefix: "https://solscan.io/",
+  },
+  [PlatformType.mstdnjp]: {
+    key: PlatformType.mstdnjp,
+    color: "#595aff",
+    icon: "icons/icon-mastodon.svg",
+    label: "mstdn.jp",
+    urlPrefix: "https://mstdn.jp/",
+  },
+  [PlatformType.lobsters]: {
+    key: PlatformType.lobsters,
+    color: "#ac130d",
+    icon: "icons/icon-lobsters.svg",
+    label: "Lobsters",
+    urlPrefix: "https://lobste.rs/~",
+  },
+  [PlatformType.hackernews]: {
+    key: PlatformType.hackernews,
+    color: "#ff6600",
+    icon: "icons/icon-hackernews.svg",
+    label: "Hacker News",
+    urlPrefix: "https://news.ycombinator.com/user?id=",
+  },
+  [PlatformType.crossbell]: {
+    key: PlatformType.crossbell,
+    color: "#9945ff",
+    icon: "icons/icon-crossbell.svg",
+    label: "Crossbell",
+    urlPrefix: "https://crossbell.io/",
+  },
+  [PlatformType.minds]: {
+    key: PlatformType.minds,
+    color: "#f7d354",
+    icon: "icons/icon-minds.svg",
+    label: "Minds",
+    urlPrefix: "https://www.minds.com/",
   },
 };
 
