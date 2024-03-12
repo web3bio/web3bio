@@ -74,6 +74,7 @@ body {
   position: absolute;
   top: 1rem;
   right: 1rem;
+  transition: all .5s ease;
   z-index: 10;
 
   .connect-btn {
@@ -117,11 +118,18 @@ body {
       line-height: 1.25rem;
 
       .chain-icon {
+        transition: all .5s ease;
         width: 1.25rem;
         height: 1.25rem;
         object-fit: contain;
         cursor: pointer;
         border-radius: 99%;
+
+        .loading-container {
+          .loading {
+            height: 1.25rem;
+          }
+        }
       }
     }
 
@@ -196,7 +204,7 @@ body {
       .web3bio-search {
         margin: auto;
         max-width: 30rem;
-        
+
         .form-input-group {
           animation: bounce-in .2s cubic-bezier(.5, .25, .5, 1) 1;
         }

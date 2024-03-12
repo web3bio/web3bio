@@ -4,19 +4,47 @@ import Link from "next/link";
 import SVG from "react-inlinesvg";
 import { disconnect } from "@wagmi/core";
 import Clipboard from "react-clipboard.js";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Loading } from "./Loading";
 
 export default function WalletButton(props) {
   const {} = props;
   const [isCopied, setIsCopied] = useState(false);
+  const [show, setShow] = useState(false);
+  const [avatarLoading, setAvatarLoading] = useState(true);
   const onCopySuccess = () => {
     setIsCopied(true);
     setTimeout(() => {
       setIsCopied(false);
     }, 1500);
   };
+  const avatar = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    if (avatar?.current) {
+      avatar.current.onload = () => {
+        setAvatarLoading(false);
+      };
+    }
+    const onKeyDown = (e) => {
+      // cmd/ctrl + i
+      if ((e.ctrlKey && e.keyCode === 73) || (e.metaKey && e.keyCode === 73)) {
+        if (!show) {
+          setShow(true);
+        }
+      }
+    };
+    document.body.addEventListener("keydown", onKeyDown);
+    return () => document.body.removeEventListener("keydown", onKeyDown);
+  }, [show, avatarLoading]);
+
   return (
-    <div className="wallet-btn">
+    <div
+      className="wallet-btn"
+      style={{
+        opacity: show ? 1 : 0,
+      }}
+    >
       <ConnectButton.Custom>
         {({ account, chain, openChainModal, openConnectModal, mounted }) => {
           const connected = mounted && account && chain;
@@ -65,8 +93,21 @@ export default function WalletButton(props) {
                         className="connect-btn chain-container dropdown-toggle"
                         tabIndex={0}
                       >
-                        <img
+                        <div
                           className="chain-icon"
+                          style={{
+                            display: avatarLoading ? "block" : "none",
+                          }}
+                        >
+                          <Loading />
+                        </div>
+                        <img
+                          ref={avatar}
+                          className="chain-icon"
+                          style={{
+                            width: avatarLoading ? 0 : "1.25rem",
+                            opacity: avatarLoading ? 0 : 1,
+                          }}
                           src={
                             account.ensAvatar ||
                             process.env.NEXT_PUBLIC_PROFILE_END_POINT +
@@ -74,6 +115,7 @@ export default function WalletButton(props) {
                           }
                           alt={account.address}
                         />
+
                         {account.displayName}
                         <SVG
                           src="../icons/icon-more.svg"
