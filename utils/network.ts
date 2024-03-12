@@ -222,7 +222,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
   [Network.zora]: {
     key: Network.zora,
     icon: "icons/icon-zora.svg",
-    label: "Solana",
+    label: "Zora",
 
     primaryColor: "#141414",
     bgColor: "#efefef",
