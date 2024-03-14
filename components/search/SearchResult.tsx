@@ -13,10 +13,7 @@ export default function SearchResult({ searchTerm, searchPlatform }) {
       identity: searchTerm,
     },
   });
-  const [identityGraphData, setIdentityGraphData] = useState({
-    vertices: [],
-    edges: [],
-  });
+  const [identityGraphData, setIdentityGraphData] = useState<any>(null);
 
   useEffect(() => {
     if (searchPlatform && searchTerm) {
@@ -35,14 +32,18 @@ export default function SearchResult({ searchTerm, searchPlatform }) {
     );
   if (error) return <Error retry={getQuery} text={error} />;
   if (searchTerm && !data?.identity) return <Empty />;
-
   return (
-    <ResultAccount
-      identityGraph={{
-        nodes: identityGraphData.vertices,
-        edges: identityGraphData.edges,
-      }}
-      graphTitle={searchTerm}
-    />
+    identityGraphData && (
+      <ResultAccount
+        identityGraph={{
+          nodes: identityGraphData?.vertices.map((x) => ({
+            ...x,
+            id: x.platform + "," + x.identity,
+          })),
+          edges: identityGraphData?.edges,
+        }}
+        graphTitle={searchTerm}
+      />
+    )
   );
 }

@@ -18,6 +18,7 @@ const getMarkerRefX = (d) => {
 const resolveGraphData = (source) => {
   const nodes = new Array<any>();
   const edges = new Array<any>();
+  console.log(source,'kkkk')
   source.forEach((x) => {
     const from = x.from;
     const to = x.to;

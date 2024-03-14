@@ -16,7 +16,7 @@ const RenderAccount = (props) => {
   );
   const profiles = _.flatten(Object.values(cached).map((x) => x));
   const resolvedListData = (() => {
-    if (!identityGraph) return [];
+    if (!identityGraph?.nodes) return [];
     const _identityGraph = JSON.parse(JSON.stringify(identityGraph));
     const _resolved = _identityGraph.nodes.filter(
       (x) => x.platform !== PlatformType.ens
