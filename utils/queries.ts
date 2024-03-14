@@ -19,6 +19,7 @@ export const GET_PROFILES = gql`
     }
     identityGraph(reverse: true) {
       vertices {
+        uuid
         identity
         platform
         displayName
@@ -30,12 +31,6 @@ export const GET_PROFILES = gql`
           uuid
           transaction
           source
-        }
-        ownedBy {
-          identity
-          platform
-          displayName
-          uid
         }
       }
       edges {

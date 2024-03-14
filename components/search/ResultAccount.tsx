@@ -5,8 +5,8 @@ import _ from "lodash";
 import { useSelector } from "react-redux";
 import { AppState } from "../../state";
 import { ProfileInterface } from "../../utils/profile";
-import D3ResultGraph from "../graph/D3ResultGraph";
 import { PlatformType } from "../../utils/platform";
+import D3ResultGraph from "../graph/D3ResultGraph";
 
 const RenderAccount = (props) => {
   const { identityGraph, graphTitle } = props;
@@ -15,7 +15,33 @@ const RenderAccount = (props) => {
     (state) => state.universal.profiles
   );
   const profiles = _.flatten(Object.values(cached).map((x) => x));
-  console.log(identityGraph,'kk')
+  const resolvedListData = (() => {
+    if (!identityGraph) return [];
+    const _identityGraph = JSON.parse(JSON.stringify(identityGraph));
+    console.log(_identityGraph,'kkkk')
+    const _resolved = _identityGraph.nodes.filter(
+      (x) => x.platform !== PlatformType.ens
+    );
+    _identityGraph.nodes
+      .filter((x) => x.platform === PlatformType.ens)
+      .forEach((x) => {
+        const connection = _identityGraph.edges.find(
+          (i) => i.target === x.id || i.source === x.id
+        );
+
+        if (connection) {
+          let idx = _resolved.findIndex(
+            (i) => i.id === connection.source || i.id === connection.target
+          );
+          _resolved[idx] = {
+            ..._resolved[idx],
+            nfts: _resolved[idx].nfts ? [..._resolved[idx].nfts] : [],
+          };
+          _resolved[idx].nfts.push(x);
+        }
+      });
+    return _resolved;
+  })();
   return (
     <>
       <div className="search-result">
@@ -23,41 +49,30 @@ const RenderAccount = (props) => {
           <div className="search-result-text text-gray">
             Identity Graph results:
           </div>
-          {identityGraph?.vertices?.length > 0 && (
+          {identityGraph?.nodes.length > 0 && (
             <div className="btn btn-link btn-sm" onClick={() => setOpen(true)}>
               <SVG src={"/icons/icon-view.svg"} width={20} height={20} />{" "}
-              Visualize
+              Identity Graph
             </div>
           )}
         </div>
         <div className="search-result-body">
-          {identityGraph?.vertices?.map((avatar, idx) => {
-            const profile = profiles.find(
-              (x) => x?.uuid === avatar.identity.uuid
-            );
-            const identity = avatar.identity;
-            return (
-              <ResultAccountItem
-                resolvedIdentity={
-                  [
-                    PlatformType.unstoppableDomains,
-                    PlatformType.dotbit,
-                  ].includes(avatar.identity.platform)
-                    ? identity.ownedBy.identity
-                    : profile?.address || identity.identity
-                }
-                identity={identity}
-                sources={avatar.sources}
-                profile={profile}
-                key={avatar.identity.uuid + idx}
-              />
-            );
-          })}
+          {resolvedListData.map((avatar, idx) => (
+            <ResultAccountItem
+              identity={avatar}
+              sources={["nextid"]}
+              profile={profiles.find((x) => x?.uuid === avatar.uuid)}
+              key={avatar.id + idx}
+            />
+          ))}
         </div>
       </div>
       {open && (
         <D3ResultGraph
-          onClose={() => setOpen(false)}
+          onClose={() => {
+            setOpen(false);
+          }}
+          disableBack
           data={identityGraph}
           title={graphTitle}
         />
