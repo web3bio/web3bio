@@ -23,18 +23,19 @@ const ArweaveAssetPrefix = "https://arweave.net/";
 export const formatText = (string, length?) => {
   if (!string) return "";
   const len = length ?? 12;
+  const chars = len / 2 - 2;
   if (string.length <= len) {
     return string;
   }
-  if (string.startsWith("0x")) {
-    const oriAddr = string,
-      chars = length || 4;
-    return `${oriAddr.substring(0, chars + 2)}...${oriAddr.substring(
-      oriAddr.length - chars
+  if (string.startsWith("0x"))  {
+    return `${string.substring(0, chars + 2)}...${string.substring(
+      string.length - chars
     )}`;
   } else {
     if (string.length > len) {
-      return `${string.substr(0, len)}...`;
+      return `${string.substring(0, chars + 1)}...${string.substring(
+        string.length - (chars + 1)
+      )}`;
     }
   }
   return string;
@@ -107,7 +108,6 @@ export const handleSearchPlatform = (term: string) => {
     case regexDotbit.test(term):
       return PlatformType.dotbit;
     case regexSns.test(term):
-      return PlatformType.solana;
     case regexSolana.test(term):
       return PlatformType.solana;
     case regexTwitter.test(term):
