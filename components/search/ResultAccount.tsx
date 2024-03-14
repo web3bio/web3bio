@@ -9,12 +9,13 @@ import D3ResultGraph from "../graph/D3ResultGraph";
 import { PlatformType } from "../../utils/platform";
 
 const RenderAccount = (props) => {
-  const { graphData, resultNeighbor, graphTitle } = props;
+  const { identityGraph, graphTitle } = props;
   const [open, setOpen] = useState(false);
   const cached = useSelector<AppState, { [address: string]: ProfileInterface }>(
     (state) => state.universal.profiles
   );
   const profiles = _.flatten(Object.values(cached).map((x) => x));
+  console.log(identityGraph,'kk')
   return (
     <>
       <div className="search-result">
@@ -22,7 +23,7 @@ const RenderAccount = (props) => {
           <div className="search-result-text text-gray">
             Identity Graph results:
           </div>
-          {graphData.length > 0 && (
+          {identityGraph?.vertices?.length > 0 && (
             <div className="btn btn-link btn-sm" onClick={() => setOpen(true)}>
               <SVG src={"/icons/icon-view.svg"} width={20} height={20} />{" "}
               Visualize
@@ -30,7 +31,7 @@ const RenderAccount = (props) => {
           )}
         </div>
         <div className="search-result-body">
-          {resultNeighbor?.map((avatar, idx) => {
+          {identityGraph?.vertices?.map((avatar, idx) => {
             const profile = profiles.find(
               (x) => x?.uuid === avatar.identity.uuid
             );
@@ -57,20 +58,7 @@ const RenderAccount = (props) => {
       {open && (
         <D3ResultGraph
           onClose={() => setOpen(false)}
-          data={graphData.reduce((pre, cur) => {
-            pre.push({
-              ...cur,
-              to: {
-                ...cur.to,
-                profile: _.find(profiles, (i) => i.uuid == cur.to.uuid),
-              },
-              from: {
-                ...cur.from,
-                profile: _.find(profiles, (i) => i.uuid == cur.from.uuid),
-              },
-            });
-            return pre;
-          }, [])}
+          data={identityGraph}
           title={graphTitle}
         />
       )}
