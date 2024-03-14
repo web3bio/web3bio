@@ -76,9 +76,11 @@ const RenderAccountItem = (props) => {
     if (
       !fetched &&
       (identity?.reverse ||
-        [PlatformType.farcaster, PlatformType.lens, PlatformType.solana].includes(
-          identity.platform
-        )) &&
+        [
+          PlatformType.farcaster,
+          PlatformType.lens,
+          PlatformType.solana,
+        ].includes(identity.platform)) &&
       visible
     ) {
       fetchProfileData();
@@ -171,11 +173,12 @@ const RenderAccountItem = (props) => {
                     {isCopied && <div className="tooltip-copy">COPIED</div>}
                   </Clipboard>
                 </div>
-               {
-                expiredAt &&  <div className="content-expired">
-                Expired at {new Date(Number(expiredAt) * 1000).toUTCString()}
-              </div>
-               }
+                {expiredAt && (
+                  <div className="content-expired">
+                    Expired at{" "}
+                    {new Date(Number(expiredAt) * 1000).toUTCString()}
+                  </div>
+                )}
               </div>
             </div>
             {(customAction && customAction()) || (
@@ -193,7 +196,7 @@ const RenderAccountItem = (props) => {
           {identity.nft?.length > 0 && (
             <div className="nfts">
               {identity.nft.map((nft) => {
-                return nft.category == "ENS" ? (
+                return (
                   <Link
                     key={`${nft.uuid}`}
                     href={{
@@ -213,7 +216,7 @@ const RenderAccountItem = (props) => {
                       <span>{nft.id}</span>
                     </div>
                   </Link>
-                ) : null;
+                );
               })}
             </div>
           )}

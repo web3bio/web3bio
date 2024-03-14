@@ -41,3 +41,11 @@ export const resolveIdentityGraphData = (source) => {
 
   return { nodes: _nodes, edges: resolvedEdges };
 };
+export const isSingleEdge = (data, d) => {
+  if (
+    data.find((x) => d.source === x.target) &&
+    data.find((x) => d.target === x.source)
+  )
+    return false;
+  return true;
+};

@@ -18,30 +18,13 @@ const RenderAccount = (props) => {
   const resolvedListData = (() => {
     if (!identityGraph) return [];
     const _identityGraph = JSON.parse(JSON.stringify(identityGraph));
-    console.log(_identityGraph,'kkkk')
     const _resolved = _identityGraph.nodes.filter(
       (x) => x.platform !== PlatformType.ens
     );
-    _identityGraph.nodes
-      .filter((x) => x.platform === PlatformType.ens)
-      .forEach((x) => {
-        const connection = _identityGraph.edges.find(
-          (i) => i.target === x.id || i.source === x.id
-        );
-
-        if (connection) {
-          let idx = _resolved.findIndex(
-            (i) => i.id === connection.source || i.id === connection.target
-          );
-          _resolved[idx] = {
-            ..._resolved[idx],
-            nfts: _resolved[idx].nfts ? [..._resolved[idx].nfts] : [],
-          };
-          _resolved[idx].nfts.push(x);
-        }
-      });
     return _resolved;
   })();
+
+  console.log(resolvedListData,'data')
   return (
     <>
       <div className="search-result">
