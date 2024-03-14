@@ -4,9 +4,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import SearchInput from "../search/SearchInput";
 import { handleSearchPlatform, isDomainSearch } from "../../utils/utils";
-import SearchResultDomain from "./SearchResultDomain";
-import SearchResultQuery from "./SearchResultQuery";
 import IndexPageListener from "./IndexPageListener";
+import SearchResult from "./SearchResult";
 
 export default function HomePage() {
   const [searchFocus, setSearchFocus] = useState(false);
@@ -83,23 +82,14 @@ export default function HomePage() {
             />
           </div>
         </div>
-        {searchPlatform ? (
-          isDomainSearch(searchPlatform) ? (
-            <SearchResultDomain
-              searchTerm={searchTerm}
-              searchPlatform={searchPlatform}
-            />
-          ) : (
-            <SearchResultQuery
-              searchTerm={
-                searchTerm.endsWith(".farcaster")
-                  ? searchTerm.replace(".farcaster", "")
-                  : searchTerm
-              }
-              searchPlatform={searchPlatform}
-            />
-          )
-        ) : null}
+        <SearchResult
+          searchTerm={
+            searchTerm.endsWith(".farcaster")
+              ? searchTerm.replace(".farcaster", "")
+              : searchTerm
+          }
+          searchPlatform={searchPlatform}
+        />
       </div>
       <IndexPageListener inputRef={inputRef} />
     </div>

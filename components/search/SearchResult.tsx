@@ -6,7 +6,7 @@ import { Error } from "../shared/Error";
 import { Loading } from "../shared/Loading";
 import { ResultAccount } from "./ResultAccount";
 
-export default function SearchResultQuery({
+export default function SearchResult({
   searchTerm,
   searchPlatform,
 }) {
