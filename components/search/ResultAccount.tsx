@@ -24,7 +24,6 @@ const RenderAccount = (props) => {
     return _resolved;
   })();
 
-  console.log(resolvedListData,'data')
   return (
     <>
       <div className="search-result">
@@ -45,7 +44,7 @@ const RenderAccount = (props) => {
               identity={avatar}
               sources={["nextid"]}
               profile={profiles.find((x) => x?.uuid === avatar.uuid)}
-              key={avatar.id + idx}
+              key={avatar.uuid + idx}
             />
           ))}
         </div>

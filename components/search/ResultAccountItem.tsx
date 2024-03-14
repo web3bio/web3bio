@@ -26,7 +26,6 @@ const RenderAccountItem = (props) => {
     identity,
     sources,
     profile,
-    resolvedIdentity,
     disableAction,
     onClick,
     customAction,
@@ -43,7 +42,7 @@ const RenderAccountItem = (props) => {
     isAddress(resolvedDisplayName) || identity.platform === PlatformType.nextid
       ? formatText(resolvedDisplayName)
       : resolvedDisplayName;
-
+  const resolvedIdentity = identity.identity || profile?.address;
   useEffect(() => {
     const element = ref?.current;
     const options = {
@@ -76,11 +75,9 @@ const RenderAccountItem = (props) => {
     if (
       !fetched &&
       (identity?.reverse ||
-        [
-          PlatformType.farcaster,
-          PlatformType.lens,
-          PlatformType.solana,
-        ].includes(identity.platform)) &&
+        [PlatformType.farcaster, PlatformType.lens].includes(
+          identity.platform
+        )) &&
       visible
     ) {
       fetchProfileData();

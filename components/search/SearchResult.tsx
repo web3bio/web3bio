@@ -14,8 +14,8 @@ export default function SearchResult({ searchTerm, searchPlatform }) {
     },
   });
   const [identityGraphData, setIdentityGraphData] = useState({
-    vertices:[],
-    edges:[]
+    vertices: [],
+    edges: [],
   });
 
   useEffect(() => {
@@ -34,12 +34,15 @@ export default function SearchResult({ searchTerm, searchPlatform }) {
       />
     );
   if (error) return <Error retry={getQuery} text={error} />;
-  if (!data?.identity) return <Empty />;
+  if (searchTerm && !data?.identity) return <Empty />;
 
   return (
-    <ResultAccount identityGraph={{
-      nodes:identityGraphData.vertices,
-      edges: identityGraphData.edges,
-    }} graphTitle={searchTerm} />
+    <ResultAccount
+      identityGraph={{
+        nodes: identityGraphData.vertices,
+        edges: identityGraphData.edges,
+      }}
+      graphTitle={searchTerm}
+    />
   );
 }
