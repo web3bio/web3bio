@@ -1,48 +1,39 @@
 import { gql } from "@apollo/client";
 
 export const GET_PROFILES = gql`
-  query GET_PROFILES($platform:String, $identity: String) {
-  identity(platform: $platform, identity: $identity) {
-    identity
-    platform
-    displayName
-    uid
-    reverse
-    expiredAt
-    ownedBy {
+  query GET_PROFILES($platform: String, $identity: String) {
+    identity(platform: $platform, identity: $identity) {
       identity
       platform
       displayName
       uid
       reverse
       expiredAt
-    }
-    identityGraph(reverse: true) {
-      vertices {
-        uuid
-        identity
-        platform
-        displayName
-        uid
-        reverse
-        expiredAt
-        nft(category: [ENS]) {
-          id
+      identityGraph {
+        vertices {
           uuid
-          transaction
+          identity
+          platform
+          displayName
+          uid
+          reverse
+          expiredAt
+          nft(category: [ENS]) {
+            id
+            uuid
+            transaction
+            source
+          }
+        }
+        edges {
           source
+          target
+          dataSource
+          edgeType
         }
       }
-      edges {
-        source
-        target
-        dataSource
-        edgeType
-      }
     }
-    
   }
-}
 `;
 export function matchQuery(query) {
   if (!query) return "";

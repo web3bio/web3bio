@@ -55,22 +55,7 @@ const RenderAccount = (props) => {
             setOpen(false);
           }}
           disableBack
-          data={{
-            nodes: identityGraph.nodes.reduce((pre, cur) => {
-              pre.push(cur);
-              if (cur.nft?.length > 0) {
-                cur.nft.forEach((i) => {
-                  pre.push({
-                    id: i.id,
-                    label: i.id,
-                    platform: PlatformType.ens,
-                  });
-                });
-              }
-              return pre;
-            }, []),
-            edges: identityGraph.edges,
-          }}
+          data={identityGraph}
           title={graphTitle}
         />
       )}

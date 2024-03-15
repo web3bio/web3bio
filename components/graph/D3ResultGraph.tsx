@@ -479,4 +479,3 @@ export default function D3IdentityGraph(props) {
     </div>
   );
 }
-

@@ -17,18 +17,9 @@ export const resolveIdentityGraphData = (source) => {
       displayName: x.profile?.displayName || x.displayName || x.id,
       identity: x.profile?.identity || x.identity || x.id,
       uid: x.uid,
-      address: x.profile?.address || x.ownedBy?.identity,
+      address: x.profile?.address || x.identity,
       isIdentity: x.platform === PlatformType.ens ? false : true,
     });
-    if (x.nft?.length > 0) {
-      x.nft.forEach((i) => {
-        edges.push({
-          source: x.id,
-          target: i.id,
-          id: `${x.id}*${i.id}`,
-        });
-      });
-    }
   });
   source.edges.forEach((x) => {
     const resolvedPlatform = SocialPlatformMapping(x.dataSource);
@@ -49,7 +40,6 @@ export const resolveIdentityGraphData = (source) => {
     ...x,
     isSingle: isSingleEdge(_edges, x),
   }));
-
   return { nodes: _nodes, edges: resolvedEdges };
 };
 export const isSingleEdge = (data, d) => {
