@@ -213,7 +213,7 @@ export default function ProfileMain(props) {
                     className={`platform-badge ${x.platform}${
                       idx === 0 ? " active" : ""
                     }`}
-                    title={`${pageTitle} ${
+                    title={`${
                       SocialPlatformMapping(x.platform).label
                     }: ${x.identity}`}
                     style={{
@@ -238,7 +238,7 @@ export default function ProfileMain(props) {
                       className="platform-badge-name"
                       itemProp="alternateName"
                     >
-                      {x.platform === PlatformType.ethereum
+                      {x.platform === PlatformType.ethereum || x.platform === PlatformType.solana
                         ? formatText(x.identity)
                         : x.identity}
                     </span>
