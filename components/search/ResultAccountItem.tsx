@@ -326,10 +326,10 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
               <div className="content">
-                <div className="content-title text-bold">{displayName}</div>
+                <div className="content-title text-bold">{formatText(displayName)}</div>
                 <div className="content-subtitle text-gray">
                   <div className="address">
-                    {formatText(resolvedIdentity, 10)}
+                    {formatText(resolvedIdentity, 24)}
                   </div>
                   <Clipboard
                     component="div"
