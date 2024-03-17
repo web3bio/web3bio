@@ -1,5 +1,18 @@
 //- Web3.bio Search
 .web3bio-search {
+  min-height: 75vh;
+  padding: .5rem;
+
+  &.focused {
+    .search-form {
+      transform: translateY(0);
+    }
+
+    .form-label {
+      display: none;
+    }
+  }
+
   .search-form {
     display: flex;
     flex-direction: column;
@@ -92,16 +105,6 @@
       .search-list-item-active {
         background: rgba($dark-color, .05);
       }
-    }
-  }
-
-  &.focused {
-    .search-form {
-      transform: translateY(0);
-    }
-
-    .form-label {
-      display: none;
     }
   }
 
