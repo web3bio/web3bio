@@ -431,7 +431,7 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     color: "#595aff",
     icon: "icons/icon-mastodon.svg",
     label: "mstdn.jp",
-    urlPrefix: "https://mstdn.jp/",
+    urlPrefix: "https://mstdn.jp/@",
   },
   [PlatformType.lobsters]: {
     key: PlatformType.lobsters,
