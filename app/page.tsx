@@ -20,14 +20,14 @@ export async function generateMetadata({ searchParams }) {
   const title = searchTerm
     ? `${searchTerm} on ${
         platform
-          ? PlatformData[platform].label
+          ? PlatformData[platform.toLowerCase()].label
           : PlatformData[handleSearchPlatform(searchTerm)].label
       } - Web3.bio Search`
     : defaultTitle;
   const description = searchTerm
     ? `Search ${searchTerm} on ${
         platform
-          ? PlatformData[platform].label
+          ? PlatformData[platform.toLowerCase()].label
           : PlatformData[handleSearchPlatform(searchTerm)].label
       } to discover the Web3 decentralized profiles and identities associated with ${searchTerm}. Check out and explore the ${searchTerm} Web3 profile.`
     : defaultDescription;

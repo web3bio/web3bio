@@ -74,7 +74,6 @@ body {
   position: absolute;
   top: 1rem;
   right: 1rem;
-  transition: all .5s ease;
   z-index: 10;
 
   .connect-btn {
@@ -88,7 +87,6 @@ body {
     cursor: pointer;
 
     &:hover {
-      transform: scale(1.05);
       box-shadow: 0 0.1rem 1.2rem hsla(0, 0%, 7%, .3);
     }
   }
@@ -474,15 +472,20 @@ body {
   backdrop-filter: blur(2rem) saturate(120%) brightness(100%);
 }
 
+// Home
+.home-features {
+  color: rgba($dark-color, .5);
+  font-size: .7rem;
+  font-weight: 500;
+  padding: .5rem;
+}
+
 //- Web3.bio Footer
 .web3bio-footer {
   color: rgba($dark-color, .5);
   font-size: .7rem;
   font-weight: 500;
   padding: .5rem;
-  position: sticky;
-  z-index: 9;
-  top: 90vh;
 }
 
 .card-feature {
