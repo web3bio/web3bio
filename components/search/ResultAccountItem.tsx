@@ -22,15 +22,7 @@ const RenderAccountItem = (props) => {
     }, 1500);
   };
   const ref = useRef(null);
-  const {
-    identity,
-    sources,
-    profile,
-    disableAction,
-    onClick,
-    customAction,
-    expiredAt,
-  } = props;
+  const { identity, sources, profile, onClick, expiredAt } = props;
   const [isCopied, setIsCopied] = useState(false);
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
@@ -38,8 +30,9 @@ const RenderAccountItem = (props) => {
   const resolvedDisplayName = profile?.displayName
     ? profile.displayName
     : identity.displayName || identity.identity;
+  const resolvedPlatform = identity.platform.toLowerCase();
   const displayName =
-    isAddress(resolvedDisplayName) || identity.platform === PlatformType.nextid
+    isAddress(resolvedDisplayName) || resolvedPlatform === PlatformType.nextid
       ? formatText(resolvedDisplayName)
       : resolvedDisplayName;
   const resolvedIdentity = identity.identity || profile?.address;
@@ -75,9 +68,11 @@ const RenderAccountItem = (props) => {
     if (
       !fetched &&
       (identity?.reverse ||
-        [PlatformType.farcaster, PlatformType.lens].includes(
-          identity.platform
-        )) &&
+        [
+          PlatformType.farcaster,
+          PlatformType.lens,
+          PlatformType.solana,
+        ].includes(resolvedPlatform)) &&
       visible
     ) {
       fetchProfileData();
@@ -89,7 +84,7 @@ const RenderAccountItem = (props) => {
       }
     };
   }, [fetched, identity, visible, dispatch]);
-  switch (identity.platform) {
+  switch (resolvedPlatform) {
     case PlatformType.ens:
     case PlatformType.ethereum:
     case PlatformType.unstoppableDomains:
@@ -98,7 +93,7 @@ const RenderAccountItem = (props) => {
         <div
           onClick={onClick}
           ref={ref}
-          className={`social-item ${identity.platform}${
+          className={`social-item ${resolvedPlatform}${
             identity.isOwner ? " social-item-owner" : ""
           }`}
         >
@@ -118,11 +113,11 @@ const RenderAccountItem = (props) => {
                 <div
                   className="icon"
                   style={{
-                    background: SocialPlatformMapping(identity.platform).color,
+                    background: SocialPlatformMapping(resolvedPlatform).color,
                   }}
                 >
                   <SVG
-                    src={SocialPlatformMapping(identity.platform)?.icon || ""}
+                    src={SocialPlatformMapping(resolvedPlatform)?.icon || ""}
                     fill={"#fff"}
                     width={20}
                     height={20}
@@ -134,7 +129,7 @@ const RenderAccountItem = (props) => {
                   {displayName}
                 </div>
                 <div className="content-subtitle text-gray">
-                  {identity.platform === PlatformType.ethereum ? (
+                  {resolvedPlatform === PlatformType.ethereum ? (
                     <>
                       {profile?.displayName === profile?.identity ? (
                         <>
@@ -178,17 +173,36 @@ const RenderAccountItem = (props) => {
                 )}
               </div>
             </div>
-            {(customAction && customAction()) || (
-              <ResultAccountItemAction
-                disable={disableAction}
-                isActive={!profile?.error}
-                href={`/${
-                  profile?.identity || identity.displayName || resolvedIdentity
-                }`}
-                title={"Open Profile"}
-                text={"Profile"}
-              />
-            )}
+            {!profile?.error &&
+              (profile ? (
+                <div className="actions active">
+                  <Link
+                    target={"_blank"}
+                    href={`/${
+                      profile?.identity ||
+                      identity.displayName ||
+                      resolvedIdentity
+                    }`}
+                    title="Open Profile"
+                    className="btn btn-sm btn-link action"
+                  >
+                    <SVG src="icons/icon-open.svg" width={20} height={20} />
+                    <span className="hide-xs">Profile</span>
+                  </Link>
+                </div>
+              ) : (
+                <div className="actions">
+                  <Link
+                    target={"_blank"}
+                    href={`/${identity.displayName || resolvedIdentity}`}
+                    title="Open Profile"
+                    className="btn btn-sm btn-link action"
+                  >
+                    <SVG src="icons/icon-open.svg" width={20} height={20} />
+                    <span className="hide-xs">Profile</span>
+                  </Link>
+                </div>
+              ))}
           </div>
           {identity.nft?.length > 0 && (
             <div className="nfts">
@@ -226,7 +240,7 @@ const RenderAccountItem = (props) => {
         <div
           onClick={onClick}
           ref={ref}
-          className={`social-item ${identity.platform}`}
+          className={`social-item ${resolvedPlatform}`}
         >
           <div className="social-main">
             <div className="social">
@@ -243,11 +257,11 @@ const RenderAccountItem = (props) => {
                 <div
                   className="icon"
                   style={{
-                    background: SocialPlatformMapping(identity.platform).color,
+                    background: SocialPlatformMapping(resolvedPlatform).color,
                   }}
                 >
                   <SVG
-                    src={SocialPlatformMapping(identity.platform)?.icon || ""}
+                    src={SocialPlatformMapping(resolvedPlatform)?.icon || ""}
                     fill={"#fff"}
                     width={20}
                     height={20}
@@ -266,9 +280,9 @@ const RenderAccountItem = (props) => {
                       <div
                         className="address"
                         title={`${
-                          SocialPlatformMapping(identity.platform)?.label
+                          SocialPlatformMapping(resolvedPlatform)?.label
                         } ${
-                          identity.platform === PlatformType.farcaster
+                          resolvedPlatform === PlatformType.farcaster
                             ? "FID"
                             : "UID"
                         }`}
@@ -282,16 +296,21 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
             </div>
-            <ResultAccountItemAction
-              isActive
-              disable={disableAction}
-              text={"Profile"}
-              href={`/${
-                identity.platform === PlatformType.farcaster
-                  ? identity.identity + ".farcaster"
-                  : identity.identity
-              }`}
-            />
+            <div className="actions active">
+              <Link
+                target={"_blank"}
+                className="btn btn-sm btn-link action"
+                href={`/${
+                  identity.platform === PlatformType.farcaster
+                    ? identity.identity + ".farcaster"
+                    : identity.identity
+                }`}
+                title="Open Profile"
+              >
+                <SVG src="icons/icon-open.svg" width={20} height={20} />
+                <span className="hide-xs">Profile</span>
+              </Link>
+            </div>
           </div>
           <RenderSourceFooter sources={sources} />
         </div>
@@ -299,7 +318,7 @@ const RenderAccountItem = (props) => {
     case PlatformType.nextid:
     case PlatformType.solana:
       return (
-        <div ref={ref} className={`social-item ${identity.platform}`}>
+        <div ref={ref} className={`social-item ${resolvedPlatform}`}>
           <div className="social-main">
             <div className="social">
               <div className="avatar">
@@ -315,18 +334,20 @@ const RenderAccountItem = (props) => {
                 <div
                   className="icon"
                   style={{
-                    background: SocialPlatformMapping(identity.platform).color,
+                    background: SocialPlatformMapping(resolvedPlatform).color,
                   }}
                 >
                   <SVG
-                    src={SocialPlatformMapping(identity.platform)?.icon || ""}
+                    src={SocialPlatformMapping(resolvedPlatform)?.icon || ""}
                     width={20}
                     height={20}
                   />
                 </div>
               </div>
               <div className="content">
-                <div className="content-title text-bold">{formatText(displayName)}</div>
+                <div className="content-title text-bold">
+                  {formatText(displayName)}
+                </div>
                 <div className="content-subtitle text-gray">
                   <div className="address">
                     {formatText(resolvedIdentity, 24)}
@@ -343,20 +364,19 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
             </div>
-            <ResultAccountItemAction
-              disable={disableAction}
-              isActive={identity.platform === PlatformType.nextid}
-              href={`/${resolvedIdentity}`}
-              prefetch={false}
-              title={`${
-                identity.platform === PlatformType.nextid
-                  ? "Open Next.ID Profile page"
-                  : "Open"
-              }`}
-              text={`${
-                identity.platform === PlatformType.nextid ? "Profile" : "Open"
-              }`}
-            />
+            <div className="actions active">
+              <Link
+                target={"_blank"}
+                className="btn btn-sm btn-link action"
+                href={`/${resolvedIdentity}`}
+                prefetch={false}
+                title="Open Next.ID Profile page"
+                rel="noopener noreferrer"
+              >
+                <SVG src="icons/icon-open.svg" width={20} height={20} />
+                <span className="hide-xs">Profile</span>
+              </Link>
+            </div>
           </div>
           <RenderSourceFooter sources={sources} />
         </div>
@@ -366,7 +386,7 @@ const RenderAccountItem = (props) => {
         <div
           onClick={onClick}
           ref={ref}
-          className={`social-item ${identity.platform}`}
+          className={`social-item ${resolvedPlatform}`}
         >
           <div className="social-main">
             <Link
@@ -383,20 +403,27 @@ const RenderAccountItem = (props) => {
               <div className="icon">
                 <SVG
                   fill="#000"
-                  src={SocialPlatformMapping(identity.platform)?.icon || ""}
+                  src={SocialPlatformMapping(resolvedPlatform)?.icon || ""}
                   width={20}
                   height={20}
                 />
               </div>
               <div className="title">{displayName}</div>
             </Link>
-            <ResultAccountItemAction
-              disable={disableAction}
-              isActive={false}
-              href={`${SocialPlatformMapping(identity.platform)?.urlPrefix}${
-                identity.displayName || displayName
-              }`}
-            />
+            <div className="actions">
+              <a
+                className="btn btn-sm btn-link action"
+                href={`${SocialPlatformMapping(resolvedPlatform)?.urlPrefix}${
+                  identity.displayName || displayName
+                }`}
+                title="Open"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <SVG src="icons/icon-open.svg" width={20} height={20} />
+                <span className="hide-xs">Open</span>
+              </a>
+            </div>
           </div>
           <RenderSourceFooter sources={sources} />
         </div>

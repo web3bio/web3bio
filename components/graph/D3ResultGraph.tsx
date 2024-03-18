@@ -48,7 +48,7 @@ const updateNodes = (nodeContainer) => {
   const identityIcon = nodeContainer
     .append("svg:image")
     .attr("class", "identity-icon")
-    .attr("xlink:href", (d) => SocialPlatformMapping(d.platform).icon)
+    .attr("xlink:href", (d) => SocialPlatformMapping(d.platform.toLowerCase()).icon)
     .attr("style", (d) => `display:${d.isIdentity ? "normal" : "none"}`);
 
   const ensBadge = nodeContainer
