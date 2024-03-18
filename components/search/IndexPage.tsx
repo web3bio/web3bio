@@ -88,17 +88,17 @@ export default function HomePage() {
               />
             </div>
           </div>
+          {searchPlatform && (
+            <SearchResult
+              searchTerm={
+                searchTerm.endsWith(".farcaster")
+                  ? searchTerm.replace(".farcaster", "")
+                  : searchTerm
+              }
+              searchPlatform={searchPlatform}
+            />
+          )}
         </div>
-        {searchPlatform && (
-          <SearchResult
-            searchTerm={
-              searchTerm.endsWith(".farcaster")
-                ? searchTerm.replace(".farcaster", "")
-                : searchTerm
-            }
-            searchPlatform={searchPlatform}
-          />
-        )}
         <IndexPageListener inputRef={inputRef} />
       </div>
       <HomeFeatures />

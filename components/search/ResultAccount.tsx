@@ -55,7 +55,13 @@ const RenderAccount = (props) => {
             setOpen(false);
           }}
           disableBack
-          data={identityGraph}
+          data={{
+            nodes: identityGraph.nodes?.map((x) => ({
+              ...x,
+              profile: profiles.find((i) => i?.uuid === x.uuid),
+            })),
+            edges: identityGraph.edges,
+          }}
           title={graphTitle}
         />
       )}
