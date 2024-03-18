@@ -286,6 +286,7 @@ const RenderAccountItem = (props) => {
       );
     case PlatformType.nextid:
     case PlatformType.solana:
+    case PlatformType.crossbell:
       return (
         <div ref={ref} className={`social-item ${resolvedPlatform}`}>
           <div className="social-main">
@@ -376,7 +377,7 @@ const RenderAccountItem = (props) => {
             <ResultAccountItemAction
               prefetch={false}
               href={`${SocialPlatformMapping(resolvedPlatform)?.urlPrefix}${
-                identity.displayName || displayName
+                identity.identity
               }`}
               platform={identity.platform}
             />

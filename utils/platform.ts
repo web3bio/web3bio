@@ -452,7 +452,7 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     color: "#9945ff",
     icon: "icons/icon-crossbell.svg",
     label: "Crossbell",
-    urlPrefix: "https://crossbell.io/",
+    urlPrefix: "https://crossbell.io/@",
   },
   [PlatformType.minds]: {
     key: PlatformType.minds,
