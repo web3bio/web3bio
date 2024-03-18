@@ -21,6 +21,7 @@ const RenderAccount = (props) => {
     const _resolved = _identityGraph.nodes.filter(
       (x) => x.platform !== PlatformType.ens
     );
+
     return _resolved;
   })();
 

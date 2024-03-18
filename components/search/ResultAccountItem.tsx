@@ -165,44 +165,18 @@ const RenderAccountItem = (props) => {
                     {isCopied && <div className="tooltip-copy">COPIED</div>}
                   </Clipboard>
                 </div>
-                {expiredAt && (
-                  <div className="content-expired">
-                    Expired at{" "}
-                    {new Date(Number(expiredAt) * 1000).toUTCString()}
-                  </div>
-                )}
               </div>
             </div>
-            {!profile?.error &&
-              (profile ? (
-                <div className="actions active">
-                  <Link
-                    target={"_blank"}
-                    href={`/${
-                      profile?.identity ||
-                      identity.displayName ||
-                      resolvedIdentity
-                    }`}
-                    title="Open Profile"
-                    className="btn btn-sm btn-link action"
-                  >
-                    <SVG src="icons/icon-open.svg" width={20} height={20} />
-                    <span className="hide-xs">Profile</span>
-                  </Link>
-                </div>
-              ) : (
-                <div className="actions">
-                  <Link
-                    target={"_blank"}
-                    href={`/${identity.displayName || resolvedIdentity}`}
-                    title="Open Profile"
-                    className="btn btn-sm btn-link action"
-                  >
-                    <SVG src="icons/icon-open.svg" width={20} height={20} />
-                    <span className="hide-xs">Profile</span>
-                  </Link>
-                </div>
-              ))}
+            {!profile?.error && (
+              <ResultAccountItemAction
+                isActive={!!profile?.identity}
+                href={`/${
+                  profile?.identity || identity.displayName || resolvedIdentity
+                }`}
+                platform={identity.platform}
+                text={"Profile"}
+              />
+            )}
           </div>
           {identity.nft?.length > 0 && (
             <div className="nfts">
@@ -296,21 +270,16 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
             </div>
-            <div className="actions active">
-              <Link
-                target={"_blank"}
-                className="btn btn-sm btn-link action"
-                href={`/${
-                  identity.platform === PlatformType.farcaster
-                    ? identity.identity + ".farcaster"
-                    : identity.identity
-                }`}
-                title="Open Profile"
-              >
-                <SVG src="icons/icon-open.svg" width={20} height={20} />
-                <span className="hide-xs">Profile</span>
-              </Link>
-            </div>
+            <ResultAccountItemAction
+              isActive
+              href={`/${
+                identity.platform === PlatformType.farcaster
+                  ? identity.identity + ".farcaster"
+                  : identity.identity
+              }`}
+              platform={identity.platform}
+              text={"Profile"}
+            />
           </div>
           <RenderSourceFooter sources={sources} />
         </div>
@@ -364,19 +333,13 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
             </div>
-            <div className="actions active">
-              <Link
-                target={"_blank"}
-                className="btn btn-sm btn-link action"
-                href={`/${resolvedIdentity}`}
-                prefetch={false}
-                title="Open Next.ID Profile page"
-                rel="noopener noreferrer"
-              >
-                <SVG src="icons/icon-open.svg" width={20} height={20} />
-                <span className="hide-xs">Profile</span>
-              </Link>
-            </div>
+            <ResultAccountItemAction
+              isActive
+              prefetch={false}
+              href={`/${resolvedIdentity}`}
+              platform={identity.platform}
+              text={"Profile"}
+            />
           </div>
           <RenderSourceFooter sources={sources} />
         </div>
@@ -410,20 +373,13 @@ const RenderAccountItem = (props) => {
               </div>
               <div className="title">{displayName}</div>
             </Link>
-            <div className="actions">
-              <a
-                className="btn btn-sm btn-link action"
-                href={`${SocialPlatformMapping(resolvedPlatform)?.urlPrefix}${
-                  identity.displayName || displayName
-                }`}
-                title="Open"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <SVG src="icons/icon-open.svg" width={20} height={20} />
-                <span className="hide-xs">Open</span>
-              </a>
-            </div>
+            <ResultAccountItemAction
+              prefetch={false}
+              href={`${SocialPlatformMapping(resolvedPlatform)?.urlPrefix}${
+                identity.displayName || displayName
+              }`}
+              platform={identity.platform}
+            />
           </div>
           <RenderSourceFooter sources={sources} />
         </div>
