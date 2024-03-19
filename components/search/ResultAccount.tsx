@@ -18,9 +18,21 @@ const RenderAccount = (props) => {
   const resolvedListData = (() => {
     if (!identityGraph?.nodes) return [];
     const _identityGraph = JSON.parse(JSON.stringify(identityGraph));
-    const _resolved = _identityGraph.nodes.filter(
-      (x) => x.platform !== PlatformType.ens
-    );
+    const _resolved = _identityGraph.nodes
+      .filter((x) => x.platform !== PlatformType.ens)
+      .map((x) => {
+        return {
+          ...x,
+          profile: profiles.find((i) => i?.uuid === x.uuid),
+        };
+      })
+      .sort((a, b) => {
+        return [a.displayName, a.identity].includes(graphTitle)
+          ? -1
+          : [b.displayName, b.identity].includes(graphTitle)
+          ? 1
+          : 0;
+      });
 
     return _resolved;
   })();
@@ -44,7 +56,7 @@ const RenderAccount = (props) => {
             <ResultAccountItem
               identity={avatar}
               sources={["nextid"]}
-              profile={profiles.find((x) => x?.uuid === avatar.uuid)}
+              profile={avatar?.profile}
               key={avatar.uuid + idx}
             />
           ))}
