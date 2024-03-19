@@ -66,7 +66,7 @@ const updateNodes = (nodeContainer) => {
     .attr("id", (d) => d.id)
     .style("transform", (d) =>
       !d.displayName || d.displayName === d.identity
-        ? "transformY(0.25rem)"
+        ? "translateY(0.25rem)"
         : "none"
     )
     .text((d) => formatText(d.displayName));
