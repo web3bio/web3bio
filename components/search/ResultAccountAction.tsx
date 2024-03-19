@@ -5,7 +5,7 @@ export default function ResultAccountItemAction(props) {
   const { classes, title, disable, isActive, href, text, prefetch, platform } =
     props;
   return !disable ? (
-    <div className={`actions ${isActive && "active"} ${classes && classes}`}>
+    <div className={`actions ${isActive && "active"} ${classes ? classes : ""}`}>
       <Link
         target={"_blank"}
         className="btn btn-sm btn-link action"
