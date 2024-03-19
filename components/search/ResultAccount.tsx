@@ -36,7 +36,7 @@ const RenderAccount = (props) => {
 
     return _resolved;
   })();
-
+  console.log(identityGraph,'identityGraph')
   return (
     <>
       <div className="search-result">

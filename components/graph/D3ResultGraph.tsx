@@ -363,6 +363,7 @@ export default function D3IdentityGraph(props) {
       svg.selectAll("*").remove();
     };
   }, [data]);
+
   return (
     <div
       className="identity-graph-modal"
@@ -470,7 +471,7 @@ export default function D3IdentityGraph(props) {
               </li>
               <li>
                 <span className="text-gray">Owner: </span>
-                {currentNode.holder || ""}
+                {currentNode.address || ""}
               </li>
             </ul>
           )}

@@ -17,7 +17,12 @@ export const resolveIdentityGraphData = (source) => {
       displayName: x.profile?.displayName || x.displayName || x.identity,
       identity: x.profile?.identity || x.identity || x.id,
       uid: x.uid,
-      address: x.profile?.address || x.identity,
+      address:
+        x.platform === PlatformType.ens
+          ? source.edges
+              .find((i) => i.target === `${x.platform},${x.identity}`)
+              ?.source.slice(9)
+          : x.profile?.address || x.identity,
       isIdentity: x.platform === PlatformType.ens ? false : true,
     });
   });
