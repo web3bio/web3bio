@@ -34,6 +34,11 @@
       user-select: none;
       word-break: break-all;
     }
+    .graph-header-action {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
   }
 
   .web3bio-tooltip {
@@ -71,6 +76,7 @@
       }
     }
   }
+
   .graph-container {
     background: #fff;
     border-radius: .4rem;

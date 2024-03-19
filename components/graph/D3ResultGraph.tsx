@@ -6,6 +6,7 @@ import _ from "lodash";
 import SVG from "react-inlinesvg";
 import { Empty } from "../shared/Empty";
 import { resolveIdentityGraphData } from "./hook";
+import { isValidEthereumAddress } from "../../utils/regexp";
 
 const IdentityNodeSize = 48;
 const NFTNodeSize = 14;
@@ -371,7 +372,6 @@ export default function D3IdentityGraph(props) {
       svg.selectAll("*").remove();
     };
   }, [data]);
-
   return (
     <div
       className="identity-graph-modal"
@@ -398,7 +398,7 @@ export default function D3IdentityGraph(props) {
               <strong className="ml-1">{title}</strong>
             </span>
           </div>
-          <div className="btn-close">
+          <div className="graph-header-action">
             {!disableBack && (
               <div className="btn" onClick={onBack}>
                 <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
@@ -435,7 +435,7 @@ export default function D3IdentityGraph(props) {
               </li>
               <li className="mb-1">
                 {currentNode.identity != currentNode.displayName
-                  ? currentNode.platform === PlatformType.ethereum
+                  ? isValidEthereumAddress(currentNode.identity)
                     ? formatText(currentNode.identity)
                     : currentNode.identity
                   : ""}

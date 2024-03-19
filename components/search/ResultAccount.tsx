@@ -9,7 +9,7 @@ import { PlatformType } from "../../utils/platform";
 import D3ResultGraph from "../graph/D3ResultGraph";
 
 const RenderAccount = (props) => {
-  const { identityGraph, graphTitle } = props;
+  const { identityGraph, graphTitle, platform } = props;
   const [open, setOpen] = useState(false);
   const cached = useSelector<AppState, { [address: string]: ProfileInterface }>(
     (state) => state.universal.profiles
@@ -25,18 +25,26 @@ const RenderAccount = (props) => {
           ...x,
           profile: profiles.find((i) => i?.uuid === x.uuid),
         };
-      })
-      .sort((a, b) => {
-        return [a.displayName, a.identity].includes(graphTitle)
-          ? -1
-          : [b.displayName, b.identity].includes(graphTitle)
-          ? 1
-          : 0;
       });
+    const index = _resolved.findIndex((x) => {
+      if (platform === PlatformType.ens) {
+        return (
+          x.displayName === graphTitle && x.platform === PlatformType.ethereum
+        );
+      }
+      return x.identity === graphTitle;
+    });
+    if (index !== -1) {
+      const firstItem = JSON.parse(JSON.stringify(_resolved[index]));
+      if (index !== -1) {
+        _resolved.splice(index, 1);
+        _resolved.unshift(firstItem);
+      }
+    }
 
     return _resolved;
   })();
-  
+
   return (
     <>
       <div className="search-result">

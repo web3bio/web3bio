@@ -42,6 +42,7 @@ export default function SearchResult({ searchTerm, searchPlatform }) {
           })),
           edges: identityGraphData?.edges,
         }}
+        platform={searchPlatform}
         graphTitle={searchTerm}
       />
     )
