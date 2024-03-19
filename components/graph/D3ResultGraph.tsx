@@ -48,7 +48,10 @@ const updateNodes = (nodeContainer) => {
   const identityIcon = nodeContainer
     .append("svg:image")
     .attr("class", "identity-icon")
-    .attr("xlink:href", (d) => SocialPlatformMapping(d.platform.toLowerCase()).icon)
+    .attr(
+      "xlink:href",
+      (d) => SocialPlatformMapping(d.platform.toLowerCase()).icon
+    )
     .attr("style", (d) => `display:${d.isIdentity ? "normal" : "none"}`);
 
   const ensBadge = nodeContainer
@@ -61,16 +64,21 @@ const updateNodes = (nodeContainer) => {
     .append("text")
     .attr("class", "displayName")
     .attr("id", (d) => d.id)
-    .text((d) => formatText(d.displayName || d.identity));
+    .style("transform", (d) =>
+      !d.displayName || d.displayName === d.identity
+        ? "transformY(0.25rem)"
+        : "none"
+    )
+    .text((d) => formatText(d.displayName));
+
   const identity = nodeContainer
     .append("text")
     .attr("class", "identity")
     .attr("id", (d) => d.id)
     .style("display", (d) => (d.isIdentity ? "normal" : "none"))
     .text((d) => {
-      if (d.displayName === "") return "";
-      if (d.displayName === d.identity) return formatText(d.address);
-      return formatText(d.identity);
+      if (!d.displayName || d.displayName === d.identity) return "";
+      return formatText(d.identity || d.address);
     });
   return {
     identityBadge,
@@ -150,7 +158,7 @@ export default function D3IdentityGraph(props) {
             d3
               .forceCollide()
               .radius((d) =>
-                d.isIdentity ? IdentityNodeSize * 2 : NFTNodeSize * 4
+                d.isIdentity ? IdentityNodeSize * 2 : NFTNodeSize * 2.25
               )
           )
           .force("center", d3.forceCenter(width / 2, height / 2))
@@ -470,8 +478,12 @@ export default function D3IdentityGraph(props) {
                 {currentNode.platform || ""}
               </li>
               <li>
+                <span className="text-gray">Resolved: </span>
+                {currentNode.resolvedAddress || ""}
+              </li>
+              <li>
                 <span className="text-gray">Owner: </span>
-                {currentNode.address || ""}
+                {currentNode.owner || ""}
               </li>
             </ul>
           )}

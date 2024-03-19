@@ -5,6 +5,26 @@ import _ from "lodash";
 export const resolveIdentityGraphData = (source) => {
   const nodes = new Array<any>();
   const edges = new Array<any>();
+
+  const findENSOwner = (ens: string) => {
+    return source.edges
+      .find(
+        (i) =>
+          i.target === `${PlatformType.ens},${ens}` && i.edgeType === "Hold"
+      )
+      ?.source?.slice(9);
+  };
+
+  const findENSResolvedAddress = (ens: string) => {
+    return source.edges
+      .find(
+        (i) =>
+          i.target === `${PlatformType.ens},${ens}` &&
+          ["Reverse_Resolve", "Resolve", "Hold"].includes(i.edgeType)
+      )
+      ?.source?.slice(9);
+  };
+
   source.nodes.forEach((x) => {
     const resolvedPlatform = SocialPlatformMapping(x.platform);
     nodes.push({
@@ -17,13 +37,13 @@ export const resolveIdentityGraphData = (source) => {
       displayName: x.profile?.displayName || x.displayName || x.identity,
       identity: x.profile?.identity || x.identity || x.id,
       uid: x.uid,
-      address:
-        x.platform === PlatformType.ens
-          ? source.edges
-              .find((i) => i.target === `${x.platform},${x.identity}`)
-              ?.source.slice(9)
-          : x.profile?.address || x.identity,
+      address: x.profile?.address || x.identity,
       isIdentity: x.platform === PlatformType.ens ? false : true,
+      owner: x.platform === PlatformType.ens ? findENSOwner(x.identity) : null,
+      resolvedAddress:
+        x.platform === PlatformType.ens
+          ? findENSResolvedAddress(x.identity)
+          : null,
     });
   });
   source.edges.forEach((x) => {
