@@ -5,7 +5,7 @@ import { PlatformType } from "../../utils/platform";
 import _ from "lodash";
 import SVG from "react-inlinesvg";
 import { Empty } from "../shared/Empty";
-import { resolveIdentityGraphData } from "./hook";
+import { calcTranslation, resolveIdentityGraphData } from "./utils";
 import { isValidEthereumAddress } from "../../utils/regexp";
 
 const IdentityNodeSize = 48;
@@ -18,25 +18,6 @@ const getMarkerRefX = (d) => {
     ? IdentityNodeSize + (d.isSingle ? 30 : 26)
     : NFTNodeSize + (d.isSingle ? 16 : 8);
 };
-
-export function calcTranslation(targetDistance, point0, point1) {
-  let x1_x0 = point1.x - point0.x,
-    y1_y0 = point1.y - point0.y,
-    x2_x0,
-    y2_y0;
-  if (y1_y0 === 0) {
-    x2_x0 = 0;
-    y2_y0 = targetDistance;
-  } else {
-    let angle = Math.atan(x1_x0 / y1_y0);
-    x2_x0 = -targetDistance * Math.cos(angle);
-    y2_y0 = targetDistance * Math.sin(angle);
-  }
-  return {
-    dx: x2_x0,
-    dy: y2_y0,
-  };
-}
 
 const updateNodes = (nodeContainer) => {
   const identityBadge = nodeContainer
