@@ -73,7 +73,7 @@ export default function HomePage() {
               Web3 Identity Search
               <br />
               <small>
-                Explore Web3 identity and profiles in a whole new way
+                Explore Web3 identities and domains in a whole new way
               </small>
             </div>
             <div className="form-input-group">

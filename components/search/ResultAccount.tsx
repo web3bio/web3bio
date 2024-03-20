@@ -71,7 +71,7 @@ const RenderAccount = (props) => {
               }}
             >
               <SVG src={"/icons/icon-view.svg"} width={20} height={20} />{" "}
-              Identity Graph
+              Visualize
             </div>
           )}
         </div>

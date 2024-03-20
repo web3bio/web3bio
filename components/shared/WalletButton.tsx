@@ -57,7 +57,7 @@ export default function WalletButton(props) {
               {(() => {
                 if (!connected) {
                   return (
-                    <div onClick={openConnectModal} className="connect-btn">
+                    <div onClick={openConnectModal} className="btn btn-primary connect-btn">
                       Connect Wallet
                     </div>
                   );
