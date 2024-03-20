@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo } from "react";
 import SVG from "react-inlinesvg";
 import { ResultAccountItem } from "./ResultAccountItem";
 import _ from "lodash";
@@ -6,14 +6,15 @@ import { useSelector } from "react-redux";
 import { AppState } from "../../state";
 import { ProfileInterface } from "../../utils/profile";
 import { PlatformType } from "../../utils/platform";
-import D3ResultGraph from "../graph/D3ResultGraph";
+import Modal from "../modal/Modal";
+import useModal, { ModalType } from "../../hooks/useModal";
 
 const RenderAccount = (props) => {
   const { identityGraph, graphTitle, platform } = props;
-  const [open, setOpen] = useState(false);
   const cached = useSelector<AppState, { [address: string]: ProfileInterface }>(
     (state) => state.universal.profiles
   );
+  const { isOpen, modalType, closeModal, openModal, params } = useModal();
   const profiles = _.flatten(Object.values(cached).map((x) => x));
   const resolvedListData = (() => {
     if (!identityGraph?.nodes) return [];
@@ -53,7 +54,22 @@ const RenderAccount = (props) => {
             Identity Graph results:
           </div>
           {identityGraph?.nodes.length > 0 && (
-            <div className="btn btn-link btn-sm" onClick={() => setOpen(true)}>
+            <div
+              className="btn btn-link btn-sm"
+              onClick={() => {
+                openModal(ModalType.graph, {
+                  disableBack: true,
+                  data: {
+                    nodes: identityGraph.nodes?.map((x) => ({
+                      ...x,
+                      profile: profiles.find((i) => i?.uuid === x.uuid),
+                    })),
+                    edges: identityGraph.edges,
+                  },
+                  title: graphTitle,
+                });
+              }}
+            >
               <SVG src={"/icons/icon-view.svg"} width={20} height={20} />{" "}
               Identity Graph
             </div>
@@ -70,21 +86,9 @@ const RenderAccount = (props) => {
           ))}
         </div>
       </div>
-      {open && (
-        <D3ResultGraph
-          onClose={() => {
-            setOpen(false);
-          }}
-          disableBack
-          data={{
-            nodes: identityGraph.nodes?.map((x) => ({
-              ...x,
-              profile: profiles.find((i) => i?.uuid === x.uuid),
-            })),
-            edges: identityGraph.edges,
-          }}
-          title={graphTitle}
-        />
+
+      {isOpen && (
+        <Modal params={params} onDismiss={closeModal} modalType={modalType} />
       )}
     </>
   );

@@ -95,7 +95,6 @@ export default function D3IdentityGraph(props) {
   const [currentNode, setCurrentNode] = useState<any>(null);
   const [hideTooltip, setHideToolTip] = useState(true);
   const [transform, setTransform] = useState([0, 0]);
-  const tooltipContainer = useRef(null);
   const graphContainer = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -373,11 +372,7 @@ export default function D3IdentityGraph(props) {
     };
   }, [data]);
   return (
-    <div
-      className="identity-graph-modal"
-      ref={tooltipContainer}
-      onClick={onClose}
-    >
+    <div className="identity-graph-modal">
       <div
         className="graph-container"
         ref={graphContainer}

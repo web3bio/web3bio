@@ -8,6 +8,7 @@ import PhilandModalContent from "./PhilandModalContent";
 import PoapsModalContent from "./PoapsModalContent";
 import SearchModalContent from "./SearchModalContent";
 import ShareModalContent from "./ShareModalContent";
+import D3IdentityGraph from "../graph/D3ResultGraph";
 
 export default function Modal(props) {
   const { onDismiss, children, modalType, params } = props;
@@ -51,12 +52,16 @@ export default function Modal(props) {
       case ModalType.article:
         return <ArticleModalContent {...params} onClose={onDismiss} />;
       case ModalType.search:
-        return <SearchModalContent {...params} onClose={onDismiss} />
+        return <SearchModalContent {...params} onClose={onDismiss} />;
+      case ModalType.graph:
+        return <D3IdentityGraph {...params} onClose={onDismiss} />;
       default:
         return children;
     }
   };
-  return (
+  return modalType === ModalType.graph ? (
+    renderContent(children, params)
+  ) : (
     <div ref={overlay} className="web3bio-mask-cover" onClick={onClick}>
       <div
         ref={wrapper}
