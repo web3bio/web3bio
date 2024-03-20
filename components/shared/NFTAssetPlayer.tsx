@@ -78,6 +78,7 @@ function VideoRender(props: AssetPlayerProps) {
       onError={() => setIsError(true)}
       muted
       autoPlay
+      controls
       loop
       playsInline
       poster={poster}
