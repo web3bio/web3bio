@@ -91,16 +91,15 @@ const updateNodes = (nodeContainer) => {
 };
 
 export default function D3IdentityGraph(props) {
-  const { data, onClose, title, onBack, disableBack } = props;
+  const { data, onClose, title, onBack, disableBack, containerRef } = props;
   const [currentNode, setCurrentNode] = useState<any>(null);
   const [hideTooltip, setHideToolTip] = useState(true);
   const [transform, setTransform] = useState([0, 0]);
-  const graphContainer = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!data) return;
     let chart = null;
-    const chartContainer = graphContainer?.current;
+    const chartContainer = containerRef?.current;
     const generateGraph = (_data) => {
       const width = chartContainer?.offsetWidth!;
       const height = chartContainer?.offsetHeight!;
@@ -372,37 +371,28 @@ export default function D3IdentityGraph(props) {
     };
   }, [data]);
   return (
-    <div className="identity-graph-modal">
-      <div
-        className="graph-container"
-        ref={graphContainer}
-        onClick={(e) => {
-          e.stopPropagation();
-          e.preventDefault();
-        }}
-      >
-        {(data && <svg className="svg-canvas" />) || (
-          <Empty title={"No Identity graph found"} />
-        )}
+    <>
+      {(data && <svg className="svg-canvas" />) || (
+        <Empty title={"No Identity graph found"} />
+      )}
 
-        <div className="graph-header">
-          <div className="graph-title">
-            <SVG src={"/icons/icon-view.svg"} width="20" height="20" />
-            <span className="ml-2">
-              Identity Graph for
-              <strong className="ml-1">{title}</strong>
-            </span>
-          </div>
-          <div className="graph-header-action">
-            {!disableBack && (
-              <div className="btn" onClick={onBack}>
-                <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
-                Back
-              </div>
-            )}
-            <div className="btn" onClick={onClose}>
-              <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
+      <div className="graph-header">
+        <div className="graph-title">
+          <SVG src={"/icons/icon-view.svg"} width="20" height="20" />
+          <span className="ml-2">
+            Identity Graph for
+            <strong className="ml-1">{title}</strong>
+          </span>
+        </div>
+        <div className="graph-header-action">
+          {!disableBack && (
+            <div className="btn" onClick={onBack}>
+              <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
+              Back
             </div>
+          )}
+          <div className="btn" onClick={onClose}>
+            <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
           </div>
         </div>
       </div>
@@ -412,10 +402,10 @@ export default function D3IdentityGraph(props) {
           style={{
             left:
               currentNode.x +
-              (currentNode.isIdentity ? IdentityNodeSize : NFTNodeSize * 2),
+              (currentNode.isIdentity ? IdentityNodeSize : NFTNodeSize) / 3,
             top:
               currentNode.y +
-              (currentNode.isIdentity ? IdentityNodeSize : NFTNodeSize * 2),
+              (currentNode.isIdentity ? IdentityNodeSize : NFTNodeSize) / 3,
             transform: `translate(${transform[0]}px,${transform[1]}px)`,
           }}
           onClick={(e) => {
@@ -484,6 +474,6 @@ export default function D3IdentityGraph(props) {
           )}
         </div>
       )}
-    </div>
+    </>
   );
 }
