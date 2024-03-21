@@ -447,10 +447,12 @@ export default function D3IdentityGraph(props) {
                 <span className="text-gray">Platform: </span>
                 {currentNode.platform || ""}
               </li>
-              <li>
-                <span className="text-gray">Resolved: </span>
-                {currentNode.resolvedAddress || ""}
-              </li>
+              {currentNode.resolvedAddress && (
+                <li>
+                  <span className="text-gray">Resolved: </span>
+                  {currentNode.resolvedAddress || ""}
+                </li>
+              )}
               <li>
                 <span className="text-gray">Owner: </span>
                 {currentNode.owner || ""}

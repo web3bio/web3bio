@@ -18,6 +18,12 @@ export const GET_PROFILES = gql`
           uid
           reverse
           expiredAt
+          ownedBy {
+            identity
+            platform
+            displayName
+            uid
+          }
           nft(category: [ENS]) {
             id
             uuid

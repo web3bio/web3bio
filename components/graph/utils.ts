@@ -1,4 +1,5 @@
 import { PlatformType } from "../../utils/platform";
+import { isValidEthereumAddress } from "../../utils/regexp";
 import { SocialPlatformMapping, formatText } from "../../utils/utils";
 import _ from "lodash";
 
@@ -7,27 +8,22 @@ export const resolveIdentityGraphData = (source) => {
   const edges = new Array<any>();
 
   const findENSOwner = (ens: string) => {
-    return source.edges
-      .find(
-        (i) =>
-          i.target === `${PlatformType.ens},${ens}` && i.edgeType === "Hold"
-      )
-      ?.source?.slice(9);
+    const item = source.edges.find((i) =>
+      [i.target, i.source].includes(`${PlatformType.ens},${ens}`)
+    );
+    const res = item.source.slice(9);
+    return isValidEthereumAddress(res) ? res : item.target.slice(9);
   };
 
   const findENSResolvedAddress = (ens: string) => {
     return source.edges
-      .find(
-        (i) =>
-          i.target === `${PlatformType.ens},${ens}` &&
-          ["Reverse_Resolve", "Resolve", "Hold"].includes(i.edgeType)
-      )
-      ?.source?.slice(9);
+      .find((i) => i.source === `${PlatformType.ens},${ens}`)
+      ?.target?.slice(9);
   };
 
-  source.nodes.forEach((x) => {
+  const generateVerticesStruct = (x) => {
     const resolvedPlatform = SocialPlatformMapping(x.platform);
-    nodes.push({
+    return {
       id: x.id,
       label:
         x.platform === PlatformType.ens
@@ -35,17 +31,53 @@ export const resolveIdentityGraphData = (source) => {
           : formatText(x.displayName || x.identity),
       platform: resolvedPlatform.key || x.platform,
       displayName: x.profile?.displayName || x.displayName || x.identity,
-      identity: x.profile?.identity || x.identity || x.id,
+      identity: x.profile?.identity || x.identity,
       uid: x.uid,
-      address: x.profile?.address || x.identity,
+      uuid: x.uuid,
+      address: x.profile?.address || x.ownedBy?.identity,
       isIdentity: x.platform === PlatformType.ens ? false : true,
       owner: x.platform === PlatformType.ens ? findENSOwner(x.identity) : null,
       resolvedAddress:
         x.platform === PlatformType.ens
           ? findENSResolvedAddress(x.identity)
           : null,
-    });
+    };
+  };
+
+  const generateNFTENSStruct = (ens, owner) => {
+    return {
+      id: `${PlatformType.ens},${ens.id}`,
+      label: ens.id,
+      platform: PlatformType.ens,
+      displayName: ens.id,
+      identity: ens.id,
+      uuid: ens.uuid,
+      isIdentity: false,
+      owner,
+      resolvedAddress: ens.resolved,
+      transaction: ens.transaction,
+    };
+  };
+
+  source.nodes.forEach((x) => {
+    nodes.push(generateVerticesStruct(x));
+    if (x.nft.length > 0) {
+      x.nft.forEach((i) => {
+        if (!nodes.some((j) => j.identity === i.id)) {
+          nodes.push(generateNFTENSStruct(i, x.identity));
+          const source = `${PlatformType.ethereum},${x.identity}`;
+          const target = `${PlatformType.ens},${i.id}`;
+          edges.push({
+            source,
+            target,
+            label: "",
+            id: `${source}*${target}`,
+          });
+        }
+      });
+    }
   });
+
   source.edges.forEach((x) => {
     const resolvedPlatform = SocialPlatformMapping(x.dataSource);
     edges.push({
@@ -74,7 +106,7 @@ export const isSingleEdge = (data, d) => {
   )
     return false;
   return true;
-}
+};
 export function calcTranslation(targetDistance, point0, point1) {
   let x1_x0 = point1.x - point0.x,
     y1_y0 = point1.y - point0.y,
