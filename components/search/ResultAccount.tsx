@@ -50,7 +50,7 @@ const RenderAccount = (props) => {
   const resolveSources = (id: string) => {
     let res: string[] = [];
     identityGraph.edges.forEach((x) => {
-      if ([x.source, x.target].includes(id)) {
+      if (x.target === id) {
         const label = SocialPlatformMapping(x.dataSource)?.label;
         if (label && !res.includes(label)) {
           res.push(label);
