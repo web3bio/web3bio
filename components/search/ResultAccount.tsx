@@ -40,6 +40,7 @@ const RenderAccount = (props) => {
           displayName: ensItem.identity,
           // todo: wait for rs resolved in identity
           identity: "resolved address",
+          reverse: false,
         });
       }
     } else {
@@ -70,6 +71,9 @@ const RenderAccount = (props) => {
 
   return (
     <>
+      {isOpen && (
+        <Modal params={params} onDismiss={closeModal} modalType={modalType} />
+      )}
       <div className="search-result">
         <div className="search-result-header">
           <div className="search-result-text text-gray">
@@ -108,10 +112,6 @@ const RenderAccount = (props) => {
           ))}
         </div>
       </div>
-
-      {isOpen && (
-        <Modal params={params} onDismiss={closeModal} modalType={modalType} />
-      )}
     </>
   );
 };
