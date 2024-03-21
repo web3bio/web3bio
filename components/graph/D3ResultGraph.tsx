@@ -185,7 +185,11 @@ export default function D3IdentityGraph(props) {
         .attr("dx", ".5em")
         .attr("dy", "3px")
         .attr("text-anchor", "middle")
-        .text((d) => (d.target.isIdentity ? d.label : ""));
+        .text((d) =>
+          [d.source.platform, d.target.platform].includes(PlatformType.ens)
+            ? ""
+            : d.label
+        );
 
       const dragged = (event, d) => {
         const clamp = (x, lo, hi) => {
