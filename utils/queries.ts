@@ -9,6 +9,12 @@ export const GET_PROFILES = gql`
       uid
       reverse
       expiredAt
+      ownedBy {
+        identity
+        platform
+        displayName
+        uid
+      }
       identityGraph {
         vertices {
           uuid

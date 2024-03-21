@@ -28,22 +28,30 @@ const RenderAccount = (props) => {
           profile: profiles.find((i) => i?.uuid === x.uuid),
         };
       });
-    const index = _resolved.findIndex((x) => {
-      if (platform === PlatformType.ens) {
-        return (
-          x.displayName === graphTitle && x.platform === PlatformType.ethereum
-        );
+
+    if (platform === PlatformType.ens) {
+      const ensItem = identityGraph.nodes
+        .filter((x) => x.platform === PlatformType.ens)
+        .find((x) => x.identity === graphTitle);
+      if (ensItem) {
+        _resolved.unshift({
+          ...ensItem,
+          platform: PlatformType.ethereum,
+          displayName: ensItem.identity,
+          // todo: wait for rs resolved in identity
+          identity: "resolved address",
+        });
       }
-      return x.identity === graphTitle;
-    });
-    if (index !== -1) {
+    } else {
+      const index = _resolved.findIndex((x) => {
+        return x.identity === graphTitle && x.platform === platform;
+      });
       const firstItem = JSON.parse(JSON.stringify(_resolved[index]));
       if (index !== -1) {
         _resolved.splice(index, 1);
         _resolved.unshift(firstItem);
       }
     }
-
     return _resolved;
   })();
 
