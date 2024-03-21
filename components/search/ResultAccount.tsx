@@ -8,6 +8,7 @@ import { ProfileInterface } from "../../utils/profile";
 import { PlatformType } from "../../utils/platform";
 import Modal from "../modal/Modal";
 import useModal, { ModalType } from "../../hooks/useModal";
+import { SocialPlatformMapping } from "../../utils/utils";
 
 const RenderAccount = (props) => {
   const { identityGraph, graphTitle, platform } = props;
@@ -46,6 +47,19 @@ const RenderAccount = (props) => {
     return _resolved;
   })();
 
+  const resolveSources = (id: string) => {
+    let res: string[] = [];
+    identityGraph.edges.forEach((x) => {
+      if ([x.source, x.target].includes(id)) {
+        const label = SocialPlatformMapping(x.dataSource)?.label;
+        if (label && !res.includes(label)) {
+          res.push(label);
+        }
+      }
+    });
+    return res;
+  };
+
   return (
     <>
       <div className="search-result">
@@ -79,7 +93,7 @@ const RenderAccount = (props) => {
           {resolvedListData.map((avatar, idx) => (
             <ResultAccountItem
               identity={avatar}
-              sources={["nextid"]}
+              sources={resolveSources(`${avatar.platform},${avatar.identity}`)}
               profile={avatar?.profile}
               key={avatar.uuid + idx}
             />

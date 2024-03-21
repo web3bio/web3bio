@@ -22,7 +22,7 @@ const RenderAccountItem = (props) => {
     }, 1500);
   };
   const ref = useRef(null);
-  const { identity, sources, profile, onClick, expiredAt } = props;
+  const { identity, sources, profile, onClick } = props;
   const [isCopied, setIsCopied] = useState(false);
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
