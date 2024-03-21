@@ -31,7 +31,7 @@ export const resolveIdentityGraphData = (source) => {
           : formatText(x.displayName || x.identity),
       platform: resolvedPlatform.key || x.platform,
       displayName: x.profile?.displayName || x.displayName || x.identity,
-      identity: x.profile?.identity || x.identity,
+      identity:  x.identity,
       uid: x.uid,
       uuid: x.uuid,
       address: x.profile?.address || x.ownedBy?.identity,

@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
-import { formatText, SocialPlatformMapping } from "../../utils/utils";
+import {
+  formatText,
+  isDomainSearch,
+  SocialPlatformMapping,
+} from "../../utils/utils";
 import { PlatformType } from "../../utils/platform";
 import _ from "lodash";
 import SVG from "react-inlinesvg";
@@ -47,11 +51,12 @@ const updateNodes = (nodeContainer) => {
     .attr("class", "displayName")
     .attr("id", (d) => d.id)
     .style("transform", (d) =>
-      !d.displayName || d.displayName === d.identity
+      (!d.displayName || d.displayName === d.identity) &&
+      isDomainSearch(d.platform)
         ? "translateY(0.25rem)"
         : "none"
     )
-    .text((d) => formatText(d.displayName));
+    .text((d) => formatText(d.displayName || d.identity));
 
   const identity = nodeContainer
     .append("text")
@@ -423,7 +428,9 @@ export default function D3IdentityGraph(props) {
               )) ||
                 ""}
               {((currentNode.address ||
-                currentNode.platform === PlatformType.ethereum) && (
+                [PlatformType.ethereum, PlatformType.solana].includes(
+                  currentNode.platform
+                )) && (
                 <li>
                   <span className="text-gray">Address: </span>
                   {currentNode.address || currentNode.identity}
