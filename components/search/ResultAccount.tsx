@@ -28,8 +28,10 @@ const RenderAccount = (props) => {
           profile: profiles.find((i) => i?.uuid === x.uuid),
         };
       });
-
-    if (platform === PlatformType.ens) {
+    if (
+      platform === PlatformType.ens &&
+      !_resolved.some((x) => x.displayName === graphTitle)
+    ) {
       const ensItem = identityGraph.nodes
         .filter((x) => x.platform === PlatformType.ens)
         .find((x) => x.identity === graphTitle);
@@ -45,7 +47,9 @@ const RenderAccount = (props) => {
       }
     } else {
       const index = _resolved.findIndex((x) => {
-        return x.identity === graphTitle && x.platform === platform;
+        return platform === PlatformType.ens
+          ? x.displayName === graphTitle && x.platform === PlatformType.ethereum
+          : x.identity === graphTitle && x.platform === platform;
       });
       const firstItem = JSON.parse(JSON.stringify(_resolved[index]));
       if (index !== -1) {
