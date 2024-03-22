@@ -10,6 +10,18 @@ import Modal from "../modal/Modal";
 import useModal, { ModalType } from "../../hooks/useModal";
 import { SocialPlatformMapping } from "../../utils/utils";
 
+const getENSAddress = (ensItem) => {
+  return (
+    ensItem.resolveAddress?.find((x) => x.chain === PlatformType.ethereum)
+      ?.address ||
+    ensItem.resolveAddress?.[0].address ||
+    ensItem.ownerAddress?.find((x) => x.chain === PlatformType.ethereum)
+      ?.address ||
+    ensItem.ownerAddress?.[0]?.address ||
+    ensItem.identity
+  );
+};
+
 const RenderAccount = (props) => {
   const { identityGraph, graphTitle, platform } = props;
   const cached = useSelector<AppState, { [address: string]: ProfileInterface }>(
@@ -40,10 +52,7 @@ const RenderAccount = (props) => {
           ...ensItem,
           platform: PlatformType.ens,
           displayName: ensItem.identity,
-          identity:
-            ensItem.resolveAddress?.find(
-              (x) => x.chain === PlatformType.ethereum
-            ).address || ensItem.resolveAddress?.[0].address,
+          identity: getENSAddress(ensItem),
           reverse: false,
         });
       }
@@ -75,7 +84,6 @@ const RenderAccount = (props) => {
     });
     return res;
   };
-
   return (
     <>
       {isOpen && (
@@ -99,7 +107,7 @@ const RenderAccount = (props) => {
                     })),
                     edges: identityGraph.edges,
                   },
-                  root: resolvedListData[0],
+                  root: resolvedListData?.[0],
                   title: graphTitle,
                 });
               }}

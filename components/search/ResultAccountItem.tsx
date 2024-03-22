@@ -143,7 +143,7 @@ const RenderAccountItem = (props) => {
                         </>
                       ) : (
                         <>
-                          <div className="address">{profile.identity}</div>
+                          <div className="address">{profile.identity || identity.identity}</div>
                           <div className="ml-1 mr-1"> · </div>
                           <div className="address">
                             {formatText(resolvedIdentity)}

@@ -18,12 +18,6 @@ export const GET_PROFILES = gql`
         chain
         address
       }
-      ownedBy {
-        identity
-        platform
-        displayName
-        uid
-      }
       identityGraph {
         vertices {
           uuid
@@ -40,12 +34,6 @@ export const GET_PROFILES = gql`
           ownerAddress {
             chain
             address
-          }
-          ownedBy {
-            identity
-            platform
-            displayName
-            uid
           }
           nft(category: [ENS]) {
             id

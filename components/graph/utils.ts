@@ -7,22 +7,14 @@ export const resolveIdentityGraphData = (source) => {
   const nodes = new Array<any>();
   const edges = new Array<any>();
 
-  const findENSOwner = (ens: string) => {
-    const item = source.edges.find((i) =>
-      [i.target, i.source].includes(`${PlatformType.ens},${ens}`)
-    );
-    const res = item.source.slice(9);
-    return isValidEthereumAddress(res) ? res : item.target.slice(9);
-  };
-
-  const findENSResolvedAddress = (ens: string) => {
-    return source.edges
-      .find((i) => i.source === `${PlatformType.ens},${ens}`)
-      ?.target?.slice(9);
-  };
-
   const generateVerticesStruct = (x) => {
     const resolvedPlatform = SocialPlatformMapping(x.platform);
+    const ownerAddress =
+      x.ownerAddress?.find((x) => x.chain === PlatformType.ethereum)?.address ||
+      x.ownerAddress?.[0].address;
+    const resolvedAddress =
+      x.resolveAddress?.find((x) => x.chain === PlatformType.ethereum)
+        ?.address || x.resolveAddress?.[0].address;
     return {
       id: x.id,
       label:
@@ -31,16 +23,13 @@ export const resolveIdentityGraphData = (source) => {
           : formatText(x.displayName || x.identity),
       platform: resolvedPlatform.key || x.platform,
       displayName: x.profile?.displayName || x.displayName || x.identity,
-      identity:  x.identity,
+      identity: x.identity,
       uid: x.uid,
       uuid: x.uuid,
-      address: x.profile?.address || x.ownedBy?.identity,
+      address: x.profile?.address || resolvedAddress || ownerAddress,
       isIdentity: x.platform === PlatformType.ens ? false : true,
-      owner: x.platform === PlatformType.ens ? findENSOwner(x.identity) : null,
-      resolvedAddress:
-        x.platform === PlatformType.ens
-          ? findENSResolvedAddress(x.identity)
-          : null,
+      owner: ownerAddress,
+      resolvedAddress: resolvedAddress,
     };
   };
 
@@ -54,16 +43,15 @@ export const resolveIdentityGraphData = (source) => {
       uuid: ens.uuid,
       isIdentity: false,
       owner,
-      resolvedAddress: ens.resolved,
+      resolvedAddress: null,
       transaction: ens.transaction,
     };
   };
-
   source.nodes.forEach((x) => {
     nodes.push(generateVerticesStruct(x));
-    if (x.nft.length > 0) {
+    if (x.nft?.length > 0) {
       x.nft.forEach((i) => {
-        if (!nodes.some((j) => j.identity === i.id)) {
+        if (!source.nodes.some((j) => j.identity === i.id)) {
           nodes.push(generateNFTENSStruct(i, x.identity));
           const source = `${PlatformType.ethereum},${x.identity}`;
           const target = `${PlatformType.ens},${i.id}`;

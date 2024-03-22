@@ -33,14 +33,17 @@ export default function SearchResult({ searchTerm, searchPlatform }) {
   if (error) return <Error retry={getQuery} text={error} />;
   if (searchTerm && !data?.identity) return <Empty />;
   return (
-    identityGraphData && (
+    data?.identity && (
       <ResultAccount
         identityGraph={{
-          nodes: identityGraphData?.vertices.map((x) => ({
-            ...x,
-            id: x.platform + "," + x.identity,
-          })),
-          edges: identityGraphData?.edges,
+          nodes:
+            identityGraphData?.vertices?.length > 0
+              ? identityGraphData?.vertices.map((x) => ({
+                  ...x,
+                  id: x.platform + "," + x.identity,
+                }))
+              : [{ ...data?.identity }],
+          edges: identityGraphData?.edges || [],
         }}
         platform={searchPlatform}
         graphTitle={searchTerm}
