@@ -96,6 +96,7 @@ const RenderAccount = (props) => {
                     })),
                     edges: identityGraph.edges,
                   },
+                  root: resolvedListData[0],
                   title: graphTitle,
                 });
               }}

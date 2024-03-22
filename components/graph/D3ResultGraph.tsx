@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import * as d3 from "d3";
 import {
   formatText,
@@ -77,7 +77,8 @@ const updateNodes = (nodeContainer) => {
 };
 
 export default function D3IdentityGraph(props) {
-  const { data, onClose, title, onBack, disableBack, containerRef } = props;
+  const { data, onClose, title, onBack, disableBack, containerRef, root } =
+    props;
   const [currentNode, setCurrentNode] = useState<any>(null);
   const [hideTooltip, setHideToolTip] = useState(true);
   const [transform, setTransform] = useState([0, 0]);
@@ -248,6 +249,7 @@ export default function D3IdentityGraph(props) {
       const { displayName, identity, identityBadge, identityIcon, ensBadge } =
         updateNodes(nodeContainer);
       const ticked = () => {
+        // tick
         edgePath.attr("d", (d) => {
           const delta = calcTranslation(4, d.source, d.target);
           const rightwardSign = d.target.x > d.source.x ? 2 : -2;
@@ -343,6 +345,10 @@ export default function D3IdentityGraph(props) {
           i < n;
           ++i
         ) {
+          // initial center the root node before every tick
+          const rootNode = nodes.find((x) => x.id === root.id);
+          rootNode.x = width / 2;
+          rootNode.y = height / 2;
           simulation.tick();
         }
         ticked();
