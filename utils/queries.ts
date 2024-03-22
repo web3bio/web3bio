@@ -3,12 +3,21 @@ import { gql } from "@apollo/client";
 export const GET_PROFILES = gql`
   query GET_PROFILES($platform: String, $identity: String) {
     identity(platform: $platform, identity: $identity) {
+      id
       identity
       platform
       displayName
       uid
       reverse
       expiredAt
+      resolveAddress {
+        chain
+        address
+      }
+      ownerAddress {
+        chain
+        address
+      }
       ownedBy {
         identity
         platform
@@ -24,6 +33,14 @@ export const GET_PROFILES = gql`
           uid
           reverse
           expiredAt
+          resolveAddress {
+            chain
+            address
+          }
+          ownerAddress {
+            chain
+            address
+          }
           ownedBy {
             identity
             platform

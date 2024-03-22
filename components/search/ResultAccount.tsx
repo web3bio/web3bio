@@ -38,10 +38,12 @@ const RenderAccount = (props) => {
       if (ensItem) {
         _resolved.unshift({
           ...ensItem,
-          platform: PlatformType.ethereum,
+          platform: PlatformType.ens,
           displayName: ensItem.identity,
-          // todo: wait for rs resolved in identity
-          identity: "resolved address",
+          identity:
+            ensItem.resolveAddress?.find(
+              (x) => x.chain === PlatformType.ethereum
+            ).address || ensItem.resolveAddress?.[0].address,
           reverse: false,
         });
       }
@@ -51,8 +53,9 @@ const RenderAccount = (props) => {
           ? x.displayName === graphTitle && x.platform === PlatformType.ethereum
           : x.identity === graphTitle && x.platform === platform;
       });
-      const firstItem = JSON.parse(JSON.stringify(_resolved[index]));
+
       if (index !== -1) {
+        const firstItem = JSON.parse(JSON.stringify(_resolved[index]));
         _resolved.splice(index, 1);
         _resolved.unshift(firstItem);
       }

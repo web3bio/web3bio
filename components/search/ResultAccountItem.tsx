@@ -30,7 +30,7 @@ const RenderAccountItem = (props) => {
   const resolvedDisplayName = profile?.displayName
     ? profile.displayName
     : identity.displayName || identity.identity;
-  const resolvedPlatform = identity.platform.toLowerCase();
+  const resolvedPlatform = identity.platform;
   const displayName =
     isAddress(resolvedDisplayName) || resolvedPlatform === PlatformType.nextid
       ? formatText(resolvedDisplayName)
@@ -84,6 +84,7 @@ const RenderAccountItem = (props) => {
       }
     };
   }, [fetched, identity, visible, dispatch]);
+
   switch (resolvedPlatform) {
     case PlatformType.ens:
     case PlatformType.ethereum:
