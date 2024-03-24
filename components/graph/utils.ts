@@ -1,5 +1,4 @@
 import { PlatformType } from "../../utils/platform";
-import { isValidEthereumAddress } from "../../utils/regexp";
 import { SocialPlatformMapping, formatText } from "../../utils/utils";
 import _ from "lodash";
 
@@ -23,7 +22,7 @@ export const resolveIdentityGraphData = (source) => {
           : formatText(x.displayName || x.identity),
       platform: resolvedPlatform.key || x.platform,
       displayName: x.profile?.displayName || x.displayName || x.identity,
-      identity: x.identity,
+      identity: x.profile?.identity || x.identity,
       uid: x.uid,
       uuid: x.uuid,
       address: x.profile?.address || resolvedAddress || ownerAddress,

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import SearchInput from "../search/SearchInput";
-import { handleSearchPlatform, isDomainSearch } from "../../utils/utils";
+import { handleSearchPlatform } from "../../utils/utils";
 import IndexPageListener from "./IndexPageListener";
 import SearchResult from "./SearchResult";
 import { HomeFeatures } from "../shared/HomeFeatures";

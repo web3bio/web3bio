@@ -35,7 +35,7 @@ const RenderAccountItem = (props) => {
     isAddress(resolvedDisplayName) || resolvedPlatform === PlatformType.nextid
       ? formatText(resolvedDisplayName)
       : resolvedDisplayName;
-  const resolvedIdentity = identity.identity || profile?.address;
+  const resolvedIdentity = profile?.address || identity.resolveAddress?.[0].address || identity.identity;
   useEffect(() => {
     const element = ref?.current;
     const options = {
@@ -90,6 +90,7 @@ const RenderAccountItem = (props) => {
     case PlatformType.ethereum:
     case PlatformType.unstoppableDomains:
     case PlatformType.dotbit:
+    case PlatformType.space_id:
       return (
         <div
           onClick={onClick}
@@ -130,32 +131,15 @@ const RenderAccountItem = (props) => {
                   {displayName}
                 </div>
                 <div className="content-subtitle text-gray">
-                  {resolvedPlatform === PlatformType.ethereum ? (
+                  {profile?.displayName !== profile?.identity && (
                     <>
-                      {profile?.displayName === profile?.identity ? (
-                        <>
-                          <div className="address hide-sm">
-                            {resolvedIdentity}
-                          </div>
-                          <div className="address show-sm">
-                            {formatText(resolvedIdentity)}
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <div className="address">{profile.identity || identity.identity}</div>
-                          <div className="ml-1 mr-1"> · </div>
-                          <div className="address">
-                            {formatText(resolvedIdentity)}
-                          </div>
-                        </>
-                      )}
+                      <div className="address">{profile.identity || identity.identity}</div>
+                      <div className="ml-1 mr-1"> · </div>
                     </>
-                  ) : (
-                    <div className="address">
-                      {formatText(resolvedIdentity)}
-                    </div>
                   )}
+                  <div className="address">
+                    {formatText(resolvedIdentity)}
+                  </div>
                   <Clipboard
                     component="div"
                     className="action"
@@ -320,8 +304,14 @@ const RenderAccountItem = (props) => {
                   {formatText(displayName)}
                 </div>
                 <div className="content-subtitle text-gray">
+                  {identity.platform === PlatformType.crossbell && (
+                    <>
+                      <div className="address">{formatText(identity.identity, 24)}</div>
+                      <div className="ml-1 mr-1"> · </div>
+                    </>
+                  )}
                   <div className="address">
-                    {formatText(resolvedIdentity, 24)}
+                    {formatText(resolvedIdentity)}
                   </div>
                   <Clipboard
                     component="div"

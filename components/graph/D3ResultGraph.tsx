@@ -50,12 +50,6 @@ const updateNodes = (nodeContainer) => {
     .append("text")
     .attr("class", "displayName")
     .attr("id", (d) => d.id)
-    .style("transform", (d) =>
-      (!d.displayName || d.displayName === d.identity) &&
-      isDomainSearch(d.platform)
-        ? "translateY(0.25rem)"
-        : "none"
-    )
     .text((d) => formatText(d.displayName || d.identity));
 
   const identity = nodeContainer
@@ -64,7 +58,9 @@ const updateNodes = (nodeContainer) => {
     .attr("id", (d) => d.id)
     .style("display", (d) => (d.isIdentity ? "normal" : "none"))
     .text((d) => {
-      if (!d.displayName || d.displayName === d.identity) return "";
+      if (d.platform === PlatformType.farcaster) return formatText(d.identity);
+      if (d.displayName === d.identity && !isDomainSearch(d.platform)) return "";
+      if (isDomainSearch(d.platform)) return formatText(d.address);
       return formatText(d.identity || d.address);
     });
   return {
@@ -369,7 +365,7 @@ export default function D3IdentityGraph(props) {
   return (
     <>
       {(data && <svg className="svg-canvas" />) || (
-        <Empty title={"No Identity graph found"} />
+        <Empty title={"No Identity Graph"} />
       )}
 
       <div className="graph-header">
@@ -387,7 +383,7 @@ export default function D3IdentityGraph(props) {
               Back
             </div>
           )}
-          <div className="btn" onClick={onClose}>
+          <div className="btn btn-close" onClick={onClose}>
             <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
           </div>
         </div>
@@ -415,7 +411,7 @@ export default function D3IdentityGraph(props) {
                 {currentNode.displayName || "-"}
               </li>
               <li className="mb-1">
-                {currentNode.identity != currentNode.displayName
+                {currentNode.identity !== currentNode.displayName
                   ? isValidEthereumAddress(currentNode.identity)
                     ? formatText(currentNode.identity)
                     : currentNode.identity
