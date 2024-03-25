@@ -8,12 +8,8 @@ export const resolveIdentityGraphData = (source) => {
 
   const generateVerticesStruct = (x) => {
     const resolvedPlatform = SocialPlatformMapping(x.platform);
-    const ownerAddress =
-      x.ownerAddress?.find((x) => x.chain === PlatformType.ethereum)?.address ||
-      x.ownerAddress?.[0].address;
-    const resolvedAddress =
-      x.resolveAddress?.find((x) => x.chain === PlatformType.ethereum)
-        ?.address || x.resolveAddress?.[0].address;
+    const ownerAddress = x.ownerAddress?.[0].address;
+    const resolvedAddress = x.resolveAddress?.[0].address;
     return {
       id: x.id,
       label:

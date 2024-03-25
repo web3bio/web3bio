@@ -58,9 +58,7 @@ const updateNodes = (nodeContainer) => {
     .attr("id", (d) => d.id)
     .style("display", (d) => (d.isIdentity ? "normal" : "none"))
     .text((d) => {
-      if (d.platform === PlatformType.farcaster) return formatText(d.identity);
-      if (d.displayName === d.identity && !isDomainSearch(d.platform)) return "";
-      if (isDomainSearch(d.platform)) return formatText(d.address);
+      if (d.displayName === d.identity || isDomainSearch(d.platform)) return formatText(d.address);
       return formatText(d.identity || d.address);
     });
   return {
