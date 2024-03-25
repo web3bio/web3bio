@@ -64,6 +64,10 @@ export const fuzzyDomainSuffix = [
     label: "crypto",
   },
   {
+    key: PlatformType.crossbell,
+    label: "csb",
+  },
+  {
     key: PlatformType.unstoppableDomains,
     label: "dao",
   },

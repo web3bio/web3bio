@@ -3,10 +3,9 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import SearchInput from "../search/SearchInput";
-import { handleSearchPlatform, isDomainSearch } from "../../utils/utils";
-import SearchResultDomain from "./SearchResultDomain";
-import SearchResultQuery from "./SearchResultQuery";
+import { handleSearchPlatform } from "../../utils/utils";
 import IndexPageListener from "./IndexPageListener";
+import SearchResult from "./SearchResult";
 import { HomeFeatures } from "../shared/HomeFeatures";
 
 export default function HomePage() {
@@ -44,7 +43,9 @@ export default function HomePage() {
 
   return (
     <>
-      <div className={searchFocus ? "web3bio-search focused" : "web3bio-search"}>
+      <div
+        className={searchFocus ? "web3bio-search focused" : "web3bio-search"}
+      >
         <div className="container grid-sm">
           <div className="search-form">
             <Link
@@ -61,17 +62,19 @@ export default function HomePage() {
                 BIO
               </h1>
               <h2 className="text-assistive">
-                Web3.bio is a platform for Web3 and Web 2.0 Identity Graph search
-                and link in bio profiles. It provides a list of relevant
-                identities when searching for a Twitter handle, Ethereum address,
-                ENS domain, Lens profile, Farcaster account, Unstoppable Domains,
-                and other Web3 identities.
+                Web3.bio is a platform for Web3 and Web 2.0 Identity Graph
+                search and link in bio profiles. It provides a list of relevant
+                identities when searching for a Twitter handle, Ethereum
+                address, ENS domain, Lens profile, Farcaster account,
+                Unstoppable Domains, and other Web3 identities.
               </h2>
             </Link>
             <div className="form-label">
               Web3 Identity Search
               <br />
-              <small>Explore Web3 identity and profiles in a whole new way</small>
+              <small>
+                Explore Web3 identities and domains in a whole new way
+              </small>
             </div>
             <div className="form-input-group">
               <SearchInput
@@ -85,23 +88,16 @@ export default function HomePage() {
               />
             </div>
           </div>
-          {searchPlatform ? (
-            isDomainSearch(searchPlatform) ? (
-              <SearchResultDomain
-                searchTerm={searchTerm}
-                searchPlatform={searchPlatform}
-              />
-            ) : (
-              <SearchResultQuery
-                searchTerm={
-                  searchTerm.endsWith(".farcaster")
-                    ? searchTerm.replace(".farcaster", "")
-                    : searchTerm
-                }
-                searchPlatform={searchPlatform}
-              />
-            )
-          ) : null}
+          {searchPlatform && (
+            <SearchResult
+              searchTerm={
+                searchTerm.endsWith(".farcaster")
+                  ? searchTerm.replace(".farcaster", "")
+                  : searchTerm
+              }
+              searchPlatform={searchPlatform}
+            />
+          )}
         </div>
         <IndexPageListener inputRef={inputRef} />
       </div>

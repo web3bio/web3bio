@@ -7,8 +7,8 @@ import useSWR from "swr";
 import { ProfileFetcher } from "../../components/apis/profile";
 import WalletProfileMain from "../../components/manage/WalletProfileMain";
 import { useLazyQuery } from "@apollo/client";
-import { GET_PROFILES_QUERY } from "../../utils/queries";
 import { PlatformType } from "../../utils/platform";
+import { GET_PROFILES } from "../../utils/queries";
 
 export default function WalletProfilePage() {
   const { address } = useAccount();
@@ -25,7 +25,7 @@ export default function WalletProfilePage() {
   );
 
   const [getQuery, { loading, error: isError, data: profileData }] =
-    useLazyQuery(GET_PROFILES_QUERY, {
+    useLazyQuery(GET_PROFILES, {
       variables: {
         platform: PlatformType.ethereum,
         identity: address?.toLowerCase(),
@@ -49,22 +49,15 @@ export default function WalletProfilePage() {
       }
       if (profileData?.identity && data?.length) {
         const _data = JSON.parse(JSON.stringify(data));
-        _data.find((x) => x.platform === PlatformType.ens).expiredAt =
-          profileData?.identity.expiredAt;
-        const neighbors = profileData?.identity.neighborWithTraversal.reduce(
-          (pre, cur) => {
-            pre.push({ ...cur.from });
-            pre.push({ ...cur.to });
-            return pre;
-          },
-          []
-        );
+
         _data?.forEach((i) => {
-          if (i.platform === PlatformType.dotbit) {
-            const rsItem = neighbors.find((x) => x.identity === i.identity);
-            if (rsItem) {
-              i.expiredAt = rsItem.expiredAt;
-            }
+          const rsItem = profileData.identity.identityGraph.vertices.find(
+            (x) =>
+              x.identity === i.identity &&
+              [PlatformType.dotbit, PlatformType.ens].includes(x.platform)
+          );
+          if (rsItem) {
+            i.expiredAt = rsItem.expiredAt;
           }
         });
         setResolvedData(_data);

@@ -1,19 +1,13 @@
 import { memo } from "react";
-import SVG from "react-inlinesvg";
 import { SocialPlatformMapping } from "../../utils/utils";
 
-export const RenderSourceFooter = ({sources}) => {
+export const RenderSourceFooter = ({ sources }) => {
   return (
-    (sources && (
+    (sources?.length > 0 && (
       <div className="social-footer">
-        <SVG
-          src="icons/icon-sources.svg"
-          width={20}
-          height={20}
-          title="Data sources"
-        />
+        Data source:
         {sources.map((source) => (
-          <span key={source} className="mr-1">
+          <span key={source} className="ml-1 mr-1">
             {SocialPlatformMapping(source).label}
           </span>
         ))}

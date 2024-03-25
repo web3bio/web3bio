@@ -1,209 +1,57 @@
 import { gql } from "@apollo/client";
 
-export const GET_PROFILES_DOMAIN = gql`
-  query GET_PROFILES_DOMAIN($platform: String, $identity: String) {
-    domain(domainSystem: $platform, name: $identity) {
-      source
-      system
-      name
-      fetcher
-      resolved {
-        reverse
-        identity
-        platform
-        displayName
-        # expiredAt
-        neighborWithTraversal(depth: 5) {
-          ... on ProofRecord {
-            __typename
-            source
-            from {
-              # expiredAt
-              reverse
-              nft(category: ["ENS"], limit: 100, offset: 0) {
-                uuid
-                category
-                chain
-                id
-              }
-              uuid
-              platform
-              identity
-              displayName
-            }
-            to {
-              # expiredAt
-              reverse
-              nft(category: ["ENS"], limit: 100, offset: 0) {
-                uuid
-                category
-                chain
-                id
-              }
-              uuid
-              platform
-              identity
-              displayName
-            }
-          }
-          ... on HoldRecord {
-            __typename
-            source
-            from {
-              # expiredAt
-              reverse
-              nft(category: ["ENS"], limit: 100, offset: 0) {
-                uuid
-                category
-                chain
-                id
-              }
-              uuid
-              uid
-              platform
-              identity
-              displayName
-              ownedBy {
-                platform
-                identity
-              }
-            }
-            to {
-              # expiredAt
-              reverse
-              nft(category: ["ENS"], limit: 100, offset: 0) {
-                uuid
-                category
-                chain
-                id
-              }
-              uuid
-              uid
-              platform
-              identity
-              displayName
-              ownedBy {
-                platform
-                identity
-              }
-            }
-          }
-        }
-      }
-      owner {
-        reverse
-        identity
-        platform
-        displayName
-        uuid
-        nft(category: ["ENS"], limit: 100, offset: 0) {
-          uuid
-          category
-          chain
-          id
-        }
-      }
-    }
-  }
-`;
-
-export const GET_PROFILES_QUERY = gql`
-  query GET_PROFILES_QUERY($platform: String, $identity: String) {
+export const GET_PROFILES = gql`
+  query GET_PROFILES($platform: String, $identity: String) {
     identity(platform: $platform, identity: $identity) {
-      platform
+      id
       identity
+      platform
       displayName
-      uuid
       uid
       reverse
-      # expiredAt
-      nft(category: ["ENS"], limit: 100, offset: 0) {
-        uuid
-        category
+      expiredAt
+      resolveAddress {
         chain
         address
-        id
       }
-      neighborWithTraversal(depth: 5) {
-        ... on ProofRecord {
-          source
-          from {
-            reverse
-            # expiredAt
-            nft(category: ["ENS"], limit: 100, offset: 0) {
-              uuid
-              category
-              chain
-              id
-            }
-            uuid
-            uid
-            platform
-            identity
-            displayName
+      ownerAddress {
+        chain
+        address
+      }
+      identityGraph {
+        vertices {
+          uuid
+          identity
+          platform
+          displayName
+          uid
+          reverse
+          expiredAt
+          resolveAddress {
+            chain
+            address
           }
-          to {
-            reverse
-            # expiredAt
-            nft(category: ["ENS"], limit: 100, offset: 0) {
-              uuid
-              category
-              chain
-              id
-            }
+          ownerAddress {
+            chain
+            address
+          }
+          nft(category: [ENS]) {
+            id
             uuid
-            uid
-            platform
-            identity
-            displayName
+            transaction
+            source
           }
         }
-        ... on HoldRecord {
+        edges {
           source
-          from {
-            reverse
-            # expiredAt
-            nft(category: ["ENS"], limit: 100, offset: 0) {
-              uuid
-              category
-              chain
-              id
-            }
-            uuid
-            uid
-            platform
-            identity
-            displayName
-            ownedBy {
-              platform
-              identity
-            }
-          }
-          to {
-            reverse
-            # expiredAt
-            nft(category: ["ENS"], limit: 100, offset: 0) {
-              uuid
-              category
-              chain
-              id
-            }
-            uuid
-            uid
-            platform
-            identity
-            displayName
-            ownedBy {
-              platform
-              identity
-            }
-          }
+          target
+          dataSource
+          edgeType
         }
       }
     }
   }
 `;
-
 export function matchQuery(query) {
   if (!query) return "";
   return query.includes(".")

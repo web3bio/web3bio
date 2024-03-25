@@ -68,9 +68,7 @@ const RenderSocialCard = (props) => {
                         }
                         target="_blank"
                       >
-                        <div className="feed-target-name">
-                          {x.key}
-                        </div>
+                        <div className="feed-target-name">{x.key}</div>
                         <div className="feed-target-content">{x.value}</div>
                         {x.handle && (
                           <div className="feed-target-address">{x.handle}</div>
@@ -120,9 +118,7 @@ const RenderSocialCard = (props) => {
                         }
                       }}
                     >
-                      <div className="feed-target-name">
-                        {metadata.title}
-                      </div>
+                      <div className="feed-target-name">{metadata.title}</div>
                       <div className="feed-target-description">
                         {metadata.body}
                       </div>
@@ -259,30 +255,26 @@ const RenderSocialCard = (props) => {
                               : ""
                           }`}
                         >
-                          {metadata.target?.media?.map((x) =>
-                            x.mime_type.includes("image") ? (
-                              <NFTAssetPlayer
-                                onClick={(e) => {
-                                  openModal(ModalType.media, {
-                                    type: x.mime_type || "image/png",
-                                    url: resolveMediaURL(x.address),
-                                  });
-                                  e.stopPropagation();
-                                  e.preventDefault();
-                                }}
-                                className="feed-content-img"
-                                src={resolveMediaURL(x.address)}
-                                type={x.mime_type}
-                                key={x.address}
-                                width="auto"
-                                height="auto"
-                                placeholder={true}
-                                alt={"Feed Image"}
-                              />
-                            ) : (
-                              ""
-                            )
-                          )}
+                          {metadata.target?.media?.map((x) => (
+                            <NFTAssetPlayer
+                              onClick={(e) => {
+                                openModal(ModalType.media, {
+                                  type: x.mime_type || "image/png",
+                                  url: resolveMediaURL(x.address),
+                                });
+                                e.stopPropagation();
+                                e.preventDefault();
+                              }}
+                              className="feed-content-img"
+                              src={resolveMediaURL(x.address)}
+                              type={x.mime_type}
+                              key={x.address}
+                              width="auto"
+                              height="auto"
+                              placeholder={true}
+                              alt={"Feed Image"}
+                            />
+                          ))}
                         </div>
                       )}
                     </Link>
@@ -306,9 +298,7 @@ const RenderSocialCard = (props) => {
                   href={action.related_urls[0]}
                   target="_blank"
                 >
-                  <div className="feed-target-name">
-                    {metadata.handle}
-                  </div>
+                  <div className="feed-target-name">{metadata.handle}</div>
                   <div className="feed-target-content">{metadata.body}</div>
                   {metadata.media?.length > 0 && (
                     <div
@@ -366,9 +356,7 @@ const RenderSocialCard = (props) => {
                     href={action.related_urls[0]}
                     target="_blank"
                   >
-                    <div className="feed-target-name">
-                      {metadata.title}
-                    </div>
+                    <div className="feed-target-name">{metadata.title}</div>
                     <div className="feed-target-description">
                       {metadata.body}
                     </div>

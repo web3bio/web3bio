@@ -8,6 +8,7 @@ import PhilandModalContent from "./PhilandModalContent";
 import PoapsModalContent from "./PoapsModalContent";
 import SearchModalContent from "./SearchModalContent";
 import ShareModalContent from "./ShareModalContent";
+import IdentityGraphModalContent from "./IdentityGraphModalContent";
 
 export default function Modal(props) {
   const { onDismiss, children, modalType, params } = props;
@@ -51,7 +52,15 @@ export default function Modal(props) {
       case ModalType.article:
         return <ArticleModalContent {...params} onClose={onDismiss} />;
       case ModalType.search:
-        return <SearchModalContent {...params} onClose={onDismiss} />
+        return <SearchModalContent {...params} onClose={onDismiss} />;
+      case ModalType.graph:
+        return (
+          <IdentityGraphModalContent
+            containerRef={wrapper}
+            {...params}
+            onClose={onDismiss}
+          />
+        );
       default:
         return children;
     }
@@ -60,14 +69,22 @@ export default function Modal(props) {
     <div ref={overlay} className="web3bio-mask-cover" onClick={onClick}>
       <div
         ref={wrapper}
-        className={`web3bio-modal-container modal-${modalType}-container`}
+        className={
+          modalType === ModalType.graph
+            ? "modal-graph-container"
+            : `web3bio-modal-container modal-${modalType}-container`
+        }
         style={{
-          background: [ModalType.common, ModalType.share].includes(modalType)
+          background: [
+            ModalType.common,
+            ModalType.share,
+            ModalType.graph,
+          ].includes(modalType)
             ? "#fff"
             : "transparent",
         }}
       >
-        {modalType !== ModalType.share && (
+        {![ModalType.share, ModalType.graph].includes(modalType) && (
           <div className="btn btn-close modal-close-icon" onClick={onDismiss}>
             <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
           </div>
