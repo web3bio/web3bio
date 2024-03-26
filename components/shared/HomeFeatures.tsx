@@ -6,10 +6,10 @@ export const HomeFeatures = () => {
   return (
     <div className="home-features">
       <div className="container grid-lg">
-        <div className="columns mt-2 mb-2">
-          <div className="column col-4 col-sm-12 mt-2 mb-2">
+        <div className="columns mt-4 mb-4">
+          <div className="column col-6 col-sm-12 mt-2 mb-2">
             <div className="card-feature">
-              <div className="feature-header text-center">
+              <div className="feature-header">
                 <h3>Identity Search Support</h3>
                 <h4>
                   Search for Web3 identities with these{" "}
@@ -17,7 +17,7 @@ export const HomeFeatures = () => {
                 </h4>
               </div>
 
-              <div className="feature-body feature-body-first text-center">
+              <div className="feature-body feature-body-first">
                 <div
                   className="identity identity-ens"
                   title="ENS domains (.eth)"
@@ -89,16 +89,16 @@ export const HomeFeatures = () => {
               </div>
             </div>
           </div>
-          <div className="column col-4 col-sm-12 mt-2 mb-2">
+          <div className="column col-6 col-sm-12 mt-2 mb-2">
             <div className="card-feature">
-              <div className="feature-header text-center">
+              <div className="feature-header">
                 <h3>Visualize Identity Graph</h3>
                 <h4>
                   Deep dive into Web3 identities and connections across digital
                   space.
                 </h4>
               </div>
-              <div className="feature-body feature-body-graph text-center">
+              <div className="feature-body feature-body-graph">
                 <div className="circle"></div>
                 <div className="circle"></div>
                 <div className="circle"></div>
@@ -115,9 +115,9 @@ export const HomeFeatures = () => {
               </div>
             </div>
           </div>
-          <div className="column col-4 col-sm-12 mt-2 mb-2">
+          <div className="column col-6 col-sm-12 mt-2 mb-2">
             <div className="card-feature">
-              <div className="feature-header text-center">
+              <div className="feature-header">
                 <h3>Web3 Link in Bio Profile </h3>
                 <h4>
                   One page to show who you are and everything you make and own.

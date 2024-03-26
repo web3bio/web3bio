@@ -9,6 +9,7 @@ import {
   regexEns,
   regexEth,
   regexLens,
+  regexCrossbell,
   regexTwitter,
   regexUnstoppableDomains,
   regexSpaceid,
@@ -105,6 +106,8 @@ export const handleSearchPlatform = (term: string) => {
       return PlatformType.unstoppableDomains;
     case regexSpaceid.test(term):
       return PlatformType.space_id;
+    case regexCrossbell.test(term):
+      return PlatformType.crossbell;
     case regexDotbit.test(term):
       return PlatformType.dotbit;
     case regexSns.test(term):
@@ -122,9 +125,11 @@ export const handleSearchPlatform = (term: string) => {
 export const isDomainSearch = (term) => {
   return [
     PlatformType.ens,
+    PlatformType.ethereum,
     PlatformType.dotbit,
     PlatformType.unstoppableDomains,
     PlatformType.space_id,
+    PlatformType.solana,
   ].includes(term);
 };
 

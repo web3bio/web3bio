@@ -123,7 +123,7 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   text-align: center;
 }
 
@@ -248,7 +248,7 @@
           border-radius: .5rem;
           object-fit: cover;
 
-          & + .icon {
+          &+.icon {
             bottom: -.6rem;
             position: absolute;
             right: -.6rem;
@@ -404,20 +404,13 @@
       }
     }
   }
-  .content-expired{
-    position: absolute;
-    font-size: .5rem;
-    right: 1rem;
-    bottom: .15rem;
-    color: rgba($gray-color, .9);
-  }
 
   .title {
     font-size: .7rem;
   }
 }
 
-.backtotop { 
+.backtotop {
   backface-visibility: hidden;
   pointer-events: none;
   position: absolute;
@@ -430,10 +423,8 @@
     pointer-events: all;
     position: sticky;
     top: 1rem;
-    z-index: 999; 
+    z-index: 999;
   }
-  
-  @media screen and (min-width: $size-sm) {
-    
-  }
+
+  @media screen and (min-width: $size-sm) {}
 }
