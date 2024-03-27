@@ -46,11 +46,7 @@ const RenderWidgetTallyDAO = ({ address }) => {
   }, [data, loading, dispatch]);
 
   if (!data) return null;
-
-  // if (process.env.NODE_ENV !== "production") {
-  //   console.log("RSS Data:", data);
-  // }
-
+  
   const _data =
     currentQuery === QUERY_DAO_DELEGATORS
       ? data?.delegates?.nodes
@@ -64,9 +60,6 @@ const RenderWidgetTallyDAO = ({ address }) => {
             <span className="emoji-large mr-2"> 🏛️</span>
             DAO Memberships
           </h2>
-          {/* {data.description && (
-            <h3 className="text-assistive">{data.description}</h3>
-          )} */}
         </div>
         <div className=""></div>
         <ul className="tab tab-block">
