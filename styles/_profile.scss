@@ -1000,6 +1000,59 @@
     }
   }
 
+  // TallyDAO Widget
+  .profile-widget-tally {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+
+    .tab {
+      max-width: 50%;
+
+      .active {
+        border-bottom: 1px solid $dark-color;
+      }
+
+      .tab-item {
+        cursor: pointer;
+        transition: all .2s ease;
+
+      }
+    }
+
+    .table {
+      padding: .25rem .5rem;
+
+      .table-header {
+        background: rgba($dark-color, .04);
+      }
+
+      th {
+        text-align: left;
+      }
+
+      td {
+        font-size: .85rem;
+        font-weight: 400;
+        text-align: left;
+      }
+
+      .name-wrapper {
+        display: flex;
+        align-items: center;
+        gap: .25rem;
+
+        .dao-icon {
+          width: 1rem;
+
+          img {
+            border-radius: 1rem;
+          }
+        }
+      }
+    }
+  }
+
   // Phi Widget
   .profile-widget-philand {
     background: #FDECCD;
