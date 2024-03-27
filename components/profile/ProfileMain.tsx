@@ -339,7 +339,22 @@ export default function ProfileMain(props) {
                           <WidgetRSS domain={data.identity} />
                         </Suspense>
                       </div>
+                    )
+                  }
+
+                  <div className="web3-section-widgets">
+                    {isValidEthereumAddress(data.address) && (
+                      <Suspense fallback={<p>Loading DAO Memberships...</p>}>
+                        <WidgetTallyDAO address={data.address} />
+                      </Suspense>
                     )}
+                  </div>
+
+                  <div className="web3-section-widgets">
+                    <Suspense fallback={<p>Loading DegenScore...</p>}>
+                      <WidgetDegenScore address={data.address} />
+                    </Suspense>
+                  </div>
 
                   <div className="web3-section-widgets">
                     {(data.platform === PlatformType.ens ||
@@ -356,14 +371,6 @@ export default function ProfileMain(props) {
                         />
                       </Suspense>
                     )}
-                    {isValidEthereumAddress(data.address) && (
-                      <Suspense fallback={<p>Loading DAO Memberships...</p>}>
-                        <WidgetTallyDAO address={data.address} />
-                      </Suspense>
-                    )}
-                    <Suspense fallback={<p>Loading DegenScore...</p>}>
-                      <WidgetDegenScore address={data.address} />
-                    </Suspense>
                   </div>
                 </>
               )}

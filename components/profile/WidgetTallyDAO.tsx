@@ -60,45 +60,37 @@ const RenderWidgetTallyDAO = ({ address }) => {
             <span className="emoji-large mr-2"> 🏛️</span>
             DAO Memberships
           </h2>
+          <div className="widget-action">
+            <div className="btn-group">
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if (currentQuery !== QUERY_DAO_DELEGATORS)
+                    setCurrentQuery(QUERY_DAO_DELEGATORS);
+                }}
+                className={`btn btn-sm${
+                  (currentQuery === QUERY_DAO_DELEGATORS && " active") || ""
+                }`}
+              >
+                Delegators
+              </button>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if (currentQuery !== QUERY_DAO_DELEGATING_TO)
+                    setCurrentQuery(QUERY_DAO_DELEGATING_TO);
+                }}
+                className={`btn btn-sm${
+                  (currentQuery === QUERY_DAO_DELEGATING_TO && " active") || ""
+                }`}
+              >
+                Delegating to
+              </button>
+            </div>
+          </div>
         </div>
-        <div className=""></div>
-        <ul className="tab tab-block">
-          <li
-            className={`tab-item ${
-              (currentQuery === QUERY_DAO_DELEGATORS && "active") || ""
-            }`}
-          >
-            <a
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                if (currentQuery !== QUERY_DAO_DELEGATORS)
-                  setCurrentQuery(QUERY_DAO_DELEGATORS);
-              }}
-              href="#"
-            >
-              Delegators
-            </a>
-          </li>
-
-          <li
-            className={`tab-item ${
-              (currentQuery === QUERY_DAO_DELEGATING_TO && "active") || ""
-            }`}
-          >
-            <a
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                if (currentQuery !== QUERY_DAO_DELEGATING_TO)
-                  setCurrentQuery(QUERY_DAO_DELEGATING_TO);
-              }}
-              href="#"
-            >
-              Delegating to
-            </a>
-          </li>
-        </ul>
 
         {loading ? (
           <LoadingSkeleton />
