@@ -3,7 +3,7 @@ import { useEffect, memo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { updateTallyDAOWidget } from "../../state/widgets/action";
 import { useQuery } from "@apollo/client";
-import { QUERY_DAO_DELEGATING_TO, QUERY_DAO_DELEGATORS } from "../apis/tally";
+import { QUERY_DAO_DELEGATORS } from "../apis/tally";
 import LoadingSkeleton from "./LoadingSkeleton";
 import { Error } from "../shared/Error";
 import { Empty } from "../shared/Empty";
@@ -12,21 +12,26 @@ import { formatEther } from "ethers";
 import { formatText } from "../../utils/utils";
 
 const RenderWidgetTallyDAO = ({ address }) => {
-  const [currentQuery, setCurrentQuery] = useState(QUERY_DAO_DELEGATORS);
-  const { data, loading, error } = useQuery(currentQuery, {
-    variables: {
-      input: {
-        filters: {
-          address,
-        },
-        page: {
-          limit: 20,
-        },
-        sort: {
-          isDescending: true,
-          sortBy: "VOTES",
-        },
+  // 0: delegators 1:delegating to
+  const [activeTab, setActiveTab] = useState(0);
+  const [queryVariable, setQueryVariable] = useState({
+    input: {
+      filters: {
+        address,
       },
+      page: {
+        limit: 20,
+      },
+      sort: {
+        isDescending: true,
+        sortBy: "VOTES",
+      },
+    },
+  });
+  const { data, loading, error } = useQuery(QUERY_DAO_DELEGATORS, {
+    variables: {
+      delegate: queryVariable.input,
+      delegatee: queryVariable.input,
     },
     context: {
       clientName: "tally",
@@ -43,14 +48,12 @@ const RenderWidgetTallyDAO = ({ address }) => {
         })
       );
     }
-  }, [data, loading, dispatch]);
+  }, [data, loading, dispatch, activeTab]);
 
   if (!data) return null;
-  
-  const _data =
-    currentQuery === QUERY_DAO_DELEGATORS
-      ? data?.delegates?.nodes
-      : data?.delegatees?.nodes;
+
+  const renderData =
+    activeTab === 0 ? data?.delegates?.nodes : data?.delegatees?.nodes;
 
   return (
     <div className="profile-widget-full" id="DAO">
@@ -66,12 +69,9 @@ const RenderWidgetTallyDAO = ({ address }) => {
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  if (currentQuery !== QUERY_DAO_DELEGATORS)
-                    setCurrentQuery(QUERY_DAO_DELEGATORS);
+                  setActiveTab(0);
                 }}
-                className={`btn btn-sm${
-                  (currentQuery === QUERY_DAO_DELEGATORS && " active") || ""
-                }`}
+                className={`btn btn-sm${(activeTab === 0 && " active") || ""}`}
               >
                 Delegators
               </button>
@@ -79,12 +79,9 @@ const RenderWidgetTallyDAO = ({ address }) => {
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  if (currentQuery !== QUERY_DAO_DELEGATING_TO)
-                    setCurrentQuery(QUERY_DAO_DELEGATING_TO);
+                  setActiveTab(1);
                 }}
-                className={`btn btn-sm${
-                  (currentQuery === QUERY_DAO_DELEGATING_TO && " active") || ""
-                }`}
+                className={`btn btn-sm${(activeTab === 1 && " active") || ""}`}
               >
                 Delegating to
               </button>
@@ -96,7 +93,7 @@ const RenderWidgetTallyDAO = ({ address }) => {
           <LoadingSkeleton />
         ) : error ? (
           <Error />
-        ) : !_data.length ? (
+        ) : !renderData.length ? (
           <Empty />
         ) : (
           <table className="table">
@@ -106,8 +103,8 @@ const RenderWidgetTallyDAO = ({ address }) => {
               <th>% of Delegated Votes</th>
               <th> </th>
             </tr>
-            {_data.map((x, idx) => {
-              return currentQuery === QUERY_DAO_DELEGATORS ? (
+            {renderData.map((x, idx) => {
+              return activeTab === 0 ? (
                 <tr key={"td" + idx}>
                   <td className="name-wrapper">
                     {x.organization.name}

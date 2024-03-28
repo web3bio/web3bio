@@ -4,8 +4,8 @@ export const TALLY_GRAPHQL_ENDPOINT = "https://api.tally.xyz/query";
 export const TALLY_AUTH = process.env.NEXT_PUBLIC_TALLY_API_KEY || "";
 
 export const QUERY_DAO_DELEGATORS = gql`
-  query AddressGovernancesDelegators($input: DelegatesInput!) {
-    delegates(input: $input) {
+  query TallyDAO($delegate: DelegatesInput!, $delegatee: DelegationsInput!) {
+    delegates(input: $delegate) {
       nodes {
         ... on Delegate {
           id
@@ -29,17 +29,8 @@ export const QUERY_DAO_DELEGATORS = gql`
           }
         }
       }
-      pageInfo {
-        firstCursor
-        lastCursor
-      }
     }
-  }
-`;
-
-export const QUERY_DAO_DELEGATING_TO = gql`
-  query AddressGovernancesDelegatees($input: DelegationsInput!) {
-    delegatees(input: $input) {
+    delegatees(input: $delegatee) {
       nodes {
         ... on DelegationV2 {
           delegate {
@@ -78,10 +69,6 @@ export const QUERY_DAO_DELEGATING_TO = gql`
             }
           }
         }
-      }
-      pageInfo {
-        firstCursor
-        lastCursor
       }
     }
   }
