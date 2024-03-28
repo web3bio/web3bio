@@ -1002,8 +1002,9 @@
 
   // TallyDAO Widget
   .profile-widget-tally {
-    overflow: hidden;
+    overflow-x: hidden;
     position: relative;
+    overflow-y: auto;
     width: 100%;
 
     .tab {
@@ -1024,6 +1025,8 @@
       padding: .25rem .5rem;
 
       .table-header {
+        font-size: .65rem;
+        font-weight: 500;
         background: rgba($dark-color, .04);
       }
 
@@ -1032,7 +1035,7 @@
       }
 
       td {
-        font-size: .85rem;
+        font-size: .7rem;
         font-weight: 400;
         text-align: left;
       }
