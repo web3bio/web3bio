@@ -1044,6 +1044,13 @@
 
         .dao-icon {
           width: 1rem;
+          height: 1rem;
+
+          .img-placeholder {
+            height: 100%;
+            width: 100%;
+            border-radius: 99%;
+          }
 
           img {
             border-radius: 1rem;

@@ -94,7 +94,11 @@ const RenderWidgetTallyDAO = ({ address }) => {
         ) : error ? (
           <Error />
         ) : !renderData.length ? (
-          <Empty />
+          <Empty
+            text={`Please try tab "${
+              activeTab === 0 ? "Delegating to" : "Delegators"
+            }"`}
+          />
         ) : (
           <table className="table">
             <tr className="table-header">
