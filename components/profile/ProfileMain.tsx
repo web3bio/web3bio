@@ -47,7 +47,8 @@ export default function ProfileMain(props) {
   };
   const isEmptyProfile = useCallback(() => {
     const source = Object.values(profileWidgetStates).filter((x) => x.loaded);
-    return source.length >= 4 && source.every((x) => x.isEmpty);
+    // 4 is all widgets num - basic widgets num (nft, poaps, feeds)
+    return source.length > 4 && source.every((x) => x.isEmpty);
   }, [profileWidgetStates])();
 
   const isBasicLoadingFinished = useCallback(() => {
@@ -339,8 +340,7 @@ export default function ProfileMain(props) {
                           <WidgetRSS domain={data.identity} />
                         </Suspense>
                       </div>
-                    )
-                  }
+                    )}
 
                   <div className="web3-section-widgets">
                     {isValidEthereumAddress(data.address) && (

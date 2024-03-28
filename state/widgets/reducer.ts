@@ -22,7 +22,7 @@ export interface WidgetState {
   degen?: WidgetStateDetail;
   rss?: WidgetStateDetail;
   philand?: WidgetStateDetail;
-  tallyDAO?: WidgetStateDetail;
+  dao?: WidgetStateDetail;
 }
 
 export const initialState: WidgetState = {
@@ -56,7 +56,7 @@ export const initialState: WidgetState = {
     initLoading: true,
     loaded: false,
   },
-  tallyDAO: {
+  dao: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
@@ -134,8 +134,8 @@ export default createReducer(initialState, (builder) =>
     .addCase(
       updateTallyDAOWidget,
       (state, { payload: { isEmpty, initLoading } }) => {
-        state.tallyDAO = {
-          ...state.tallyDAO,
+        state.dao = {
+          ...state.dao,
           isEmpty,
           initLoading,
           loaded: true,
