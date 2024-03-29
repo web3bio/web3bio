@@ -1,6 +1,12 @@
 import Markdown from "react-markdown";
 
-export default function ArticleModalContent({ title, content, baseURL, link }) {
+export default function ArticleModalContent({
+  title,
+  content,
+  baseURL,
+  link,
+  shouldSkipImageResolver,
+}) {
   const imageInMarkdownRegex = /!\[[^\]]*\]\((.*?)\s*("(?:.*[^"])")?\s*\)/g;
   const resolveImageWithMarkdown = (content) => {
     return content.replaceAll(imageInMarkdownRegex, (x) => {
@@ -11,7 +17,9 @@ export default function ArticleModalContent({ title, content, baseURL, link }) {
   return (
     <div className="modal-article-container">
       <h1 className="modal-article-title">{title}</h1>
-      <Markdown>{resolveImageWithMarkdown(content)}</Markdown>
+      <Markdown>
+        {shouldSkipImageResolver ? content : resolveImageWithMarkdown(content)}
+      </Markdown>
     </div>
   );
 }

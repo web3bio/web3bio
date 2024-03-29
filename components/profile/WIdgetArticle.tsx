@@ -82,21 +82,23 @@ const RenderWidgetArticle = ({ profile, openModal }) => {
             </Link>
           </div>
           {data?.map((x, idx) => {
-            console.log(JSON.parse(x.content_body))
+            const content = JSON.parse(x.content_body)
+            console.log(content)
             return (
               <div
                 className="rss-item"
                 onClick={() => {
                   openModal(ModalType.article, {
-                    title: JSON.parse(x.content_body).content.title,
-                    content: JSON.parse(x.content_body).content.body,
+                    title: x.platform === 1? content.content.title: content.title,
+                    content: x.platform === 1? content.content.body: content.markdown,
                     baseURL: "",
                     link: resolveIPFS_URL(x.original_id),
+                    shouldSkipImageResolver: true,
                   });
                 }}
                 key={idx}
               >
-                {JSON.parse(x.content_body).content.title}
+                {x.content_title}
               </div>
             );
           })}

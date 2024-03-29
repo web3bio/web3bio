@@ -25,7 +25,7 @@ import { isValidEthereumAddress, regexEns } from "../../utils/regexp";
 import LoadingSkeleton from "./LoadingSkeleton";
 import { WidgetTypes } from "../../utils/profile";
 import Web3bioBadge from "./ProfileFooter";
-import { WidgetArticle } from "./WIdgetArticle";
+import { WidgetArticle } from "./WidgetArticle";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, nfts, relations, domain, fallbackAvatar } =
