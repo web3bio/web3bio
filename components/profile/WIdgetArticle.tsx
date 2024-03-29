@@ -82,6 +82,7 @@ const RenderWidgetArticle = ({ profile, openModal }) => {
             </Link>
           </div>
           {data?.map((x, idx) => {
+            console.log(JSON.parse(x.content_body))
             return (
               <div
                 className="rss-item"
