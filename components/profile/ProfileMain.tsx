@@ -21,10 +21,11 @@ import { WidgetState } from "../../state/widgets/reducer";
 import { WidgetDegenScore } from "./WidgetDegenScore";
 import { WidgetRSS } from "./WidgetRSS";
 import { WidgetPhiland } from "./WidgetPhiland";
-import { regexEns } from "../../utils/regexp";
+import { isValidEthereumAddress, regexEns } from "../../utils/regexp";
 import LoadingSkeleton from "./LoadingSkeleton";
 import { WidgetTypes } from "../../utils/profile";
 import Web3bioBadge from "./ProfileFooter";
+import { WidgetArticle } from "./WIdgetArticle";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, nfts, relations, domain, fallbackAvatar } =
@@ -46,7 +47,7 @@ export default function ProfileMain(props) {
   };
   const isEmptyProfile = useCallback(() => {
     const source = Object.values(profileWidgetStates).filter((x) => x.loaded);
-    return source.length >= 4 && source.every((x) => x.isEmpty);
+    return source.length > 4 && source.every((x) => x.isEmpty);
   }, [profileWidgetStates])();
 
   const isBasicLoadingFinished = useCallback(() => {
@@ -112,7 +113,9 @@ export default function ProfileMain(props) {
               {`${pageTitle} ${SocialPlatformMapping(platform).label} Profile`}
             </h1>
             <h2 className="text-assistive">
-              {`Explore ${pageTitle} ${SocialPlatformMapping(platform).label} Web3 profiles, social links, NFT collections, Web3 activities, dWebsites, POAPs etc on the Web3.bio profile page. `}
+              {`Explore ${pageTitle} ${
+                SocialPlatformMapping(platform).label
+              } Web3 profiles, social links, NFT collections, Web3 activities, dWebsites, POAPs etc on the Web3.bio profile page. `}
               {`${pageTitle}‘s wallet address is ${data.address}`}
               <meta itemProp="identifier" content={data.identity} />
             </h2>
@@ -213,9 +216,9 @@ export default function ProfileMain(props) {
                     className={`platform-badge ${x.platform}${
                       idx === 0 ? " active" : ""
                     }`}
-                    title={`${
-                      SocialPlatformMapping(x.platform).label
-                    }: ${x.identity}`}
+                    title={`${SocialPlatformMapping(x.platform).label}: ${
+                      x.identity
+                    }`}
                     style={{
                       ["--badge-primary-color" as string]:
                         SocialPlatformMapping(x.platform).color || "#000",
@@ -238,7 +241,8 @@ export default function ProfileMain(props) {
                       className="platform-badge-name"
                       itemProp="alternateName"
                     >
-                      {x.platform === PlatformType.ethereum || x.platform === PlatformType.solana
+                      {x.platform === PlatformType.ethereum ||
+                      x.platform === PlatformType.solana
                         ? formatText(x.identity)
                         : x.identity}
                     </span>
@@ -336,6 +340,16 @@ export default function ProfileMain(props) {
                         </Suspense>
                       </div>
                     )}
+
+                  {isValidEthereumAddress(data.address) && (
+                    <div className="web3-section-widgets">
+                      <Suspense
+                        fallback={<LoadingSkeleton type={WidgetTypes.rss} />}
+                      >
+                        <WidgetArticle profile={data} openModal={openModal} />
+                      </Suspense>
+                    </div>
+                  )}
 
                   <div className="web3-section-widgets">
                     {(data.platform === PlatformType.ens ||

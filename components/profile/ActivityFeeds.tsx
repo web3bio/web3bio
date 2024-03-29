@@ -1,7 +1,5 @@
 import { memo } from "react";
 import useInfiniteScroll from "react-infinite-scroll-hook";
-import { ActivityTag } from "../../utils/activity";
-import { isSameAddress } from "../../utils/utils";
 import { FeedItem } from "../feed/FeedItem";
 import { Empty } from "../shared/Empty";
 import { Loading } from "../shared/Loading";
