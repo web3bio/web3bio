@@ -21,7 +21,7 @@ import { WidgetState } from "../../state/widgets/reducer";
 import { WidgetDegenScore } from "./WidgetDegenScore";
 import { WidgetRSS } from "./WidgetRSS";
 import { WidgetPhiland } from "./WidgetPhiland";
-import { isValidEthereumAddress, regexEns } from "../../utils/regexp";
+import { isValidEthereumAddress, regexEns, regexEth } from "../../utils/regexp";
 import LoadingSkeleton from "./LoadingSkeleton";
 import { WidgetTypes } from "../../utils/profile";
 import Web3bioBadge from "./ProfileFooter";
@@ -341,7 +341,9 @@ export default function ProfileMain(props) {
                       </div>
                     )}
 
-                  {isValidEthereumAddress(data.address) && (
+                  {(data.platform === PlatformType.ens ||
+                    regexEns.test(data.identity) ||
+                    isValidEthereumAddress(data.address)) && (
                     <div className="web3-section-widgets">
                       <Suspense
                         fallback={<LoadingSkeleton type={WidgetTypes.rss} />}

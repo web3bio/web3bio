@@ -7,7 +7,9 @@ import { useDispatch } from "react-redux";
 import { updateArticleWidget } from "../../state/widgets/action";
 import { FIREFLY_ENDPOINT_DEV, FireflyFetcher } from "../apis/firefly";
 import { ModalType } from "../../hooks/useModal";
-import { resolveIPFS_URL } from "../../utils/ipfs";
+
+const MirrorBaseURL = "https://mirror.xyz/";
+const ParagraphBaseURL = "https://paragraph.xyz/";
 
 function useArticles(address: string) {
   // platform mirror(1) paragraph(2)
@@ -64,41 +66,62 @@ const RenderWidgetArticle = ({ profile, openModal }) => {
           {/* {data.description && (
             <h3 className="text-assistive">{data.description}</h3>
           )} */}
+          <div className="btn-group widget-action">
+            <Link
+              className="btn btn-sm"
+              title="More Articles"
+              href={MirrorBaseURL + profile.identity}
+              target={"_blank"}
+            >
+              <SVG src="icons/icon-open.svg" width={20} height={20} /> Mirror
+            </Link>
+            <Link
+              className="btn btn-sm"
+              title="More Articles"
+              href={ParagraphBaseURL + `@${profile.identity}`}
+              target={"_blank"}
+            >
+              <SVG src="icons/icon-open.svg" width={20} height={20} /> Paragraph
+            </Link>
+          </div>
         </div>
 
         <div className="widget-rss-list noscrollbar">
           <div className="rss-website">
             <div className="rss-website-title mb-1">
-              {"Articles of" + profile.displayName}
+              {"Articles of " + profile.displayName}
             </div>
-
-            <Link
-              className="btn btn-sm"
-              title="More Articles"
-              href={""}
-              target={"_blank"}
-            >
-              <SVG src="icons/icon-open.svg" width={20} height={20} /> More
-            </Link>
           </div>
           {data?.map((x, idx) => {
-            const content = JSON.parse(x.content_body)
-            console.log(content)
+            const content = JSON.parse(x.content_body);
+            console.log(content);
             return (
               <div
                 className="rss-item"
                 onClick={() => {
                   openModal(ModalType.article, {
-                    title: x.platform === 1? content.content.title: content.title,
-                    content: x.platform === 1? content.content.body: content.markdown,
-                    baseURL: "",
-                    link: resolveIPFS_URL(x.original_id),
-                    shouldSkipImageResolver: true,
+                    title:
+                      x.platform === 1 ? content.content.title : content.title,
+                    content:
+                      x.platform === 1
+                        ? content.content.body
+                        : content.markdown,
+                    link:
+                      x.platform === 1
+                        ? `${MirrorBaseURL}/${profile.identity}/${x.original_id}`
+                        : `${ParagraphBaseURL}/@${profile.identity}/${content.slug}`,
                   });
                 }}
                 key={idx}
               >
-                {x.content_title}
+                <div className="rss-item-title">{x.content_title}</div>
+                <time
+                  dateTime={x.content_timestamp * 1000 + ""}
+                  suppressHydrationWarning
+                  className="rss-item-date"
+                >
+                  {new Date(x.content_timestamp * 1000).toDateString()}
+                </time>
               </div>
             );
           })}
