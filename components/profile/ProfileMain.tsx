@@ -341,9 +341,7 @@ export default function ProfileMain(props) {
                       </div>
                     )}
 
-                  {(data.platform === PlatformType.ens ||
-                    regexEns.test(data.identity) ||
-                    isValidEthereumAddress(data.address)) && (
+                  {isValidEthereumAddress(data.address) && (
                     <div className="web3-section-widgets">
                       <Suspense
                         fallback={<LoadingSkeleton type={WidgetTypes.rss} />}
