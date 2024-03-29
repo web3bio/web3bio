@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { updateArticleWidget } from "../../state/widgets/action";
 import { FIREFLY_ENDPOINT_DEV, FireflyFetcher } from "../apis/firefly";
 import { ModalType } from "../../hooks/useModal";
+import { domainRegexp } from "../feed/ActionExternalMenu";
 
 const MirrorBaseURL = "https://mirror.xyz/";
 const ParagraphBaseURL = "https://paragraph.xyz/";
@@ -55,6 +56,14 @@ const RenderWidgetArticle = ({ profile, openModal }) => {
   // if (process.env.NODE_ENV !== "production") {
   //   console.log("Article Data:", data);
   // }
+  const ParagraphURLItem = (() => {
+    try {
+      return JSON.parse(data?.find((x) => x.platform === 2)?.content_body || "")
+        .url;
+    } catch {
+      return null;
+    }
+  })();
   return (
     <div className="profile-widget-full" id="mirror">
       <div className="profile-widget profile-widget-rss">
@@ -63,9 +72,7 @@ const RenderWidgetArticle = ({ profile, openModal }) => {
             <span className="emoji-large mr-2">📰 </span>
             Mirror & Paragraph
           </h2>
-          {/* {data.description && (
-            <h3 className="text-assistive">{data.description}</h3>
-          )} */}
+
           <div className="btn-group widget-action">
             <Link
               className="btn btn-sm"
@@ -78,7 +85,11 @@ const RenderWidgetArticle = ({ profile, openModal }) => {
             <Link
               className="btn btn-sm"
               title="More Articles"
-              href={ParagraphBaseURL + `@${profile.identity}`}
+              href={
+                ParagraphURLItem
+                  ? `https://${domainRegexp.exec(ParagraphURLItem)?.[1]}`
+                  : ParagraphBaseURL + `@${profile.identity}`
+              }
               target={"_blank"}
             >
               <SVG src="icons/icon-open.svg" width={20} height={20} /> Paragraph
@@ -109,6 +120,8 @@ const RenderWidgetArticle = ({ profile, openModal }) => {
                     link:
                       x.platform === 1
                         ? `${MirrorBaseURL}/${profile.identity}/${x.original_id}`
+                        : content.url
+                        ? `https://${content.url}`
                         : `${ParagraphBaseURL}/@${profile.identity}/${content.slug}`,
                   });
                 }}
