@@ -82,18 +82,21 @@ const RenderWidgetArticle = ({ profile, openModal }) => {
             >
               <SVG src="icons/icon-open.svg" width={20} height={20} /> Mirror
             </Link>
-            <Link
-              className="btn btn-sm"
-              title="More Articles"
-              href={
-                ParagraphURLItem
-                  ? `https://${domainRegexp.exec(ParagraphURLItem)?.[1]}`
-                  : ParagraphBaseURL + `@${profile.identity}`
-              }
-              target={"_blank"}
-            >
-              <SVG src="icons/icon-open.svg" width={20} height={20} /> Paragraph
-            </Link>
+            {data.some((x) => x.platform == 2) && (
+              <Link
+                className="btn btn-sm"
+                title="More Articles"
+                href={
+                  ParagraphURLItem
+                    ? `https://${domainRegexp.exec(ParagraphURLItem)?.[1]}`
+                    : ParagraphBaseURL + `@${profile.identity}`
+                }
+                target={"_blank"}
+              >
+                <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
+                Paragraph
+              </Link>
+            )}
           </div>
         </div>
 
