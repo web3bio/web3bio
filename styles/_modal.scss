@@ -238,24 +238,6 @@
         overflow-y: auto;
         border-radius: .5rem;
         position: relative;
-
-        .external-icon {
-          opacity: 0;
-          position: absolute;
-          top: 1rem;
-          right: 1rem;
-          transition: opacity .2s ease;
-  
-          &:hover {
-            opacity: 1;
-          }
-        }
-
-        &:hover {
-          & .external-icon {
-            opacity: 1;
-          }
-        }
   
         @media screen and (max-width: $size-sm) {
           padding: 1rem;
@@ -264,6 +246,11 @@
   
         .modal-article-title {
           font-size: 1.2rem;
+          margin-bottom: 1.2rem;
+        }
+
+        .modal-article-action {
+          margin-bottom: 1.2rem;
         }
   
         img {
@@ -285,10 +272,14 @@
           font-size: .8rem;
           font-weight: 700;
         }
+
+        li {
+          p {
+            display: inline;
+          }
+        }
       }
-  
-  
-  
+
       .modal-preview-container {
         position: relative;
   

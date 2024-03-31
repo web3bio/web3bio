@@ -12,13 +12,15 @@ export default function ArticleModalContent({ title, content, baseURL, link }) {
   };
   return (
     <div className="modal-article-container">
-      {link && (
-        <Link href={link} target={"_blank"} className="btn external-icon">
-          <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
-          View Original
-        </Link>
-      )}
       <h1 className="modal-article-title">{title}</h1>
+      {link && (
+        <div className="modal-article-action">
+          <Link href={link} target={"_blank"} className="btn">
+            <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
+            View Original
+          </Link>
+        </div>
+      )}
       <Markdown>
         {!baseURL ? content : resolveImageWithMarkdown(content)}
       </Markdown>

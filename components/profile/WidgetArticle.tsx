@@ -7,10 +7,9 @@ import { useDispatch } from "react-redux";
 import { updateArticleWidget } from "../../state/widgets/action";
 import { FIREFLY_ENDPOINT_DEV, FireflyFetcher } from "../apis/firefly";
 import { ModalType } from "../../hooks/useModal";
-import { domainRegexp } from "../feed/ActionExternalMenu";
 
-const MirrorBaseURL = "https://mirror.xyz/";
-const ParagraphBaseURL = "https://paragraph.xyz/";
+const MirrorBaseURL = "https://mirror.xyz";
+const ParagraphBaseURL = "https://paragraph.xyz";
 
 function useArticles(address: string) {
   // platform mirror(1) paragraph(2)
@@ -56,59 +55,30 @@ const RenderWidgetArticle = ({ profile, openModal }) => {
   // if (process.env.NODE_ENV !== "production") {
   //   console.log("Article Data:", data);
   // }
-  const ParagraphURLItem = (() => {
-    try {
-      return JSON.parse(data?.find((x) => x.platform === 2)?.content_body || "")
-        .url;
-    } catch {
-      return null;
-    }
-  })();
+
+  // const ParagraphURLItem = (() => {
+  //   try {
+  //     return JSON.parse(data?.find((x) => x.platform === 2)?.content_body || "")
+  //       .url;
+  //   } catch {
+  //     return null;
+  //   }
+  // })();
+
   return (
     <div className="profile-widget-full" id="mirror">
       <div className="profile-widget profile-widget-rss">
         <div className="profile-widget-header">
           <h2 className="profile-widget-title">
-            <span className="emoji-large mr-2">📰 </span>
-            Mirror & Paragraph
+            <span className="emoji-large mr-2">📑 </span>
+            Articles
           </h2>
-
-          <div className="btn-group widget-action">
-            <Link
-              className="btn btn-sm"
-              title="More Articles"
-              href={MirrorBaseURL + profile.identity}
-              target={"_blank"}
-            >
-              <SVG src="icons/icon-open.svg" width={20} height={20} /> Mirror
-            </Link>
-            {data.some((x) => x.platform == 2) && (
-              <Link
-                className="btn btn-sm"
-                title="More Articles"
-                href={
-                  ParagraphURLItem
-                    ? `https://${domainRegexp.exec(ParagraphURLItem)?.[1]}`
-                    : ParagraphBaseURL + `@${profile.identity}`
-                }
-                target={"_blank"}
-              >
-                <SVG src="icons/icon-open.svg" width={20} height={20} />{" "}
-                Paragraph
-              </Link>
-            )}
-          </div>
         </div>
 
         <div className="widget-rss-list noscrollbar">
-          <div className="rss-website">
-            <div className="rss-website-title mb-1">
-              {"Articles of " + profile.displayName}
-            </div>
-          </div>
           {data?.map((x, idx) => {
             const content = JSON.parse(x.content_body);
-            console.log(content);
+            console.log(x);
             return (
               <div
                 className="rss-item"
@@ -130,6 +100,10 @@ const RenderWidgetArticle = ({ profile, openModal }) => {
                 }}
                 key={idx}
               >
+                <div className="rss-item-tag">
+                  {x.platform === 1 && (<span className="label label-primary">Mirror</span>)}
+                  {x.platform === 2 && (<span className="label">Paragraph</span>)}
+                </div>
                 <div className="rss-item-title">{x.content_title}</div>
                 <time
                   dateTime={x.content_timestamp * 1000 + ""}
