@@ -78,7 +78,7 @@ const RenderWidgetArticle = ({ profile, openModal }) => {
         <div className="widget-rss-list noscrollbar">
           {data?.map((x, idx) => {
             const content = JSON.parse(x.content_body);
-            console.log(x);
+            
             return (
               <div
                 className="rss-item"
