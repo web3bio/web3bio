@@ -1034,14 +1034,16 @@
       width: 100%;
       border-spacing: .25rem;
 
-      .table-header {
-        font-size: .65rem;
-        font-weight: 500;
-        background: rgba($dark-color, .04);
+      tr {
+        border-color: rgba($bg-color, .5);
       }
+
 
       th {
         text-align: left;
+        font-size: .65rem;
+        color: rgba($dark-color, .4);
+        font-weight: 400;
       }
 
       td {
@@ -1070,7 +1072,7 @@
         display: flex;
         align-items: center;
         gap: .25rem;
-        font-size: .8rem;
+        font-size: .7rem;
         font-weight: 500;
 
         .dao-icon {

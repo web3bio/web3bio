@@ -105,7 +105,7 @@ const RenderWidgetTallyDAO = ({ address }) => {
           />
         ) : (
           <table className="table">
-            <tr className="table-header">
+            <tr>
               <th>DAO</th>
               <th>Votes</th>
               <th>% of Delegated Votes</th>
@@ -159,8 +159,8 @@ const RenderWidgetTallyDAO = ({ address }) => {
                     </div>
 
                     <Avatar
-                      width={'1rem'}
-                      height={'1rem'}
+                      width={"1rem"}
+                      height={"1rem"}
                       identity={x.delegator?.ens || x.delegator?.ens}
                       src={x.delegator?.picture}
                       alt={x.delegator?.ens}
