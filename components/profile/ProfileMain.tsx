@@ -21,11 +21,12 @@ import { WidgetState } from "../../state/widgets/reducer";
 import { WidgetDegenScore } from "./WidgetDegenScore";
 import { WidgetRSS } from "./WidgetRSS";
 import { WidgetPhiland } from "./WidgetPhiland";
+import { WidgetTallyDAO } from "./WidgetTallyDAO";
 import { isValidEthereumAddress, regexEns } from "../../utils/regexp";
 import LoadingSkeleton from "./LoadingSkeleton";
 import { WidgetTypes } from "../../utils/profile";
 import Web3bioBadge from "./ProfileFooter";
-import { WidgetTallyDAO } from "./WidgetTallyDAO";
+import { WidgetArticle } from "./WidgetArticle";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, nfts, relations, domain, fallbackAvatar } =
@@ -47,8 +48,8 @@ export default function ProfileMain(props) {
   };
   const isEmptyProfile = useCallback(() => {
     const source = Object.values(profileWidgetStates).filter((x) => x.loaded);
-    // 4 is all widgets num - basic widgets num (nft, poaps, feeds)
-    return source.length > 4 && source.every((x) => x.isEmpty);
+    // 5 is all widgets num - basic widgets num (nft, poaps, feeds)
+    return source.length > 5 && source.every((x) => x.isEmpty);
   }, [profileWidgetStates])();
 
   const isBasicLoadingFinished = useCallback(() => {
@@ -341,6 +342,16 @@ export default function ProfileMain(props) {
                         </Suspense>
                       </div>
                     )}
+
+                  {isValidEthereumAddress(data.address) && (
+                    <div className="web3-section-widgets">
+                      <Suspense
+                        fallback={<LoadingSkeleton type={WidgetTypes.rss} />}
+                      >
+                        <WidgetArticle profile={data} openModal={openModal} />
+                      </Suspense>
+                    </div>
+                  )}
 
                   <div className="web3-section-widgets">
                     {isValidEthereumAddress(data.address) && (

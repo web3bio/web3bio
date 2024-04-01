@@ -50,7 +50,10 @@ const RenderWidgetTallyDAO = ({ address }) => {
     }
   }, [data, loading, dispatch, activeTab]);
 
-  if (!data) return null;
+  if (
+    !(data?.delegates?.nodes?.length > 0 || data?.delegatees?.nodes?.length > 0)
+  )
+    return null;
 
   const renderData =
     activeTab === 0 ? data?.delegates?.nodes : data?.delegatees?.nodes;

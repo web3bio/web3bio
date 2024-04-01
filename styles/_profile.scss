@@ -955,6 +955,7 @@
       .rss-item {
         background: lighten($bg-color, 5%);
         border-radius: .4rem;
+        cursor: pointer;
         flex: 0 0 12rem;
         min-height: 5rem;
         padding: 1rem;
@@ -982,6 +983,14 @@
           color: $gray-color;
           font-size: .6rem;
           margin-top: .25rem;
+        }
+
+        .rss-item-tag {
+          margin-bottom: .25rem;
+          
+          .label {
+            border-radius: .35rem;
+          }
         }
 
         .rss-item-img {
