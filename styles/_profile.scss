@@ -1013,7 +1013,6 @@
   .profile-widget-tally {
     overflow-x: hidden;
     position: relative;
-    overflow-y: auto;
     width: 100%;
 
     .tab {
@@ -1038,60 +1037,36 @@
         border-color: rgba($bg-color, .5);
       }
 
-
       th {
         text-align: left;
-        font-size: .65rem;
-        color: rgba($dark-color, .4);
-        font-weight: 400;
       }
 
       td {
         font-size: .7rem;
         font-weight: 400;
         text-align: left;
-        padding: .25rem 0;
-        line-height: 1.15;
-
-        .badge {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: rgba($dark-color, .05);
-          padding: .25rem .3rem;
-          border-radius: 1rem;
-          text-align: center;
-          font-size: .6rem;
-          font-weight: 500;
-        }
-
       }
 
-
-      .name-wrapper {
-        display: flex;
+      .dao-organization {
         align-items: center;
+        display: flex;
         gap: .25rem;
-        font-size: .7rem;
-        font-weight: 500;
 
         .dao-icon {
           width: 1rem;
           height: 1rem;
-
+  
           .img-placeholder {
             height: 100%;
             width: 100%;
-            border-radius: 99%;
+            border-radius: 50%;
           }
-
+  
           img {
             border-radius: 1rem;
           }
         }
       }
-
-
     }
   }
 

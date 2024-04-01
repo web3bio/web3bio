@@ -13,6 +13,7 @@
 @import "spectre/forms";
 @import "spectre/labels";
 @import "spectre/media";
+@import "spectre/tables";
 
 // Layout
 @import "spectre/layout";
@@ -42,13 +43,13 @@
 @import "share";
 
 // Variables
-$pride-color-1: #FBF4EC !default;
-$pride-color-2: #ECD7C8 !default;
-$pride-color-3: #EEA4BC !default;
-$pride-color-4: #BE88C4 !default;
-$pride-color-5: #9186E7 !default;
-$pride-color-6: #92C9F9 !default;
-$pride-color-7: #C7F8FF !default;
+$pride-color-1: #fbf4ec !default;
+$pride-color-2: #ecd7c8 !default;
+$pride-color-3: #ecc8e0 !default;
+$pride-color-4: #c492c9 !default;
+$pride-color-5: #9d93ea !default;
+$pride-color-6: #a1d0fa !default;
+$pride-color-7: #d6faff !default;
 
 /*! Web3bio.css | MIT License */
 html {
@@ -68,7 +69,6 @@ body {
   padding: .4rem 0;
   scroll-behavior: smooth;
   width: 100vw;
-
 }
 
 .wallet-btn {
