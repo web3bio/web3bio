@@ -35,7 +35,10 @@ const RenderAccountItem = (props) => {
     isAddress(resolvedDisplayName) || resolvedPlatform === PlatformType.nextid
       ? formatText(resolvedDisplayName)
       : resolvedDisplayName;
-  const resolvedIdentity = profile?.address || identity.resolveAddress?.[0].address || identity.identity;
+  const resolvedIdentity =
+    profile?.address ||
+    identity.resolveAddress?.[0].address ||
+    identity.identity;
   useEffect(() => {
     const element = ref?.current;
     const options = {
@@ -133,13 +136,13 @@ const RenderAccountItem = (props) => {
                 <div className="content-subtitle text-gray">
                   {profile?.displayName !== profile?.identity && (
                     <>
-                      <div className="address">{profile.identity || identity.identity}</div>
+                      <div className="address">
+                        {profile.identity || identity.identity}
+                      </div>
                       <div className="ml-1 mr-1"> · </div>
                     </>
                   )}
-                  <div className="address">
-                    {formatText(resolvedIdentity)}
-                  </div>
+                  <div className="address">{formatText(resolvedIdentity)}</div>
                   <Clipboard
                     component="div"
                     className="action"
@@ -271,6 +274,7 @@ const RenderAccountItem = (props) => {
       );
     case PlatformType.nextid:
     case PlatformType.solana:
+    case PlatformType.sns:
     case PlatformType.crossbell:
       return (
         <div ref={ref} className={`social-item ${resolvedPlatform}`}>
@@ -306,13 +310,13 @@ const RenderAccountItem = (props) => {
                 <div className="content-subtitle text-gray">
                   {identity.platform === PlatformType.crossbell && (
                     <>
-                      <div className="address">{formatText(identity.identity, 24)}</div>
+                      <div className="address">
+                        {formatText(identity.identity, 24)}
+                      </div>
                       <div className="ml-1 mr-1"> · </div>
                     </>
                   )}
-                  <div className="address">
-                    {formatText(resolvedIdentity)}
-                  </div>
+                  <div className="address">{formatText(resolvedIdentity)}</div>
                   <Clipboard
                     component="div"
                     className="action"

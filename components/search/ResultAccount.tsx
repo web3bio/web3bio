@@ -33,7 +33,7 @@ const RenderAccount = (props) => {
     if (!identityGraph?.nodes) return [];
     const _identityGraph = JSON.parse(JSON.stringify(identityGraph));
     const _resolved = _identityGraph.nodes
-      .filter((x) => x.platform !== PlatformType.ens)
+      .filter((x) => ![PlatformType.ens].includes(x.platform))
       .map((x) => {
         return {
           ...x,
