@@ -987,7 +987,7 @@
 
         .rss-item-tag {
           margin-bottom: .25rem;
-          
+
           .label {
             border-radius: .35rem;
           }
@@ -1031,7 +1031,8 @@
     }
 
     .table {
-      padding: .25rem .5rem;
+      width: 100%;
+      border-spacing: .25rem;
 
       .table-header {
         font-size: .65rem;
@@ -1047,12 +1048,30 @@
         font-size: .7rem;
         font-weight: 400;
         text-align: left;
+        padding: .25rem 0;
+        line-height: 1.15;
+
+        .badge {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba($dark-color, .05);
+          padding: .25rem .3rem;
+          border-radius: 1rem;
+          text-align: center;
+          font-size: .6rem;
+          font-weight: 500;
+        }
+
       }
+
 
       .name-wrapper {
         display: flex;
         align-items: center;
         gap: .25rem;
+        font-size: .8rem;
+        font-weight: 500;
 
         .dao-icon {
           width: 1rem;
@@ -1069,6 +1088,8 @@
           }
         }
       }
+
+
     }
   }
 

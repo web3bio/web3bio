@@ -10,6 +10,7 @@ import { Empty } from "../shared/Empty";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { formatEther } from "ethers";
 import { formatText } from "../../utils/utils";
+import { Avatar } from "../shared/Avatar";
 
 const RenderWidgetTallyDAO = ({ address }) => {
   // 0: delegators 1:delegating to
@@ -111,44 +112,59 @@ const RenderWidgetTallyDAO = ({ address }) => {
               <th> </th>
             </tr>
             {renderData.map((x, idx) => {
+              const votesCount = Number(
+                Number(formatEther(x.votesCount || "0")).toFixed(2)
+              );
+              const delegatesVotesCount = Number(
+                Number(
+                  formatEther(x.organization?.delegatesVotesCount || "0")
+                ).toFixed(2)
+              );
               return activeTab === 0 ? (
                 <tr key={"td" + idx}>
                   <td className="name-wrapper">
+                    <NFTAssetPlayer
+                      className="dao-icon"
+                      src={x.organization.metadata?.icon}
+                      alt={x.organization.name}
+                    />
                     {x.organization.name}
-                    {
-                      <NFTAssetPlayer
-                        className="dao-icon"
-                        src={x.organization.metadata?.icon}
-                        alt={x.organization.name}
-                      />
-                    }
                   </td>
                   <td>{Number(formatEther(x.votesCount || "0")).toFixed(2)}</td>
-                  <td>{x.delegatorsCount}</td>
-                  <td>{x.delegatorsCount}</td>
+                  <td>
+                    {((votesCount / delegatesVotesCount) * 100).toFixed(2) +
+                      "%"}
+                  </td>
+                  <td>
+                    <div className="badge">
+                      {x.delegatorsCount} addresses delegating
+                    </div>
+                  </td>
                 </tr>
               ) : (
                 <tr key={"td" + idx}>
                   <td className="name-wrapper">
-                    {x.governor.organization.name}
-                    {
-                      <NFTAssetPlayer
-                        className="dao-icon"
-                        src={x.governor.organization.metadata?.icon}
-                        alt={x.governor.organization.name}
-                      />
-                    }
-                  </td>
-                  <td>text1</td>
-                  <td>text2</td>
-                  <td className="name-wrapper">
-                    Delegating to{" "}
                     <NFTAssetPlayer
                       className="dao-icon"
+                      src={x.governor.organization.metadata?.icon}
+                      alt={x.governor.organization.name}
+                    />
+                    {x.governor.organization.name}
+                  </td>
+                  <td>0</td>
+                  <td>0.00%</td>
+                  <td className="name-wrapper">
+                    <div className="badge">
+                      Delegating to {formatText(x.delegator?.address || "")}
+                    </div>
+
+                    <Avatar
+                      width={'1rem'}
+                      height={'1rem'}
+                      identity={x.delegator?.ens || x.delegator?.ens}
                       src={x.delegator?.picture}
                       alt={x.delegator?.ens}
-                    />{" "}
-                    {formatText(x.delegator?.address || "")}
+                    />
                   </td>
                 </tr>
               );
