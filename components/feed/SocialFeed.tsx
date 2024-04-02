@@ -224,7 +224,9 @@ const RenderSocialCard = (props) => {
                           alt={"Feed Image"}
                         />
                       ) : x.mime_type.includes("text/html") ? (
-                        x.address
+                        // todo: check this field
+                        // x.address
+                        ""
                       ) : (
                         ""
                       )
