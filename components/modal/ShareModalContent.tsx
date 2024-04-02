@@ -26,11 +26,24 @@ const shareMap = [
       )}`,
     action: "Share via Telegram",
   },
+  {
+    platform: "warpcast",
+    icon: "icons/icon-farcaster.svg",
+    shareURL: (url, name) =>
+      `https://warpcast.com/~/compose?embeds[]=${encodeURIComponent(
+        url
+      )}&text=${encodeURIComponent(
+        `Hey! Check out and explore ${name}'s Web3 profile. `
+      )}`,
+    action: "Share on Warpcast",
+  },
 ];
 
 export default function ShareModalContent(props) {
-  const {profile, path, onClose, avatar} = props;
-  const url = `${process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio"}/${path}`;
+  const { profile, path, onClose, avatar } = props;
+  const url = `${
+    process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio"
+  }/${path}`;
   const [isCopied, setIsCopied] = useState(false);
   const onCopySuccess = () => {
     setIsCopied(true);
@@ -40,16 +53,14 @@ export default function ShareModalContent(props) {
   };
 
   const params = new URLSearchParams();
-    if (path)
-      params.append("path", path);
-    if (profile)
-      params.append("address", profile.address);
-      params.append("displayName", profile.displayName);
-    if (profile.description)
-      params.append("description", profile.description);
-    if(avatar)
-      params.append("avatar", avatar);
-  const relativeOGURL = params.toString() ? `/api/og?${params.toString()}` : "/api/og";
+  if (path) params.append("path", path);
+  if (profile) params.append("address", profile.address);
+  params.append("displayName", profile.displayName);
+  if (profile.description) params.append("description", profile.description);
+  if (avatar) params.append("avatar", avatar);
+  const relativeOGURL = params.toString()
+    ? `/api/og?${params.toString()}`
+    : "/api/og";
 
   return (
     <>
@@ -75,11 +86,11 @@ export default function ShareModalContent(props) {
           {shareMap.map((x) => (
             <a
               key={x.platform}
-              className="btn btn-lg share-item"
+              className="btn share-item"
               href={x.shareURL(url, profile.displayName)}
               target="_blank"
             >
-              <SVG fill="#000" src={x.icon} height={20} width={20} />
+              <SVG fill="#000" src={x.icon} height={18} width={18} />
               {x.action}
             </a>
           ))}
