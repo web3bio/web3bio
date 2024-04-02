@@ -223,6 +223,8 @@ const RenderSocialCard = (props) => {
                           placeholder={true}
                           alt={"Feed Image"}
                         />
+                      ) : x.mime_type.includes("text/html") ? (
+                        x.address
                       ) : (
                         ""
                       )
