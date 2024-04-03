@@ -94,6 +94,7 @@ const RenderAccountItem = (props) => {
     case PlatformType.unstoppableDomains:
     case PlatformType.dotbit:
     case PlatformType.space_id:
+    case PlatformType.solana:
       return (
         <div
           onClick={onClick}
@@ -273,8 +274,6 @@ const RenderAccountItem = (props) => {
         </div>
       );
     case PlatformType.nextid:
-    case PlatformType.solana:
-    case PlatformType.sns:
     case PlatformType.crossbell:
       return (
         <div ref={ref} className={`social-item ${resolvedPlatform}`}>

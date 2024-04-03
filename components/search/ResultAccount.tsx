@@ -10,15 +10,17 @@ import Modal from "../modal/Modal";
 import useModal, { ModalType } from "../../hooks/useModal";
 import { SocialPlatformMapping } from "../../utils/utils";
 
-const getENSAddress = (ensItem) => {
+const getENSAddress = (item) => {
+  const _chain =
+    item.platform === PlatformType.ens
+      ? PlatformType.ethereum
+      : PlatformType.solana;
   return (
-    ensItem.resolveAddress?.find((x) => x.chain === PlatformType.ethereum)
-      ?.address ||
-    ensItem.resolveAddress?.[0].address ||
-    ensItem.ownerAddress?.find((x) => x.chain === PlatformType.ethereum)
-      ?.address ||
-    ensItem.ownerAddress?.[0]?.address ||
-    ensItem.identity
+    item.resolveAddress?.find((x) => x.chain === _chain)?.address ||
+    item.resolveAddress?.[0].address ||
+    item.ownerAddress?.find((x) => x.chain === _chain)?.address ||
+    item.ownerAddress?.[0]?.address ||
+    item.identity
   );
 };
 
@@ -33,7 +35,7 @@ const RenderAccount = (props) => {
     if (!identityGraph?.nodes) return [];
     const _identityGraph = JSON.parse(JSON.stringify(identityGraph));
     const _resolved = _identityGraph.nodes
-      .filter((x) => ![PlatformType.ens].includes(x.platform))
+      .filter((x) => ![PlatformType.ens, PlatformType.sns].includes(x.platform))
       .map((x) => {
         return {
           ...x,
@@ -41,18 +43,20 @@ const RenderAccount = (props) => {
         };
       });
     if (
-      platform === PlatformType.ens &&
+      [PlatformType.sns, PlatformType.ens].includes(platform) &&
       !_resolved.some((x) => x.displayName === graphTitle)
     ) {
-      const ensItem = identityGraph.nodes
-        .filter((x) => x.platform === PlatformType.ens)
+      const item = identityGraph.nodes
+        .filter((x) =>
+          [PlatformType.ens, PlatformType.sns].includes(x.platform)
+        )
         .find((x) => x.identity === graphTitle);
-      if (ensItem) {
+      if (item) {
         _resolved.unshift({
-          ...ensItem,
-          platform: PlatformType.ens,
-          displayName: ensItem.identity,
-          identity: getENSAddress(ensItem),
+          ...item,
+          platform: item.platform,
+          displayName: item.identity,
+          identity: getENSAddress(item),
           reverse: false,
         });
       }
@@ -60,6 +64,8 @@ const RenderAccount = (props) => {
       const index = _resolved.findIndex((x) => {
         return platform === PlatformType.ens
           ? x.displayName === graphTitle && x.platform === PlatformType.ethereum
+          : platform === PlatformType.sns
+          ? x.displayName === graphTitle && x.platform === PlatformType.solana
           : x.identity === graphTitle && x.platform === platform;
       });
 

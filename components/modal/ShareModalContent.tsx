@@ -29,8 +29,10 @@ const shareMap = [
 ];
 
 export default function ShareModalContent(props) {
-  const {profile, path, onClose, avatar} = props;
-  const url = `${process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio"}/${path}`;
+  const { profile, path, onClose, avatar } = props;
+  const url = `${
+    process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio"
+  }/${path}`;
   const [isCopied, setIsCopied] = useState(false);
   const onCopySuccess = () => {
     setIsCopied(true);
@@ -40,16 +42,14 @@ export default function ShareModalContent(props) {
   };
 
   const params = new URLSearchParams();
-    if (path)
-      params.append("path", path);
-    if (profile)
-      params.append("address", profile.address);
-      params.append("displayName", profile.displayName);
-    if (profile.description)
-      params.append("description", profile.description);
-    if(avatar)
-      params.append("avatar", avatar);
-  const relativeOGURL = params.toString() ? `/api/og?${params.toString()}` : "/api/og";
+  if (path) params.append("path", path);
+  if (profile) params.append("address", profile.address);
+  params.append("displayName", profile.displayName);
+  if (profile.description) params.append("description", profile.description);
+  if (avatar) params.append("avatar", avatar);
+  const relativeOGURL = params.toString()
+    ? `/api/og?${params.toString()}`
+    : "/api/og";
 
   return (
     <>
