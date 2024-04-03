@@ -181,13 +181,21 @@ const RenderAccountItem = (props) => {
                   >
                     <div className="label-ens" title={nft.id}>
                       <SVG
-                        fill={SocialPlatformMapping(PlatformType.ens).color}
-                        src={"/icons/icon-ens.svg"}
+                        fill={
+                          nft.platform === PlatformType.sns
+                            ? "none"
+                            : SocialPlatformMapping(PlatformType.ens).color
+                        }
+                        src={
+                          SocialPlatformMapping(
+                            nft.platform || PlatformType.ens
+                          ).icon!
+                        }
                         width="20"
                         height="20"
                         className="icon"
                       />
-                      <span>{nft.id}</span>
+                      <span>{nft.identity || nft.id}</span>
                     </div>
                   </Link>
                 );
@@ -360,7 +368,7 @@ const RenderAccountItem = (props) => {
             >
               <div className="icon">
                 <SVG
-                  fill="#000"
+                  fill={resolvedPlatform === PlatformType.sns ? "none" : "#000"}
                   src={SocialPlatformMapping(resolvedPlatform)?.icon || ""}
                   width={20}
                   height={20}

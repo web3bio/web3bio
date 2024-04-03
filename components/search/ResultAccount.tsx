@@ -34,6 +34,19 @@ const RenderAccount = (props) => {
   const resolvedListData = (() => {
     if (!identityGraph?.nodes) return [];
     const _identityGraph = JSON.parse(JSON.stringify(identityGraph));
+    _identityGraph.nodes
+      .filter((x) => x.platform === PlatformType.sns)
+      .forEach((nft) => {
+        const solIdentity = _identityGraph.nodes.find(
+          (x) =>
+            x.identity === nft.ownerAddress[0]?.address &&
+            x.platform === PlatformType.solana
+        );
+        if (solIdentity?.id) {
+          solIdentity.nft.push(nft);
+        }
+      });
+
     const _resolved = _identityGraph.nodes
       .filter((x) => ![PlatformType.ens, PlatformType.sns].includes(x.platform))
       .map((x) => {
