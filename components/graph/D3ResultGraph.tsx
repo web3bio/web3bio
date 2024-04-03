@@ -40,10 +40,10 @@ const updateNodes = (nodeContainer) => {
     )
     .attr("style", (d) => `display:${d.isIdentity ? "normal" : "none"}`);
 
-  const ensBadge = nodeContainer
+  const badge = nodeContainer
     .append("svg:image")
-    .attr("class", "ens-icon")
-    .attr("xlink:href", SocialPlatformMapping(PlatformType.ens).icon)
+    .attr("class", "badge-icon")
+    .attr("xlink:href", (d) => SocialPlatformMapping(d.platform).icon)
     .attr("style", (d) => `display:${d.isIdentity ? "none" : "normal"}`);
 
   const displayName = nodeContainer
@@ -58,13 +58,14 @@ const updateNodes = (nodeContainer) => {
     .attr("id", (d) => d.id)
     .style("display", (d) => (d.isIdentity ? "normal" : "none"))
     .text((d) => {
-      if (d.displayName === d.identity || isDomainSearch(d.platform)) return formatText(d.address);
+      if (d.displayName === d.identity || isDomainSearch(d.platform))
+        return formatText(d.address);
       return formatText(d.identity || d.address);
     });
   return {
     identityBadge,
     identityIcon,
-    ensBadge,
+    badge,
     displayName,
     identity,
   };
@@ -186,7 +187,8 @@ export default function D3IdentityGraph(props) {
         .attr("dy", "3px")
         .attr("text-anchor", "middle")
         .text((d) =>
-          [d.source.platform, d.target.platform].includes(PlatformType.ens)
+          [d.source.platform, d.target.platform].includes(PlatformType.ens) ||
+          [d.source.platform, d.target.platform].includes(PlatformType.sns)
             ? ""
             : d.label
         );
@@ -223,7 +225,9 @@ export default function D3IdentityGraph(props) {
         .attr("r", (d) => getNodeRadius(d.isIdentity))
         .attr("stroke", (d) => SocialPlatformMapping(d.platform).color)
         .attr("fill", (d) =>
-          d.isIdentity ? "#fff" : SocialPlatformMapping(PlatformType.ens).color
+          d.platform === PlatformType.ens
+            ? SocialPlatformMapping(PlatformType.ens).color
+            : "#fff"
         );
       const maskCircle = nodeContainer
         .attr("id", (d) => d.id)
@@ -240,7 +244,7 @@ export default function D3IdentityGraph(props) {
           highlightNode(i);
         });
 
-      const { displayName, identity, identityBadge, identityIcon, ensBadge } =
+      const { displayName, identity, identityBadge, identityIcon, badge } =
         updateNodes(nodeContainer);
       const ticked = () => {
         // tick
@@ -287,7 +291,7 @@ export default function D3IdentityGraph(props) {
           .attr("x", (d) => d.x + IdentityNodeSize / 2 - 2)
           .attr("y", (d) => d.y - IdentityNodeSize / 2 - 18);
 
-        ensBadge.attr("x", (d) => d.x - 9).attr("y", (d) => d.y - 10);
+        badge.attr("x", (d) => d.x - 9).attr("y", (d) => d.y - 10);
 
         edgeLabels.attr("transform", (d) => {
           let transformation = ``;
