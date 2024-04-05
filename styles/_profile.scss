@@ -1373,7 +1373,12 @@
           display: flex;
           justify-content: space-between;
           padding: .6rem;
-
+          .profile-badge{
+            background: transparent;
+            box-shadow: none;
+            padding: 0;
+            min-width: unset;
+          }
           .list-item-right {
             align-items: center;
             display: flex;
