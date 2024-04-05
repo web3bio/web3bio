@@ -12,16 +12,16 @@ import _ from "lodash";
 import { isSameAddress } from "../../utils/utils";
 export default function PoapsModalContent({ onClose, asset }) {
   const [owners, setOwners] = useState(new Array());
-  const { data: poapDetial } = useSWR(
+  const { data: poapDetail } = useSWR(
     `${SIMPLEHASH_URL}/api/v0/nfts/poap_event/` + asset.asset.event.id,
     SimplehashFetcher
   );
   useEffect(() => {
-    if (poapDetial?.nfts?.length > 0) {
-      const sliced = poapDetial.nfts.slice(0, 5);
+    if (poapDetail?.nfts?.length > 0) {
+      const sliced = poapDetail.nfts.slice(0, 6);
       setOwners(sliced.map((x) => x.owners?.[0]));
     }
-  }, [poapDetial]);
+  }, [poapDetail]);
   const cached = useSelector<AppState, { [address: string]: ProfileInterface }>(
     (state) => state.universal.profiles
   );
