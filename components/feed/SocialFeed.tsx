@@ -146,7 +146,7 @@ const RenderSocialCard = (props) => {
                       {metadata.target?.media?.length > 0 && (
                         <div className={`feed-target-content media-gallery`}>
                           {metadata.target?.media?.map((x) =>
-                            x.mime_type.includes("image") ? (
+                            x.mime_type.includes("image", "video", "audio") ? (
                               <NFTAssetPlayer
                                 onClick={(e) => {
                                   openModal(ModalType.media, {
@@ -166,7 +166,7 @@ const RenderSocialCard = (props) => {
                                 alt={metadata.target?.body}
                               />
                             ) : (
-                              ""
+                              <></>
                             )
                           )}
                         </div>
@@ -194,7 +194,9 @@ const RenderSocialCard = (props) => {
                         metadata.action || "default"
                       ]
                     }
-                    {platform && <span className="feed-platform">&nbsp;</span>}
+                    {platform && (
+                      <span className="feed-platform">&nbsp;on {platform}</span>
+                    )}
                   </div>
                 )}
                 {metadata?.media?.length > 0 && (
@@ -204,7 +206,7 @@ const RenderSocialCard = (props) => {
                     }`}
                   >
                     {metadata.media?.map((x) =>
-                      x.mime_type.includes("image") ? (
+                      x.mime_type.includes("image", "video", "audio") ? (
                         <NFTAssetPlayer
                           key={x.address}
                           onClick={(e) => {
@@ -224,7 +226,7 @@ const RenderSocialCard = (props) => {
                           alt={"Feed Image"}
                         />
                       ) : (
-                        ""
+                        <></>
                       )
                     )}
                   </div>
@@ -256,24 +258,28 @@ const RenderSocialCard = (props) => {
                           }`}
                         >
                           {metadata.target?.media?.map((x) => (
-                            <NFTAssetPlayer
-                              onClick={(e) => {
-                                openModal(ModalType.media, {
-                                  type: x.mime_type || "image/png",
-                                  url: resolveMediaURL(x.address),
-                                });
-                                e.stopPropagation();
-                                e.preventDefault();
-                              }}
-                              className="feed-content-img"
-                              src={resolveMediaURL(x.address)}
-                              type={x.mime_type}
-                              key={x.address}
-                              width="auto"
-                              height="auto"
-                              placeholder={true}
-                              alt={"Feed Image"}
-                            />
+                            x.mime_type.includes("image", "video", "audio") ? (
+                              <NFTAssetPlayer
+                                onClick={(e) => {
+                                  openModal(ModalType.media, {
+                                    type: x.mime_type || "image/png",
+                                    url: resolveMediaURL(x.address),
+                                  });
+                                  e.stopPropagation();
+                                  e.preventDefault();
+                                }}
+                                className="feed-content-img"
+                                src={resolveMediaURL(x.address)}
+                                type={x.mime_type}
+                                key={x.address}
+                                width="auto"
+                                height="auto"
+                                placeholder={true}
+                                alt={"Feed Image"}
+                              />
+                            ) : (
+                              <></>
+                            )
                           ))}
                         </div>
                       )}

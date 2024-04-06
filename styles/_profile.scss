@@ -987,7 +987,7 @@
 
         .rss-item-tag {
           margin-bottom: .25rem;
-          
+
           .label {
             border-radius: .35rem;
           }
@@ -1004,6 +1004,79 @@
           &+.rss-item-title {
             font-size: .7rem;
           }
+        }
+      }
+    }
+  }
+
+  // TallyDAO Widget
+  .profile-widget-tally {
+    overflow-x: hidden;
+    position: relative;
+    width: 100%;
+
+    .tab {
+      max-width: 50%;
+
+      .active {
+        border-bottom: 1px solid $dark-color;
+      }
+
+      .tab-item {
+        cursor: pointer;
+        transition: all .2s ease;
+
+      }
+    }
+
+    .table {
+      width: 100%;
+      border-spacing: .25rem;
+
+      tr {
+        border-color: rgba($bg-color, .25);
+      }
+
+      th {
+        padding: .4rem;
+        text-align: left;
+      }
+
+      td {
+        font-size: .7rem;
+        font-weight: 400;
+        line-height: 1rem;
+        text-align: left;
+        
+        &:first-child {
+          width: 50%;
+        }
+      }
+
+      .table-item {
+        align-items: center;
+        display: flex;
+        gap: .25rem;
+        height: 1.2rem;
+
+        .dao-icon {
+          border-radius: 50%;
+          height: 1.2rem;
+          width: 1.2rem;
+  
+          .img-placeholder {
+            border-radius: 50%;
+            height: 100%;
+            width: 100%;
+          }
+  
+          img {
+            border-radius: 1rem;
+          }
+        }
+
+        .feed-token {
+          max-width: 10rem;
         }
       }
     }
@@ -1312,7 +1385,12 @@
           display: flex;
           justify-content: space-between;
           padding: .6rem;
-
+          .profile-badge{
+            background: transparent;
+            box-shadow: none;
+            padding: 0;
+            min-width: unset;
+          }
           .list-item-right {
             align-items: center;
             display: flex;

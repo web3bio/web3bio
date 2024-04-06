@@ -192,6 +192,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
       default: "",
       delete: "Deleted the record on profile",
       update: "Updated the profile",
+      create: "Created the profile",
       renew: "Renewed the domain",
       wrap: "Wrapped the domain",
     },

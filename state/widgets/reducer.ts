@@ -6,6 +6,7 @@ import {
   updateRssWidget,
   updateFeedsWidget,
   updatePhilandWidget,
+  updateTallyDAOWidget,
   updateArticleWidget,
 } from "./action";
 
@@ -22,6 +23,7 @@ export interface WidgetState {
   degen?: WidgetStateDetail;
   rss?: WidgetStateDetail;
   philand?: WidgetStateDetail;
+  dao?: WidgetStateDetail;
   article?: WidgetStateDetail;
 }
 
@@ -52,6 +54,11 @@ export const initialState: WidgetState = {
     loaded: false,
   },
   philand: {
+    isEmpty: null,
+    initLoading: true,
+    loaded: false,
+  },
+  dao: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
@@ -125,6 +132,17 @@ export default createReducer(initialState, (builder) =>
       (state, { payload: { isEmpty, initLoading } }) => {
         state.philand = {
           ...state.philand,
+          isEmpty,
+          initLoading,
+          loaded: true,
+        };
+      }
+    )
+    .addCase(
+      updateTallyDAOWidget,
+      (state, { payload: { isEmpty, initLoading } }) => {
+        state.dao = {
+          ...state.dao,
           isEmpty,
           initLoading,
           loaded: true,
