@@ -20,7 +20,7 @@ export default function ProfileCard({
   classNames,
 }: ProfileCardProps) {
   const relatedPath = `${data?.identity}${
-    data.platform.toLowerCase() === PlatformType.farcaster ? ".farcaster" : ""
+    data?.platform.toLowerCase() === PlatformType.farcaster ? ".farcaster" : ""
   }`;
   return (
     <div

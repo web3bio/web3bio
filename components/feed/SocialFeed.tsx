@@ -194,7 +194,9 @@ const RenderSocialCard = (props) => {
                         metadata.action || "default"
                       ]
                     }
-                    {platform && <span className="feed-platform">&nbsp;</span>}
+                    {platform && (
+                      <span className="feed-platform">&nbsp;on {platform}</span>
+                    )}
                   </div>
                 )}
                 {metadata?.media?.length > 0 && (

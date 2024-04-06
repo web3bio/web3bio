@@ -5,6 +5,8 @@ import { updateTallyDAOWidget } from "../../state/widgets/action";
 import { useQuery } from "@apollo/client";
 import { QUERY_DAO_DELEGATORS } from "../apis/tally";
 import LoadingSkeleton from "./LoadingSkeleton";
+import Image from "next/image";
+import Link from "next/link";
 import { Error } from "../shared/Error";
 import { Empty } from "../shared/Empty";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
@@ -124,14 +126,15 @@ const RenderWidgetTallyDAO = ({ address }) => {
               <tbody>
                 {renderData.map((x, idx) => {
                   const votesCount = formatBalance(x.votesCount, 18, 2);
-                  console.log(x.votesCount, x.delegatesVotesCount)
                   return activeTab === 0 ? (
                     <tr key={"td" + idx}>
                       <td>
                         <div className="table-item">
-                          <img
+                          <Image
                             className="dao-icon"
-                            src={x.organization.metadata?.icon}
+                            src={x.organization.metadata?.icon || ""}
+                            height={20}
+                            width={20}
                             alt={x.organization.name}
                           />
                           {x.organization.name}
@@ -162,22 +165,43 @@ const RenderWidgetTallyDAO = ({ address }) => {
                       <td>{formatBalance(x.votes, x.token.decimals, 2)} {x.token?.symbol}</td>
                       <td>
                         <div className="table-item">
-                          <div className="feed-token" title={x.delegator.name}>
-                            {x.delegator.picture && (
-                              <img
-                                className="feed-token-icon"
-                                src={x.delegator.picture || ""}
-                                alt={x.delegator.name}
-                                height={20}
-                                width={20}
-                                loading="lazy"
-                              />
-                            )}
-                            <span className="feed-token-value">
-                              {x.delegator.name}
-                            </span>
-                            <small className="feed-token-meta">{formatText(x.delegator?.address || "")}</small>
-                          </div>
+                          {x.delegator.ens ? (
+                            <Link className="feed-token" href={`${
+                              process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio"
+                            }/${x.delegator.ens}`} title={x.delegator.name} target="_blank">
+                              {x.delegator.picture && (
+                                <Image
+                                  className="feed-token-icon"
+                                  src={x.delegator.picture || ""}
+                                  alt={x.delegator.name}
+                                  height={20}
+                                  width={20}
+                                  loading="lazy"
+                                />
+                              )}
+                              <span className="feed-token-value">
+                                {x.delegator.name}
+                              </span>
+                              <small className="feed-token-meta">{formatText(x.delegator?.address || "")}</small>
+                            </Link>
+                          ) : (
+                            <div className="feed-token" title={x.delegator.name}>
+                              {x.delegator.picture && (
+                                <Image
+                                  className="feed-token-icon"
+                                  src={x.delegator.picture || ""}
+                                  alt={x.delegator.name}
+                                  height={20}
+                                  width={20}
+                                  loading="lazy"
+                                />
+                              )}
+                              <span className="feed-token-value">
+                                {x.delegator.name}
+                              </span>
+                              <small className="feed-token-meta">{formatText(x.delegator?.address || "")}</small>
+                            </div>
+                          )}
                         </div>
                       </td>
                     </tr>

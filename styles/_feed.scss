@@ -283,6 +283,11 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 
+  &:focus,
+  &:hover {
+    text-decoration: none;
+  }
+
   .feed-token-value {
     font-weight: 600;
     overflow: hidden;
