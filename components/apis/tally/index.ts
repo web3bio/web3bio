@@ -48,6 +48,12 @@ export const QUERY_DAO_DELEGATORS = gql`
             ens
             picture
           }
+          votes
+          token {
+            decimals
+            name
+            symbol
+          }
           governor {
             id
             tokenStats {
@@ -63,9 +69,6 @@ export const QUERY_DAO_DELEGATORS = gql`
               metadata {
                 icon
               }
-            }
-            tokens {
-              decimals
             }
           }
         }

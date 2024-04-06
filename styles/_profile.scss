@@ -1034,23 +1034,27 @@
       border-spacing: .25rem;
 
       tr {
-        border-color: rgba($bg-color, .5);
+        border-color: rgba($bg-color, .25);
       }
 
       th {
+        padding: .2rem .4rem;
         text-align: left;
       }
 
       td {
         font-size: .7rem;
         font-weight: 400;
+        line-height: 1rem;
         text-align: left;
+        width: 33.3333%;
       }
 
-      .dao-organization {
+      .table-item {
         align-items: center;
         display: flex;
         gap: .25rem;
+        height: 1.2rem;
 
         .dao-icon {
           width: 1rem;

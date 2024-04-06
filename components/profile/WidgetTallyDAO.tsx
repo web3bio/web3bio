@@ -8,9 +8,7 @@ import LoadingSkeleton from "./LoadingSkeleton";
 import { Error } from "../shared/Error";
 import { Empty } from "../shared/Empty";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { formatEther } from "ethers";
-import { formatText } from "../../utils/utils";
-import { Avatar } from "../shared/Avatar";
+import { formatText, formatBalance } from "../../utils/utils";
 
 const RenderWidgetTallyDAO = ({ address }) => {
   // 0: delegators 1:delegating to
@@ -87,7 +85,7 @@ const RenderWidgetTallyDAO = ({ address }) => {
                 }}
                 className={`btn btn-sm${(activeTab === 1 && " active") || ""}`}
               >
-                Delegating to
+                Delegating To
               </button>
             </div>
           </div>
@@ -100,72 +98,92 @@ const RenderWidgetTallyDAO = ({ address }) => {
         ) : !renderData.length ? (
           <Empty
             text={`Please try tab "${
-              activeTab === 0 ? "Delegating to" : "Delegators"
+              activeTab === 0 ? "Delegating To" : "Delegators"
             }"`}
           />
         ) : (
           <div className="profile-widget-body">
             <table className="table">
-              <tr>
-                <th>DAO</th>
-                <th>Voting Power</th>
-                <th>% of Delegated Votes</th>
-                <th>Received Delegations</th>
-              </tr>
-              {renderData.map((x, idx) => {
-                const votesCount = Number(
-                  Number(formatEther(x.votesCount || "0")).toFixed(2)
-                );
-                const delegatesVotesCount = Number(
-                  Number(
-                    formatEther(x.organization?.delegatesVotesCount || "0")
-                  ).toFixed(2)
-                );
-                return activeTab === 0 ? (
-                  <tr key={"td" + idx}>
-                    <td>
-                      <div className="dao-organization">
-                        <NFTAssetPlayer
-                          className="dao-icon"
-                          src={x.organization.metadata?.icon}
-                          alt={x.organization.name}
-                        />
-                        {x.organization.name}
-                      </div>
-                    </td>
-                    <td>{Number(formatEther(x.votesCount || "0")).toFixed(2)}</td>
-                    <td>
-                      {((votesCount / delegatesVotesCount) * 100).toFixed(2) +
-                        "%"}
-                    </td>
-                    <td>
-                      <div className="badge">
-                        {x.delegatorsCount} addresses delegating
-                      </div>
-                    </td>
+              {activeTab === 0 ? (
+                <thead>
+                  <tr>
+                    <th>DAO</th>
+                    <th>Voting Power</th>
+                    <th>Received Delegations</th>
                   </tr>
-                ) : (
-                  <tr key={"td" + idx}>
-                    <td>
-                      <div className="dao-organization">
-                        <NFTAssetPlayer
-                          className="dao-icon"
-                          src={x.governor.organization.metadata?.icon}
-                          alt={x.governor.organization.name}
-                        />
-                        {x.governor.organization.name}
-                      </div>
-                    </td>
-                    <td>0</td>
-                    <td>0.00%</td>
-                    <td className="dao-organization">
-                      <div className="badge">
-                        Delegating to {formatText(x.delegator?.address || "")}
-                      </div>
-                    </td>
+                </thead>
+              ) : (
+                <thead>
+                  <tr>
+                    <th>DAO</th>
+                    <th>Voting Power</th>
+                    <th>Delegating To</th>
                   </tr>
-                );
-              })}
+                </thead>
+              )}
+              <tbody>
+                {renderData.map((x, idx) => {
+                  const votesCount = formatBalance(x.votesCount, 18, 2);
+                  console.log(x.votesCount, x.delegatesVotesCount)
+                  return activeTab === 0 ? (
+                    <tr key={"td" + idx}>
+                      <td>
+                        <div className="table-item">
+                          <img
+                            className="dao-icon"
+                            src={x.organization.metadata?.icon}
+                            alt={x.organization.name}
+                          />
+                          {x.organization.name}
+                        </div>
+                      </td>
+                      <td>
+                        {votesCount}{" "}
+                        ({(Math.abs(Number(x.votesCount) / Number(x.organization?.delegatesVotesCount)) * 100).toFixed(2) +"%"})
+                      </td>
+                      <td>
+                        <div className="badge">
+                          {x.delegatorsCount} addresses delegating
+                        </div>
+                      </td>
+                    </tr>
+                  ) : (
+                    <tr key={"td" + idx}>
+                      <td>
+                        <div className="table-item">
+                          <NFTAssetPlayer
+                            className="dao-icon"
+                            src={x.governor.organization.metadata?.icon}
+                            alt={x.governor.organization.name}
+                          />
+                          {x.governor.organization.name}
+                        </div>
+                      </td>
+                      <td>{formatBalance(x.votes, x.token.decimals, 2)} {x.token?.symbol}</td>
+                      <td>
+                        <div className="table-item">
+                          <div className="feed-token" title={x.delegator.name}>
+                            {x.delegator.picture && (
+                              <img
+                                className="feed-token-icon"
+                                src={x.delegator.picture || ""}
+                                alt={x.delegator.name}
+                                height={20}
+                                width={20}
+                                loading="lazy"
+                              />
+                            )}
+                            <span className="feed-token-value">
+                              {x.delegator.name}
+                            </span>
+                            <small className="feed-token-meta">{formatText(x.delegator?.address || "")}</small>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
             </table>
           </div>
         )}
