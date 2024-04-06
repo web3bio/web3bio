@@ -58,6 +58,7 @@ const RenderWidgetTallyDAO = ({ address }) => {
 
   const renderData =
     activeTab === 0 ? data?.delegates?.nodes : data?.delegatees?.nodes;
+  console.log(data?.delegatees?.nodes)
 
   return (
     <div className="profile-widget-full" id="DAO">
@@ -126,15 +127,15 @@ const RenderWidgetTallyDAO = ({ address }) => {
               <tbody>
                 {renderData.map((x, idx) => {
                   const votesCount = formatBalance(x.votesCount, 18, 2);
-                  return activeTab === 0 ? (
+                  return activeTab === 0 ? Number(x.organization?.delegatesVotesCount) !== 0 && (
                     <tr key={"td" + idx}>
                       <td>
                         <div className="table-item">
                           <Image
                             className="dao-icon"
                             src={x.organization.metadata?.icon || ""}
-                            height={20}
-                            width={20}
+                            height={24}
+                            width={24}
                             alt={x.organization.name}
                           />
                           {x.organization.name}
@@ -146,7 +147,7 @@ const RenderWidgetTallyDAO = ({ address }) => {
                       </td>
                       <td>
                         <div className="badge">
-                          {x.delegatorsCount} addresses delegating
+                          <strong>{x.delegatorsCount}</strong> addresses delegating
                         </div>
                       </td>
                     </tr>
@@ -154,12 +155,17 @@ const RenderWidgetTallyDAO = ({ address }) => {
                     <tr key={"td" + idx}>
                       <td>
                         <div className="table-item">
-                          <NFTAssetPlayer
+                          <Image
                             className="dao-icon"
-                            src={x.governor.organization.metadata?.icon}
+                            src={x.governor.organization.metadata?.icon || ""}
+                            height={24}
+                            width={24}
                             alt={x.governor.organization.name}
                           />
-                          {x.governor.organization.name}
+                          <div className="dao-content">
+                            {x.governor.organization.name}{" "}
+                            <small className="label">{x.governor.name}</small>
+                          </div>
                         </div>
                       </td>
                       <td>{formatBalance(x.votes, x.token.decimals, 2)} {x.token?.symbol}</td>
@@ -174,8 +180,8 @@ const RenderWidgetTallyDAO = ({ address }) => {
                                   className="feed-token-icon"
                                   src={x.delegator.picture || ""}
                                   alt={x.delegator.name}
-                                  height={20}
-                                  width={20}
+                                  height={24}
+                                  width={24}
                                   loading="lazy"
                                 />
                               )}
@@ -191,8 +197,8 @@ const RenderWidgetTallyDAO = ({ address }) => {
                                   className="feed-token-icon"
                                   src={x.delegator.picture || ""}
                                   alt={x.delegator.name}
-                                  height={20}
-                                  width={20}
+                                  height={24}
+                                  width={24}
                                   loading="lazy"
                                 />
                               )}
