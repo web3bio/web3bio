@@ -98,7 +98,7 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
           className="feed-token-value"
           title={data?.displayName ? `${data?.displayName} (${identity})` : identity}
         >
-          {data?.displayName || formatText(identity)}
+          {data?.displayName || (fullProfile ? identity : formatText(identity))}
         </span>
         {data?.identity && fullProfile && (
           <span className="feed-token-meta">

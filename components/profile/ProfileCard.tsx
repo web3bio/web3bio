@@ -19,8 +19,8 @@ export default function ProfileCard({
   simple,
   classNames,
 }: ProfileCardProps) {
-  const relatedPath = `${data.identity}${
-    data.platform.toLowerCase() === PlatformType.farcaster ? ".farcaster" : ""
+  const relatedPath = `${data?.identity}${
+    data?.platform.toLowerCase() === PlatformType.farcaster ? ".farcaster" : ""
   }`;
   return (
     <div
