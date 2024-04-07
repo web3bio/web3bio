@@ -58,7 +58,8 @@ const updateNodes = (nodeContainer) => {
     .attr("id", (d) => d.id)
     .style("display", (d) => (d.isIdentity ? "normal" : "none"))
     .text((d) => {
-      if (d.displayName === d.identity || isDomainSearch(d.platform)) return formatText(d.address);
+      if (d.displayName === d.identity || isDomainSearch(d.platform))
+        return formatText(d.address);
       return formatText(d.identity || d.address);
     });
   return {
@@ -75,7 +76,7 @@ export default function D3IdentityGraph(props) {
     props;
   const [currentNode, setCurrentNode] = useState<any>(null);
   const [hideTooltip, setHideToolTip] = useState(true);
-  const [transform, setTransform] = useState([0, 0]);
+  const [transform, setTransform] = useState([0, 0, 1]);
 
   useEffect(() => {
     if (!data) return;
@@ -107,13 +108,13 @@ export default function D3IdentityGraph(props) {
             .zoom()
             .scaleExtent([1, 10])
             .on("zoom", (e) => {
-              svg.attr("transform", e.transform);
+              svg.attr("transform", d3.zoomTransform(svg.node()));
             })
             .on("start", () => {
               setHideToolTip(true);
             })
             .on("end", (e) => {
-              setTransform([e.transform.x, e.transform.y]);
+              setTransform([e.transform.x, e.transform.y, e.transform.k]);
               setHideToolTip(false);
             })
         )
@@ -392,11 +393,14 @@ export default function D3IdentityGraph(props) {
           style={{
             left:
               currentNode.x +
-              (currentNode.isIdentity ? IdentityNodeSize : NFTNodeSize) / 3,
+              transform[0] / transform[2] +
+              (currentNode.isIdentity ? IdentityNodeSize : NFTNodeSize) *
+                transform[2],
             top:
               currentNode.y +
-              (currentNode.isIdentity ? IdentityNodeSize : NFTNodeSize) / 3,
-            transform: `translate(${transform[0]}px,${transform[1]}px)`,
+              transform[1] / transform[2] +
+              (currentNode.isIdentity ? IdentityNodeSize : NFTNodeSize) *
+                transform[2],
           }}
           onClick={(e) => {
             e.preventDefault();
