@@ -12,6 +12,8 @@ import { Empty } from "../shared/Empty";
 import { calcTranslation, resolveIdentityGraphData } from "./utils";
 import { isValidEthereumAddress } from "../../utils/regexp";
 
+let CurrentId = null;
+
 const IdentityNodeSize = 48;
 const NFTNodeSize = 14;
 
@@ -76,7 +78,7 @@ export default function D3IdentityGraph(props) {
     props;
   const [currentNode, setCurrentNode] = useState<any>(null);
   const [hideTooltip, setHideToolTip] = useState(true);
-  const [transform, setTransform] = useState([0, 0, 1]);
+  const [transform, setTransform] = useState<any>(null);
 
   useEffect(() => {
     if (!data) return;
@@ -87,10 +89,22 @@ export default function D3IdentityGraph(props) {
       const height = chartContainer?.offsetHeight!;
       const links = _data.links.map((d) => ({ ...d }));
       const nodes = _data.nodes.map((d) => ({ ...d }));
+      const resolveBoundingTransform = () => {
+        const curNode = nodeContainer.filter((l) => l.id === CurrentId).node();
+        if (!curNode) return;
+        const rect = curNode.getBoundingClientRect();
 
+        setTransform({
+          offsetX: rect.left,
+          offsetY: rect.top,
+          offsetWidth: rect.width,
+        });
+      };
       const removeHighlight = () => {
         setHideToolTip(true);
         setCurrentNode(null);
+        setTransform(null);
+        CurrentId = null;
         edgeLabels.attr("class", "edge-label");
         edgePath.attr("class", "edge-path");
         maskCircle.attr("opacity", 0);
@@ -106,15 +120,15 @@ export default function D3IdentityGraph(props) {
         .call(
           d3
             .zoom()
-            .scaleExtent([1, 10])
+            .scaleExtent([0.3, 10])
             .on("zoom", (e) => {
               svg.attr("transform", d3.zoomTransform(svg.node()));
             })
             .on("start", () => {
               setHideToolTip(true);
             })
-            .on("end", (e) => {
-              setTransform([e.transform.x, e.transform.y, e.transform.k]);
+            .on("end", () => {
+              resolveBoundingTransform();
               setHideToolTip(false);
             })
         )
@@ -215,7 +229,10 @@ export default function D3IdentityGraph(props) {
             .drag()
             .on("drag", dragged)
             .on("start", () => setHideToolTip(true))
-            .on("end", () => setHideToolTip(false))
+            .on("end", () => {
+              resolveBoundingTransform();
+              setHideToolTip(false);
+            })
         );
 
       const circle = nodeContainer
@@ -313,6 +330,8 @@ export default function D3IdentityGraph(props) {
       const highlightNode = (i) => {
         if (hideTooltip) setHideToolTip(false);
         setCurrentNode(i);
+        CurrentId = i.id;
+        resolveBoundingTransform();
         nodeContainer.filter((l) => l.id === i.id).raise();
         edgeLabels
           .filter((l) => l.id.includes(i.id))
@@ -391,16 +410,8 @@ export default function D3IdentityGraph(props) {
         <div
           className="web3bio-tooltip"
           style={{
-            left:
-              currentNode.x +
-              transform[0] / transform[2] +
-              (currentNode.isIdentity ? IdentityNodeSize : NFTNodeSize) *
-                transform[2],
-            top:
-              currentNode.y +
-              transform[1] / transform[2] +
-              (currentNode.isIdentity ? IdentityNodeSize : NFTNodeSize) *
-                transform[2],
+            left: transform.offsetX + transform.offsetWidth / 2,
+            top: transform.offsetY + transform.offsetWidth / 2,
           }}
           onClick={(e) => {
             e.preventDefault();
