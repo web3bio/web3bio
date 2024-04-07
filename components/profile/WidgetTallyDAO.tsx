@@ -177,7 +177,7 @@ const RenderWidgetTallyDAO = ({ address }) => {
                                 width={24}
                                 alt={x.governor.organization.name}
                               />
-                              <div className="dao-content">
+                              <div className="dao-content text-ellipsis" title={x.governor.organization.name + " - " + x.governor.name}>
                                 {x.governor.organization.name}{" "}
                                 <small className="label">{x.governor.name}</small>
                               </div>
