@@ -52,7 +52,7 @@ const RenderWidgetTallyDAO = ({ address }) => {
     if (data && !data?.delegates?.nodes?.length) {
       setActiveTab(1);
     }
-  }, [data, loading, dispatch, activeTab]);
+  }, [data, loading, dispatch]);
 
   if (
     !(data?.delegates?.nodes?.length > 0 || data?.delegatees?.nodes?.length > 0)
