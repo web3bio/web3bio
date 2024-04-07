@@ -199,16 +199,6 @@ const RenderWidgetTallyDAO = ({ address }) => {
                                   title={x.delegator.name}
                                   target="_blank"
                                 >
-                                  {x.delegator.picture && (
-                                    <Image
-                                      className="feed-token-icon"
-                                      src={x.delegator.picture || ""}
-                                      alt={x.delegator.name}
-                                      height={24}
-                                      width={24}
-                                      loading="lazy"
-                                    />
-                                  )}
                                   <span className="feed-token-value">
                                     {x.delegator.name}
                                   </span>
