@@ -201,7 +201,7 @@ const RenderTransactionCard = (props) => {
                           type={"image/png"}
                           width={20}
                           height={20}
-                          alt={x.title}
+                          alt={x.title || x.name}
                         />
                       )}
                       <span className="feed-token-value">
