@@ -105,7 +105,7 @@ export default function D3IdentityGraph(props) {
         .call(
           d3
             .zoom()
-            .scaleExtent([1, 1])
+            .scaleExtent([1, 10])
             .on("zoom", (e) => {
               svg.attr("transform", e.transform);
             })
