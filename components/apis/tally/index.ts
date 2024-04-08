@@ -11,12 +11,6 @@ export const QUERY_DAO_DELEGATORS = gql`
           id
           delegatorsCount
           votesCount
-          account {
-            name
-            address
-            ens
-            picture
-          }
           organization {
             id
             name
@@ -35,18 +29,11 @@ export const QUERY_DAO_DELEGATORS = gql`
         ... on DelegationV2 {
           delegate {
             id
-            account {
-              name
-              address
-              ens
-              picture
-            }
           }
           delegator {
             name
             address
             ens
-            picture
           }
           votes
           token {
@@ -61,8 +48,6 @@ export const QUERY_DAO_DELEGATORS = gql`
               supply
             }
             name
-            quorum
-            kind
             organization {
               name
               slug

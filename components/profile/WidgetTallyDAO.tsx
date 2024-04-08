@@ -177,7 +177,7 @@ const RenderWidgetTallyDAO = ({ address }) => {
                                 width={24}
                                 alt={x.governor.organization.name}
                               />
-                              <div className="dao-content">
+                              <div className="dao-content text-ellipsis" title={x.governor.organization.name + " - " + x.governor.name}>
                                 {x.governor.organization.name}{" "}
                                 <small className="label">{x.governor.name}</small>
                               </div>
@@ -199,16 +199,6 @@ const RenderWidgetTallyDAO = ({ address }) => {
                                   title={x.delegator.name}
                                   target="_blank"
                                 >
-                                  {x.delegator.picture && (
-                                    <Image
-                                      className="feed-token-icon"
-                                      src={x.delegator.picture || ""}
-                                      alt={x.delegator.name}
-                                      height={24}
-                                      width={24}
-                                      loading="lazy"
-                                    />
-                                  )}
                                   <span className="feed-token-value">
                                     {x.delegator.name}
                                   </span>

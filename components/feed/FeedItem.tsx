@@ -105,6 +105,7 @@ const RenderFeedContent = (props) => {
           actions={resolveDuplicatedActions(actions, id, [
             ActivityType.mint,
             ActivityType.trade,
+            ActivityType.transfer,
           ])}
         />
       );

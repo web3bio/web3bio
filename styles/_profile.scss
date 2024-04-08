@@ -1015,6 +1015,10 @@
     position: relative;
     width: 100%;
 
+    .profile-widget-body {
+      overflow-x: auto;
+    }
+
     .tab {
       max-width: 50%;
 
@@ -1047,6 +1051,7 @@
         font-weight: 400;
         line-height: 1rem;
         text-align: left;
+        width: 25%;
         
         &:first-child {
           width: 50%;
@@ -1058,6 +1063,14 @@
         display: flex;
         gap: .25rem;
         height: 1.2rem;
+
+        .dao-content {
+          max-width: 16rem;
+
+          .label {
+            display: inline;
+          }
+        }
 
         .dao-icon {
           border-radius: 50%;
