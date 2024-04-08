@@ -165,9 +165,7 @@ const RenderSocialCard = (props) => {
                                 placeholder={true}
                                 alt={metadata.target?.body}
                               />
-                            ) : (
-                              <></>
-                            )
+                            ) : null
                           )}
                         </div>
                       )}
@@ -225,9 +223,7 @@ const RenderSocialCard = (props) => {
                           placeholder={true}
                           alt={"Feed Image"}
                         />
-                      ) : (
-                        <></>
-                      )
+                      ) : null
                     )}
                   </div>
                 )}
@@ -257,7 +253,7 @@ const RenderSocialCard = (props) => {
                               : ""
                           }`}
                         >
-                          {metadata.target?.media?.map((x) => (
+                          {metadata.target?.media?.map((x) =>
                             x.mime_type.includes("image", "video", "audio") ? (
                               <NFTAssetPlayer
                                 onClick={(e) => {
@@ -277,10 +273,8 @@ const RenderSocialCard = (props) => {
                                 placeholder={true}
                                 alt={"Feed Image"}
                               />
-                            ) : (
-                              <></>
-                            )
-                          ))}
+                            ) : null
+                          )}
                         </div>
                       )}
                     </Link>
