@@ -261,57 +261,63 @@
       color: $gray-color;
       font-size: .7rem;
     }
+  }
+}
 
-    .feed-token {
-      align-items: center;
-      background: lighten($bg-color, 6%);
-      border: .05rem solid $border-color;
-      border-radius: .3rem;
-      box-shadow: 0 .05rem .2rem rgba($dark-color, .05);
-      display: inline-flex;
-      flex-wrap: nowrap;
-      font-size: .7rem;
-      gap: .2rem;
-      height: 1.2rem;
-      margin: .05rem;
-      max-width: $size-md;
-      padding: .1rem .2rem;
-      position: relative;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+// Feed Token
+.feed-token {
+  align-items: center;
+  background: lighten($bg-color, 6%);
+  border: .05rem solid $border-color;
+  border-radius: .3rem;
+  box-shadow: 0 .05rem .2rem rgba($dark-color, .05);
+  display: inline-flex;
+  flex-wrap: nowrap;
+  font-size: .7rem;
+  gap: .2rem;
+  height: 1.2rem;
+  margin: .05rem;
+  max-width: $size-md;
+  padding: .1rem .2rem;
+  position: relative;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
-      .feed-token-value {
-        font-weight: 600;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
+  &:focus,
+  &:hover {
+    text-decoration: none;
+  }
 
-      .avatar {
-        margin-left: -.1rem;
-      }
+  .feed-token-value {
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
-      .feed-token-icon {
-        border-radius: .25rem;
-        flex: 0 0 1rem;
-        height: 1rem;
-        margin-left: -.1rem;
-        width: 1rem;
+  .avatar {
+    margin-left: -.1rem;
+  }
 
-        .img-responsive {
-          border-radius: .25rem;
-          height: 1rem;
-          object-fit: cover;
-          width: 1rem;
-        }
-      }
+  .feed-token-icon {
+    border-radius: .25rem;
+    flex: 0 0 1rem;
+    height: 1rem;
+    margin-left: -.1rem;
+    width: 1rem;
 
-      .feed-token-meta {
-        color: $gray-color-dark;
-        font-size: 90%;
-        font-weight: 400;
-        line-height: 1.2rem;
-      }
+    .img-responsive {
+      border-radius: .25rem;
+      height: 1rem;
+      object-fit: cover;
+      width: 1rem;
     }
+  }
+
+  .feed-token-meta {
+    color: $gray-color-dark;
+    font-size: 90%;
+    font-weight: 400;
+    line-height: 1.2rem;
   }
 }

@@ -21,7 +21,8 @@ import { WidgetState } from "../../state/widgets/reducer";
 import { WidgetDegenScore } from "./WidgetDegenScore";
 import { WidgetRSS } from "./WidgetRSS";
 import { WidgetPhiland } from "./WidgetPhiland";
-import { isValidEthereumAddress, regexEns, regexEth } from "../../utils/regexp";
+import { WidgetTallyDAO } from "./WidgetTallyDAO";
+import { isValidEthereumAddress, regexEns } from "../../utils/regexp";
 import LoadingSkeleton from "./LoadingSkeleton";
 import { WidgetTypes } from "../../utils/profile";
 import Web3bioBadge from "./ProfileFooter";
@@ -47,7 +48,8 @@ export default function ProfileMain(props) {
   };
   const isEmptyProfile = useCallback(() => {
     const source = Object.values(profileWidgetStates).filter((x) => x.loaded);
-    return source.length > 4 && source.every((x) => x.isEmpty);
+    // 5 is all widgets num - basic widgets num (nft, poaps, feeds)
+    return source.length > 5 && source.every((x) => x.isEmpty);
   }, [profileWidgetStates])();
 
   const isBasicLoadingFinished = useCallback(() => {
@@ -352,6 +354,20 @@ export default function ProfileMain(props) {
                   )}
 
                   <div className="web3-section-widgets">
+                    {isValidEthereumAddress(data.address) && (
+                      <Suspense fallback={<p>Loading DAO Memberships...</p>}>
+                        <WidgetTallyDAO address={data.address} />
+                      </Suspense>
+                    )}
+                  </div>
+
+                  <div className="web3-section-widgets">
+                    <Suspense fallback={<p>Loading DegenScore...</p>}>
+                      <WidgetDegenScore address={data.address} />
+                    </Suspense>
+                  </div>
+
+                  <div className="web3-section-widgets">
                     {(data.platform === PlatformType.ens ||
                       regexEns.test(data.identity)) && (
                       <Suspense fallback={<p>Loading Phi Land...</p>}>
@@ -366,9 +382,6 @@ export default function ProfileMain(props) {
                         />
                       </Suspense>
                     )}
-                    <Suspense fallback={<p>Loading DegenScore...</p>}>
-                      <WidgetDegenScore address={data.address} />
-                    </Suspense>
                   </div>
                 </>
               )}

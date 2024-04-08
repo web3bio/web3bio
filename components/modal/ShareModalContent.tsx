@@ -26,6 +26,17 @@ const shareMap = [
       )}`,
     action: "Share via Telegram",
   },
+  {
+    platform: "warpcast",
+    icon: "icons/icon-farcaster.svg",
+    shareURL: (url, name) =>
+      `https://warpcast.com/~/compose?embeds[]=${encodeURIComponent(
+        url
+      )}&text=${encodeURIComponent(
+        `Hey! Check out and explore ${name}'s Web3 profile. `
+      )}`,
+    action: "Share on Warpcast",
+  },
 ];
 
 export default function ShareModalContent(props) {
@@ -75,11 +86,11 @@ export default function ShareModalContent(props) {
           {shareMap.map((x) => (
             <a
               key={x.platform}
-              className="btn btn-lg share-item"
+              className="btn share-item"
               href={x.shareURL(url, profile.displayName)}
               target="_blank"
             >
-              <SVG fill="#000" src={x.icon} height={20} width={20} />
+              <SVG fill="#000" src={x.icon} height={18} width={18} />
               {x.action}
             </a>
           ))}

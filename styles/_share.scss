@@ -28,8 +28,10 @@
   }
 
   .btn-group {
+    flex-wrap: nowrap;
     .btn {
       gap: .2rem;
+      font-size: .6rem
     }
   }
 
@@ -47,7 +49,7 @@
     @media screen and (max-width: $size-md) {
       min-height: 8rem;
     }
-
+    
     .img-responsive {
       border-radius: .5rem;
       height: 12rem;

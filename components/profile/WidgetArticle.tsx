@@ -1,8 +1,6 @@
 "use client";
 import { useEffect, memo } from "react";
 import useSWR from "swr";
-import SVG from "react-inlinesvg";
-import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { updateArticleWidget } from "../../state/widgets/action";
 import { FIREFLY_ENDPOINT_DEV, FireflyFetcher } from "../apis/firefly";
@@ -55,15 +53,6 @@ const RenderWidgetArticle = ({ profile, openModal }) => {
   // if (process.env.NODE_ENV !== "production") {
   //   console.log("Article Data:", data);
   // }
-
-  // const ParagraphURLItem = (() => {
-  //   try {
-  //     return JSON.parse(data?.find((x) => x.platform === 2)?.content_body || "")
-  //       .url;
-  //   } catch {
-  //     return null;
-  //   }
-  // })();
 
   return (
     <div className="profile-widget-full" id="mirror">

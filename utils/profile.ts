@@ -28,5 +28,6 @@ export enum WidgetTypes {
   rss = "rss",
   degen = "degen",
   phi = "phi",
+  dao = "dao",
   default = "default",
 }

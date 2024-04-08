@@ -14,5 +14,7 @@ export const updateDegenWidget =
   createAction<UpdateWidgetState>("widgets/degen");
 export const updatePhilandWidget =
   createAction<UpdateWidgetState>("widgets/philand");
+export const updateTallyDAOWidget =
+  createAction<UpdateWidgetState>("widgets/tallyDAO");
 export const updateArticleWidget =
   createAction<UpdateWidgetState>("widgets/article");
