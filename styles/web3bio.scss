@@ -287,34 +287,33 @@ body {
   }
 }
 
-// -Web3.bio Widgets Control
+// Web3.bio Widgets Control
 .widgets-control {
-  position: fixed;
-  z-index: 10;
-  top: 50%;
-  right: 1rem;
-  transform: translateY(-50%);
+  align-items: center;
+  background: rgba($bg-color, .5);
+  border-radius: 1rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  font-size: 1rem;
   gap: .25rem;
-  background: $light-color;
-  padding: .5rem .25rem;
-  border-radius: 1rem;
   height: fit-content;
-  transition: all .3s ease;
-  box-shadow: 0 .1rem .4rem 0.05rem rgba($dark-color, .25), 0 .1rem .2rem rgba($dark-color, .05);
+  padding: .4rem;
+  position: fixed;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all .25s ease;
+  width: 2rem;
+  z-index: 10;
+
+  &:hover {
+    background: rgba($bg-color, 1);
+  }
 
   .widget-control-item {
-    font-size: 1rem;
     text-align: center;
     text-decoration: none;
-    transition: all .2s ease;
     cursor: pointer;
-
-    &:hover {
-      transform: scale(1.15);
-    }
   }
 }
 

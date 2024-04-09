@@ -42,7 +42,7 @@ const RenderWidgetArticle = ({ profile, openModal }) => {
     if (!isLoading) {
       dispatch(
         updateArticleWidget({
-          isEmpty: !data?.data?.length,
+          isEmpty: !data?.length,
           initLoading: false,
         })
       );
@@ -55,7 +55,7 @@ const RenderWidgetArticle = ({ profile, openModal }) => {
   // }
 
   return (
-    <div className="profile-widget-full" id="mirror">
+    <div className="profile-widget-full" id="article">
       <div className="profile-widget profile-widget-rss">
         <div className="profile-widget-header">
           <h2 className="profile-widget-title">

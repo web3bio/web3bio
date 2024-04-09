@@ -30,7 +30,7 @@ import { WidgetArticle } from "./WidgetArticle";
 import WidgetsControl from "./WidgetsControl";
 
 export default function ProfileMain(props) {
-  const { data, pageTitle, platform, nfts, relations, domain, fallbackAvatar } =
+  const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
     props;
   const [isCopied, setIsCopied] = useState(false);
   const { isOpen, modalType, closeModal, openModal, params } = useModal();
@@ -84,7 +84,7 @@ export default function ProfileMain(props) {
       <WidgetsControl states={profileWidgetStates} />
 
       <div className="columns">
-        <div className="column col-4 col-md-12">
+        <div className="column col-4 col-lg-12">
           <div
             className="web3-profile-base"
             itemProp="mainEntity"
@@ -148,20 +148,6 @@ export default function ProfileMain(props) {
                     <span className="profile-label ml-1 mr-1">
                       {formatText(data.address)}
                     </span>
-                  </Clipboard>
-                  <Clipboard
-                    component="div"
-                    className="btn btn-sm"
-                    data-clipboard-text={data.address}
-                    onSuccess={onCopySuccess}
-                    title="Copy this wallet address"
-                  >
-                    <SVG
-                      src="../icons/icon-copy.svg"
-                      width={20}
-                      height={20}
-                      className="action"
-                    />
                   </Clipboard>
                   <AddressMenu profile={data} />
                 </div>
@@ -275,7 +261,7 @@ export default function ProfileMain(props) {
             )}
           </div>
         </div>
-        <div className="column col-8 col-md-12">
+        <div className="column col-7 col-lg-12">
           <div className="web3-section-widgets">
             {data?.links?.map((item, idx) => {
               if (item.handle) {

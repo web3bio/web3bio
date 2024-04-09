@@ -10,11 +10,11 @@ export const updateFeedsWidget =
 export const updatePoapsWidget =
   createAction<UpdateWidgetState>("widgets/poaps");
 export const updateRssWidget = createAction<UpdateWidgetState>("widgets/rss");
+export const updateArticleWidget =
+  createAction<UpdateWidgetState>("widgets/article");
+export const updateTallyDAOWidget =
+  createAction<UpdateWidgetState>("widgets/tallyDAO");
 export const updateDegenWidget =
   createAction<UpdateWidgetState>("widgets/degen");
 export const updatePhilandWidget =
   createAction<UpdateWidgetState>("widgets/philand");
-export const updateTallyDAOWidget =
-  createAction<UpdateWidgetState>("widgets/tallyDAO");
-export const updateArticleWidget =
-  createAction<UpdateWidgetState>("widgets/article");

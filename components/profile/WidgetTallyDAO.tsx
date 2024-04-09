@@ -58,7 +58,7 @@ const RenderWidgetTallyDAO = ({ address }) => {
     return null;
 
   return (
-    <div className="profile-widget-full" id="DAO">
+    <div className="profile-widget-full" id="tally">
       <div className="profile-widget profile-widget-tally">
         <div className="profile-widget-header">
           <h2 className="profile-widget-title">

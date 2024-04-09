@@ -20,17 +20,22 @@ interface WidgetStateDetail {
 }
 export interface WidgetState {
   nft: WidgetStateDetail;
-  poaps?: WidgetStateDetail;
   feeds?: WidgetStateDetail;
-  degen?: WidgetStateDetail;
+  poaps?: WidgetStateDetail;
   rss?: WidgetStateDetail;
-  philand?: WidgetStateDetail;
-  dao?: WidgetStateDetail;
   article?: WidgetStateDetail;
+  dao?: WidgetStateDetail;
+  degen?: WidgetStateDetail;
+  philand?: WidgetStateDetail;
 }
 
 export const initialState: WidgetState = {
   nft: {
+    isEmpty: null,
+    initLoading: true,
+    loaded: false,
+  },
+  feeds: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
@@ -45,17 +50,7 @@ export const initialState: WidgetState = {
     initLoading: true,
     loaded: false,
   },
-  degen: {
-    isEmpty: null,
-    initLoading: true,
-    loaded: false,
-  },
-  feeds: {
-    isEmpty: null,
-    initLoading: true,
-    loaded: false,
-  },
-  philand: {
+  article: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
@@ -65,7 +60,12 @@ export const initialState: WidgetState = {
     initLoading: true,
     loaded: false,
   },
-  article: {
+  degen: {
+    isEmpty: null,
+    initLoading: true,
+    loaded: false,
+  },
+  philand: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
@@ -84,6 +84,19 @@ export default createReducer(initialState, (builder) =>
           loaded: true,
           icon: "🖼",
           key: "nft",
+        };
+      }
+    )
+    .addCase(
+      updateFeedsWidget,
+      (state, { payload: { isEmpty, initLoading } }) => {
+        state.feeds = {
+          ...state.feeds,
+          isEmpty,
+          initLoading,
+          loaded: true,
+          icon: "🌈",
+          key: "feeds",
         };
       }
     )
@@ -113,41 +126,15 @@ export default createReducer(initialState, (builder) =>
       }
     )
     .addCase(
-      updateDegenWidget,
+      updateArticleWidget,
       (state, { payload: { isEmpty, initLoading } }) => {
-        state.degen = {
-          ...state.degen,
+        state.article = {
+          ...state.article,
           isEmpty,
           initLoading,
           loaded: true,
-          icon: "👾",
-          key: "degen",
-        };
-      }
-    )
-    .addCase(
-      updateFeedsWidget,
-      (state, { payload: { isEmpty, initLoading } }) => {
-        state.feeds = {
-          ...state.feeds,
-          isEmpty,
-          initLoading,
-          loaded: true,
-          icon: "🌈",
-          key: "feeds",
-        };
-      }
-    )
-    .addCase(
-      updatePhilandWidget,
-      (state, { payload: { isEmpty, initLoading } }) => {
-        state.philand = {
-          ...state.philand,
-          isEmpty,
-          initLoading,
-          loaded: true,
-          icon: "🏝️",
-          key: "philand",
+          icon: "📑",
+          key: "article",
         };
       }
     )
@@ -165,15 +152,28 @@ export default createReducer(initialState, (builder) =>
       }
     )
     .addCase(
-      updateArticleWidget,
+      updateDegenWidget,
       (state, { payload: { isEmpty, initLoading } }) => {
-        state.article = {
-          ...state.article,
+        state.degen = {
+          ...state.degen,
           isEmpty,
           initLoading,
           loaded: true,
-          icon: "📑",
-          key: "article",
+          icon: "👾",
+          key: "degen",
+        };
+      }
+    )
+    .addCase(
+      updatePhilandWidget,
+      (state, { payload: { isEmpty, initLoading } }) => {
+        state.philand = {
+          ...state.philand,
+          isEmpty,
+          initLoading,
+          loaded: true,
+          icon: "🏝️",
+          key: "philand",
         };
       }
     )

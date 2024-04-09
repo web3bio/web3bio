@@ -1,6 +1,6 @@
 export default function DomainLayout({ children }) {
   return <div 
-            className="web3-profile container grid-xl" 
+            className="web3-profile container grid-2x" 
             itemType="https://schema.org/ProfilePage" 
             itemScope
           >
