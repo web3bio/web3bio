@@ -61,14 +61,12 @@ export async function GET(request: NextRequest) {
             style={{
               display: "flex",
               backgroundColor: "#fff",
-              backgroundImage: avatarImg
-                ? `url(${avatarImg})`
-                : "radial-gradient(at 40% 33%, #FBF4EC 0px, rgba(251,244,236,0) 50%), radial-gradient(at 82% 10%, #ECD7C8 0px, rgba(236,215,200,0) 50%), radial-gradient(at 17% -11%, #EEA4BC 0px, rgba(238,164,188,0) 30%), radial-gradient(at 48% 2%, #BE88C4 0px, rgba(190,136,196,0) 50%), radial-gradient(at 39% 67%, #ECD7C8 0px, rgba(236,215,200,0) 50%), radial-gradient(at 96% 158%, #92C9F9 0px, rgba(146,201,249,0) 50%), radial-gradient(at 61% 57%, #C7F8FF 0px, rgba(199,248,255,0) 50%)",
+              backgroundImage: `url(${avatarImg}), url(${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/avatar/${path})`,
               backgroundPosition: "0 top",
               backgroundRepeat: "no-repeat",
               backgroundSize: "100% 200px",
               color: "transparent",
-              opacity: 0.2,
+              opacity: 0.25,
               width: 1200,
               height: 200,
               position: "absolute",
@@ -81,14 +79,12 @@ export async function GET(request: NextRequest) {
           {avatarImg && (
             <img
               style={{
-                backgroundColor: "#f9f9f9",
-                boxShadow:
-                  "inset 0 0 0 0.2rem rgba(255, 255, 255, 0.1), 0 0.4rem 1rem rgba(0, 0, 0, 0.1)",
+                backgroundColor: "transparent",
                 borderRadius: "50%",
                 objectFit: "cover",
               }}
-              width={180}
-              height={180}
+              width={100}
+              height={100}
               src={avatarImg}
               alt=""
             />
@@ -96,9 +92,9 @@ export async function GET(request: NextRequest) {
 
           <div
             style={{
-              fontSize: "60px",
+              fontSize: "80px",
               letterSpacing: "-.05em",
-              marginTop: "20px",
+              marginTop: "60px",
               fontWeight: "bold",
             }}
           >
@@ -111,7 +107,7 @@ export async function GET(request: NextRequest) {
               fontSize: "30px",
               flex: 1,
               height: "120px",
-              lineHeight: 1.5,
+              lineHeight: 1.65,
               width: "800px",
             }}
           >
@@ -140,12 +136,12 @@ export async function GET(request: NextRequest) {
                 style={{
                   background: "transparent",
                 }}
-                width={120}
-                height={120}
+                width={100}
+                height={100}
                 src={qrcode(`https://web3.bio/${path}`, {
-                  size: 120,
+                  size: 100,
                 })}
-                alt={`https://web3.bio/${path}`}
+                alt={""}
               />
             </div>
           )}
