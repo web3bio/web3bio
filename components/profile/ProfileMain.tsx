@@ -81,7 +81,7 @@ export default function ProfileMain(props) {
               : "none",
         }}
       ></div>
-      {<WidgetsControl states={profileWidgetStates} />}
+      <WidgetsControl states={profileWidgetStates} />
 
       <div className="columns">
         <div className="column col-4 col-md-12">
