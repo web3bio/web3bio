@@ -15,6 +15,8 @@ interface WidgetStateDetail {
   initLoading?: boolean;
   position?: string;
   loaded?: boolean | null;
+  key?: string;
+  icon?: string;
 }
 export interface WidgetState {
   nft: WidgetStateDetail;
@@ -80,6 +82,8 @@ export default createReducer(initialState, (builder) =>
           isEmpty,
           initLoading,
           loaded: true,
+          icon: "🖼",
+          key: "nft",
         };
       }
     )
@@ -87,10 +91,11 @@ export default createReducer(initialState, (builder) =>
       updatePoapsWidget,
       (state, { payload: { isEmpty, initLoading } }) => {
         state.poaps = {
-          ...state.poaps,
           isEmpty,
           initLoading,
           loaded: true,
+          icon: "🔮",
+          key: "poap",
         };
       }
     )
@@ -102,6 +107,8 @@ export default createReducer(initialState, (builder) =>
           isEmpty,
           initLoading,
           loaded: true,
+          icon: "📰",
+          key: "rss",
         };
       }
     )
@@ -113,6 +120,8 @@ export default createReducer(initialState, (builder) =>
           isEmpty,
           initLoading,
           loaded: true,
+          icon: "👾",
+          key: "degen",
         };
       }
     )
@@ -124,6 +133,8 @@ export default createReducer(initialState, (builder) =>
           isEmpty,
           initLoading,
           loaded: true,
+          icon: "🌈",
+          key: "feeds",
         };
       }
     )
@@ -135,6 +146,8 @@ export default createReducer(initialState, (builder) =>
           isEmpty,
           initLoading,
           loaded: true,
+          icon: "🏝️",
+          key: "philand",
         };
       }
     )
@@ -146,6 +159,8 @@ export default createReducer(initialState, (builder) =>
           isEmpty,
           initLoading,
           loaded: true,
+          icon: "🏛️",
+          key: "tally",
         };
       }
     )
@@ -157,6 +172,8 @@ export default createReducer(initialState, (builder) =>
           isEmpty,
           initLoading,
           loaded: true,
+          icon: "📑",
+          key: "article",
         };
       }
     )

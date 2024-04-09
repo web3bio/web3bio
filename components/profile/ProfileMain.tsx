@@ -27,6 +27,7 @@ import LoadingSkeleton from "./LoadingSkeleton";
 import { WidgetTypes } from "../../utils/profile";
 import Web3bioBadge from "./ProfileFooter";
 import { WidgetArticle } from "./WidgetArticle";
+import WidgetsControl from "./WidgetsControl";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, nfts, relations, domain, fallbackAvatar } =
@@ -80,6 +81,8 @@ export default function ProfileMain(props) {
               : "none",
         }}
       ></div>
+      {<WidgetsControl states={profileWidgetStates} />}
+
       <div className="columns">
         <div className="column col-4 col-md-12">
           <div
