@@ -13,7 +13,7 @@ const shareMap = [
       )}&text=${encodeURIComponent(
         `Hey! Check out and explore ${name}'s Web3 profile. `
       )}&via=web3bio`,
-    action: "Share on Twitter",
+    action: "Twitter",
   },
   {
     platform: "telegram",
@@ -24,7 +24,7 @@ const shareMap = [
       )}&text=${encodeURIComponent(
         `Hey! Check out and explore ${name}'s Web3 profile. `
       )}`,
-    action: "Share via Telegram",
+    action: "Telegram",
   },
   {
     platform: "warpcast",
@@ -35,7 +35,7 @@ const shareMap = [
       )}&text=${encodeURIComponent(
         `Hey! Check out and explore ${name}'s Web3 profile. `
       )}`,
-    action: "Share on Warpcast",
+    action: "Warpcast",
   },
 ];
 
@@ -81,8 +81,10 @@ export default function ShareModalContent(props) {
             style={{ height: "auto", width: "100%", aspectRatio: "40 / 21" }}
           />
         </div>
-
-        <div className="btn-group btn-group-block">
+      </div>
+      <div className="profile-share-actions">
+        Share on
+        <div className="btn-group">
           {shareMap.map((x) => (
             <a
               key={x.platform}
@@ -113,7 +115,7 @@ export default function ShareModalContent(props) {
             data-clipboard-text={url}
             onSuccess={onCopySuccess}
           >
-            <SVG src="icons/icon-copy.svg" height={24} width={24} /> COPY
+            COPY
           </Clipboard>
         </div>
       </div>
