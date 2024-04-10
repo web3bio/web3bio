@@ -103,19 +103,25 @@ export default function ShareModalContent(props) {
         <div className="input-group">
           <input
             type="text"
-            className="form-input input-lg"
+            className="form-input"
             value={url}
             readOnly
             onFocus={(e) => e.target.select()}
           />
           <Clipboard
             component="div"
-            className="btn btn-primary btn-lg input-group-btn"
+            className="btn input-group-btn"
             key="share_copy"
             data-clipboard-text={url}
             onSuccess={onCopySuccess}
           >
-            COPY
+            <SVG
+              src="../icons/icon-copy.svg"
+              width={20}
+              height={20}
+              className="action"
+            />
+            Copy
           </Clipboard>
         </div>
       </div>

@@ -32,9 +32,7 @@ const RenderTransactionCard = (props) => {
               &nbsp;
               {metadata.tokens.map((x) =>
                 RenderToken({
-                  key: `${actionId}_${x.name}_${
-                    ActivityTypeMapping(action.type).prep
-                  }`,
+                  key: `${actionId}_${x.name || x.symbol}_${x.value}`,
                   name: x.name,
                   symbol: x.symbol,
                   image: x.image,
@@ -148,9 +146,7 @@ const RenderTransactionCard = (props) => {
                 &nbsp;
                 {metadata.token &&
                   RenderToken({
-                    key: `${actionId}_${metadata.token.name}_${
-                      ActivityTypeMapping(action.type).prep
-                    }`,
+                    key: `${actionId}_${metadata.token.name || metadata.token.symbol}_${metadata.token.value}`,
                     name: metadata.token.name,
                     symbol: metadata.token.symbol,
                     image: metadata.token.image,
@@ -214,7 +210,7 @@ const RenderTransactionCard = (props) => {
                       )}
                     </span>
                   : RenderToken({
-                    key: `${actionId + idx}_${ActivityType.transfer}_${x.name}_${
+                    key: `${actionId + idx}_${x.name || x.symbol}_${
                       x.value
                     }`,
                     name: x.name,

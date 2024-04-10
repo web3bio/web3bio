@@ -21,7 +21,7 @@ import RenderProfileBadge from "../profile/RenderProfileBadge";
 
 export const RenderToken = ({ key, name, symbol, image, value }) => {
   return (
-    <div className="feed-token" key={key} title={name}>
+    <div className="feed-token" key={key} title={formatValue(value) + " " + symbol}>
       {image && (
         <Image
           className="feed-token-icon"
@@ -32,7 +32,7 @@ export const RenderToken = ({ key, name, symbol, image, value }) => {
           loading="lazy"
         />
       )}
-      <span className="feed-token-value" title={formatValue(value) + " " + symbol}>
+      <span className="feed-token-value">
         {formatText(formatValue(value))}
       </span>
       {symbol && <small className="feed-token-meta">{symbol}</small>}

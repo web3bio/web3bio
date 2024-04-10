@@ -37,7 +37,7 @@ legend {
   appearance: none;
   background: $bg-color-light;
   background-image: none;
-  border: $border-width solid $dark-color;
+  border: $border-width solid $border-color;
   border-radius: $border-radius;
   color: $body-font-color;
   display: block;
@@ -520,7 +520,7 @@ textarea.form-input {
 
 .form-input {
   &[readonly] {
-    background-color: lighten($bg-color, 3%);
+    background-color: lighten($bg-color, 6%);
 
     &:focus {
       border-color: $dark-color;

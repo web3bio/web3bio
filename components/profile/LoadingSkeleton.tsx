@@ -1,4 +1,4 @@
-import { WidgetTypes } from "../../utils/profile";
+import { WidgetTypes } from "../../utils/widgets";
 
 export default function LoadingSkeleton(props) {
   const { type } = props;
