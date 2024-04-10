@@ -103,7 +103,7 @@ export default function ShareModalContent(props) {
         <div className="input-group">
           <input
             type="text"
-            className="form-input "
+            className="form-input"
             value={url}
             readOnly
             onFocus={(e) => e.target.select()}

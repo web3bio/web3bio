@@ -26,7 +26,7 @@ import { isValidEthereumAddress, regexEns } from "../../utils/regexp";
 import LoadingSkeleton from "./LoadingSkeleton";
 import Web3bioBadge from "./ProfileFooter";
 import { WidgetArticle } from "./WidgetArticle";
-import WidgetsIndicator from "./WidgetsIndicator";
+import WidgetIndicator from "./WidgetIndicator";
 import { WidgetTypes } from "../../utils/widgets";
 
 export default function ProfileMain(props) {
@@ -81,7 +81,7 @@ export default function ProfileMain(props) {
               : "none",
         }}
       ></div>
-      <WidgetsIndicator states={profileWidgetStates} />
+      <WidgetIndicator states={profileWidgetStates} />
 
       <div className="columns">
         <div className="column col-4 col-lg-12">

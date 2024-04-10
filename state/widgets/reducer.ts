@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import {
-  updateDegenWidget,
+  updateDegenscoreWidget,
   updateNFTWidget,
   updatePoapsWidget,
   updateRssWidget,
@@ -24,7 +24,7 @@ export interface WidgetState {
   [WidgetTypes.rss]?: WidgetStateDetail;
   [WidgetTypes.article]?: WidgetStateDetail;
   [WidgetTypes.tally]?: WidgetStateDetail;
-  [WidgetTypes.degen]?: WidgetStateDetail;
+  [WidgetTypes.degenscore]?: WidgetStateDetail;
   [WidgetTypes.philand]?: WidgetStateDetail;
 }
 
@@ -59,7 +59,7 @@ export const initialState: WidgetState = {
     initLoading: true,
     loaded: false,
   },
-  [WidgetTypes.degen]: {
+  [WidgetTypes.degenscore]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
@@ -140,10 +140,10 @@ export default createReducer(initialState, (builder) =>
       }
     )
     .addCase(
-      updateDegenWidget,
+      updateDegenscoreWidget,
       (state, { payload: { isEmpty, initLoading } }) => {
-        state[WidgetTypes.degen] = {
-          ...state[WidgetTypes.degen],
+        state[WidgetTypes.degenscore] = {
+          ...state[WidgetTypes.degenscore],
           isEmpty,
           initLoading,
           loaded: true,

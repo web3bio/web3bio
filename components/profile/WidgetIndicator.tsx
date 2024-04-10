@@ -1,9 +1,9 @@
 import { WidgetState } from "../../state/widgets/reducer";
 import { WidgetInfoMapping, WidgetTypes } from "../../utils/widgets";
-interface WidgetsIndicatorInterface {
+interface WidgetIndicatorInterface {
   states: WidgetState;
 }
-export default function WidgetsIndicator(props: WidgetsIndicatorInterface) {
+export default function WidgetIndicator(props: WidgetIndicatorInterface) {
   const { states } = props;
   const arr = Object.entries(states).filter(
     (x) => x[1].loaded && !x[1].isEmpty
@@ -17,8 +17,8 @@ export default function WidgetsIndicator(props: WidgetsIndicatorInterface) {
             <a
               key={WidgetInfoMapping(type).icon + x[0]}
               href={`#${x[0]}`}
-              className="widget-indicator-item"
-              title={""}
+              className="widget-indicator-item tooltip tooltip-left"
+              title={WidgetInfoMapping(type).title}
             >
               <div className="indicator-dot"></div>
               {WidgetInfoMapping(type).icon}
