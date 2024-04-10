@@ -153,7 +153,7 @@ export default function WidgetFeed({ profile, openModal }) {
         updateFeedsWidget({ isEmpty: !data?.length, initLoading: false })
       );
     }
-  }, [expand, isValidating, data?.length, dispatch]);
+  }, [isValidating, data?.length, dispatch]);
   const resolvedData = data?.filter((x) => {
     if (
       x.tag === ActivityTag.transaction &&

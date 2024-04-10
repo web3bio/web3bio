@@ -115,7 +115,7 @@ export default function WidgetNFT({ profile, onShowDetail }) {
   useEffect(() => {
     if (
       window.location.hash &&
-      window.location.hash === `<div id="1">WidgetTypes.nft</div>` &&
+      window.location.hash === `#${WidgetTypes.nft}` &&
       !expand
     ) {
       setExpand(true);
@@ -141,13 +141,10 @@ export default function WidgetNFT({ profile, onShowDetail }) {
     if (assetId) {
       scrollToAsset(assetId);
     }
-  }, [assetId]);
-
-  useEffect(() => {
     if (!isValidating) {
       dispatch(updateNFTWidget({ isEmpty: !data?.length, initLoading: false }));
     }
-  }, [isValidating]);
+  }, [assetId, isValidating]);
 
   if (!filter && (!data.length || isError)) return null;
 
