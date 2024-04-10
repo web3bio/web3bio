@@ -6,6 +6,7 @@ import Link from "next/link";
 import SVG from "react-inlinesvg";
 import { updateDegenWidget } from "../../state/widgets/action";
 import { useDispatch } from "react-redux";
+import { WidgetTypes } from "../../utils/widgets";
 
 function useDegenInfo(address: string) {
   const { data, error } = useSWR(
@@ -41,7 +42,7 @@ const RenderWidgetDegenScore = ({ address }) => {
   // }
 
   return (
-    <div className="profile-widget-full" id="degenscore">
+    <div className="profile-widget-full" id={WidgetTypes.degen}>
       <div className="profile-widget profile-widget-degenscore">
         <div className="profile-widget-header">
           <h2 className="profile-widget-title">

@@ -9,6 +9,7 @@ import {
   updateTallyDAOWidget,
   updateArticleWidget,
 } from "./action";
+import { WidgetTypes } from "../../utils/widgets";
 
 interface WidgetStateDetail {
   isEmpty?: boolean | null;
@@ -28,42 +29,42 @@ export interface WidgetState {
 }
 
 export const initialState: WidgetState = {
-  nft: {
+  [WidgetTypes.nft]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
   },
-  feeds: {
+  [WidgetTypes.feeds]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
   },
-  poaps: {
+  [WidgetTypes.poaps]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
   },
-  rss: {
+  [WidgetTypes.rss]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
   },
-  article: {
+  [WidgetTypes.article]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
   },
-  tally: {
+  [WidgetTypes.tally]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
   },
-  degen: {
+  [WidgetTypes.degen]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
   },
-  philand: {
+  [WidgetTypes.philand]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
@@ -75,8 +76,8 @@ export default createReducer(initialState, (builder) =>
     .addCase(
       updateNFTWidget,
       (state, { payload: { isEmpty, initLoading } }) => {
-        state.nft = {
-          ...state.nft,
+        state[WidgetTypes.nft] = {
+          ...state[WidgetTypes.nft],
           isEmpty,
           initLoading,
           loaded: true,
@@ -86,8 +87,8 @@ export default createReducer(initialState, (builder) =>
     .addCase(
       updateFeedsWidget,
       (state, { payload: { isEmpty, initLoading } }) => {
-        state.feeds = {
-          ...state.feeds,
+        state[WidgetTypes.feeds] = {
+          ...state[WidgetTypes.feeds],
           isEmpty,
           initLoading,
           loaded: true,
@@ -97,7 +98,8 @@ export default createReducer(initialState, (builder) =>
     .addCase(
       updatePoapsWidget,
       (state, { payload: { isEmpty, initLoading } }) => {
-        state.poaps = {
+        state[WidgetTypes.poaps] = {
+          ...state[WidgetTypes.poaps],
           isEmpty,
           initLoading,
           loaded: true,
@@ -107,8 +109,8 @@ export default createReducer(initialState, (builder) =>
     .addCase(
       updateRssWidget,
       (state, { payload: { isEmpty, initLoading } }) => {
-        state.rss = {
-          ...state.rss,
+        state[WidgetTypes.rss] = {
+          ...state[WidgetTypes.rss],
           isEmpty,
           initLoading,
           loaded: true,
@@ -118,8 +120,8 @@ export default createReducer(initialState, (builder) =>
     .addCase(
       updateArticleWidget,
       (state, { payload: { isEmpty, initLoading } }) => {
-        state.article = {
-          ...state.article,
+        state[WidgetTypes.article] = {
+          ...state[WidgetTypes.article],
           isEmpty,
           initLoading,
           loaded: true,
@@ -129,8 +131,8 @@ export default createReducer(initialState, (builder) =>
     .addCase(
       updateTallyDAOWidget,
       (state, { payload: { isEmpty, initLoading } }) => {
-        state.tally = {
-          ...state.tally,
+        state[WidgetTypes.tally] = {
+          ...state[WidgetTypes.tally],
           isEmpty,
           initLoading,
           loaded: true,
@@ -140,8 +142,8 @@ export default createReducer(initialState, (builder) =>
     .addCase(
       updateDegenWidget,
       (state, { payload: { isEmpty, initLoading } }) => {
-        state.degen = {
-          ...state.degen,
+        state[WidgetTypes.degen] = {
+          ...state[WidgetTypes.degen],
           isEmpty,
           initLoading,
           loaded: true,
@@ -151,8 +153,8 @@ export default createReducer(initialState, (builder) =>
     .addCase(
       updatePhilandWidget,
       (state, { payload: { isEmpty, initLoading } }) => {
-        state.philand = {
-          ...state.philand,
+        state[WidgetTypes.philand] = {
+          ...state[WidgetTypes.philand],
           isEmpty,
           initLoading,
           loaded: true,

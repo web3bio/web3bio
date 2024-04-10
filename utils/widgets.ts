@@ -20,7 +20,6 @@ export const WidgetInfoMapping = (widgetType: WidgetTypes) => {
       key: "feeds",
       icon: "🌈",
       description: "",
-      defaultOrder: 1,
     },
     [WidgetTypes.poaps]: {
       key: "poaps",
@@ -53,4 +52,11 @@ export const WidgetInfoMapping = (widgetType: WidgetTypes) => {
       description: "",
     },
   };
+  return (
+    WidgetsInfoData[widgetType] || {
+      key: "default",
+      icon: "😊",
+      description: "",
+    }
+  );
 };

@@ -14,6 +14,7 @@ import { updateNFTWidget } from "../../state/widgets/action";
 import { useDispatch } from "react-redux";
 import { PlatformType } from "../../utils/platform";
 import { NetworkData } from "../../utils/network";
+import { WidgetTypes } from "../../utils/widgets";
 
 const CURSOR_PARAM = "&cursor=";
 
@@ -112,7 +113,11 @@ export default function WidgetNFT({ profile, onShowDetail }) {
   const scrollContainer = useRef(null);
 
   useEffect(() => {
-    if (window.location.hash && window.location.hash === "#nft" && !expand) {
+    if (
+      window.location.hash &&
+      window.location.hash === `<div id="1">WidgetTypes.nft</div>` &&
+      !expand
+    ) {
       setExpand(true);
     }
     const scrollToAsset = (assetId) => {
@@ -151,7 +156,11 @@ export default function WidgetNFT({ profile, onShowDetail }) {
   // }
 
   return (
-    <div ref={scrollContainer} className="profile-widget-full" id="nft">
+    <div
+      ref={scrollContainer}
+      className="profile-widget-full"
+      id={WidgetTypes.nft}
+    >
       <div
         className={`profile-widget profile-widget-nft${
           expand ? " active" : ""

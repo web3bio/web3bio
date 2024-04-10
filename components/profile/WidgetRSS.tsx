@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { updateRssWidget } from "../../state/widgets/action";
 import RssItem from "./RssItem";
+import { WidgetTypes } from "../../utils/widgets";
 
 function useRSS(domain: string) {
   const fetchUrl = (() => {
@@ -44,7 +45,7 @@ const RenderWidgetRSS = ({ domain }) => {
   // }
 
   return (
-    <div className="profile-widget-full" id="rss">
+    <div className="profile-widget-full" id={WidgetTypes.rss}>
       <div className="profile-widget profile-widget-rss">
         <div className="profile-widget-header">
           <h2 className="profile-widget-title">
