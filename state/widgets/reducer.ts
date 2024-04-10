@@ -18,14 +18,14 @@ interface WidgetStateDetail {
   loaded?: boolean | null;
 }
 export interface WidgetState {
-  nft: WidgetStateDetail;
-  feeds?: WidgetStateDetail;
-  poaps?: WidgetStateDetail;
-  rss?: WidgetStateDetail;
-  article?: WidgetStateDetail;
-  tally?: WidgetStateDetail;
-  degen?: WidgetStateDetail;
-  philand?: WidgetStateDetail;
+  [WidgetTypes.nft]: WidgetStateDetail;
+  [WidgetTypes.feeds]?: WidgetStateDetail;
+  [WidgetTypes.poaps]?: WidgetStateDetail;
+  [WidgetTypes.rss]?: WidgetStateDetail;
+  [WidgetTypes.article]?: WidgetStateDetail;
+  [WidgetTypes.tally]?: WidgetStateDetail;
+  [WidgetTypes.degen]?: WidgetStateDetail;
+  [WidgetTypes.philand]?: WidgetStateDetail;
 }
 
 export const initialState: WidgetState = {
