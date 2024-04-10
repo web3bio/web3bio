@@ -10,7 +10,7 @@ export default function WidgetIndicator(props: WidgetIndicatorInterface) {
   );
   return (
     arr.length > 0 && (
-      <div className="widgets-indicator">
+      <div className="widgets-indicator hide-lg">
         {arr.map((x) => {
           const type = x[0] as WidgetTypes;
           return (
