@@ -24,10 +24,10 @@ import { WidgetPhiland } from "./WidgetPhiland";
 import { WidgetTallyDAO } from "./WidgetTallyDAO";
 import { isValidEthereumAddress, regexEns } from "../../utils/regexp";
 import LoadingSkeleton from "./LoadingSkeleton";
-import { WidgetTypes } from "../../utils/profile";
 import Web3bioBadge from "./ProfileFooter";
 import { WidgetArticle } from "./WidgetArticle";
 import WidgetsIndicator from "./WidgetsIndicator";
+import { WidgetTypes } from "../../utils/widgets";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, relations, domain, fallbackAvatar } =

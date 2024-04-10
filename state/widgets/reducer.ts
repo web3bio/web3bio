@@ -15,8 +15,6 @@ interface WidgetStateDetail {
   initLoading?: boolean;
   position?: string;
   loaded?: boolean | null;
-  key?: string;
-  icon?: string;
 }
 export interface WidgetState {
   nft: WidgetStateDetail;
@@ -24,7 +22,7 @@ export interface WidgetState {
   poaps?: WidgetStateDetail;
   rss?: WidgetStateDetail;
   article?: WidgetStateDetail;
-  dao?: WidgetStateDetail;
+  tally?: WidgetStateDetail;
   degen?: WidgetStateDetail;
   philand?: WidgetStateDetail;
 }
@@ -55,7 +53,7 @@ export const initialState: WidgetState = {
     initLoading: true,
     loaded: false,
   },
-  dao: {
+  tally: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
@@ -82,8 +80,6 @@ export default createReducer(initialState, (builder) =>
           isEmpty,
           initLoading,
           loaded: true,
-          icon: "🖼",
-          key: "nft",
         };
       }
     )
@@ -95,8 +91,6 @@ export default createReducer(initialState, (builder) =>
           isEmpty,
           initLoading,
           loaded: true,
-          icon: "🌈",
-          key: "feeds",
         };
       }
     )
@@ -107,8 +101,6 @@ export default createReducer(initialState, (builder) =>
           isEmpty,
           initLoading,
           loaded: true,
-          icon: "🔮",
-          key: "poap",
         };
       }
     )
@@ -120,8 +112,6 @@ export default createReducer(initialState, (builder) =>
           isEmpty,
           initLoading,
           loaded: true,
-          icon: "📰",
-          key: "rss",
         };
       }
     )
@@ -133,21 +123,17 @@ export default createReducer(initialState, (builder) =>
           isEmpty,
           initLoading,
           loaded: true,
-          icon: "📑",
-          key: "article",
         };
       }
     )
     .addCase(
       updateTallyDAOWidget,
       (state, { payload: { isEmpty, initLoading } }) => {
-        state.dao = {
-          ...state.dao,
+        state.tally = {
+          ...state.tally,
           isEmpty,
           initLoading,
           loaded: true,
-          icon: "🏛️",
-          key: "tally",
         };
       }
     )
@@ -159,8 +145,6 @@ export default createReducer(initialState, (builder) =>
           isEmpty,
           initLoading,
           loaded: true,
-          icon: "👾",
-          key: "degen",
         };
       }
     )
@@ -172,8 +156,6 @@ export default createReducer(initialState, (builder) =>
           isEmpty,
           initLoading,
           loaded: true,
-          icon: "🏝️",
-          key: "philand",
         };
       }
     )

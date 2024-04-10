@@ -60,7 +60,7 @@ export default function WidgetPOAP({ address, onShowDetail }) {
 
   return (
     render && (
-      <div className="profile-widget-full" id="poap">
+      <div className="profile-widget-full" id="poaps">
         <div className="profile-widget profile-widget-poap">
           <div className="profile-widget-header">
             <h2

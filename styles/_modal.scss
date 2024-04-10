@@ -187,6 +187,7 @@
       padding: 2rem;
       scroll-behavior: smooth;
       width: 100%;
+      z-index: 101;
   
       @media screen and (max-width: $size-sm) {
         @supports (height: 100dvh) {
