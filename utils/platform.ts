@@ -491,6 +491,7 @@ export const shouldPlatformFetch = (platform?: PlatformType | null) => {
       PlatformType.dotbit,
       PlatformType.nextid,
       PlatformType.solana,
+      PlatformType.sns,
     ].includes(platform)
   )
     return true;

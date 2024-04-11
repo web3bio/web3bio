@@ -11,9 +11,13 @@ async function fetchDataFromServer(domain: string) {
   if (!domain) return null;
   try {
     const platform = handleSearchPlatform(domain);
+    const useSolana = [PlatformType.sns, PlatformType.solana].includes(
+      platform
+    );
+
     if (!shouldPlatformFetch(platform)) return null;
     const url = `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile${
-      platform === PlatformType.solana ? "/solana/" : ""
+      useSolana ? "/solana/" : ""
     }/${domain}`;
     const response = await fetch(url, {
       next: { revalidate: 86400 },
@@ -21,7 +25,7 @@ async function fetchDataFromServer(domain: string) {
     if (response.status === 404) return null;
     const data = await response.json();
     return {
-      data: platform === PlatformType.solana ? [data] : data,
+      data: useSolana ? [data] : data,
       platform,
     };
   } catch (e) {
