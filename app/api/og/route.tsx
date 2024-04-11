@@ -61,22 +61,12 @@ export async function GET(request: NextRequest) {
             style={{
               display: "flex",
               backgroundColor: "#fff",
-<<<<<<< HEAD
-              backgroundImage: avatarImg
-                ? `url(${avatarImg})`
-                : "radial-gradient(at 40% 33%, #FBF4EC 0px, rgba(251,244,236,0) 50%), radial-gradient(at 82% 10%, #ECD7C8 0px, rgba(236,215,200,0) 50%), radial-gradient(at 17% -11%, #EEA4BC 0px, rgba(238,164,188,0) 30%), radial-gradient(at 48% 2%, #BE88C4 0px, rgba(190,136,196,0) 50%), radial-gradient(at 39% 67%, #ECD7C8 0px, rgba(236,215,200,0) 50%), radial-gradient(at 96% 158%, #92C9F9 0px, rgba(146,201,249,0) 50%), radial-gradient(at 61% 57%, #C7F8FF 0px, rgba(199,248,255,0) 50%)",
-=======
               backgroundImage: `url(${avatarImg}), url(${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/avatar/${path})`,
->>>>>>> d788e484d6dc6e326c2791c8d29a7c9bf6aa6794
               backgroundPosition: "0 top",
               backgroundRepeat: "no-repeat",
               backgroundSize: "100% 200px",
               color: "transparent",
-<<<<<<< HEAD
-              opacity: 0.2,
-=======
               opacity: 0.25,
->>>>>>> d788e484d6dc6e326c2791c8d29a7c9bf6aa6794
               width: 1200,
               height: 200,
               position: "absolute",
@@ -146,21 +136,12 @@ export async function GET(request: NextRequest) {
                 style={{
                   background: "transparent",
                 }}
-<<<<<<< HEAD
-                width={120}
-                height={120}
-                src={qrcode(`https://web3.bio/${path}`, {
-                  size: 120,
-                })}
-                alt={`https://web3.bio/${path}`}
-=======
                 width={100}
                 height={100}
                 src={qrcode(`https://web3.bio/${path}`, {
                   size: 100,
                 })}
                 alt={""}
->>>>>>> d788e484d6dc6e326c2791c8d29a7c9bf6aa6794
               />
             </div>
           )}
