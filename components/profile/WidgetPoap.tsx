@@ -9,6 +9,7 @@ import { resolveIPFS_URL } from "../../utils/ipfs";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { useDispatch } from "react-redux";
 import { updatePoapsWidget } from "../../state/widgets/action";
+import { WidgetTypes } from "../../utils/widgets";
 
 function usePoaps(address: string) {
   const { data, error, isValidating } = useSWR(
@@ -60,7 +61,7 @@ export default function WidgetPOAP({ address, onShowDetail }) {
 
   return (
     render && (
-      <div className="profile-widget-full" id="poap">
+      <div className="profile-widget-full" id={WidgetTypes.poaps}>
         <div className="profile-widget profile-widget-poap">
           <div className="profile-widget-header">
             <h2

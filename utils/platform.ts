@@ -15,6 +15,7 @@ export enum PlatformType {
   ethereum = "ethereum",
   twitter = "twitter",
   nextid = "nextid",
+  bitcoin = "bitcoin",
   keybase = "keybase",
   reddit = "reddit",
   github = "github",
@@ -128,6 +129,13 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     label: "Next.ID",
     urlPrefix: "https://web3.bio/",
     dotbitText: ["profile.nextid"],
+  },
+  [PlatformType.bitcoin]: {
+    key: PlatformType.bitcoin,
+    color: "#F7931A",
+    icon: "icons/icon-bitcoin.svg",
+    label: "Bitcoin",
+    urlPrefix: "https://explorer.btc.com/btc/address/",
   },
   [PlatformType.reddit]: {
     key: PlatformType.reddit,

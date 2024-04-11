@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { updatePhilandWidget } from "../../state/widgets/action";
 import { QUERY_PHILAND_INFO } from "../apis/philand";
 import { useQuery } from "@apollo/client";
+import { WidgetTypes } from "../../utils/widgets";
 
 const RenderWidgetPhiland = ({ domain, onShowDetail }) => {
   const { data, loading, error } = useQuery(QUERY_PHILAND_INFO, {
@@ -12,7 +13,7 @@ const RenderWidgetPhiland = ({ domain, onShowDetail }) => {
       name: domain,
     },
     context: {
-      clientName: "philand",
+      clientName: WidgetTypes.philand,
     },
   });
   const dispatch = useDispatch();
@@ -34,7 +35,7 @@ const RenderWidgetPhiland = ({ domain, onShowDetail }) => {
   // }
 
   return (
-    <div className="profile-widget-half" id="philand">
+    <div className="profile-widget-half" id={WidgetTypes.philand}>
       <div 
         className="profile-widget profile-widget-philand" 
         onClick={() =>

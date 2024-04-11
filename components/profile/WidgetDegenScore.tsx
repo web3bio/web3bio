@@ -4,8 +4,9 @@ import useSWR from "swr";
 import { DegenFetcher, DEGENSCORE_ENDPOINT } from "../apis/degenscore";
 import Link from "next/link";
 import SVG from "react-inlinesvg";
-import { updateDegenWidget } from "../../state/widgets/action";
+import { updateDegenscoreWidget } from "../../state/widgets/action";
 import { useDispatch } from "react-redux";
+import { WidgetTypes } from "../../utils/widgets";
 
 function useDegenInfo(address: string) {
   const { data, error } = useSWR(
@@ -30,7 +31,7 @@ const RenderWidgetDegenScore = ({ address }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     if (!isLoading) {
-      dispatch(updateDegenWidget({ isEmpty: !data?.name, initLoading: false }));
+      dispatch(updateDegenscoreWidget({ isEmpty: !data?.name, initLoading: false }));
     }
   }, [data, isLoading, dispatch]);
 
@@ -41,7 +42,7 @@ const RenderWidgetDegenScore = ({ address }) => {
   // }
 
   return (
-    <div className="profile-widget-full" id="degenscore">
+    <div className="profile-widget-full" id={WidgetTypes.degenscore}>
       <div className="profile-widget profile-widget-degenscore">
         <div className="profile-widget-header">
           <h2 className="profile-widget-title">

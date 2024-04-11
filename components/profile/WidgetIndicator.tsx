@@ -1,0 +1,31 @@
+import { WidgetState } from "../../state/widgets/reducer";
+import { WidgetInfoMapping, WidgetTypes } from "../../utils/widgets";
+interface WidgetIndicatorInterface {
+  states: WidgetState;
+}
+export default function WidgetIndicator(props: WidgetIndicatorInterface) {
+  const { states } = props;
+  const arr = Object.entries(states).filter(
+    (x) => x[1].loaded && !x[1].isEmpty
+  );
+  return (
+    arr.length > 0 && (
+      <div className="widgets-indicator hide-lg">
+        {arr.map((x) => {
+          const type = x[0] as WidgetTypes;
+          return (
+            <a
+              key={WidgetInfoMapping(type).icon + x[0]}
+              href={`#${x[0]}`}
+              className="widget-indicator-item tooltip tooltip-left"
+              title={WidgetInfoMapping(type).title}
+            >
+              <div className="indicator-dot"></div>
+              {WidgetInfoMapping(type).icon}
+            </a>
+          );
+        })}
+      </div>
+    )
+  );
+}
