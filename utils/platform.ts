@@ -496,6 +496,7 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     icon: "icons/icon-sns.svg",
     label: "SNS",
     urlPrefix: "https://www.sns.id/search?search=",
+    system: PlatformSystem.web3,
   },
   [PlatformType.mstdnjp]: {
     key: PlatformType.mstdnjp,
