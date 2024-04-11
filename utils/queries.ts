@@ -38,7 +38,7 @@ export const GET_PROFILES = gql`
           nft(category: [ENS]) {
             id
             uuid
-            transaction
+            category
             source
           }
         }

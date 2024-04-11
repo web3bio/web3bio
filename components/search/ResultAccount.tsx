@@ -10,15 +10,17 @@ import Modal from "../modal/Modal";
 import useModal, { ModalType } from "../../hooks/useModal";
 import { SocialPlatformMapping } from "../../utils/utils";
 
-const getENSAddress = (ensItem) => {
+const getNSAddress = (item) => {
+  const _chain =
+    item.platform === PlatformType.ens
+      ? PlatformType.ethereum
+      : PlatformType.solana;
   return (
-    ensItem.resolveAddress?.find((x) => x.chain === PlatformType.ethereum)
-      ?.address ||
-    ensItem.resolveAddress?.[0].address ||
-    ensItem.ownerAddress?.find((x) => x.chain === PlatformType.ethereum)
-      ?.address ||
-    ensItem.ownerAddress?.[0]?.address ||
-    ensItem.identity
+    item.resolveAddress?.find((x) => x.chain === _chain)?.address ||
+    item.resolveAddress?.[0].address ||
+    item.ownerAddress?.find((x) => x.chain === _chain)?.address ||
+    item.ownerAddress?.[0]?.address ||
+    item.identity
   );
 };
 
@@ -31,9 +33,44 @@ const RenderAccount = (props) => {
   const profiles = _.flatten(Object.values(cached).map((x) => x));
   const resolvedListData = (() => {
     if (!identityGraph?.nodes) return [];
+    const domainSkipMap = [
+      {
+        network: PlatformType.ethereum,
+        ns: PlatformType.ens,
+      },
+      {
+        network: PlatformType.solana,
+        ns: PlatformType.sns,
+      },
+    ];
     const _identityGraph = JSON.parse(JSON.stringify(identityGraph));
+    _identityGraph.nodes
+      .filter((x) => domainSkipMap.some((i) => i.ns === x.platform))
+      .forEach((domain) => {
+        const networkIdentity = identityGraph.nodes.find(
+          (x) =>
+            x.identity === domain.ownerAddress[0]?.address &&
+            x.platform ===
+              domainSkipMap.find((i) => i.ns === domain.platform)?.network
+        );
+        if (
+          networkIdentity?.id &&
+          !networkIdentity?.nft.some((i) => i.id === domain.identity)
+        ) {
+          networkIdentity.nft = [
+            ...networkIdentity.nft,
+            {
+              ...domain,
+              id: domain.identity,
+            },
+          ];
+        }
+      });
+
     const _resolved = _identityGraph.nodes
-      .filter((x) => x.platform !== PlatformType.ens)
+      .filter((x) => {
+        return !domainSkipMap.some((i) => i.ns === x.platform);
+      })
       .map((x) => {
         return {
           ...x,
@@ -41,18 +78,18 @@ const RenderAccount = (props) => {
         };
       });
     if (
-      platform === PlatformType.ens &&
+      domainSkipMap.some((x) => x.ns === platform) &&
       !_resolved.some((x) => x.displayName === graphTitle)
     ) {
-      const ensItem = identityGraph.nodes
-        .filter((x) => x.platform === PlatformType.ens)
+      const item = identityGraph.nodes
+        .filter((x) => domainSkipMap.some((i) => i.ns === x.platform))
         .find((x) => x.identity === graphTitle);
-      if (ensItem) {
+      if (item) {
         _resolved.unshift({
-          ...ensItem,
-          platform: PlatformType.ens,
-          displayName: ensItem.identity,
-          identity: getENSAddress(ensItem),
+          ...item,
+          platform: item.platform,
+          displayName: item.identity,
+          identity: getNSAddress(item),
           reverse: false,
         });
       }
@@ -60,6 +97,9 @@ const RenderAccount = (props) => {
       const index = _resolved.findIndex((x) => {
         return platform === PlatformType.ens
           ? x.displayName === graphTitle && x.platform === PlatformType.ethereum
+          : platform === PlatformType.sns
+          ? [x.displayName, x.profile?.displayName].includes(graphTitle) &&
+            x.platform === PlatformType.solana
           : x.identity === graphTitle && x.platform === platform;
       });
 
