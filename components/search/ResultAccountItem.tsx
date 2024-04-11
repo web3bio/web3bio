@@ -95,6 +95,7 @@ const RenderAccountItem = (props) => {
     case PlatformType.dotbit:
     case PlatformType.space_id:
     case PlatformType.solana:
+    case PlatformType.sns:
       return (
         <div
           onClick={onClick}
@@ -120,11 +121,14 @@ const RenderAccountItem = (props) => {
                   className="icon"
                   style={{
                     background: SocialPlatformMapping(resolvedPlatform).color,
+                    color: "#fff",
                   }}
                 >
                   <SVG
                     src={SocialPlatformMapping(resolvedPlatform)?.icon || ""}
-                    fill={"#fff"}
+                    fill={
+                      resolvedPlatform === PlatformType.sns ? "none" : "#fff"
+                    }
                     width={20}
                     height={20}
                   />
