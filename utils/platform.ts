@@ -437,7 +437,7 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
   },
   [PlatformType.sns]: {
     key: PlatformType.sns,
-    color: "#13122b",
+    color: "#030119",
     icon: "icons/icon-sns.svg",
     label: "SNS",
     urlPrefix: "https://www.sns.id/search?search=",

@@ -1,4 +1,3 @@
-// import { fetchInitialNFTsData } from "../../hooks/api/fetchProfile";
 import { PlatformType, shouldPlatformFetch } from "../../utils/platform";
 import { SocialPlatformMapping } from "../../utils/utils";
 import { handleSearchPlatform, mapLinks } from "../../utils/utils";
@@ -148,9 +147,6 @@ export default async function ProfilePage({
           identity: x.identity,
         })) || []
       }
-      nfts={{
-        nfts: [],
-      }}
       data={{
         ...data[0],
         links: mapLinks(data),

@@ -209,11 +209,11 @@ export default function D3IdentityGraph(props) {
         .attr("dy", "3px")
         .attr("text-anchor", "middle")
         .text((d) =>
-          [d.source.platform, d.target.platform].includes(PlatformType.ens) ||
-          [d.source.platform, d.target.platform].includes(PlatformType.sns)
-            ? ""
-            : d.label
+          d.source.isIdentity && d.target.isIdentity
+            ? d.label
+            : ""
         );
+      
 
       const dragged = (event, d) => {
         const clamp = (x, lo, hi) => {
@@ -250,9 +250,9 @@ export default function D3IdentityGraph(props) {
         .attr("r", (d) => getNodeRadius(d.isIdentity))
         .attr("stroke", (d) => SocialPlatformMapping(d.platform).color)
         .attr("fill", (d) =>
-          d.platform === PlatformType.ens
-            ? SocialPlatformMapping(PlatformType.ens).color
-            : "#fff"
+          d.isIdentity
+            ? "#fff"
+            : SocialPlatformMapping(d.platform).color
         );
       const maskCircle = nodeContainer
         .attr("id", (d) => d.id)
@@ -478,7 +478,7 @@ export default function D3IdentityGraph(props) {
               </li>
               <li>
                 <span className="text-gray">Platform: </span>
-                {currentNode.platform || ""}
+                {SocialPlatformMapping(currentNode.platform).label || ""}
               </li>
               {currentNode.resolvedAddress && (
                 <li>

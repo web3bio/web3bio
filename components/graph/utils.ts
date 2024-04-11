@@ -16,7 +16,7 @@ export const resolveIdentityGraphData = (source) => {
     return {
       id: x.id,
       label:
-        x.platform === PlatformType.ens
+        [PlatformType.ens, PlatformType.sns].includes(x.platform)
           ? formatText(x.id)
           : formatText(x.displayName || x.identity),
       platform: resolvedPlatform.key || x.platform,
@@ -44,7 +44,6 @@ export const resolveIdentityGraphData = (source) => {
       isIdentity: false,
       owner,
       resolvedAddress: null,
-      transaction: ens.transaction,
     };
   };
   source.nodes.forEach((x) => {

@@ -10,7 +10,7 @@ import { SocialPlatformMapping } from "../../utils/utils";
 import { isAddress } from "ethers";
 import { useDispatch } from "react-redux";
 import _ from "lodash";
-import { fetchProfile } from "../../hooks/api/fetchProfile";
+import { fetchProfile } from "../../hooks/fetchProfile";
 import { updateUniversalBatchedProfile } from "../../state/universal/actions";
 import ResultAccountItemAction from "./ResultAccountAction";
 
@@ -126,9 +126,7 @@ const RenderAccountItem = (props) => {
                 >
                   <SVG
                     src={SocialPlatformMapping(resolvedPlatform)?.icon || ""}
-                    fill={
-                      resolvedPlatform === PlatformType.sns ? "none" : "#fff"
-                    }
+                    fill={"#fff"}
                     width={20}
                     height={20}
                   />
@@ -174,6 +172,7 @@ const RenderAccountItem = (props) => {
           {identity.nft?.length > 0 && (
             <div className="nfts">
               {identity.nft.map((nft) => {
+                console.log(nft)
                 return (
                   <Link
                     key={`${nft.uuid}`}
@@ -183,16 +182,12 @@ const RenderAccountItem = (props) => {
                     }}
                     prefetch={false}
                   >
-                    <div className="label-ens" title={nft.id}>
+                    <div className="label-domain" title={nft.id}>
                       <SVG
-                        fill={
-                          nft.platform === PlatformType.sns
-                            ? "none"
-                            : SocialPlatformMapping(PlatformType.ens).color
-                        }
+                        fill={SocialPlatformMapping(nft.platform || nft.category).color}
                         src={
                           SocialPlatformMapping(
-                            nft.platform || PlatformType.ens
+                            nft.platform || nft.category
                           ).icon!
                         }
                         width="20"
@@ -372,7 +367,7 @@ const RenderAccountItem = (props) => {
             >
               <div className="icon">
                 <SVG
-                  fill={resolvedPlatform === PlatformType.sns ? "none" : "#000"}
+                  fill={"#000"}
                   src={SocialPlatformMapping(resolvedPlatform)?.icon || ""}
                   width={20}
                   height={20}
