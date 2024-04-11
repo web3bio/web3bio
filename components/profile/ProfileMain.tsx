@@ -3,8 +3,13 @@ import React, { Suspense, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
-import { PlatformType } from "../../utils/platform";
-import { SocialPlatformMapping, formatText, colorMod } from "../../utils/utils";
+import { PlatformSystem, PlatformType } from "../../utils/platform";
+import {
+  SocialPlatformMapping,
+  formatText,
+  colorMod,
+  getSocialMediaLink,
+} from "../../utils/utils";
 import { Error } from "../shared/Error";
 import { Empty } from "../shared/Empty";
 import { RenderWidgetItem } from "./WidgetLinkItem";
@@ -28,19 +33,63 @@ import Web3bioBadge from "./ProfileFooter";
 import { WidgetArticle } from "./WidgetArticle";
 import WidgetIndicator from "./WidgetIndicator";
 import { WidgetTypes } from "../../utils/widgets";
+import { GET_PROFILES } from "../../utils/queries";
+import { useLazyQuery } from "@apollo/client";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
     props;
   const [isCopied, setIsCopied] = useState(false);
+  const [links, setLinks] = useState(data?.links);
+  const [getQuery, { loading, error, data: identityGraph }] = useLazyQuery(
+    GET_PROFILES,
+    {
+      variables: {
+        platform: platform,
+        identity: domain,
+      },
+    }
+  );
   const { isOpen, modalType, closeModal, openModal, params } = useModal();
   const [mounted, setMounted] = useState(false);
   const profileWidgetStates = useSelector<AppState, WidgetState>(
     (state) => state.widgets
   );
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    if (!mounted) setMounted(true);
+    if (domain && platform) {
+      getQuery();
+    }
+    if (identityGraph) {
+      const vertices = identityGraph.identity.identityGraph.vertices;
+      const _res = JSON.parse(JSON.stringify(data?.links));
+      vertices
+        .filter(
+          (x) =>
+            SocialPlatformMapping(x.platform).system === PlatformSystem.web2
+        )
+        .forEach((x) => {
+          const verifiedIndex = _res.findIndex(
+            (i) =>
+              i.platform === x.platform &&
+              i.handle.toLowerCase() === x.identity.toLowerCase()
+          );
+          if (verifiedIndex !== -1) {
+            _res[verifiedIndex] = {
+              ..._res[verifiedIndex],
+              verified: true,
+            };
+          } else {
+            _res.push({
+              platform: x.platform,
+              handle: x.identity,
+              link: getSocialMediaLink(x.identity, x.platform),
+            });
+          }
+        });
+      setLinks(_res);
+    }
+  }, [domain, platform, identityGraph, getQuery, mounted, data?.links]);
   const onCopySuccess = () => {
     setIsCopied(true);
     setTimeout(() => {
@@ -263,7 +312,7 @@ export default function ProfileMain(props) {
         </div>
         <div className="column col-7 col-lg-12">
           <div className="web3-section-widgets">
-            {data?.links?.map((item, idx) => {
+            {links?.map((item, idx) => {
               if (item.handle) {
                 return (
                   <div key={idx} className="profile-widget-item">

@@ -413,12 +413,18 @@
       cursor: pointer;
       overflow: hidden;
       position: relative;
+      .verified-icon{
+        position: absolute;
+        right: 1rem;
+        bottom: 1rem;
+        font-size: 0.8;
+      }
 
       &:focus,
       &:hover {
         box-shadow: 0 .4rem 1.6rem -.4rem rgba($dark-color, .15), 0 .1rem .2rem rgba($dark-color, .01);
         z-index: 99;
-
+       
         .platform-action {
           opacity: 1;
         }
