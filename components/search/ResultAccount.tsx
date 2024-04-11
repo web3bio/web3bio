@@ -81,7 +81,6 @@ const RenderAccount = (props) => {
       domainSkipMap.some((x) => x.ns === platform) &&
       !_resolved.some((x) => x.displayName === graphTitle)
     ) {
-      // todo: check rs solana identity displayName
       const item = identityGraph.nodes
         .filter((x) => domainSkipMap.some((i) => i.ns === x.platform))
         .find((x) => x.identity === graphTitle);

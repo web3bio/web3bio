@@ -78,7 +78,11 @@ export default function D3IdentityGraph(props) {
     props;
   const [currentNode, setCurrentNode] = useState<any>(null);
   const [hideTooltip, setHideToolTip] = useState(true);
-  const [transform, setTransform] = useState<any>(null);
+  const [transform, setTransform] = useState({
+    offsetX: 0,
+    offsetY: 0,
+    offsetWidth: 0,
+  });
 
   useEffect(() => {
     if (!data) return;
@@ -103,7 +107,11 @@ export default function D3IdentityGraph(props) {
       const removeHighlight = () => {
         setHideToolTip(true);
         setCurrentNode(null);
-        setTransform(null);
+        setTransform({
+          offsetX: 0,
+          offsetY: 0,
+          offsetWidth: 0,
+        });
         CurrentId = null;
         edgeLabels.attr("class", "edge-label");
         edgePath.attr("class", "edge-path");
