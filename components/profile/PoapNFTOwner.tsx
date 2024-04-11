@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { fetchProfile } from "../../hooks/api/fetchProfile";
+import { fetchProfile } from "../../hooks/fetchProfile";
 import { updateUniversalBatchedProfile } from "../../state/universal/actions";
 import { useDispatch } from "react-redux";
 import ProfileCard from "./ProfileCard";

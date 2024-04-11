@@ -26,7 +26,7 @@ export default function HomePage() {
       const query = searchParams.get("s");
       setSearchFocus(true);
       // todo: check the type of router querys
-      const searchkeyword = query!.toLowerCase();
+      const searchkeyword = query || "";
       setSearchTerm(searchkeyword);
       if (!searchParams.get("platform")) {
         let searchPlatform = handleSearchPlatform(searchkeyword);

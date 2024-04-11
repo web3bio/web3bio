@@ -58,6 +58,7 @@ export enum PlatformType {
   degenscore = "degenscore",
   firefly = "firefly",
   solana = "solana",
+  sns = "sns",
   mstdnjp = "mstdnjp",
   lobsters = "lobsters",
   hackernews = "hackernews",
@@ -434,6 +435,13 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     label: "Solana",
     urlPrefix: "https://solscan.io/",
   },
+  [PlatformType.sns]: {
+    key: PlatformType.sns,
+    color: "#030119",
+    icon: "icons/icon-sns.svg",
+    label: "SNS",
+    urlPrefix: "https://www.sns.id/search?search=",
+  },
   [PlatformType.mstdnjp]: {
     key: PlatformType.mstdnjp,
     color: "#595aff",
@@ -482,7 +490,8 @@ export const shouldPlatformFetch = (platform?: PlatformType | null) => {
       PlatformType.unstoppableDomains,
       PlatformType.dotbit,
       PlatformType.nextid,
-      PlatformType.solana
+      PlatformType.solana,
+      PlatformType.sns,
     ].includes(platform)
   )
     return true;
