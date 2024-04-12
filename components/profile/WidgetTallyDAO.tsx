@@ -10,9 +10,10 @@ import Link from "next/link";
 import { Error } from "../shared/Error";
 import { Empty } from "../shared/Empty";
 import { formatText, formatBalance } from "../../utils/utils";
+import { WidgetTypes } from "../../utils/widgets";
 
 const RenderWidgetTallyDAO = ({ address }) => {
-  // 0: delegators 1:delegating to
+  // 0:delegators  1:delegating to
   const [activeTab, setActiveTab] = useState(0);
   const queryVar = {
     filters: {
@@ -38,7 +39,7 @@ const RenderWidgetTallyDAO = ({ address }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!loading) { 
+    if (!loading) {
       dispatch(
         updateTallyDAOWidget({
           isEmpty:
@@ -58,7 +59,7 @@ const RenderWidgetTallyDAO = ({ address }) => {
     return null;
 
   return (
-    <div className="profile-widget-full" id="DAO">
+    <div className="profile-widget-full" id={WidgetTypes.tally}>
       <div className="profile-widget profile-widget-tally">
         <div className="profile-widget-header">
           <h2 className="profile-widget-title">
@@ -97,8 +98,8 @@ const RenderWidgetTallyDAO = ({ address }) => {
           <Error />
         ) : (
           <div className="profile-widget-body">
-            {activeTab === 0 && (
-              data?.delegates?.nodes.length > 0 ? (
+            {activeTab === 0 &&
+              (data?.delegates?.nodes.length > 0 ? (
                 <table className="table">
                   <thead>
                     <tr>
@@ -143,7 +144,7 @@ const RenderWidgetTallyDAO = ({ address }) => {
                             </td>
                           </tr>
                         )
-                      )
+                      );
                     })}
                   </tbody>
                 </table>
@@ -152,10 +153,9 @@ const RenderWidgetTallyDAO = ({ address }) => {
                   title={`No delegations`}
                   text={`Please switch to Delegating To tab`}
                 />
-              )
-            )}
-            {activeTab === 1 && (
-              data?.delegatees?.nodes.length > 0 ? (
+              ))}
+            {activeTab === 1 &&
+              (data?.delegatees?.nodes.length > 0 ? (
                 <table className="table">
                   <thead>
                     <tr>
@@ -172,14 +172,25 @@ const RenderWidgetTallyDAO = ({ address }) => {
                             <div className="table-item">
                               <Image
                                 className="dao-icon"
-                                src={x.governor.organization.metadata?.icon || ""}
+                                src={
+                                  x.governor.organization.metadata?.icon || ""
+                                }
                                 height={24}
                                 width={24}
                                 alt={x.governor.organization.name}
                               />
-                              <div className="dao-content text-ellipsis" title={x.governor.organization.name + " - " + x.governor.name}>
+                              <div
+                                className="dao-content text-ellipsis"
+                                title={
+                                  x.governor.organization.name +
+                                  " - " +
+                                  x.governor.name
+                                }
+                              >
                                 {x.governor.organization.name}{" "}
-                                <small className="label">{x.governor.name}</small>
+                                <small className="label">
+                                  {x.governor.name}
+                                </small>
                               </div>
                             </div>
                           </td>
@@ -222,7 +233,7 @@ const RenderWidgetTallyDAO = ({ address }) => {
                             </div>
                           </td>
                         </tr>
-                      )
+                      );
                     })}
                   </tbody>
                 </table>
@@ -231,8 +242,7 @@ const RenderWidgetTallyDAO = ({ address }) => {
                   title={`Not delegating to anyone`}
                   text={`Please switch to Delegators tab`}
                 />
-              )
-            )}
+              ))}
           </div>
         )}
       </div>

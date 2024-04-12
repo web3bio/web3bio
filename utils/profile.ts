@@ -20,14 +20,3 @@ export interface ProfileInterface {
     }
   >;
 }
-
-export enum WidgetTypes {
-  nft = "nft",
-  poaps = "poaps",
-  feeds = "feeds",
-  rss = "rss",
-  degen = "degen",
-  phi = "phi",
-  dao = "dao",
-  default = "default",
-}

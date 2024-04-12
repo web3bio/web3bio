@@ -2,10 +2,8 @@ import {
   SIMPLEHASH_URL,
   SIMPLEHASH_CHAINS,
   SIMPLEHASH_PAGE_SIZE,
-} from "../../components/apis/simplehash";
-import { PlatformType, shouldPlatformFetch } from "../../utils/platform";
-
-
+} from "../components/apis/simplehash";
+import { PlatformType, shouldPlatformFetch } from "../utils/platform";
 
 export const fetchProfile = async (identity) => {
   try {

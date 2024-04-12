@@ -28,7 +28,7 @@ export const formatText = (string, length?) => {
   if (string.length <= len) {
     return string;
   }
-  if (string.startsWith("0x"))  {
+  if (string.startsWith("0x")) {
     return `${string.substring(0, chars + 2)}...${string.substring(
       string.length - chars
     )}`;
@@ -111,6 +111,7 @@ export const handleSearchPlatform = (term: string) => {
     case regexDotbit.test(term):
       return PlatformType.dotbit;
     case regexSns.test(term):
+      return PlatformType.sns;
     case regexSolana.test(term):
       return PlatformType.solana;
     case regexTwitter.test(term):

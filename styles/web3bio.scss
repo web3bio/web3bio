@@ -40,7 +40,6 @@
 @import "profile";
 @import "search";
 @import "feed";
-@import "share";
 
 // Variables
 $pride-color-1: #fbf4ec !default;
@@ -288,6 +287,63 @@ body {
   }
 }
 
+// Web3.bio Widgets Indicator
+.widgets-indicator {
+  align-items: center;
+  background: rgba($bg-color, .05);
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+  gap: .4rem;
+  height: fit-content;
+  padding: .6rem .4rem;
+  position: fixed;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all .25s ease;
+  width: 2rem;
+  z-index: 10;
+
+  &:hover {
+    background: rgba($bg-color, .85);
+    
+    .widget-indicator-item {
+      color: initial;
+
+      .indicator-dot {
+        display: none;
+      }
+    }
+  }
+
+  .widget-indicator-item {
+    align-items: center;
+    border-radius: 50%;
+    color: transparent;
+    cursor: pointer;
+    display: flex;
+    height: 1.2rem;
+    justify-content: center;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    width: 1.2rem;
+
+    .indicator-dot {
+      background: $bg-color;
+      border-radius: .2rem;
+      display: block;
+      height: .4rem;
+      left: .4rem;
+      position: absolute;
+      top: .4rem;
+      width: .4rem;
+    }
+  }
+}
+
 .web3bio-placeholder {
   background: rgba(darken($primary-color, 10%), .01);
   box-shadow: inset 0 0 4rem rgba($dark-color, .2);
@@ -313,16 +369,16 @@ body {
     overflow: hidden;
     padding: 2rem;
     width: 100%;
-  
+
     .feature-header {
       position: relative;
       z-index: 1;
-  
+
       h3 {
         font-size: 1rem;
         font-weight: 700;
       }
-  
+
       h4 {
         color: lighten($dark-color, 25%);
         font-size: .65rem;
@@ -330,7 +386,7 @@ body {
         margin: 1rem 0;
       }
     }
-  
+
     .feature-body {
       &.feature-body-profile {
         .demo-profile {
@@ -342,41 +398,41 @@ body {
           display: inline-flex;
           margin: .1rem;
           padding: .25rem;
-  
+
           .avatar {
             align-items: center;
             background: rgba($dark-color, .05);
             display: flex;
             font-size: 2rem;
             justify-content: center;
-  
+
             &.avatar-1 {}
-  
+
             &.avatar-2 {
               background: rgba(#F78E4E, .25);
             }
-  
+
             &.avatar-3 {
               background: rgba(#836F6F, .25);
             }
-  
+
             &.avatar-4 {
               background: rgba(#D2CFD1, .25);
             }
-  
+
             &.avatar-5 {
               background: rgba(#4AADCB, .25);
             }
-  
+
             &.avatar-6 {
               background: rgba(#F0415E, .25);
             }
-  
+
             &.avatar-7 {
               background: rgba(#93989B, .25);
             }
           }
-  
+
           .name {
             font-size: .8rem;
             font-weight: 700;
@@ -384,7 +440,7 @@ body {
           }
         }
       }
-  
+
       &.feature-body-graph {
         align-items: center;
         display: flex;
@@ -392,41 +448,41 @@ body {
         flex-direction: column;
         justify-content: center;
         position: relative;
-  
+
         .btn {
           position: relative;
           z-index: 99;
         }
-  
+
         .circle {
           background: rgba($dark-color, .04);
           border-radius: 50%;
           content: "";
           display: block;
           position: absolute;
-  
+
           &:first-child {
             height: 4rem;
             width: 4rem;
           }
-  
+
           &:nth-child(2) {
             height: 8rem;
             width: 8rem;
           }
-  
+
           &:nth-child(3) {
             height: 13rem;
             width: 13rem;
           }
-  
+
           &:nth-child(4) {
             height: 19rem;
             width: 19rem;
           }
         }
       }
-  
+
       .identity {
         border-radius: .6rem;
         box-shadow: inset 0 0 .05rem rgba($dark-color, .25);
@@ -434,23 +490,23 @@ body {
         display: inline-flex;
         margin: .1rem;
         padding: .4rem;
-  
+
         &.identity-ens {
           background: rgba(#5298FF, .1);
         }
-  
+
         &.identity-spaceid {
           background: rgba(#71EBAA, .2);
         }
-  
+
         &.identity-farcaster {
           background: rgba(#8465CB, .1);
         }
-  
+
         &.identity-unstoppabledomains {
           background: rgba(#2E65F5, .05);
         }
-  
+
         &.identity-lens {
           background: lighten(#6bc674, 35%);
         }

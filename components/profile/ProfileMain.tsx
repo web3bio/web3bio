@@ -24,12 +24,13 @@ import { WidgetPhiland } from "./WidgetPhiland";
 import { WidgetTallyDAO } from "./WidgetTallyDAO";
 import { isValidEthereumAddress, regexEns } from "../../utils/regexp";
 import LoadingSkeleton from "./LoadingSkeleton";
-import { WidgetTypes } from "../../utils/profile";
 import Web3bioBadge from "./ProfileFooter";
 import { WidgetArticle } from "./WidgetArticle";
+import WidgetIndicator from "./WidgetIndicator";
+import { WidgetTypes } from "../../utils/widgets";
 
 export default function ProfileMain(props) {
-  const { data, pageTitle, platform, nfts, relations, domain, fallbackAvatar } =
+  const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
     props;
   const [isCopied, setIsCopied] = useState(false);
   const { isOpen, modalType, closeModal, openModal, params } = useModal();
@@ -80,8 +81,10 @@ export default function ProfileMain(props) {
               : "none",
         }}
       ></div>
+      <WidgetIndicator states={profileWidgetStates} />
+
       <div className="columns">
-        <div className="column col-4 col-md-12">
+        <div className="column col-4 col-lg-12">
           <div
             className="web3-profile-base"
             itemProp="mainEntity"
@@ -145,20 +148,6 @@ export default function ProfileMain(props) {
                     <span className="profile-label ml-1 mr-1">
                       {formatText(data.address)}
                     </span>
-                  </Clipboard>
-                  <Clipboard
-                    component="div"
-                    className="btn btn-sm"
-                    data-clipboard-text={data.address}
-                    onSuccess={onCopySuccess}
-                    title="Copy this wallet address"
-                  >
-                    <SVG
-                      src="../icons/icon-copy.svg"
-                      width={20}
-                      height={20}
-                      className="action"
-                    />
                   </Clipboard>
                   <AddressMenu profile={data} />
                 </div>
@@ -272,7 +261,7 @@ export default function ProfileMain(props) {
             )}
           </div>
         </div>
-        <div className="column col-8 col-md-12">
+        <div className="column col-7 col-lg-12">
           <div className="web3-section-widgets">
             {data?.links?.map((item, idx) => {
               if (item.handle) {

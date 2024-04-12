@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import {
-  updateDegenWidget,
+  updateDegenscoreWidget,
   updateNFTWidget,
   updatePoapsWidget,
   updateRssWidget,
@@ -9,6 +9,7 @@ import {
   updateTallyDAOWidget,
   updateArticleWidget,
 } from "./action";
+import { WidgetTypes } from "../../utils/widgets";
 
 interface WidgetStateDetail {
   isEmpty?: boolean | null;
@@ -17,53 +18,53 @@ interface WidgetStateDetail {
   loaded?: boolean | null;
 }
 export interface WidgetState {
-  nft: WidgetStateDetail;
-  poaps?: WidgetStateDetail;
-  feeds?: WidgetStateDetail;
-  degen?: WidgetStateDetail;
-  rss?: WidgetStateDetail;
-  philand?: WidgetStateDetail;
-  dao?: WidgetStateDetail;
-  article?: WidgetStateDetail;
+  [WidgetTypes.nft]: WidgetStateDetail;
+  [WidgetTypes.feeds]?: WidgetStateDetail;
+  [WidgetTypes.poaps]?: WidgetStateDetail;
+  [WidgetTypes.rss]?: WidgetStateDetail;
+  [WidgetTypes.article]?: WidgetStateDetail;
+  [WidgetTypes.tally]?: WidgetStateDetail;
+  [WidgetTypes.degenscore]?: WidgetStateDetail;
+  [WidgetTypes.philand]?: WidgetStateDetail;
 }
 
 export const initialState: WidgetState = {
-  nft: {
+  [WidgetTypes.nft]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
   },
-  poaps: {
+  [WidgetTypes.feeds]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
   },
-  rss: {
+  [WidgetTypes.poaps]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
   },
-  degen: {
+  [WidgetTypes.rss]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
   },
-  feeds: {
+  [WidgetTypes.article]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
   },
-  philand: {
+  [WidgetTypes.tally]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
   },
-  dao: {
+  [WidgetTypes.degenscore]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
   },
-  article: {
+  [WidgetTypes.philand]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
@@ -75,41 +76,8 @@ export default createReducer(initialState, (builder) =>
     .addCase(
       updateNFTWidget,
       (state, { payload: { isEmpty, initLoading } }) => {
-        state.nft = {
-          ...state.nft,
-          isEmpty,
-          initLoading,
-          loaded: true,
-        };
-      }
-    )
-    .addCase(
-      updatePoapsWidget,
-      (state, { payload: { isEmpty, initLoading } }) => {
-        state.poaps = {
-          ...state.poaps,
-          isEmpty,
-          initLoading,
-          loaded: true,
-        };
-      }
-    )
-    .addCase(
-      updateRssWidget,
-      (state, { payload: { isEmpty, initLoading } }) => {
-        state.rss = {
-          ...state.rss,
-          isEmpty,
-          initLoading,
-          loaded: true,
-        };
-      }
-    )
-    .addCase(
-      updateDegenWidget,
-      (state, { payload: { isEmpty, initLoading } }) => {
-        state.degen = {
-          ...state.degen,
+        state[WidgetTypes.nft] = {
+          ...state[WidgetTypes.nft],
           isEmpty,
           initLoading,
           loaded: true,
@@ -119,8 +87,8 @@ export default createReducer(initialState, (builder) =>
     .addCase(
       updateFeedsWidget,
       (state, { payload: { isEmpty, initLoading } }) => {
-        state.feeds = {
-          ...state.feeds,
+        state[WidgetTypes.feeds] = {
+          ...state[WidgetTypes.feeds],
           isEmpty,
           initLoading,
           loaded: true,
@@ -128,10 +96,10 @@ export default createReducer(initialState, (builder) =>
       }
     )
     .addCase(
-      updatePhilandWidget,
+      updatePoapsWidget,
       (state, { payload: { isEmpty, initLoading } }) => {
-        state.philand = {
-          ...state.philand,
+        state[WidgetTypes.poaps] = {
+          ...state[WidgetTypes.poaps],
           isEmpty,
           initLoading,
           loaded: true,
@@ -139,10 +107,10 @@ export default createReducer(initialState, (builder) =>
       }
     )
     .addCase(
-      updateTallyDAOWidget,
+      updateRssWidget,
       (state, { payload: { isEmpty, initLoading } }) => {
-        state.dao = {
-          ...state.dao,
+        state[WidgetTypes.rss] = {
+          ...state[WidgetTypes.rss],
           isEmpty,
           initLoading,
           loaded: true,
@@ -152,8 +120,41 @@ export default createReducer(initialState, (builder) =>
     .addCase(
       updateArticleWidget,
       (state, { payload: { isEmpty, initLoading } }) => {
-        state.article = {
-          ...state.article,
+        state[WidgetTypes.article] = {
+          ...state[WidgetTypes.article],
+          isEmpty,
+          initLoading,
+          loaded: true,
+        };
+      }
+    )
+    .addCase(
+      updateTallyDAOWidget,
+      (state, { payload: { isEmpty, initLoading } }) => {
+        state[WidgetTypes.tally] = {
+          ...state[WidgetTypes.tally],
+          isEmpty,
+          initLoading,
+          loaded: true,
+        };
+      }
+    )
+    .addCase(
+      updateDegenscoreWidget,
+      (state, { payload: { isEmpty, initLoading } }) => {
+        state[WidgetTypes.degenscore] = {
+          ...state[WidgetTypes.degenscore],
+          isEmpty,
+          initLoading,
+          loaded: true,
+        };
+      }
+    )
+    .addCase(
+      updatePhilandWidget,
+      (state, { payload: { isEmpty, initLoading } }) => {
+        state[WidgetTypes.philand] = {
+          ...state[WidgetTypes.philand],
           isEmpty,
           initLoading,
           loaded: true,

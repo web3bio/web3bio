@@ -3,13 +3,18 @@ import { useEffect, useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { ExpandController } from "./ExpandController";
 import { RSS3Fetcher, RSS3_ENDPOINT } from "../apis/rss3";
-import { ActivityTag, ActivityType, TagsFilterMapping } from "../../utils/activity";
+import {
+  ActivityTag,
+  ActivityType,
+  TagsFilterMapping,
+} from "../../utils/activity";
 import FeedFilter from "./FeedFilter";
 import { useDispatch } from "react-redux";
 import { updateFeedsWidget } from "../../state/widgets/action";
 import { ActivityFeeds } from "./ActivityFeeds";
 import { PlatformType } from "../../utils/platform";
 import { isSameAddress } from "../../utils/utils";
+import { WidgetTypes } from "../../utils/widgets";
 
 const FEEDS_PAGE_SIZE = 20;
 
@@ -129,11 +134,17 @@ export default function WidgetFeed({ profile, openModal }) {
   const scrollContainer = useRef(null);
 
   useEffect(() => {
-    if (window.location.hash && window.location.hash === "#feeds" && !expand) {
+    if (
+      window.location.hash &&
+      window.location.hash === `#${WidgetTypes.feeds}` &&
+      !expand
+    ) {
       setExpand(true);
     }
+  }, []);
+  useEffect(() => {
     if (expand) {
-      const anchorElement = document.getElementById("feeds");
+      const anchorElement = document.getElementById(WidgetTypes.feeds);
       anchorElement?.scrollIntoView({
         block: "start",
         behavior: "smooth",
@@ -158,9 +169,13 @@ export default function WidgetFeed({ profile, openModal }) {
   // if (process.env.NODE_ENV !== "production") {
   //   console.log("Feed Data:", data);
   // }
-  
+
   return (
-    <div ref={scrollContainer} className="profile-widget-full" id="feeds">
+    <div
+      ref={scrollContainer}
+      className="profile-widget-full"
+      id={WidgetTypes.feeds}
+    >
       <div
         className={`profile-widget profile-widget-feeds${
           expand ? " active" : ""

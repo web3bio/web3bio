@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { updateArticleWidget } from "../../state/widgets/action";
 import { FIREFLY_ENDPOINT_DEV, FireflyFetcher } from "../apis/firefly";
 import { ModalType } from "../../hooks/useModal";
+import { WidgetTypes } from "../../utils/widgets";
 
 const MirrorBaseURL = "https://mirror.xyz";
 const ParagraphBaseURL = "https://paragraph.xyz";
@@ -42,7 +43,7 @@ const RenderWidgetArticle = ({ profile, openModal }) => {
     if (!isLoading) {
       dispatch(
         updateArticleWidget({
-          isEmpty: !data?.data?.length,
+          isEmpty: !data?.length,
           initLoading: false,
         })
       );
@@ -55,7 +56,7 @@ const RenderWidgetArticle = ({ profile, openModal }) => {
   // }
 
   return (
-    <div className="profile-widget-full" id="mirror">
+    <div className="profile-widget-full" id={WidgetTypes.article}>
       <div className="profile-widget profile-widget-rss">
         <div className="profile-widget-header">
           <h2 className="profile-widget-title">
