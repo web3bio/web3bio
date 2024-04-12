@@ -42,10 +42,10 @@ const updateNodes = (nodeContainer) => {
     )
     .attr("style", (d) => `display:${d.isIdentity ? "normal" : "none"}`);
 
-  const ensBadge = nodeContainer
+  const badge = nodeContainer
     .append("svg:image")
-    .attr("class", "ens-icon")
-    .attr("xlink:href", SocialPlatformMapping(PlatformType.ens).icon)
+    .attr("class", "badge-icon")
+    .attr("xlink:href", (d) => SocialPlatformMapping(d.platform).icon)
     .attr("style", (d) => `display:${d.isIdentity ? "none" : "normal"}`);
 
   const displayName = nodeContainer
@@ -67,7 +67,7 @@ const updateNodes = (nodeContainer) => {
   return {
     identityBadge,
     identityIcon,
-    ensBadge,
+    badge,
     displayName,
     identity,
   };
@@ -78,7 +78,11 @@ export default function D3IdentityGraph(props) {
     props;
   const [currentNode, setCurrentNode] = useState<any>(null);
   const [hideTooltip, setHideToolTip] = useState(true);
-  const [transform, setTransform] = useState<any>(null);
+  const [transform, setTransform] = useState({
+    offsetX: 0,
+    offsetY: 0,
+    offsetWidth: 0,
+  });
 
   useEffect(() => {
     if (!data) return;
@@ -103,7 +107,11 @@ export default function D3IdentityGraph(props) {
       const removeHighlight = () => {
         setHideToolTip(true);
         setCurrentNode(null);
-        setTransform(null);
+        setTransform({
+          offsetX: 0,
+          offsetY: 0,
+          offsetWidth: 0,
+        });
         CurrentId = null;
         edgeLabels.attr("class", "edge-label");
         edgePath.attr("class", "edge-path");
@@ -201,10 +209,11 @@ export default function D3IdentityGraph(props) {
         .attr("dy", "3px")
         .attr("text-anchor", "middle")
         .text((d) =>
-          [d.source.platform, d.target.platform].includes(PlatformType.ens)
-            ? ""
-            : d.label
+          d.source.isIdentity && d.target.isIdentity
+            ? d.label
+            : ""
         );
+      
 
       const dragged = (event, d) => {
         const clamp = (x, lo, hi) => {
@@ -241,7 +250,9 @@ export default function D3IdentityGraph(props) {
         .attr("r", (d) => getNodeRadius(d.isIdentity))
         .attr("stroke", (d) => SocialPlatformMapping(d.platform).color)
         .attr("fill", (d) =>
-          d.isIdentity ? "#fff" : SocialPlatformMapping(PlatformType.ens).color
+          d.isIdentity
+            ? "#fff"
+            : SocialPlatformMapping(d.platform).color
         );
       const maskCircle = nodeContainer
         .attr("id", (d) => d.id)
@@ -258,7 +269,7 @@ export default function D3IdentityGraph(props) {
           highlightNode(i);
         });
 
-      const { displayName, identity, identityBadge, identityIcon, ensBadge } =
+      const { displayName, identity, identityBadge, identityIcon, badge } =
         updateNodes(nodeContainer);
       const ticked = () => {
         // tick
@@ -305,7 +316,7 @@ export default function D3IdentityGraph(props) {
           .attr("x", (d) => d.x + IdentityNodeSize / 2 - 2)
           .attr("y", (d) => d.y - IdentityNodeSize / 2 - 18);
 
-        ensBadge.attr("x", (d) => d.x - 9).attr("y", (d) => d.y - 10);
+        badge.attr("x", (d) => d.x - 9).attr("y", (d) => d.y - 10);
 
         edgeLabels.attr("transform", (d) => {
           let transformation = ``;
@@ -467,7 +478,7 @@ export default function D3IdentityGraph(props) {
               </li>
               <li>
                 <span className="text-gray">Platform: </span>
-                {currentNode.platform || ""}
+                {SocialPlatformMapping(currentNode.platform).label || ""}
               </li>
               {currentNode.resolvedAddress && (
                 <li>

@@ -312,7 +312,7 @@
     padding: 0 .8rem .4rem .8rem;
   }
 
-  .label-ens {
+  .label-domain {
     align-items: center;
     border-radius: .3rem;
     color: lighten($dark-color, 25%);
@@ -330,7 +330,6 @@
     }
 
     .icon {
-      color: #3741ba;
       flex: 0 0 .8rem;
       height: 1rem;
       margin-right: .2rem;

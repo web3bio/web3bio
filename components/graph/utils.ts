@@ -9,11 +9,14 @@ export const resolveIdentityGraphData = (source) => {
   const generateVerticesStruct = (x) => {
     const resolvedPlatform = SocialPlatformMapping(x.platform);
     const ownerAddress = x.ownerAddress?.[0].address;
-    const resolvedAddress = x.platform === PlatformType.ethereum ? x.identity : x.resolveAddress?.[0].address;
+    const resolvedAddress =
+      x.platform === PlatformType.ethereum
+        ? x.identity
+        : x.resolveAddress?.[0].address;
     return {
       id: x.id,
       label:
-        x.platform === PlatformType.ens
+        [PlatformType.ens, PlatformType.sns].includes(x.platform)
           ? formatText(x.id)
           : formatText(x.displayName || x.identity),
       platform: resolvedPlatform.key || x.platform,
@@ -22,7 +25,9 @@ export const resolveIdentityGraphData = (source) => {
       uid: x.uid,
       uuid: x.uuid,
       address: x.profile?.address || resolvedAddress,
-      isIdentity: x.platform === PlatformType.ens ? false : true,
+      isIdentity: [PlatformType.ens, PlatformType.sns].includes(x.platform)
+        ? false
+        : true,
       owner: ownerAddress,
       resolvedAddress: resolvedAddress,
     };
@@ -39,7 +44,6 @@ export const resolveIdentityGraphData = (source) => {
       isIdentity: false,
       owner,
       resolvedAddress: null,
-      transaction: ens.transaction,
     };
   };
   source.nodes.forEach((x) => {
