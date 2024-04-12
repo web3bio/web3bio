@@ -63,7 +63,13 @@ export default function ProfileMain(props) {
       getQuery();
     }
     if (identityGraph?.identity?.identityGraph) {
-      const vertices = identityGraph.identity.identityGraph.vertices;
+      const vertices = identityGraph.identity.identityGraph.vertices.map(
+        (x) => ({
+          ...x,
+          platform:
+            x.platform === PlatformType.dns ? PlatformType.website : x.platform,
+        })
+      );
       const _res = JSON.parse(JSON.stringify(data?.links));
       vertices
         .filter(
