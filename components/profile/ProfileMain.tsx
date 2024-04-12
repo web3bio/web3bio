@@ -46,7 +46,9 @@ export default function ProfileMain(props) {
     {
       variables: {
         platform: platform,
-        identity: domain,
+        identity: domain.endsWith(".farcaster")
+          ? domain.replace(".farcaster", "")
+          : domain,
       },
     }
   );
