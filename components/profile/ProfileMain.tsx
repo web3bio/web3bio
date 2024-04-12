@@ -84,6 +84,7 @@ export default function ProfileMain(props) {
               platform: x.platform,
               handle: x.identity,
               link: getSocialMediaLink(x.identity, x.platform),
+              verified: true,
             });
           }
         });
