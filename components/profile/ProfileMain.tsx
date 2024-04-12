@@ -60,7 +60,7 @@ export default function ProfileMain(props) {
     if (domain && platform) {
       getQuery();
     }
-    if (identityGraph) {
+    if (identityGraph?.identity?.identityGraph) {
       const vertices = identityGraph.identity.identityGraph.vertices;
       const _res = JSON.parse(JSON.stringify(data?.links));
       vertices
