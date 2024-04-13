@@ -21,7 +21,11 @@ import RenderProfileBadge from "../profile/RenderProfileBadge";
 
 export const RenderToken = ({ key, name, symbol, image, value }) => {
   return (
-    <div className="feed-token" key={key} title={formatValue(value) + " " + symbol}>
+    <div
+      className="feed-token"
+      key={key}
+      title={formatValue(value) + " " + symbol}
+    >
       {image && (
         <Image
           className="feed-token-icon"
@@ -32,9 +36,7 @@ export const RenderToken = ({ key, name, symbol, image, value }) => {
           loading="lazy"
         />
       )}
-      <span className="feed-token-value">
-        {formatText(formatValue(value))}
-      </span>
+      <span className="feed-token-value">{formatText(formatValue(value))}</span>
       {symbol && <small className="feed-token-meta">{symbol}</small>}
     </div>
   );
@@ -166,8 +168,7 @@ const RenderFeedItem = (props) => {
                 remoteFetch
                 fullProfile
               />
-            ) ||
-              feedOwner}
+            ) || feedOwner}
           </div>
           <div className="feed-item-action dropdown dropdown-right">
             <Link
@@ -183,6 +184,7 @@ const RenderFeedItem = (props) => {
               </span>
             </Link>
             <ActionExternalMenu
+              action={actions?.[0]}
               links={actions?.[0]?.related_urls.map((x) => resolveIPFS_URL(x))}
             />
           </div>

@@ -1,8 +1,17 @@
 import Link from "next/link";
 import SVG from "react-inlinesvg";
-export const domainRegexp = /^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)/;
+import { PlatformType } from "../../utils/platform";
+export const domainRegexp =
+  /^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)/;
 
-export default function ActionExternalMenu({ links }) {
+export default function ActionExternalMenu({ links, action }) {
+  const fireflyWebUrl = [PlatformType.farcaster, PlatformType.lens].includes(
+    action?.platform?.toLowerCase()
+  )
+    ? `https://firefly.mask.social/post/${
+        action.metadata.publication_id
+      }?source=${action.platform.toLowerCase()}`
+    : null;
   return (
     <>
       <div
@@ -19,9 +28,22 @@ export default function ActionExternalMenu({ links }) {
       </div>
       <ul className="menu">
         <li className="divider" data-content="LINKS"></li>
+        {fireflyWebUrl && (
+          <li key={fireflyWebUrl} className="menu-item dropdown-menu-item">
+            <Link prefetch={false} href={fireflyWebUrl} target="_blank">
+              <SVG
+                src="../icons/icon-search.svg"
+                width={20}
+                height={20}
+                className="action mr-1"
+              />
+              Firefly Web
+            </Link>
+          </li>
+        )}
         {links?.map((x) => (
           <li key={x} className="menu-item dropdown-menu-item">
-            <Link href={x} target="_blank">
+            <Link prefetch={false} href={x} target="_blank">
               <SVG
                 src="../icons/icon-search.svg"
                 width={20}
