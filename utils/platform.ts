@@ -106,7 +106,7 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     label: "Farcaster",
     urlPrefix: "https://warpcast.com/",
     ensText: ["farcaster"],
-    system: PlatformSystem.web3,
+    system: PlatformSystem.web2,
   },
   [PlatformType.github]: {
     key: PlatformType.github,
