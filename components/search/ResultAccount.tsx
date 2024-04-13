@@ -49,7 +49,7 @@ const RenderAccount = (props) => {
       .forEach((domain) => {
         const networkIdentity = identityGraph.nodes.find(
           (x) =>
-            x.identity === domain.ownerAddress[0]?.address &&
+            x.identity === domain.ownerAddress?.[0].address &&
             x.platform ===
               domainSkipMap.find((i) => i.ns === domain.platform)?.network
         );

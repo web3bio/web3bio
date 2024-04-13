@@ -7,7 +7,7 @@ export const RenderSourceFooter = ({ sources }) => {
       <div className="social-footer">
         Data source:
         {sources.map((source) => (
-          <span key={source} className="ml-1 mr-1">
+          <span key={source} className="ml-1">
             {SocialPlatformMapping(source).label}
           </span>
         ))}
