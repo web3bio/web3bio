@@ -291,7 +291,7 @@ body {
 .widget-indicator {
   align-items: center;
   background: rgba($bg-color, .05);
-  border-radius: 1rem;
+  border-radius: 2rem;
   display: flex;
   flex-direction: column;
   font-size: 1rem;
@@ -344,17 +344,25 @@ body {
   }
 
   @media screen and (max-width: $size-md) {
-    background: rgba($bg-color, .95);
+    backdrop-filter: blur(1rem);
+    background: rgba($bg-color, .5);
     bottom: 1rem;
+    box-shadow: 0 .1rem 1rem rgba($dark-color, .15);
     flex-direction: row;
-    height: 2rem;
+    font-size: 1.2rem;
+    gap: .6rem;
+    height: 2.4rem;
     max-width: 80vw;
-    padding: .4rem .6rem;
+    padding: .6rem .8rem;
     right: 50%;
     top: auto;
     transform: translateX(50%);
     width: auto;
     z-index: 99999;
+
+    &:hover {
+      background: rgba($bg-color, .5);
+    }
 
     .widget-indicator-item {
       color: initial;
