@@ -60,7 +60,7 @@ const RenderWidgetArticle = ({ profile, openModal }) => {
       <div className="profile-widget profile-widget-rss">
         <div className="profile-widget-header">
           <h2 className="profile-widget-title">
-            <span className="emoji-large mr-2">📑 </span>
+            <span className="emoji-large mr-2">📰 </span>
             Articles
           </h2>
         </div>
@@ -91,8 +91,16 @@ const RenderWidgetArticle = ({ profile, openModal }) => {
                 key={idx}
               >
                 <div className="rss-item-tag">
-                  {x.platform === 1 && (<span className="label label-primary">Mirror</span>)}
-                  {x.platform === 2 && (<span className="label">Paragraph</span>)}
+                  {x.platform === 1 && (
+                    <span className="label label-primary">
+                      Mirror
+                    </span>
+                  )}
+                  {x.platform === 2 && (
+                    <span className="label">
+                      Paragraph
+                    </span>
+                  )}
                 </div>
                 <div className="rss-item-title">{x.content_title}</div>
                 <time

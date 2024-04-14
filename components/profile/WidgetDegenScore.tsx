@@ -58,7 +58,7 @@ const RenderWidgetDegenScore = ({ address }) => {
           </h3>
           <div className="widget-action">
             <Link
-              className="btn btn-sm"
+              className="btn btn-sm btn-action"
               title="More on DegenScore"
               href={`https://degenscore.com/beacon/${address}`}
               target={"_blank"}

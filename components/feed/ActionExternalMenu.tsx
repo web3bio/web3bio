@@ -32,7 +32,7 @@ export default function ActionExternalMenu({ links, action }) {
           <li key={fireflyWebUrl} className="menu-item dropdown-menu-item">
             <Link prefetch={false} href={fireflyWebUrl} target="_blank">
               <SVG
-                src="../icons/icon-search.svg"
+                src="../icons/icon-open.svg"
                 width={20}
                 height={20}
                 className="action mr-1"

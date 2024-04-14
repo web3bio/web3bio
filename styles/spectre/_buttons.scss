@@ -2,7 +2,7 @@
 .btn {
   align-items: center;
   appearance: none;
-  background: $bg-color;
+  background: rgba($gray-color, .25);
   border: $border-width solid transparent;
   border-radius: $border-radius;
   box-shadow: none;
@@ -22,13 +22,13 @@
   white-space: nowrap;
   &:focus,
   &:hover {
-    background: darken($bg-color, 3%);
+    background: rgba($gray-color, .35);
     color: $dark-color;
     text-decoration: none;
   }
   &:active,
   &.active {
-    background: darken($bg-color, 6%);
+    background: rgba($gray-color, .45);
     color: $dark-color;
     text-decoration: none;
     &.loading {

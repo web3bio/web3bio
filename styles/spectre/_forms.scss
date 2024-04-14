@@ -117,7 +117,7 @@ textarea.form-input {
 .form-select {
   appearance: none;
   border: $border-width solid transparent;
-  background-color: $bg-color;
+  background-color: rgba($gray-color, .25);
   border-radius: $border-radius;
   color: inherit;
   font-size: $font-size;

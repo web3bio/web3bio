@@ -80,21 +80,26 @@ export default function ProfileMain(props) {
           const verifiedIndex = _res.findIndex(
             (i) =>
               i.platform === x.platform &&
-              i.handle.toLowerCase() === x.identity.toLowerCase()
+              i.handle.toLowerCase() === (x.identity.endsWith(".lens")
+                ? x.identity.replace(".lens", "")
+                : x.identity).toLowerCase()
+
+              
           );
           if (verifiedIndex !== -1) {
             _res[verifiedIndex] = {
               ..._res[verifiedIndex],
               verified: true,
             };
-          } else {
-            _res.push({
-              platform: x.platform,
-              handle: x.identity,
-              link: getSocialMediaLink(x.identity, x.platform),
-              verified: true,
-            });
-          }
+          } 
+          // else {
+          //   _res.push({
+          //     platform: x.platform,
+          //     handle: x.identity,
+          //     link: getSocialMediaLink(x.identity, x.platform),
+          //     verified: true,
+          //   });
+          // }
         });
       setLinks(_res);
     }

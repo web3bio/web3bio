@@ -133,7 +133,7 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     icon: "icons/icon-lens.svg",
     label: "Lens",
     urlPrefix: "https://www.lensfrens.xyz/",
-    system: PlatformSystem.web3,
+    system: PlatformSystem.web2,
   },
   [PlatformType.nextid]: {
     key: PlatformType.nextid,
