@@ -60,7 +60,7 @@ export default function PoapsModalContent({ onClose, asset }) {
                       src="../icons/icon-poap.svg"
                       width={24}
                       height={24}
-                      color={"#5E58A5"}
+                      fill={"#5E58A5"}
                     />
                     <div
                       className="collection-name text-ellipsis"

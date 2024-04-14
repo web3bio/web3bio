@@ -786,8 +786,9 @@
                 display: flex;
                 height: 1.25rem;
                 left: .25rem;
+                min-width: 1.25rem;
                 opacity: .85;
-                padding: .25rem;
+                padding: .2rem;
                 position: absolute;
                 transition: all .25s ease-in-out;
 
@@ -1349,8 +1350,9 @@
       display: flex;
       height: 1.5rem;
       left: .5rem;
+      min-width: 1.5rem;
       opacity: .85;
-      padding: .25rem;
+      padding: .2rem;
       position: absolute;
       transition: all .25s ease-in-out;
 

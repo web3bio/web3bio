@@ -86,7 +86,7 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.ens]: {
     key: PlatformType.ens,
     color: "#5298FF",
-    icon: "icons/icon-ens.svg",
+    icon: "icons/icon-poap.svg",
     label: "ENS",
     urlPrefix: "https://app.ens.domains/search/",
     system: PlatformSystem.web3,
@@ -133,7 +133,7 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     icon: "icons/icon-lens.svg",
     label: "Lens",
     urlPrefix: "https://www.lensfrens.xyz/",
-    system: PlatformSystem.web3,
+    system: PlatformSystem.web2,
   },
   [PlatformType.nextid]: {
     key: PlatformType.nextid,
