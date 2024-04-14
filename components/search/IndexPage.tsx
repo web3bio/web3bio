@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import SearchInput from "../search/SearchInput";
 import { handleSearchPlatform } from "../../utils/utils";
+import { regexSolana } from "../../utils/regexp";
 import IndexPageListener from "./IndexPageListener";
 import SearchResult from "./SearchResult";
 import { HomeFeatures } from "../shared/HomeFeatures";
@@ -23,10 +24,11 @@ export default function HomePage() {
   };
   useEffect(() => {
     if (searchParams.get("s")) {
-      const query = searchParams.get("s");
+      const query = searchParams.get("s") || "";
       setSearchFocus(true);
       // todo: check the type of router querys
-      const searchkeyword = query || "";
+      const searchkeyword = regexSolana.test(query) ? query : query.toLowerCase();
+      console.log(searchkeyword)
       setSearchTerm(searchkeyword);
       if (!searchParams.get("platform")) {
         let searchPlatform = handleSearchPlatform(searchkeyword);
