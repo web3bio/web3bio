@@ -49,7 +49,7 @@ const RenderWidgetRSS = ({ domain }) => {
       <div className="profile-widget profile-widget-rss">
         <div className="profile-widget-header">
           <h2 className="profile-widget-title">
-            <span className="emoji-large mr-2">📰 </span>
+            <span className="emoji-large mr-2">🌐 </span>
             Website
           </h2>
           {data.description && (

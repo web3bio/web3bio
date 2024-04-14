@@ -86,7 +86,7 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.ens]: {
     key: PlatformType.ens,
     color: "#5298FF",
-    icon: "icons/icon-poap.svg",
+    icon: "icons/icon-ens.svg",
     label: "ENS",
     urlPrefix: "https://app.ens.domains/search/",
     system: PlatformSystem.web3,

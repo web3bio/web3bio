@@ -80,7 +80,7 @@ export default function WidgetPOAP({ address, onShowDetail }) {
             <div className="widget-action">
               <div className="action-icon">
                 <Link
-                  className="btn btn-sm"
+                  className="btn btn-sm btn-action"
                   title="More on POAPs"
                   href={`https://app.poap.xyz/scan/${address}`}
                   target={"_blank"}
