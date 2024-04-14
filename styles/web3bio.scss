@@ -288,7 +288,7 @@ body {
 }
 
 // Web3.bio Widgets Indicator
-.widgets-indicator {
+.widget-indicator {
   align-items: center;
   background: rgba($bg-color, .05);
   border-radius: 1rem;
@@ -340,6 +340,28 @@ body {
       position: absolute;
       top: .4rem;
       width: .4rem;
+    }
+  }
+
+  @media screen and (max-width: $size-md) {
+    background: rgba($bg-color, .95);
+    bottom: 1rem;
+    flex-direction: row;
+    height: 2rem;
+    max-width: 80vw;
+    padding: .4rem .6rem;
+    right: 50%;
+    top: auto;
+    transform: translateX(50%);
+    width: auto;
+    z-index: 99999;
+
+    .widget-indicator-item {
+      color: initial;
+
+      .indicator-dot {
+        display: none;
+      }
     }
   }
 }
