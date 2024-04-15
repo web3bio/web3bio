@@ -185,6 +185,7 @@ const RenderFeedItem = (props) => {
               </span>
             </Link>
             <ActionExternalMenu
+              platform={feed.platform}
               action={actions?.[0]}
               links={actions?.[0]?.related_urls.map((x) => resolveIPFS_URL(x))}
             />

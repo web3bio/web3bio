@@ -28,7 +28,6 @@ export default function HomePage() {
       setSearchFocus(true);
       // todo: check the type of router querys
       const searchkeyword = regexSolana.test(query) ? query : query.toLowerCase();
-      console.log(searchkeyword)
       setSearchTerm(searchkeyword);
       if (!searchParams.get("platform")) {
         let searchPlatform = handleSearchPlatform(searchkeyword);

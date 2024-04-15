@@ -1,17 +1,35 @@
 import Link from "next/link";
 import SVG from "react-inlinesvg";
 import { PlatformType } from "../../utils/platform";
+import { ActivityType } from "../../utils/activity";
 export const domainRegexp =
   /^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)/;
 
-export default function ActionExternalMenu({ links, action }) {
-  const fireflyWebUrl = [PlatformType.farcaster, PlatformType.lens].includes(
-    action?.platform?.toLowerCase()
-  )
-    ? `https://firefly.mask.social/post/${
-        action.metadata.publication_id
-      }?source=${action.platform.toLowerCase()}`
-    : null;
+export default function ActionExternalMenu({ links, action, platform }) {
+  const fireflyWebUrl = (() => {
+    const source = platform?.toLowerCase();
+    if (
+      !source ||
+      ![PlatformType.farcaster, PlatformType.lens].includes(source)
+    )
+      return null;
+    let path = "";
+    if (action.type === ActivityType.share) {
+      if (source === PlatformType.lens) {
+        path =
+          action.metadata.target.profile_id +
+          "-" +
+          action.metadata.target.publication_id;
+      } else {
+        path = action.metadata.target.publication_id;
+      }
+    } else {
+      path = action.metadata.publication_id;
+    }
+
+    return `https://firefly.mask.social/post/${path}?source=${platform?.toLowerCase()}`;
+  })();
+
   return (
     <>
       <div
