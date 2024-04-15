@@ -14,17 +14,21 @@ export default function ActionExternalMenu({ links, action, platform }) {
     )
       return null;
     let path = "";
-    if (action.type === ActivityType.share) {
-      if (source === PlatformType.lens) {
-        path =
-          action.metadata.target.profile_id +
-          "-" +
-          action.metadata.target.publication_id;
-      } else {
-        path = action.metadata.target.publication_id;
+    if (source === PlatformType.lens) {
+      const pathExp = /\/([^\/]+)$/;
+      const matches = (
+        action.type === ActivityType.share
+          ? action.metadata.target_url
+          : action.related_urls[0]
+      ).match(pathExp);
+      if (matches) {
+        path = matches[1];
       }
     } else {
-      path = action.metadata.publication_id;
+      path =
+        action.type === ActivityType.share
+          ? action.metadata.target.publication_id
+          : action.metadata.publication_id;
     }
 
     return `https://firefly.mask.social/post/${path}?source=${platform?.toLowerCase()}`;
