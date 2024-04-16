@@ -35,7 +35,7 @@ export const GET_PROFILES = gql`
             chain
             address
           }
-          nft(category: [ENS]) {
+          nft(category: [ENS, SNS]) {
             id
             uuid
             category
