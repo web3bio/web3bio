@@ -6,7 +6,7 @@ export const regexEns = /.*?\.(eth|xyz|app|luxe|kred|art|ceo|club)$/i,
   regexEth = /^0x[a-fA-F0-9]{40}$/i,
   regexBtc = /^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$/i,
   regexSns = /.*\.(sol)$/i,
-  regexSolana = /^[1-9A-HJ-NP-Za-km-z]{44}$/i,
+  regexSolana = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/i,
   regexTwitter = /^[A-Za-z0-9_]{1,15}$/i,
   regexFarcaster = /^[A-Za-z0-9_-]{1,61}(?:|\.eth)(?:|\.farcaster)$/i,
   regexUnstoppableDomains =
@@ -20,4 +20,3 @@ export const isValidEthereumAddress = (address: string) => {
   if (address.match(/^0x0*.$|0x[123468abef]*$|0x0*dead$/i)) return false; // empty & burn address
   return true;
 };
-

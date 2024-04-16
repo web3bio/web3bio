@@ -111,12 +111,6 @@ export const fuzzyDomainSuffix = [
   },
   // ⬇️ Addresses
   {
-    key: PlatformType.solana,
-    icon: SocialPlatformMapping(PlatformType.solana).icon,
-    match: regexSolana,
-    suffixes: null,
-  },
-  {
     key: PlatformType.ethereum,
     icon: SocialPlatformMapping(PlatformType.ethereum).icon,
     match: regexEth,
@@ -126,6 +120,12 @@ export const fuzzyDomainSuffix = [
     key: PlatformType.bitcoin,
     icon: SocialPlatformMapping(PlatformType.bitcoin).icon,
     match: regexBtc,
+    suffixes: null,
+  },
+  {
+    key: PlatformType.solana,
+    icon: SocialPlatformMapping(PlatformType.solana).icon,
+    match: regexSolana,
     suffixes: null,
   },
 ];
