@@ -16,7 +16,10 @@ import {
   regexFarcaster,
   regexSolana,
   regexSns,
+  regexBtc,
+  regexAvatar,
 } from "./regexp";
+import { isAddress } from "ethers";
 import _ from "lodash";
 
 const ArweaveAssetPrefix = "https://arweave.net/";
@@ -94,8 +97,23 @@ export function isSameAddress(
   return address.toLowerCase() === otherAddress.toLowerCase();
 }
 
+export function isWeb3Address(
+  address: string
+): boolean {
+  switch (!!address) {
+    case regexEth.test(address):
+    case regexCrossbell.test(address):
+    case regexBtc.test(address):
+    case regexSolana.test(address):
+    case regexAvatar.test(address):
+      return true;
+    default:
+      return false;
+  }
+}
+
 export const handleSearchPlatform = (term: string) => {
-  switch (true) {
+  switch (!!term) {
     case regexEns.test(term):
       return PlatformType.ens;
     case regexEth.test(term):
@@ -112,6 +130,8 @@ export const handleSearchPlatform = (term: string) => {
       return PlatformType.dotbit;
     case regexSns.test(term):
       return PlatformType.sns;
+    case regexBtc.test(term):
+      return PlatformType.bitcoin;
     case regexSolana.test(term):
       return PlatformType.solana;
     case regexTwitter.test(term):
@@ -121,6 +141,12 @@ export const handleSearchPlatform = (term: string) => {
     default:
       return PlatformType.nextid;
   }
+};
+
+export const isValidEthereumAddress = (address: string) => {
+  if (!regexEth.test(address)) return false; // invalid ethereum address
+  if (address.match(/^0x0*.$|0x[123468abef]*$|0x0*dead$/i)) return false; // empty & burn address
+  return true;
 };
 
 export const isDomainSearch = (term) => {

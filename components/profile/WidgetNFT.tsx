@@ -19,6 +19,7 @@ import { WidgetTypes } from "../../utils/widgets";
 const CURSOR_PARAM = "&cursor=";
 
 const processNFTsData = (data) => {
+  if (data?.[0] === null) return null;
   if (!data?.length) return [];
   const uniqueValues = new Set();
   const assets = new Array();
@@ -141,12 +142,12 @@ export default function WidgetNFT({ profile, onShowDetail }) {
     if (assetId) {
       scrollToAsset(assetId);
     }
-    if (!isValidating) {
+    if (!isValidating && data !== null) {
       dispatch(updateNFTWidget({ isEmpty: !data?.length, initLoading: false }));
     }
   }, [assetId, isValidating]);
 
-  if (!filter && (!data.length || isError)) return null;
+  if (!filter && (!data?.length || isError)) return null;
 
   // if (process.env.NODE_ENV !== "production") {
   //   console.log("NFT Data:", data);

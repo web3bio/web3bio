@@ -12,7 +12,7 @@ import { Empty } from "../shared/Empty";
 import { formatText, formatBalance } from "../../utils/utils";
 import { WidgetTypes } from "../../utils/widgets";
 
-const RenderWidgetTallyDAO = ({ address }) => {
+const RenderWidgetTally = ({ address }) => {
   // 0:delegators  1:delegating to
   const [activeTab, setActiveTab] = useState(0);
   const queryVar = {
@@ -250,4 +250,4 @@ const RenderWidgetTallyDAO = ({ address }) => {
   );
 };
 
-export const WidgetTallyDAO = memo(RenderWidgetTallyDAO);
+export const WidgetTally = memo(RenderWidgetTally);

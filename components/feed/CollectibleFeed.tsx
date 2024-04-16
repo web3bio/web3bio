@@ -1,7 +1,6 @@
 import { memo } from "react";
 import { ModalType } from "../../hooks/useModal";
 import { ActivityType } from "../../utils/activity";
-import { isValidEthereumAddress } from "../../utils/regexp";
 import {
   ActivityTypeMapping,
   formatText,

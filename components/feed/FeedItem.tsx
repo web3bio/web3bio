@@ -73,11 +73,12 @@ const resolveDuplicatedActions = (
   return duplicatedObjects;
 };
 const RenderFeedContent = (props) => {
-  const { actions, tag, openModal, network, id } = props;
+  const { actions, tag, openModal, network, id, platform } = props;
   switch (tag) {
     case "social":
       return (
         <SocialCard
+          platform={platform}
           openModal={openModal}
           actions={resolveDuplicatedActions(
             actions,
@@ -184,12 +185,14 @@ const RenderFeedItem = (props) => {
               </span>
             </Link>
             <ActionExternalMenu
+              platform={feed.platform}
               action={actions?.[0]}
               links={actions?.[0]?.related_urls.map((x) => resolveIPFS_URL(x))}
             />
           </div>
         </div>
         <RenderFeedContent
+          platform={feed.platform}
           network={feed.network}
           openModal={openModal}
           id={feed.id}
