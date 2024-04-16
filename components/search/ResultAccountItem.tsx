@@ -172,7 +172,6 @@ const RenderAccountItem = (props) => {
           {identity.nft?.length > 0 && (
             <div className="nfts">
               {identity.nft.map((nft) => {
-                // console.log(nft)
                 return (
                   <Link
                     key={`${nft.uuid}`}

@@ -2,16 +2,10 @@
 import { useEffect, useState } from "react";
 import SVG from "react-inlinesvg";
 import { useSearchParams } from "next/navigation";
-import { DefaultSearchSuffix, fuzzyDomainSuffix } from "../../utils/constants";
+import { getSearchSuggestions } from "../../utils/constants";
 import { PlatformType } from "../../utils/platform";
-import { matchQuery } from "../../utils/queries";
-import { handleSearchPlatform, SocialPlatformMapping } from "../../utils/utils";
 
-const isQuerySplit = (query: string) => {
-  return query.includes(".") || query.includes("。");
-};
-
-type SearchListItem = {
+export type SearchListItemType = {
   key: string;
   label: string;
   icon?: string;
@@ -19,7 +13,7 @@ type SearchListItem = {
 export default function SearchInput(props) {
   const { defaultValue, handleSubmit, inputRef } = props;
   const [query, setQuery] = useState(defaultValue);
-  const [searchList, setSearchList] = useState<SearchListItem[]>([]);
+  const [searchList, setSearchList] = useState<Array<SearchListItemType>>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const searchParams = useSearchParams();
   const emitSubmit = (e, value?) => {
@@ -76,57 +70,11 @@ export default function SearchInput(props) {
     }
   };
   useEffect(() => {
-    if (!query || query.length > 40 || query === defaultValue) {
+    if (!query || query === defaultValue) {
       setSearchList([]);
       return;
     }
-    const isLastDot = [".", "。"].includes(query[query.length - 1]);
-    if (isQuerySplit(query) && !isLastDot) {
-      if (isLastDot) return;
-      const backupDomains = fuzzyDomainSuffix.map((x) => ({
-        key: x.key,
-        text: matchQuery(query) + `.${x.label}`,
-        icon: x.icon,
-      }));
-      setSearchList(
-        backupDomains.reduce((pre, cur) => {
-          if (cur.text.includes(query.replace("。", "."))) {
-            pre.push({
-              key: cur.key,
-              icon:
-                cur?.icon ||
-                SocialPlatformMapping(handleSearchPlatform(cur.text)).icon ||
-                "",
-              label: cur.text,
-            });
-          }
-          return pre;
-        }, [] as SearchListItem[])
-      );
-    } else {
-      setSearchList(
-        DefaultSearchSuffix.reduce((pre, cur) => {
-          const label =
-            matchQuery(query) + (cur.label.length > 0 ? `.${cur.label}` : "");
-          if (isLastDot && cur.key === PlatformType.farcaster) {
-            pre.push({
-              key: cur.key,
-              icon: SocialPlatformMapping(cur.key).icon,
-              label: label + "." + cur.optional,
-            });
-          }
-          if (!isLastDot || cur.label.length > 0) {
-            pre.push({
-              key: cur.key,
-              icon: SocialPlatformMapping(cur.key).icon,
-              label: label,
-            });
-          }
-
-          return pre;
-        }, new Array<SearchListItem>())
-      );
-    }
+    setSearchList(getSearchSuggestions(query));
   }, [query, searchParams]);
   return (
     <>

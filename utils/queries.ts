@@ -52,11 +52,3 @@ export const GET_PROFILES = gql`
     }
   }
 `;
-export function matchQuery(query) {
-  if (!query) return "";
-  return query.includes(".")
-    ? query.split(".")[0]
-    : query.includes("。")
-    ? query.split("。")[0]
-    : query;
-}

@@ -1,4 +1,18 @@
+import { SearchListItemType } from "../components/search/SearchInput";
 import { PlatformType } from "./platform";
+import {
+  regexBtc,
+  regexCrossbell,
+  regexDotbit,
+  regexEns,
+  regexEth,
+  regexFarcaster,
+  regexLens,
+  regexSns,
+  regexSolana,
+  regexSpaceid,
+  regexUnstoppableDomains,
+} from "./regexp";
 import { SocialPlatformMapping } from "./utils";
 
 // empty for twitter and farcaster
@@ -28,100 +42,177 @@ export const DefaultSearchSuffix = [
 export const fuzzyDomainSuffix = [
   {
     key: PlatformType.ens,
-    label: "eth",
+    icon: SocialPlatformMapping(PlatformType.ens).icon,
+    match: regexEns,
+    suffixes: ["eth", "xyz", "app", "luxe", "kred", "art", "ceo", "club"],
   },
   {
     key: PlatformType.farcaster,
-    label: "eth",
     icon: SocialPlatformMapping(PlatformType.farcaster).icon,
+    match: regexFarcaster,
+    suffixes: ["eth", "farcaster"],
   },
   {
     key: PlatformType.lens,
-    label: "lens",
+    icon: SocialPlatformMapping(PlatformType.lens).icon,
+    match: regexLens,
+    suffixes: ["lens"],
   },
   {
     key: PlatformType.dotbit,
-    label: "bit",
+    icon: SocialPlatformMapping(PlatformType.dotbit).icon,
+    match: regexDotbit,
+    suffixes: ["bit"],
   },
   {
     key: PlatformType.unstoppableDomains,
-    label: "bitcoin",
+    icon: SocialPlatformMapping(PlatformType.unstoppableDomains).icon,
+    match: regexUnstoppableDomains,
+    suffixes: [
+      "crypto",
+      "888",
+      "nft",
+      "blockchain",
+      "bitcoin",
+      "dao",
+      "x",
+      "klever",
+      "hi",
+      "zil",
+      "kresus",
+      "polygon",
+      "wallet",
+      "binanceus",
+      "anime",
+      "go",
+      "manga",
+      "eth",
+    ],
   },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "binanceus",
-  },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "blockchain",
-  },
+
   {
     key: PlatformType.space_id,
-    label: "bnb",
+    icon: SocialPlatformMapping(PlatformType.space_id).icon,
+    match: regexSpaceid,
+    suffixes: ["bnb", "arb"],
   },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "crypto",
-  },
+
   {
     key: PlatformType.crossbell,
-    label: "csb",
+    icon: SocialPlatformMapping(PlatformType.crossbell).icon,
+    match: regexCrossbell,
+    suffixes: ["csb"],
   },
   {
-    key: PlatformType.unstoppableDomains,
-    label: "dao",
+    key: PlatformType.sns,
+    icon: SocialPlatformMapping(PlatformType.sns).icon,
+    match: regexSns,
+    suffixes: ["sol"],
   },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "nft",
-  },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "888",
-  },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "wallet",
-  },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "x",
-  },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "klever",
-  },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "kresus",
-  },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "zil",
-  },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "hi",
-  },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "polygon",
-  },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "anime",
-  },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "manga",
-  },
+  // ⬇️ Addresses
   {
     key: PlatformType.solana,
-    label: "sol",
     icon: SocialPlatformMapping(PlatformType.solana).icon,
+    match: regexSolana,
+    suffixes: null,
   },
-  // {
-  //   key: "space_id",
-  //   label: "arb",
-  // },
+  {
+    key: PlatformType.ethereum,
+    icon: SocialPlatformMapping(PlatformType.ethereum).icon,
+    match: regexEth,
+    suffixes: null,
+  },
+  {
+    key: PlatformType.bitcoin,
+    icon: SocialPlatformMapping(PlatformType.bitcoin).icon,
+    match: regexBtc,
+    suffixes: null,
+  },
 ];
+
+const matchQuery = (query, index = 0) => {
+  if (!query) return "";
+  return query.includes(".")
+    ? query.split(".")[index]
+    : query.includes("。")
+    ? query.split("。")[index]
+    : query;
+};
+const isQuerySplit = (query: string) => {
+  return query.includes(".") || query.includes("。");
+};
+
+export const getSearchSuggestions = (query) => {
+  const isLastDot = [".", "。"].includes(query[query.length - 1]);
+  // address or query.x
+  if (
+    fuzzyDomainSuffix
+      .filter((x) => !x.suffixes)
+      .some((x) => x.match.test(query)) ||
+    (isQuerySplit(query) && !isLastDot)
+  ) {
+    if (isLastDot) return [];
+    const suffix = matchQuery(query, 1);
+    const backupDomains = fuzzyDomainSuffix
+      .filter(
+        (x) =>
+          x.match.test(query.replace("。", ".")) ||
+          x.suffixes?.some((i) => i.startsWith(suffix))
+      )
+      .map((x) => {
+        if (
+          x.suffixes &&
+          !fuzzyDomainSuffix
+            .filter((x) => !x.suffixes)
+            .some((x) => x.match.test(query))
+        ) {
+          return {
+            key: x.key,
+            text:
+              matchQuery(query) +
+              "." +
+              x.suffixes?.find((i) => i.startsWith(suffix)),
+            icon: x.icon,
+          };
+        } else {
+          if (x.key !== PlatformType.farcaster)
+            return {
+              key: x.key,
+              text: query,
+              icon: x.icon,
+            };
+        }
+      });
+    return backupDomains.reduce((pre, cur) => {
+      if (cur?.key) {
+        pre.push({
+          key: cur.key,
+          icon: cur?.icon,
+          label: cur.text,
+        });
+      }
+      return pre;
+    }, new Array<SearchListItemType>());
+  } else {
+    return DefaultSearchSuffix.reduce((pre, cur) => {
+      const label =
+        matchQuery(query) + (cur.label.length > 0 ? `.${cur.label}` : "");
+      if (isLastDot && cur.key === PlatformType.farcaster) {
+        pre.push({
+          key: cur.key,
+          icon: SocialPlatformMapping(cur.key).icon,
+          label: label + "." + cur.optional,
+        });
+      }
+      if (!isLastDot || cur.label.length > 0) {
+        pre.push({
+          key: cur.key,
+          icon: SocialPlatformMapping(cur.key).icon,
+          label: label,
+        });
+      }
+
+      return pre;
+    }, new Array<SearchListItemType>());
+  }
+};
