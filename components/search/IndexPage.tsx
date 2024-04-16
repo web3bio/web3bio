@@ -4,10 +4,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import SearchInput from "../search/SearchInput";
 import { handleSearchPlatform } from "../../utils/utils";
-import { regexSolana } from "../../utils/regexp";
+import { regexBtc, regexSolana } from "../../utils/regexp";
 import IndexPageListener from "./IndexPageListener";
 import SearchResult from "./SearchResult";
 import { HomeFeatures } from "../shared/HomeFeatures";
+import { PlatformType } from "../../utils/platform";
 
 export default function HomePage() {
   const [searchFocus, setSearchFocus] = useState(false);
@@ -25,15 +26,16 @@ export default function HomePage() {
   useEffect(() => {
     if (searchParams.get("s")) {
       const query = searchParams.get("s") || "";
+      const _paramPlatform = searchParams.get("platform");
       setSearchFocus(true);
-      // todo: check the type of router querys
-      const searchkeyword = regexSolana.test(query) ? query : query.toLowerCase();
+      const searchkeyword = [regexSolana, regexBtc].some((x) => x.test(query))
+        ? query
+        : query.toLowerCase();
       setSearchTerm(searchkeyword);
-      if (!searchParams.get("platform")) {
-        let searchPlatform = handleSearchPlatform(searchkeyword);
-        setSearchPlatform(searchPlatform);
+      if (!_paramPlatform) {
+        setSearchPlatform(handleSearchPlatform(searchkeyword));
       } else {
-        setSearchPlatform(searchParams.get("platform")!.toLowerCase());
+        setSearchPlatform(_paramPlatform.toLowerCase());
       }
     } else {
       setSearchFocus(false);

@@ -20,8 +20,8 @@ export default function SearchInput(props) {
     const platfrom = (() => {
       if (!value) return "";
       if (typeof value === "string") return "";
-      if (value.key && value.key === PlatformType.farcaster)
-        return PlatformType.farcaster;
+      if ([PlatformType.farcaster, PlatformType.bitcoin].includes(value?.key))
+        return value.key;
     })();
 
     const _value = (() => {
@@ -72,10 +72,10 @@ export default function SearchInput(props) {
   useEffect(() => {
     if (!query || query === defaultValue) {
       setSearchList([]);
-      return;
+    } else {
+      setSearchList(getSearchSuggestions(query));
     }
-    setSearchList(getSearchSuggestions(query));
-  }, [query, searchParams]);
+  }, [query]);
   return (
     <>
       <input
