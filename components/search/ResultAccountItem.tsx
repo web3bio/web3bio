@@ -95,6 +95,7 @@ const RenderAccountItem = (props) => {
     case PlatformType.space_id:
     case PlatformType.solana:
     case PlatformType.sns:
+    case PlatformType.bitcoin:
     case PlatformType.nextid:
     case PlatformType.crossbell:
       return (
@@ -146,7 +147,17 @@ const RenderAccountItem = (props) => {
                       <div className="ml-1 mr-1"> · </div>
                     </>
                   )}
-                  <div className="address">{formatText(resolvedIdentity)}</div>
+                  {identity.platform === PlatformType.crossbell && (
+                    <>
+                      <div className="address">
+                        {formatText(identity.identity)}
+                      </div>
+                      <div className="ml-1 mr-1"> · </div>
+                    </>
+                  )}
+                  <div className="address">
+                    {formatText(resolvedIdentity)}
+                  </div>
                   <Clipboard
                     component="div"
                     className="action"
@@ -280,72 +291,6 @@ const RenderAccountItem = (props) => {
           <RenderSourceFooter sources={sources} />
         </div>
       );
-    // case PlatformType.nextid:
-    // case PlatformType.crossbell:
-    //   return (
-    //     <div ref={ref} className={`social-item ${resolvedPlatform}`}>
-    //       <div className="social-main">
-    //         <div className="social">
-    //           <div className="avatar">
-    //             {profile?.avatar && (
-    //               <Image
-    //                 width={18}
-    //                 height={18}
-    //                 alt="avatar"
-    //                 src={profile?.avatar}
-    //                 className="avatar-img"
-    //               />
-    //             )}
-    //             <div
-    //               className="icon"
-    //               style={{
-    //                 background: SocialPlatformMapping(resolvedPlatform).color,
-    //               }}
-    //             >
-    //               <SVG
-    //                 src={SocialPlatformMapping(resolvedPlatform)?.icon || ""}
-    //                 width={20}
-    //                 height={20}
-    //               />
-    //             </div>
-    //           </div>
-    //           <div className="content">
-    //             <div className="content-title text-bold">
-    //               {formatText(displayName)}
-    //             </div>
-    //             <div className="content-subtitle text-gray">
-    //               {identity.platform === PlatformType.crossbell && (
-    //                 <>
-    //                   <div className="address">
-    //                     {formatText(identity.identity)}
-    //                   </div>
-    //                   <div className="ml-1 mr-1"> · </div>
-    //                 </>
-    //               )}
-    //               <div className="address">{formatText(resolvedIdentity)}</div>
-    //               <Clipboard
-    //                 component="div"
-    //                 className="action"
-    //                 data-clipboard-text={resolvedIdentity}
-    //                 onSuccess={onCopySuccess}
-    //               >
-    //                 <SVG src="icons/icon-copy.svg" width={20} height={20} />
-    //                 {isCopied && <div className="tooltip-copy">COPIED</div>}
-    //               </Clipboard>
-    //             </div>
-    //           </div>
-    //         </div>
-    //         <ResultAccountItemAction
-    //           isActive
-    //           prefetch={false}
-    //           href={`/${resolvedIdentity}`}
-    //           platform={identity.platform}
-    //           text={"Profile"}
-    //         />
-    //       </div>
-    //       <RenderSourceFooter sources={sources} />
-    //     </div>
-    //   );
     default:
       return (
         <div
