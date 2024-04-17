@@ -125,6 +125,7 @@ export default function D3IdentityGraph(props) {
         .attr("width", width)
         .attr("height", height)
         .attr("viewBox", [0, 0, width, height])
+        .call("click", removeHighlight)
         // .call(
         //   d3
         //     .zoom()
@@ -228,17 +229,17 @@ export default function D3IdentityGraph(props) {
       const nodeContainer = svg
         .selectAll(".node")
         .data(nodes, (d) => d.id)
-        .join("g")
-        .call(
-          d3
-            .drag()
-            .on("drag", dragged)
-            .on("start", () => setHideToolTip(true))
-            .on("end", () => {
-              resolveBoundingTransform();
-              setHideToolTip(false);
-            })
-        );
+        .join("g");
+      // .call(
+      //   d3
+      //     .drag()
+      //     .on("drag", dragged)
+      //     .on("start", () => setHideToolTip(true))
+      //     .on("end", () => {
+      //       resolveBoundingTransform();
+      //       setHideToolTip(false);
+      //     })
+      // );
 
       const circle = nodeContainer
         .append("circle")
@@ -257,6 +258,8 @@ export default function D3IdentityGraph(props) {
         .attr("opacity", 0)
         .attr("r", (d) => getNodeRadius(d.isIdentity))
         .on("click", (e, i) => {
+          e.preventDefault();
+          e.stopPropagation();
           removeHighlight();
           highlightNode(i);
         });
