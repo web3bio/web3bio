@@ -122,7 +122,7 @@ export default function SearchInput(props) {
                 key={x.label + idx}
                 onClick={(e) => emitSubmit(e, x)}
               >
-                <SVG fill="#000" src={x.icon || ""} width={20} height={20} />
+                <SVG fill="#121212" src={x.icon || ""} width={20} height={20} />
                 {x.label}
               </div>
             );

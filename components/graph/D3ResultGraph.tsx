@@ -3,6 +3,7 @@ import * as d3 from "d3";
 import {
   formatText,
   isDomainSearch,
+  isValidEthereumAddress,
   SocialPlatformMapping,
 } from "../../utils/utils";
 import { PlatformType } from "../../utils/platform";
@@ -10,7 +11,6 @@ import _ from "lodash";
 import SVG from "react-inlinesvg";
 import { Empty } from "../shared/Empty";
 import { calcTranslation, resolveIdentityGraphData } from "./utils";
-import { isValidEthereumAddress } from "../../utils/regexp";
 
 let CurrentId = null;
 
