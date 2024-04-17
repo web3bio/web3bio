@@ -14,12 +14,13 @@ import {
   formatText,
   isSameAddress,
   SocialPlatformMapping,
+  shouldPlatformFetch,
 } from "../../utils/utils";
 import ActionExternalMenu from "./ActionExternalMenu";
 import { ActivityType } from "../../utils/activity";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
 import { formatDistanceToNow } from "date-fns";
-import { PlatformType, shouldPlatformFetch } from "../../utils/platform";
+import { PlatformType } from "../../utils/platform";
 
 export const RenderToken = ({ key, name, symbol, image, value }) => {
   return (

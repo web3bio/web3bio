@@ -1,5 +1,5 @@
-import { PlatformType, shouldPlatformFetch } from "../../utils/platform";
-import { SocialPlatformMapping } from "../../utils/utils";
+import { PlatformType } from "../../utils/platform";
+import { SocialPlatformMapping, shouldPlatformFetch } from "../../utils/utils";
 import { handleSearchPlatform, mapLinks } from "../../utils/utils";
 import { notFound, redirect } from "next/navigation";
 import { Metadata } from "next";

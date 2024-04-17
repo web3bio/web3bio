@@ -539,22 +539,3 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     system: PlatformSystem.web2,
   },
 };
-
-export const shouldPlatformFetch = (platform?: PlatformType | null) => {
-  if (!platform) return false;
-  if (
-    [
-      PlatformType.ens,
-      PlatformType.ethereum,
-      PlatformType.farcaster,
-      PlatformType.lens,
-      PlatformType.unstoppableDomains,
-      PlatformType.dotbit,
-      PlatformType.nextid,
-      PlatformType.solana,
-      PlatformType.sns,
-    ].includes(platform)
-  )
-    return true;
-  return false;
-};
