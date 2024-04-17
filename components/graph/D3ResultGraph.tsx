@@ -125,7 +125,7 @@ export default function D3IdentityGraph(props) {
         .attr("width", width)
         .attr("height", height)
         .attr("viewBox", [0, 0, width, height])
-        .on("click", removeHighlight)
+        // .on("click", removeHighlight)
         // .call(
         //   d3
         //     .zoom()
