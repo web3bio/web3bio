@@ -166,7 +166,8 @@ const RenderFeedItem = (props) => {
             {(
               <RenderProfileBadge
                 platform={
-                  shouldPlatformFetch(feed.platform)
+                  feed.platform &&
+                  shouldPlatformFetch(feed?.platform.toLowerCase())
                     ? feed.platform
                     : PlatformType.ethereum
                 }
