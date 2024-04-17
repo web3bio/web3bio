@@ -1,10 +1,11 @@
+"use client";
 import Link from "next/link";
 import SearchInput from "../search/SearchInput";
-import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 export default function SearchModalContent(props) {
   const { domain, onClose } = props;
-  useEffect(() => {});
+  const router = useRouter();
   return (
     <div className="web3bio-search">
       <Link
@@ -26,10 +27,8 @@ export default function SearchModalContent(props) {
           key={domain}
           defaultValue={""}
           handleSubmit={(value, platform) => {
-            window.history.pushState(
-              {},
-              '',
-              `/?s=${value}${platform ? `&platform=${platform}` : ""}`,
+            router.push(
+              `/?s=${value}${platform ? `&platform=${platform}` : ""}`
             );
             onClose();
           }}
