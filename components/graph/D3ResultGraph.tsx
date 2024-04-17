@@ -125,7 +125,6 @@ export default function D3IdentityGraph(props) {
         .attr("width", width)
         .attr("height", height)
         .attr("viewBox", [0, 0, width, height])
-        // .on("click", removeHighlight)
         // .call(
         //   d3
         //     .zoom()
@@ -209,11 +208,8 @@ export default function D3IdentityGraph(props) {
         .attr("dy", "3px")
         .attr("text-anchor", "middle")
         .text((d) =>
-          d.source.isIdentity && d.target.isIdentity
-            ? d.label
-            : ""
+          d.source.isIdentity && d.target.isIdentity ? d.label : ""
         );
-      
 
       const dragged = (event, d) => {
         const clamp = (x, lo, hi) => {
@@ -233,16 +229,16 @@ export default function D3IdentityGraph(props) {
         .selectAll(".node")
         .data(nodes, (d) => d.id)
         .join("g")
-        // .call(
-        //   d3
-        //     .drag()
-        //     .on("drag", dragged)
-        //     .on("start", () => setHideToolTip(true))
-        //     .on("end", () => {
-        //       resolveBoundingTransform();
-        //       setHideToolTip(false);
-        //     })
-        // );
+        .call(
+          d3
+            .drag()
+            .on("drag", dragged)
+            .on("start", () => setHideToolTip(true))
+            .on("end", () => {
+              resolveBoundingTransform();
+              setHideToolTip(false);
+            })
+        );
 
       const circle = nodeContainer
         .append("circle")
@@ -250,9 +246,7 @@ export default function D3IdentityGraph(props) {
         .attr("r", (d) => getNodeRadius(d.isIdentity))
         .attr("stroke", (d) => SocialPlatformMapping(d.platform).color)
         .attr("fill", (d) =>
-          d.isIdentity
-            ? "#fff"
-            : SocialPlatformMapping(d.platform).color
+          d.isIdentity ? "#fff" : SocialPlatformMapping(d.platform).color
         );
       const maskCircle = nodeContainer
         .attr("id", (d) => d.id)
@@ -263,8 +257,6 @@ export default function D3IdentityGraph(props) {
         .attr("opacity", 0)
         .attr("r", (d) => getNodeRadius(d.isIdentity))
         .on("click", (e, i) => {
-          e.preventDefault();
-          e.stopPropagation();
           removeHighlight();
           highlightNode(i);
         });
