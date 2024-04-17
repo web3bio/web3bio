@@ -6,7 +6,7 @@ import SVG from "react-inlinesvg";
 import { formatText } from "../../utils/utils";
 import { RenderSourceFooter } from "./SourcesFooter";
 import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
-import {  isWeb3Address } from "../../utils/utils";
+import { isWeb3Address } from "../../utils/utils";
 import { useDispatch } from "react-redux";
 import _ from "lodash";
 import { fetchProfile } from "../../hooks/fetchProfile";
@@ -30,10 +30,9 @@ const RenderAccountItem = (props) => {
     ? profile.displayName
     : identity.displayName || identity.identity;
   const resolvedPlatform = identity.platform;
-  const displayName =
-    isWeb3Address(resolvedDisplayName)
-      ? formatText(resolvedDisplayName)
-      : resolvedDisplayName;
+  const displayName = isWeb3Address(resolvedDisplayName)
+    ? formatText(resolvedDisplayName)
+    : resolvedDisplayName;
   const resolvedIdentity =
     profile?.address ||
     identity.resolveAddress?.[0].address ||
@@ -155,9 +154,7 @@ const RenderAccountItem = (props) => {
                       <div className="ml-1 mr-1"> · </div>
                     </>
                   )}
-                  <div className="address">
-                    {formatText(resolvedIdentity)}
-                  </div>
+                  <div className="address">{formatText(resolvedIdentity)}</div>
                   <Clipboard
                     component="div"
                     className="action"
@@ -184,6 +181,11 @@ const RenderAccountItem = (props) => {
           {identity.nft?.length > 0 && (
             <div className="nfts">
               {identity.nft.map((nft) => {
+                const nftPlatform =
+                  nft.chain === PlatformType.ethereum
+                    ? PlatformType.ens
+                    : PlatformType.sns;
+
                 return (
                   <Link
                     key={`${nft.uuid}`}
@@ -195,12 +197,8 @@ const RenderAccountItem = (props) => {
                   >
                     <div className="label-domain" title={nft.id}>
                       <SVG
-                        fill={SocialPlatformMapping(nft.platform || nft.category).color}
-                        src={
-                          SocialPlatformMapping(
-                            nft.platform || nft.category
-                          ).icon!
-                        }
+                        fill={SocialPlatformMapping(nftPlatform).color}
+                        src={SocialPlatformMapping(nftPlatform).icon!}
                         width="20"
                         height="20"
                         className="icon"
