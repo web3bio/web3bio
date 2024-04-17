@@ -233,16 +233,16 @@ export default function D3IdentityGraph(props) {
         .selectAll(".node")
         .data(nodes, (d) => d.id)
         .join("g")
-        .call(
-          d3
-            .drag()
-            .on("drag", dragged)
-            .on("start", () => setHideToolTip(true))
-            .on("end", () => {
-              resolveBoundingTransform();
-              setHideToolTip(false);
-            })
-        );
+        // .call(
+        //   d3
+        //     .drag()
+        //     .on("drag", dragged)
+        //     .on("start", () => setHideToolTip(true))
+        //     .on("end", () => {
+        //       resolveBoundingTransform();
+        //       setHideToolTip(false);
+        //     })
+        // );
 
       const circle = nodeContainer
         .append("circle")
