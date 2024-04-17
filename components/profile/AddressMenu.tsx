@@ -3,8 +3,7 @@ import Link from "next/link";
 import SVG from "react-inlinesvg";
 import Clipboard from "react-clipboard.js";
 import { generateVCardData } from "../../utils/vcard";
-import { NetworkMapping } from "../../utils/utils";
-import { NetworkData } from "../../utils/network";
+import { NetworkData, NetworkMapping } from "../../utils/network";
 
 const createDownloadLink = (data, filename) => {
   var blob = new Blob([data], { type: "text/vcard" });
@@ -82,8 +81,7 @@ export default function AddressMenu({ profile }) {
             View on {NetworkMapping(network).scanLabel}
           </Link>
         </li>
-        {
-          profile.platform !== NetworkData.solana.key && 
+        {profile.platform !== NetworkData.solana.key && (
           <li className="menu-item dropdown-menu-item">
             <Link
               href={`https://debank.com/profile/${profile.address}`}
@@ -98,7 +96,7 @@ export default function AddressMenu({ profile }) {
               View assets on DeBank
             </Link>
           </li>
-        }
+        )}
         <li className="divider"></li>
         <li className="menu-item dropdown-menu-item">
           <Link

@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { SocialPlatformMapping } from "../../utils/utils";
+import { SocialPlatformMapping } from "../../utils/platform";
 
 export const RenderSourceFooter = ({ sources }) => {
   return (

@@ -1,5 +1,5 @@
-import { PlatformType } from "../../utils/platform";
-import { SocialPlatformMapping, formatText } from "../../utils/utils";
+import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import { formatText } from "../../utils/utils";
 import _ from "lodash";
 
 export const resolveIdentityGraphData = (source) => {
@@ -15,10 +15,9 @@ export const resolveIdentityGraphData = (source) => {
         : x.resolveAddress?.[0].address;
     return {
       id: x.id,
-      label:
-        [PlatformType.ens, PlatformType.sns].includes(x.platform)
-          ? formatText(x.id)
-          : formatText(x.displayName || x.identity),
+      label: [PlatformType.ens, PlatformType.sns].includes(x.platform)
+        ? formatText(x.id)
+        : formatText(x.displayName || x.identity),
       platform: resolvedPlatform.key || x.platform,
       displayName: x.profile?.displayName || x.displayName || x.identity,
       identity: x.profile?.identity || x.identity,

@@ -4,8 +4,9 @@ import { Empty } from "../shared/Empty";
 import { Loading } from "../shared/Loading";
 import SVG from "react-inlinesvg";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { resolveMediaURL, NetworkMapping } from "../../utils/utils";
+import { resolveMediaURL } from "../../utils/utils";
 import { CollectionSwitcher } from "./CollectionSwitcher";
+import { NetworkMapping } from "../../utils/network";
 
 const RenderNFTCollections = (props) => {
   const {
@@ -92,19 +93,20 @@ const RenderNFTCollections = (props) => {
       });
     }
   };
-  if (!isLoadingMore && !data.length) return (
-    <div
-      style={{
-        position: "relative",
-        width: "100%",
-        display: "flex",
-        height: "16rem",
-        justifyContent: "center",
-      }}
-    >
-      <Empty title="No NFTs" text="Please switch to different chains" />
-    </div>
-  );
+  if (!isLoadingMore && !data.length)
+    return (
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          display: "flex",
+          height: "16rem",
+          justifyContent: "center",
+        }}
+      >
+        <Empty title="No NFTs" text="Please switch to different chains" />
+      </div>
+    );
 
   return (
     <>
@@ -203,7 +205,10 @@ const RenderNFTCollections = (props) => {
                               <div
                                 className={`preview-network ${y.chain}`}
                                 title={NetworkMapping(y.chain).label}
-                                style={{backgroundColor: NetworkMapping(y.chain).bgColor}}
+                                style={{
+                                  backgroundColor: NetworkMapping(y.chain)
+                                    .bgColor,
+                                }}
                               >
                                 <SVG
                                   fill={NetworkMapping(y.chain).primaryColor}

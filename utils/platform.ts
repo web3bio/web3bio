@@ -539,3 +539,15 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     system: PlatformSystem.web2,
   },
 };
+
+export const SocialPlatformMapping = (platform: PlatformType) => {
+  return (
+    PlatformData[platform] ?? {
+      key: platform,
+      color: "#000000",
+      icon: "",
+      label: platform,
+      ensText: [],
+    }
+  );
+};

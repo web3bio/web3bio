@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { memo } from "react";
-import { ActivityTypeMapping, resolveMediaURL } from "../../utils/utils";
+import { resolveMediaURL } from "../../utils/utils";
 import { RenderToken } from "./FeedItem";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { isArray } from "@apollo/client/cache/inmemory/helpers";
-import { ActivityType } from "../../utils/activity";
+import { ActivityType, ActivityTypeMapping } from "../../utils/activity";
 
 const RenderDefaultCard = (props) => {
   const { actions, id } = props;
@@ -50,9 +50,7 @@ const RenderDefaultCard = (props) => {
                     href={action.related_urls[action.related_urls.length - 1]}
                     target="_blank"
                   >
-                    <div className="feed-target-name">
-                      {metadata.title}
-                    </div>
+                    <div className="feed-target-name">{metadata.title}</div>
                     <div className="feed-target-content">
                       <NFTAssetPlayer
                         className="feed-content-img float-right"

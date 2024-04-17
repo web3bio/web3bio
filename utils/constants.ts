@@ -1,4 +1,4 @@
-import { PlatformType } from "./platform";
+import { PlatformType, SocialPlatformMapping } from "./platform";
 import {
   regexBtc,
   regexCrossbell,
@@ -12,7 +12,6 @@ import {
   regexSpaceid,
   regexUnstoppableDomains,
 } from "./regexp";
-import { SocialPlatformMapping } from "./utils";
 
 // empty for twitter and farcaster
 export const DefaultSearchSuffix = [

@@ -8,19 +8,17 @@ import { TransactionCard } from "./TransactionFeed";
 import { SocialCard } from "./SocialFeed";
 import { CollectibleCard } from "./CollectibleFeed";
 import {
-  NetworkMapping,
-  ActivityTypeMapping,
   formatValue,
   formatText,
   isSameAddress,
-  SocialPlatformMapping,
   shouldPlatformFetch,
 } from "../../utils/utils";
 import ActionExternalMenu from "./ActionExternalMenu";
-import { ActivityType } from "../../utils/activity";
+import { ActivityType, ActivityTypeMapping } from "../../utils/activity";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
 import { formatDistanceToNow } from "date-fns";
-import { PlatformType } from "../../utils/platform";
+import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import { NetworkMapping } from "../../utils/network";
 
 export const RenderToken = ({ key, name, symbol, image, value }) => {
   return (

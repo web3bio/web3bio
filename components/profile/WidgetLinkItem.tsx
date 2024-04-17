@@ -3,8 +3,8 @@ import Link from "next/link";
 import { memo, useState } from "react";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
-import { PlatformType } from "../../utils/platform";
-import { SocialPlatformMapping, colorMod } from "../../utils/utils";
+import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import { colorMod } from "../../utils/utils";
 
 const WidgetItem = (props) => {
   const onCopySuccess = () => {
@@ -34,7 +34,7 @@ const WidgetItem = (props) => {
               height={20}
             />
           )}
-          {item.verified && 
+          {item.verified && (
             <div className="icon-verified">
               <SVG
                 src={`icons/icon-badge.svg`}
@@ -44,7 +44,7 @@ const WidgetItem = (props) => {
                 title={"Verified Social Link"}
               />
             </div>
-          }
+          )}
         </div>
 
         <div className="platform-content">
