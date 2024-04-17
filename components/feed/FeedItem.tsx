@@ -18,6 +18,8 @@ import {
 import ActionExternalMenu from "./ActionExternalMenu";
 import { ActivityType } from "../../utils/activity";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
+import { formatDistanceToNow } from "date-fns";
+import { PlatformType, shouldPlatformFetch } from "../../utils/platform";
 
 export const RenderToken = ({ key, name, symbol, image, value }) => {
   return (
@@ -163,9 +165,13 @@ const RenderFeedItem = (props) => {
           <div className="feed-item-name">
             {(
               <RenderProfileBadge
-                platform={identity.platform}
+                platform={
+                  shouldPlatformFetch(feed.platform)
+                    ? feed.platform
+                    : PlatformType.ethereum
+                }
                 offset={[50, -5]}
-                identity={identity.identity}
+                identity={feed.owner}
                 remoteFetch
                 fullProfile
               />
@@ -178,10 +184,14 @@ const RenderFeedItem = (props) => {
               className="feed-timestamp"
             >
               <span className="hide-sm">
-                {new Date(feed.timestamp * 1000).toLocaleString()}
+                {formatDistanceToNow(new Date(feed.timestamp * 1000), {
+                  addSuffix: true,
+                })}
               </span>
               <span className="show-sm">
-                {new Date(feed.timestamp * 1000).toLocaleDateString()}
+                {formatDistanceToNow(new Date(feed.timestamp * 1000), {
+                  addSuffix: true,
+                })}
               </span>
             </Link>
             <ActionExternalMenu
