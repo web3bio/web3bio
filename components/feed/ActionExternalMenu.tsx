@@ -5,7 +5,7 @@ import { ActivityType } from "../../utils/activity";
 export const domainRegexp =
   /^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)/;
 
-export default function ActionExternalMenu({ links, action, platform }) {
+export default function ActionExternalMenu({ links, date, action, platform }) {
   const fireflyWebUrl = (() => {
     const source = platform?.toLowerCase();
     if (
@@ -49,6 +49,17 @@ export default function ActionExternalMenu({ links, action, platform }) {
         />
       </div>
       <ul className="menu">
+        <li className="menu-item dropdown-menu-item">
+          <div>
+            <SVG
+              src="../icons/icon-sources.svg"
+              width={20}
+              height={20}
+              className="action mr-1"
+            />
+            {new Date(date * 1000).toLocaleString()}
+          </div>
+        </li>
         <li className="divider" data-content="LINKS"></li>
         {fireflyWebUrl && (
           <li key={fireflyWebUrl} className="menu-item dropdown-menu-item">

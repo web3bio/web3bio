@@ -188,14 +188,10 @@ const RenderFeedItem = (props) => {
                   addSuffix: true,
                 })}
               </span>
-              <span className="show-sm">
-                {formatDistanceToNow(new Date(feed.timestamp * 1000), {
-                  addSuffix: true,
-                })}
-              </span>
             </Link>
             <ActionExternalMenu
               platform={feed.platform}
+              date={feed.timestamp}
               action={actions?.[0]}
               links={actions?.[0]?.related_urls.map((x) => resolveIPFS_URL(x))}
             />

@@ -4,7 +4,7 @@ import Link from "next/link";
 import Clipboard from "react-clipboard.js";
 import { ProfileInterface } from "../../utils/profile";
 import { Avatar } from "../shared/Avatar";
-import { PlatformType } from "../../utils/platform";
+import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 
 interface ProfileCardProps {
   data: ProfileInterface;
@@ -44,6 +44,13 @@ export default function ProfileCard({
             {data?.displayName || formatText(data?.identity)}
           </div>
           <div className="profile-card-meta">
+            <SVG
+              fill={SocialPlatformMapping(data?.platform).color}
+              height={16}
+              width={16}
+              src={SocialPlatformMapping(data?.platform).icon || ""}
+              title={SocialPlatformMapping(data?.platform).label}
+            />
             {data?.identity === data?.address ||
             data?.identity === data?.displayName
               ? ""

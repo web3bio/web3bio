@@ -23,7 +23,7 @@
     text-decoration: none;
     user-select: none;
 
-    &>a {
+    & > a {
       align-items: center;
       border-radius: $border-radius;
       color: inherit;
@@ -43,6 +43,15 @@
         background: rgba($color: $dark-color, $alpha: 0.075);
         color: $primary-color;
       }
+    }
+
+    & > div {
+      align-items: center;
+      border-radius: $border-radius;
+      color: inherit;
+      display: flex;
+      margin: 0 (-$unit-4);
+      padding: $unit-2 $unit-2;
     }
 
     .form-checkbox,
