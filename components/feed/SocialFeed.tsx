@@ -1,22 +1,21 @@
 import Link from "next/link";
 import { memo } from "react";
 import { ModalType } from "../../hooks/useModal";
-import { ActivityType } from "../../utils/activity";
+import { ActivityType, ActivityTypeMapping } from "../../utils/activity";
 import { resolveIPFS_URL } from "../../utils/ipfs";
-import { ActivityTypeMapping, resolveMediaURL } from "../../utils/utils";
+import { resolveMediaURL } from "../../utils/utils";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { domainRegexp } from "./ActionExternalMenu";
 
 const RenderSocialCard = (props) => {
-  const { actions, openModal } = props;
+  const { actions, openModal, platform } = props;
   return actions.map((action) => {
     const metadata = action?.metadata;
     const checkEmojis = /^(\p{Emoji}\uFE0F|\p{Emoji_Presentation})+$/gu.test(
       metadata?.body
     );
     const actionId = action?.action_id;
-    const platform = action?.platform;
     const renderContent = (() => {
       switch (action.type) {
         case ActivityType.profile:

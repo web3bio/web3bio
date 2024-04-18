@@ -5,10 +5,9 @@ import _ from "lodash";
 import { useSelector } from "react-redux";
 import { AppState } from "../../state";
 import { ProfileInterface } from "../../utils/profile";
-import { PlatformType } from "../../utils/platform";
+import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import Modal from "../modal/Modal";
 import useModal, { ModalType } from "../../hooks/useModal";
-import { SocialPlatformMapping } from "../../utils/utils";
 
 const getNSAddress = (item) => {
   const _chain =

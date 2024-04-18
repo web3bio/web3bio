@@ -92,7 +92,7 @@ export default function ShareModalContent(props) {
               href={x.shareURL(url, profile.displayName)}
               target="_blank"
             >
-              <SVG fill="#000" src={x.icon} height={18} width={18} />
+              <SVG fill="#121212" src={x.icon} height={18} width={18} />
               {x.action}
             </a>
           ))}

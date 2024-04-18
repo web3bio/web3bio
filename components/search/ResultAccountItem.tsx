@@ -5,9 +5,8 @@ import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { formatText } from "../../utils/utils";
 import { RenderSourceFooter } from "./SourcesFooter";
-import { PlatformType } from "../../utils/platform";
-import { SocialPlatformMapping } from "../../utils/utils";
-import { isAddress } from "ethers";
+import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import { isWeb3Address } from "../../utils/utils";
 import { useDispatch } from "react-redux";
 import _ from "lodash";
 import { fetchProfile } from "../../hooks/fetchProfile";
@@ -31,10 +30,9 @@ const RenderAccountItem = (props) => {
     ? profile.displayName
     : identity.displayName || identity.identity;
   const resolvedPlatform = identity.platform;
-  const displayName =
-    isAddress(resolvedDisplayName) || resolvedPlatform === PlatformType.nextid
-      ? formatText(resolvedDisplayName)
-      : resolvedDisplayName;
+  const displayName = isWeb3Address(resolvedDisplayName)
+    ? formatText(resolvedDisplayName)
+    : resolvedDisplayName;
   const resolvedIdentity =
     profile?.address ||
     identity.resolveAddress?.[0].address ||
@@ -96,6 +94,9 @@ const RenderAccountItem = (props) => {
     case PlatformType.space_id:
     case PlatformType.solana:
     case PlatformType.sns:
+    case PlatformType.bitcoin:
+    case PlatformType.nextid:
+    case PlatformType.crossbell:
       return (
         <div
           onClick={onClick}
@@ -145,6 +146,14 @@ const RenderAccountItem = (props) => {
                       <div className="ml-1 mr-1"> · </div>
                     </>
                   )}
+                  {identity.platform === PlatformType.crossbell && (
+                    <>
+                      <div className="address">
+                        {formatText(identity.identity)}
+                      </div>
+                      <div className="ml-1 mr-1"> · </div>
+                    </>
+                  )}
                   <div className="address">{formatText(resolvedIdentity)}</div>
                   <Clipboard
                     component="div"
@@ -172,7 +181,11 @@ const RenderAccountItem = (props) => {
           {identity.nft?.length > 0 && (
             <div className="nfts">
               {identity.nft.map((nft) => {
-                // console.log(nft)
+                const nftPlatform =
+                  nft.chain === PlatformType.ethereum
+                    ? PlatformType.ens
+                    : PlatformType.sns;
+
                 return (
                   <Link
                     key={`${nft.uuid}`}
@@ -184,12 +197,8 @@ const RenderAccountItem = (props) => {
                   >
                     <div className="label-domain" title={nft.id}>
                       <SVG
-                        fill={SocialPlatformMapping(nft.platform || nft.category).color}
-                        src={
-                          SocialPlatformMapping(
-                            nft.platform || nft.category
-                          ).icon!
-                        }
+                        fill={SocialPlatformMapping(nftPlatform).color}
+                        src={SocialPlatformMapping(nftPlatform).icon!}
                         width="20"
                         height="20"
                         className="icon"
@@ -273,72 +282,6 @@ const RenderAccountItem = (props) => {
                   ? identity.identity + ".farcaster"
                   : identity.identity
               }`}
-              platform={identity.platform}
-              text={"Profile"}
-            />
-          </div>
-          <RenderSourceFooter sources={sources} />
-        </div>
-      );
-    case PlatformType.nextid:
-    case PlatformType.crossbell:
-      return (
-        <div ref={ref} className={`social-item ${resolvedPlatform}`}>
-          <div className="social-main">
-            <div className="social">
-              <div className="avatar">
-                {profile?.avatar && (
-                  <Image
-                    width={18}
-                    height={18}
-                    alt="avatar"
-                    src={profile?.avatar}
-                    className="avatar-img"
-                  />
-                )}
-                <div
-                  className="icon"
-                  style={{
-                    background: SocialPlatformMapping(resolvedPlatform).color,
-                  }}
-                >
-                  <SVG
-                    src={SocialPlatformMapping(resolvedPlatform)?.icon || ""}
-                    width={20}
-                    height={20}
-                  />
-                </div>
-              </div>
-              <div className="content">
-                <div className="content-title text-bold">
-                  {formatText(displayName)}
-                </div>
-                <div className="content-subtitle text-gray">
-                  {identity.platform === PlatformType.crossbell && (
-                    <>
-                      <div className="address">
-                        {formatText(identity.identity, 24)}
-                      </div>
-                      <div className="ml-1 mr-1"> · </div>
-                    </>
-                  )}
-                  <div className="address">{formatText(resolvedIdentity)}</div>
-                  <Clipboard
-                    component="div"
-                    className="action"
-                    data-clipboard-text={resolvedIdentity}
-                    onSuccess={onCopySuccess}
-                  >
-                    <SVG src="icons/icon-copy.svg" width={20} height={20} />
-                    {isCopied && <div className="tooltip-copy">COPIED</div>}
-                  </Clipboard>
-                </div>
-              </div>
-            </div>
-            <ResultAccountItemAction
-              isActive
-              prefetch={false}
-              href={`/${resolvedIdentity}`}
               platform={identity.platform}
               text={"Profile"}
             />

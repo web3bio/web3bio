@@ -42,7 +42,7 @@ export default function Web3bioBadge(props) {
         </Link>
         <button
           className={"btn btn-search"}
-          title="Try it out – press CMD+K (macOS) or CTRL+K (Windows) to search Web3 identities"
+          title="Try it out – press ⌘+K (macOS) or CTRL+K (Windows) to search Web3 identities"
           onClick={() =>
             openModal(ModalType.search, {
               domain,

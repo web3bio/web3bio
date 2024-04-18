@@ -3,12 +3,11 @@ import React, { Suspense, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
-import { PlatformSystem, PlatformType } from "../../utils/platform";
+import { PlatformSystem, PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import {
-  SocialPlatformMapping,
   formatText,
+  isValidEthereumAddress,
   colorMod,
-  getSocialMediaLink,
 } from "../../utils/utils";
 import { Error } from "../shared/Error";
 import { Empty } from "../shared/Empty";
@@ -26,8 +25,8 @@ import { WidgetState } from "../../state/widgets/reducer";
 import { WidgetDegenScore } from "./WidgetDegenScore";
 import { WidgetRSS } from "./WidgetRSS";
 import { WidgetPhiland } from "./WidgetPhiland";
-import { WidgetTallyDAO } from "./WidgetTallyDAO";
-import { isValidEthereumAddress, regexEns } from "../../utils/regexp";
+import { WidgetTally } from "./WidgetTally";
+import { regexEns } from "../../utils/regexp";
 import LoadingSkeleton from "./LoadingSkeleton";
 import Web3bioBadge from "./ProfileFooter";
 import { WidgetArticle } from "./WidgetArticle";
@@ -408,7 +407,7 @@ export default function ProfileMain(props) {
                   <div className="web3-section-widgets">
                     {isValidEthereumAddress(data.address) && (
                       <Suspense fallback={<p>Loading DAO Memberships...</p>}>
-                        <WidgetTallyDAO address={data.address} />
+                        <WidgetTally address={data.address} />
                       </Suspense>
                     )}
                   </div>

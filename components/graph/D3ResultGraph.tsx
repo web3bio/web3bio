@@ -3,14 +3,13 @@ import * as d3 from "d3";
 import {
   formatText,
   isDomainSearch,
-  SocialPlatformMapping,
+  isValidEthereumAddress,
 } from "../../utils/utils";
-import { PlatformType } from "../../utils/platform";
+import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import _ from "lodash";
 import SVG from "react-inlinesvg";
 import { Empty } from "../shared/Empty";
 import { calcTranslation, resolveIdentityGraphData } from "./utils";
-import { isValidEthereumAddress } from "../../utils/regexp";
 
 let CurrentId = null;
 
@@ -209,11 +208,8 @@ export default function D3IdentityGraph(props) {
         .attr("dy", "3px")
         .attr("text-anchor", "middle")
         .text((d) =>
-          d.source.isIdentity && d.target.isIdentity
-            ? d.label
-            : ""
+          d.source.isIdentity && d.target.isIdentity ? d.label : ""
         );
-      
 
       const dragged = (event, d) => {
         const clamp = (x, lo, hi) => {
@@ -250,9 +246,7 @@ export default function D3IdentityGraph(props) {
         .attr("r", (d) => getNodeRadius(d.isIdentity))
         .attr("stroke", (d) => SocialPlatformMapping(d.platform).color)
         .attr("fill", (d) =>
-          d.isIdentity
-            ? "#fff"
-            : SocialPlatformMapping(d.platform).color
+          d.isIdentity ? "#fff" : SocialPlatformMapping(d.platform).color
         );
       const maskCircle = nodeContainer
         .attr("id", (d) => d.id)

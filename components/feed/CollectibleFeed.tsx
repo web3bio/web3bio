@@ -1,12 +1,7 @@
 import { memo } from "react";
 import { ModalType } from "../../hooks/useModal";
-import { ActivityType } from "../../utils/activity";
-import { isValidEthereumAddress } from "../../utils/regexp";
-import {
-  ActivityTypeMapping,
-  formatText,
-  resolveMediaURL,
-} from "../../utils/utils";
+import { ActivityType, ActivityTypeMapping } from "../../utils/activity";
+import { formatText, resolveMediaURL } from "../../utils/utils";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { RenderToken } from "./FeedItem";
@@ -118,46 +113,47 @@ const RenderCollectibleCard = (props) => {
               }
               &nbsp;
               {action.duplicatedObjects.map((x, idx) => {
-                return (
-                  x.contract_address && (x.standard === 721 || x.standard === 1155) ? 
-                    <span
-                      key={`${idx}_preview`}
-                      className="feed-token c-hand"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        openModal(ModalType.nft, {
-                          remoteFetch: true,
-                          network: network,
-                          standard: x.standard,
-                          contractAddress: x.contract_address,
-                          tokenId: x.id,
-                        });
-                      }}
-                    >
-                      {x.image_url && (
-                        <NFTAssetPlayer
-                          className="feed-token-icon"
-                          src={resolveMediaURL(x.image_url)}
-                          type={"image/png"}
-                          width={20}
-                          height={20}
-                          alt={x.title || x.name}
-                        />
-                      )}
-                      <span className="feed-token-value">
-                        {x.title || x.name}
-                      </span>
-                      {x.id && !x.title && (
-                        <small className="feed-token-meta">{`#${formatText(
-                          x.id
-                        )}`}</small>
-                      )}
+                return x.contract_address &&
+                  (x.standard === 721 || x.standard === 1155) ? (
+                  <span
+                    key={`${idx}_preview`}
+                    className="feed-token c-hand"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      openModal(ModalType.nft, {
+                        remoteFetch: true,
+                        network: network,
+                        standard: x.standard,
+                        contractAddress: x.contract_address,
+                        tokenId: x.id,
+                      });
+                    }}
+                  >
+                    {x.image_url && (
+                      <NFTAssetPlayer
+                        className="feed-token-icon"
+                        src={resolveMediaURL(x.image_url)}
+                        type={"image/png"}
+                        width={20}
+                        height={20}
+                        alt={x.title || x.name}
+                      />
+                    )}
+                    <span className="feed-token-value">
+                      {x.title || x.name}
                     </span>
-                  : RenderToken({
-                    key: `${actionId + idx}_${ActivityType.transfer}_${x.name}_${
-                      x.value
-                    }`,
+                    {x.id && !x.title && (
+                      <small className="feed-token-meta">{`#${formatText(
+                        x.id
+                      )}`}</small>
+                    )}
+                  </span>
+                ) : (
+                  RenderToken({
+                    key: `${actionId + idx}_${ActivityType.transfer}_${
+                      x.name
+                    }_${x.value}`,
                     name: x.name,
                     symbol: x.symbol,
                     image: x.image,
@@ -166,7 +162,7 @@ const RenderCollectibleCard = (props) => {
                       decimals: x.decimals,
                     },
                   })
-                )
+                );
               })}
               {action.to && ActivityTypeMapping(action.type).prep && (
                 <>

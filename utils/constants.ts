@@ -1,5 +1,17 @@
-import { PlatformType } from "./platform";
-import { SocialPlatformMapping } from "./utils";
+import { PlatformType, SocialPlatformMapping } from "./platform";
+import {
+  regexBtc,
+  regexCrossbell,
+  regexDotbit,
+  regexEns,
+  regexEth,
+  regexFarcaster,
+  regexLens,
+  regexSns,
+  regexSolana,
+  regexSpaceid,
+  regexUnstoppableDomains,
+} from "./regexp";
 
 // empty for twitter and farcaster
 export const DefaultSearchSuffix = [
@@ -28,100 +40,91 @@ export const DefaultSearchSuffix = [
 export const fuzzyDomainSuffix = [
   {
     key: PlatformType.ens,
-    label: "eth",
+    icon: SocialPlatformMapping(PlatformType.ens).icon,
+    match: regexEns,
+    suffixes: ["eth", "xyz", "app", "luxe", "kred", "art", "ceo", "club"],
   },
   {
     key: PlatformType.farcaster,
-    label: "eth",
     icon: SocialPlatformMapping(PlatformType.farcaster).icon,
+    match: regexFarcaster,
+    suffixes: ["eth", "farcaster"],
   },
   {
     key: PlatformType.lens,
-    label: "lens",
+    icon: SocialPlatformMapping(PlatformType.lens).icon,
+    match: regexLens,
+    suffixes: ["lens"],
   },
   {
     key: PlatformType.dotbit,
-    label: "bit",
+    icon: SocialPlatformMapping(PlatformType.dotbit).icon,
+    match: regexDotbit,
+    suffixes: ["bit"],
   },
   {
     key: PlatformType.unstoppableDomains,
-    label: "bitcoin",
+    icon: SocialPlatformMapping(PlatformType.unstoppableDomains).icon,
+    match: regexUnstoppableDomains,
+    suffixes: [
+      "crypto",
+      "888",
+      "nft",
+      "blockchain",
+      "bitcoin",
+      "dao",
+      "x",
+      "klever",
+      "hi",
+      "zil",
+      "kresus",
+      "polygon",
+      "wallet",
+      "binanceus",
+      "anime",
+      "go",
+      "manga",
+      "eth",
+    ],
   },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "binanceus",
-  },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "blockchain",
-  },
+
   {
     key: PlatformType.space_id,
-    label: "bnb",
+    icon: SocialPlatformMapping(PlatformType.space_id).icon,
+    match: regexSpaceid,
+    suffixes: ["bnb", "arb"],
   },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "crypto",
-  },
+
   {
     key: PlatformType.crossbell,
-    label: "csb",
+    icon: SocialPlatformMapping(PlatformType.crossbell).icon,
+    match: regexCrossbell,
+    suffixes: ["csb"],
   },
   {
-    key: PlatformType.unstoppableDomains,
-    label: "dao",
+    key: PlatformType.sns,
+    icon: SocialPlatformMapping(PlatformType.sns).icon,
+    match: regexSns,
+    suffixes: ["sol"],
+  },
+  // ⬇️ Addresses
+  {
+    key: PlatformType.ethereum,
+    icon: SocialPlatformMapping(PlatformType.ethereum).icon,
+    match: regexEth,
+    suffixes: null,
   },
   {
-    key: PlatformType.unstoppableDomains,
-    label: "nft",
-  },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "888",
-  },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "wallet",
-  },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "x",
-  },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "klever",
-  },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "kresus",
-  },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "zil",
-  },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "hi",
-  },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "polygon",
-  },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "anime",
-  },
-  {
-    key: PlatformType.unstoppableDomains,
-    label: "manga",
+    key: PlatformType.bitcoin,
+    icon: SocialPlatformMapping(PlatformType.bitcoin).icon,
+    match: regexBtc,
+    suffixes: null,
   },
   {
     key: PlatformType.solana,
-    label: "sol",
     icon: SocialPlatformMapping(PlatformType.solana).icon,
+    match: regexSolana,
+    suffixes: null,
   },
-  // {
-  //   key: "space_id",
-  //   label: "arb",
-  // },
 ];
+export const ArweaveAssetPrefix = "https://arweave.net/";

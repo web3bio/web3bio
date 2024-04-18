@@ -6,7 +6,7 @@ export interface ProfileInterface {
   addresses: Record<string, string>;
   avatar: string | null;
   description: string | null;
-  platform: string;
+  platform: PlatformType;
   displayName: string | null;
   email: string | null;
   header: string | null;

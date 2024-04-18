@@ -540,21 +540,14 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
   },
 };
 
-export const shouldPlatformFetch = (platform?: PlatformType | null) => {
-  if (!platform) return false;
-  if (
-    [
-      PlatformType.ens,
-      PlatformType.ethereum,
-      PlatformType.farcaster,
-      PlatformType.lens,
-      PlatformType.unstoppableDomains,
-      PlatformType.dotbit,
-      PlatformType.nextid,
-      PlatformType.solana,
-      PlatformType.sns,
-    ].includes(platform)
-  )
-    return true;
-  return false;
+export const SocialPlatformMapping = (platform: PlatformType) => {
+  return (
+    PlatformData[platform] ?? {
+      key: platform,
+      color: "#000000",
+      icon: "",
+      label: platform,
+      ensText: [],
+    }
+  );
 };

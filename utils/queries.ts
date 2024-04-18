@@ -35,10 +35,10 @@ export const GET_PROFILES = gql`
             chain
             address
           }
-          nft(category: [ENS]) {
+          nft(category: [ENS, SNS]) {
             id
             uuid
-            category
+            chain
             source
           }
         }
@@ -52,11 +52,3 @@ export const GET_PROFILES = gql`
     }
   }
 `;
-export function matchQuery(query) {
-  if (!query) return "";
-  return query.includes(".")
-    ? query.split(".")[0]
-    : query.includes("。")
-    ? query.split("。")[0]
-    : query;
-}

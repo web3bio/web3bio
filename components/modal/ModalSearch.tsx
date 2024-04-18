@@ -1,5 +1,6 @@
-import { useRouter } from "next/navigation";
+"use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import SearchInput from "../search/SearchInput";
 
 export default function SearchModalContent(props) {
@@ -24,6 +25,7 @@ export default function SearchModalContent(props) {
       <div className="form-input-group">
         <SearchInput
           key={domain}
+          defaultValue={""}
           handleSubmit={(value, platform) => {
             router.push(
               `/?s=${value}${platform ? `&platform=${platform}` : ""}`
