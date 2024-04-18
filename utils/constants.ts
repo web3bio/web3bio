@@ -13,6 +13,14 @@ import {
   regexUnstoppableDomains,
 } from "./regexp";
 
+export const DefaultWeb2SearchSuffix = [
+  PlatformType.twitter,
+  PlatformType.github,
+  PlatformType.linkedin,
+  PlatformType.keybase,
+  PlatformType.reddit,
+];
+
 // empty for twitter and farcaster
 export const DefaultSearchSuffix = [
   {
@@ -22,10 +30,6 @@ export const DefaultSearchSuffix = [
   {
     key: PlatformType.lens,
     label: "lens",
-  },
-  {
-    key: PlatformType.twitter,
-    label: "",
   },
   {
     key: PlatformType.farcaster,

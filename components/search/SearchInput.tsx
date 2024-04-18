@@ -2,8 +2,13 @@
 import { useEffect, useState } from "react";
 import SVG from "react-inlinesvg";
 import { useSearchParams } from "next/navigation";
-import { PlatformType } from "../../utils/platform";
+import {
+  PlatformSystem,
+  PlatformType,
+  SocialPlatformMapping,
+} from "../../utils/platform";
 import { getSearchSuggestions } from "../../utils/utils";
+import { DefaultWeb2SearchSuffix } from "../../utils/constants";
 
 export type SearchListItemType = {
   key: string;
@@ -15,12 +20,16 @@ export default function SearchInput(props) {
   const [query, setQuery] = useState(defaultValue);
   const [searchList, setSearchList] = useState<Array<SearchListItemType>>([]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [currentWeb2, setCurrentWeb2] = useState(PlatformType.twitter);
   const searchParams = useSearchParams();
   const emitSubmit = (e, value?) => {
     const platfrom = (() => {
       if (!value) return "";
       if (typeof value === "string") return "";
-      if ([PlatformType.farcaster, PlatformType.bitcoin].includes(value?.key))
+      if (
+        [PlatformType.farcaster, PlatformType.bitcoin].includes(value?.key) ||
+        value.system === PlatformSystem.web2
+      )
         return value.key;
     })();
 
@@ -127,6 +136,61 @@ export default function SearchInput(props) {
               </div>
             );
           })}
+          {![".", "。"].includes(query[query.length - 1]) && (
+            <>
+              <li className="divider" data-content="WEB2" />
+
+              <div
+                className={
+                  activeIndex === 4
+                    ? "search-list-item search-list-item-active"
+                    : "search-list-item"
+                }
+                style={{
+                  justifyContent: "space-between",
+                }}
+                onClick={(e) =>
+                  emitSubmit(null, {
+                    key: currentWeb2,
+                    system: PlatformSystem.web2,
+                    value: query,
+                  })
+                }
+              >
+                <div
+                  key={currentWeb2}
+                  className="search-list-item"
+                  style={{
+                    padding: 0,
+                  }}
+                >
+                  <SVG
+                    fill="#121212"
+                    src={SocialPlatformMapping(currentWeb2).icon || ""}
+                    width={20}
+                    height={20}
+                  />
+                  {query}
+                </div>
+                <div className="search-item-actions">
+                  {DefaultWeb2SearchSuffix.filter((x) => x !== currentWeb2).map(
+                    (x) => {
+                      return (
+                        <div key={x} className="search-list-item-action">
+                          <SVG
+                            fill="#121212"
+                            src={SocialPlatformMapping(x).icon || ""}
+                            width={20}
+                            height={20}
+                          />
+                        </div>
+                      );
+                    }
+                  )}
+                </div>
+              </div>
+            </>
+          )}
         </div>
       )}
     </>

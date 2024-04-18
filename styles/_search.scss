@@ -92,6 +92,13 @@
         gap: .5rem;
         transition: all .2s ease;
 
+        .search-item-actions {
+          display: flex;
+          gap: .5rem;
+          align-items: center;
+          place-self: flex-end;
+        }
+
         &:focus,
         &:hover {
           background: rgba($dark-color, .05);
