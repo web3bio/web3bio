@@ -56,15 +56,15 @@ const WidgetItem = (props) => {
           </div>
           <div className="platform-handle text-ellipsis">{item.handle}</div>
         </div>
-        {isCopied && <div className="tooltip-copy">COPIED</div>}
         <div className="platform-action">
           <div className="btn btn-sm btn-action">
             <SVG
-              src={item.link ? "icons/icon-open.svg" : "icons/icon-copy.svg"}
+              src={item.link ? "icons/icon-open.svg" : !isCopied ? "icons/icon-copy.svg" : "icons/icon-check.svg"}
               width={20}
               height={20}
             />
           </div>
+          {isCopied && <div className="tooltip-copy">COPIED</div>}
         </div>
       </>
     );

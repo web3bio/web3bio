@@ -1,8 +1,8 @@
-import { formatText } from "../../utils/utils";
-import SVG from "react-inlinesvg";
 import Link from "next/link";
+import SVG from "react-inlinesvg";
 import Clipboard from "react-clipboard.js";
 import { ProfileInterface } from "../../utils/profile";
+import { formatText } from "../../utils/utils";
 import { Avatar } from "../shared/Avatar";
 import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 

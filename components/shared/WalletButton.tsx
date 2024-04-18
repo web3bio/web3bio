@@ -67,7 +67,7 @@ export default function WalletButton(props) {
                   return (
                     <div
                       onClick={openChainModal}
-                      className="connect-btn wrong-network"
+                      className="connect-btn btn btn-primary wrong-network"
                     >
                       Wrong network
                     </div>
@@ -77,7 +77,7 @@ export default function WalletButton(props) {
                   <div className="wallet-container">
                     {chain.hasIcon && (
                       <div
-                        className="connect-btn chain-container"
+                        className="connect-btn btn btn-primary chain-container"
                         onClick={openChainModal}
                       >
                         {chain.iconUrl && (

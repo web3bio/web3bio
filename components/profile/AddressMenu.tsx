@@ -53,13 +53,12 @@ export default function AddressMenu({ profile }) {
         <li className="menu-item dropdown-menu-item">
           <Clipboard
             component="a"
-            className=""
             data-clipboard-text={profile.address}
             onSuccess={onCopySuccess}
             title="Copy this wallet address"
           >
             <SVG
-              src="../icons/icon-copy.svg"
+              src={isCopied ? "../icons/icon-check.svg" : "../icons/icon-copy.svg"}
               width={20}
               height={20}
               className="action mr-1"
