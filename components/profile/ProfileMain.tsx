@@ -3,9 +3,8 @@ import React, { Suspense, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
-import { PlatformSystem, PlatformType } from "../../utils/platform";
+import { PlatformSystem, PlatformType, SocialPlatformMapping } from "../../utils/platform";
 import {
-  SocialPlatformMapping,
   formatText,
   isValidEthereumAddress,
   colorMod,

@@ -1,6 +1,5 @@
 import SVG from "react-inlinesvg";
-import { PlatformType } from "../../utils/platform";
-import { SocialPlatformMapping } from "../../utils/utils";
+import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
 
 export const HomeFeatures = () => {
   return (

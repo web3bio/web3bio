@@ -1,6 +1,6 @@
 import { memo } from "react";
-import { ActivityType } from "../../utils/activity";
-import { ActivityTypeMapping, formatText, resolveMediaURL } from "../../utils/utils";
+import { ActivityType, ActivityTypeMapping } from "../../utils/activity";
+import { formatText, resolveMediaURL } from "../../utils/utils";
 import { ModalType } from "../../hooks/useModal";
 import { RenderToken } from "./FeedItem";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
@@ -146,7 +146,9 @@ const RenderTransactionCard = (props) => {
                 &nbsp;
                 {metadata.token &&
                   RenderToken({
-                    key: `${actionId}_${metadata.token.name || metadata.token.symbol}_${metadata.token.value}`,
+                    key: `${actionId}_${
+                      metadata.token.name || metadata.token.symbol
+                    }_${metadata.token.value}`,
                     name: metadata.token.name,
                     symbol: metadata.token.symbol,
                     image: metadata.token.image,
@@ -173,46 +175,45 @@ const RenderTransactionCard = (props) => {
               }
               &nbsp;
               {action.duplicatedObjects.map((x, idx) => {
-                return (
-                  x.contract_address && (x.standard === 721 || x.standard === 1155) ? 
-                    <span
-                      key={`${idx}_preview`}
-                      className="feed-token c-hand"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        openModal(ModalType.nft, {
-                          remoteFetch: true,
-                          network: network,
-                          standard: x.standard,
-                          contractAddress: x.contract_address,
-                          tokenId: x.id,
-                        });
-                      }}
-                    >
-                      {x.image_url && (
-                        <NFTAssetPlayer
-                          className="feed-token-icon"
-                          src={resolveMediaURL(x.image_url)}
-                          type={"image/png"}
-                          width={20}
-                          height={20}
-                          alt={x.title || x.name}
-                        />
-                      )}
-                      <span className="feed-token-value">
-                        {x.title || x.name}
-                      </span>
-                      {x.id && !x.title && (
-                        <small className="feed-token-meta">{`#${formatText(
-                          x.id
-                        )}`}</small>
-                      )}
+                return x.contract_address &&
+                  (x.standard === 721 || x.standard === 1155) ? (
+                  <span
+                    key={`${idx}_preview`}
+                    className="feed-token c-hand"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      openModal(ModalType.nft, {
+                        remoteFetch: true,
+                        network: network,
+                        standard: x.standard,
+                        contractAddress: x.contract_address,
+                        tokenId: x.id,
+                      });
+                    }}
+                  >
+                    {x.image_url && (
+                      <NFTAssetPlayer
+                        className="feed-token-icon"
+                        src={resolveMediaURL(x.image_url)}
+                        type={"image/png"}
+                        width={20}
+                        height={20}
+                        alt={x.title || x.name}
+                      />
+                    )}
+                    <span className="feed-token-value">
+                      {x.title || x.name}
                     </span>
-                  : RenderToken({
-                    key: `${actionId + idx}_${x.name || x.symbol}_${
-                      x.value
-                    }`,
+                    {x.id && !x.title && (
+                      <small className="feed-token-meta">{`#${formatText(
+                        x.id
+                      )}`}</small>
+                    )}
+                  </span>
+                ) : (
+                  RenderToken({
+                    key: `${actionId + idx}_${x.name || x.symbol}_${x.value}`,
                     name: x.name,
                     symbol: x.symbol,
                     image: x.image,
@@ -221,7 +222,7 @@ const RenderTransactionCard = (props) => {
                       decimals: x.decimals,
                     },
                   })
-                )
+                );
               })}
               {action.to && ActivityTypeMapping(action.type).prep && (
                 <>

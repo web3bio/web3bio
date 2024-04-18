@@ -1,14 +1,14 @@
 import { useCallback, useRef, useEffect } from "react";
 import SVG from "react-inlinesvg";
 import { ModalType } from "../../hooks/useModal";
-import ArticleModalContent from "./ArticleModalContent";
-import MediaModalContent from "./MediaModalContent";
-import NFTModalContentRender from "./NFTModalContent";
-import PhilandModalContent from "./PhilandModalContent";
-import PoapsModalContent from "./PoapsModalContent";
-import SearchModalContent from "./SearchModalContent";
-import ShareModalContent from "./ShareModalContent";
-import IdentityGraphModalContent from "./IdentityGraphModalContent";
+import ArticleModalContent from "./ModalArticle";
+import MediaModalContent from "./ModalMedia";
+import NFTModalContentRender from "./ModalNFT";
+import PhilandModalContent from "./ModalPhiland";
+import PoapsModalContent from "./ModalPoaps";
+import SearchModalContent from "./ModalSearch";
+import ShareModalContent from "./ModalShare";
+import IdentityGraphModalContent from "./ModalIdentityGraph";
 
 export default function Modal(props) {
   const { onDismiss, children, modalType, params } = props;

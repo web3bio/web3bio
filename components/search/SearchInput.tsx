@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react";
 import SVG from "react-inlinesvg";
 import { useSearchParams } from "next/navigation";
-import { getSearchSuggestions } from "../../utils/constants";
 import { PlatformType } from "../../utils/platform";
+import { getSearchSuggestions } from "../../utils/utils";
 
 export type SearchListItemType = {
   key: string;

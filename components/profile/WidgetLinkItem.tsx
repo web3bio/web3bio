@@ -3,8 +3,8 @@ import Link from "next/link";
 import { memo, useState } from "react";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
-import { PlatformType } from "../../utils/platform";
-import { SocialPlatformMapping, colorMod } from "../../utils/utils";
+import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import { colorMod } from "../../utils/utils";
 
 const WidgetItem = (props) => {
   const onCopySuccess = () => {
@@ -34,7 +34,7 @@ const WidgetItem = (props) => {
               height={20}
             />
           )}
-          {item.verified && 
+          {item.verified && (
             <div className="icon-verified">
               <SVG
                 src={`icons/icon-badge.svg`}
@@ -44,7 +44,7 @@ const WidgetItem = (props) => {
                 title={"Verified Social Link"}
               />
             </div>
-          }
+          )}
         </div>
 
         <div className="platform-content">
@@ -56,15 +56,15 @@ const WidgetItem = (props) => {
           </div>
           <div className="platform-handle text-ellipsis">{item.handle}</div>
         </div>
-        {isCopied && <div className="tooltip-copy">COPIED</div>}
         <div className="platform-action">
           <div className="btn btn-sm btn-action">
             <SVG
-              src={item.link ? "icons/icon-open.svg" : "icons/icon-copy.svg"}
+              src={item.link ? "icons/icon-open.svg" : !isCopied ? "icons/icon-copy.svg" : "icons/icon-check.svg"}
               width={20}
               height={20}
             />
           </div>
+          {isCopied && <div className="tooltip-copy">COPIED</div>}
         </div>
       </>
     );

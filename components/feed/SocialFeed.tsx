@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { memo } from "react";
 import { ModalType } from "../../hooks/useModal";
-import { ActivityType } from "../../utils/activity";
+import { ActivityType, ActivityTypeMapping } from "../../utils/activity";
 import { resolveIPFS_URL } from "../../utils/ipfs";
-import { ActivityTypeMapping, resolveMediaURL } from "../../utils/utils";
+import { resolveMediaURL } from "../../utils/utils";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { domainRegexp } from "./ActionExternalMenu";

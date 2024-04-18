@@ -3,14 +3,11 @@ import SVG from "react-inlinesvg";
 import Markdown from "react-markdown";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { CollectionAbout } from "../profile/CollectionAbout";
-import { PlatformType } from "../../utils/platform";
-import {
-  getSocialMediaLink,
-  SocialPlatformMapping,
-  NetworkMapping,
-} from "../../utils/utils";
+import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import { getSocialMediaLink } from "../../utils/utils";
 import useSWR from "swr";
 import { SimplehashFetcher, SIMPLEHASH_URL } from "../apis/simplehash";
+import { NetworkMapping } from "../../utils/network";
 
 const renderSocialMediaLinks = (_collection) => {
   const renderArr = {
@@ -52,7 +49,7 @@ const renderSocialMediaLinks = (_collection) => {
 
 export default function NFTModalContentRender(props) {
   const { onClose, asset } = props;
-  
+
   const { data: fetchedAsset, isValidating } = useSWR(
     asset?.remoteFetch
       ? SIMPLEHASH_URL +
@@ -80,7 +77,8 @@ export default function NFTModalContentRender(props) {
         id="nft-dialog"
         className="nft-preview"
         style={{
-          ["--nft-primary-color" as string]: _asset.previews?.predominant_color || "#000",
+          ["--nft-primary-color" as string]:
+            _asset.previews?.predominant_color || "#000",
         }}
       >
         <div className="preview-container">
@@ -112,7 +110,7 @@ export default function NFTModalContentRender(props) {
             <div
               className={`preview-network ${_asset.chain}`}
               title={NetworkMapping(_asset.chain).label}
-              style={{backgroundColor: NetworkMapping(_asset.chain).bgColor}}
+              style={{ backgroundColor: NetworkMapping(_asset.chain).bgColor }}
             >
               <SVG
                 fill={NetworkMapping(_asset.chain).primaryColor}

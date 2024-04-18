@@ -8,16 +8,17 @@ import { TransactionCard } from "./TransactionFeed";
 import { SocialCard } from "./SocialFeed";
 import { CollectibleCard } from "./CollectibleFeed";
 import {
-  NetworkMapping,
-  ActivityTypeMapping,
   formatValue,
   formatText,
   isSameAddress,
-  SocialPlatformMapping,
+  shouldPlatformFetch,
 } from "../../utils/utils";
 import ActionExternalMenu from "./ActionExternalMenu";
-import { ActivityType } from "../../utils/activity";
+import { ActivityType, ActivityTypeMapping } from "../../utils/activity";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
+import { formatDistanceToNow } from "date-fns";
+import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import { NetworkMapping } from "../../utils/network";
 
 export const RenderToken = ({ key, name, symbol, image, value }) => {
   return (
@@ -163,9 +164,14 @@ const RenderFeedItem = (props) => {
           <div className="feed-item-name">
             {(
               <RenderProfileBadge
-                platform={identity.platform}
+                platform={
+                  feed.platform &&
+                  shouldPlatformFetch(feed?.platform.toLowerCase())
+                    ? feed.platform
+                    : PlatformType.ethereum
+                }
                 offset={[50, -5]}
-                identity={identity.identity}
+                identity={feed.owner}
                 remoteFetch
                 fullProfile
               />
@@ -178,14 +184,14 @@ const RenderFeedItem = (props) => {
               className="feed-timestamp"
             >
               <span className="hide-sm">
-                {new Date(feed.timestamp * 1000).toLocaleString()}
-              </span>
-              <span className="show-sm">
-                {new Date(feed.timestamp * 1000).toLocaleDateString()}
+                {formatDistanceToNow(new Date(feed.timestamp * 1000), {
+                  addSuffix: true,
+                })}
               </span>
             </Link>
             <ActionExternalMenu
               platform={feed.platform}
+              date={feed.timestamp}
               action={actions?.[0]}
               links={actions?.[0]?.related_urls.map((x) => resolveIPFS_URL(x))}
             />
