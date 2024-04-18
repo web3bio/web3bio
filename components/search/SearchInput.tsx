@@ -20,7 +20,7 @@ export default function SearchInput(props) {
   const [query, setQuery] = useState(defaultValue);
   const [searchList, setSearchList] = useState<Array<SearchListItemType>>([]);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [currentWeb2, setCurrentWeb2] = useState(PlatformType.twitter);
+  const [web2Platforms, setWeb2Platforms] = useState(DefaultWeb2SearchSuffix);
   const searchParams = useSearchParams();
   const emitSubmit = (e, value?) => {
     const platfrom = (() => {
@@ -47,11 +47,30 @@ export default function SearchInput(props) {
 
   const onKeyDown = (e) => {
     if (e.keyCode === 13) {
-      const _value = searchList[activeIndex] ? searchList[activeIndex] : query;
+      const _value =
+        activeIndex === searchList?.length
+          ? {
+              label: query,
+              system: PlatformSystem.web2,
+              key: web2Platforms[0],
+            }
+          : searchList[activeIndex]
+          ? searchList[activeIndex]
+          : query;
       emitSubmit(e, _value);
     }
     if (e.keyCode === 229) {
       // do nothing
+    }
+
+    if (e.key === "Tab") {
+      if (activeIndex !== searchList.length) return;
+      e.preventDefault();
+      const _web2Platforms = JSON.parse(JSON.stringify(web2Platforms));
+      const current = web2Platforms[0];
+      _web2Platforms.push(current);
+      _web2Platforms.shift();
+      setWeb2Platforms(_web2Platforms);
     }
     if (e.key === "ArrowUp") {
       if (searchList?.length) e.preventDefault();
@@ -60,18 +79,15 @@ export default function SearchInput(props) {
         return;
       }
       if (!activeIndex) {
-        setActiveIndex(searchList.length - 1);
+        setActiveIndex(searchList.length);
       } else {
         setActiveIndex(activeIndex - 1);
       }
     }
     if (e.key === "ArrowDown") {
       if (searchList?.length) e.preventDefault();
-      if (searchList && searchList.length === 1) {
-        setActiveIndex(0);
-        return;
-      }
-      if (activeIndex === null || activeIndex >= searchList.length - 1) {
+      if (searchList && searchList.length === 1) return setActiveIndex(0);
+      if (activeIndex === null || activeIndex >= searchList.length) {
         setActiveIndex(0);
       } else {
         setActiveIndex(activeIndex + 1);
@@ -136,61 +152,62 @@ export default function SearchInput(props) {
               </div>
             );
           })}
-          {![".", "。"].includes(query[query.length - 1]) && (
-            <>
-              <li className="divider" data-content="WEB2" />
-
-              <div
-                className={
-                  activeIndex === 4
-                    ? "search-list-item search-list-item-active"
-                    : "search-list-item"
-                }
-                style={{
-                  justifyContent: "space-between",
-                }}
-                onClick={(e) =>
-                  emitSubmit(null, {
-                    key: currentWeb2,
-                    system: PlatformSystem.web2,
-                    value: query,
-                  })
-                }
-              >
+          {!query.includes(".") &&
+            !query.includes("。") &&
+            query.length < 25 && (
+              <>
+                <li className="divider" data-content="WEB2" />
                 <div
-                  key={currentWeb2}
-                  className="search-list-item"
+                  className={
+                    activeIndex === searchList.length
+                      ? "search-list-item search-list-item-active"
+                      : "search-list-item"
+                  }
                   style={{
-                    padding: 0,
+                    justifyContent: "space-between",
                   }}
+                  onClick={(e) =>
+                    emitSubmit(null, {
+                      key: web2Platforms[0],
+                      system: PlatformSystem.web2,
+                      label: query,
+                    })
+                  }
                 >
-                  <SVG
-                    fill="#121212"
-                    src={SocialPlatformMapping(currentWeb2).icon || ""}
-                    width={20}
-                    height={20}
-                  />
-                  {query}
+                  <div
+                    key={web2Platforms[0]}
+                    className="search-list-item"
+                    style={{
+                      padding: 0,
+                    }}
+                  >
+                    <SVG
+                      fill="#121212"
+                      src={SocialPlatformMapping(web2Platforms[0]).icon || ""}
+                      width={20}
+                      height={20}
+                    />
+                    {query}
+                  </div>
+                  <div className="search-item-actions">
+                    {web2Platforms
+                      .filter((x) => x !== web2Platforms[0])
+                      .map((x) => {
+                        return (
+                          <div key={x} className="search-list-item-action">
+                            <SVG
+                              fill="#121212"
+                              src={SocialPlatformMapping(x).icon || ""}
+                              width={20}
+                              height={20}
+                            />
+                          </div>
+                        );
+                      })}
+                  </div>
                 </div>
-                <div className="search-item-actions">
-                  {DefaultWeb2SearchSuffix.filter((x) => x !== currentWeb2).map(
-                    (x) => {
-                      return (
-                        <div key={x} className="search-list-item-action">
-                          <SVG
-                            fill="#121212"
-                            src={SocialPlatformMapping(x).icon || ""}
-                            width={20}
-                            height={20}
-                          />
-                        </div>
-                      );
-                    }
-                  )}
-                </div>
-              </div>
-            </>
-          )}
+              </>
+            )}
         </div>
       )}
     </>

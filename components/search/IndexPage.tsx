@@ -8,7 +8,6 @@ import { regexBtc, regexSolana } from "../../utils/regexp";
 import IndexPageListener from "./IndexPageListener";
 import SearchResult from "./SearchResult";
 import { HomeFeatures } from "../shared/HomeFeatures";
-import { PlatformType } from "../../utils/platform";
 
 export default function HomePage() {
   const [searchFocus, setSearchFocus] = useState(false);
@@ -85,9 +84,7 @@ export default function HomePage() {
                 inputRef={inputRef}
                 key={searchTerm}
                 defaultValue={searchTerm}
-                handleSubmit={(value, platform) => {
-                  handleSubmit(value, platform);
-                }}
+                handleSubmit={handleSubmit}
               />
             </div>
           </div>
