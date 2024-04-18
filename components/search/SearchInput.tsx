@@ -79,7 +79,7 @@ export default function SearchInput(props) {
         return;
       }
       if (!activeIndex) {
-        setActiveIndex(searchList.length);
+        setActiveIndex(searchList.length - 1);
       } else {
         setActiveIndex(activeIndex - 1);
       }
