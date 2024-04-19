@@ -162,7 +162,7 @@ export default function SearchInput(props) {
                     width={20}
                     height={20}
                   />
-                  {x.label}
+                  <div className="search-list-item-label">{x.label}</div>
                 </div>
               );
             })}

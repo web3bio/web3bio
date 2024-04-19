@@ -82,7 +82,8 @@
       top: 2.5rem;
       width: 100%;
       z-index: 100;
-      .search-web2-list{
+
+      .search-web2-list {
         width: 100%;
         overflow-x: auto;
         overflow-y: hidden;
@@ -90,7 +91,9 @@
         gap: .5rem;
         align-items: center;
       }
+
       .search-list-item {
+        width: 100%;
         align-items: center;
         border-radius: .4rem;
         cursor: pointer;
@@ -98,7 +101,12 @@
         padding: .5rem;
         gap: .5rem;
         transition: all .2s ease;
-
+        .search-list-item-label{
+          max-width: 90%;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+        }
         &:focus,
         &:hover {
           background: rgba($dark-color, .05);
