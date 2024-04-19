@@ -4,6 +4,7 @@ import {
   SocialPlatformMapping,
 } from "./platform";
 import {
+  regexAvatar,
   regexBtc,
   regexCrossbell,
   regexDotbit,
@@ -149,5 +150,11 @@ export const fuzzyDomainSuffix = [
     match: regexSolana,
     suffixes: null,
   },
+  {
+    key: PlatformType.nextid,
+    icon: SocialPlatformMapping(PlatformType.nextid).icon,
+    match: regexAvatar,
+    suffixes: null
+  }
 ];
 export const ArweaveAssetPrefix = "https://arweave.net/";
