@@ -84,6 +84,7 @@ export default function SearchInput(props) {
     }
 
     if (
+      searchList.some((x) => x.system === PlatformSystem.web2) &&
       activeIndex >
         searchList.filter((x) => x.system === PlatformSystem.web3)?.length -
           1 &&

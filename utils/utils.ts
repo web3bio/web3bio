@@ -1,7 +1,11 @@
 import { BigNumber } from "bignumber.js";
 import { isIPFS_Resource, resolveIPFS_URL } from "./ipfs";
 import { pow10 } from "./number";
-import { PlatformType, SocialPlatformMapping } from "./platform";
+import {
+  PlatformSystem,
+  PlatformType,
+  SocialPlatformMapping,
+} from "./platform";
 import {
   regexDotbit,
   regexEns,
@@ -336,6 +340,7 @@ export const getSearchSuggestions = (query) => {
               "." +
               x.suffixes?.find((i) => i.startsWith(suffix)),
             icon: x.icon,
+            system: PlatformSystem.web3,
           };
         } else {
           if (x.key !== PlatformType.farcaster)
@@ -343,6 +348,7 @@ export const getSearchSuggestions = (query) => {
               key: x.key,
               text: query,
               icon: x.icon,
+              system: PlatformSystem.web3,
             };
         }
       });
@@ -352,6 +358,7 @@ export const getSearchSuggestions = (query) => {
           key: cur.key,
           icon: cur?.icon,
           label: cur.text,
+          system:  PlatformSystem.web3
         });
       }
       return pre;
