@@ -358,7 +358,7 @@ export const getSearchSuggestions = (query) => {
           key: cur.key,
           icon: cur?.icon,
           label: cur.text,
-          system:  PlatformSystem.web3
+          system: PlatformSystem.web3,
         });
       }
       return pre;
@@ -374,6 +374,14 @@ export const getSearchSuggestions = (query) => {
           label: label,
           system: cur.system,
         });
+      } else {
+        if (cur.system === PlatformSystem.web3)
+          pre.push({
+            key: cur.key,
+            icon: SocialPlatformMapping(cur.key).icon,
+            label: `${query}${cur.label || cur.optional}`,
+            system: PlatformSystem.web3,
+          });
       }
 
       return pre;

@@ -33,6 +33,7 @@ export const DefaultSearchSuffix = [
   {
     key: PlatformType.farcaster,
     label: "",
+    optional: "eth",
     system: PlatformSystem.web3,
   },
   {
@@ -154,7 +155,7 @@ export const fuzzyDomainSuffix = [
     key: PlatformType.nextid,
     icon: SocialPlatformMapping(PlatformType.nextid).icon,
     match: regexAvatar,
-    suffixes: null
-  }
+    suffixes: null,
+  },
 ];
 export const ArweaveAssetPrefix = "https://arweave.net/";
