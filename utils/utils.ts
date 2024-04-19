@@ -358,20 +358,14 @@ export const getSearchSuggestions = (query) => {
     }, new Array<SearchListItemType>());
   } else {
     return DefaultSearchSuffix.reduce((pre, cur) => {
-      const label =
-        matchQuery(query) + (cur.label.length > 0 ? `.${cur.label}` : "");
-      if (isLastDot && cur.key === PlatformType.farcaster) {
-        pre.push({
-          key: cur.key,
-          icon: SocialPlatformMapping(cur.key).icon,
-          label: label + "." + cur.optional,
-        });
-      }
-      if (!isLastDot || cur.label.length > 0) {
+      const label = query + (cur.label ? `.${cur.label}` : "");
+
+      if (!isLastDot) {
         pre.push({
           key: cur.key,
           icon: SocialPlatformMapping(cur.key).icon,
           label: label,
+          system: cur.system,
         });
       }
 

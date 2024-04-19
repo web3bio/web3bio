@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SVG from "react-inlinesvg";
 import { useSearchParams } from "next/navigation";
 import {
@@ -8,11 +8,11 @@ import {
   SocialPlatformMapping,
 } from "../../utils/platform";
 import { getSearchSuggestions } from "../../utils/utils";
-import { DefaultWeb2SearchSuffix } from "../../utils/constants";
 
 export type SearchListItemType = {
-  key: string;
+  key: PlatformType;
   label: string;
+  system?: PlatformSystem;
   icon?: string;
 };
 export default function SearchInput(props) {
@@ -20,8 +20,8 @@ export default function SearchInput(props) {
   const [query, setQuery] = useState(defaultValue);
   const [searchList, setSearchList] = useState<Array<SearchListItemType>>([]);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [web2Platforms, setWeb2Platforms] = useState(DefaultWeb2SearchSuffix);
   const searchParams = useSearchParams();
+  const web2ScrollContainer = useRef<HTMLDivElement>(null);
   const emitSubmit = (e, value?) => {
     const platfrom = (() => {
       if (!value) return "";
@@ -47,31 +47,13 @@ export default function SearchInput(props) {
 
   const onKeyDown = (e) => {
     if (e.keyCode === 13) {
-      const _value =
-        activeIndex === searchList?.length
-          ? {
-              label: query,
-              system: PlatformSystem.web2,
-              key: web2Platforms[0],
-            }
-          : searchList[activeIndex]
-          ? searchList[activeIndex]
-          : query;
+      const _value = searchList[activeIndex] ? searchList[activeIndex] : query;
       emitSubmit(e, _value);
     }
     if (e.keyCode === 229) {
       // do nothing
     }
 
-    if (e.key === "Tab") {
-      if (activeIndex !== searchList.length) return;
-      e.preventDefault();
-      const _web2Platforms = JSON.parse(JSON.stringify(web2Platforms));
-      const current = web2Platforms[0];
-      _web2Platforms.push(current);
-      _web2Platforms.shift();
-      setWeb2Platforms(_web2Platforms);
-    }
     if (e.key === "ArrowUp") {
       if (searchList?.length) e.preventDefault();
       if (searchList && searchList.length === 1) {
@@ -87,7 +69,7 @@ export default function SearchInput(props) {
     if (e.key === "ArrowDown") {
       if (searchList?.length) e.preventDefault();
       if (searchList && searchList.length === 1) return setActiveIndex(0);
-      if (activeIndex === null || activeIndex >= searchList.length) {
+      if (activeIndex === null || activeIndex >= searchList.length - 1) {
         setActiveIndex(0);
       } else {
         setActiveIndex(activeIndex + 1);
@@ -100,7 +82,31 @@ export default function SearchInput(props) {
     } else {
       setSearchList(getSearchSuggestions(query));
     }
-  }, [query]);
+
+    if (
+      activeIndex >
+        searchList.filter((x) => x.system === PlatformSystem.web3)?.length -
+          1 &&
+      web2ScrollContainer.current
+    ) {
+      const activeItemId = searchList.find(
+        (x) => x.key === searchList[activeIndex].key
+      )?.key;
+      if (activeItemId) {
+        const activeItem = document.getElementById(activeItemId);
+        if (!activeItem) return;
+        const left = activeItem.getBoundingClientRect().width;
+        web2ScrollContainer.current.scrollTo({
+          left:
+            left *
+            (activeIndex -
+              searchList.filter((x) => x.system === PlatformSystem.web3)
+                ?.length),
+          behavior: "smooth",
+        });
+      }
+    }
+  }, [query, activeIndex]);
   return (
     <>
       <input
@@ -136,75 +142,74 @@ export default function SearchInput(props) {
       </button>
       {searchList.length > 0 && (
         <div className="search-list">
-          {searchList.map((x: { label: string; icon?: string }, idx) => {
-            return (
-              <div
-                className={
-                  activeIndex === idx
-                    ? "search-list-item search-list-item-active"
-                    : "search-list-item"
-                }
-                key={x.label + idx}
-                onClick={(e) => emitSubmit(e, x)}
-              >
-                <SVG fill="#121212" src={x.icon || ""} width={20} height={20} />
-                {x.label}
-              </div>
-            );
-          })}
+          {searchList
+            .filter((x) => x.system === PlatformSystem.web3)
+            .map((x: { label: string; icon?: string }, idx) => {
+              return (
+                <div
+                  className={
+                    activeIndex === idx
+                      ? "search-list-item search-list-item-active"
+                      : "search-list-item"
+                  }
+                  key={x.label + idx}
+                  onClick={(e) => emitSubmit(e, x)}
+                >
+                  <SVG
+                    fill="#121212"
+                    src={x.icon || ""}
+                    width={20}
+                    height={20}
+                  />
+                  {x.label}
+                </div>
+              );
+            })}
           {!query.includes(".") &&
             !query.includes("。") &&
             query.length < 25 && (
               <>
                 <li className="divider" data-content="WEB2" />
                 <div
-                  className={
-                    activeIndex === searchList.length
-                      ? "search-list-item search-list-item-active"
-                      : "search-list-item"
-                  }
+                  ref={web2ScrollContainer}
+                  className={"search-web2-list noscrollbar"}
                   style={{
-                    justifyContent: "space-between",
+                    padding: 0,
                   }}
-                  onClick={(e) =>
-                    emitSubmit(null, {
-                      key: web2Platforms[0],
-                      system: PlatformSystem.web2,
-                      label: query,
-                    })
-                  }
                 >
-                  <div
-                    key={web2Platforms[0]}
-                    className="search-list-item"
-                    style={{
-                      padding: 0,
-                    }}
-                  >
-                    <SVG
-                      fill="#121212"
-                      src={SocialPlatformMapping(web2Platforms[0]).icon || ""}
-                      width={20}
-                      height={20}
-                    />
-                    {query}
-                  </div>
-                  <div className="search-item-actions">
-                    {web2Platforms
-                      .filter((x) => x !== web2Platforms[0])
-                      .map((x) => {
-                        return (
-                          <div key={x} className="search-list-item-action">
-                            <SVG
-                              fill="#121212"
-                              src={SocialPlatformMapping(x).icon || ""}
-                              width={20}
-                              height={20}
-                            />
-                          </div>
-                        );
-                      })}
-                  </div>
+                  {searchList
+                    .filter((x) => x.system === PlatformSystem.web2)
+                    .map((x) => {
+                      const activeIdx = searchList.findIndex(
+                        (i) => i.key === x.key
+                      );
+                      return (
+                        <div
+                          id={x.key}
+                          onClick={() =>
+                            emitSubmit(null, {
+                              label: query,
+                              key: x.key,
+                              system: PlatformSystem.web2,
+                            })
+                          }
+                          key={x.key}
+                          className={
+                            activeIndex === activeIdx
+                              ? "search-list-item search-list-item-active"
+                              : "search-list-item"
+                          }
+                        >
+                          <SVG
+                            fill="#121212"
+                            src={SocialPlatformMapping(x.key).icon || ""}
+                            width={20}
+                            height={20}
+                          />
+                          {query}
+                        </div>
+                      );
+                    })}
                 </div>
               </>
             )}

@@ -1,4 +1,8 @@
-import { PlatformType, SocialPlatformMapping } from "./platform";
+import {
+  PlatformSystem,
+  PlatformType,
+  SocialPlatformMapping,
+} from "./platform";
 import {
   regexBtc,
   regexCrossbell,
@@ -13,32 +17,47 @@ import {
   regexUnstoppableDomains,
 } from "./regexp";
 
-export const DefaultWeb2SearchSuffix = [
-  PlatformType.twitter,
-  PlatformType.github,
-  PlatformType.linkedin,
-  PlatformType.keybase,
-  PlatformType.reddit,
-];
-
 // empty for twitter and farcaster
 export const DefaultSearchSuffix = [
   {
     key: PlatformType.ens,
     label: "eth",
+    system: PlatformSystem.web3,
   },
   {
     key: PlatformType.lens,
     label: "lens",
+    system: PlatformSystem.web3,
   },
   {
     key: PlatformType.farcaster,
     label: "",
-    optional: "eth",
+    system: PlatformSystem.web3,
   },
   {
     key: PlatformType.unstoppableDomains,
     label: "crypto",
+    system: PlatformSystem.web3,
+  },
+  {
+    key: PlatformType.twitter,
+    system: PlatformSystem.web2,
+  },
+  {
+    key: PlatformType.github,
+    system: PlatformSystem.web2,
+  },
+  {
+    key: PlatformType.linkedin,
+    system: PlatformSystem.web2,
+  },
+  {
+    key: PlatformType.reddit,
+    system: PlatformSystem.web2,
+  },
+  {
+    key: PlatformType.keybase,
+    system: PlatformSystem.web2,
   },
 ];
 export const fuzzyDomainSuffix = [

@@ -82,7 +82,14 @@
       top: 2.5rem;
       width: 100%;
       z-index: 100;
-
+      .search-web2-list{
+        width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        display: flex;
+        gap: .5rem;
+        align-items: center;
+      }
       .search-list-item {
         align-items: center;
         border-radius: .4rem;
@@ -91,13 +98,6 @@
         padding: .5rem;
         gap: .5rem;
         transition: all .2s ease;
-
-        .search-item-actions {
-          display: flex;
-          gap: .5rem;
-          align-items: center;
-          place-self: flex-end;
-        }
 
         &:focus,
         &:hover {
