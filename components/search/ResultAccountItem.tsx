@@ -185,7 +185,6 @@ const RenderAccountItem = (props) => {
                   nft.chain === PlatformType.ethereum
                     ? PlatformType.ens
                     : PlatformType.sns;
-
                 return (
                   <Link
                     key={`${nft.uuid}`}
@@ -272,6 +271,15 @@ const RenderAccountItem = (props) => {
                     </>
                   )}
                   <div className="address">{identity.identity}</div>
+                  <Clipboard
+                    component="div"
+                    className="action"
+                    data-clipboard-text={identity.identity}
+                    onSuccess={onCopySuccess}
+                  >
+                    <SVG src={isCopied ? "../icons/icon-check.svg" : "../icons/icon-copy.svg"} width={20} height={20} />
+                    {isCopied && <div className="tooltip-copy">COPIED</div>}
+                  </Clipboard>
                 </div>
               </div>
             </div>
@@ -318,13 +326,30 @@ const RenderAccountItem = (props) => {
               </div>
               <div className="title">{displayName}</div>
             </Link>
-            <ResultAccountItemAction
-              prefetch={false}
-              href={`${SocialPlatformMapping(resolvedPlatform)?.urlPrefix}${
-                identity.identity
-              }`}
-              platform={identity.platform}
-            />
+            <div className={`actions`}>
+              <Clipboard
+                component="button"
+                className="btn btn-sm btn-link action"
+                data-clipboard-text={resolvedIdentity}
+                onSuccess={onCopySuccess}
+              >
+                <SVG src={isCopied ? "../icons/icon-check.svg" : "../icons/icon-copy.svg"} width={20} height={20} />
+                <span className="hide-xs">Copy</span>
+              </Clipboard>
+              <Link
+                target={"_blank"}
+                className="btn btn-sm btn-link action"
+                href={`${SocialPlatformMapping(resolvedPlatform)?.urlPrefix}${
+                  identity.identity
+                }`}
+                prefetch={false}
+                title={`Open ${SocialPlatformMapping(identity.platform).label} Link`}
+                rel="noopener noreferrer"
+              >
+                <SVG src="icons/icon-open.svg" width={20} height={20} />
+                <span className="hide-xs">{"Open"}</span>
+              </Link>
+            </div>
           </div>
           <RenderSourceFooter sources={sources} />
         </div>
