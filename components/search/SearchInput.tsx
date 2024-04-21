@@ -170,7 +170,7 @@ export default function SearchInput(props) {
             !query.includes("。") &&
             query.length < 25 && (
               <>
-                <li className="divider" data-content="WEB2" />
+                <li className="divider" />
                 <div
                   ref={web2ScrollContainer}
                   className={"search-web2-list noscrollbar"}
@@ -207,7 +207,7 @@ export default function SearchInput(props) {
                             width={20}
                             height={20}
                           />
-                          {query}
+                          {/* {query} */}
                         </div>
                       );
                     })}

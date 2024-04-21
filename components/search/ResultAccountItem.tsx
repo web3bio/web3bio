@@ -161,7 +161,7 @@ const RenderAccountItem = (props) => {
                     data-clipboard-text={resolvedIdentity}
                     onSuccess={onCopySuccess}
                   >
-                    <SVG src="icons/icon-copy.svg" width={20} height={20} />
+                    <SVG src={isCopied ? "../icons/icon-check.svg" : "../icons/icon-copy.svg"} width={20} height={20} />
                     {isCopied && <div className="tooltip-copy">COPIED</div>}
                   </Clipboard>
                 </div>
