@@ -19,6 +19,7 @@ const RenderCollectionSwitcher = (props) => {
                 ? "collection-item active"
                 : "collection-item"
             }
+            title={item.name}
             key={item.collection_id}
           >
             <NFTAssetPlayer

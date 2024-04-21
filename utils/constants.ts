@@ -1,5 +1,10 @@
-import { PlatformType, SocialPlatformMapping } from "./platform";
 import {
+  PlatformSystem,
+  PlatformType,
+  SocialPlatformMapping,
+} from "./platform";
+import {
+  regexAvatar,
   regexBtc,
   regexCrossbell,
   regexDotbit,
@@ -18,23 +23,43 @@ export const DefaultSearchSuffix = [
   {
     key: PlatformType.ens,
     label: "eth",
+    system: PlatformSystem.web3,
   },
   {
     key: PlatformType.lens,
     label: "lens",
-  },
-  {
-    key: PlatformType.twitter,
-    label: "",
+    system: PlatformSystem.web3,
   },
   {
     key: PlatformType.farcaster,
     label: "",
     optional: "eth",
+    system: PlatformSystem.web3,
   },
   {
     key: PlatformType.unstoppableDomains,
     label: "crypto",
+    system: PlatformSystem.web3,
+  },
+  {
+    key: PlatformType.twitter,
+    system: PlatformSystem.web2,
+  },
+  {
+    key: PlatformType.github,
+    system: PlatformSystem.web2,
+  },
+  {
+    key: PlatformType.linkedin,
+    system: PlatformSystem.web2,
+  },
+  {
+    key: PlatformType.reddit,
+    system: PlatformSystem.web2,
+  },
+  {
+    key: PlatformType.keybase,
+    system: PlatformSystem.web2,
   },
 ];
 export const fuzzyDomainSuffix = [
@@ -124,6 +149,12 @@ export const fuzzyDomainSuffix = [
     key: PlatformType.solana,
     icon: SocialPlatformMapping(PlatformType.solana).icon,
     match: regexSolana,
+    suffixes: null,
+  },
+  {
+    key: PlatformType.nextid,
+    icon: SocialPlatformMapping(PlatformType.nextid).icon,
+    match: regexAvatar,
     suffixes: null,
   },
 ];
