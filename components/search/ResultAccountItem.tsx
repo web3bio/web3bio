@@ -26,13 +26,13 @@ const RenderAccountItem = (props) => {
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
   const [fetched, setFetched] = useState(!!profile);
-  const resolvedDisplayName = profile?.displayName
+  const rawDisplayName = profile?.displayName
     ? profile.displayName
     : identity.displayName || identity.identity;
   const resolvedPlatform = identity.platform;
-  const displayName = isWeb3Address(resolvedDisplayName)
-    ? formatText(resolvedDisplayName)
-    : resolvedDisplayName;
+  // const resolvedDisplayName = isWeb3Address(rawDisplayName)
+  //   ? formatText(rawDisplayName)
+  //   : rawDisplayName;
   const resolvedIdentity =
     profile?.address ||
     identity.resolveAddress?.[0].address ||
@@ -94,7 +94,6 @@ const RenderAccountItem = (props) => {
     case PlatformType.space_id:
     case PlatformType.solana:
     case PlatformType.sns:
-    case PlatformType.bitcoin:
     case PlatformType.nextid:
     case PlatformType.crossbell:
       return (
@@ -134,8 +133,8 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
               <div className="content">
-                <div className="content-title text-ellipsis text-bold">
-                  {displayName}
+                <div className="content-title text-ellipsis text-bold" title="rawDisplayName">
+                  {rawDisplayName}
                 </div>
                 <div className="content-subtitle text-gray">
                   {profile?.displayName !== profile?.identity && (
@@ -324,7 +323,7 @@ const RenderAccountItem = (props) => {
                   height={20}
                 />
               </div>
-              <div className="title">{displayName}</div>
+              <div className="title">{rawDisplayName}</div>
             </Link>
             <div className={`actions`}>
               <Clipboard

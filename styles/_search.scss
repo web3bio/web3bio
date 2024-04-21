@@ -392,13 +392,14 @@
   }
 
   .content {
-    flex: 1;
+    flex: 1 1 24rem;
     margin-left: .5rem;
   }
 
   .content-title {
     font-size: .75rem;
     line-height: 1.2rem;
+    width: 14rem;
   }
 
   .content-subtitle {
