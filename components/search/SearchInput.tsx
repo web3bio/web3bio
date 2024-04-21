@@ -19,7 +19,7 @@ export default function SearchInput(props) {
   const { defaultValue, handleSubmit, inputRef } = props;
   const [query, setQuery] = useState(defaultValue);
   const [searchList, setSearchList] = useState<Array<SearchListItemType>>([]);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(-1);
   const searchParams = useSearchParams();
   const web2ScrollContainer = useRef<HTMLDivElement>(null);
   const emitSubmit = (e, value?) => {
@@ -42,19 +42,25 @@ export default function SearchInput(props) {
       setQuery(_value);
     }
     handleSubmit(_value, platfrom);
-    setActiveIndex(0);
   };
 
   const onKeyDown = (e) => {
     if (e.keyCode === 13) {
-      const _value = searchList[activeIndex] ? searchList[activeIndex] : query;
+      const _value = searchList[activeIndex] ? searchList[activeIndex] : query.replaceAll("。", ".");
       emitSubmit(e, _value);
     }
-    if (e.keyCode === 229) {
-      // do nothing
+    if (e.keyCode === 9) {
+      
+    }
+    if (e.keyCode === 27) {
+      if (activeIndex === -1) {
+        setSearchList([]);
+      } else {
+        setActiveIndex(-1);
+      }
     }
 
-    if (e.key === "ArrowUp") {
+    if (e.keyCode === 38) {
       if (searchList?.length) e.preventDefault();
       if (searchList && searchList.length === 1) {
         setActiveIndex(0);
@@ -66,7 +72,7 @@ export default function SearchInput(props) {
         setActiveIndex(activeIndex - 1);
       }
     }
-    if (e.key === "ArrowDown") {
+    if (e.keyCode === 40 || e.keyCode === 9) {
       if (searchList?.length) e.preventDefault();
       if (searchList && searchList.length === 1) return setActiveIndex(0);
       if (activeIndex === null || activeIndex >= searchList.length - 1) {
@@ -129,9 +135,7 @@ export default function SearchInput(props) {
       <button
         className="form-button btn"
         onClick={(e) => {
-          const ipt = inputRef.current;
-          if (!ipt) return;
-          emitSubmit(e, (ipt as { value: string }).value);
+          emitSubmit(e, query.replaceAll("。", "."));
         }}
       >
         <SVG
@@ -158,7 +162,7 @@ export default function SearchInput(props) {
                 >
                   <SVG
                     fill="#121212"
-                    src={x.icon || ""}
+                    src={x.icon || "icons/icon-search.svg"}
                     width={20}
                     height={20}
                   />
