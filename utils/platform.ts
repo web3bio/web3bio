@@ -356,7 +356,7 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     color: "#000000",
     icon: "icons/icon-tiktok.svg",
     label: "TikTok",
-    urlPrefix: "https://www.tiktok.com/",
+    urlPrefix: "https://www.tiktok.com/@",
     dotbitText: ["profile.tiktok"],
     system: PlatformSystem.web2,
   },

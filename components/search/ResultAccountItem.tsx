@@ -133,7 +133,7 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
               <div className="content">
-                <div className="content-title text-ellipsis text-bold" title="rawDisplayName">
+                <div className="content-title text-ellipsis text-bold" title={rawDisplayName}>
                   {rawDisplayName}
                 </div>
                 <div className="content-subtitle text-gray">
