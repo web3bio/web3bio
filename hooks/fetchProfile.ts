@@ -11,10 +11,7 @@ export const fetchProfile = async (identity) => {
     const handle = identity.identity;
     if (!handle || !shouldPlatformFetch(identity.platform)) return null;
 
-    const platform =
-      identity.platform === PlatformType.ethereum
-        ? PlatformType.ens
-        : identity.platform;
+    const platform = identity.platform;
     const url =
       process.env.NEXT_PUBLIC_PROFILE_END_POINT +
       `/ns/${platform.toLowerCase()}/${handle}`;

@@ -72,7 +72,6 @@ const RenderAccountItem = (props) => {
         [
           PlatformType.farcaster,
           PlatformType.lens,
-          PlatformType.solana,
         ].includes(resolvedPlatform)) &&
       visible
     ) {

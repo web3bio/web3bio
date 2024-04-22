@@ -97,8 +97,7 @@ const RenderAccount = (props) => {
         return platform === PlatformType.ens
           ? x.displayName === graphTitle && x.platform === PlatformType.ethereum
           : platform === PlatformType.sns
-          ? [x.displayName, x.profile?.displayName].includes(graphTitle) &&
-            x.platform === PlatformType.solana
+          ? x.displayName === graphTitle && x.platform === PlatformType.solana
           : x.identity === graphTitle && x.platform === platform;
       });
 
