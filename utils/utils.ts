@@ -310,7 +310,7 @@ const isQuerySplit = (query: string) => {
 };
 
 export const getSearchSuggestions = (query) => {
-  const isLastDot = [".", "。"].includes(query[query.length - 1]);
+  const isLastDot = query[query.length - 1] === ".";
   // address or query.x
   if (
     fuzzyDomainSuffix
@@ -319,12 +319,11 @@ export const getSearchSuggestions = (query) => {
     (isQuerySplit(query) && !isLastDot)
   ) {
     if (isLastDot) return [];
-    const suffix = matchQuery(query, 1);
+    const suffix = matchQuery(query, query.split(".").length - 1);
     const backupDomains = fuzzyDomainSuffix
       .filter(
         (x) =>
-          x.match.test(query.replace("。", ".")) ||
-          x.suffixes?.some((i) => i.startsWith(suffix))
+          x.match.test(query) || x.suffixes?.some((i) => i.startsWith(suffix))
       )
       .map((x) => {
         if (
@@ -336,7 +335,7 @@ export const getSearchSuggestions = (query) => {
           return {
             key: x.key,
             text:
-              matchQuery(query) +
+              query.replace(`.${suffix}`, "") +
               "." +
               x.suffixes?.find((i) => i.startsWith(suffix)),
             icon: x.icon,

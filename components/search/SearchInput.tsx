@@ -86,7 +86,7 @@ export default function SearchInput(props) {
     if (!query || query === defaultValue) {
       setSearchList([]);
     } else {
-      setSearchList(getSearchSuggestions(query));
+      setSearchList(getSearchSuggestions(query.replaceAll('。','.')));
     }
 
     if (
