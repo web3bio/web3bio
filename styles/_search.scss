@@ -84,12 +84,15 @@
       z-index: 100;
 
       .search-web2-list {
-        width: 100%;
-        overflow-x: auto;
-        overflow-y: hidden;
+        align-items: center;
         display: flex;
         gap: .5rem;
-        align-items: center;
+        width: 100%;
+
+        .search-list-item {
+          flex: 0 0 2rem;
+          width: 2rem;
+        }
       }
 
       .search-list-item {
@@ -101,12 +104,14 @@
         padding: .5rem;
         gap: .5rem;
         transition: all .2s ease;
-        .search-list-item-label{
+
+        .search-list-item-label {
           max-width: 90%;
           text-overflow: ellipsis;
           overflow: hidden;
           white-space: nowrap;
         }
+
         &:focus,
         &:hover {
           background: rgba($dark-color, .05);
@@ -387,13 +392,14 @@
   }
 
   .content {
-    flex: 1;
+    flex: 1 1 24rem;
     margin-left: .5rem;
   }
 
   .content-title {
     font-size: .75rem;
     line-height: 1.2rem;
+    width: 14rem;
   }
 
   .content-subtitle {

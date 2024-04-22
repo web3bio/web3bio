@@ -82,7 +82,6 @@ const RenderSocialCard = (props) => {
         case ActivityType.post:
         case ActivityType.comment:
         case ActivityType.share:
-        case ActivityType.revise:
           if (["Mirror"].includes(platform) || metadata.summary) {
             return (
               <>
@@ -297,7 +296,14 @@ const RenderSocialCard = (props) => {
                   href={action.related_urls[0]}
                   target="_blank"
                 >
-                  <div className="feed-target-name">{metadata.handle}</div>
+                  <div className="feed-target-name">
+                    <RenderProfileBadge
+                      platform={platform}
+                      identity={metadata.handle}
+                      remoteFetch
+                      fullProfile
+                    />
+                  </div>
                   <div className="feed-target-content">{metadata.body}</div>
                   {metadata.media?.length > 0 && (
                     <div
