@@ -427,10 +427,6 @@
           opacity: 1;
         }
       }
-
-      .tooltip-copy {
-        bottom: 10%;
-      }
     }
 
     &.website {
@@ -493,6 +489,11 @@
       position: absolute;
       right: .5rem;
       top: .5rem;
+
+      .tooltip-copy {
+        bottom: .35rem;
+        left: -100%;
+      }
 
       &.active {
         opacity: 1;

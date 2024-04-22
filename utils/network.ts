@@ -317,3 +317,16 @@ export const NFTFilterMapping = {
     filters: "flow",
   },
 };
+
+export const NetworkMapping = (network: Network) => {
+  return (
+    NetworkData[network] ?? {
+      key: network,
+      icon: "",
+      label: network,
+      primaryColor: "#000000",
+      bgColor: "#efefef",
+      scanPrefix: "",
+    }
+  );
+};

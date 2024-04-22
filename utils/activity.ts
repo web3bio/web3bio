@@ -336,3 +336,16 @@ export const TagsFilterMapping = {
     filters: [ActivityTag.collectible, ActivityTag.metaverse],
   },
 };
+
+
+export const ActivityTypeMapping = (type: ActivityType) => {
+  return (
+    ActivityTypeData[type] ?? {
+      key: type,
+      emoji: "",
+      label: type,
+      action: [],
+      prep: "",
+    }
+  );
+};

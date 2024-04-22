@@ -1,9 +1,11 @@
 import { BigNumber } from "bignumber.js";
 import { isIPFS_Resource, resolveIPFS_URL } from "./ipfs";
 import { pow10 } from "./number";
-import { PlatformType, PlatformData } from "./platform";
-import { Network, NetworkData } from "./network";
-import { ActivityType, ActivityTypeData } from "./activity";
+import {
+  PlatformSystem,
+  PlatformType,
+  SocialPlatformMapping,
+} from "./platform";
 import {
   regexDotbit,
   regexEns,
@@ -19,10 +21,13 @@ import {
   regexBtc,
   regexAvatar,
 } from "./regexp";
-import { isAddress } from "ethers";
 import _ from "lodash";
-
-const ArweaveAssetPrefix = "https://arweave.net/";
+import {
+  ArweaveAssetPrefix,
+  DefaultSearchSuffix,
+  fuzzyDomainSuffix,
+} from "./constants";
+import { SearchListItemType } from "../components/search/SearchInput";
 
 export const formatText = (string, length?) => {
   if (!string) return "";
@@ -97,9 +102,7 @@ export function isSameAddress(
   return address.toLowerCase() === otherAddress.toLowerCase();
 }
 
-export function isWeb3Address(
-  address: string
-): boolean {
+export function isWeb3Address(address: string): boolean {
   switch (!!address) {
     case regexEth.test(address):
     case regexCrossbell.test(address):
@@ -183,43 +186,6 @@ export const resolveMediaURL = (url) => {
     default:
       return url;
   }
-};
-
-export const SocialPlatformMapping = (platform: PlatformType) => {
-  return (
-    PlatformData[platform] ?? {
-      key: platform,
-      color: "#000000",
-      icon: "",
-      label: platform,
-      ensText: [],
-    }
-  );
-};
-
-export const NetworkMapping = (network: Network) => {
-  return (
-    NetworkData[network] ?? {
-      key: network,
-      icon: "",
-      label: network,
-      primaryColor: "#000000",
-      bgColor: "#efefef",
-      scanPrefix: "",
-    }
-  );
-};
-
-export const ActivityTypeMapping = (type: ActivityType) => {
-  return (
-    ActivityTypeData[type] ?? {
-      key: type,
-      emoji: "",
-      label: type,
-      action: [],
-      prep: "",
-    }
-  );
 };
 
 const resolveSocialMediaLink = (name: string, type: PlatformType) => {
@@ -329,4 +295,115 @@ export const isValidURL = (str) => {
   } catch (e) {
     return false;
   }
+};
+
+const matchQuery = (query, index = 0) => {
+  if (!query) return "";
+  return query.includes(".")
+    ? query.split(".")[index]
+    : query.includes("。")
+    ? query.split("。")[index]
+    : query;
+};
+const isQuerySplit = (query: string) => {
+  return query.includes(".") || query.includes("。");
+};
+
+export const getSearchSuggestions = (query) => {
+  const isLastDot = [".", "。"].includes(query[query.length - 1]);
+  // address or query.x
+  if (
+    fuzzyDomainSuffix
+      .filter((x) => !x.suffixes)
+      .some((x) => x.match.test(query)) ||
+    (isQuerySplit(query) && !isLastDot)
+  ) {
+    if (isLastDot) return [];
+    const suffix = matchQuery(query, 1);
+    const backupDomains = fuzzyDomainSuffix
+      .filter(
+        (x) =>
+          x.match.test(query.replace("。", ".")) ||
+          x.suffixes?.some((i) => i.startsWith(suffix))
+      )
+      .map((x) => {
+        if (
+          x.suffixes &&
+          !fuzzyDomainSuffix
+            .filter((x) => !x.suffixes)
+            .some((x) => x.match.test(query))
+        ) {
+          return {
+            key: x.key,
+            text:
+              matchQuery(query) +
+              "." +
+              x.suffixes?.find((i) => i.startsWith(suffix)),
+            icon: x.icon,
+            system: PlatformSystem.web3,
+          };
+        } else {
+          if (x.key !== PlatformType.farcaster)
+            return {
+              key: x.key,
+              text: query,
+              icon: x.icon,
+              system: PlatformSystem.web3,
+            };
+        }
+      });
+    return backupDomains.reduce((pre, cur) => {
+      if (cur?.key) {
+        pre.push({
+          key: cur.key,
+          icon: cur?.icon,
+          label: cur.text,
+          system: PlatformSystem.web3,
+        });
+      }
+      return pre;
+    }, new Array<SearchListItemType>());
+  } else {
+    return DefaultSearchSuffix.reduce((pre, cur) => {
+      const label = query + (cur.label ? `.${cur.label}` : "");
+
+      if (!isLastDot) {
+        pre.push({
+          key: cur.key,
+          icon: SocialPlatformMapping(cur.key).icon,
+          label: label,
+          system: cur.system,
+        });
+      } else {
+        if (cur.system === PlatformSystem.web3)
+          pre.push({
+            key: cur.key,
+            icon: SocialPlatformMapping(cur.key).icon,
+            label: `${query}${cur.label || cur.optional}`,
+            system: PlatformSystem.web3,
+          });
+      }
+
+      return pre;
+    }, new Array<SearchListItemType>());
+  }
+};
+
+export const shouldPlatformFetch = (platform?: PlatformType | null) => {
+  if (!platform) return false;
+  if (
+    [
+      PlatformType.ens,
+      PlatformType.ethereum,
+      PlatformType.farcaster,
+      PlatformType.lens,
+      PlatformType.unstoppableDomains,
+      PlatformType.dotbit,
+      PlatformType.nextid,
+      PlatformType.solana,
+      PlatformType.sns,
+    ].includes(platform)
+  )
+    return true;
+  return false;
 };

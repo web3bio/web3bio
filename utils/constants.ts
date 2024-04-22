@@ -1,6 +1,10 @@
-import { SearchListItemType } from "../components/search/SearchInput";
-import { PlatformType } from "./platform";
 import {
+  PlatformSystem,
+  PlatformType,
+  SocialPlatformMapping,
+} from "./platform";
+import {
+  regexAvatar,
   regexBtc,
   regexCrossbell,
   regexDotbit,
@@ -13,30 +17,49 @@ import {
   regexSpaceid,
   regexUnstoppableDomains,
 } from "./regexp";
-import { SocialPlatformMapping } from "./utils";
 
 // empty for twitter and farcaster
 export const DefaultSearchSuffix = [
   {
     key: PlatformType.ens,
     label: "eth",
+    system: PlatformSystem.web3,
   },
   {
     key: PlatformType.lens,
     label: "lens",
-  },
-  {
-    key: PlatformType.twitter,
-    label: "",
+    system: PlatformSystem.web3,
   },
   {
     key: PlatformType.farcaster,
     label: "",
     optional: "eth",
+    system: PlatformSystem.web3,
   },
   {
     key: PlatformType.unstoppableDomains,
     label: "crypto",
+    system: PlatformSystem.web3,
+  },
+  {
+    key: PlatformType.twitter,
+    system: PlatformSystem.web2,
+  },
+  {
+    key: PlatformType.github,
+    system: PlatformSystem.web2,
+  },
+  {
+    key: PlatformType.linkedin,
+    system: PlatformSystem.web2,
+  },
+  {
+    key: PlatformType.reddit,
+    system: PlatformSystem.web2,
+  },
+  {
+    key: PlatformType.keybase,
+    system: PlatformSystem.web2,
   },
 ];
 export const fuzzyDomainSuffix = [
@@ -128,91 +151,11 @@ export const fuzzyDomainSuffix = [
     match: regexSolana,
     suffixes: null,
   },
+  {
+    key: PlatformType.nextid,
+    icon: SocialPlatformMapping(PlatformType.nextid).icon,
+    match: regexAvatar,
+    suffixes: null,
+  },
 ];
-
-const matchQuery = (query, index = 0) => {
-  if (!query) return "";
-  return query.includes(".")
-    ? query.split(".")[index]
-    : query.includes("。")
-    ? query.split("。")[index]
-    : query;
-};
-const isQuerySplit = (query: string) => {
-  return query.includes(".") || query.includes("。");
-};
-
-export const getSearchSuggestions = (query) => {
-  const isLastDot = [".", "。"].includes(query[query.length - 1]);
-  // address or query.x
-  if (
-    fuzzyDomainSuffix
-      .filter((x) => !x.suffixes)
-      .some((x) => x.match.test(query)) ||
-    (isQuerySplit(query) && !isLastDot)
-  ) {
-    if (isLastDot) return [];
-    const suffix = matchQuery(query, 1);
-    const backupDomains = fuzzyDomainSuffix
-      .filter(
-        (x) =>
-          x.match.test(query.replace("。", ".")) ||
-          x.suffixes?.some((i) => i.startsWith(suffix))
-      )
-      .map((x) => {
-        if (
-          x.suffixes &&
-          !fuzzyDomainSuffix
-            .filter((x) => !x.suffixes)
-            .some((x) => x.match.test(query))
-        ) {
-          return {
-            key: x.key,
-            text:
-              matchQuery(query) +
-              "." +
-              x.suffixes?.find((i) => i.startsWith(suffix)),
-            icon: x.icon,
-          };
-        } else {
-          if (x.key !== PlatformType.farcaster)
-            return {
-              key: x.key,
-              text: query,
-              icon: x.icon,
-            };
-        }
-      });
-    return backupDomains.reduce((pre, cur) => {
-      if (cur?.key) {
-        pre.push({
-          key: cur.key,
-          icon: cur?.icon,
-          label: cur.text,
-        });
-      }
-      return pre;
-    }, new Array<SearchListItemType>());
-  } else {
-    return DefaultSearchSuffix.reduce((pre, cur) => {
-      const label =
-        matchQuery(query) + (cur.label.length > 0 ? `.${cur.label}` : "");
-      if (isLastDot && cur.key === PlatformType.farcaster) {
-        pre.push({
-          key: cur.key,
-          icon: SocialPlatformMapping(cur.key).icon,
-          label: label + "." + cur.optional,
-        });
-      }
-      if (!isLastDot || cur.label.length > 0) {
-        pre.push({
-          key: cur.key,
-          icon: SocialPlatformMapping(cur.key).icon,
-          label: label,
-        });
-      }
-
-      return pre;
-    }, new Array<SearchListItemType>());
-  }
-};
+export const ArweaveAssetPrefix = "https://arweave.net/";

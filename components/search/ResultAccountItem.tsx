@@ -5,8 +5,8 @@ import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { formatText } from "../../utils/utils";
 import { RenderSourceFooter } from "./SourcesFooter";
-import { PlatformType } from "../../utils/platform";
-import { SocialPlatformMapping, isWeb3Address } from "../../utils/utils";
+import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import { isWeb3Address } from "../../utils/utils";
 import { useDispatch } from "react-redux";
 import _ from "lodash";
 import { fetchProfile } from "../../hooks/fetchProfile";
@@ -26,14 +26,13 @@ const RenderAccountItem = (props) => {
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
   const [fetched, setFetched] = useState(!!profile);
-  const resolvedDisplayName = profile?.displayName
+  const rawDisplayName = profile?.displayName
     ? profile.displayName
     : identity.displayName || identity.identity;
   const resolvedPlatform = identity.platform;
-  const displayName =
-    isWeb3Address(resolvedDisplayName)
-      ? formatText(resolvedDisplayName)
-      : resolvedDisplayName;
+  // const resolvedDisplayName = isWeb3Address(rawDisplayName)
+  //   ? formatText(rawDisplayName)
+  //   : rawDisplayName;
   const resolvedIdentity =
     profile?.address ||
     identity.resolveAddress?.[0].address ||
@@ -95,7 +94,6 @@ const RenderAccountItem = (props) => {
     case PlatformType.space_id:
     case PlatformType.solana:
     case PlatformType.sns:
-    case PlatformType.bitcoin:
     case PlatformType.nextid:
     case PlatformType.crossbell:
       return (
@@ -135,8 +133,8 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
               <div className="content">
-                <div className="content-title text-ellipsis text-bold">
-                  {displayName}
+                <div className="content-title text-ellipsis text-bold" title={rawDisplayName}>
+                  {rawDisplayName}
                 </div>
                 <div className="content-subtitle text-gray">
                   {profile?.displayName !== profile?.identity && (
@@ -155,16 +153,14 @@ const RenderAccountItem = (props) => {
                       <div className="ml-1 mr-1"> · </div>
                     </>
                   )}
-                  <div className="address">
-                    {formatText(resolvedIdentity)}
-                  </div>
+                  <div className="address">{formatText(resolvedIdentity)}</div>
                   <Clipboard
                     component="div"
                     className="action"
                     data-clipboard-text={resolvedIdentity}
                     onSuccess={onCopySuccess}
                   >
-                    <SVG src="icons/icon-copy.svg" width={20} height={20} />
+                    <SVG src={isCopied ? "../icons/icon-check.svg" : "../icons/icon-copy.svg"} width={20} height={20} />
                     {isCopied && <div className="tooltip-copy">COPIED</div>}
                   </Clipboard>
                 </div>
@@ -184,6 +180,10 @@ const RenderAccountItem = (props) => {
           {identity.nft?.length > 0 && (
             <div className="nfts">
               {identity.nft.map((nft) => {
+                const nftPlatform =
+                  nft.chain === PlatformType.ethereum
+                    ? PlatformType.ens
+                    : PlatformType.sns;
                 return (
                   <Link
                     key={`${nft.uuid}`}
@@ -195,12 +195,8 @@ const RenderAccountItem = (props) => {
                   >
                     <div className="label-domain" title={nft.id}>
                       <SVG
-                        fill={SocialPlatformMapping(nft.platform || nft.category).color}
-                        src={
-                          SocialPlatformMapping(
-                            nft.platform || nft.category
-                          ).icon!
-                        }
+                        fill={SocialPlatformMapping(nftPlatform).color}
+                        src={SocialPlatformMapping(nftPlatform).icon!}
                         width="20"
                         height="20"
                         className="icon"
@@ -274,6 +270,15 @@ const RenderAccountItem = (props) => {
                     </>
                   )}
                   <div className="address">{identity.identity}</div>
+                  <Clipboard
+                    component="div"
+                    className="action"
+                    data-clipboard-text={identity.identity}
+                    onSuccess={onCopySuccess}
+                  >
+                    <SVG src={isCopied ? "../icons/icon-check.svg" : "../icons/icon-copy.svg"} width={20} height={20} />
+                    {isCopied && <div className="tooltip-copy">COPIED</div>}
+                  </Clipboard>
                 </div>
               </div>
             </div>
@@ -318,15 +323,32 @@ const RenderAccountItem = (props) => {
                   height={20}
                 />
               </div>
-              <div className="title">{displayName}</div>
+              <div className="title">{rawDisplayName}</div>
             </Link>
-            <ResultAccountItemAction
-              prefetch={false}
-              href={`${SocialPlatformMapping(resolvedPlatform)?.urlPrefix}${
-                identity.identity
-              }`}
-              platform={identity.platform}
-            />
+            <div className={`actions`}>
+              <Clipboard
+                component="button"
+                className="btn btn-sm btn-link action"
+                data-clipboard-text={resolvedIdentity}
+                onSuccess={onCopySuccess}
+              >
+                <SVG src={isCopied ? "../icons/icon-check.svg" : "../icons/icon-copy.svg"} width={20} height={20} />
+                <span className="hide-xs">Copy</span>
+              </Clipboard>
+              <Link
+                target={"_blank"}
+                className="btn btn-sm btn-link action"
+                href={`${SocialPlatformMapping(resolvedPlatform)?.urlPrefix}${
+                  identity.identity
+                }`}
+                prefetch={false}
+                title={`Open ${SocialPlatformMapping(identity.platform).label} Link`}
+                rel="noopener noreferrer"
+              >
+                <SVG src="icons/icon-open.svg" width={20} height={20} />
+                <span className="hide-xs">{"Open"}</span>
+              </Link>
+            </div>
           </div>
           <RenderSourceFooter sources={sources} />
         </div>

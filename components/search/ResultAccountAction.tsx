@@ -1,6 +1,6 @@
 import Link from "next/link";
 import SVG from "react-inlinesvg";
-import { SocialPlatformMapping } from "../../utils/utils";
+import { SocialPlatformMapping } from "../../utils/platform";
 export default function ResultAccountItemAction(props) {
   const { classes, title, disable, isActive, href, text, prefetch, platform } =
     props;

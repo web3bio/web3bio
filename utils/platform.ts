@@ -356,7 +356,7 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     color: "#000000",
     icon: "icons/icon-tiktok.svg",
     label: "TikTok",
-    urlPrefix: "https://www.tiktok.com/",
+    urlPrefix: "https://www.tiktok.com/@",
     dotbitText: ["profile.tiktok"],
     system: PlatformSystem.web2,
   },
@@ -540,21 +540,14 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
   },
 };
 
-export const shouldPlatformFetch = (platform?: PlatformType | null) => {
-  if (!platform) return false;
-  if (
-    [
-      PlatformType.ens,
-      PlatformType.ethereum,
-      PlatformType.farcaster,
-      PlatformType.lens,
-      PlatformType.unstoppableDomains,
-      PlatformType.dotbit,
-      PlatformType.nextid,
-      PlatformType.solana,
-      PlatformType.sns,
-    ].includes(platform)
-  )
-    return true;
-  return false;
+export const SocialPlatformMapping = (platform: PlatformType) => {
+  return (
+    PlatformData[platform] ?? {
+      key: platform,
+      color: "#000000",
+      icon: "",
+      label: platform,
+      ensText: [],
+    }
+  );
 };
