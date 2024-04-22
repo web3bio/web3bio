@@ -125,21 +125,21 @@ export default function D3IdentityGraph(props) {
         .attr("height", height)
         .attr("viewBox", [0, 0, width, height])
         .on("click", removeHighlight)
-        // .call(
-        //   d3
-        //     .zoom()
-        //     .scaleExtent([0.3, 10])
-        //     .on("zoom", (e) => {
-        //       svg.attr("transform", d3.zoomTransform(svg.node()));
-        //     })
-        //     .on("start", () => {
-        //       setHideToolTip(true);
-        //     })
-        //     .on("end", () => {
-        //       resolveBoundingTransform();
-        //       setHideToolTip(false);
-        //     })
-        // )
+        .call(
+          d3
+            .zoom()
+            .scaleExtent([0.3, 10])
+            .on("zoom", (e) => {
+              if (!hideTooltip) setHideToolTip(true);
+              svg.attr("transform", d3.zoomTransform(svg.node()));
+            })
+            .on("end", () => {
+              resolveBoundingTransform();
+              if (hideTooltip) {
+                setHideToolTip(false);
+              }
+            })
+        )
         .append("svg:g");
 
       const generateSimulation = () => {
