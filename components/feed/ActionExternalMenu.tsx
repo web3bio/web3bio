@@ -1,7 +1,7 @@
 import Link from "next/link";
 import SVG from "react-inlinesvg";
-import { PlatformType } from "../../utils/platform";
-import { ActivityType } from "../../utils/activity";
+import { PlatformType } from "../utils/platform";
+import { ActivityType } from "../utils/activity";
 export const domainRegexp =
   /^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)/;
 

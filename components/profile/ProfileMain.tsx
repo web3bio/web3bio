@@ -7,12 +7,12 @@ import {
   PlatformSystem,
   PlatformType,
   SocialPlatformMapping,
-} from "../../utils/platform";
+} from "../utils/platform";
 import {
   formatText,
   isValidEthereumAddress,
   colorMod,
-} from "../../utils/utils";
+} from "../utils/utils";
 import { Error } from "../shared/Error";
 import { Empty } from "../shared/Empty";
 import { RenderWidgetItem } from "./WidgetLinkItem";
@@ -21,22 +21,22 @@ import WidgetPOAP from "./WidgetPoap";
 import WidgetFeed from "./WidgetFeed";
 import AddressMenu from "./AddressMenu";
 import { Avatar } from "../shared/Avatar";
-import useModal, { ModalType } from "../../hooks/useModal";
+import useModal, { ModalType } from "../hooks/useModal";
 import Modal from "../modal/Modal";
 import { useSelector } from "react-redux";
-import { AppState } from "../../state";
-import { WidgetState } from "../../state/widgets/reducer";
+import { AppState } from "../state";
+import { WidgetState } from "../state/widgets/reducer";
 import { WidgetDegenScore } from "./WidgetDegenScore";
 import { WidgetRSS } from "./WidgetRSS";
 import { WidgetPhiland } from "./WidgetPhiland";
 import { WidgetTally } from "./WidgetTally";
-import { regexEns } from "../../utils/regexp";
+import { regexEns } from "../utils/regexp";
 import LoadingSkeleton from "./LoadingSkeleton";
 import Web3bioBadge from "./ProfileFooter";
 import { WidgetArticle } from "./WidgetArticle";
 import WidgetIndicator from "./WidgetIndicator";
-import { WidgetTypes } from "../../utils/widgets";
-import { GET_PROFILES } from "../../utils/queries";
+import { WidgetTypes } from "../utils/widgets";
+import { GET_PROFILES } from "../utils/queries";
 import { useLazyQuery } from "@apollo/client";
 
 export default function ProfileMain(props) {

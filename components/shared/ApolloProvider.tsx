@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { ApolloProvider as Provider } from "@apollo/client";
-import client from "../../utils/apollo";
+import client from "../utils/apollo";
 export default function ApolloProvider({
   children,
 }: {

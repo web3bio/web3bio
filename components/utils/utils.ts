@@ -27,7 +27,7 @@ import {
   DefaultSearchSuffix,
   fuzzyDomainSuffix,
 } from "./constants";
-import { SearchListItemType } from "../components/search/SearchInput";
+import { SearchListItemType } from "../search/SearchInput";
 
 export const formatText = (string, length?) => {
   if (!string) return "";

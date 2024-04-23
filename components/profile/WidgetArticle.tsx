@@ -3,11 +3,11 @@ import { useEffect, memo } from "react";
 import useSWR from "swr";
 import { useDispatch } from "react-redux";
 import SVG from "react-inlinesvg";
-import { updateArticleWidget } from "../../state/widgets/action";
+import { updateArticleWidget } from "../state/widgets/action";
 import { FIREFLY_ENDPOINT, FireflyFetcher } from "../apis/firefly";
-import { ModalType } from "../../hooks/useModal";
-import { WidgetTypes } from "../../utils/widgets";
-import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import { ModalType } from "../hooks/useModal";
+import { WidgetTypes } from "../utils/widgets";
+import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 
 const MirrorBaseURL = "https://mirror.xyz";
 const ParagraphBaseURL = "https://paragraph.xyz";

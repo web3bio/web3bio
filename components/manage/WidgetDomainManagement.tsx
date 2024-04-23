@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ResultAccountItem } from "../search/ResultAccountItem";
 import SVG from "react-inlinesvg";
-import { PlatformType } from "../../utils/platform";
+import { PlatformType } from "../utils/platform";
 export default function WidgetDomainManagement(props) {
   const { data, setCurProfile } = props;
 

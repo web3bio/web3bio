@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
-import { formatText } from "../../../utils/utils";
+import { formatText } from "../../../components/utils/utils";
 import qrcode from "yaqrcode";
 
 export const runtime = "edge";

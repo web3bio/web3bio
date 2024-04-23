@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fallbackEmoji } from "../../utils/utils";
+import { fallbackEmoji } from "../utils/utils";
 
 export const Empty = (props) => {
   const {

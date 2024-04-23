@@ -4,8 +4,8 @@ import {
   formatText,
   isDomainSearch,
   isValidEthereumAddress,
-} from "../../utils/utils";
-import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+} from "../utils/utils";
+import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import _ from "lodash";
 import SVG from "react-inlinesvg";
 import { Empty } from "../shared/Empty";

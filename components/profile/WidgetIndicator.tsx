@@ -1,5 +1,5 @@
-import { WidgetState } from "../../state/widgets/reducer";
-import { WidgetInfoMapping, WidgetTypes } from "../../utils/widgets";
+import { WidgetState } from "../state/widgets/reducer";
+import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 interface WidgetIndicatorInterface {
   states: WidgetState;
 }

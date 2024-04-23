@@ -3,11 +3,11 @@ import SVG from "react-inlinesvg";
 import Markdown from "react-markdown";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { CollectionAbout } from "../profile/CollectionAbout";
-import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
-import { getSocialMediaLink } from "../../utils/utils";
+import { PlatformType, SocialPlatformMapping } from "../utils/platform";
+import { getSocialMediaLink } from "../utils/utils";
 import useSWR from "swr";
 import { SimplehashFetcher, SIMPLEHASH_URL } from "../apis/simplehash";
-import { NetworkMapping } from "../../utils/network";
+import { NetworkMapping } from "../utils/network";
 
 const renderSocialMediaLinks = (_collection) => {
   const renderArr = {

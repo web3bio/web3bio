@@ -6,8 +6,8 @@ import {
   PlatformSystem,
   PlatformType,
   SocialPlatformMapping,
-} from "../../utils/platform";
-import { getSearchSuggestions } from "../../utils/utils";
+} from "../utils/platform";
+import { getSearchSuggestions } from "../utils/utils";
 
 export type SearchListItemType = {
   key: PlatformType;

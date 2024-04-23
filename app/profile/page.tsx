@@ -7,8 +7,8 @@ import useSWR from "swr";
 import { ProfileFetcher } from "../../components/apis/profile";
 import WalletProfileMain from "../../components/manage/WalletProfileMain";
 import { useLazyQuery } from "@apollo/client";
-import { PlatformType } from "../../utils/platform";
-import { GET_PROFILES } from "../../utils/queries";
+import { PlatformType } from "../../components/utils/platform";
+import { GET_PROFILES } from "../../components/utils/queries";
 
 export default function WalletProfilePage() {
   const { address } = useAccount();

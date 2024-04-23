@@ -3,11 +3,11 @@ import SVG from "react-inlinesvg";
 import { ResultAccountItem } from "./ResultAccountItem";
 import _ from "lodash";
 import { useSelector } from "react-redux";
-import { AppState } from "../../state";
-import { ProfileInterface } from "../../utils/profile";
-import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import { AppState } from "../state";
+import { ProfileInterface } from "../utils/profile";
+import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import Modal from "../modal/Modal";
-import useModal, { ModalType } from "../../hooks/useModal";
+import useModal, { ModalType } from "../hooks/useModal";
 
 const getNSAddress = (item) => {
   const _chain =

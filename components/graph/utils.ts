@@ -1,5 +1,5 @@
-import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
-import { formatText } from "../../utils/utils";
+import { PlatformType, SocialPlatformMapping } from "../utils/platform";
+import { formatText } from "../utils/utils";
 import _ from "lodash";
 
 export const resolveIdentityGraphData = (source) => {
