@@ -3,7 +3,7 @@ import { useEffect, memo } from "react";
 import useSWR from "swr";
 import { useDispatch } from "react-redux";
 import { updateArticleWidget } from "../../state/widgets/action";
-import { FIREFLY_ENDPOINT_DEV, FireflyFetcher } from "../apis/firefly";
+import { FIREFLY_ENDPOINT, FireflyFetcher } from "../apis/firefly";
 import { ModalType } from "../../hooks/useModal";
 import { WidgetTypes } from "../../utils/widgets";
 
@@ -14,7 +14,7 @@ function useArticles(address: string) {
   // platform mirror(1) paragraph(2)
   const { data, error, isValidating } = useSWR(
     [
-      FIREFLY_ENDPOINT_DEV + "/article/v1/article",
+      FIREFLY_ENDPOINT + "/article/v1/article",
       {
         addresses: [address],
         limit: 20,
