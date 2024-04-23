@@ -3,7 +3,11 @@ import React, { Suspense, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
-import { PlatformSystem, PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import {
+  PlatformSystem,
+  PlatformType,
+  SocialPlatformMapping,
+} from "../../utils/platform";
 import {
   formatText,
   isValidEthereumAddress,
@@ -79,18 +83,18 @@ export default function ProfileMain(props) {
           const verifiedIndex = _res.findIndex(
             (i) =>
               i.platform === x.platform &&
-              i.handle.toLowerCase() === (x.identity.endsWith(".lens")
-                ? x.identity.replace(".lens", "")
-                : x.identity).toLowerCase()
-
-              
+              i.handle.toLowerCase() ===
+                (x.identity.endsWith(".lens")
+                  ? x.identity.replace(".lens", "")
+                  : x.identity
+                ).toLowerCase()
           );
           if (verifiedIndex !== -1) {
             _res[verifiedIndex] = {
               ..._res[verifiedIndex],
               verified: true,
             };
-          } 
+          }
           // else {
           //   _res.push({
           //     platform: x.platform,
@@ -418,7 +422,8 @@ export default function ProfileMain(props) {
                     </Suspense>
                   </div>
 
-                  <div className="web3-section-widgets">
+                  {/* todo: Due to philand error background color, hide phi widget for now */}
+                  {/* <div className="web3-section-widgets">
                     {(data.platform === PlatformType.ens ||
                       regexEns.test(data.identity)) && (
                       <Suspense fallback={<p>Loading Phi Land...</p>}>
@@ -433,7 +438,7 @@ export default function ProfileMain(props) {
                         />
                       </Suspense>
                     )}
-                  </div>
+                  </div> */}
                 </>
               )}
             </>
