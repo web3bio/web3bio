@@ -19,7 +19,7 @@ function usePoaps(address: string) {
       suspense: true,
       revalidateOnFocus: false,
       revalidateOnMount: true,
-      revalidateOnReconnect: true,
+      revalidateOnReconnect: false,
     }
   );
   return {

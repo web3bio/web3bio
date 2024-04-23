@@ -17,7 +17,7 @@ function useRSS(domain: string) {
     suspense: true,
     revalidateOnFocus: false,
     revalidateOnMount: true,
-    revalidateOnReconnect: true,
+    revalidateOnReconnect: false,
   });
   return {
     data: data || [],

@@ -1,6 +1,5 @@
 import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
-import { shouldPlatformFetch } from "../../utils/utils";
-import { handleSearchPlatform, mapLinks } from "../../utils/utils";
+import { shouldPlatformFetch, handleSearchPlatform, mapLinks } from "../../utils/utils";
 import { notFound, redirect } from "next/navigation";
 import { Metadata } from "next";
 import ProfileMain from "../../components/profile/ProfileMain";

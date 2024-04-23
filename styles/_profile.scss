@@ -462,13 +462,16 @@
         backdrop-filter: blur(.2rem);
         border-radius: 50%;
         bottom: -.4rem;
-        filter: drop-shadow(0 .2rem .2rem rgba($dark-color, .2));
         height: 1.2rem;
         opacity: .9;
         padding: .1rem;
         position: absolute;
         right: -.4rem;
         width: 1.2rem;
+
+        svg {
+          filter: drop-shadow(0 .2rem .2rem rgba($dark-color, .2));
+        }
       }
     }
 
