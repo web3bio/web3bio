@@ -28,7 +28,7 @@ import { AppState } from "../state";
 import { WidgetState } from "../state/widgets/reducer";
 import { WidgetDegenScore } from "./WidgetDegenScore";
 import { WidgetRSS } from "./WidgetRSS";
-import { WidgetPhiland } from "./WidgetPhiland";
+// import { WidgetPhiland } from "./WidgetPhiland";
 import { WidgetTally } from "./WidgetTally";
 import { regexEns } from "../utils/regexp";
 import LoadingSkeleton from "./LoadingSkeleton";
