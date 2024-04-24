@@ -6,10 +6,10 @@ import { SIMPLEHASH_URL, SimplehashFetcher } from "../apis/simplehash";
 import { useEffect, useState } from "react";
 import PoapNFTOwner from "../profile/PoapNFTOwner";
 import { useSelector } from "react-redux";
-import { AppState } from "../../state";
-import { ProfileInterface } from "../../utils/profile";
+import { AppState } from "../state";
+import { ProfileInterface } from "../utils/profile";
 import _ from "lodash";
-import { isSameAddress } from "../../utils/utils";
+import { isSameAddress } from "../utils/utils";
 export default function PoapsModalContent({ onClose, asset }) {
   const [owners, setOwners] = useState(new Array());
   const { data: poapDetail } = useSWR(

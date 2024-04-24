@@ -1,7 +1,7 @@
 import Link from "next/link";
 import SVG from "react-inlinesvg";
-import { PlatformType } from "../../utils/platform";
-import { ActivityType } from "../../utils/activity";
+import { PlatformType } from "../utils/platform";
+import { ActivityType } from "../utils/activity";
 export const domainRegexp =
   /^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)/;
 
@@ -37,7 +37,7 @@ export default function ActionExternalMenu({ links, date, action, platform }) {
   return (
     <>
       <div
-        className={`btn btn-sm btn-link ${links?.length && "dropdown-toggle"}`}
+        className={`btn btn-sm btn-link btn-action ${links?.length && "dropdown-toggle"}`}
         tabIndex={0}
       >
         <SVG
@@ -51,12 +51,6 @@ export default function ActionExternalMenu({ links, date, action, platform }) {
       <ul className="menu">
         <li className="menu-item dropdown-menu-item">
           <div>
-            <SVG
-              src="../icons/icon-sources.svg"
-              width={20}
-              height={20}
-              className="action mr-1"
-            />
             {new Date(date * 1000).toLocaleString()}
           </div>
         </li>

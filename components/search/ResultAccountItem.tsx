@@ -3,14 +3,13 @@ import Link from "next/link";
 import { memo, useEffect, useRef, useState } from "react";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
-import { formatText } from "../../utils/utils";
+import { formatText } from "../utils/utils";
 import { RenderSourceFooter } from "./SourcesFooter";
-import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
-import { isWeb3Address } from "../../utils/utils";
+import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { useDispatch } from "react-redux";
 import _ from "lodash";
-import { fetchProfile } from "../../hooks/fetchProfile";
-import { updateUniversalBatchedProfile } from "../../state/universal/actions";
+import { fetchProfile } from "../hooks/fetchProfile";
+import { updateUniversalBatchedProfile } from "../state/universal/actions";
 import ResultAccountItemAction from "./ResultAccountAction";
 
 const RenderAccountItem = (props) => {

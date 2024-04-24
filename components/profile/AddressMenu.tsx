@@ -2,8 +2,8 @@ import { useState } from "react";
 import Link from "next/link";
 import SVG from "react-inlinesvg";
 import Clipboard from "react-clipboard.js";
-import { generateVCardData } from "../../utils/vcard";
-import { NetworkData, NetworkMapping } from "../../utils/network";
+import { generateVCardData } from "../utils/vcard";
+import { NetworkData, NetworkMapping } from "../utils/network";
 
 const createDownloadLink = (data, filename) => {
   var blob = new Blob([data], { type: "text/vcard" });

@@ -70,6 +70,7 @@ export enum PlatformType {
   hackernews = "hackernews",
   crossbell = "crossbell",
   minds = "minds",
+  paragraph = "paragraph",
 }
 
 export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
@@ -537,6 +538,14 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     label: "Minds",
     urlPrefix: "https://www.minds.com/",
     system: PlatformSystem.web2,
+  },
+  [PlatformType.paragraph]: {
+    key: PlatformType.paragraph,
+    color: "#2563eb",
+    icon: "icons/icon-paragraph.svg",
+    label: "Paragraph",
+    urlPrefix: "https://paragraph.xyz/",
+    system: PlatformSystem.web3,
   },
 };
 

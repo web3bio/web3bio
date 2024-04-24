@@ -102,7 +102,7 @@
 
       .feed-timestamp {
         color: $gray-color;
-        font-size: .7rem;
+        font-size: .65rem;
         text-decoration: none;
 
         &:focus,
@@ -315,8 +315,8 @@
   }
 
   .feed-token-meta {
-    color: $gray-color-dark;
-    font-size: 90%;
+    color: $gray-color;
+    font-size: .65rem;
     font-weight: 400;
     line-height: 1.2rem;
   }

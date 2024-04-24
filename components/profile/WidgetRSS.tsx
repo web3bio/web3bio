@@ -5,9 +5,9 @@ import { RSSFetcher, RSS_ENDPOINT } from "../apis/rss";
 import SVG from "react-inlinesvg";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
-import { updateRssWidget } from "../../state/widgets/action";
+import { updateRssWidget } from "../state/widgets/action";
 import RssItem from "./RssItem";
-import { WidgetTypes } from "../../utils/widgets";
+import { WidgetTypes } from "../utils/widgets";
 
 function useRSS(domain: string) {
   const fetchUrl = (() => {
@@ -17,7 +17,7 @@ function useRSS(domain: string) {
     suspense: true,
     revalidateOnFocus: false,
     revalidateOnMount: true,
-    revalidateOnReconnect: true,
+    revalidateOnReconnect: false,
   });
   return {
     data: data || [],

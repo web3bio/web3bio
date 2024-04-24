@@ -5,11 +5,11 @@ import useSWR from "swr";
 import { Loading } from "../shared/Loading";
 import SVG from "react-inlinesvg";
 import { POAPFetcher, POAP_ENDPOINT } from "../apis/poap";
-import { resolveIPFS_URL } from "../../utils/ipfs";
+import { resolveIPFS_URL } from "../utils/ipfs";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { useDispatch } from "react-redux";
-import { updatePoapsWidget } from "../../state/widgets/action";
-import { WidgetTypes } from "../../utils/widgets";
+import { updatePoapsWidget } from "../state/widgets/action";
+import { WidgetTypes } from "../utils/widgets";
 
 function usePoaps(address: string) {
   const { data, error, isValidating } = useSWR(
@@ -19,7 +19,7 @@ function usePoaps(address: string) {
       suspense: true,
       revalidateOnFocus: false,
       revalidateOnMount: true,
-      revalidateOnReconnect: true,
+      revalidateOnReconnect: false,
     }
   );
   return {

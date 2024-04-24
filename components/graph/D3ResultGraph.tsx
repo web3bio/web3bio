@@ -4,8 +4,8 @@ import {
   formatText,
   isDomainSearch,
   isValidEthereumAddress,
-} from "../../utils/utils";
-import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+} from "../utils/utils";
+import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import _ from "lodash";
 import SVG from "react-inlinesvg";
 import { Empty } from "../shared/Empty";
@@ -93,14 +93,15 @@ export default function D3IdentityGraph(props) {
       const links = _data.links.map((d) => ({ ...d }));
       const nodes = _data.nodes.map((d) => ({ ...d }));
       const resolveBoundingTransform = () => {
-        const curNode = nodeContainer.filter((l) => l.id === CurrentId).node();
-        if (!curNode) return;
-        const rect = curNode.getBoundingClientRect();
-
+        const curNode = nodeContainer.filter((l) => l.id === CurrentId);
+        const curNodeElement = curNode.node();
+        if (!curNodeElement) return;
+        const rect = curNodeElement.getBoundingClientRect();
+        const isIdentity = nodes.find((x) => x.id === CurrentId)?.isIdentity;
         setTransform({
           offsetX: rect.left,
           offsetY: rect.top,
-          offsetWidth: rect.width,
+          offsetWidth: isIdentity ? IdentityNodeSize * 2 : NFTNodeSize,
         });
       };
       const removeHighlight = () => {

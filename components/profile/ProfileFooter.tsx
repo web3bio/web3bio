@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import SVG from "react-inlinesvg";
-import useModal, { ModalType } from "../../hooks/useModal";
+import useModal, { ModalType } from "../hooks/useModal";
 import Modal from "../modal/Modal";
 
 export default function Web3bioBadge(props) {

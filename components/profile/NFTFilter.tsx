@@ -1,4 +1,4 @@
-import { NFTFilterMapping } from "../../utils/network";
+import { NFTFilterMapping } from "../utils/network";
 
 export default function NFTFilter({ value, onChange }) {
   return (

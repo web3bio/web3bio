@@ -4,8 +4,8 @@ import {
   HttpLink,
   InMemoryCache,
 } from "@apollo/client";
-import { PHI_AUTH, PHI_GRAPHQL_END_POINT } from "../components/apis/philand";
-import { TALLY_AUTH, TALLY_GRAPHQL_ENDPOINT } from "../components/apis/tally";
+import { PHI_AUTH, PHI_GRAPHQL_END_POINT } from "../apis/philand";
+import { TALLY_AUTH, TALLY_GRAPHQL_ENDPOINT } from "../apis/tally";
 import { WidgetTypes } from "./widgets";
 
 const defaultLink = new HttpLink({

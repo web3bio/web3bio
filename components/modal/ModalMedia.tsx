@@ -1,4 +1,4 @@
-import { resolveMediaURL } from "../../utils/utils";
+import { resolveMediaURL } from "../utils/utils";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import Link from "next/link";
 import SVG from "react-inlinesvg";

@@ -1,6 +1,6 @@
 import { ApolloError } from "@apollo/client";
 import { useEffect, useState } from "react";
-import { fallbackEmoji } from "../../utils/utils";
+import { fallbackEmoji } from "../utils/utils";
 interface ErrorProps {
   msg?: string;
   text?: ApolloError;

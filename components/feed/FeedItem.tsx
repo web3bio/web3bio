@@ -1,7 +1,7 @@
 import { memo } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { resolveIPFS_URL } from "../../utils/ipfs";
+import { resolveIPFS_URL } from "../utils/ipfs";
 import SVG from "react-inlinesvg";
 import { DefaultCard } from "./DefaultFeed";
 import { TransactionCard } from "./TransactionFeed";
@@ -12,13 +12,13 @@ import {
   formatText,
   isSameAddress,
   shouldPlatformFetch,
-} from "../../utils/utils";
+} from "../utils/utils";
 import ActionExternalMenu from "./ActionExternalMenu";
-import { ActivityType, ActivityTypeMapping } from "../../utils/activity";
+import { ActivityType, ActivityTypeMapping } from "../utils/activity";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
 import { formatDistanceToNow } from "date-fns";
-import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
-import { NetworkMapping } from "../../utils/network";
+import { PlatformType, SocialPlatformMapping } from "../utils/platform";
+import { NetworkMapping } from "../utils/network";
 
 export const RenderToken = ({ key, name, symbol, image, value }) => {
   return (
