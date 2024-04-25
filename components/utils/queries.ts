@@ -35,7 +35,7 @@ export const GET_PROFILES = gql`
             chain
             address
           }
-          nft(category: [ENS, SNS]) {
+          nft(category: [ens, sns]) {
             id
             uuid
             chain
@@ -47,6 +47,44 @@ export const GET_PROFILES = gql`
           target
           dataSource
           edgeType
+        }
+      }
+    }
+  }
+`;
+
+export const GET_SOCIAL_GRAPH = gql`
+  query GET_SOCIAL_GRAPH {
+    relation(platform: "lens", identity: "sujiyan.lens") {
+      identityGraph {
+        graphId
+      }
+      follow(hop: 1, limit: 200, offset: 0) {
+        count
+        relation {
+          edgeType
+          tag
+          dataSource
+          source
+          target
+          sourceDegree
+          targetDegree
+          originalSource {
+            id
+            uuid
+            identity
+            platform
+            displayName
+            uid
+          }
+          originalTarget {
+            id
+            uuid
+            identity
+            platform
+            displayName
+            uid
+          }
         }
       }
     }

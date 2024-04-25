@@ -2,6 +2,15 @@ import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { formatText } from "../utils/utils";
 import _ from "lodash";
 
+export enum GraphType {
+  identityGraph = 0,
+  socialGraph = 1,
+}
+
+export enum EdgeType {
+  following = "following",
+  follower = "follower",
+}
 export const resolveIdentityGraphData = (source) => {
   const nodes = new Array<any>();
   const edges = new Array<any>();
@@ -111,3 +120,36 @@ export function calcTranslation(targetDistance, point0, point1) {
     dy: y2_y0,
   };
 }
+
+export const resolveSocialGraphData = (source) => {
+  const nodes = new Array<any>();
+  const edges = new Array<any>();
+  const arr = source.relation.follow.relation;
+  arr.forEach((x) => {
+    const source =
+      x.edgeType === "following" ? x.originalSource.id : x.originalTarget.id;
+    const target =
+      x.edgeType === "following" ? x.originalTarget.id : x.originalSource.id;
+    edges.push({
+      type: x.edgeType,
+      source: source,
+      target: target,
+      label: `${x.dataSource}-${x.edgeType}`,
+      id: `${source}*${target}`,
+    });
+    if (!nodes.includes((x) => x.id === x.originalSource.id)) {
+      nodes.push({
+        ...x.originalSource,
+        idIdentity: true,
+      });
+    }
+    if (!nodes.includes((x) => x.id === x.originalTarget.id)) {
+      nodes.push({
+        ...x.originalTarget,
+        isIdentity: true,
+      });
+    }
+  });
+
+  return { nodes: nodes, edges: edges };
+};

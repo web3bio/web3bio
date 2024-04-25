@@ -8,7 +8,7 @@ import { ProfileInterface } from "../utils/profile";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import Modal from "../modal/Modal";
 import useModal, { ModalType } from "../hooks/useModal";
-import { GraphType } from "../modal/ModalIdentityGraph";
+import { GraphType } from "../graph/utils";
 
 const getNSAddress = (item) => {
   const _chain =

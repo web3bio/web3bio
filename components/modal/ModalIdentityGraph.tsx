@@ -1,16 +1,48 @@
+"use client";
+import { useEffect, useState } from "react";
 import D3IdentityGraph from "../graph/D3IdentityGraph";
 import D3SocialGraph from "../graph/D3SocialGraph";
-
-export enum GraphType {
-  identityGraph = 0,
-  socialGraph = 1,
-}
+import { useLazyQuery } from "@apollo/client";
+import { GET_SOCIAL_GRAPH } from "../utils/queries";
+import { Loading } from "../shared/Loading";
+import { GraphType, resolveSocialGraphData } from "../graph/utils";
 
 export default function IdentityGraphModalContent(props) {
-  const { type } = props;
+  const { type, domain, platform } = props;
+  const [socialData, setSocialData] = useState({
+    nodes: new Array(),
+    edges: new Array(),
+  });
+  const [querySocial, { loading, data: socialGraph }] = useLazyQuery(
+    GET_SOCIAL_GRAPH,
+    {
+      variables: {
+        platform: platform,
+        identity: domain.endsWith(".farcaster")
+          ? domain.replace(".farcaster", "")
+          : domain,
+      },
+    }
+  );
+  useEffect(() => {
+    if (type === GraphType.socialGraph) {
+      querySocial();
+    }
+    if (socialGraph) {
+      setSocialData(resolveSocialGraphData(socialGraph));
+    }
+  }, [type, socialGraph]);
   return type === 0 ? (
     <D3IdentityGraph {...props} />
+  ) : loading ? (
+    <Loading />
   ) : (
-    <D3SocialGraph {...props} />
+    <D3SocialGraph
+      data={{
+        nodes: socialData.nodes,
+        edges: socialData.edges,
+      }}
+      {...props}
+    />
   );
 }
