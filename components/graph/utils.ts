@@ -11,6 +11,7 @@ export enum EdgeType {
   following = "following",
   follower = "follower",
 }
+
 export const resolveIdentityGraphData = (source) => {
   const nodes = new Array<any>();
   const edges = new Array<any>();
@@ -127,29 +128,31 @@ export const resolveSocialGraphData = (source) => {
   const arr = source.relation.follow.relation;
   arr.forEach((x) => {
     const source =
-      x.edgeType === "following" ? x.originalSource.id : x.originalTarget.id;
+      x.edgeType === "following" ? x.originalSource?.id : x.originalTarget?.id;
     const target =
-      x.edgeType === "following" ? x.originalTarget.id : x.originalSource.id;
-    edges.push({
-      type: x.edgeType,
-      source: source,
-      target: target,
-      label: `${x.dataSource}-${x.edgeType}`,
-      id: `${source}*${target}`,
-    });
-    if (!nodes.includes((x) => x.id === x.originalSource.id)) {
-      nodes.push({
-        ...x.originalSource,
-        idIdentity: true,
+      x.edgeType === "following" ? x.originalTarget?.id : x.originalSource?.id;
+    if (source && target) {
+      edges.push({
+        type: x.edgeType,
+        source: source,
+        target: target,
+        label: `${x.dataSource}-${x.edgeType}`,
+        id: `${source}*${target}`,
       });
-    }
-    if (!nodes.includes((x) => x.id === x.originalTarget.id)) {
-      nodes.push({
-        ...x.originalTarget,
-        isIdentity: true,
-      });
+      if (!nodes.find((i) => i?.id === x.originalSource.id)) {
+        nodes.push({
+          ...x.originalSource,
+          idIdentity: true,
+        });
+      }
+      if (!nodes.find((i) => i?.id === x.originalTarget.id)) {
+        nodes.push({
+          ...x.originalTarget,
+          isIdentity: true,
+        });
+      }
     }
   });
-
+  console.log(nodes,)
   return { nodes: nodes, edges: edges };
 };

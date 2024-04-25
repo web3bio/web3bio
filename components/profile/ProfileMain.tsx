@@ -335,11 +335,12 @@ export default function ProfileMain(props) {
                   type: GraphType.socialGraph,
                   domain: domain,
                   platform: platform,
+                  root: {id:`${platform},${domain}`}
                 });
               }}
             >
               <SVG src={"/icons/icon-view.svg"} width={20} height={20} /> Social
-              Graph for {domain}
+              Graph
             </div>
           </div>
         </div>

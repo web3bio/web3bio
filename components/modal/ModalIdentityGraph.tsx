@@ -9,10 +9,7 @@ import { GraphType, resolveSocialGraphData } from "../graph/utils";
 
 export default function IdentityGraphModalContent(props) {
   const { type, domain, platform } = props;
-  const [socialData, setSocialData] = useState({
-    nodes: new Array(),
-    edges: new Array(),
-  });
+
   const [querySocial, { loading, data: socialGraph }] = useLazyQuery(
     GET_SOCIAL_GRAPH,
     {
@@ -28,21 +25,12 @@ export default function IdentityGraphModalContent(props) {
     if (type === GraphType.socialGraph) {
       querySocial();
     }
-    if (socialGraph) {
-      setSocialData(resolveSocialGraphData(socialGraph));
-    }
-  }, [type, socialGraph]);
+  }, [type]);
   return type === 0 ? (
     <D3IdentityGraph {...props} />
   ) : loading ? (
     <Loading />
   ) : (
-    <D3SocialGraph
-      data={{
-        nodes: socialData.nodes,
-        edges: socialData.edges,
-      }}
-      {...props}
-    />
+    <D3SocialGraph data={socialGraph} {...props} />
   );
 }

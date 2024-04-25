@@ -9,7 +9,10 @@ import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import _ from "lodash";
 import SVG from "react-inlinesvg";
 import { Empty } from "../shared/Empty";
-import { calcTranslation, resolveIdentityGraphData } from "./utils";
+import {
+  calcTranslation,
+  resolveSocialGraphData,
+} from "./utils";
 
 let CurrentId = null;
 
@@ -380,7 +383,7 @@ export default function D3SocialGraph(props) {
     };
 
     if (!chart && chartContainer) {
-      const res = resolveIdentityGraphData(data);
+      const res = resolveSocialGraphData(data);
       chart = generateGraph({ nodes: res.nodes, links: res.edges });
     }
     return () => {

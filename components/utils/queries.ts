@@ -59,7 +59,7 @@ export const GET_SOCIAL_GRAPH = gql`
       identityGraph {
         graphId
       }
-      follow(hop: 1, limit: 200, offset: 0) {
+      follow(hop: 1, limit: 20, offset: 0) {
         count
         relation {
           edgeType
