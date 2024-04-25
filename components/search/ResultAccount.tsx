@@ -8,6 +8,7 @@ import { ProfileInterface } from "../utils/profile";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import Modal from "../modal/Modal";
 import useModal, { ModalType } from "../hooks/useModal";
+import { GraphType } from "../modal/ModalIdentityGraph";
 
 const getNSAddress = (item) => {
   const _chain =
@@ -137,6 +138,7 @@ const RenderAccount = (props) => {
               className="btn btn-link btn-sm"
               onClick={() => {
                 openModal(ModalType.graph, {
+                  type: GraphType.identityGraph,
                   disableBack: true,
                   data: {
                     nodes: identityGraph.nodes?.map((x) => ({
