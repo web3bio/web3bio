@@ -18,16 +18,16 @@ export enum MediaType {
 
 export enum VideoType {
   MP4 = "video/mp4",
+  QUICKTIME = "video/quicktime",
   MPEG = "audio/mpeg",
   WAV = "audio/wav",
-  QUICKTIME = "video/quicktime",
 }
 
-function isImage(type: string) {
+export function isImage(type: string) {
   return Object.values(MediaType).includes(type as MediaType);
 }
 
-function isVideo(type: string) {
+export function isVideo(type: string) {
   return Object.values(VideoType).includes(type as VideoType);
 }
 
