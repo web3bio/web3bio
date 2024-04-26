@@ -1,4 +1,4 @@
-import { GeistSans } from "geist/font";
+import { GeistSans } from "geist/font/sans";
 import ApolloProvider from "../components/shared/ApolloProvider";
 import GoogleAnalytics from "../components/shared/GoogleAnalytics";
 import ReduxProvider from "../components/shared/ReduxProvider";

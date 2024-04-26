@@ -53,6 +53,10 @@ export default function AddressMenu({ profile }) {
         <li className="menu-item dropdown-menu-item">
           <Clipboard
             component="a"
+            button-href="#"
+            onClick={(e) => {
+              e.preventDefault();
+            }}
             data-clipboard-text={profile.address}
             onSuccess={onCopySuccess}
             title="Copy this wallet address"
@@ -63,7 +67,7 @@ export default function AddressMenu({ profile }) {
               height={20}
               className="action mr-1"
             />
-            Copy this wallet address
+            Copy wallet address
           </Clipboard>
         </li>
         <li className="menu-item dropdown-menu-item">
@@ -99,7 +103,7 @@ export default function AddressMenu({ profile }) {
         <li className="divider"></li>
         <li className="menu-item dropdown-menu-item">
           <Link
-            href="/"
+            href="#"
             onClick={(e) => {
               e.preventDefault();
               downloadVCard(profile);
