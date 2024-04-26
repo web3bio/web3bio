@@ -4,8 +4,8 @@ import D3IdentityGraph from "../graph/D3IdentityGraph";
 import D3SocialGraph from "../graph/D3SocialGraph";
 import { useLazyQuery } from "@apollo/client";
 import { GET_SOCIAL_GRAPH, QUERY_IDENTITY_GRAPH } from "../utils/queries";
-import { Loading } from "../shared/Loading";
 import { GraphType } from "../graph/utils";
+import Loading from "../../app/[domain]/loading";
 
 export default function IdentityGraphModalContent(props) {
   const { type, domain, platform } = props;
@@ -41,9 +41,6 @@ export default function IdentityGraphModalContent(props) {
     if (graphId) {
       queryIdentity();
     }
-    if (identityGraph) {
-      setGraphType(GraphType.identityGraph);
-    }
     if (socialGraph?.relation?.follow?.relation) {
       const _arr = JSON.parse(JSON.stringify(graphData));
       socialGraph?.relation?.follow?.relation.forEach((x) => {
@@ -56,13 +53,27 @@ export default function IdentityGraphModalContent(props) {
       setGraphData(_arr);
     }
   }, [type, offset, graphId, identityGraph, socialGraph]);
-  return type === 0 ? (
-    <D3IdentityGraph data={identityGraph || props.data} {...props} />
+  return graphType === 0 ? (
+    <D3IdentityGraph
+      {...props}
+      onBack={() => setGraphType(GraphType.socialGraph)}
+      data={
+        identityGraph
+          ? {
+              nodes: identityGraph?.identityGraph?.[0]?.vertices,
+              edges: identityGraph?.identityGraph?.[0]?.edges,
+            }
+          : props.data
+      }
+    />
   ) : loading && !graphData?.length ? (
     <Loading />
   ) : (
     <D3SocialGraph
-      onExpand={setGraphId}
+      onExpand={(id) => {
+        setGraphId(id);
+        setGraphType(GraphType.identityGraph);
+      }}
       domain={domain}
       onExtend={() => setOffset(offset + 1)}
       data={graphData}

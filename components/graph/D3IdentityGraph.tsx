@@ -367,10 +367,13 @@ export default function D3IdentityGraph(props) {
           i < n;
           ++i
         ) {
-          // initial center the root node before every tick
-          const rootNode = nodes.find((x) => x.id === root.id);
-          rootNode.x = width / 2;
-          rootNode.y = height / 2;
+          if (root) {
+            // initial center the root node before every tick
+            const rootNode = nodes.find((x) => x.id === root.id);
+            rootNode.x = width / 2;
+            rootNode.y = height / 2;
+          }
+
           simulation.tick();
         }
         ticked();
