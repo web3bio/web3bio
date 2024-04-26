@@ -42,20 +42,30 @@ export default function IdentityGraphModalContent(props) {
       queryIdentity();
     }
     if (identityGraph) {
-      console.log(identityGraph,'kkk')
       setGraphType(GraphType.identityGraph);
     }
-  }, [type, offset, graphId, identityGraph]);
+    if (socialGraph?.relation?.follow?.relation) {
+      const _arr = JSON.parse(JSON.stringify(graphData));
+      socialGraph?.relation?.follow?.relation.forEach((x) => {
+        if (
+          !_arr.includes((i) => i.source === x.source && i.target === x.target)
+        ) {
+          _arr.push(x);
+        }
+      });
+      setGraphData(_arr);
+    }
+  }, [type, offset, graphId, identityGraph, socialGraph]);
   return type === 0 ? (
     <D3IdentityGraph data={identityGraph || props.data} {...props} />
-  ) : loading ? (
+  ) : loading && !graphData?.length ? (
     <Loading />
   ) : (
     <D3SocialGraph
       onExpand={setGraphId}
       domain={domain}
       onExtend={() => setOffset(offset + 1)}
-      data={socialGraph}
+      data={graphData}
       {...props}
     />
   );

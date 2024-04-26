@@ -122,11 +122,10 @@ export function calcTranslation(targetDistance, point0, point1) {
   };
 }
 
-export const resolveSocialGraphData = (source) => {
+export const resolveSocialGraphData = (data) => {
   const nodes = new Array<any>();
   const edges = new Array<any>();
-  const arr = source.relation.follow.relation;
-  arr.forEach((x) => {
+  data.forEach((x) => {
     const source =
       x.edgeType === "following" ? x.originalSource?.id : x.originalTarget?.id;
     const target =
@@ -155,6 +154,5 @@ export const resolveSocialGraphData = (source) => {
       }
     }
   });
-  console.log(nodes,)
   return { nodes: nodes, edges: edges };
 };
