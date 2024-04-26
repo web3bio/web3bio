@@ -5,7 +5,7 @@ import { ActivityType, ActivityTypeMapping } from "../utils/activity";
 import { resolveIPFS_URL } from "../utils/ipfs";
 import { resolveMediaURL } from "../utils/utils";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
-import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
+import { NFTAssetPlayer, isImage, isVideo } from "../shared/NFTAssetPlayer";
 import { domainRegexp } from "./ActionExternalMenu";
 
 const RenderSocialCard = (props) => {
@@ -144,7 +144,7 @@ const RenderSocialCard = (props) => {
                       {metadata.target?.media?.length > 0 && (
                         <div className={`feed-target-content media-gallery`}>
                           {metadata.target?.media?.map((x) =>
-                            x.mime_type.includes("image", "video", "audio") ? (
+                            isImage(x.mime_type) || isVideo(x.mime_type) ? (
                               <NFTAssetPlayer
                                 onClick={(e) => {
                                   openModal(ModalType.media, {
@@ -202,7 +202,7 @@ const RenderSocialCard = (props) => {
                     }`}
                   >
                     {metadata.media?.map((x) =>
-                      x.mime_type.includes("image", "video", "audio") ? (
+                      isImage(x.mime_type) || isVideo(x.mime_type) ? (
                         <NFTAssetPlayer
                           key={x.address}
                           onClick={(e) => {
@@ -252,7 +252,7 @@ const RenderSocialCard = (props) => {
                           }`}
                         >
                           {metadata.target?.media?.map((x) =>
-                            x.mime_type.includes("image", "video", "audio") ? (
+                            isImage(x.mime_type) || isVideo(x.mime_type) ? (
                               <NFTAssetPlayer
                                 onClick={(e) => {
                                   openModal(ModalType.media, {
@@ -312,7 +312,7 @@ const RenderSocialCard = (props) => {
                       }`}
                     >
                       {metadata.media?.map((x) =>
-                        x.mime_type.includes("image") ? (
+                        isImage(x.mime_type) || isVideo(x.mime_type) ? (
                           <NFTAssetPlayer
                             onClick={(e) => {
                               openModal(ModalType.media, {
@@ -389,7 +389,7 @@ const RenderSocialCard = (props) => {
                     {metadata.target?.media?.length > 0 && (
                       <div className={`feed-target-content media-gallery`}>
                         {metadata.target?.media?.map((x) =>
-                          x.mime_type.includes("image") ? (
+                          isImage(x.mime_type) || isVideo(x.mime_type) ? (
                             <NFTAssetPlayer
                               onClick={(e) => {
                                 openModal(ModalType.media, {
