@@ -268,7 +268,7 @@
 .feed-token {
   align-items: center;
   background: lighten($bg-color, 6%);
-  border: .05rem solid $border-color;
+  border: .05rem solid rgba($dark-color, .05);
   border-radius: .3rem;
   box-shadow: 0 .05rem .2rem rgba($dark-color, .05);
   display: inline-flex;

@@ -23,7 +23,7 @@ export default function HomePage() {
     setSearchFocus(true);
   };
   useEffect(() => {
-    if (searchParams.get("s")) {
+    if (searchParams?.get("s")) {
       const query = searchParams.get("s") || "";
       const _paramPlatform = searchParams.get("platform");
       setSearchFocus(true);
