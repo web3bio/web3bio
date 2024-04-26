@@ -4,9 +4,9 @@ import { Empty } from "../shared/Empty";
 import { Loading } from "../shared/Loading";
 import SVG from "react-inlinesvg";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { resolveMediaURL } from "../../utils/utils";
+import { resolveMediaURL } from "../utils/utils";
 import { CollectionSwitcher } from "./CollectionSwitcher";
-import { NetworkMapping } from "../../utils/network";
+import { NetworkMapping } from "../utils/network";
 
 const RenderNFTCollections = (props) => {
   const {

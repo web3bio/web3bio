@@ -1,10 +1,11 @@
+import { useState } from "react";
 import Link from "next/link";
 import SVG from "react-inlinesvg";
 import Clipboard from "react-clipboard.js";
-import { ProfileInterface } from "../../utils/profile";
-import { formatText } from "../../utils/utils";
+import { ProfileInterface } from "../utils/profile";
+import { formatText } from "../utils/utils";
 import { Avatar } from "../shared/Avatar";
-import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 
 interface ProfileCardProps {
   data: ProfileInterface;
@@ -22,6 +23,13 @@ export default function ProfileCard({
   const relatedPath = `${data?.identity}${
     data?.platform.toLowerCase() === PlatformType.farcaster ? ".farcaster" : ""
   }`;
+  const [isCopied, setIsCopied] = useState(false);
+  const onCopySuccess = () => {
+    setIsCopied(true);
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 1500);
+  };
   return (
     <div
       className={`profile-card ${classNames ? classNames?.["container"] : ""}`}
@@ -60,10 +68,11 @@ export default function ProfileCard({
               className="profile-card-address c-hand"
               data-clipboard-text={data?.address}
               title="Copy the wallet address"
+              onSuccess={onCopySuccess}
             >
               {formatText(data?.address)}
               <SVG
-                src="../icons/icon-copy.svg"
+                src={isCopied ? "../icons/icon-check.svg" : "../icons/icon-copy.svg"}
                 width={18}
                 height={18}
                 className="action"

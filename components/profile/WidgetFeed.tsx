@@ -7,14 +7,14 @@ import {
   ActivityTag,
   ActivityType,
   TagsFilterMapping,
-} from "../../utils/activity";
+} from "../utils/activity";
 import FeedFilter from "./FeedFilter";
 import { useDispatch } from "react-redux";
-import { updateFeedsWidget } from "../../state/widgets/action";
+import { updateFeedsWidget } from "../state/widgets/action";
 import { ActivityFeeds } from "./ActivityFeeds";
-import { PlatformType } from "../../utils/platform";
-import { isSameAddress } from "../../utils/utils";
-import { WidgetTypes } from "../../utils/widgets";
+import { PlatformType } from "../utils/platform";
+import { isSameAddress } from "../utils/utils";
+import { WidgetTypes } from "../utils/widgets";
 
 const FEEDS_PAGE_SIZE = 20;
 

@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { fallbackEmoji } from "../utils/utils";
+import { fallbackEmoji } from "../components/utils/utils";
 
 export default function NotFound() {
   const [emoji, setEmoji] = useState("");

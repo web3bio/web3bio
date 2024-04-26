@@ -2,10 +2,10 @@
 import { useEffect, memo } from "react";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
-import { updatePhilandWidget } from "../../state/widgets/action";
+import { updatePhilandWidget } from "../state/widgets/action";
 import { QUERY_PHILAND_INFO } from "../apis/philand";
 import { useQuery } from "@apollo/client";
-import { WidgetTypes } from "../../utils/widgets";
+import { WidgetTypes } from "../utils/widgets";
 
 const RenderWidgetPhiland = ({ domain, onShowDetail }) => {
   const { data, loading, error } = useQuery(QUERY_PHILAND_INFO, {

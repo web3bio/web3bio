@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, memo, useState } from "react";
 import { useDispatch } from "react-redux";
-import { updateTallyDAOWidget } from "../../state/widgets/action";
+import { updateTallyDAOWidget } from "../state/widgets/action";
 import { useQuery } from "@apollo/client";
 import { QUERY_DAO_DELEGATORS } from "../apis/tally";
 import LoadingSkeleton from "./LoadingSkeleton";
@@ -9,8 +9,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Error } from "../shared/Error";
 import { Empty } from "../shared/Empty";
-import { formatText, formatBalance } from "../../utils/utils";
-import { WidgetTypes } from "../../utils/widgets";
+import { formatText, formatBalance } from "../utils/utils";
+import { WidgetTypes } from "../utils/widgets";
 
 const RenderWidgetTally = ({ address }) => {
   // 0:delegators  1:delegating to

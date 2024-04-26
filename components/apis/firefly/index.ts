@@ -1,4 +1,4 @@
-export const FIREFLY_ENDPOINT_DEV = "https://api-dev.firefly.land";
+export const FIREFLY_ENDPOINT = "https://api.firefly.land";
 
 export const FireflyFetcher = async ([url, body]) => {
   console.time("Firefly API call");

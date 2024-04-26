@@ -4,7 +4,7 @@ import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
 import { Loading } from "../shared/Loading";
 import { ResultAccount } from "./ResultAccount";
-import { GET_PROFILES } from "../../utils/queries";
+import { GET_PROFILES } from "../utils/queries";
 
 export default function SearchResult({ searchTerm, searchPlatform }) {
   const [getQuery, { loading, error, data }] = useLazyQuery(GET_PROFILES, {

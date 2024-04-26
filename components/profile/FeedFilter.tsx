@@ -1,4 +1,4 @@
-import { TagsFilterMapping } from "../../utils/activity";
+import { TagsFilterMapping } from "../utils/activity";
 
 export default function FeedFilter({ value, onChange }) {
   return (

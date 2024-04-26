@@ -1,7 +1,7 @@
 import IndexPageRender from "../components/search/IndexPage";
 import { Footer } from "../components/shared/Footer";
-import { PlatformData } from "../utils/platform";
-import { handleSearchPlatform } from "../utils/utils";
+import { PlatformData } from "../components/utils/platform";
+import { handleSearchPlatform } from "../components/utils/utils";
 import WalletButton from "../components/shared/WalletButton";
 
 export async function generateMetadata({ searchParams }) {

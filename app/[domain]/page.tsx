@@ -1,10 +1,9 @@
-import { PlatformType, SocialPlatformMapping } from "../../utils/platform";
-import { shouldPlatformFetch } from "../../utils/utils";
-import { handleSearchPlatform, mapLinks } from "../../utils/utils";
+import { PlatformType, SocialPlatformMapping } from "../../components/utils/platform";
+import { shouldPlatformFetch, handleSearchPlatform, mapLinks } from "../../components/utils/utils";
 import { notFound, redirect } from "next/navigation";
 import { Metadata } from "next";
 import ProfileMain from "../../components/profile/ProfileMain";
-import { regexAvatar } from "../../utils/regexp";
+import { regexAvatar } from "../../components/utils/regexp";
 
 async function fetchDataFromServer(domain: string) {
   if (!domain) return null;

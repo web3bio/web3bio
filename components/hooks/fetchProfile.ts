@@ -2,8 +2,7 @@ import {
   SIMPLEHASH_URL,
   SIMPLEHASH_CHAINS,
   SIMPLEHASH_PAGE_SIZE,
-} from "../components/apis/simplehash";
-import { PlatformType } from "../utils/platform";
+} from "../apis/simplehash";
 import { shouldPlatformFetch } from "../utils/utils";
 
 export const fetchProfile = async (identity) => {
@@ -11,10 +10,7 @@ export const fetchProfile = async (identity) => {
     const handle = identity.identity;
     if (!handle || !shouldPlatformFetch(identity.platform)) return null;
 
-    const platform =
-      identity.platform === PlatformType.ethereum
-        ? PlatformType.ens
-        : identity.platform;
+    const platform = identity.platform;
     const url =
       process.env.NEXT_PUBLIC_PROFILE_END_POINT +
       `/ns/${platform.toLowerCase()}/${handle}`;

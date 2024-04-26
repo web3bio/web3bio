@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { formatEther } from "ethers";
 import Markdown from "react-markdown";
-import { formatText } from "../../utils/utils";
+import { formatText } from "../utils/utils";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 
 const INFO_CONFIG = [

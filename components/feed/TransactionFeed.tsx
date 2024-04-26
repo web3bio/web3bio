@@ -1,7 +1,7 @@
 import { memo } from "react";
-import { ActivityType, ActivityTypeMapping } from "../../utils/activity";
-import { formatText, resolveMediaURL } from "../../utils/utils";
-import { ModalType } from "../../hooks/useModal";
+import { ActivityType, ActivityTypeMapping } from "../utils/activity";
+import { formatText, resolveMediaURL } from "../utils/utils";
+import { ModalType } from "../hooks/useModal";
 import { RenderToken } from "./FeedItem";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import RenderProfileBadge from "../profile/RenderProfileBadge";

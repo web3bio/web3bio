@@ -3,12 +3,16 @@ import React, { Suspense, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
-import { PlatformSystem, PlatformType, SocialPlatformMapping } from "../../utils/platform";
+import {
+  PlatformSystem,
+  PlatformType,
+  SocialPlatformMapping,
+} from "../utils/platform";
 import {
   formatText,
   isValidEthereumAddress,
   colorMod,
-} from "../../utils/utils";
+} from "../utils/utils";
 import { Error } from "../shared/Error";
 import { Empty } from "../shared/Empty";
 import { RenderWidgetItem } from "./WidgetLinkItem";
@@ -17,22 +21,22 @@ import WidgetPOAP from "./WidgetPoap";
 import WidgetFeed from "./WidgetFeed";
 import AddressMenu from "./AddressMenu";
 import { Avatar } from "../shared/Avatar";
-import useModal, { ModalType } from "../../hooks/useModal";
+import useModal, { ModalType } from "../hooks/useModal";
 import Modal from "../modal/Modal";
 import { useSelector } from "react-redux";
-import { AppState } from "../../state";
-import { WidgetState } from "../../state/widgets/reducer";
+import { AppState } from "../state";
+import { WidgetState } from "../state/widgets/reducer";
 import { WidgetDegenScore } from "./WidgetDegenScore";
 import { WidgetRSS } from "./WidgetRSS";
 import { WidgetPhiland } from "./WidgetPhiland";
 import { WidgetTally } from "./WidgetTally";
-import { regexEns } from "../../utils/regexp";
+import { regexEns } from "../utils/regexp";
 import LoadingSkeleton from "./LoadingSkeleton";
 import Web3bioBadge from "./ProfileFooter";
 import { WidgetArticle } from "./WidgetArticle";
 import WidgetIndicator from "./WidgetIndicator";
-import { WidgetTypes } from "../../utils/widgets";
-import { GET_PROFILES } from "../../utils/queries";
+import { WidgetTypes } from "../utils/widgets";
+import { GET_PROFILES } from "../utils/queries";
 import { useLazyQuery } from "@apollo/client";
 
 export default function ProfileMain(props) {
@@ -79,18 +83,18 @@ export default function ProfileMain(props) {
           const verifiedIndex = _res.findIndex(
             (i) =>
               i.platform === x.platform &&
-              i.handle.toLowerCase() === (x.identity.endsWith(".lens")
-                ? x.identity.replace(".lens", "")
-                : x.identity).toLowerCase()
-
-              
+              i.handle.toLowerCase() ===
+                (x.identity.endsWith(".lens")
+                  ? x.identity.replace(".lens", "")
+                  : x.identity
+                ).toLowerCase()
           );
           if (verifiedIndex !== -1) {
             _res[verifiedIndex] = {
               ..._res[verifiedIndex],
               verified: true,
             };
-          } 
+          }
           // else {
           //   _res.push({
           //     platform: x.platform,
@@ -418,7 +422,8 @@ export default function ProfileMain(props) {
                     </Suspense>
                   </div>
 
-                  <div className="web3-section-widgets">
+                  {/* todo: Due to philand error background color, hide phi widget for now */}
+                  {/* <div className="web3-section-widgets">
                     {(data.platform === PlatformType.ens ||
                       regexEns.test(data.identity)) && (
                       <Suspense fallback={<p>Loading Phi Land...</p>}>
@@ -433,7 +438,7 @@ export default function ProfileMain(props) {
                         />
                       </Suspense>
                     )}
-                  </div>
+                  </div> */}
                 </>
               )}
             </>

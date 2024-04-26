@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { ProfileFetcher } from "../apis/profile";
-import { formatText, isWeb3Address } from "../../utils/utils";
-import { PlatformType } from "../../utils/platform";
+import { formatText, isWeb3Address } from "../utils/utils";
+import { PlatformType } from "../utils/platform";
 import { Avatar } from "../shared/Avatar";
 import Trigger from "@rc-component/trigger";
 import ProfileCard from "./ProfileCard";

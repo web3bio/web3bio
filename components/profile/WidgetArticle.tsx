@@ -2,19 +2,21 @@
 import { useEffect, memo } from "react";
 import useSWR from "swr";
 import { useDispatch } from "react-redux";
-import { updateArticleWidget } from "../../state/widgets/action";
-import { FIREFLY_ENDPOINT_DEV, FireflyFetcher } from "../apis/firefly";
-import { ModalType } from "../../hooks/useModal";
-import { WidgetTypes } from "../../utils/widgets";
+import SVG from "react-inlinesvg";
+import { updateArticleWidget } from "../state/widgets/action";
+import { FIREFLY_ENDPOINT, FireflyFetcher } from "../apis/firefly";
+import { ModalType } from "../hooks/useModal";
+import { WidgetTypes } from "../utils/widgets";
+import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 
 const MirrorBaseURL = "https://mirror.xyz";
 const ParagraphBaseURL = "https://paragraph.xyz";
 
 function useArticles(address: string) {
-  // platform mirror(1) paragraph(2)
+  // platform: mirror(1) paragraph(2)
   const { data, error, isValidating } = useSWR(
     [
-      FIREFLY_ENDPOINT_DEV + "/article/v1/article",
+      FIREFLY_ENDPOINT + "/article/v1/article",
       {
         addresses: [address],
         limit: 20,
@@ -25,7 +27,7 @@ function useArticles(address: string) {
       suspense: true,
       revalidateOnFocus: false,
       revalidateOnMount: true,
-      revalidateOnReconnect: true,
+      revalidateOnReconnect: false,
     }
   );
   return {
@@ -92,12 +94,26 @@ const RenderWidgetArticle = ({ profile, openModal }) => {
               >
                 <div className="rss-item-tag">
                   {x.platform === 1 && (
-                    <span className="label label-primary">
+                    <span className="label text-dark">
+                      <SVG
+                        fill={"#121212"}
+                        src={SocialPlatformMapping(PlatformType.mirror).icon || ""}
+                        height={18}
+                        width={18}
+                        className="mr-1"
+                      />
                       Mirror
                     </span>
                   )}
                   {x.platform === 2 && (
-                    <span className="label">
+                    <span className="label text-dark">
+                      <SVG
+                        fill={"#121212"}
+                        src={SocialPlatformMapping(PlatformType.paragraph).icon || ""}
+                        height={18}
+                        width={18}
+                        className="mr-1"
+                      />
                       Paragraph
                     </span>
                   )}
