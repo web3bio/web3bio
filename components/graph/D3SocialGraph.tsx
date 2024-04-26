@@ -9,10 +9,7 @@ import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import _ from "lodash";
 import SVG from "react-inlinesvg";
 import { Empty } from "../shared/Empty";
-import {
-  calcTranslation,
-  resolveSocialGraphData,
-} from "./utils";
+import { calcTranslation, resolveSocialGraphData } from "./utils";
 
 let CurrentId = null;
 
@@ -76,8 +73,7 @@ const updateNodes = (nodeContainer) => {
 };
 
 export default function D3SocialGraph(props) {
-  const { data, onClose, title, onBack, disableBack, containerRef, root } =
-    props;
+  const { data, onClose, title, onExtend, containerRef, onExpand } = props;
   const [currentNode, setCurrentNode] = useState<any>(null);
   const [hideTooltip, setHideToolTip] = useState(true);
   const [transform, setTransform] = useState({
@@ -267,6 +263,11 @@ export default function D3SocialGraph(props) {
           e.stopPropagation();
           removeHighlight();
           highlightNode(i);
+        })
+        .on("dblclick", (e, i) => {
+          e.preventDefault();
+          e.stopPropagation();
+          onExpand(i.graphId);
         });
 
       const { displayName, identity, identityBadge, identityIcon, badge } =
@@ -371,9 +372,9 @@ export default function D3SocialGraph(props) {
           ++i
         ) {
           // initial center the root node before every tick
-          const rootNode = nodes.find((x) => x.id === root.id);
-          rootNode.x = width / 2;
-          rootNode.y = height / 2;
+          // const rootNode = nodes.find((x) => x.id === domain);
+          // rootNode.x = width / 2;
+          // rootNode.y = height / 2;
           simulation.tick();
         }
         ticked();
@@ -394,24 +395,22 @@ export default function D3SocialGraph(props) {
   return (
     <>
       {(data && <svg className="svg-canvas" />) || (
-        <Empty title={"No Identity Graph"} />
+        <Empty title={"No Social Graph"} />
       )}
 
       <div className="graph-header">
         <div className="graph-title">
           <SVG src={"/icons/icon-view.svg"} width="20" height="20" />
           <span className="ml-2">
-            Identity Graph for
+            Social Graph for
             <strong className="ml-1">{title}</strong>
           </span>
         </div>
         <div className="graph-header-action">
-          {!disableBack && (
-            <div className="btn" onClick={onBack}>
-              <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
-              Back
-            </div>
-          )}
+          <div className="btn" onClick={onExtend}>
+            <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
+            Extend
+          </div>
           <div className="btn btn-close" onClick={onClose}>
             <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
           </div>

@@ -54,12 +54,16 @@ export const GET_PROFILES = gql`
 `;
 
 export const GET_SOCIAL_GRAPH = gql`
-  query GET_SOCIAL_GRAPH {
-    relation(platform: "lens", identity: "sujiyan.lens") {
+  query GET_SOCIAL_GRAPH(
+    $platform: String
+    $identity: String
+    $offset: String
+  ) {
+    relation(platform: $platform, identity: $identity) {
       identityGraph {
         graphId
       }
-      follow(hop: 1, limit: 20, offset: 0) {
+      follow(hop: 1, limit: 20, offset: $offset) {
         count
         relation {
           edgeType
@@ -86,6 +90,26 @@ export const GET_SOCIAL_GRAPH = gql`
             uid
           }
         }
+      }
+    }
+  }
+`;
+
+export const QUERY_IDENTITY_GRAPH = gql`
+  query QUERY_IDENTITY_GRAPH($graphId: String) {
+    identityGraph(filter: { byGraphId: [$graphId] }) {
+      graphId
+      vertices {
+        id
+        uid
+        platform
+        identity
+      }
+      edges {
+        edgeType
+        dataSource
+        source
+        target
       }
     }
   }
