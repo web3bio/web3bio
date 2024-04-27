@@ -57,13 +57,13 @@ export default function Web3bioBadge(props) {
           />
         </button>
         <div className="text-assistive">
-          <a
+          <Link
             href="/sitemaps"
             className="btn-link text-dark ml-2 mr-2"
             title="Web3.bio Sitemaps"
           >
             Web3.bio Sitemaps
-          </a>
+          </Link>
         </div>
       </div>
     </>
