@@ -28,8 +28,8 @@ export default function IdentityGraphModalContent(props) {
     {
       variables: {
         platform: platform,
-        identity: domain.endsWith(".farcaster")
-          ? domain.replace(".farcaster", "")
+        identity: domain?.endsWith(".farcaster")
+          ? domain?.replace(".farcaster", "")
           : domain,
         offset: offset,
       },
@@ -64,20 +64,22 @@ export default function IdentityGraphModalContent(props) {
   }, [type, offset, graphId, identityGraph, socialGraph]);
   return graphType === 0 ? (
     identityGraphLoading ||
-    !identityGraph?.identityGraph?.[0]?.vertices.length ? (
+    (!identityGraph?.identityGraph?.[0]?.vertices.length && !props.data) ? (
       <Loading />
     ) : (
       <D3IdentityGraph
         {...props}
         title={rootNode?.identity}
         onBack={() => setGraphType(GraphType.socialGraph)}
-        data={{
-          nodes: identityGraph?.identityGraph?.[0]?.vertices.map((x) => ({
-            ...x,
-            profile: profiles.find((i) => i?.uuid === x?.uuid),
-          })),
-          edges: identityGraph?.identityGraph?.[0]?.edges,
-        }}
+        data={
+          props.data || {
+            nodes: identityGraph?.identityGraph?.[0]?.vertices.map((x) => ({
+              ...x,
+              profile: profiles.find((i) => i?.uuid === x?.uuid),
+            })),
+            edges: identityGraph?.identityGraph?.[0]?.edges,
+          }
+        }
         root={rootNode}
       />
     )
@@ -85,6 +87,7 @@ export default function IdentityGraphModalContent(props) {
     <Loading />
   ) : (
     <D3SocialGraph
+      {...props}
       onExpand={(i) => {
         setGraphId(i.graphId);
         setRootNode(i);
@@ -92,8 +95,8 @@ export default function IdentityGraphModalContent(props) {
       }}
       domain={domain}
       onExtend={() => setOffset(offset + 1)}
-      data={graphData}
-      {...props}
+      data={graphData?.length > 0 ? graphData : null}
+      title={domain}
     />
   );
 }

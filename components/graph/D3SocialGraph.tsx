@@ -389,10 +389,12 @@ export default function D3SocialGraph(props) {
           </span>
         </div>
         <div className="graph-header-action">
-          <div className="btn" onClick={onExtend}>
-            <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
-            Extend
-          </div>
+          {data && (
+            <div className="btn" onClick={onExtend}>
+              <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
+              Extend
+            </div>
+          )}
           <div className="btn btn-close" onClick={onClose}>
             <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
           </div>
