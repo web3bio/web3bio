@@ -14,14 +14,9 @@ import { calcTranslation, resolveSocialGraphData } from "./utils";
 let CurrentId = null;
 
 const IdentityNodeSize = 48;
-const NFTNodeSize = 14;
 
-const getNodeRadius = (isIdentity) =>
-  isIdentity ? IdentityNodeSize : NFTNodeSize;
 const getMarkerRefX = (d) => {
-  return d.target.isIdentity
-    ? IdentityNodeSize + (d.isSingle ? 30 : 26)
-    : NFTNodeSize + (d.isSingle ? 16 : 8);
+  return IdentityNodeSize + (d.isSingle ? 30 : 26);
 };
 
 const updateNodes = (nodeContainer) => {
@@ -29,8 +24,7 @@ const updateNodes = (nodeContainer) => {
     .append("circle")
     .attr("class", "identity-badge")
     .attr("r", 16)
-    .attr("fill", (d) => SocialPlatformMapping(d.platform).color)
-    .attr("style", (d) => `display:${d.isIdentity ? "normal" : "none"}`);
+    .attr("fill", (d) => SocialPlatformMapping(d.platform).color);
 
   const identityIcon = nodeContainer
     .append("svg:image")
@@ -38,8 +32,7 @@ const updateNodes = (nodeContainer) => {
     .attr(
       "xlink:href",
       (d) => SocialPlatformMapping(d.platform.toLowerCase()).icon
-    )
-    .attr("style", (d) => `display:${d.isIdentity ? "normal" : "none"}`);
+    );
 
   const badge = nodeContainer
     .append("svg:image")
@@ -57,7 +50,6 @@ const updateNodes = (nodeContainer) => {
     .append("text")
     .attr("class", "identity")
     .attr("id", (d) => d.id)
-    .style("display", (d) => (d.isIdentity ? "normal" : "none"))
     .text((d) => {
       if (d.displayName === d.identity || isDomainSearch(d.platform))
         return formatText(d.address);
@@ -96,11 +88,10 @@ export default function D3SocialGraph(props) {
         const curNodeElement = curNode.node();
         if (!curNodeElement) return;
         const rect = curNodeElement.getBoundingClientRect();
-        const isIdentity = nodes.find((x) => x.id === CurrentId)?.isIdentity;
         setTransform({
           offsetX: rect.left,
           offsetY: rect.top,
-          offsetWidth: isIdentity ? IdentityNodeSize * 2 : NFTNodeSize,
+          offsetWidth: IdentityNodeSize * 2,
         });
       };
       const removeHighlight = () => {
@@ -150,18 +141,14 @@ export default function D3SocialGraph(props) {
             d3
               .forceLink(links)
               .id((d) => d.id)
-              .distance((d) => (d.target.isIdentity ? 60 : 10))
+              .distance((d) => 60)
           )
           .force("charge", d3.forceManyBody())
           .force("x", d3.forceX(width / 2).strength(0.5))
           .force("y", d3.forceY(height / 2).strength(1.3))
           .force(
             "collision",
-            d3
-              .forceCollide()
-              .radius((d) =>
-                d.isIdentity ? IdentityNodeSize * 2 : NFTNodeSize * 2.25
-              )
+            d3.forceCollide().radius((d) => IdentityNodeSize * 2)
           )
           .force("center", d3.forceCenter(width / 2, height / 2))
           .stop();
@@ -207,9 +194,7 @@ export default function D3SocialGraph(props) {
         .attr("dx", ".5em")
         .attr("dy", "3px")
         .attr("text-anchor", "middle")
-        .text((d) =>
-          d.source.isIdentity && d.target.isIdentity ? d.label : ""
-        );
+        .text((d) => d.label);
 
       const dragged = (event, d) => {
         const clamp = (x, lo, hi) => {
@@ -245,11 +230,9 @@ export default function D3SocialGraph(props) {
       const circle = nodeContainer
         .append("circle")
         .attr("stroke-width", 2)
-        .attr("r", (d) => getNodeRadius(d.isIdentity))
+        .attr("r", IdentityNodeSize)
         .attr("stroke", (d) => SocialPlatformMapping(d.platform).color)
-        .attr("fill", (d) =>
-          d.isIdentity ? "#fff" : SocialPlatformMapping(d.platform).color
-        );
+        .attr("fill", (d) => "#fff");
       const maskCircle = nodeContainer
         .attr("id", (d) => d.id)
         .append("circle")
@@ -257,7 +240,7 @@ export default function D3SocialGraph(props) {
         .attr("fill", (d) => SocialPlatformMapping(d.platform).color)
         .attr("fill-opacity", 0.1)
         .attr("opacity", 0)
-        .attr("r", (d) => getNodeRadius(d.isIdentity))
+        .attr("r", IdentityNodeSize)
         .on("click", (e, i) => {
           e.preventDefault();
           e.stopPropagation();
@@ -295,7 +278,6 @@ export default function D3SocialGraph(props) {
         displayName
           .attr("dx", (d) => d.x)
           .attr("dy", (d) => {
-            if (!d.isIdentity) return d.y + NFTNodeSize * 2;
             if (
               d.displayName !== "" &&
               (d.displayName !== d.identity || d.address)
@@ -306,7 +288,7 @@ export default function D3SocialGraph(props) {
           .attr("text-anchor", "middle");
         identity
           .attr("dx", (d) => d.x)
-          .attr("dy", (d) => (d.isIdentity ? d.y + 14 : 0))
+          .attr("dy", (d) => d.y + 14)
           .attr("text-anchor", "middle");
 
         identityBadge
@@ -428,7 +410,7 @@ export default function D3SocialGraph(props) {
             e.stopPropagation();
           }}
         >
-          {currentNode.isIdentity ? (
+          {
             <ul>
               <li className="text-large text-bold">
                 {currentNode.displayName || "-"}
@@ -470,27 +452,7 @@ export default function D3SocialGraph(props) {
                   "Unknown"}
               </li>
             </ul>
-          ) : (
-            <ul>
-              <li className="text-large text-bold mb-1">
-                {currentNode.identity || ""}
-              </li>
-              <li>
-                <span className="text-gray">Platform: </span>
-                {SocialPlatformMapping(currentNode.platform).label || ""}
-              </li>
-              {currentNode.resolvedAddress && (
-                <li>
-                  <span className="text-gray">Resolved: </span>
-                  {currentNode.resolvedAddress || ""}
-                </li>
-              )}
-              <li>
-                <span className="text-gray">Owner: </span>
-                {currentNode.owner || ""}
-              </li>
-            </ul>
-          )}
+          }
         </div>
       )}
     </>

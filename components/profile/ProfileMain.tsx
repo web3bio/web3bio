@@ -32,7 +32,7 @@ import Web3bioBadge from "./ProfileFooter";
 import { WidgetArticle } from "./WidgetArticle";
 import WidgetIndicator from "./WidgetIndicator";
 import { WidgetTypes } from "../utils/widgets";
-import { GET_PROFILES, GET_SOCIAL_GRAPH } from "../utils/queries";
+import { GET_PROFILES } from "../utils/queries";
 import { useLazyQuery } from "@apollo/client";
 import { ProfileInterface } from "../utils/profile";
 import _ from "lodash";
@@ -336,7 +336,7 @@ export default function ProfileMain(props) {
                   type: GraphType.socialGraph,
                   domain: domain,
                   platform: platform,
-                  root: {id:`${platform},${domain}`}
+                  root: { id: `${platform},${domain}` },
                 });
               }}
             >

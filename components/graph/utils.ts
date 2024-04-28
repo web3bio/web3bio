@@ -142,14 +142,12 @@ export const resolveSocialGraphData = (data) => {
         nodes.push({
           ...x.originalSource,
           graphId: x.source,
-          idIdentity: true,
         });
       }
       if (!nodes.find((i) => i?.id === x.originalTarget.id)) {
         nodes.push({
           ...x.originalTarget,
           graphId: x.target,
-          isIdentity: true,
         });
       }
     }
