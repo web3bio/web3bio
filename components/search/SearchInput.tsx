@@ -49,9 +49,6 @@ export default function SearchInput(props) {
       const _value = searchList[activeIndex] ? searchList[activeIndex] : query.replaceAll("。", ".");
       emitSubmit(e, _value);
     }
-    if (e.keyCode === 9) {
-      
-    }
     if (e.keyCode === 27) {
       if (activeIndex === -1) {
         setSearchList([]);
@@ -60,7 +57,7 @@ export default function SearchInput(props) {
       }
     }
 
-    if (e.keyCode === 38) {
+    if (e.keyCode === 38 || (e.shiftKey && e.keyCode === 9)) {
       if (searchList?.length) e.preventDefault();
       if (searchList && searchList.length === 1) {
         setActiveIndex(0);
@@ -72,7 +69,7 @@ export default function SearchInput(props) {
         setActiveIndex(activeIndex - 1);
       }
     }
-    if (e.keyCode === 40 || e.keyCode === 9) {
+    if (e.keyCode === 40 || (!e.shiftKey && e.keyCode === 9)) {
       if (searchList?.length) e.preventDefault();
       if (searchList && searchList.length === 1) return setActiveIndex(0);
       if (activeIndex === null || activeIndex >= searchList.length - 1) {

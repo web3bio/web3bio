@@ -448,3 +448,46 @@
 
   @media screen and (min-width: $size-sm) {}
 }
+
+// Sitemaps results
+.sitemap-result {
+  animation: slide-down .2s ease 1;
+  background: rgba($light-color, .85);
+  border-radius: $border-radius;
+  box-shadow: 0 .05rem .2rem rgba($dark-color, .1);
+  position: relative;
+
+  .sitemap-result-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .8rem;
+
+    .sitemap-result-text {
+      font-size: .7rem;
+      width: 100%;
+      word-break: break-all;
+      word-wrap: break-word;
+    }
+
+    .btn {
+      align-items: center;
+      display: inline-flex;
+      flex-shrink: 0;
+    }
+  }
+
+  .sitemap-result-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .8rem;
+  }
+
+  .sitemap-result-body {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+    padding: 0 .4rem .4rem .4rem;
+  }
+}
