@@ -152,5 +152,11 @@ export const resolveSocialGraphData = (data) => {
       }
     }
   });
-  return { nodes: nodes, edges: edges };
+  const _nodes = _.uniqBy(nodes, "id");
+  const _edges = _.uniqBy(edges, "id");
+  const resolvedEdges = _edges.map((x) => ({
+    ...x,
+    isSingle: isSingleEdge(_edges, x),
+  }));
+  return { nodes: _nodes, edges: resolvedEdges };
 };

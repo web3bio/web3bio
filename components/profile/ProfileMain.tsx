@@ -34,7 +34,6 @@ import WidgetIndicator from "./WidgetIndicator";
 import { WidgetTypes } from "../utils/widgets";
 import { GET_PROFILES } from "../utils/queries";
 import { useLazyQuery } from "@apollo/client";
-import { ProfileInterface } from "../utils/profile";
 import _ from "lodash";
 import { GraphType } from "../graph/utils";
 
@@ -60,10 +59,7 @@ export default function ProfileMain(props) {
   const profileWidgetStates = useSelector<AppState, WidgetState>(
     (state) => state.widgets
   );
-  const cached = useSelector<AppState, { [address: string]: ProfileInterface }>(
-    (state) => state.universal.profiles
-  );
-  const profiles = _.flatten(Object.values(cached).map((x) => x));
+
   useEffect(() => {
     if (!mounted) setMounted(true);
     if (domain && platform) {

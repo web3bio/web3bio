@@ -75,6 +75,7 @@ const updateNodes = (nodeContainer) => {
 export default function D3IdentityGraph(props) {
   const { data, onClose, title, onBack, disableBack, containerRef, root } =
     props;
+
   const [currentNode, setCurrentNode] = useState<any>(null);
   const [hideTooltip, setHideToolTip] = useState(true);
   const [transform, setTransform] = useState({

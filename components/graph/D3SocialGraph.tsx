@@ -250,7 +250,7 @@ export default function D3SocialGraph(props) {
         .on("dblclick", (e, i) => {
           e.preventDefault();
           e.stopPropagation();
-          onExpand(i.graphId);
+          onExpand(i);
         });
 
       const { displayName, identity, identityBadge, identityIcon, badge } =
