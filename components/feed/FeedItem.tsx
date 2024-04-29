@@ -185,7 +185,7 @@ const RenderFeedItem = (props) => {
             >
               <span className="hide-sm">
                 {formatDistanceToNow(new Date(feed.timestamp * 1000), {
-                  addSuffix: true,
+                  addSuffix: false,
                 })}
               </span>
             </Link>

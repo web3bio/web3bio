@@ -244,6 +244,7 @@
     .social-main {
       align-items: center;
       display: flex;
+      flex: 1;
       overflow: hidden;
       padding: .4rem;
       width: 100%;
@@ -280,7 +281,7 @@
 
       .social {
         text-decoration: none;
-        width: 50%;
+        width: 100%;
       }
 
       .title {
@@ -294,8 +295,10 @@
     .actions {
       align-items: center;
       display: flex;
-      margin-left: auto;
+      flex: 0 1;
+      margin-left: 1rem;
       visibility: hidden;
+      width: 100%;
 
       &.active {
         visibility: visible;
@@ -392,14 +395,17 @@
   }
 
   .content {
-    flex: 1 1 24rem;
+    display: flex;
+    flex: 1 1;
+    flex-direction: column;
     margin-left: .5rem;
+    width: 12rem;
   }
 
   .content-title {
     font-size: .75rem;
     line-height: 1.2rem;
-    width: 14rem;
+    width: 100%;
   }
 
   .content-subtitle {
