@@ -3,7 +3,7 @@
   padding: 2rem;
 
   @media screen and (max-width: $size-md) {
-    padding: .5rem;
+    padding: .5rem .5rem 4rem .5rem;
   }
 
   .web3bio-custom {
@@ -255,6 +255,10 @@
   display: flex;
   flex-wrap: wrap;
   margin: 0;
+
+  @media screen and (max-width: $size-lg) {
+    margin: 0 -.4rem;
+  }
 
   .profile-widget-item {
     padding: .5rem;
@@ -1283,6 +1287,7 @@
     height: 80vh;
     gap: 2rem;
     max-width: $size-xl;
+    position: relative;
     width: 100%;
 
     @media screen and (max-width: $size-md) {
@@ -1303,10 +1308,9 @@
       }
 
       .preview-image {
-
         .img-responsive,
         .video-responsive {
-          max-width: 98vw;
+          max-width: 100vw;
         }
       }
     }
@@ -1329,10 +1333,10 @@
     display: flex;
     justify-content: center;
     margin: 0 auto;
-    position: relative;
 
     &.preview-image-poap {
-
+      padding: 2rem;
+      
       .img-container,
       .img-responsive {
         border-radius: 50%;

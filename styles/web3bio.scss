@@ -358,7 +358,7 @@ body {
     top: auto;
     transform: translateX(50%);
     width: auto;
-    z-index: 99999;
+    z-index: 999;
 
     &:hover {
       background: rgba($bg-color, .5);

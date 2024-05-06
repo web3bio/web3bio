@@ -102,7 +102,11 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
         </span>
         {data?.identity && fullProfile && (
           <span className="feed-token-meta">
-            {data?.identity === data?.displayName ? "" : data?.identity}
+            {isWeb3Address(data?.identity) ? 
+              formatText(data?.identity) === data?.displayName ? 
+                "" : formatText(data?.identity)
+              : data?.identity === data?.displayName ?
+                "" : data?.identity}
           </span>
         )}
       </div>
