@@ -183,9 +183,9 @@ const RenderFeedItem = (props) => {
               target="_blank"
               className="feed-timestamp"
             >
-              <span className="hide-sm">
+              <span>
                 {formatDistanceToNow(new Date(feed.timestamp * 1000), {
-                  addSuffix: true,
+                  addSuffix: false,
                 })}
               </span>
             </Link>

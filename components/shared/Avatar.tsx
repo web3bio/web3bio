@@ -8,7 +8,7 @@ interface Avatar extends AssetPlayerProps {
 export const Avatar = (props: Avatar) => {
   const { src, width, height, alt, identity, itemProp } = props;
   const profileAvatarAPIURL =
-    process.env.NEXT_PUBLIC_PROFILE_END_POINT + `/avatar/${identity}`;
+    process.env.NEXT_PUBLIC_PROFILE_END_POINT + `/avatar/svg?handle=${identity}`;
   return (
     <Image
       className="avatar"

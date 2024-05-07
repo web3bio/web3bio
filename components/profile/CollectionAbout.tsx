@@ -38,7 +38,7 @@ const CollectionAboutRender = (props) => {
           {collection.name}
         </div>
         {collection.description && (
-          <div className="nft-header-description mt-4 mb-4">
+          <div className="nft-header-description mt-2 mb-4">
             <Markdown>
               {collection.description}
             </Markdown>

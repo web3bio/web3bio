@@ -17,7 +17,7 @@ export default function WidgetIndicator(props: WidgetIndicatorInterface) {
             <a
               key={WidgetInfoMapping(type).icon + x[0]}
               href={`#${x[0]}`}
-              className="widget-indicator-item tooltip tooltip-left"
+              className="widget-indicator-item tooltip"
               title={WidgetInfoMapping(type).title}
             >
               <div className="indicator-dot"></div>

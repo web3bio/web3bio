@@ -142,13 +142,13 @@ export default function NFTModalContentRender(props) {
                   <div className="nft-header-name h4">
                     {_asset.name || `${_collection?.name} #${_asset.token_id}`}
                   </div>
-                  <div className="nft-header-description mt-4 mb-4">
+                  <div className="nft-header-description mt-2 mb-2">
                     <Markdown>
                       {_asset.description || _collection?.description}
                     </Markdown>
                   </div>
 
-                  <div className="btn-group mt-4">
+                  <div className="btn-group mt-2 mb-4">
                     {renderSocialMediaLinks(_collection)}
                   </div>
                 </div>

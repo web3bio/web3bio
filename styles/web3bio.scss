@@ -358,7 +358,7 @@ body {
     top: auto;
     transform: translateX(50%);
     width: auto;
-    z-index: 99999;
+    z-index: 999;
 
     &:hover {
       background: rgba($bg-color, .5);
@@ -369,6 +369,24 @@ body {
 
       .indicator-dot {
         display: none;
+      }
+    }
+  }
+
+  @media screen and (min-width: $size-md) {
+    .widget-indicator-item {
+      &.tooltip {
+        &::after {
+          bottom: 50%;
+          left: auto;
+          right: 100%;
+          transform: translate($unit-2, 50%);
+        }
+        &:hover {
+          &::after {
+            transform: translate(-$unit-1, 50%);
+          }
+        }
       }
     }
   }

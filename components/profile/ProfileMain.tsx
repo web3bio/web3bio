@@ -246,8 +246,7 @@ export default function ProfileMain(props) {
                     ["--badge-primary-color" as string]:
                       SocialPlatformMapping(platform).color || "#000",
                     ["--badge-bg-color" as string]:
-                      colorMod(SocialPlatformMapping(platform).color, 5) ||
-                      "rgba(#000, .04)",
+                      colorMod(SocialPlatformMapping(platform).color, 5),
                   }}
                 >
                   <div className="platform-badge-icon">
@@ -283,7 +282,7 @@ export default function ProfileMain(props) {
                         colorMod(
                           SocialPlatformMapping(x.platform)?.color,
                           10
-                        ) || "rgba(#000, .04)",
+                        ),
                     }}
                     itemProp="sameAs"
                   >

@@ -9,7 +9,7 @@
     background: rgba($dark-color, .5);
     right: 0;
     bottom: 0;
-    z-index: 100;
+    z-index: 1000;
     backdrop-filter: blur(.2rem);
   
     .modal-graph-container {
@@ -388,7 +388,6 @@
         }
   
         .preview-image {
-  
           .img-responsive,
           .video-responsive {
             max-height: 90vh;

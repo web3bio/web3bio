@@ -3,10 +3,6 @@
   overflow-y: auto;
   padding: 1rem;
 
-  @media screen and (max-width: $size-md) {
-    margin: 0 -1rem;
-  }
-
   .feed-item {
     align-items: flex-start;
     display: flex;
@@ -260,6 +256,17 @@
     .feed-meta {
       color: $gray-color;
       font-size: .7rem;
+    }
+  }
+
+  @media screen and (max-width: $size-md) {
+    margin: 0 -1rem;
+    padding: 1rem 1rem 1rem .5rem;
+
+    .feed-item {
+      .feed-item-icon {
+        margin-right: .75rem;
+      }
     }
   }
 }
