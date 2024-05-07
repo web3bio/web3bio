@@ -118,6 +118,7 @@
       flex: 1 1 100%;
       flex-wrap: wrap;
       font-size: .75rem;
+      gap: .1rem;
       line-height: 1.5;
       margin-top: .25rem;
       width: 100%;
@@ -129,6 +130,7 @@
 
       &.text-emoji {
         font-size: 1.5rem;
+        line-height: 1;
       }
 
       &:focus,
@@ -261,7 +263,7 @@
 
   @media screen and (max-width: $size-md) {
     margin: 0 -1rem;
-    padding: 1rem 1rem 1rem .5rem;
+    padding: 1rem 1rem 1rem .75rem;
 
     .feed-item {
       .feed-item-icon {

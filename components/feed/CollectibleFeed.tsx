@@ -1,13 +1,13 @@
 import { memo } from "react";
 import { ModalType } from "../hooks/useModal";
 import { ActivityType, ActivityTypeMapping } from "../utils/activity";
-import { formatText, resolveMediaURL } from "../utils/utils";
+import { formatText, resolveMediaURL, isSameAddress } from "../utils/utils";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { RenderToken } from "./FeedItem";
 
 const RenderCollectibleCard = (props) => {
-  const { actions, openModal, network } = props;
+  const { actions, openModal, network, owner } = props;
   return actions.map((action) => {
     const metadata = action?.metadata;
     const collections = action?.duplicatedObjects;
@@ -26,7 +26,6 @@ const RenderCollectibleCard = (props) => {
                     metadata.action || "default"
                   ]
                 }
-                &nbsp;
                 {collections.map((x, cIdx) => {
                   return (
                     <span
@@ -66,9 +65,7 @@ const RenderCollectibleCard = (props) => {
                   );
                 })}
                 {action.platform && (
-                  <span className="feed-platform">
-                    &nbsp;on {action.platform}
-                  </span>
+                  <>{" "}on {action.platform}</>
                 )}
               </div>
               {collections.some((x) => x.image_url) &&
@@ -104,76 +101,137 @@ const RenderCollectibleCard = (props) => {
             </>
           );
         case ActivityType.transfer:
+          const isOwner = isSameAddress(owner, action.to);
+
           return (
             <div className="feed-content">
-              {
-                ActivityTypeMapping(action.type).action[
-                  metadata.action || "default"
-                ]
-              }
-              &nbsp;
-              {action.duplicatedObjects.map((x, idx) => {
-                return x.contract_address &&
-                  (x.standard === 721 || x.standard === 1155) ? (
-                  <span
-                    key={`${idx}_preview`}
-                    className="feed-token c-hand"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      openModal(ModalType.nft, {
-                        remoteFetch: true,
-                        network: network,
-                        standard: x.standard,
-                        contractAddress: x.contract_address,
-                        tokenId: x.id,
-                      });
-                    }}
-                  >
-                    {x.image_url && (
-                      <NFTAssetPlayer
-                        className="feed-token-icon"
-                        src={resolveMediaURL(x.image_url)}
-                        type={"image/png"}
-                        width={20}
-                        height={20}
-                        alt={x.title || x.name}
-                      />
-                    )}
-                    <span className="feed-token-value">
-                      {x.title || x.name}
-                    </span>
-                    {x.id && !x.title && (
-                      <small className="feed-token-meta">{`#${formatText(
-                        x.id
-                      )}`}</small>
-                    )}
-                  </span>
-                ) : (
-                  RenderToken({
-                    key: `${actionId + idx}_${ActivityType.transfer}_${
-                      x.name
-                    }_${x.value}`,
-                    name: x.name,
-                    symbol: x.symbol,
-                    image: x.image,
-                    value: {
-                      value: x.value,
-                      decimals: x.decimals,
-                    },
-                  })
-                );
-              })}
-              {action.to && ActivityTypeMapping(action.type).prep && (
+              { isOwner ? (
                 <>
-                  &nbsp;{ActivityTypeMapping(action.type).prep}&nbsp;
-                  <RenderProfileBadge identity={action.to} remoteFetch />
+                  {
+                    ActivityTypeMapping(action.type).action["receive"]
+                  }
+                  {action.duplicatedObjects.map((x, idx) => {
+                    return x.contract_address &&
+                      (x.standard === 721 || x.standard === 1155) ? (
+                      <span
+                        key={`${idx}_preview`}
+                        className="feed-token c-hand"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          openModal(ModalType.nft, {
+                            remoteFetch: true,
+                            network: network,
+                            standard: x.standard,
+                            contractAddress: x.contract_address,
+                            tokenId: x.id,
+                          });
+                        }}
+                      >
+                        {x.image_url && (
+                          <NFTAssetPlayer
+                            className="feed-token-icon"
+                            src={resolveMediaURL(x.image_url)}
+                            type={"image/png"}
+                            width={20}
+                            height={20}
+                            alt={x.title || x.name}
+                          />
+                        )}
+                        <span className="feed-token-value">
+                          {x.title || x.name}
+                        </span>
+                        {x.id && !x.title && (
+                          <small className="feed-token-meta">{`#${formatText(
+                            x.id
+                          )}`}</small>
+                        )}
+                      </span>
+                    ) : (
+                      RenderToken({
+                        key: `${actionId + idx}_${ActivityType.transfer}_${
+                          x.name
+                        }_${x.value}`,
+                        name: x.name,
+                        symbol: x.symbol,
+                        image: x.image,
+                        value: {
+                          value: x.value,
+                          decimals: x.decimals,
+                        },
+                      })
+                    );
+                  })}
+                </>
+              ) : (
+                <>
+                  {
+                    ActivityTypeMapping(action.type).action[
+                      metadata.action || "default"
+                    ]
+                  }
+                  {action.duplicatedObjects.map((x, idx) => {
+                    return x.contract_address &&
+                      (x.standard === 721 || x.standard === 1155) ? (
+                      <span
+                        key={`${idx}_preview`}
+                        className="feed-token c-hand"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          openModal(ModalType.nft, {
+                            remoteFetch: true,
+                            network: network,
+                            standard: x.standard,
+                            contractAddress: x.contract_address,
+                            tokenId: x.id,
+                          });
+                        }}
+                      >
+                        {x.image_url && (
+                          <NFTAssetPlayer
+                            className="feed-token-icon"
+                            src={resolveMediaURL(x.image_url)}
+                            type={"image/png"}
+                            width={20}
+                            height={20}
+                            alt={x.title || x.name}
+                          />
+                        )}
+                        <span className="feed-token-value">
+                          {x.title || x.name}
+                        </span>
+                        {x.id && !x.title && (
+                          <small className="feed-token-meta">{`#${formatText(
+                            x.id
+                          )}`}</small>
+                        )}
+                      </span>
+                    ) : (
+                      RenderToken({
+                        key: `${actionId + idx}_${ActivityType.transfer}_${
+                          x.name
+                        }_${x.value}`,
+                        name: x.name,
+                        symbol: x.symbol,
+                        image: x.image,
+                        value: {
+                          value: x.value,
+                          decimals: x.decimals,
+                        },
+                      })
+                    );
+                  })}
+                  {action.to && ActivityTypeMapping(action.type).prep && (
+                    <>
+                      {ActivityTypeMapping(action.type).prep}
+                      <RenderProfileBadge identity={action.to} remoteFetch />
+                    </>
+                  )}
                 </>
               )}
               {action.platform && (
-                <span className="feed-platform">
-                  &nbsp;on {action.platform}
-                </span>
+                <>{" "}on {action.platform}</>
               )}
             </div>
           );
@@ -185,7 +243,6 @@ const RenderCollectibleCard = (props) => {
                   metadata.action || "default"
                 ]
               }
-              &nbsp;
               {action.tag === "collectible" ? (
                 <span className="feed-token">
                   {metadata.image_url && (
@@ -219,14 +276,12 @@ const RenderCollectibleCard = (props) => {
               )}
               {action.to && ActivityTypeMapping(action.type).prep && (
                 <>
-                  &nbsp;{ActivityTypeMapping(action.type).prep}&nbsp;
+                  {ActivityTypeMapping(action.type).prep}
                   <RenderProfileBadge identity={action.to} remoteFetch />
                 </>
               )}
               {action.platform && (
-                <span className="feed-platform">
-                  &nbsp;on {action.platform}
-                </span>
+                <>{" "}on {action.platform}</>
               )}
             </div>
           );
