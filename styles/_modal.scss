@@ -48,6 +48,10 @@
           display: flex;
           align-items: center;
           gap: .5rem;
+          .loading{
+            width: 20px;
+            height: 20px;
+          }
         }
       }
   

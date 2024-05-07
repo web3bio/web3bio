@@ -88,6 +88,7 @@ export default function IdentityGraphModalContent(props) {
   ) : (
     <D3SocialGraph
       {...props}
+      loading={loading}
       onExpand={(i) => {
         setGraphId(i.graphId);
         setRootNode(i);

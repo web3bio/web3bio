@@ -65,7 +65,8 @@ const updateNodes = (nodeContainer) => {
 };
 
 export default function D3SocialGraph(props) {
-  const { data, onClose, title, onExtend, containerRef, onExpand } = props;
+  const { data, onClose, title, onExtend, containerRef, onExpand, loading } =
+    props;
   const [currentNode, setCurrentNode] = useState<any>(null);
   const [hideTooltip, setHideToolTip] = useState(true);
   const [transform, setTransform] = useState({
@@ -391,7 +392,11 @@ export default function D3SocialGraph(props) {
         <div className="graph-header-action">
           {data && (
             <div className="btn" onClick={onExtend}>
-              <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
+              {loading ? (
+                <div className="loading"></div>
+              ) : (
+                <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
+              )}
               Extend
             </div>
           )}
