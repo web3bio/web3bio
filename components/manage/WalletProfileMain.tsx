@@ -157,7 +157,7 @@ export default function WalletProfileMain(props) {
                       colorMod(
                         SocialPlatformMapping(curProfile.platform).color,
                         5
-                      ) || "rgba(#000, .04)",
+                      ),
                   }}
                 >
                   <div className="platform-badge-icon">
