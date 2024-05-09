@@ -94,7 +94,7 @@ const RenderTransactionCard = (props) => {
               )}
               {metadata.vault?.address && (
                 <>
-                  on
+                  {" "} on
                   <RenderProfileBadge
                     identity={metadata.vault.address}
                     remoteFetch
