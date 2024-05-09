@@ -8,11 +8,7 @@ import {
   PlatformType,
   SocialPlatformMapping,
 } from "../utils/platform";
-import {
-  formatText,
-  isValidEthereumAddress,
-  colorMod,
-} from "../utils/utils";
+import { formatText, isValidEthereumAddress, colorMod } from "../utils/utils";
 import { Error } from "../shared/Error";
 import { Empty } from "../shared/Empty";
 import { RenderWidgetItem } from "./WidgetLinkItem";
@@ -95,16 +91,17 @@ export default function ProfileMain(props) {
               verified: true,
             };
           }
-          // else {
-          //   _res.push({
-          //     platform: x.platform,
-          //     handle: x.identity,
-          //     link: getSocialMediaLink(x.identity, x.platform),
-          //     verified: true,
-          //   });
-          // }
         });
-      setLinks(_res);
+      setLinks(
+        _res.map((x) => {
+          if (
+            [PlatformType.lens, PlatformType.farcaster].includes(x.platform)
+          ) {
+            x.hasDetail = true;
+          }
+          return x;
+        })
+      );
     }
   }, [domain, platform, identityGraph, getQuery, mounted, data?.links]);
   const onCopySuccess = () => {
@@ -245,8 +242,10 @@ export default function ProfileMain(props) {
                   style={{
                     ["--badge-primary-color" as string]:
                       SocialPlatformMapping(platform).color || "#000",
-                    ["--badge-bg-color" as string]:
-                      colorMod(SocialPlatformMapping(platform).color, 5),
+                    ["--badge-bg-color" as string]: colorMod(
+                      SocialPlatformMapping(platform).color,
+                      5
+                    ),
                   }}
                 >
                   <div className="platform-badge-icon">
@@ -278,11 +277,10 @@ export default function ProfileMain(props) {
                     style={{
                       ["--badge-primary-color" as string]:
                         SocialPlatformMapping(x.platform).color || "#000",
-                      ["--badge-bg-color" as string]:
-                        colorMod(
-                          SocialPlatformMapping(x.platform)?.color,
-                          10
-                        ),
+                      ["--badge-bg-color" as string]: colorMod(
+                        SocialPlatformMapping(x.platform)?.color,
+                        10
+                      ),
                     }}
                     itemProp="sameAs"
                   >
@@ -332,7 +330,7 @@ export default function ProfileMain(props) {
               if (item.handle) {
                 return (
                   <div key={idx} className="profile-widget-item">
-                    <RenderWidgetItem displayName={pageTitle} item={item} />
+                    <RenderWidgetItem openModal={openModal}  displayName={pageTitle} item={item} />
                   </div>
                 );
               }

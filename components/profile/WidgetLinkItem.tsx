@@ -5,6 +5,7 @@ import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { colorMod } from "../utils/utils";
+import { ModalType } from "../hooks/useModal";
 
 const WidgetItem = (props) => {
   const onCopySuccess = () => {
@@ -13,7 +14,7 @@ const WidgetItem = (props) => {
       setIsCopied(false);
     }, 1500);
   };
-  const { item, displayName } = props;
+  const { item, displayName, openModal } = props;
   const [isCopied, setIsCopied] = useState(false);
   const WidgetContent = (() => {
     return (
@@ -59,7 +60,13 @@ const WidgetItem = (props) => {
         <div className="platform-action">
           <div className="btn btn-sm btn-action">
             <SVG
-              src={item.link ? "icons/icon-open.svg" : !isCopied ? "icons/icon-copy.svg" : "icons/icon-check.svg"}
+              src={
+                item.link
+                  ? "icons/icon-open.svg"
+                  : !isCopied
+                  ? "icons/icon-copy.svg"
+                  : "icons/icon-check.svg"
+              }
               width={20}
               height={20}
             />
@@ -71,7 +78,16 @@ const WidgetItem = (props) => {
   })();
   return item.link ? (
     <Link
-      href={item.link}
+      href={!item.hasDetail ? item.link : ""}
+      onClick={(e) => {
+        if (item.hasDetail) {
+          e.preventDefault();
+          e.stopPropagation();
+          openModal(ModalType.profile, {
+            ...item,
+          });
+        }
+      }}
       className={`profile-widget profile-widget-link ${item.platform}`}
       title={`Open ${displayName} ${
         SocialPlatformMapping(item.platform)?.label

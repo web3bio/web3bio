@@ -9,6 +9,7 @@ import PoapsModalContent from "./ModalPoaps";
 import SearchModalContent from "./ModalSearch";
 import ShareModalContent from "./ModalShare";
 import IdentityGraphModalContent from "./ModalIdentityGraph";
+import ProfileModalContent from "./ModalProfile";
 
 export default function Modal(props) {
   const { onDismiss, children, modalType, params } = props;
@@ -61,6 +62,8 @@ export default function Modal(props) {
             onClose={onDismiss}
           />
         );
+      case ModalType.profile:
+        return <ProfileModalContent identity={params} onClose={onDismiss} />;
       default:
         return children;
     }
