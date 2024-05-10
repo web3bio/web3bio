@@ -104,12 +104,16 @@ export default function FarcasterProfileCard(props) {
       </div>
       <div className="modal-profile-body">
         <Avatar
-          width={120}
+          width={150}
           className="avatar"
           alt={handle}
           src={avatar}
           identity={handle}
         />
+        <div className="modal-profile-name">
+          <strong>{data.result.user.displayName} </strong>/
+          <span>{data.result.user.username}</span>
+        </div>
         <div className="modal-profile-follows">
           <div>{data.result.user.followingCount} Following</div> ·{" "}
           <div>{data.result.user.followerCount} Followers</div>

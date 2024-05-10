@@ -1,79 +1,106 @@
 import { gql } from "@apollo/client";
 
 export const GET_PROFILE_LENS = gql`
-  query Profile($handle: Handle) {
-    profile(request: { handle: $handle }) {
+  query Profile($request: ProfileRequest!) {
+    profile(request: $request) {
       id
-      name
-      bio
-      attributes {
-        displayType
-        traitType
-        key
-        value
+      ownedBy {
+        chainId
+        address
       }
-      picture {
-        ... on NftImage {
-          contractAddress
-          tokenId
-          uri
-          verified
-        }
-        ... on MediaSet {
-          original {
-            url
+      metadata {
+        displayName
+        bio
+        rawURI
+        appId
+        coverPicture {
+          optimized {
+            uri
             mimeType
           }
-        }
-        __typename
-      }
-      handle
-      coverPicture {
-        ... on NftImage {
-          contractAddress
-          tokenId
-          uri
-          verified
-        }
-        ... on MediaSet {
-          original {
-            url
+          raw {
             mimeType
+            uri
           }
         }
-        __typename
+        attributes {
+          value
+          key
+          type
+        }
+        picture {
+          ... on ImageSet {
+            raw {
+              uri
+              mimeType
+            }
+            optimized {
+              mimeType
+              uri
+            }
+          }
+        }
       }
-      ownedBy
-      # stats {
-      #   totalFollowers
-      #   totalFollowing
-      #   totalPosts
-      #   totalComments
-      #   totalMirrors
-      #   totalPublications
-      #   totalCollects
-      # }
-      # followModule {
-      #   ... on FeeFollowModuleSettings {
-      #     type
-      #     amount {
-      #       asset {
-      #         symbol
-      #         name
-      #         decimals
-      #         address
-      #       }
-      #       value
-      #     }
-      #     recipient
-      #   }
-      #   ... on ProfileFollowModuleSettings {
-      #     type
-      #   }
-      #   ... on RevertFollowModuleSettings {
-      #     type
-      #   }
-      # }
+      onchainIdentity {
+        proofOfHumanity
+        sybilDotOrg {
+          source {
+            twitter {
+              handle
+            }
+          }
+          verified
+        }
+        worldcoin {
+          isHuman
+        }
+      }
+      stats {
+        followers
+        following
+        comments
+        posts
+        mirrors
+        quotes
+        publications
+      }
+      interests
+      handle {
+        id
+        fullHandle
+        namespace
+        localName
+        suggestedFormatted {
+          full
+          localName
+        }
+        linkedTo {
+          nftTokenId
+          contract {
+            address
+            chainId
+          }
+        }
+        ownedBy
+      }
     }
   }
 `;
+
+export enum ProfileInterestsPrefix {
+  ArtEntertainment = "ART_ENTERTAINMENT",
+  Business = "BUSINESS",
+  Technology = "TECHNOLOGY",
+  Career = "CAREER",
+  Education = "EDUCATION",
+  FamilyPartners = "FAMILY_PARENTING",
+  HealthFitness = "HEALTH_FITNESS",
+  FoodDrink = "FOOD_DRINK",
+  HobbiesInterests = "HOBBIES_INTERESTS",
+  News = "NEWS",
+  HomeGarden = "HOME_GARDEN",
+  LawGovernmentPolitics = "LAW_GOVERNMENT_POLITICS",
+  Crypto = "CRYPTO",
+  Lens = "LENS",
+  NSFW = "NSFW",
+}
