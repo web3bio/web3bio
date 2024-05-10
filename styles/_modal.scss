@@ -429,6 +429,13 @@
         width: 70%;
         gap: .25rem;
 
+        .channels-number {
+          margin-top: 1rem;
+          font-size: .55rem;
+          font-weight: 500;
+          color: rgba($dark-color, .5)
+        }
+
         .channel-item {
           width: 100%;
           display: flex;
