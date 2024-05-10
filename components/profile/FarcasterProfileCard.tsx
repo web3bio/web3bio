@@ -21,7 +21,7 @@ export default function FarcasterProfileCard(props) {
     trigger,
     isMutating,
   } = useSWRMutation(
-    `v2/user-following-channels?fid=${fid}&limit=${50}`,
+    `v1/user-following-channels?fid=${fid}&limit=${20}`,
     waprcastFetcher,
     {}
   );
@@ -37,7 +37,7 @@ export default function FarcasterProfileCard(props) {
   const hostingChannels = useMemo(() => {
     if (channelsData?.result?.channels && fid) {
       return channelsData.result.channels.reduce((pre, cur) => {
-        if (cur.lead.fid === fid) {
+        if (cur.hostFids.includes(fid)) {
           pre.push(cur);
         }
         return pre;
@@ -92,10 +92,10 @@ export default function FarcasterProfileCard(props) {
                       alt={x.name}
                       width={36}
                       height={36}
-                      src={x.fastImageUrl}
+                      src={x.imageUrl}
                     />
                     <div className="channel-item-body">
-                      {x.name}/ {x.key} <br />
+                      <strong>{x.name}</strong>/ {x.id} <br />
                       <span>{x.followerCount} followers </span>
                     </div>
                   </div>

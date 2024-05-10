@@ -365,7 +365,7 @@
       width: 100%;
       height: 100%;
       background: #fff;
-      max-width: $size-sm;
+      max-width: $size-xs;
       margin: auto;
       padding: 1rem 2rem;
       box-sizing: border-box;
@@ -401,7 +401,7 @@
       }
 
       .modal-profile-bio {
-        width: 70%;
+        width: 80%;
         font-size: .8rem;
         font-weight: 400;
         text-align: center;
@@ -426,7 +426,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 60%;
+        width: 70%;
         gap: .25rem;
 
         .channel-item {
@@ -437,6 +437,7 @@
           align-items: center;
 
           .channel-item-body {
+            white-space: nowrap;
             font-size: .75rem;
             font-weight: 500;
 
