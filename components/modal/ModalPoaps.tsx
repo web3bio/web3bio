@@ -72,11 +72,11 @@ export default function PoapsModalContent({ onClose, asset }) {
                   <div className="nft-header-name h4">
                     {asset.asset.event.name}
                   </div>
-                  <div className="nft-header-description mt-4 mb-4">
+                  <div className="nft-header-description mt-2 mb-2">
                     {asset.asset.event.description}
                   </div>
 
-                  <div className="btn-group mt-4">
+                  <div className="btn-group mt-2 mb-4">
                     {asset.asset.tokenId && (
                       <Link
                         href={`https://collectors.poap.xyz/token/${asset.asset.tokenId}`}

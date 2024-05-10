@@ -3,7 +3,7 @@ import Link from "next/link";
 import SVG from "react-inlinesvg";
 import Clipboard from "react-clipboard.js";
 import { ProfileInterface } from "../utils/profile";
-import { formatText } from "../utils/utils";
+import { formatText, colorMod } from "../utils/utils";
 import { Avatar } from "../shared/Avatar";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 
@@ -37,14 +37,36 @@ export default function ProfileCard({
       <div className="profile-card-header">
         <div className="profile-card-avatar">
           {(data?.avatar || data?.identity) && (
-            <Avatar
-              src={data?.avatar!}
-              identity={data?.identity}
-              className="avatar"
-              alt={`${data?.displayName} Profile Photo`}
-              height={40}
-              width={40}
-            />
+            <>
+              <Avatar
+                src={data?.avatar!}
+                identity={data?.identity}
+                className="avatar"
+                alt={`${data?.displayName} Profile Photo`}
+                height={40}
+                width={40}
+              />
+              <div
+                className={`profile-card-platform ${data?.platform}`}
+                style={{
+                  ["--badge-primary-color" as string]:
+                    SocialPlatformMapping(data?.platform).color || "#000",
+                  ["--badge-bg-color" as string]:
+                    colorMod(
+                      SocialPlatformMapping(data?.platform)?.color,
+                      90
+                    ),
+                }}
+                title={SocialPlatformMapping(data?.platform).label}
+              >
+                <SVG
+                  fill={"#fff"}
+                  src={SocialPlatformMapping(data?.platform).icon || ""}
+                  height={16}
+                  width={16}
+                />
+              </div>
+            </>
           )}
         </div>
         <div className="profile-card-aside">
@@ -52,13 +74,6 @@ export default function ProfileCard({
             {data?.displayName || formatText(data?.identity)}
           </div>
           <div className="profile-card-meta">
-            <SVG
-              fill={SocialPlatformMapping(data?.platform).color}
-              height={16}
-              width={16}
-              src={SocialPlatformMapping(data?.platform).icon || ""}
-              title={SocialPlatformMapping(data?.platform).label}
-            />
             {data?.identity === data?.address ||
             data?.identity === data?.displayName
               ? ""
@@ -93,6 +108,12 @@ export default function ProfileCard({
             className="btn btn-sm btn-block"
           >
             View Profile
+            <SVG
+              src={"../icons/icon-open.svg"}
+              width={18}
+              height={18}
+              className="action"
+            />
           </Link>
         </div>
       )}

@@ -74,7 +74,7 @@ const resolveDuplicatedActions = (
   return duplicatedObjects;
 };
 const RenderFeedContent = (props) => {
-  const { actions, tag, openModal, network, id, platform } = props;
+  const { actions, tag, openModal, network, id, platform, owner } = props;
   switch (tag) {
     case "social":
       return (
@@ -99,6 +99,7 @@ const RenderFeedContent = (props) => {
           actions={resolveDuplicatedActions(actions, id, [
             ActivityType.transfer,
           ])}
+          owner={owner}
         />
       );
     case "collectible":
@@ -111,6 +112,7 @@ const RenderFeedContent = (props) => {
             ActivityType.trade,
             ActivityType.transfer,
           ])}
+          owner={owner}
         />
       );
     default:
@@ -165,7 +167,7 @@ const RenderFeedItem = (props) => {
             {(
               <RenderProfileBadge
                 platform={
-                  feed.platform &&
+                  feed?.platform &&
                   shouldPlatformFetch(feed?.platform.toLowerCase())
                     ? feed.platform
                     : PlatformType.ethereum
@@ -183,9 +185,9 @@ const RenderFeedItem = (props) => {
               target="_blank"
               className="feed-timestamp"
             >
-              <span className="hide-sm">
+              <span>
                 {formatDistanceToNow(new Date(feed.timestamp * 1000), {
-                  addSuffix: true,
+                  addSuffix: false,
                 })}
               </span>
             </Link>
@@ -204,6 +206,7 @@ const RenderFeedItem = (props) => {
           id={feed.id}
           actions={actions}
           tag={feed.tag}
+          owner={feed.owner}
         />
       </div>
     </>

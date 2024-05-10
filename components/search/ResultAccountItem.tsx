@@ -110,7 +110,7 @@ const RenderAccountItem = (props) => {
                     width={36}
                     height={36}
                     alt="avatar"
-                    title="avatar"
+                    title="Profile Picture"
                     src={profile?.avatar}
                     className="avatar-img"
                   />
@@ -170,6 +170,7 @@ const RenderAccountItem = (props) => {
                 href={`/${
                   profile?.identity || identity.displayName || resolvedIdentity
                 }`}
+                classes=""
                 platform={identity.platform}
                 text={"Profile"}
               />

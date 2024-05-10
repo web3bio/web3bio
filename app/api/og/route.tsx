@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
     const paramAvatar = searchParams.get("avatar");
     const avatarImg =
       !paramAvatar || paramAvatar === "null"
-        ? process.env.NEXT_PUBLIC_PROFILE_END_POINT + `/avatar/${path}`
+        ? process.env.NEXT_PUBLIC_PROFILE_END_POINT + `/avatar/svg?handle=${path}`
         : paramAvatar;
 
     const isShowDefault = ![address, path, displayName].some((x) => !!x);
@@ -61,7 +61,7 @@ export async function GET(request: NextRequest) {
             style={{
               display: "flex",
               backgroundColor: "#fff",
-              backgroundImage: `url(${avatarImg}), url(${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/avatar/${path})`,
+              backgroundImage: `url(${avatarImg}), url(${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/avatar/svg?handle=${path})`,
               backgroundPosition: "0 top",
               backgroundRepeat: "no-repeat",
               backgroundSize: "100% 200px",
