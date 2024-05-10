@@ -330,7 +330,18 @@ export default function ProfileMain(props) {
               if (item.handle) {
                 return (
                   <div key={idx} className="profile-widget-item">
-                    <RenderWidgetItem openModal={openModal}  displayName={pageTitle} item={item} />
+                    <RenderWidgetItem
+                      openModal={(v) => {
+                        openModal(ModalType.profile, {
+                          ...v,
+                          avatar: relations?.find(
+                            (x) => x.platform === v.platform
+                          )?.avatar,
+                        });
+                      }}
+                      displayName={pageTitle}
+                      item={item}
+                    />
                   </div>
                 );
               }

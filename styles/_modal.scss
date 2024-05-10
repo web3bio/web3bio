@@ -385,6 +385,7 @@
         font-size: 1rem;
         font-weight: 500;
         color: rgba($dark-color, .5);
+        margin-bottom: 1.5rem;
       }
 
       .modal-profile-body {
@@ -392,7 +393,58 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 1rem;
+        gap: .5rem;
+
+        .divider {
+          width: 100%;
+        }
+      }
+
+      .modal-profile-bio {
+        width: 70%;
+        font-size: .8rem;
+        font-weight: 400;
+        text-align: center;
+      }
+
+      .modal-profile-follows {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        font-size: .85rem;
+        font-weight: 500;
+        color: rgba($dark-color, .7);
+        justify-content: center;
+      }
+
+      .modal-profile-location {
+        color: rgba($dark-color, .5)
+      }
+
+      .modal-profile-channels {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 60%;
+        gap: .25rem;
+
+        .channel-item {
+          width: 100%;
+          display: flex;
+          gap: 1rem;
+          justify-content: flex-start;
+          align-items: center;
+
+          .channel-item-body {
+            font-size: .75rem;
+            font-weight: 500;
+
+            span {
+              color: rgba($dark-color, .5)
+            }
+          }
+        }
       }
     }
 

@@ -83,9 +83,7 @@ const WidgetItem = (props) => {
         if (item.hasDetail) {
           e.preventDefault();
           e.stopPropagation();
-          openModal(ModalType.profile, {
-            ...item,
-          });
+          openModal(item);
         }
       }}
       className={`profile-widget profile-widget-link ${item.platform}`}
