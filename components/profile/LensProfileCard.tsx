@@ -3,12 +3,10 @@ import { Loading } from "../shared/Loading";
 import Link from "next/link";
 import { Avatar } from "../shared/Avatar";
 import { useQuery } from "@apollo/client";
-import { GET_PROFILE_LENS } from "../utils/lens";
-import { useEffect, useState } from "react";
+import { GET_PROFILE_LENS, LensInterestsMapping } from "../utils/lens";
 
 export default function LensProfileCard(props) {
   const { handle, link, avatar } = props;
-  const [heyScore, setHeyScore] = useState(null);
   const { data, loading, error } = useQuery(GET_PROFILE_LENS, {
     variables: {
       request: { forHandle: "lens/" + handle.replace(".lens", "") },
@@ -17,28 +15,13 @@ export default function LensProfileCard(props) {
       clientName: "lens",
     },
   });
-  useEffect(() => {
-    const getHeyScore = async () => {
-      // const res = await fetch(
-      //   "https://api.hey.xyz/score/get?id=" + data.profile.id,
-      // )
-      //   .then((res) => res.json())
-      //   .catch((e) => null);
-      // if (res?.success) {
-      //   setHeyScore(res.score);
-      // }
-    };
-    // if (data?.profile?.id) {
-    //   getHeyScore();
-    // }
-  }, [data]);
 
   return loading || !data?.profile ? (
     <Loading />
   ) : (
     <>
       <div className="modal-profile-header">
-        <div className="modal-profile-id">#{data.profile.id}</div>
+        <div className="modal-profile-id">#{parseInt(data.profile.id, 16)}</div>
         <Link href={link} target="_blank" className="btn btn-action">
           <SVG src={"icons/icon-open.svg"} width={20} height={20} />
         </Link>
@@ -67,6 +50,16 @@ export default function LensProfileCard(props) {
         </div>
         <div className="divider"></div>
         <div className="modal-profile-bio">{data.profile.metadata.bio}</div>
+        <div className="modal-profile-interests">
+          {data.profile.interests.map((x) => {
+            const interestItem = LensInterestsMapping(x);
+            return (
+              <div className={`interest-item ${x.split("__")[0]}`} key={x}>
+                {interestItem?.label || x}
+              </div>
+            );
+          })}
+        </div>
         <div>Posts: {data.profile.stats.posts}</div>
         <div>Mirrors: {data.profile.stats.mirrors}</div>
         <div>Publications: {data.profile.stats.publications}</div>
@@ -77,26 +70,12 @@ export default function LensProfileCard(props) {
         </div>
         <div>
           SybilDotOrg:{" "}
-          {data.profile.onchainIdentity.sybilDotOrg.source?.twitter?.handle}
+          {data.profile.onchainIdentity.sybilDotOrg.source?.twitter?.handle ||
+            "No Sybildotorg info"}
         </div>
         <div>
           World Coin is Humain:{" "}
           {data.profile.onchainIdentity.worldcoin.isHuman.toString()}
-        </div>
-        <div>
-          Hey Score:
-          {heyScore}
-        </div>
-        <div>
-          Interests:{" "}
-          {data.profile.interests.map((x) => {
-            return (
-              <>
-                <strong key={x}>{x}</strong>
-                <br />
-              </>
-            );
-          })}
         </div>
       </div>
     </>

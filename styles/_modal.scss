@@ -411,6 +411,32 @@
         text-align: center;
       }
 
+      .modal-profile-interests {
+        width: 90%;
+        display: flex;
+        gap: .5rem;
+        align-items: center;
+        flex-wrap: wrap;
+
+        .interest-item {
+          align-items: center;
+          background: linear-gradient(90.47deg, #efefef 2%, #fcfcfc 32%, #cdcdcd 98%);
+          border-radius: 1rem;
+          box-shadow: inset 0 0 0 .1rem rgba($light-color, .2), inset 0 0 .25rem rgba($dark-color, .15), 0 0 .4rem rgba($dark-color, .1);
+          display: flex;
+          padding: 0.05rem .65rem;
+          font-size: .7rem;
+          font-weight: 500;
+          text-shadow: rgba($dark-color, .95);
+
+          &.ART_ENTERTAINMENT {
+            background: linear-gradient(124.2deg, #d6fdff 8%, #bad1ff 34%, #7cd4f0 74%, #b4fffa 95%);
+          }
+
+
+        }
+      }
+
       .modal-profile-follows {
         width: 100%;
         display: flex;
@@ -423,6 +449,9 @@
       }
 
       .modal-profile-location {
+        span{
+          color: inherit;
+        }
         color: rgba($dark-color, .5)
       }
 
