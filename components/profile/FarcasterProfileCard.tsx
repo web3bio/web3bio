@@ -115,8 +115,8 @@ export default function FarcasterProfileCard(props) {
           <span>{data.result.user.username}</span>
         </div>
         <div className="modal-profile-follows">
-          <div>{data.result.user.followingCount} Following</div> ·{" "}
-          <div>{data.result.user.followerCount} Followers</div>
+          <div>{data.result.user.followingCount.toLocaleString()} Following</div> ·{" "}
+          <div>{data.result.user.followerCount.toLocaleString()} Followers</div>
         </div>
         <div className="modal-profile-location">
           {data.result.user.profile.location.description}
@@ -136,7 +136,7 @@ export default function FarcasterProfileCard(props) {
                 <Image alt={x.name} width={36} height={36} src={x.imageUrl} />
                 <div className="channel-item-body">
                   <strong>{x.name}</strong>/ {x.id} <br />
-                  <span>{x.followerCount} followers </span>
+                  <span>{x.followerCount.toLocaleString()} followers </span>
                 </div>
               </div>
             );

@@ -39,8 +39,8 @@ export default function LensProfileCard(props) {
           <span>{data.profile.handle.suggestedFormatted.localName}</span>
         </div>
         <div className="modal-profile-follows">
-          <div>{data.profile.stats.following} Following</div> ·{" "}
-          <div>{data.profile.stats.followers} Followers</div>
+          <div>{data.profile.stats.following.toLocaleString()} Following</div> ·{" "}
+          <div>{data.profile.stats.followers.toLocaleString()} Followers</div>
         </div>
         <div className="modal-profile-location">
           {
