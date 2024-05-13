@@ -132,7 +132,6 @@ export default function WalletProfileMain(props) {
                   openModal(ModalType.share, {
                     profile: curProfile,
                     path: `${curProfile.identity}`,
-                    avatar: avatarProfile.avatar,
                   })
                 }
               >

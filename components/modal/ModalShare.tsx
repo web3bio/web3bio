@@ -40,7 +40,7 @@ const shareMap = [
 ];
 
 export default function ShareModalContent(props) {
-  const { profile, path, onClose, avatar } = props;
+  const { profile, path, onClose } = props;
   const url = `${
     process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio"
   }/${path}`;
@@ -57,7 +57,6 @@ export default function ShareModalContent(props) {
   if (profile) params.append("address", profile.address);
   params.append("displayName", profile.displayName);
   if (profile.description) params.append("description", profile.description);
-  if (avatar) params.append("avatar", avatar);
   const relativeOGURL = params.toString()
     ? `/api/og?${params.toString()}`
     : "/api/og";
