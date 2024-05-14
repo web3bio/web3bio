@@ -1617,12 +1617,11 @@
 
   .profile-card-avatar {
     height: 2rem;
-    margin-right: .5rem;
+    margin-right: .25rem;
     position: relative;
 
-    .avatar,
-    svg {
-      border-radius: 50%;
+    .avatar {
+      border-radius: 1rem;
       box-shadow: 0 .1rem .6rem rgba($dark-color, .1);
       height: 2rem;
       width: 2rem;
@@ -1633,18 +1632,18 @@
       background-color: var(--badge-bg-color, rgba($dark-color, .95));
       border: .05rem solid transparent;
       border-color: var(--badge-bg-color, transparent);
-      border-radius: 50%;
-      bottom: -.4rem;
+      border-radius: 1rem;
+      bottom: -.25rem;
       box-shadow: 0 .05rem .1rem var(--badge-bg-color, rgba($dark-color, .05));
       display: flex;
       flex: 0 0;
-      height: 1.2rem;
-      padding: .2rem;
+      height: 1rem;
+      padding: .1rem;
       position: absolute;
-      right: -.4rem;
+      right: -.25rem;
       text-decoration: none;
       transition: all .2s ease;
-      width: 1.2rem;
+      width: 1rem;
     }
   }
 

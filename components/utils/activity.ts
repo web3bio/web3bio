@@ -282,6 +282,7 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     label: "Transfer",
     action: {
       default: "Transferred",
+      receive: "Received",
     },
     prep: "to",
   },

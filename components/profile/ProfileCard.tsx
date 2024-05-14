@@ -62,6 +62,8 @@ export default function ProfileCard({
                 <SVG
                   fill={"#fff"}
                   src={SocialPlatformMapping(data?.platform).icon || ""}
+                  height={16}
+                  width={16}
                 />
               </div>
             </>

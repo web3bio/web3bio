@@ -29,7 +29,6 @@ const RenderSocialCard = (props) => {
                       : metadata.action || "default"
                   ]
                 }
-                &nbsp;
                 {(action.duplicatedObjects?.length &&
                   metadata.action === "renew" &&
                   action.duplicatedObjects.map((x) => (
@@ -49,7 +48,7 @@ const RenderSocialCard = (props) => {
                   />
                 )}
                 {platform && (
-                  <span className="feed-platform">&nbsp;on {platform}</span>
+                  <>{" "}on {platform}</>
                 )}
               </div>
               {action.duplicatedObjects?.map((x) => {
@@ -92,7 +91,7 @@ const RenderSocialCard = (props) => {
                     ]
                   }
                   {platform && (
-                    <span className="feed-platform">&nbsp;on {platform}</span>
+                    <>{" "}on {platform}</>
                   )}
                 </div>
                 {metadata.body && (
@@ -191,7 +190,7 @@ const RenderSocialCard = (props) => {
                       ]
                     }
                     {platform && (
-                      <span className="feed-platform">&nbsp;on {platform}</span>
+                      <>{" "}on {platform}</>
                     )}
                   </div>
                 )}
@@ -287,7 +286,7 @@ const RenderSocialCard = (props) => {
               <div className="feed-content">
                 {ActivityTypeMapping(action.type).action["post"]}
                 {platform && (
-                  <span className="feed-platform">&nbsp;on {platform}</span>
+                  <>{" "}on {platform}</>
                 )}
               </div>
               <div className="feed-content">
@@ -351,7 +350,7 @@ const RenderSocialCard = (props) => {
                   ]
                 }
                 {platform && (
-                  <span className="feed-platform">&nbsp;on {platform}</span>
+                  <>{" "}on {platform}</>
                 )}
               </div>
               {metadata.body && (
