@@ -122,7 +122,7 @@ export default function ShareModalContent(props) {
             onSuccess={onCopySuccess}
           >
             <SVG
-              src="../icons/icon-copy.svg"
+              src={isCopied ? "../icons/icon-check.svg" : "../icons/icon-copy.svg"}
               width={20}
               height={20}
               className="action"
@@ -130,8 +130,9 @@ export default function ShareModalContent(props) {
             Copy
           </Clipboard>
         </div>
+        <div className="divider mt-4 mb-4"></div>
         <div
-          className="btn profile-download-vcard"
+          className="btn btn-block"
           onClick={(e) => {
             e.preventDefault();
             downloadVCard(profile);

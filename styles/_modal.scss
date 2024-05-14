@@ -260,11 +260,6 @@
         .tooltip-copy {
           position: absolute;
         }
-
-        .profile-download-vcard {
-          margin-top: 1rem;
-          width: 100%;
-        }
       }
 
       .btn-group {
@@ -289,18 +284,11 @@
         cursor: pointer;
         transition: all .1s ease;
 
-        &:hover {
-          rotate: 5deg;
-          transform: scale(1.05);
-        }
-
         @media screen and (max-width: $size-md) {
-          min-height: 8rem;
+          min-height: 7rem;
         }
 
         .img-responsive {
-
-
           border-radius: .5rem;
           height: 12rem;
           margin: 0 auto;
@@ -398,7 +386,6 @@
       }
 
       .preview-image {
-
         .img-responsive,
         .video-responsive {
           max-height: 90vh;
