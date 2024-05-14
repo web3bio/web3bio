@@ -2,6 +2,7 @@ import { useState } from "react";
 import Image from "next/image";
 import SVG from "react-inlinesvg";
 import Clipboard from "react-clipboard.js";
+import { downloadVCard } from "../utils/vcard";
 
 const shareMap = [
   {
@@ -70,7 +71,13 @@ export default function ShareModalContent(props) {
         </div>
       </div>
       <div className="profile-share-body">
-        <div className="profile-share-card mb-4">
+        <div
+          className="profile-share-card mb-4"
+          onClick={(e) => {
+            e.preventDefault();
+            downloadVCard(profile);
+          }}
+        >
           <Image
             className="img-responsive"
             src={`${relativeOGURL}`}
@@ -122,6 +129,21 @@ export default function ShareModalContent(props) {
             />
             Copy
           </Clipboard>
+        </div>
+        <div
+          className="btn profile-download-vcard"
+          onClick={(e) => {
+            e.preventDefault();
+            downloadVCard(profile);
+          }}
+        >
+          <SVG
+            src="../icons/icon-open.svg"
+            width={20}
+            height={20}
+            className="action mr-1"
+          />
+          Download Profile vCard
         </div>
       </div>
 
