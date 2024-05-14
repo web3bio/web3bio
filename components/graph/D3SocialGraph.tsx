@@ -10,6 +10,12 @@ import _ from "lodash";
 import SVG from "react-inlinesvg";
 import { Empty } from "../shared/Empty";
 import { calcTranslation, resolveSocialGraphData } from "./utils";
+import SocialGraphList from "./SocialGraphList";
+
+enum SocialGraphMode {
+  graph = "graph",
+  list = "list",
+}
 
 let CurrentId = null;
 
@@ -67,7 +73,12 @@ const updateNodes = (nodeContainer) => {
 export default function D3SocialGraph(props) {
   const { data, onClose, title, onExtend, containerRef, onExpand, loading } =
     props;
+  const [mode, setMode] = useState(SocialGraphMode.graph);
   const [currentNode, setCurrentNode] = useState<any>(null);
+  const [listData, setListData] = useState({
+    nodes: [],
+    edges: [],
+  });
   const [hideTooltip, setHideToolTip] = useState(true);
   const [transform, setTransform] = useState({
     offsetX: 0,
@@ -368,16 +379,26 @@ export default function D3SocialGraph(props) {
 
     if (!chart && chartContainer) {
       const res = resolveSocialGraphData(data);
-      chart = generateGraph({ nodes: res.nodes, links: res.edges });
+      if (mode === SocialGraphMode.graph) {
+        chart = generateGraph({ nodes: res.nodes, links: res.edges });
+      } else {
+        setListData(res);
+      }
     }
     return () => {
       const svg = d3.select(".svg-canvas");
       svg.selectAll("*").remove();
     };
-  }, [data]);
+  }, [data, mode]);
   return (
     <>
-      {(data && <svg className="svg-canvas" />) || (
+      {data ? (
+        mode === SocialGraphMode.graph ? (
+          <svg className="svg-canvas" />
+        ) : (
+          <SocialGraphList data={listData} />
+        )
+      ) : (
         <Empty title={"No Social Graph"} />
       )}
 
@@ -388,6 +409,24 @@ export default function D3SocialGraph(props) {
             Social Graph for
             <strong className="ml-1">{title}</strong>
           </span>
+          <div className="btn-group">
+            <div
+              onClick={() => setMode(SocialGraphMode.graph)}
+              className={`btn btn-sm ${
+                mode === SocialGraphMode.graph && "active"
+              }`}
+            >
+              Graph
+            </div>
+            <div
+              onClick={() => setMode(SocialGraphMode.list)}
+              className={`btn btn-sm ${
+                mode === SocialGraphMode.list && "active"
+              }`}
+            >
+              List
+            </div>
+          </div>
         </div>
         <div className="graph-header-action">
           {data && (

@@ -10,6 +10,7 @@ import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 interface ProfileCardProps {
   data: ProfileInterface;
   simple?: boolean;
+  showDes?: boolean;
   classNames?: {
     [index: string]: string;
   };
@@ -18,6 +19,7 @@ interface ProfileCardProps {
 export default function ProfileCard({
   data,
   simple,
+  showDes,
   classNames,
 }: ProfileCardProps) {
   const relatedPath = `${data?.identity}${
@@ -51,11 +53,10 @@ export default function ProfileCard({
                 style={{
                   ["--badge-primary-color" as string]:
                     SocialPlatformMapping(data?.platform).color || "#000",
-                  ["--badge-bg-color" as string]:
-                    colorMod(
-                      SocialPlatformMapping(data?.platform)?.color,
-                      90
-                    ),
+                  ["--badge-bg-color" as string]: colorMod(
+                    SocialPlatformMapping(data?.platform)?.color,
+                    90
+                  ),
                 }}
                 title={SocialPlatformMapping(data?.platform).label}
               >
@@ -87,14 +88,18 @@ export default function ProfileCard({
             >
               {formatText(data?.address)}
               <SVG
-                src={isCopied ? "../icons/icon-check.svg" : "../icons/icon-copy.svg"}
+                src={
+                  isCopied
+                    ? "../icons/icon-check.svg"
+                    : "../icons/icon-copy.svg"
+                }
                 width={18}
                 height={18}
                 className="action"
               />
             </Clipboard>
           </div>
-          {!simple && (
+          {(!simple || showDes) && (
             <div className="profile-card-description">{data?.description}</div>
           )}
         </div>
