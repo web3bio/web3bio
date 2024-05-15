@@ -304,6 +304,7 @@
       }
 
       .profile-share-card {
+        position: relative;
         background: $bg-color;
         border-radius: .5rem;
         box-shadow: 0 -.05rem 2rem rgba($dark-color, .15), inset 0 -.05rem .1rem rgba($dark-color, .025);
@@ -313,9 +314,11 @@
         min-height: 10rem;
         position: relative;
         width: 100%;
+        cursor: pointer;
+        transition: all .1s ease;
 
         @media screen and (max-width: $size-md) {
-          min-height: 8rem;
+          min-height: 7rem;
         }
 
         .img-responsive {
