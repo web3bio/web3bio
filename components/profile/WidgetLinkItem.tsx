@@ -57,7 +57,7 @@ const WidgetItem = (props) => {
           </div>
           <div className="platform-handle text-ellipsis">{item.handle}</div>
         </div>
-        <div className="platform-action">
+        <div className={`platform-action${item.hasDetail ? " active" : ""}`}>
           <div className="btn btn-sm btn-action">
             <SVG
               src={

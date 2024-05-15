@@ -16,5 +16,5 @@ export default function ProfileModalContent(props) {
     }
   })();
 
-  return <div className="modal-profile-container">{renderContent}</div>;
+  return renderContent;
 }

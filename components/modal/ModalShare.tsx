@@ -64,11 +64,13 @@ export default function ShareModalContent(props) {
 
   return (
     <>
-      <div className="profile-share-header">
-        <div className="h5">Share this profile</div>
+      <div className="modal-actions">
         <div className="btn btn-close" onClick={onClose}>
           <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
         </div>
+      </div>
+      <div className="profile-share-header">
+        <div className="h5">Share this profile</div>
       </div>
       <div className="profile-share-body">
         <div

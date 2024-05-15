@@ -40,14 +40,14 @@ export default function Modal(props) {
     switch (modalType) {
       case ModalType.common:
         return children;
+      case ModalType.share:
+        return <ShareModalContent {...params} onClose={onDismiss} />;
       case ModalType.nft:
         return <NFTModalContentRender asset={params} onClose={onDismiss} />;
       case ModalType.poaps:
         return <PoapsModalContent asset={params} onClose={onDismiss} />;
       case ModalType.philand:
         return <PhilandModalContent {...params} onClose={onDismiss} />;
-      case ModalType.share:
-        return <ShareModalContent {...params} onClose={onDismiss} />;
       case ModalType.media:
         return <MediaModalContent {...params} onClose={onDismiss} />;
       case ModalType.article:
@@ -69,7 +69,7 @@ export default function Modal(props) {
     }
   };
   return (
-    <div ref={overlay} className="web3bio-mask-cover" onClick={onClick}>
+    <div ref={overlay} className="web3bio-modal-cover" onClick={onClick}>
       <div
         ref={wrapper}
         className={
@@ -87,11 +87,6 @@ export default function Modal(props) {
             : "transparent",
         }}
       >
-        {![ModalType.share, ModalType.graph].includes(modalType) && (
-          <div className="btn btn-close modal-close-icon" onClick={onDismiss}>
-            <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
-          </div>
-        )}
         {renderContent(children, params)}
       </div>
     </div>
