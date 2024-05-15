@@ -24,7 +24,7 @@
     .graph-list-container {
       width: 90%;
       margin: auto;
-      padding: 4rem 2.5rem;
+      padding: 4rem 2rem;
       display: flex;
       flex-wrap: wrap;
       align-items: flex-start;
@@ -33,6 +33,7 @@
 
       .graph-list-item-wrapper {
         width: 25%;
+        min-width: 15rem;
         padding: .5rem;
 
         .graph-list-item {
