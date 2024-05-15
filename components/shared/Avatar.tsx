@@ -8,10 +8,11 @@ interface Avatar extends AssetPlayerProps {
 
 export const Avatar = (props: Avatar) => {
   const { src, width, height, alt, identity, itemProp } = props;
-  const [dataURL, setDataURL] = useState(src);
   const AvatarAPIFallback =
     process.env.NEXT_PUBLIC_PROFILE_END_POINT +
     `/avatar/svg?handle=${identity}`;
+  const [dataURL, setDataURL] = useState(src || AvatarAPIFallback);
+
   return (
     dataURL && (
       <Image
