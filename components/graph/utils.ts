@@ -7,10 +7,28 @@ export enum GraphType {
   socialGraph = 1,
 }
 
-export enum EdgeType {
+export enum SocialRelationEnum {
   following = "following",
   follower = "follower",
+  mutual_follow = "mutual_follow",
 }
+
+export const SocialRelationMapping = (key) => {
+  return {
+    following: {
+      key: "following",
+      label: "Following",
+    },
+    follower: {
+      key: "follower",
+      label: "Followed",
+    },
+    mutual_follow: {
+      key: "mutual_follow",
+      label: "Mutual Follow",
+    },
+  }[key];
+};
 
 export const resolveIdentityGraphData = (source) => {
   const nodes = new Array<any>();
@@ -126,15 +144,14 @@ export const resolveSocialGraphData = (data) => {
   const nodes = new Array<any>();
   const edges = new Array<any>();
   data.forEach((x) => {
-    const source =
-      x.edgeType === "following" ? x.originalSource?.id : x.originalTarget?.id;
-    const target =
-      x.edgeType === "following" ? x.originalTarget?.id : x.originalSource?.id;
+    const source = x.originalSource?.id;
+    const target = x.originalTarget?.id;
     if (source && target) {
       edges.push({
         type: x.edgeType,
         source: source,
         target: target,
+        dataSource: x.dataSource,
         label: `${x.dataSource}-${x.edgeType}`,
         id: `${source}*${target}`,
       });
@@ -142,12 +159,14 @@ export const resolveSocialGraphData = (data) => {
         nodes.push({
           ...x.originalSource,
           graphId: x.source,
+          root: !!(x.edgeType === SocialRelationEnum.following),
         });
       }
       if (!nodes.find((i) => i?.id === x.originalTarget.id)) {
         nodes.push({
           ...x.originalTarget,
           graphId: x.target,
+          root: !!(x.edgeType === SocialRelationEnum.follower),
         });
       }
     }
@@ -157,6 +176,7 @@ export const resolveSocialGraphData = (data) => {
   const resolvedEdges = _edges.map((x) => ({
     ...x,
     isSingle: isSingleEdge(_edges, x),
+    label: isSingleEdge(_edges, x) ? x.label : `${x.dataSource}-mutual-follows`,
   }));
   return { nodes: _nodes, edges: resolvedEdges };
 };

@@ -43,6 +43,18 @@
           border-radius: inherit;
           box-shadow: none;
         }
+        .social-relations{
+          display: flex;
+          flex-direction: column;
+          padding: 0 .75rem;
+          .social-relations-item{
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            font-weight: 500;
+            color: rgba($dark-color, .75)
+          }
+        }
 
       }
     }

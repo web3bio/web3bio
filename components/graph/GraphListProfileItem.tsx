@@ -3,9 +3,12 @@ import { fetchProfile } from "../hooks/fetchProfile";
 import { useDispatch } from "react-redux";
 import { updateUniversalBatchedProfile } from "../state/universal/actions";
 import ProfileCard from "../profile/ProfileCard";
+import SVG from "react-inlinesvg";
+import { SocialPlatformMapping } from "../utils/platform";
+import { SocialRelationMapping } from "./utils";
 
 export function GraphListProfileItem(props) {
-  const { key, identity, platform, profile, uuid } = props;
+  const { key, identity, platform, profile, uuid, relations } = props;
   const ref = useRef(null);
   const [fetched, setFetched] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -62,8 +65,20 @@ export function GraphListProfileItem(props) {
         data={profile}
       />
       <div className="divider" />
-      <div className="social-relations" >
-        mutal Follows
+      <div className="social-relations">
+        {relations.map((x, idx) => {
+          return (
+            <div key={idx} className="social-relations-item">
+              <SVG
+                width={20}
+                fill={SocialPlatformMapping(x.key)?.color}
+                src={SocialPlatformMapping(x.key)?.icon || ""}
+              />
+              {SocialPlatformMapping(x.key)?.label}
+              <div>{SocialRelationMapping(x.action).label}</div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
