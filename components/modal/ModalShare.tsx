@@ -2,6 +2,7 @@ import { useState } from "react";
 import Image from "next/image";
 import SVG from "react-inlinesvg";
 import Clipboard from "react-clipboard.js";
+import { downloadVCard } from "../utils/vcard";
 
 const shareMap = [
   {
@@ -40,7 +41,7 @@ const shareMap = [
 ];
 
 export default function ShareModalContent(props) {
-  const { profile, path, onClose, avatar } = props;
+  const { profile, path, onClose } = props;
   const url = `${
     process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio"
   }/${path}`;
@@ -57,7 +58,6 @@ export default function ShareModalContent(props) {
   if (profile) params.append("address", profile.address);
   params.append("displayName", profile.displayName);
   if (profile.description) params.append("description", profile.description);
-  if (avatar) params.append("avatar", avatar);
   const relativeOGURL = params.toString()
     ? `/api/og?${params.toString()}`
     : "/api/og";
@@ -71,7 +71,13 @@ export default function ShareModalContent(props) {
         </div>
       </div>
       <div className="profile-share-body">
-        <div className="profile-share-card mb-4">
+        <div
+          className="profile-share-card mb-4"
+          onClick={(e) => {
+            e.preventDefault();
+            downloadVCard(profile);
+          }}
+        >
           <Image
             className="img-responsive"
             src={`${relativeOGURL}`}
@@ -116,13 +122,29 @@ export default function ShareModalContent(props) {
             onSuccess={onCopySuccess}
           >
             <SVG
-              src="../icons/icon-copy.svg"
+              src={isCopied ? "../icons/icon-check.svg" : "../icons/icon-copy.svg"}
               width={20}
               height={20}
               className="action"
             />
             Copy
           </Clipboard>
+        </div>
+        <div className="divider mt-4 mb-4"></div>
+        <div
+          className="btn btn-block"
+          onClick={(e) => {
+            e.preventDefault();
+            downloadVCard(profile);
+          }}
+        >
+          <SVG
+            src="../icons/icon-open.svg"
+            width={20}
+            height={20}
+            className="action mr-1"
+          />
+          Download Profile vCard
         </div>
       </div>
 
