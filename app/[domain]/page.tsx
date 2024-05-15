@@ -1,5 +1,12 @@
-import { PlatformType, SocialPlatformMapping } from "../../components/utils/platform";
-import { shouldPlatformFetch, handleSearchPlatform, mapLinks } from "../../components/utils/utils";
+import {
+  PlatformType,
+  SocialPlatformMapping,
+} from "../../components/utils/platform";
+import {
+  shouldPlatformFetch,
+  handleSearchPlatform,
+  mapLinks,
+} from "../../components/utils/utils";
 import { notFound, redirect } from "next/navigation";
 import { Metadata } from "next";
 import ProfileMain from "../../components/profile/ProfileMain";
@@ -59,14 +66,12 @@ export async function generateMetadata({
     `Explore ${pageTitle} ${
       SocialPlatformMapping(platform!).label
     } profile, connected identities, social links, NFT collections, Web3 activities, dWebsites, POAPs etc on the Web3.bio profile page.`;
-  const avatarURL = data?.find((x) => !!x.avatar)?.avatar;
 
   const params = new URLSearchParams();
   if (domain) params.append("path", domain);
   if (profile) params.append("address", profile.address);
   params.append("displayName", profile.displayName);
   if (profile.description) params.append("description", profile.description);
-  if (avatarURL) params.append("avatar", avatarURL);
   const relativeOGURL = params.toString()
     ? `/api/og?${params.toString()}`
     : "/api/og";

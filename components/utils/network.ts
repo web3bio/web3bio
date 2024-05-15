@@ -312,10 +312,6 @@ export const NFTFilterMapping = {
     label: "Linea",
     filters: "linea",
   },
-  ["flow"]: {
-    label: "Flow",
-    filters: "flow",
-  },
 };
 
 export const NetworkMapping = (network: Network) => {

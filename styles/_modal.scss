@@ -245,90 +245,90 @@
           flex: 1;
         }
 
-        @media screen and (max-width: $size-sm) {
-          flex-direction: column;
+          @media screen and (max-width: $size-sm) {
+            flex-direction: column;
+          }
         }
-      }
-
-      .profile-share-footer {
-        padding-top: 1rem;
-
-        .input-group-btn {
-          position: relative;
+      
+        .profile-share-footer {
+          padding-top: 1rem;
+      
+          .input-group-btn {
+            position: relative;
+          }
+      
+          .tooltip-copy {
+            position: absolute;
+          }
         }
-
-        .tooltip-copy {
-          position: absolute;
+      
+        .btn-group {
+          flex-wrap: wrap;
+      
+          .btn {
+            gap: .2rem;
+          }
         }
-      }
-
-      .btn-group {
-        flex-wrap: wrap;
-
-        .btn {
-          gap: .2rem;
-        }
-      }
-
-      .profile-share-card {
-        background: $bg-color;
-        border-radius: .5rem;
-        box-shadow: 0 -.05rem 2rem rgba($dark-color, .15), inset 0 -.05rem .1rem rgba($dark-color, .025);
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        min-height: 10rem;
-        position: relative;
-        width: 100%;
-
-        @media screen and (max-width: $size-md) {
-          min-height: 8rem;
-        }
-
-        .img-responsive {
+      
+        .profile-share-card {
+          background: $bg-color;
           border-radius: .5rem;
-          height: 12rem;
-          margin: 0 auto;
-          transition: filter 0.3s ease-out;
-          width: auto;
+          box-shadow: 0 -.05rem 2rem rgba($dark-color, .15), inset 0 -.05rem .1rem rgba($dark-color, .025);
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          min-height: 10rem;
+          position: relative;
+          width: 100%;
+          
+          @media screen and (max-width: $size-md) {
+            min-height: 8rem;
+          }
+          
+          .img-responsive {
+            border-radius: .5rem;
+            height: 12rem;
+            margin: 0 auto;
+            transition: filter 0.3s ease-out;
+            width: auto;
+          }
         }
       }
-    }
-
-    &.modal-search-container {
-      padding-top: 15vh;
-
-      .web3bio-search {
+  
+      &.modal-search-container {
+        padding-top: 15vh;
+  
+        .web3bio-search {
+          margin: auto;
+          max-width: 30rem;
+  
+          .form-input-group {
+            animation: bounce-in .2s cubic-bezier(.5, .25, .5, 1) 1;
+          }
+        }
+      }
+  
+      .modal-article-container {
+        width: 100%;
+        height: 100%;
+        background: #fff;
+        max-width: $size-md;
         margin: auto;
-        max-width: 30rem;
-
-        .form-input-group {
-          animation: bounce-in .2s cubic-bezier(.5, .25, .5, 1) 1;
+        padding: 2rem 4rem;
+        box-sizing: border-box;
+        overflow-y: auto;
+        border-radius: .5rem;
+        position: relative;
+  
+        @media screen and (max-width: $size-sm) {
+          padding: 1rem;
         }
-      }
-    }
-
-    .modal-article-container {
-      width: 100%;
-      height: 100%;
-      background: #fff;
-      max-width: $size-md;
-      margin: auto;
-      padding: 2rem 4rem;
-      box-sizing: border-box;
-      overflow-y: auto;
-      border-radius: .5rem;
-      position: relative;
-
-      @media screen and (max-width: $size-sm) {
-        padding: 1rem;
-      }
-
-
-      .modal-article-title {
-        font-size: 1.2rem;
-        margin-bottom: 1.2rem;
-      }
+        
+  
+        .modal-article-title {
+          font-size: 1.2rem;
+          margin-bottom: 1.2rem;
+        }
 
       .modal-article-action {
         margin-bottom: 1.2rem;
@@ -354,183 +354,54 @@
         font-weight: 700;
       }
 
-      li {
-        p {
-          display: inline;
-        }
-      }
-    }
-
-    .modal-profile-container {
-      width: 100%;
-      height: 100%;
-      background: #fff;
-      max-width: $size-xs;
-      margin: auto;
-      padding: 1rem 2rem;
-      box-sizing: border-box;
-      overflow-y: auto;
-      border-radius: .5rem;
-      position: relative;
-
-      @media screen and (max-width: $size-sm) {
-        padding: 1rem;
-      }
-
-      .modal-profile-header {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 1rem;
-        font-weight: 500;
-        color: rgba($dark-color, .5);
-        margin-bottom: 1.5rem;
-      }
-
-      .modal-profile-body {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: .5rem;
-
-        .divider {
-          width: 100%;
-        }
-      }
-
-      .modal-profile-name {
-        font-size: 1rem;
-      }
-
-      .modal-profile-bio {
-        width: 80%;
-        font-size: .8rem;
-        font-weight: 400;
-        text-align: center;
-      }
-
-      .modal-profile-interests {
-        width: 90%;
-        display: flex;
-        gap: .5rem;
-        align-items: center;
-        flex-wrap: wrap;
-
-        .interest-item {
-          align-items: center;
-          background: linear-gradient(90.47deg, #efefef 2%, #fcfcfc 32%, #cdcdcd 98%);
-          border-radius: 1rem;
-          box-shadow: inset 0 0 0 .1rem rgba($light-color, .2), inset 0 0 .25rem rgba($dark-color, .15), 0 0 .4rem rgba($dark-color, .1);
-          display: flex;
-          padding: 0.05rem .65rem;
-          font-size: .7rem;
-          font-weight: 500;
-          text-shadow: rgba($dark-color, .95);
-
-          &.ART_ENTERTAINMENT {
-            background: linear-gradient(124.2deg, #d6fdff 8%, #bad1ff 34%, #7cd4f0 74%, #b4fffa 95%);
+        li {
+          p {
+            display: inline;
           }
-
-
         }
       }
 
-      .modal-profile-follows {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        gap: .5rem;
-        font-size: .85rem;
-        font-weight: 500;
-        color: rgba($dark-color, .7);
-        justify-content: center;
-      }
-
-      .modal-profile-location {
-        span{
-          color: inherit;
+      .modal-preview-container {
+        position: relative;
+  
+        .btn {
+          width: unset;
+          height: unset;
+          padding: .2rem
         }
-        color: rgba($dark-color, .5)
-      }
-
-      .modal-profile-channels {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 70%;
-        gap: .25rem;
-
-        .channels-number {
-          margin-top: 1rem;
-          font-size: .55rem;
-          font-weight: 500;
-          color: rgba($dark-color, .5)
+  
+        .external-icon {
+          opacity: 0;
+          position: absolute;
+          top: 1rem;
+          right: 1rem;
+          transition: opacity .2s ease;
+  
+          &:hover {
+            opacity: 1;
+          }
         }
-
-        .channel-item {
-          width: 100%;
-          display: flex;
-          gap: 1rem;
-          justify-content: flex-start;
-          align-items: center;
-
-          .channel-item-body {
-            white-space: nowrap;
-            font-size: .75rem;
-            font-weight: 500;
-
-            span {
-              color: rgba($dark-color, .5)
+  
+        .preview-image {
+          .img-responsive,
+          .video-responsive {
+            max-height: 90vh;
+            max-width: 90vw;
+          }
+  
+          &:hover {
+            & .external-icon {
+              opacity: 1;
             }
           }
         }
       }
-    }
-
-    .modal-preview-container {
-      position: relative;
-
-      .btn {
-        width: unset;
-        height: unset;
-        padding: .2rem
-      }
-
-      .external-icon {
-        opacity: 0;
-        position: absolute;
-        top: 1rem;
+  
+      .modal-close-icon {
+        position: fixed;
         right: 1rem;
-        transition: opacity .2s ease;
-
-        &:hover {
-          opacity: 1;
-        }
+        top: 1rem;
+        z-index: 999;
       }
-
-      .preview-image {
-
-        .img-responsive,
-        .video-responsive {
-          max-height: 90vh;
-          max-width: 90vw;
-        }
-
-        &:hover {
-          & .external-icon {
-            opacity: 1;
-          }
-        }
-      }
-    }
-
-    .modal-close-icon {
-      position: fixed;
-      right: 1rem;
-      top: 1rem;
-      z-index: 999;
     }
   }
-}

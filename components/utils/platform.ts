@@ -71,6 +71,8 @@ export enum PlatformType {
   crossbell = "crossbell",
   minds = "minds",
   paragraph = "paragraph",
+  genome = "genome",
+  gnosis = "gnosis",
 }
 
 export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
@@ -545,6 +547,22 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     icon: "icons/icon-paragraph.svg",
     label: "Paragraph",
     urlPrefix: "https://paragraph.xyz/",
+    system: PlatformSystem.web3,
+  },
+  [PlatformType.genome]: {
+    key: PlatformType.genome,
+    color: "#6DD85D",
+    icon: "icons/icon-gnosis.svg",
+    label: "Genome",
+    urlPrefix: "https://genomedomains.com/name/",
+    system: PlatformSystem.web3,
+  },
+  [PlatformType.gnosis]: {
+    key: PlatformType.gnosis,
+    color: "#1c352a",
+    icon: "icons/icon-gnosis.svg",
+    label: "Gnosis",
+    urlPrefix: "https://gnosisscan.io/address/",
     system: PlatformSystem.web3,
   },
 };
