@@ -21,174 +21,8 @@
   }
 }
 
-// Modal Graph
-.modal-graph-container {
-  background: #fff;
-  border-radius: .4rem;
-  box-shadow: 0 .4rem 2rem rgba($dark-color, .5);
-  height: calc(100vh - 3rem);
-  overflow: hidden;
-  overscroll-behavior: contain;
-  position: relative;
-  width: calc(100vw - 3rem);
-
-  .graph-header {
-    align-items: center;
-    display: flex;
-    font-size: .7rem;
-    justify-content: space-between;
-    left: .5rem;
-    position: absolute;
-    right: .5rem;
-    top: .5rem;
-    z-index: 999;
-
-    .graph-title {
-      align-items: center;
-      border-radius: .4rem;
-      display: flex;
-      line-height: 1rem;
-      padding: .4rem;
-      pointer-events: none;
-      user-select: none;
-      word-break: break-all;
-    }
-
-    .graph-header-action {
-      display: flex;
-      align-items: center;
-      gap: .5rem;
-    }
-  }
-
-  .web3bio-tooltip {
-    position: absolute;
-    background: #fcfcfc;
-    z-index: 999;
-    list-style-type: none;
-    border-radius: 8px;
-    font-size: .6rem;
-    max-width: 400px;
-    min-width: 200px;
-    text-align: left;
-    user-select: none;
-    padding: 8px 12px;
-    pointer-events: none;
-    border: 1px solid rgba($dark-color, .25);
-    box-shadow: 0 0.1rem 1.2rem hsla(0, 0%, 7%, .3);
-    border: 0;
-
-    ul {
-      padding-left: 0;
-      margin: 0;
-
-      li {
-        list-style-type: none;
-        list-style: none;
-        overflow-wrap: break-word;
-        word-break: break-all;
-        margin: 0;
-
-        span {
-          font-size: .5rem;
-
-        }
-      }
-    }
-  }
-
-  .svg-canvas {
-    .edge-selected {
-      stroke-width: 1.5;
-    }
-
-    .node-selected {
-      stroke-width: 3;
-      stroke-opacity: 1;
-    }
-
-    .edge-path {
-      stroke: #cecece;
-      stroke-opacity: .65;
-      fill: transparent;
-      pointer-events: none;
-
-    }
-
-    .edge-label {
-      user-select: none;
-      fill: #999;
-      font-size: 10px;
-      font-weight: 400;
-      pointer-events: none;
-    }
-
-    .edge-label-selected {
-      fill: $dark-color;
-    }
-
-    .node {
-      cursor: pointer;
-    }
-
-    .identity-badge {
-      cursor: pointer;
-    }
-
-    .displayName {
-      fill: $dark-color;
-      user-select: none;
-      font-size: 12px;
-      font-weight: 500;
-    }
-
-    .identity {
-      fill: $gray-color;
-      user-select: none;
-      font-size: 11px;
-      font-weight: 400;
-    }
-
-    .identity-icon {
-      cursor: pointer;
-      width: 20px;
-      height: 20px
-    }
-
-    .badge-icon {
-      fill: none;
-      pointer-events: none;
-      cursor: pointer;
-      width: 18px;
-      height: 20px;
-    }
-
-  }
-
-  @media screen and (max-width: $size-sm) {
-    @supports (height: 100dvh) {
-      height: calc(100dvh - .5rem);
-      width: calc(100dvw - .5rem);
-    }
-  }
-
-  .loading-mask {
-    border-radius: .4rem;
-    position: absolute;
-    height: 94%;
-    max-height: 40rem;
-    max-width: 64rem;
-    width: 94%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 99;
-    background: #fff;
-  }
-}
-
 .web3bio-modal-container {
-  position: relative;
+  background: transparent;
   border-radius: 1rem;
   height: 100%;
   max-height: 100vh;
@@ -196,6 +30,7 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: 2rem;
+  position: relative;
   scroll-behavior: smooth;
   width: 100%;
   z-index: 101;
@@ -214,7 +49,177 @@
     top: 0;
   }
 
+  // Modal Graph
+  &.modal-graph-container {
+    background: #fff;
+    border-radius: .4rem;
+    box-shadow: 0 .4rem 2rem rgba($dark-color, .5);
+    height: calc(100vh - 3rem);
+    max-width: none;
+    overflow: hidden;
+    overscroll-behavior: contain;
+    padding: 0;
+    position: relative;
+    width: calc(100vw - 3rem);
+
+    .graph-header {
+      align-items: center;
+      display: flex;
+      font-size: .7rem;
+      justify-content: space-between;
+      left: .5rem;
+      position: absolute;
+      right: .5rem;
+      top: .5rem;
+      z-index: 999;
+
+      .graph-title {
+        align-items: center;
+        border-radius: .4rem;
+        display: flex;
+        line-height: 1rem;
+        padding: .4rem;
+        pointer-events: none;
+        user-select: none;
+        word-break: break-all;
+      }
+
+      .graph-header-action {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+      }
+    }
+
+    .web3bio-tooltip {
+      position: absolute;
+      background: #fcfcfc;
+      z-index: 999;
+      list-style-type: none;
+      border-radius: 8px;
+      font-size: .6rem;
+      max-width: 400px;
+      min-width: 200px;
+      text-align: left;
+      user-select: none;
+      padding: 8px 12px;
+      pointer-events: none;
+      border: 1px solid rgba($dark-color, .25);
+      box-shadow: 0 0.1rem 1.2rem hsla(0, 0%, 7%, .3);
+      border: 0;
+
+      ul {
+        padding-left: 0;
+        margin: 0;
+
+        li {
+          list-style-type: none;
+          list-style: none;
+          overflow-wrap: break-word;
+          word-break: break-all;
+          margin: 0;
+
+          span {
+            font-size: .5rem;
+
+          }
+        }
+      }
+    }
+
+    .svg-canvas {
+      .edge-selected {
+        stroke-width: 1.5;
+      }
+
+      .node-selected {
+        stroke-width: 3;
+        stroke-opacity: 1;
+      }
+
+      .edge-path {
+        stroke: #cecece;
+        stroke-opacity: .65;
+        fill: transparent;
+        pointer-events: none;
+
+      }
+
+      .edge-label {
+        user-select: none;
+        fill: #999;
+        font-size: 10px;
+        font-weight: 400;
+        pointer-events: none;
+      }
+
+      .edge-label-selected {
+        fill: $dark-color;
+      }
+
+      .node {
+        cursor: pointer;
+      }
+
+      .identity-badge {
+        cursor: pointer;
+      }
+
+      .displayName {
+        fill: $dark-color;
+        user-select: none;
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      .identity {
+        fill: $gray-color;
+        user-select: none;
+        font-size: 11px;
+        font-weight: 400;
+      }
+
+      .identity-icon {
+        cursor: pointer;
+        width: 20px;
+        height: 20px
+      }
+
+      .badge-icon {
+        fill: none;
+        pointer-events: none;
+        cursor: pointer;
+        width: 18px;
+        height: 20px;
+      }
+
+    }
+
+    @media screen and (max-width: $size-sm) {
+      @supports (height: 100dvh) {
+        height: calc(100dvh - .5rem);
+        width: calc(100dvw - .5rem);
+      }
+    }
+
+    .loading-mask {
+      border-radius: .4rem;
+      position: absolute;
+      height: 94%;
+      max-height: 40rem;
+      max-width: 64rem;
+      width: 94%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99;
+      background: #fff;
+    }
+  }
+
+  // Modal Share
   &.modal-share-container {
+    background: #fff;
     display: flex;
     flex-direction: column;
     height: auto;
@@ -306,6 +311,7 @@
     }
   }
 
+  // Modal Profile
   &.modal-profile-container {
     display: flex;
     flex-direction: column;
@@ -320,6 +326,7 @@
     }
   }
 
+  // Modal Search
   &.modal-search-container {
     padding-top: 15vh;
 
@@ -333,17 +340,18 @@
     }
   }
 
-  .modal-article-container {
-    width: 100%;
-    height: 100%;
+  // Modal Article
+  &.modal-article-container {
     background: #fff;
+    border-radius: .5rem;
+    box-sizing: border-box;
+    height: calc(100vh - 3rem);
     max-width: $size-md;
     margin: auto;
     padding: 2rem 4rem;
-    box-sizing: border-box;
     overflow-y: auto;
-    border-radius: .5rem;
     position: relative;
+    width: 100%;
 
     @media screen and (max-width: $size-sm) {
       padding: 1rem;
@@ -386,51 +394,21 @@
     }
   }
 
-  .modal-preview-container {
-    position: relative;
-
-    .btn {
-      width: unset;
-      height: unset;
-      padding: .2rem
-    }
-
-    .external-icon {
-      opacity: 0;
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      transition: opacity .2s ease;
-
-      &:hover {
-        opacity: 1;
-      }
-    }
-
+  // Modal Media
+  &.modal-media-container {
     .preview-image {
+      margin: auto;
+      
       .img-responsive,
       .video-responsive {
-        max-height: 90vh;
         max-width: 90vw;
       }
-
-      &:hover {
-        & .external-icon {
-          opacity: 1;
-        }
-      }
     }
-  }
 
-  .modal-close-icon {
-    position: fixed;
-    right: 1rem;
-    top: 1rem;
-    z-index: 999;
   }
 }
 
-// NFT Preview
+// Modal NFT Preview
 .nft-preview {
   align-items: center;
   display: flex;

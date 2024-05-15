@@ -38,20 +38,16 @@ export default function Modal(props) {
 
   const renderContent = (children, params) => {
     switch (modalType) {
-      case ModalType.common:
-        return children;
       case ModalType.share:
         return <ShareModalContent {...params} onClose={onDismiss} />;
       case ModalType.nft:
         return <NFTModalContentRender asset={params} onClose={onDismiss} />;
       case ModalType.poaps:
         return <PoapsModalContent asset={params} onClose={onDismiss} />;
-      case ModalType.philand:
-        return <PhilandModalContent {...params} onClose={onDismiss} />;
+      // case ModalType.philand:
+      //   return <PhilandModalContent {...params} onClose={onDismiss} />;
       case ModalType.media:
         return <MediaModalContent {...params} onClose={onDismiss} />;
-      case ModalType.article:
-        return <ArticleModalContent {...params} onClose={onDismiss} />;
       case ModalType.search:
         return <SearchModalContent {...params} onClose={onDismiss} />;
       case ModalType.graph:
@@ -64,6 +60,8 @@ export default function Modal(props) {
         );
       case ModalType.profile:
         return <ProfileModalContent identity={params} onClose={onDismiss} />;
+      case ModalType.article:
+        return <ArticleModalContent {...params} onClose={onDismiss} />;
       default:
         return children;
     }
@@ -72,20 +70,7 @@ export default function Modal(props) {
     <div ref={overlay} className="web3bio-modal-cover" onClick={onClick}>
       <div
         ref={wrapper}
-        className={
-          modalType === ModalType.graph
-            ? "modal-graph-container"
-            : `web3bio-modal-container modal-${modalType}-container`
-        }
-        style={{
-          background: [
-            ModalType.common,
-            ModalType.share,
-            ModalType.graph,
-          ].includes(modalType)
-            ? "#fff"
-            : "transparent",
-        }}
+        className={`web3bio-modal-container modal-${modalType}-container`}
       >
         {renderContent(children, params)}
       </div>
