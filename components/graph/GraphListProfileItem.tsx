@@ -56,29 +56,31 @@ export function GraphListProfileItem(props) {
     };
   }, [fetched, identity, visible, dispatch, platform]);
   return (
-    <div ref={ref} key={key} className="graph-list-item">
-      <ProfileCard
-        classNames={{
-          container: "profile-badge",
-        }}
-        simple
-        data={profile}
-      />
-      <div className="divider" />
-      <div className="social-relations">
-        {relations.map((x, idx) => {
-          return (
-            <div key={idx} className="social-relations-item">
-              <SVG
-                width={20}
-                fill={SocialPlatformMapping(x.key)?.color}
-                src={SocialPlatformMapping(x.key)?.icon || ""}
-              />
-              {SocialPlatformMapping(x.key)?.label}
-              <div>{SocialRelationMapping(x.action).label}</div>
-            </div>
-          );
-        })}
+    <div className="graph-list-item-wrapper">
+      <div ref={ref} key={key} className="graph-list-item">
+        <ProfileCard
+          classNames={{
+            container: "profile-badge",
+          }}
+          simple
+          data={profile}
+        />
+        <div className="divider" />
+        <div className="social-relations">
+          {relations.map((x, idx) => {
+            return (
+              <div key={idx} className="social-relations-item">
+                <SVG
+                  width={20}
+                  fill={SocialPlatformMapping(x.key)?.color}
+                  src={SocialPlatformMapping(x.key)?.icon || ""}
+                />
+                {SocialPlatformMapping(x.key)?.label}
+                <div>{SocialRelationMapping(x.action).label}</div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

@@ -28,35 +28,44 @@
       display: flex;
       flex-wrap: wrap;
       align-items: flex-start;
-      gap: 1rem;
       height: 100%;
       overflow-y: auto;
 
-      .graph-list-item {
-        width: auto;
-        box-shadow: 0 0.4rem 1.6rem rgba(18, 18, 18, 0.25);
-        border-radius: .8rem;
-        background: #fff;
-        height: 12rem;
+      .graph-list-item-wrapper {
+        width: 25%;
+        padding: .5rem;
 
-        .profile-card {
-          border-radius: inherit;
-          box-shadow: none;
-        }
-        .social-relations{
-          display: flex;
-          flex-direction: column;
-          padding: 0 .75rem;
-          .social-relations-item{
-            display: flex;
-            align-items: center;
-            gap: .5rem;
-            font-weight: 500;
-            color: rgba($dark-color, .75)
+        .graph-list-item {
+          width: 100%;
+          box-shadow: 0 0.4rem 1.6rem rgba(18, 18, 18, 0.25);
+          border-radius: .8rem;
+          background: #fff;
+          height: 12rem;
+
+          .profile-card {
+            max-width: 100%;
+            min-width: unset;
+            border-radius: inherit;
+            box-shadow: none;
           }
-        }
 
+          .social-relations {
+            display: flex;
+            flex-direction: column;
+            padding: 0 .75rem;
+
+            .social-relations-item {
+              display: flex;
+              align-items: center;
+              gap: .5rem;
+              font-weight: 500;
+              color: rgba($dark-color, .75)
+            }
+          }
+
+        }
       }
+
     }
 
     .graph-header {
