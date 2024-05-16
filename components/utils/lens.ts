@@ -328,7 +328,6 @@ export const LensInterestsMapping = (key: ProfileInterestsPrefix) => {
   };
 
   const _key = key.split("__")[0];
-  console.log(_key,'kkk')
   const item = interestsMap[_key]?.[key];
   return item;
 };

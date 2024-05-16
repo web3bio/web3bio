@@ -5,7 +5,6 @@ import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { colorMod } from "../utils/utils";
-import { ModalType } from "../hooks/useModal";
 
 const WidgetItem = (props) => {
   const onCopySuccess = () => {
