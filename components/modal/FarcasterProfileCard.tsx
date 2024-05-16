@@ -93,8 +93,27 @@ export default function FarcasterProfileCard(props) {
     },
     hasNextPage: hasNextPage,
   });
-  return isLoading ? (
-    <Loading />
+  return isLoading || !data ? (
+    <>
+      <div className="modal-profile-header" style={{
+        ["--widget-primary-color" as string]: SocialPlatformMapping(
+          PlatformType.farcaster
+        )?.color
+      }}>
+        <div className="modal-profile-cover farcaster"></div>
+        <div className="platform-icon">
+          <SVG
+            src={`../${SocialPlatformMapping(PlatformType.farcaster)?.icon}`}
+            width={14}
+            height={14}
+          />
+        </div>
+        <span>Farcaster Profile</span>
+      </div>
+      <div className="modal-profile-body">
+        <Loading />
+      </div>
+    </>
   ) : (
     <>
       <div className="modal-profile-header" style={{
@@ -141,28 +160,30 @@ export default function FarcasterProfileCard(props) {
           <strong className="text-large">{data.result.user.followerCount.toLocaleString()}</strong> Followers
         </div>
         <div className="divider"></div>
-        <div className="panel-widget">
-          <div className="panel-widget-title">
-            Hosting Channels
+        {channelsData.length > 0 && (
+          <div className="panel-widget">
+            <div className="panel-widget-title">
+              Hosting Channels
+            </div>
+            <div className="panel-widget-content">
+              {channelsData.map((x) => {
+                return (
+                  <Link key={x.key} href={x.url} className="channel-item" target="_blank">
+                    <Image alt={x.name} width={40} height={40} src={x.imageUrl} className="channel-item-icon" />
+                    <div className="channel-item-body">
+                      <div className="channel-item-title"><strong>{x.name}</strong> <span className="text-gray">/{x.id}</span></div>
+                      <div className="channel-item-title">{x.description}</div>
+                      <div className="channel-item-subtitle text-gray">{x.followerCount.toLocaleString()} followers</div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+            {hasNextPage && (
+              <div ref={albumRef}>{isValidating && <Loading />}</div>
+            )}
           </div>
-          <div className="panel-widget-content">
-            {channelsData.map((x) => {
-              return (
-                <Link key={x.key} href={x.url} className="channel-item" target="_blank">
-                  <Image alt={x.name} width={40} height={40} src={x.imageUrl} className="channel-item-icon" />
-                  <div className="channel-item-body">
-                    <div className="channel-item-title"><strong>{x.name}</strong> <span className="text-gray">/{x.id}</span></div>
-                    <div className="channel-item-title">{x.description}</div>
-                    <div className="channel-item-subtitle text-gray">{x.followerCount.toLocaleString()} followers</div>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-          {hasNextPage && (
-            <div ref={albumRef}>{isValidating && <Loading />}</div>
-          )}
-        </div>
+        )}
       </div>
       <div className="modal-profile-footer">
         <div className="btn-group btn-group-block">

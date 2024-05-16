@@ -18,6 +18,19 @@
     right: 1rem;
     top: 1rem;
     z-index: 999;
+
+    .btn {
+      background: rgba($gray-color-light, .5);
+
+      &:focus,
+      &:hover {
+        background: rgba($gray-color-light, .65);
+      }
+      &:active,
+      &.active {
+        background: rgba($gray-color-light, .75);
+      }
+    }
   }
 }
 

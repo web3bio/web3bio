@@ -149,7 +149,7 @@ export default function NFTModalContentRender(props) {
                     </Markdown>
                   </div>
 
-                  <div className="btn-group mt-2 mb-4">
+                  <div className="btn-group mt-2 mb-2">
                     {renderSocialMediaLinks(_collection)}
                   </div>
                 </div>

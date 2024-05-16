@@ -20,7 +20,26 @@ export default function LensProfileCard(props) {
   console.log(data)
 
   return loading || !data?.profile ? (
-    <Loading />
+    <>
+      <div className="modal-profile-header" style={{
+        ["--widget-primary-color" as string]: SocialPlatformMapping(
+          PlatformType.lens
+        )?.color
+      }}>
+        <div className="modal-profile-cover lens"></div>
+        <div className="platform-icon">
+          <SVG
+            src={`../${SocialPlatformMapping(PlatformType.lens)?.icon}`}
+            width={14}
+            height={14}
+          />
+        </div>
+        <span>Lens Profile</span>
+      </div>
+      <div className="modal-profile-body">
+        <Loading />
+      </div>
+    </>
   ) : (
     <>
       <div className="modal-profile-header" style={{
@@ -84,24 +103,27 @@ export default function LensProfileCard(props) {
             <strong className="text-large">{data.profile.stats.quotes}</strong> Quotes
           </div>
         </div>
+        
         <div className="divider"></div>
-        <div className="panel-widget">
-          <div className="panel-widget-title">
-            Interests
-          </div>
-          <div className="panel-widget-content">
-            <div className="profile-interests">
-              {data.profile.interests.map((x) => {
-                const interestItem = LensInterestsMapping(x);
-                return (
-                  <div className={`interest-item label ${x.split("__")[0].toLowerCase()}`} key={x}>
-                    {interestItem?.label || x}
-                  </div>
-                );
-              })}
+        {data.profile.interests.length > 0 && (
+          <div className="panel-widget">
+            <div className="panel-widget-title">
+              Interests
+            </div>
+            <div className="panel-widget-content">
+              <div className="profile-interests">
+                {data.profile.interests.map((x) => {
+                  const interestItem = LensInterestsMapping(x);
+                  return (
+                    <div className={`interest-item label ${x.split("__")[0].toLowerCase()}`} key={x}>
+                      {interestItem?.label || x}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
       <div className="modal-profile-footer">
         <div className="btn-group btn-group-block">
