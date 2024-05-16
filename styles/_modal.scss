@@ -37,11 +37,17 @@
         padding: .5rem;
 
         .graph-list-item {
+          position: relative;
           width: 100%;
           box-shadow: 0 0.4rem 1.6rem rgba(18, 18, 18, 0.25);
           border-radius: .8rem;
           background: #fff;
           height: 12rem;
+          .graph-header-action{
+            position: absolute;
+            right: .75rem;
+            top: .75rem;
+          }
 
           .profile-card {
             max-width: 100%;

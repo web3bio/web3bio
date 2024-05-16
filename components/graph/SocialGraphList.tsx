@@ -59,8 +59,8 @@ export default function SocialGraphList(props) {
       {renderData.map((x, idx) => {
         return (
           <GraphListProfileItem
-            profile={profiles?.find((i) => i.uuid === x.uuid)}
             key={`list_item_${idx}`}
+            profile={profiles?.find((i) => i.uuid === x.uuid)}
             uuid={x.uuid}
             identity={x.identity}
             platform={x.platform}

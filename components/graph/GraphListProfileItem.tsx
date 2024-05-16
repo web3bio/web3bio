@@ -4,11 +4,12 @@ import { useDispatch } from "react-redux";
 import { updateUniversalBatchedProfile } from "../state/universal/actions";
 import ProfileCard from "../profile/ProfileCard";
 import SVG from "react-inlinesvg";
-import { SocialPlatformMapping } from "../utils/platform";
+import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { SocialRelationMapping } from "./utils";
+import Link from "next/link";
 
 export function GraphListProfileItem(props) {
-  const { key, identity, platform, profile, uuid, relations } = props;
+  const { identity, platform, profile, uuid, relations } = props;
   const ref = useRef(null);
   const [fetched, setFetched] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -56,8 +57,23 @@ export function GraphListProfileItem(props) {
     };
   }, [fetched, identity, visible, dispatch, platform]);
   return (
-    <div className="graph-list-item-wrapper">
-      <div ref={ref} key={key} className="graph-list-item">
+    <div ref={ref} className="graph-list-item-wrapper">
+      <div className="graph-list-item">
+        <Link
+          onClick={(e)=>{
+            e.stopPropagation()
+            return false
+          }}
+          className="graph-header-action btn btn-link btn-sm"
+          href={
+            SocialPlatformMapping(PlatformType.hey).urlPrefix +
+            identity.replace(".lens", "")
+          }
+          target="_blank"
+        >
+          <SVG width={20} height={20} src={"icons/icon-open.svg"} />
+        </Link>
+
         <ProfileCard
           classNames={{
             container: "profile-badge",
