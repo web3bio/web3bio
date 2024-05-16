@@ -11,6 +11,7 @@ import {
   regexEns,
   regexEth,
   regexFarcaster,
+  regexGenome,
   regexLens,
   regexSns,
   regexSolana,
@@ -131,6 +132,12 @@ export const fuzzyDomainSuffix = [
     icon: SocialPlatformMapping(PlatformType.sns).icon,
     match: regexSns,
     suffixes: ["sol"],
+  },
+  {
+    key: PlatformType.genome,
+    icon: SocialPlatformMapping(PlatformType.genome).icon,
+    match: regexGenome,
+    suffixes: ["gno"],
   },
   // ⬇️ Addresses
   {

@@ -92,6 +92,7 @@ const RenderAccountItem = (props) => {
     case PlatformType.space_id:
     case PlatformType.solana:
     case PlatformType.sns:
+    case PlatformType.genome:
     case PlatformType.nextid:
     case PlatformType.crossbell:
       return (
