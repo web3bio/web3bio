@@ -19,6 +19,7 @@ import {
   regexSolana,
   regexSns,
   regexBtc,
+  regexGenome,
   regexAvatar,
 } from "./regexp";
 import _ from "lodash";
@@ -133,6 +134,8 @@ export const handleSearchPlatform = (term: string) => {
       return PlatformType.dotbit;
     case regexSns.test(term):
       return PlatformType.sns;
+    case regexGenome.test(term):
+      return PlatformType.genome;
     case regexBtc.test(term):
       return PlatformType.bitcoin;
     case regexSolana.test(term):

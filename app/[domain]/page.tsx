@@ -149,6 +149,7 @@ export default async function ProfilePage({
         data?.map((x) => ({
           platform: x.platform,
           identity: x.identity,
+          avatar: x.avatar
         })) || []
       }
       data={{

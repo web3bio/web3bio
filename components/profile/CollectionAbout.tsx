@@ -1,8 +1,8 @@
 import { memo } from "react";
-import { formatEther } from "ethers";
 import Markdown from "react-markdown";
 import { formatText } from "../utils/utils";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
+import { formatEther } from "viem";
 
 const INFO_CONFIG = [
   { key: "distinct_nft_count", label: "Total Minted" },
