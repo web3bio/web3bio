@@ -57,7 +57,8 @@ export async function GET(request: NextRequest) {
             style={{
               display: "flex",
               backgroundColor: "#fff",
-              backgroundImage: `url(${avatarImg}), url(${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/avatar/svg?handle=${path})`,
+              backgroundImage: `url(${avatarImg})`,
+              // backgroundImage: `url(${avatarImg}), url(${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/avatar/svg?handle=${path})`,
               backgroundPosition: "0 top",
               backgroundRepeat: "no-repeat",
               backgroundSize: "100% 200px",
@@ -79,8 +80,8 @@ export async function GET(request: NextRequest) {
                 borderRadius: "50%",
                 objectFit: "cover",
               }}
-              width={180}
-              height={180}
+              width={120}
+              height={120}
               src={avatarImg}
               alt=""
             />
@@ -90,7 +91,7 @@ export async function GET(request: NextRequest) {
             style={{
               fontSize: "80px",
               letterSpacing: "-.05em",
-              marginTop: "40px",
+              marginTop: "60px",
               fontWeight: "bold",
             }}
           >

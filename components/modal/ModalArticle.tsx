@@ -2,7 +2,7 @@ import Link from "next/link";
 import Markdown from "react-markdown";
 import SVG from "react-inlinesvg";
 
-export default function ArticleModalContent({ title, content, baseURL, link }) {
+export default function ArticleModalContent({ title, content, baseURL, link, onClose }) {
   const imageInMarkdownRegex = /!\[[^\]]*\]\((.*?)\s*("(?:.*[^"])")?\s*\)/g;
   const resolveImageWithMarkdown = (content) => {
     return content.replaceAll(imageInMarkdownRegex, (x) => {
@@ -11,19 +11,24 @@ export default function ArticleModalContent({ title, content, baseURL, link }) {
     });
   };
   return (
-    <div className="modal-article-container">
-      <h1 className="modal-article-title">{title}</h1>
-      {link && (
-        <div className="modal-article-action">
+    <>
+      <div className="modal-actions">
+        {link && (
           <Link href={link} target={"_blank"} className="btn">
             <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
             View Original
           </Link>
+        )}
+        <div className="btn btn-close" onClick={onClose}>
+          <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
         </div>
-      )}
-      <Markdown>
-        {!baseURL ? content : resolveImageWithMarkdown(content)}
-      </Markdown>
-    </div>
+      </div>
+      <div className="modal-article-container">
+        <h1 className="modal-article-title">{title}</h1>
+        <Markdown>
+          {!baseURL ? content : resolveImageWithMarkdown(content)}
+        </Markdown>
+      </div>
+    </>
   );
 }

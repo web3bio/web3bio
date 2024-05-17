@@ -29,6 +29,11 @@ export default function PoapsModalContent({ onClose, asset }) {
 
   return (
     <>
+      <div className="modal-actions">
+        <div className="btn btn-close" onClick={onClose}>
+          <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
+        </div>
+      </div>
       <div id="nft-dialog" className="nft-preview">
         <div className="preview-container">
           <div
@@ -38,9 +43,6 @@ export default function PoapsModalContent({ onClose, asset }) {
             }}
             onClick={onClose}
           ></div>
-          <div className="btn btn-close" onClick={onClose}>
-            <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
-          </div>
           <div className="preview-image preview-image-poap">
             <NFTAssetPlayer
               className={"img-container"}
