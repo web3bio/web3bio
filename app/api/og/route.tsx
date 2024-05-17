@@ -21,12 +21,8 @@ export async function GET(request: NextRequest) {
     const address = searchParams.get("address");
     const displayName = searchParams.get("displayName");
     const description = searchParams.get("description");
-    const paramAvatar = searchParams.get("avatar");
     const avatarImg =
-      !paramAvatar || paramAvatar === "null"
-        ? process.env.NEXT_PUBLIC_PROFILE_END_POINT + `/avatar/svg?handle=${path}`
-        : paramAvatar;
-
+      process.env.NEXT_PUBLIC_PROFILE_END_POINT + `/avatar/${path}`;
     const isShowDefault = ![address, path, displayName].some((x) => !!x);
 
     if (isShowDefault) {
@@ -61,7 +57,8 @@ export async function GET(request: NextRequest) {
             style={{
               display: "flex",
               backgroundColor: "#fff",
-              backgroundImage: `url(${avatarImg}), url(${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/avatar/svg?handle=${path})`,
+              backgroundImage: `url(${avatarImg})`,
+              // backgroundImage: `url(${avatarImg}), url(${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/avatar/svg?handle=${path})`,
               backgroundPosition: "0 top",
               backgroundRepeat: "no-repeat",
               backgroundSize: "100% 200px",
@@ -83,8 +80,8 @@ export async function GET(request: NextRequest) {
                 borderRadius: "50%",
                 objectFit: "cover",
               }}
-              width={100}
-              height={100}
+              width={120}
+              height={120}
               src={avatarImg}
               alt=""
             />

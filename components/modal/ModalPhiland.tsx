@@ -13,8 +13,10 @@ export default function PhilandModalContent({ data, onClose, profile }) {
             }}
             onClick={onClose}
           ></div>
-          <div className="btn btn-close" onClick={onClose}>
-            <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
+          <div className="modal-actions">
+            <div className="btn btn-close" onClick={onClose}>
+              <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
+            </div>
           </div>
           <div className="preview-image">
             <NFTAssetPlayer

@@ -43,10 +43,6 @@ export const QUERY_DAO_DELEGATORS = gql`
           }
           governor {
             id
-            tokenStats {
-              delegatedVotingPower
-              supply
-            }
             name
             organization {
               name

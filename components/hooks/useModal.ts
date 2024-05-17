@@ -6,10 +6,11 @@ export enum ModalType {
   media = "media",
   share = "share",
   common = "common",
-  article = 'article',
-  philand = 'philand',
-  search = 'search',
-  graph = 'graph'
+  article = "article",
+  philand = "philand",
+  search = "search",
+  graph = "graph",
+  profile = "profile",
 }
 
 const useModal = () => {
