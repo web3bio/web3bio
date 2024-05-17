@@ -1,11 +1,11 @@
+import { useEffect, useState } from "react";
 import SVG from "react-inlinesvg";
+import Link from "next/link";
+import Image from "next/image";
 import useSWR from "swr";
 import { Loading } from "../shared/Loading";
-import { useEffect, useState } from "react";
-import Link from "next/link";
 import { Avatar } from "../shared/Avatar";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
-import Image from "next/image";
 import { FIREFLY_ENDPOINT } from "../apis/firefly";
 import { ProfileFetcher } from "../apis/profile";
 
@@ -87,7 +87,7 @@ export default function FarcasterProfileCard(props) {
           identity={handle}
         />
         <div className="d-flex mt-4" style={{ alignItems: "center" }}>
-          <strong className="h4 text-bold">{_profile.displayName}</strong>
+          <strong className="h4 text-bold">{_profile.display_name}</strong>
           {_profile.isPowerUser ? (
             <div className="active-badge" title="Power User of Farcaster">
               ϟ
