@@ -355,6 +355,9 @@ export default function ProfileMain(props) {
                           avatar: relations?.find(
                             (x) => x.platform === v.platform
                           )?.avatar,
+                          location: relations?.find(
+                            (x) => x.platform === v.platform
+                          )?.location,
                         });
                       }}
                       displayName={pageTitle}
