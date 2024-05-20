@@ -32,19 +32,20 @@ import { SearchListItemType } from "../search/SearchInput";
 
 export const formatText = (string, length?) => {
   if (!string) return "";
+  const lengthWithEmoji = [...string].length;
   const len = length ?? 12;
   const chars = len / 2 - 2;
-  if (string.length <= len) {
+  if (lengthWithEmoji <= len) {
     return string;
   }
   if (string.startsWith("0x")) {
     return `${string.substring(0, chars + 2)}...${string.substring(
-      string.length - chars
+      lengthWithEmoji - chars
     )}`;
   } else {
-    if (string.length > len) {
+    if (lengthWithEmoji > len) {
       return `${string.substring(0, chars + 1)}...${string.substring(
-        string.length - (chars + 1)
+        lengthWithEmoji - (chars + 1)
       )}`;
     }
   }
