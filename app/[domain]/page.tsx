@@ -147,9 +147,7 @@ export default async function ProfilePage({
       domain={domain}
       relations={
         data?.map((x) => ({
-          platform: x.platform,
-          identity: x.identity,
-          avatar: x.avatar
+          ...x
         })) || []
       }
       data={{
