@@ -73,7 +73,7 @@ const updateNodes = (nodeContainer) => {
 export default function D3SocialGraph(props) {
   const { data, onClose, title, onExtend, containerRef, onExpand, loading } =
     props;
-  const [mode, setMode] = useState(SocialGraphMode.graph);
+  const [mode, setMode] = useState(SocialGraphMode.list);
   const [currentNode, setCurrentNode] = useState<any>(null);
   const [listData, setListData] = useState({
     nodes: [],
@@ -382,6 +382,7 @@ export default function D3SocialGraph(props) {
       if (mode === SocialGraphMode.graph) {
         chart = generateGraph({ nodes: res.nodes, links: res.edges });
       } else {
+        setHideToolTip(true)
         setListData(res);
       }
     }

@@ -60,15 +60,12 @@ export function GraphListProfileItem(props) {
     <div ref={ref} className="graph-list-item-wrapper">
       <div className="graph-list-item">
         <Link
-          onClick={(e)=>{
-            e.stopPropagation()
-            return false
+          onClick={(e) => {
+            e.stopPropagation();
+            return false;
           }}
           className="graph-header-action btn btn-link btn-sm"
-          href={
-            SocialPlatformMapping(PlatformType.hey).urlPrefix +
-            identity.replace(".lens", "")
-          }
+          href={`https://web3.bio/${identity}`}
           target="_blank"
         >
           <SVG width={20} height={20} src={"icons/icon-open.svg"} />
