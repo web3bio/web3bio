@@ -81,6 +81,7 @@ export default function FarcasterProfileCard(props) {
       <div className="modal-profile-body">
         <Avatar
           width={80}
+          height={80}
           className="avatar"
           alt={handle}
           src={avatar}
@@ -134,7 +135,7 @@ export default function FarcasterProfileCard(props) {
                         <strong>{x.name}</strong>{" "}
                         <span className="text-gray">/{x.id}</span>
                       </div>
-                      <div className="channel-item-title">{x.description}</div>
+                      <div className="channel-item-subtitle">{x.description}</div>
                       <div className="channel-item-subtitle text-gray">
                         {x.follower_count?.toLocaleString()} followers
                       </div>

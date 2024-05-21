@@ -62,6 +62,7 @@ export default function LensProfileCard(props) {
       <div className="modal-profile-body">
         <Avatar
           width={80}
+          height={80}
           className="avatar"
           alt={handle}
           src={avatar}

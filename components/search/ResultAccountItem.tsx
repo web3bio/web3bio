@@ -39,7 +39,7 @@ const RenderAccountItem = (props) => {
     identity.resolveAddress?.[0].address ||
     identity.identity;
   useEffect(() => {
-    if (nftContainer.current?.offsetHeight! <= 136) {
+    if (nftContainer.current?.offsetHeight! <= 110) {
       setExpand(true);
     }
   }, [nftContainer]);
@@ -200,7 +200,7 @@ const RenderAccountItem = (props) => {
               className="nfts"
               ref={nftContainer}
               style={{
-                maxHeight: expand ? "unset" : "8.5rem",
+                maxHeight: expand ? "unset" : "6rem",
               }}
             >
               <div className={`nfts-list-container `}>
@@ -240,7 +240,7 @@ const RenderAccountItem = (props) => {
                     setExpand(true);
                   }}
                 >
-                  <button className="btn btn-block">View More</button>
+                  <button className="btn btn-sm btn-link btn-block">View More</button>
                 </div>
               )}
             </div>
