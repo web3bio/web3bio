@@ -26,7 +26,7 @@ export default function FarcasterProfileCard(props) {
     ProfileFetcher
   );
   const _profile = data?.data;
-  
+
   useEffect(() => {
     if (_profile?.fid) {
       setFid(_profile.fid);
@@ -81,6 +81,7 @@ export default function FarcasterProfileCard(props) {
       <div className="modal-profile-body">
         <Avatar
           width={80}
+          height={80}
           className="avatar"
           alt={handle}
           src={avatar}

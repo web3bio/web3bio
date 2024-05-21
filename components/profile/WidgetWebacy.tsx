@@ -1,13 +1,12 @@
 "use client";
 import { memo } from "react";
-
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import useSWR from "swr";
 import { WEBACY_API_ENDPOINT, webacyFetcher } from "../apis/webacy";
 
 const RenderWidgetWebacy = ({ address }) => {
   const { data, isLoading } = useSWR(
-    WEBACY_API_ENDPOINT + "/quick-profile/" + address,
+    WEBACY_API_ENDPOINT + "/api/risk/address/" + address,
     webacyFetcher
   );
   console.log(data, "webacy");

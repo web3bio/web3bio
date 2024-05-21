@@ -26,7 +26,7 @@ import { WidgetDegenScore } from "./WidgetDegenScore";
 import { WidgetRSS } from "./WidgetRSS";
 // import { WidgetPhiland } from "./WidgetPhiland";
 import { WidgetTally } from "./WidgetTally";
-import { regexEns } from "../utils/regexp";
+import { regexEns, regexSolana } from "../utils/regexp";
 import LoadingSkeleton from "./LoadingSkeleton";
 import Web3bioBadge from "./ProfileFooter";
 import { WidgetArticle } from "./WidgetArticle";
@@ -434,11 +434,14 @@ export default function ProfileMain(props) {
                     </Suspense>
                   </div>
 
-                  <div className="web3-section-widgets">
-                    <Suspense fallback={<p>Loading Webacy...</p>}>
-                      <WidgetWebacy address={data.address} />
-                    </Suspense>
-                  </div>
+                  {(isValidEthereumAddress(data.address) ||
+                    regexSolana.test(data.address)) && (
+                    <div className="web3-section-widgets">
+                      <Suspense fallback={<p>Loading Webacy...</p>}>
+                        <WidgetWebacy address={data.address} />
+                      </Suspense>
+                    </div>
+                  )}
                   {/* todo: Due to philand error background color, hide phi widget for now */}
                   {/* <div className="web3-section-widgets">
                     {(data.platform === PlatformType.ens ||
