@@ -34,6 +34,7 @@ import WidgetIndicator from "./WidgetIndicator";
 import { WidgetTypes } from "../utils/widgets";
 import { GET_PROFILES } from "../utils/queries";
 import { useLazyQuery } from "@apollo/client";
+import { WidgetWebacy } from "./WidgetWebacy";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
@@ -112,8 +113,8 @@ export default function ProfileMain(props) {
   };
   const isEmptyProfile = useCallback(() => {
     const source = Object.values(profileWidgetStates).filter((x) => x.loaded);
-    // 5 is all widgets num - basic widgets num (nft, poaps, feeds)
-    return source.length > 5 && source.every((x) => x.isEmpty);
+    // 6 is all widgets num - basic widgets num (nft, poaps, feeds)
+    return source.length > 6 && source.every((x) => x.isEmpty);
   }, [profileWidgetStates])();
 
   const isBasicLoadingFinished = useCallback(() => {
@@ -433,6 +434,11 @@ export default function ProfileMain(props) {
                     </Suspense>
                   </div>
 
+                  <div className="web3-section-widgets">
+                    <Suspense fallback={<p>Loading Webacy...</p>}>
+                      <WidgetWebacy address={data.address} />
+                    </Suspense>
+                  </div>
                   {/* todo: Due to philand error background color, hide phi widget for now */}
                   {/* <div className="web3-section-widgets">
                     {(data.platform === PlatformType.ens ||

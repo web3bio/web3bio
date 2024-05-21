@@ -8,6 +8,7 @@ import {
   updatePhilandWidget,
   updateTallyDAOWidget,
   updateArticleWidget,
+  updateWebacyWidget,
 } from "./action";
 import { WidgetTypes } from "../../utils/widgets";
 
@@ -26,6 +27,7 @@ export interface WidgetState {
   [WidgetTypes.tally]?: WidgetStateDetail;
   [WidgetTypes.degenscore]?: WidgetStateDetail;
   [WidgetTypes.philand]?: WidgetStateDetail;
+  [WidgetTypes.webacy]?: WidgetStateDetail;
 }
 
 export const initialState: WidgetState = {
@@ -65,6 +67,11 @@ export const initialState: WidgetState = {
     loaded: false,
   },
   [WidgetTypes.philand]: {
+    isEmpty: null,
+    initLoading: true,
+    loaded: false,
+  },
+  [WidgetTypes.webacy]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
@@ -155,6 +162,17 @@ export default createReducer(initialState, (builder) =>
       (state, { payload: { isEmpty, initLoading } }) => {
         state[WidgetTypes.philand] = {
           ...state[WidgetTypes.philand],
+          isEmpty,
+          initLoading,
+          loaded: true,
+        };
+      }
+    )
+    .addCase(
+      updateWebacyWidget,
+      (state, { payload: { isEmpty, initLoading } }) => {
+        state[WidgetTypes.webacy] = {
+          ...state[WidgetTypes.webacy],
           isEmpty,
           initLoading,
           loaded: true,
