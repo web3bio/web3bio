@@ -2,19 +2,19 @@
 import { memo } from "react";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import useSWR from "swr";
-import { WEBACY_API_ENDPOINT, webacyFetcher } from "../apis/webacy";
+import {
+  WEBACY_API_ENDPOINT,
+  webacyFetcher,
+  WBEACY_DAPP_ENDPOINT,
+} from "../apis/webacy";
 
 const RenderWidgetWebacy = ({ address }) => {
   const { data, isLoading } = useSWR(
-    WEBACY_API_ENDPOINT + "/api/risk/address/" + address,
+    WEBACY_API_ENDPOINT + "/quick-profile/" + address,
     webacyFetcher
   );
-  console.log(data, "webacy");
-  if (!data) return null;
 
-  // if (process.env.NODE_ENV !== "production") {
-  //   console.log("Phi:", data);
-  // }
+  if (!data) return null;
 
   return (
     <div className="profile-widget-half" id={WidgetTypes.webacy}>
