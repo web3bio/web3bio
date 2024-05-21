@@ -17,7 +17,6 @@ export default function LensProfileCard(props) {
     },
   });
   const profileLocation = data?.profile?.metadata?.attributes?.find((x) => x.key === "location")?.value || "";
-  console.log(data)
 
   return loading || !data?.profile ? (
     <>

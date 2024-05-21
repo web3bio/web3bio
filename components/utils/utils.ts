@@ -29,24 +29,28 @@ import {
   fuzzyDomainSuffix,
 } from "./constants";
 import { SearchListItemType } from "../search/SearchInput";
+import GraphemeSplitter from "grapheme-splitter";
 
 export const formatText = (string, length?) => {
   if (!string) return "";
-  const lengthWithEmoji = [...string].length;
-  const len = length ?? 12;
-  const chars = len / 2 - 2;
-  if (lengthWithEmoji <= len) {
+  const splitter = new GraphemeSplitter();
+  const stringSplitArr = splitter.splitGraphemes(string);
+  const maxLength = length ?? 12;
+  const chars = maxLength / 2 - 2;
+
+  if (stringSplitArr.length <= maxLength) {
     return string;
   }
+  
   if (string.startsWith("0x")) {
-    return `${string.substring(0, chars + 2)}...${string.substring(
-      lengthWithEmoji - chars
-    )}`;
+    return `${stringSplitArr.slice(0, chars + 2).join("")}...${stringSplitArr
+      .slice(stringSplitArr.length - chars)
+      .join("")}`;
   } else {
-    if (lengthWithEmoji > len) {
-      return `${string.substring(0, chars + 1)}...${string.substring(
-        lengthWithEmoji - (chars + 1)
-      )}`;
+    if (stringSplitArr.length > maxLength) {
+      return `${stringSplitArr.slice(0, chars + 1).join("")}...${stringSplitArr
+        .slice(stringSplitArr.length - (chars + 1))
+        .join("")}`;
     }
   }
   return string;
