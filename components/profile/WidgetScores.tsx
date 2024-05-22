@@ -121,7 +121,7 @@ const RenderWidgetScores = ({ address }) => {
                     </h2>
                   ) : (
                     <h2 className="profile-widget-title">
-                      <span className="emoji-large mr-2"> </span>
+                      <span className="emoji-large mr-2">🚨 </span>
                       WebacyScore{" "}
                       <span className="label ml-2">
                         {Number(x.data.overallRisk).toFixed(2)}
