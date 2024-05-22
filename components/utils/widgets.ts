@@ -4,7 +4,6 @@ export enum WidgetTypes {
   feeds = "feeds",
   rss = "rss",
   article = "article",
-  degenscore = "degenscore",
   philand = "philand",
   tally = "tally",
   scores = "scores",
@@ -48,13 +47,6 @@ export const WidgetInfoMapping = (widgetType: WidgetTypes) => {
       icon: "🏛️",
       title: "DAO Memberships",
       description: "",
-    },
-    [WidgetTypes.degenscore]: {
-      key: "degenscore",
-      icon: "👾",
-      title: "DegenScore",
-      description:
-        "The DegenScore Beacon is an Ethereum soulbound token that highlights your on-chain skills & traits across one or more wallets.\nUse it to leverage your on-chain reputation in the DegenScore Cafe and across Web3.",
     },
     [WidgetTypes.philand]: {
       key: "philand",
