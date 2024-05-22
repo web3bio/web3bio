@@ -18,5 +18,5 @@ export const updateDegenscoreWidget =
   createAction<UpdateWidgetState>("widgets/degenscore");
 export const updatePhilandWidget =
   createAction<UpdateWidgetState>("widgets/philand");
-  export const updateWebacyWidget =
-  createAction<UpdateWidgetState>("widgets/webacy");
+export const updateScoresWidget =
+  createAction<UpdateWidgetState>("widgets/scores");

@@ -34,7 +34,7 @@ import WidgetIndicator from "./WidgetIndicator";
 import { WidgetTypes } from "../utils/widgets";
 import { GET_PROFILES } from "../utils/queries";
 import { useLazyQuery } from "@apollo/client";
-import { WidgetWebacy } from "./WidgetWebacy";
+import { WidgetScores } from "./WidgetScores";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
@@ -437,8 +437,8 @@ export default function ProfileMain(props) {
                   {(isValidEthereumAddress(data.address) ||
                     regexSolana.test(data.address)) && (
                     <div className="web3-section-widgets">
-                      <Suspense fallback={<p>Loading Webacy...</p>}>
-                        <WidgetWebacy address={data.address} />
+                      <Suspense fallback={<p>Loading Scores...</p>}>
+                        <WidgetScores address={data.address} />
                       </Suspense>
                     </div>
                   )}

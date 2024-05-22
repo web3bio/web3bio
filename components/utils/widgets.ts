@@ -7,7 +7,7 @@ export enum WidgetTypes {
   degenscore = "degenscore",
   philand = "philand",
   tally = "tally",
-  webacy = "webacy",
+  scores = "scores",
   default = "default",
 }
 export const WidgetInfoMapping = (widgetType: WidgetTypes) => {
@@ -63,11 +63,11 @@ export const WidgetInfoMapping = (widgetType: WidgetTypes) => {
       description:
         "Phi is a new Web3 world created from ENS domains & On-Chain Activity, enabling the easy visualization of On-Chain Identities, currently built on Polygon. Virtually interact with crypto protocols from around the Ethereum ecosystem.",
     },
-    [WidgetTypes.webacy]: {
-      key: "webacy",
+    [WidgetTypes.scores]: {
+      key: "scores",
       icon: "🪪",
-      title: "Webacy",
-      description: "Webacy description",
+      title: "Web3 Scores",
+      description: "",
     },
   };
   return (
