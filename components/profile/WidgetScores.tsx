@@ -27,7 +27,7 @@ const RenderWidgetScores = ({ address }) => {
 
   return (
     <div className="profile-widget-half" id={WidgetTypes.scores}>
-      <div className="profile-widget profile-widget-webacy">
+      <div className="profile-widget profile-widget-scores">
         <div className="profile-widget-header">
           <h2 className="profile-widget-title">
             <span className="emoji-large mr-2">
