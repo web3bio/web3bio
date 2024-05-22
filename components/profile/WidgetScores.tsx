@@ -8,17 +8,15 @@ import { updateScoresWidget } from "../state/widgets/action";
 import { DEGENSCORE_ENDPOINT, DegenFetcher } from "../apis/degenscore";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import SVG from "react-inlinesvg";
+import { isValidEthereumAddress } from "../utils/utils";
+import { regexSolana } from "../utils/regexp";
 
 function useWebcyInfo(address: string) {
   const { data, error } = useSWR(
-    WEBACY_API_ENDPOINT + "/addresses/" + address,
-    webacyFetcher,
-    {
-      suspense: true,
-      fallbackData: [],
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
+    `${WEBACY_API_ENDPOINT}/addresses/${address}?chain=${
+      regexSolana.test(address) ? "sol" : "eth"
+    }`,
+    webacyFetcher
   );
   return {
     webacyInfo: data,
@@ -29,14 +27,9 @@ function useWebcyInfo(address: string) {
 
 function useDegenInfo(address: string) {
   const { data, error } = useSWR(
-    `${DEGENSCORE_ENDPOINT}${address}`,
-    DegenFetcher,
-    {
-      suspense: true,
-      fallbackData: [],
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
+    (isValidEthereumAddress(address) && `${DEGENSCORE_ENDPOINT}${address}`) ||
+      null,
+    DegenFetcher
   );
   return {
     degenInfo: data,
@@ -80,7 +73,7 @@ const RenderWidgetScores = ({ address }) => {
     }
     return res;
   }, [webacyInfo, degenInfo]);
-
+  console.log(webacyInfo, degenInfo, "kkk");
   if (isEmpty) return null;
   return (
     <div className="profile-widget-full" id={WidgetTypes.scores}>
