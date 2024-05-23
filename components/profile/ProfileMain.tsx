@@ -22,7 +22,6 @@ import Modal from "../modal/Modal";
 import { useSelector } from "react-redux";
 import { AppState } from "../state";
 import { WidgetState } from "../state/widgets/reducer";
-import { WidgetDegenScore } from "./WidgetDegenScore";
 import { WidgetRSS } from "./WidgetRSS";
 // import { WidgetPhiland } from "./WidgetPhiland";
 import { WidgetTally } from "./WidgetTally";
@@ -113,7 +112,7 @@ export default function ProfileMain(props) {
   };
   const isEmptyProfile = useCallback(() => {
     const source = Object.values(profileWidgetStates).filter((x) => x.loaded);
-    // 6 is all widgets num - basic widgets num (nft, poaps, feeds)
+    // 5 is all widgets num - basic widgets num (nft, poaps, feeds)
     return source.length > 5 && source.every((x) => x.isEmpty);
   }, [profileWidgetStates])();
 
