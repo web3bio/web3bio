@@ -64,7 +64,7 @@ const RenderAccountItem = (props) => {
         uuid: identity.uuid,
       }));
       if (response) {
-        await dispatch(
+        dispatch(
           updateUniversalBatchedProfile({
             profiles: [response],
           })

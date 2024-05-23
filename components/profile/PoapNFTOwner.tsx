@@ -44,7 +44,7 @@ export default function PoapNFTOwner({ address, profile }) {
         uuid: x.address,
       }));
       if (response) {
-        await dispatch(
+        dispatch(
           updateUniversalBatchedProfile({
             profiles: [response],
           })
