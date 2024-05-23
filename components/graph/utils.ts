@@ -2,6 +2,34 @@ import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { formatText, isSameAddress } from "../utils/utils";
 import _ from "lodash";
 
+export enum GraphType {
+  identityGraph = 0,
+  socialGraph = 1,
+}
+
+export enum SocialRelationEnum {
+  following = "following",
+  follower = "follower",
+  mutual_follow = "mutual_follow",
+}
+
+export const SocialRelationMapping = (key) => {
+  return {
+    following: {
+      key: "following",
+      label: "Following",
+    },
+    follower: {
+      key: "follower",
+      label: "Followed",
+    },
+    mutual_follow: {
+      key: "mutual_follow",
+      label: "Mutual Follow",
+    },
+  }[key];
+};
+
 export const resolveIdentityGraphData = (source) => {
   const nodes = new Array<any>();
   const edges = new Array<any>();
@@ -122,3 +150,44 @@ export function calcTranslation(targetDistance, point0, point1) {
     dy: y2_y0,
   };
 }
+
+export const resolveSocialGraphData = (data) => {
+  const nodes = new Array<any>();
+  const edges = new Array<any>();
+  data.forEach((x) => {
+    const source = x.originalSource?.id;
+    const target = x.originalTarget?.id;
+    if (source && target) {
+      edges.push({
+        type: x.edgeType,
+        source: source,
+        target: target,
+        dataSource: x.dataSource,
+        label: `${x.dataSource}-${x.edgeType}`,
+        id: `${source}*${target}`,
+      });
+      if (!nodes.find((i) => i?.id === x.originalSource.id)) {
+        nodes.push({
+          ...x.originalSource,
+          graphId: x.source,
+          root: !!(x.edgeType === SocialRelationEnum.following),
+        });
+      }
+      if (!nodes.find((i) => i?.id === x.originalTarget.id)) {
+        nodes.push({
+          ...x.originalTarget,
+          graphId: x.target,
+          root: !!(x.edgeType === SocialRelationEnum.follower),
+        });
+      }
+    }
+  });
+  const _nodes = _.uniqBy(nodes, "id");
+  const _edges = _.uniqBy(edges, "id");
+  const resolvedEdges = _edges.map((x) => ({
+    ...x,
+    isSingle: isSingleEdge(_edges, x),
+    label: isSingleEdge(_edges, x) ? x.label : `${x.dataSource}-mutual-follows`,
+  }));
+  return { nodes: _nodes, edges: resolvedEdges };
+};

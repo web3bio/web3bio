@@ -34,6 +34,8 @@ import WidgetIndicator from "./WidgetIndicator";
 import { WidgetTypes } from "../utils/widgets";
 import { GET_PROFILES } from "../utils/queries";
 import { useLazyQuery } from "@apollo/client";
+import _ from "lodash";
+import { GraphType } from "../graph/utils";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
@@ -51,11 +53,13 @@ export default function ProfileMain(props) {
       },
     }
   );
+
   const { isOpen, modalType, closeModal, openModal, params } = useModal();
   const [mounted, setMounted] = useState(false);
   const profileWidgetStates = useSelector<AppState, WidgetState>(
     (state) => state.widgets
   );
+
   useEffect(() => {
     if (!mounted) setMounted(true);
     if (domain && platform) {
@@ -322,6 +326,20 @@ export default function ProfileMain(props) {
                 <a href={`mailto:${data.email}`}>{data.email}</a>
               </div>
             )}
+            <div
+              className="btn btn-link"
+              onClick={() => {
+                openModal(ModalType.graph, {
+                  type: GraphType.socialGraph,
+                  domain: domain,
+                  platform: platform,
+                  root: { id: `${platform},${domain}` },
+                });
+              }}
+            >
+              <SVG src={"/icons/icon-view.svg"} width={20} height={20} /> Social
+              Graph
+            </div>
           </div>
         </div>
         <div className="column col-7 col-lg-12">
