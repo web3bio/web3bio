@@ -68,7 +68,9 @@ export default function LensProfileCard(props) {
               </div>
             )}
           </div>
-          <div className="text-gray">@{_profile.identity}</div>
+          <div className="text-gray">
+            @{_profile.identity.replace(".lens", "")}
+          </div>
           <div className="mt-2">{_profile.description}</div>
           <div className="mt-2">
             {_profile.location ? `📍 ${_profile.location}` : ""}
