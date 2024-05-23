@@ -16,7 +16,12 @@ function useWebcyInfo(address: string) {
     `${WEBACY_API_ENDPOINT}/addresses/${address}?chain=${
       regexSolana.test(address) ? "sol" : "eth"
     }`,
-    webacyFetcher
+    webacyFetcher,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnMount: true,
+    }
   );
   return {
     webacyInfo: data,
@@ -29,7 +34,12 @@ function useDegenInfo(address: string) {
   const { data, error } = useSWR(
     (isValidEthereumAddress(address) && `${DEGENSCORE_ENDPOINT}${address}`) ||
       null,
-    DegenFetcher
+    DegenFetcher,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnMount: true,
+    }
   );
   return {
     degenInfo: data,
@@ -73,7 +83,7 @@ const RenderWidgetScores = ({ address }) => {
     }
     return res;
   }, [webacyInfo, degenInfo]);
-  console.log(webacyInfo, degenInfo, "kkk");
+  console.log(webacyInfo, degenInfo, "data");
   if (isEmpty) return null;
   return (
     <div className="profile-widget-full" id={WidgetTypes.scores}>
