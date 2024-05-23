@@ -68,7 +68,7 @@ export default function LensProfileCard(props) {
           identity={handle}
         />
         <div className="d-flex mt-4" style={{alignItems: "center"}}>
-          <strong className="h4 text-bold">{data.profile.metadata.displayName}</strong>
+          <strong className="h4 text-bold">{data.profile.metadata?.displayName || data.profile.handle?.localName}</strong>
           {data.profile.onchainIdentity.proofOfHumanity && <div className="profile-badge" title="Proof of Humanity">Proof of Humanity</div>}
           {data.profile.onchainIdentity.worldcoin.isHuman && <div className="profile-badge" title="Worldcoin Verified Human">Worldcoin Verified</div>}
         </div>
@@ -76,7 +76,7 @@ export default function LensProfileCard(props) {
           @{data.profile.handle.localName}
         </div>
         <div className="mt-2">
-          {data.profile.metadata.bio}
+          {data.profile.metadata?.bio}
         </div>
         <div className="mt-2">
           {profileLocation ? `📍 ${profileLocation}` : ""}

@@ -200,7 +200,7 @@ const RenderAccountItem = (props) => {
               className="nfts"
               ref={nftContainer}
               style={{
-                maxHeight: expand ? "unset" : "6rem",
+                maxHeight: expand ? "unset" : "7.6rem",
               }}
             >
               <div className={`nfts-list-container `}>
@@ -240,7 +240,7 @@ const RenderAccountItem = (props) => {
                     setExpand(true);
                   }}
                 >
-                  <button className="btn btn-sm btn-link btn-block">View More</button>
+                  <button className="btn btn-sm btn-block">View More</button>
                 </div>
               )}
             </div>

@@ -176,7 +176,7 @@ const RenderSocialCard = (props) => {
               <>
                 {metadata?.body ? (
                   <div
-                    className={`feed-content text-large${
+                    className={`feed-content ${
                       checkEmojis ? " text-emoji" : ""
                     }`}
                   >
