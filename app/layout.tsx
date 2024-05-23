@@ -1,4 +1,3 @@
-import { GeistSans } from "geist/font/sans";
 import ApolloProvider from "../components/shared/ApolloProvider";
 import GoogleAnalytics from "../components/shared/GoogleAnalytics";
 import ReduxProvider from "../components/shared/ReduxProvider";
@@ -76,7 +75,7 @@ export default function RootLayout({ children }) {
         <meta httpEquiv="x-ua-compatible" content="ie=edge" />
         <link rel="shortcut icon" href="/favicon.ico" />
       </head>
-      <body className={GeistSans.className}>
+      <body>
         <main>
           <ReduxProvider>
             <ApolloProvider>

@@ -9,7 +9,7 @@ export default function ResultAccountItemAction(props) {
       <Link
         target={"_blank"}
         className="btn btn-sm btn-link action"
-        href={href}
+        href={encodeURI(href)}
         prefetch={prefetch}
         title={
           title || `Open ${SocialPlatformMapping(platform).label} Profile Page`
