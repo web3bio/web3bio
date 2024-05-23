@@ -3,7 +3,6 @@ import SVG from "react-inlinesvg";
 import Link from "next/link";
 import Image from "next/image";
 import useSWR from "swr";
-import { Loading } from "../shared/Loading";
 import { Avatar } from "../shared/Avatar";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { FIREFLY_ENDPOINT } from "../apis/firefly";
@@ -73,7 +72,7 @@ export default function FarcasterProfileCard(props) {
           />
           <div className="d-flex mt-4" style={{ alignItems: "center" }}>
             <strong className="h4 text-bold">{_profile.displayName}</strong>
-            {_profile.isPowerUser ? (
+            {data?.data.isPowerUser ? (
               <div className="active-badge" title="Power User of Farcaster">
                 ϟ
               </div>
