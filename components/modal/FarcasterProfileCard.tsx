@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import SVG from "react-inlinesvg";
 import Link from "next/link";
 import Image from "next/image";
@@ -8,12 +8,15 @@ import { Avatar } from "../shared/Avatar";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { FIREFLY_ENDPOINT } from "../apis/firefly";
 import { ProfileFetcher } from "../apis/profile";
+import { useProfiles } from "../hooks/useReduxProfiles";
 
 export default function FarcasterProfileCard(props) {
-  const { handle, link, avatar, location } = props;
+  const { handle, link } = props;
   const [fid, setFid] = useState(null);
 
-  const { data, isLoading, error } = useSWR(
+  const profiles = useProfiles();
+  
+  const { data } = useSWR(
     handle
       ? FIREFLY_ENDPOINT + `/v2/farcaster-hub/user/profile?handle=${handle}`
       : null,
@@ -25,38 +28,18 @@ export default function FarcasterProfileCard(props) {
       : null,
     ProfileFetcher
   );
-  const _profile = data?.data;
-  
+  const _profile = useMemo(() => {
+    return profiles?.find(
+      (x) => x.platform === PlatformType.farcaster && x.identity === handle
+    );
+  }, [profiles, handle]);
+
   useEffect(() => {
-    if (_profile?.fid) {
-      setFid(_profile.fid);
+    if (data?.data?.fid) {
+      setFid(data.data.fid);
     }
-  }, [_profile]);
-  return isLoading || !_profile ? (
-    <>
-      <div
-        className="modal-profile-header"
-        style={{
-          ["--widget-primary-color" as string]: SocialPlatformMapping(
-            PlatformType.farcaster
-          )?.color,
-        }}
-      >
-        <div className="modal-profile-cover farcaster"></div>
-        <div className="platform-icon">
-          <SVG
-            src={`../${SocialPlatformMapping(PlatformType.farcaster)?.icon}`}
-            width={14}
-            height={14}
-          />
-        </div>
-        <span>Farcaster Profile</span>
-      </div>
-      <div className="modal-profile-body">
-        <Loading />
-      </div>
-    </>
-  ) : (
+  }, [data]);
+  return (
     <>
       <div
         className="modal-profile-header"
@@ -84,11 +67,11 @@ export default function FarcasterProfileCard(props) {
           height={80}
           className="avatar"
           alt={handle}
-          src={avatar}
+          src={_profile?.avatar}
           identity={handle}
         />
         <div className="d-flex mt-4" style={{ alignItems: "center" }}>
-          <strong className="h4 text-bold">{_profile.display_name}</strong>
+          <strong className="h4 text-bold">{_profile.displayName}</strong>
           {_profile.isPowerUser ? (
             <div className="active-badge" title="Power User of Farcaster">
               ϟ
@@ -97,16 +80,18 @@ export default function FarcasterProfileCard(props) {
             ""
           )}
         </div>
-        <div className="text-gray">@{_profile.username}</div>
-        <div className="mt-2">{_profile.bio}</div>
-        <div className="mt-2">{(location && `📍 ${location}`) || ""}</div>
+        <div className="text-gray">@{_profile.identity}</div>
+        <div className="mt-2">{_profile.description}</div>
+        <div className="mt-2">
+          {(_profile.location && `📍 ${_profile.location}`) || ""}
+        </div>
         <div className="mt-2 mb-4">
           <strong className="text-large">
-            {_profile.following.toLocaleString()}
+            {data?.data?.following.toLocaleString()}
           </strong>{" "}
           Following ·{" "}
           <strong className="text-large">
-            {_profile.followers.toLocaleString()}
+            {data?.data.followers.toLocaleString()}
           </strong>{" "}
           Followers
         </div>
@@ -135,7 +120,9 @@ export default function FarcasterProfileCard(props) {
                         <strong>{x.name}</strong>{" "}
                         <span className="text-gray">/{x.id}</span>
                       </div>
-                      <div className="channel-item-subtitle">{x.description}</div>
+                      <div className="channel-item-subtitle">
+                        {x.description}
+                      </div>
                       <div className="channel-item-subtitle text-gray">
                         {x.follower_count?.toLocaleString()} followers
                       </div>
