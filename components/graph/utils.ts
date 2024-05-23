@@ -1,5 +1,5 @@
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
-import { formatText } from "../utils/utils";
+import { formatText, isSameAddress } from "../utils/utils";
 import _ from "lodash";
 
 export const resolveIdentityGraphData = (source) => {
@@ -45,24 +45,35 @@ export const resolveIdentityGraphData = (source) => {
       resolvedAddress: null,
     };
   };
-  source.nodes.forEach((x) => {
-    nodes.push(generateVerticesStruct(x));
-    if (x.nft?.length > 0) {
-      x.nft.forEach((i) => {
-        if (!source.nodes.some((j) => j.identity === i.id)) {
-          nodes.push(generateNFTENSStruct(i, x.identity));
-          const source = `${PlatformType.ethereum},${x.identity}`;
-          const target = `${PlatformType.ens},${i.id}`;
-          edges.push({
-            source,
-            target,
-            label: "",
-            id: `${source}*${target}`,
-          });
-        }
-      });
-    }
-  });
+  source.nodes
+    .filter((x) => {
+      if (x.platform === PlatformType.ens) {
+        return isSameAddress(
+          x.ownerAddress?.[0]?.address,
+          x.resolveAddress?.[0].address
+        );
+      } else {
+        return true;
+      }
+    })
+    .forEach((x) => {
+      nodes.push(generateVerticesStruct(x));
+      if (x.nft?.length > 0) {
+        x.nft.forEach((i) => {
+          if (!source.nodes.some((j) => j.identity === i.id)) {
+            nodes.push(generateNFTENSStruct(i, x.identity));
+            const source = `${PlatformType.ethereum},${x.identity}`;
+            const target = `${PlatformType.ens},${i.id}`;
+            edges.push({
+              source,
+              target,
+              label: "",
+              id: `${source}*${target}`,
+            });
+          }
+        });
+      }
+    });
 
   source.edges.forEach((x) => {
     const resolvedPlatform = SocialPlatformMapping(x.dataSource);

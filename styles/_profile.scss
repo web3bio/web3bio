@@ -451,7 +451,9 @@
       align-items: center;
       background: var(--widget-primary-color, $light-color);
       border-radius: .6rem;
-      box-shadow: inset 0 0 0 .05rem rgba($dark-color, .1), 0 .2rem .4rem rgba($dark-color, .15), 1rem 0 4rem 2rem var(--widget-bg-color);
+      box-shadow: inset 0 0 0 .05rem rgba($dark-color, .1),
+        0 .2rem .4rem rgba($dark-color, .15),
+        1rem 0 4rem 2rem var(--widget-bg-color);
       color: $light-color;
       display: flex;
       flex: 0 0 1.8rem;

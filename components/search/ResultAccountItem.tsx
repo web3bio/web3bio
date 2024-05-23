@@ -19,10 +19,12 @@ const RenderAccountItem = (props) => {
       setIsCopied(false);
     }, 1500);
   };
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
+  const nftContainer = useRef<HTMLDivElement>(null);
   const { identity, sources, profile, onClick } = props;
   const [isCopied, setIsCopied] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [expand, setExpand] = useState(false);
   const dispatch = useDispatch();
   const [fetched, setFetched] = useState(!!profile);
   const rawDisplayName = profile?.displayName
@@ -36,6 +38,11 @@ const RenderAccountItem = (props) => {
     profile?.address ||
     identity.resolveAddress?.[0].address ||
     identity.identity;
+  useEffect(() => {
+    if (nftContainer.current?.offsetHeight! <= 110) {
+      setExpand(true);
+    }
+  }, [nftContainer]);
   useEffect(() => {
     const element = ref?.current;
     const options = {
@@ -68,10 +75,9 @@ const RenderAccountItem = (props) => {
     if (
       !fetched &&
       (identity?.reverse ||
-        [
-          PlatformType.farcaster,
-          PlatformType.lens,
-        ].includes(resolvedPlatform)) &&
+        [PlatformType.farcaster, PlatformType.lens].includes(
+          resolvedPlatform
+        )) &&
       visible
     ) {
       fetchProfileData();
@@ -132,7 +138,10 @@ const RenderAccountItem = (props) => {
                 </div>
               </div>
               <div className="content">
-                <div className="content-title text-ellipsis text-bold" title={rawDisplayName}>
+                <div
+                  className="content-title text-ellipsis text-bold"
+                  title={rawDisplayName}
+                >
                   {rawDisplayName}
                 </div>
                 <div className="content-subtitle text-gray">
@@ -159,7 +168,15 @@ const RenderAccountItem = (props) => {
                     data-clipboard-text={resolvedIdentity}
                     onSuccess={onCopySuccess}
                   >
-                    <SVG src={isCopied ? "../icons/icon-check.svg" : "../icons/icon-copy.svg"} width={20} height={20} />
+                    <SVG
+                      src={
+                        isCopied
+                          ? "../icons/icon-check.svg"
+                          : "../icons/icon-copy.svg"
+                      }
+                      width={20}
+                      height={20}
+                    />
                     {isCopied && <div className="tooltip-copy">COPIED</div>}
                   </Clipboard>
                 </div>
@@ -172,40 +189,60 @@ const RenderAccountItem = (props) => {
                   profile?.identity || identity.displayName || resolvedIdentity
                 }`}
                 classes=""
+                prefetch={false}
                 platform={identity.platform}
                 text={"Profile"}
               />
             )}
           </div>
           {identity.nft?.length > 0 && (
-            <div className="nfts">
-              {identity.nft.map((nft) => {
-                const nftPlatform =
-                  nft.chain === PlatformType.ethereum
-                    ? PlatformType.ens
-                    : PlatformType.sns;
-                return (
-                  <Link
-                    key={`${nft.uuid}`}
-                    href={{
-                      pathname: "/",
-                      query: { s: nft.id },
-                    }}
-                    prefetch={false}
-                  >
-                    <div className="label-domain" title={nft.id}>
-                      <SVG
-                        fill={SocialPlatformMapping(nftPlatform).color}
-                        src={SocialPlatformMapping(nftPlatform).icon!}
-                        width="20"
-                        height="20"
-                        className="icon"
-                      />
-                      <span>{nft.identity || nft.id}</span>
-                    </div>
-                  </Link>
-                );
-              })}
+            <div
+              className="nfts"
+              ref={nftContainer}
+              style={{
+                maxHeight: expand ? "unset" : "7.6rem",
+              }}
+            >
+              <div className={`nfts-list-container `}>
+                {identity.nft.map((nft) => {
+                  const nftPlatform =
+                    nft.chain === PlatformType.ethereum
+                      ? PlatformType.ens
+                      : PlatformType.sns;
+
+                  return (
+                    <Link
+                      key={`${nft.uuid}`}
+                      href={{
+                        pathname: "/",
+                        query: { s: nft.id },
+                      }}
+                      prefetch={false}
+                    >
+                      <div className="label-domain" title={nft.id}>
+                        <SVG
+                          fill={SocialPlatformMapping(nftPlatform).color}
+                          src={SocialPlatformMapping(nftPlatform).icon!}
+                          width="20"
+                          height="20"
+                          className="icon"
+                        />
+                        <span>{nft.identity || nft.id}</span>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+              {!expand && (
+                <div
+                  className="btn-list-more"
+                  onClick={() => {
+                    setExpand(true);
+                  }}
+                >
+                  <button className="btn btn-sm btn-block">View More</button>
+                </div>
+              )}
             </div>
           )}
           <RenderSourceFooter sources={sources} />
@@ -276,7 +313,15 @@ const RenderAccountItem = (props) => {
                     data-clipboard-text={identity.identity}
                     onSuccess={onCopySuccess}
                   >
-                    <SVG src={isCopied ? "../icons/icon-check.svg" : "../icons/icon-copy.svg"} width={20} height={20} />
+                    <SVG
+                      src={
+                        isCopied
+                          ? "../icons/icon-check.svg"
+                          : "../icons/icon-copy.svg"
+                      }
+                      width={20}
+                      height={20}
+                    />
                     {isCopied && <div className="tooltip-copy">COPIED</div>}
                   </Clipboard>
                 </div>
@@ -332,7 +377,15 @@ const RenderAccountItem = (props) => {
                 data-clipboard-text={resolvedIdentity}
                 onSuccess={onCopySuccess}
               >
-                <SVG src={isCopied ? "../icons/icon-check.svg" : "../icons/icon-copy.svg"} width={20} height={20} />
+                <SVG
+                  src={
+                    isCopied
+                      ? "../icons/icon-check.svg"
+                      : "../icons/icon-copy.svg"
+                  }
+                  width={20}
+                  height={20}
+                />
                 <span className="hide-xs">Copy</span>
               </Clipboard>
               <Link
@@ -342,7 +395,9 @@ const RenderAccountItem = (props) => {
                   identity.identity
                 }`}
                 prefetch={false}
-                title={`Open ${SocialPlatformMapping(identity.platform).label} Link`}
+                title={`Open ${
+                  SocialPlatformMapping(identity.platform).label
+                } Link`}
                 rel="noopener noreferrer"
               >
                 <SVG src="icons/icon-open.svg" width={20} height={20} />
