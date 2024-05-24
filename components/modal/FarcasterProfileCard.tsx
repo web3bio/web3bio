@@ -59,7 +59,7 @@ export default function FarcasterProfileCard(props) {
           </div>
           <span>Farcaster Profile</span>
           <span> · </span>
-          <span title="Farcaster FID"># {fid}</span>
+          <span title="Farcaster FID"># {fid || "…"}</span>
         </div>
         <div className="modal-profile-body">
           <Avatar
@@ -87,11 +87,11 @@ export default function FarcasterProfileCard(props) {
           </div>
           <div className="mt-2 mb-4">
             <strong className="text-large">
-              {data?.data?.following.toLocaleString()}
+              {data?.data?.following.toLocaleString() || "…"}
             </strong>{" "}
             Following ·{" "}
             <strong className="text-large">
-              {data?.data.followers.toLocaleString()}
+              {data?.data.followers.toLocaleString() || "…"}
             </strong>{" "}
             Followers
           </div>

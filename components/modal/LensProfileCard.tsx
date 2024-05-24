@@ -44,7 +44,7 @@ export default function LensProfileCard(props) {
           </div>
           <span>Lens Profile</span>
           <span> · </span>
-          <span title="Lens UID"># {parseInt(data?.profile?.id, 16)}</span>
+          <span title="Lens UID"># {parseInt(data?.profile?.id, 16) || "…"}</span>
         </div>
         <div className="modal-profile-body">
           <Avatar
@@ -77,11 +77,11 @@ export default function LensProfileCard(props) {
           </div>
           <div className="mt-2 mb-4">
             <strong className="text-large">
-              {data?.profile?.stats?.following?.toLocaleString()}
+              {data?.profile?.stats?.following?.toLocaleString() || "…"}
             </strong>{" "}
             Following ·{" "}
             <strong className="text-large">
-              {data?.profile?.stats?.followers?.toLocaleString()}
+              {data?.profile?.stats?.followers?.toLocaleString() || "…"}
             </strong>{" "}
             Followers
           </div>
@@ -90,23 +90,23 @@ export default function LensProfileCard(props) {
             <div className="panel-widget-title">Stats</div>
             <div className="panel-widget-content">
               <strong className="text-large">
-                {data?.profile?.stats?.posts}
+                {data?.profile?.stats?.posts.toLocaleString() || "…"}
               </strong>{" "}
               Posts ·{" "}
               <strong className="text-large">
-                {data?.profile?.stats?.comments}
+                {data?.profile?.stats?.comments.toLocaleString() || "…"}
               </strong>{" "}
               Comments ·{" "}
               <strong className="text-large">
-                {data?.profile?.stats?.mirrors}
+                {data?.profile?.stats?.mirrors.toLocaleString() || "…"}
               </strong>{" "}
               Mirrors ·{" "}
               <strong className="text-large">
-                {data?.profile?.stats?.publications}
+                {data?.profile?.stats?.publications.toLocaleString() || "…"}
               </strong>{" "}
               Publications ·{" "}
               <strong className="text-large">
-                {data?.profile?.stats?.quotes}
+                {data?.profile?.stats?.quotes.toLocaleString() || "…"}
               </strong>{" "}
               Quotes
             </div>
