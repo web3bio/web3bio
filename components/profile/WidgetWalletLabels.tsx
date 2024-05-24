@@ -37,10 +37,10 @@ export function WidgetWalletLabels(props) {
   const { data, error, loading } = useWalletLabelsInfo(address);
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!!data) {
+    if (!!data?.data) {
       dispatch(
         updateWalletLabels({
-          isEmpty: !data?.length,
+          isEmpty: !data?.data?.length,
           initLoading: false,
         })
       );
@@ -73,9 +73,9 @@ export function WidgetWalletLabels(props) {
           </h2>
         )}
       </div>
-      {data?.length > 0 && (
+      {data?.data?.length > 0 && (
         <div className="widget-trait-list">
-          {data.map((item, idx) => {
+          {data.data.map((item, idx) => {
             return (
               <div key={idx} title={item.label}>
                 <div className="trait-name">{item.label}</div>
