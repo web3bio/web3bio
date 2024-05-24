@@ -6,6 +6,9 @@ export enum WidgetTypes {
   article = "article",
   philand = "philand",
   tally = "tally",
+  degen = "degen",
+  webacy = "webacy",
+  walletLabels = "walletLabels",
   scores = "scores",
   default = "default",
 }
@@ -59,6 +62,24 @@ export const WidgetInfoMapping = (widgetType: WidgetTypes) => {
       key: "scores",
       icon: "🪪",
       title: "Web3 Scores",
+      description: "",
+    },
+    [WidgetTypes.degen]: {
+      key: "degen",
+      icon: "👾",
+      title: "Degen Score",
+      description: "",
+    },
+    [WidgetTypes.webacy]: {
+      key: "webacy",
+      icon: "🚨",
+      title: "Webacy ",
+      description: "",
+    },
+    [WidgetTypes.walletLabels]: {
+      key: "walletLabels",
+      icon: "😊",
+      title: "Wallet Labels",
       description: "",
     },
   };

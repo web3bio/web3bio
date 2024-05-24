@@ -1,11 +1,10 @@
 "use client";
-import { memo, useEffect } from "react";
+import { memo } from "react";
 import useSWR from "swr";
 import { DegenFetcher, DEGENSCORE_ENDPOINT } from "../apis/degenscore";
 import Link from "next/link";
 import SVG from "react-inlinesvg";
 import { useDispatch } from "react-redux";
-import { WidgetTypes } from "../utils/widgets";
 
 function useDegenInfo(address: string) {
   const { data, error } = useSWR(

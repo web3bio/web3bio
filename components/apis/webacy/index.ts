@@ -13,7 +13,7 @@ export const webacyFetcher = async (url) => {
 
     console.timeEnd("Webacy API call");
     if (res.status != 200) return [];
-    return res.json();
+    return await res.json();
   } catch (e) {
     return [];
   }
