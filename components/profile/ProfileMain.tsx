@@ -19,7 +19,7 @@ import AddressMenu from "./AddressMenu";
 import { Avatar } from "../shared/Avatar";
 import useModal, { ModalType } from "../hooks/useModal";
 import Modal from "../modal/Modal";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../state";
 import { WidgetState } from "../state/widgets/reducer";
 import { WidgetRSS } from "./WidgetRSS";
@@ -34,6 +34,7 @@ import { WidgetTypes } from "../utils/widgets";
 import { GET_PROFILES } from "../utils/queries";
 import { useLazyQuery } from "@apollo/client";
 import { WidgetScores } from "./WidgetScores";
+import { updateUniversalBatchedProfile } from "../state/universal/actions";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
@@ -51,11 +52,21 @@ export default function ProfileMain(props) {
       },
     }
   );
+  const dispatch = useDispatch();
   const { isOpen, modalType, closeModal, openModal, params } = useModal();
   const [mounted, setMounted] = useState(false);
   const profileWidgetStates = useSelector<AppState, WidgetState>(
     (state) => state.widgets
   );
+  useEffect(() => {
+    if (relations?.length > 0) {
+      dispatch(
+        updateUniversalBatchedProfile({
+          profiles: relations,
+        })
+      );
+    }
+  }, [relations]);
   useEffect(() => {
     if (!mounted) setMounted(true);
     if (domain && platform) {
@@ -334,12 +345,6 @@ export default function ProfileMain(props) {
                       openModal={(v) => {
                         openModal(ModalType.profile, {
                           ...v,
-                          avatar: relations?.find(
-                            (x) => x.platform === v.platform
-                          )?.avatar,
-                          location: relations?.find(
-                            (x) => x.platform === v.platform
-                          )?.location,
                         });
                       }}
                       displayName={pageTitle}

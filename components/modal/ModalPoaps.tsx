@@ -5,11 +5,10 @@ import useSWR from "swr";
 import { SIMPLEHASH_URL, SimplehashFetcher } from "../apis/simplehash";
 import { useEffect, useState } from "react";
 import PoapNFTOwner from "../profile/PoapNFTOwner";
-import { useSelector } from "react-redux";
-import { AppState } from "../state";
-import { ProfileInterface } from "../utils/profile";
+
 import _ from "lodash";
 import { isSameAddress } from "../utils/utils";
+import { useProfiles } from "../hooks/useReduxProfiles";
 export default function PoapsModalContent({ onClose, asset }) {
   const [owners, setOwners] = useState(new Array());
   const { data: poapDetail } = useSWR(
@@ -22,10 +21,7 @@ export default function PoapsModalContent({ onClose, asset }) {
       setOwners(sliced.map((x) => x.owners?.[0]));
     }
   }, [poapDetail]);
-  const cached = useSelector<AppState, { [address: string]: ProfileInterface }>(
-    (state) => state.universal.profiles
-  );
-  const profiles = _.flatten(Object.values(cached).map((x) => x));
+  const profiles = useProfiles()
 
   return (
     <>

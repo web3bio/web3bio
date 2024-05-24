@@ -5,7 +5,6 @@ import LensProfileCard from "./LensProfileCard";
 
 export default function ProfileModalContent(props) {
   const { identity, onClose } = props;
-
   const renderContent = (() => {
     switch (identity.platform) {
       case PlatformType.farcaster:
