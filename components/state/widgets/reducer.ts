@@ -8,6 +8,9 @@ import {
   updateTallyDAOWidget,
   updateArticleWidget,
   updateScoresWidget,
+  updateWalletLabels,
+  updateWebacyWidget,
+  updateDegenWidget,
 } from "./action";
 import { WidgetTypes } from "../../utils/widgets";
 
@@ -26,6 +29,9 @@ export interface WidgetState {
   [WidgetTypes.tally]?: WidgetStateDetail;
   [WidgetTypes.philand]?: WidgetStateDetail;
   [WidgetTypes.scores]?: WidgetStateDetail;
+  [WidgetTypes.degen]?: WidgetStateDetail;
+  [WidgetTypes.webacy]?: WidgetStateDetail;
+  [WidgetTypes.walletLabels]?: WidgetStateDetail;
 }
 
 export const initialState: WidgetState = {
@@ -65,6 +71,21 @@ export const initialState: WidgetState = {
     loaded: false,
   },
   [WidgetTypes.scores]: {
+    isEmpty: null,
+    initLoading: true,
+    loaded: false,
+  },
+  [WidgetTypes.webacy]: {
+    isEmpty: null,
+    initLoading: true,
+    loaded: false,
+  },
+  [WidgetTypes.walletLabels]: {
+    isEmpty: null,
+    initLoading: true,
+    loaded: false,
+  },
+  [WidgetTypes.degen]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
@@ -155,6 +176,39 @@ export default createReducer(initialState, (builder) =>
       (state, { payload: { isEmpty, initLoading } }) => {
         state[WidgetTypes.scores] = {
           ...state[WidgetTypes.scores],
+          isEmpty,
+          initLoading,
+          loaded: true,
+        };
+      }
+    )
+    .addCase(
+      updateWebacyWidget,
+      (state, { payload: { isEmpty, initLoading } }) => {
+        state[WidgetTypes.webacy] = {
+          ...state[WidgetTypes.webacy],
+          isEmpty,
+          initLoading,
+          loaded: true,
+        };
+      }
+    )
+    .addCase(
+      updateWalletLabels,
+      (state, { payload: { isEmpty, initLoading } }) => {
+        state[WidgetTypes.walletLabels] = {
+          ...state[WidgetTypes.walletLabels],
+          isEmpty,
+          initLoading,
+          loaded: true,
+        };
+      }
+    )
+    .addCase(
+      updateDegenWidget,
+      (state, { payload: { isEmpty, initLoading } }) => {
+        state[WidgetTypes.degen] = {
+          ...state[WidgetTypes.degen],
           isEmpty,
           initLoading,
           loaded: true,

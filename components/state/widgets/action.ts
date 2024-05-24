@@ -18,3 +18,10 @@ export const updatePhilandWidget =
   createAction<UpdateWidgetState>("widgets/philand");
 export const updateScoresWidget =
   createAction<UpdateWidgetState>("widgets/scores");
+export const updateWebacyWidget =
+  createAction<UpdateWidgetState>("widgets/webacy");
+export const updateDegenWidget =
+  createAction<UpdateWidgetState>("widgets/degen");
+export const updateWalletLabels = createAction<UpdateWidgetState>(
+  "widgets/walletLabels"
+);

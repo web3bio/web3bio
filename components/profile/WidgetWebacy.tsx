@@ -3,15 +3,16 @@ import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import useSWR from "swr";
 import { WEBACY_API_ENDPOINT, webacyFetcher } from "../apis/webacy";
 import { regexSolana } from "../utils/regexp";
+import { Loading } from "../shared/Loading";
 
 export function WidgetWebacy({ address }) {
-  const { data, error } = useSWR(
+  const { data, error, isLoading } = useSWR(
     `${WEBACY_API_ENDPOINT}/addresses/${address}?chain=${
       regexSolana.test(address) ? "sol" : "eth"
     }`,
     webacyFetcher
   );
-  console.log(data,'webacy')
+
   return (
     <div className="rss-item">
       <div className="rss-item-tag">
@@ -27,13 +28,17 @@ export function WidgetWebacy({ address }) {
         </span>
       </div>
       <div className="rss-item-title">
-        <h2 className="profile-widget-title">
-          <span className="emoji-large mr-2">🚨 </span>
-          WebacyScore{" "}
-          <span className="label ml-2">
-            {Number(data?.overallRisk).toFixed(2)}
-          </span>
-        </h2>
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <h2 className="profile-widget-title">
+            <span className="emoji-large mr-2">🚨 </span>
+            WebacyScore{" "}
+            <span className="label ml-2">
+              {Number(data?.overallRisk).toFixed(2)}
+            </span>
+          </h2>
+        )}
       </div>
     </div>
   );
