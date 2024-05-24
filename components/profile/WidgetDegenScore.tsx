@@ -1,11 +1,13 @@
 "use client";
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import useSWR from "swr";
 import { DegenFetcher, DEGENSCORE_ENDPOINT } from "../apis/degenscore";
 import SVG from "react-inlinesvg";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { Loading } from "../shared/Loading";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
+import { updateDegenWidget } from "../state/widgets/action";
+import { useDispatch } from "react-redux";
 
 function useDegenInfo(address: string) {
   const { data, error } = useSWR(
@@ -27,6 +29,17 @@ function useDegenInfo(address: string) {
 
 const RenderWidgetDegenScore = ({ address }) => {
   const { data, isLoading } = useDegenInfo(address);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (data?.name) {
+      dispatch(
+        updateDegenWidget({
+          isEmpty: false,
+          initLoading: false,
+        })
+      );
+    }
+  }, [data, dispatch]);
   if (!data || !data.name) return null;
 
   // if (process.env.NODE_ENV !== "production") {

@@ -8,6 +8,9 @@ import SVG from "react-inlinesvg";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { Loading } from "../shared/Loading";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { updateWalletLabels } from "../state/widgets/action";
 
 function useWalletLabelsInfo(address: string) {
   const { data, error, isLoading } = useSWR(
@@ -28,9 +31,21 @@ function useWalletLabelsInfo(address: string) {
     loading: isLoading,
   };
 }
+
 export function WidgetWalletLabels(props) {
   const { address } = props;
   const { data, error, loading } = useWalletLabelsInfo(address);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (!!data) {
+      dispatch(
+        updateWalletLabels({
+          isEmpty: !data?.length,
+          initLoading: false,
+        })
+      );
+    }
+  }, [data, dispatch]);
   console.log(data, "wallet labels");
   return (
     <div className="rss-item">

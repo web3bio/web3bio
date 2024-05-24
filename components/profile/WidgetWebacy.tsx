@@ -4,6 +4,9 @@ import useSWR from "swr";
 import { WEBACY_API_ENDPOINT, webacyFetcher } from "../apis/webacy";
 import { regexSolana } from "../utils/regexp";
 import { Loading } from "../shared/Loading";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { updateWebacyWidget } from "../state/widgets/action";
 
 export function WidgetWebacy({ address }) {
   const { data, error, isLoading } = useSWR(
@@ -12,7 +15,17 @@ export function WidgetWebacy({ address }) {
     }`,
     webacyFetcher
   );
-
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (!!data) {
+      dispatch(
+        updateWebacyWidget({
+          isEmpty: isNaN(data?.overallRisk),
+          initLoading: false,
+        })
+      );
+    }
+  }, [data, dispatch]);
   return (
     <div className="rss-item">
       <div className="rss-item-tag">
