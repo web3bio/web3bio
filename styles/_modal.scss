@@ -497,11 +497,18 @@
 
   // Modal Media
   &.modal-media-container {
-    .preview-image {
+    .preview-media {
+      align-items: center;
+      border-radius: .8rem;
+      display: flex;
+      justify-content: center;
       margin: auto;
+      position: relative;
       
       .img-responsive,
       .video-responsive {
+        border-radius: .8rem;
+        max-height: 80vh;
         max-width: 90vw;
       }
     }
@@ -549,7 +556,7 @@
     @media screen and (max-width: $size-md) {
       flex-direction: column;
       height: 100vh;
-      gap: 1rem;
+      gap: .5rem;
       overflow-y: auto;
       padding: .5rem;
       width: 100vw;
