@@ -400,6 +400,10 @@ export default function ProfileMain(props) {
 
               {isBasicLoadingFinished && (
                 <>
+                  <div className="web3-section-widgets">
+                    <WidgetScores address={data.address} />
+                  </div>
+                  
                   {([PlatformType.ens, PlatformType.dotbit].includes(
                     data.platform
                   ) ||
@@ -432,9 +436,6 @@ export default function ProfileMain(props) {
                     )}
                   </div>
 
-                  <div className="web3-section-widgets">
-                    <WidgetScores address={data.address} />
-                  </div>
                   {/* todo: Due to philand error background color, hide phi widget for now */}
                   {/* <div className="web3-section-widgets">
                     {(data.platform === PlatformType.ens ||

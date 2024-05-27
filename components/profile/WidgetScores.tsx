@@ -1,7 +1,7 @@
 "use client";
 import { memo, useMemo } from "react";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
-import { WidgetWalletLabels } from "./WidgetWalletLabels";
+// import { WidgetWalletLabels } from "./WidgetWalletLabels";
 import { WidgetDegenScore } from "./WidgetDegenScore";
 import { WidgetWebacy } from "./WidgetWebacy";
 
@@ -16,10 +16,10 @@ const RenderWidgetScores = ({ address }) => {
         key: WidgetTypes.webacy,
         render: () => <WidgetWebacy address={address} />,
       },
-      {
-        key: WidgetTypes.walletLabels,
-        render: () => <WidgetWalletLabels address={address} />,
-      },
+      // {
+      //   key: WidgetTypes.walletLabels,
+      //   render: () => <WidgetWalletLabels address={address} />,
+      // },
     ];
   }, [address]);
 

@@ -5,7 +5,6 @@ import {
 } from "../apis/walletLabels";
 import { regexSolana } from "../utils/regexp";
 import SVG from "react-inlinesvg";
-import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { Loading } from "../shared/Loading";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { useEffect } from "react";
@@ -46,21 +45,9 @@ export function WidgetWalletLabels(props) {
       );
     }
   }, [data, dispatch]);
-  console.log(data, "wallet labels");
+  console.log(data, "walletlabels");
   return (
     <div className="rss-item">
-      <div className="rss-item-tag">
-        <span className="label text-dark">
-          <SVG
-            fill={"#121212"}
-            src={SocialPlatformMapping(PlatformType.walletLabels).icon || ""}
-            height={18}
-            width={18}
-            className="mr-1"
-          />
-          {SocialPlatformMapping(PlatformType.walletLabels).label}
-        </span>
-      </div>
       <div className="rss-item-title">
         {loading ? (
           <Loading />
@@ -69,7 +56,7 @@ export function WidgetWalletLabels(props) {
             <span className="emoji-large mr-2">
               {WidgetInfoMapping(WidgetTypes.walletLabels).icon}{" "}
             </span>
-            Wallet Labels{" "}
+            WalletLabels{" "}
           </h2>
         )}
       </div>

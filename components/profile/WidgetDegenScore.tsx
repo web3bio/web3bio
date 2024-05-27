@@ -5,7 +5,6 @@ import { DegenFetcher, DEGENSCORE_ENDPOINT } from "../apis/degenscore";
 import SVG from "react-inlinesvg";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { Loading } from "../shared/Loading";
-import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { updateDegenWidget } from "../state/widgets/action";
 import { useDispatch } from "react-redux";
 
@@ -42,24 +41,12 @@ const RenderWidgetDegenScore = ({ address }) => {
   }, [data, dispatch]);
   if (!data || !data.name) return null;
 
-  // if (process.env.NODE_ENV !== "production") {
-  //   console.log("DegenScore Data:", data);
-  // }
+  if (process.env.NODE_ENV !== "production") {
+    console.log("DegenScore Data:", data);
+  }
 
   return (
     <div className="rss-item">
-      <div className="rss-item-tag">
-        <span className="label text-dark">
-          <SVG
-            fill={"#121212"}
-            src={SocialPlatformMapping(PlatformType.degenscore).icon || ""}
-            height={18}
-            width={18}
-            className="mr-1"
-          />
-          {SocialPlatformMapping(PlatformType.degenscore).label}
-        </span>
-      </div>
       <div className="rss-item-title">
         {isLoading ? (
           <Loading />

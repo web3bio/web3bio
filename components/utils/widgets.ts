@@ -39,6 +39,12 @@ export const WidgetInfoMapping = (widgetType: WidgetTypes) => {
       title: "Website",
       description: "",
     },
+    [WidgetTypes.scores]: {
+      key: "scores",
+      icon: "🏆",
+      title: "Badges and Scores",
+      description: "",
+    },
     [WidgetTypes.article]: {
       key: "article",
       icon: "📰",
@@ -58,28 +64,22 @@ export const WidgetInfoMapping = (widgetType: WidgetTypes) => {
       description:
         "Phi is a new Web3 world created from ENS domains & On-Chain Activity, enabling the easy visualization of On-Chain Identities, currently built on Polygon. Virtually interact with crypto protocols from around the Ethereum ecosystem.",
     },
-    [WidgetTypes.scores]: {
-      key: "scores",
-      icon: "🪪",
-      title: "Web3 Scores",
-      description: "",
-    },
     [WidgetTypes.degen]: {
       key: "degen",
       icon: "👾",
-      title: "Degen Score",
+      title: "DegenScore",
       description: "",
     },
     [WidgetTypes.webacy]: {
       key: "webacy",
-      icon: "🚨",
-      title: "Webacy ",
+      icon: "🛡️",
+      title: "Webacy",
       description: "",
     },
     [WidgetTypes.walletLabels]: {
       key: "walletLabels",
-      icon: "😊",
-      title: "Wallet Labels",
+      icon: "🏷️",
+      title: "WalletLabels",
       description: "",
     },
   };

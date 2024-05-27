@@ -491,7 +491,7 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     key: PlatformType.walletLabels,
     color: "#000000",
     icon: "",
-    label: "Wallet Labels",
+    label: "WalletLabels",
     urlPrefix: "https://dapp.webacy.com/",
     system: PlatformSystem.web3,
   },

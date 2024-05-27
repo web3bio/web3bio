@@ -1,7 +1,7 @@
 import SVG from "react-inlinesvg";
-import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import useSWR from "swr";
 import { WEBACY_API_ENDPOINT, webacyFetcher } from "../apis/webacy";
+import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { regexSolana } from "../utils/regexp";
 import { Loading } from "../shared/Loading";
 import { useEffect } from "react";
@@ -28,24 +28,14 @@ export function WidgetWebacy({ address }) {
   }, [data, dispatch]);
   return (
     <div className="rss-item">
-      <div className="rss-item-tag">
-        <span className="label text-dark">
-          <SVG
-            fill={"#121212"}
-            src={SocialPlatformMapping(PlatformType.webacy).icon || ""}
-            height={18}
-            width={18}
-            className="mr-1"
-          />
-          {SocialPlatformMapping(PlatformType.webacy).label}
-        </span>
-      </div>
       <div className="rss-item-title">
         {isLoading ? (
           <Loading />
         ) : (
           <h2 className="profile-widget-title">
-            <span className="emoji-large mr-2">🚨 </span>
+            <span className="emoji-large mr-2">
+              {WidgetInfoMapping(WidgetTypes.webacy).icon}{" "}
+            </span>
             WebacyScore{" "}
             <span className="label ml-2">
               {Number(data?.overallRisk).toFixed(2)}
