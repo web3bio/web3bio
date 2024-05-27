@@ -19,6 +19,8 @@ interface WidgetStateDetail {
   initLoading?: boolean;
   position?: string;
   loaded?: boolean | null;
+  parent?: WidgetTypes | null;
+  children?: WidgetTypes[] | null;
 }
 export interface WidgetState {
   [WidgetTypes.nft]: WidgetStateDetail;
@@ -74,21 +76,25 @@ export const initialState: WidgetState = {
     isEmpty: null,
     initLoading: true,
     loaded: false,
+    children: [WidgetTypes.webacy, WidgetTypes.walletLabels, WidgetTypes.degen],
   },
   [WidgetTypes.webacy]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
+    parent: WidgetTypes.scores,
   },
   [WidgetTypes.walletLabels]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
+    parent: WidgetTypes.scores,
   },
   [WidgetTypes.degen]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
+    parent: WidgetTypes.scores,
   },
 };
 

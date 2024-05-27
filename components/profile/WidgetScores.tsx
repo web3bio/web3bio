@@ -1,11 +1,14 @@
 "use client";
-import { memo, useMemo } from "react";
+import { memo, useEffect, useMemo } from "react";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 // import { WidgetWalletLabels } from "./WidgetWalletLabels";
 import { WidgetDegenScore } from "./WidgetDegenScore";
 import { WidgetWebacy } from "./WidgetWebacy";
+import { updateScoresWidget } from "../state/widgets/action";
+import { useDispatch } from "react-redux";
 
-const RenderWidgetScores = ({ address }) => {
+const RenderWidgetScores = ({ address, states }) => {
+  const dispatch = useDispatch();
   const scoresArr = useMemo(() => {
     return [
       {
@@ -22,6 +25,24 @@ const RenderWidgetScores = ({ address }) => {
       // },
     ];
   }, [address]);
+
+  useEffect(() => {
+    const childs = [
+      WidgetTypes.webacy,
+      WidgetTypes.degen,
+      WidgetTypes.walletLabels,
+    ];
+    childs.forEach((x) => {
+      if (states[x].isEmpty === false && !states[WidgetTypes.scores].loaded) {
+        dispatch(
+          updateScoresWidget({
+            initLoading: false,
+            isEmpty: false,
+          })
+        );
+      }
+    });
+  }, [states, dispatch]);
 
   return (
     <div className="profile-widget-full" id={WidgetTypes.scores}>

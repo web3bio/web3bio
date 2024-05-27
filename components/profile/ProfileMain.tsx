@@ -401,9 +401,12 @@ export default function ProfileMain(props) {
               {isBasicLoadingFinished && (
                 <>
                   <div className="web3-section-widgets">
-                    <WidgetScores address={data.address} />
+                    <WidgetScores
+                      states={profileWidgetStates}
+                      address={data.address}
+                    />
                   </div>
-                  
+
                   {([PlatformType.ens, PlatformType.dotbit].includes(
                     data.platform
                   ) ||

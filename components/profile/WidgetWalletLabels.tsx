@@ -45,7 +45,9 @@ export function WidgetWalletLabels(props) {
       );
     }
   }, [data, dispatch]);
-  console.log(data, "walletlabels");
+  if (process.env.NODE_ENV !== "production") {
+    console.log("WalletLabels Data:", data?.data);
+  }
   return (
     <div className="rss-item">
       <div className="rss-item-title">
