@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { formatText } from "../utils/utils";
@@ -11,6 +11,7 @@ import _ from "lodash";
 import { fetchProfile } from "../hooks/fetchProfile";
 import { updateUniversalBatchedProfile } from "../state/universal/actions";
 import ResultAccountItemAction from "./ResultAccountAction";
+import { useProfiles } from "../hooks/useReduxProfiles";
 
 const RenderAccountItem = (props) => {
   const onCopySuccess = () => {
@@ -21,15 +22,17 @@ const RenderAccountItem = (props) => {
   };
   const ref = useRef<HTMLDivElement>(null);
   const nftContainer = useRef<HTMLDivElement>(null);
-  const { identity, sources, profile, onClick } = props;
+  const { identity, sources, onClick } = props;
   const [isCopied, setIsCopied] = useState(false);
   const [visible, setVisible] = useState(false);
   const [expand, setExpand] = useState(false);
   const dispatch = useDispatch();
-  const [fetched, setFetched] = useState(!!profile);
-  const rawDisplayName = profile?.displayName
-    ? profile.displayName
-    : identity.displayName || identity.identity;
+  const profiles = useProfiles();
+  const profile = useMemo(() => {
+    return profiles.find((x) => x.uuid === identity.uuid);
+  }, [profiles, identity.uuid]);
+  const rawDisplayName =
+    profile?.displayName || identity.displayName || identity.identity;
   const resolvedIdentity =
     profile?.address ||
     identity.resolveAddress?.[0].address ||
@@ -65,15 +68,14 @@ const RenderAccountItem = (props) => {
             profiles: [response],
           })
         );
-        setFetched(true);
       }
     };
     if (
-      !fetched &&
       (identity?.reverse ||
         [PlatformType.farcaster, PlatformType.lens].includes(
           identity.platform
         )) &&
+      !profile &&
       visible
     ) {
       fetchProfileData();
@@ -84,7 +86,7 @@ const RenderAccountItem = (props) => {
         observer.unobserve(element);
       }
     };
-  }, [fetched, identity, visible]);
+  }, [visible, profile, dispatch]);
 
   switch (identity.platform) {
     case PlatformType.ens:
