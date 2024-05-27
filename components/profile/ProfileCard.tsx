@@ -81,11 +81,11 @@ export default function ProfileCard({
             <Clipboard
               component="div"
               className="profile-card-address c-hand"
-              data-clipboard-text={data?.address}
+              data-clipboard-text={data?.address || data.identity}
               title="Copy the wallet address"
               onSuccess={onCopySuccess}
             >
-              {formatText(data?.address)}
+              {formatText(data?.address || data.identity)}
               <SVG
                 src={isCopied ? "../icons/icon-check.svg" : "../icons/icon-copy.svg"}
                 width={18}
