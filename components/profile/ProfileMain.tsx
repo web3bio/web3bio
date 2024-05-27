@@ -25,7 +25,7 @@ import { WidgetState } from "../state/widgets/reducer";
 import { WidgetRSS } from "./WidgetRSS";
 // import { WidgetPhiland } from "./WidgetPhiland";
 import { WidgetTally } from "./WidgetTally";
-import { regexEns, regexSolana } from "../utils/regexp";
+import { regexEns } from "../utils/regexp";
 import LoadingSkeleton from "./LoadingSkeleton";
 import Web3bioBadge from "./ProfileFooter";
 import { WidgetArticle } from "./WidgetArticle";
@@ -66,7 +66,7 @@ export default function ProfileMain(props) {
         })
       );
     }
-  }, [relations]);
+  }, [relations, dispatch]);
   useEffect(() => {
     if (!mounted) setMounted(true);
     if (domain && platform) {
