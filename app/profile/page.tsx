@@ -6,9 +6,9 @@ import { Loading } from "../../components/shared/Loading";
 import useSWR from "swr";
 import { ProfileFetcher } from "../../components/apis/profile";
 import WalletProfileMain from "../../components/manage/WalletProfileMain";
-import { useLazyQuery } from "@apollo/client";
+import { DocumentNode, useLazyQuery } from "@apollo/client";
 import { PlatformType } from "../../components/utils/platform";
-import { GET_PROFILES } from "../../components/utils/queries";
+import { getProfileQuery } from "../../components/utils/queries";
 
 export default function WalletProfilePage() {
   const { address } = useAccount();
@@ -25,7 +25,7 @@ export default function WalletProfilePage() {
   );
 
   const [getQuery, { loading, error: isError, data: profileData }] =
-    useLazyQuery(GET_PROFILES, {
+    useLazyQuery(getProfileQuery() as DocumentNode, {
       variables: {
         platform: PlatformType.ethereum,
         identity: address?.toLowerCase(),

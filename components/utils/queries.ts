@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 import { PlatformType } from "./platform";
 import { IdentityRecord, RelationServiceQueryResponse } from "./types";
 
-export const GET_PROFILES = gql`
+const GET_PROFILES = gql`
   query GET_PROFILES($platform: String, $identity: String) {
     identity(platform: $platform, identity: $identity) {
       id
@@ -54,6 +54,33 @@ export const GET_PROFILES = gql`
     }
   }
 `;
+
+const GET_PROFILES_MINIFY = `
+query GET_PROFILES($platform: String, $identity: String) {
+  identity(platform: $platform, identity: $identity) {
+    identity
+    platform
+    displayName
+    uid
+    reverse
+    expiredAt
+    identityGraph{
+      vertices {
+        uuid
+        identity
+        platform
+        displayName
+        uid
+        reverse
+        expiredAt
+      }
+    }
+  }
+}`;
+
+export const getProfileQuery = (minify?: Boolean) => {
+  return minify ? GET_PROFILES_MINIFY : GET_PROFILES;
+};
 
 const directPass = (identity: IdentityRecord) => {
   if (identity.reverse) return true;

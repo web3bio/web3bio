@@ -5,7 +5,7 @@ import {
   ProfileAPIResponse,
 } from "../../../../components/utils/types";
 import {
-  GET_PROFILES,
+  getProfileQuery,
   primaryDomainResolvedRequestArray,
 } from "../../../../components/utils/queries";
 import {
@@ -33,7 +33,7 @@ const resolveHandleFromRelationService = (
       "x-api-key": process.env.NEXT_PUBLIC_RELATION_API_KEY || "",
     },
     body: JSON.stringify({
-      query: GET_PROFILES,
+      query: getProfileQuery(true),
       variables: {
         platform,
         identity: handle,
