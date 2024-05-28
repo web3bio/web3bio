@@ -326,3 +326,12 @@ export const NetworkMapping = (network: Network) => {
     }
   );
 };
+
+export const chainIdToNetwork = (chainId?: number | string) => {
+  if (!chainId) return null;
+  return (
+    Object.values(NetworkData).find(
+      (x) => x.chainId && x.chainId === Number(chainId)
+    )?.key || null
+  );
+};
