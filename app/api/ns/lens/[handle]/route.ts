@@ -8,7 +8,7 @@ import {
   respondWithCache,
   errorHandle,
 } from "../../../../../components/utils/utils";
-import { resolveLensResponse } from "../../../profile/lens/[handle]/route";
+import { resolveLensResponse } from "../../../profile/lens/[handle]/utils";
 
 const resolveLensHandleNS = async (handle: string) => {
   const response = await resolveLensResponse(handle);
