@@ -526,3 +526,7 @@ export const decodeContenthash = (encoded: string) => {
   }
   return decoded;
 };
+
+export const queryClient = async (path: string) => {
+  return await fetch(baseURL + path);
+};

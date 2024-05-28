@@ -27,7 +27,6 @@ const resolveHandleFromRelationService = (
   handle: string,
   platform: PlatformType = handleSearchPlatform(handle)!
 ) => {
-  console.log(nextidGraphQLEndpoint, "kkk");
   return fetch(nextidGraphQLEndpoint, {
     method: "POST",
     headers: {
