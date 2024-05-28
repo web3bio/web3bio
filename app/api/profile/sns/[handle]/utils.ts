@@ -4,11 +4,14 @@ import {
   getRecordV2,
   resolve,
 } from "@bonfida/spl-name-service";
-import { formatText } from "@/utils/base";
-import { PlatformType } from "@/utils/platform";
-import { regexSns } from "@/utils/regexp";
-import { getSocialMediaLink, resolveHandle } from "@/utils/resolver";
-import { ErrorMessages } from "@/utils/types";
+import { PlatformType } from "../../../../../components/utils/platform";
+import { regexSns } from "../../../../../components/utils/regexp";
+import { ErrorMessages } from "../../../../../components/utils/types";
+import {
+  formatText,
+  resolveHandle,
+  getSocialMediaLink,
+} from "../../../../../components/utils/utils";
 
 const SnsSDKProxyEndpoint = "https://sns-sdk-proxy.bonfida.workers.dev/";
 
@@ -109,12 +112,12 @@ export const resolveSNSHandle = async (handle: string) => {
     const recordType = recordsShouldFetch[i];
     const linkHandle = await getSNSRecord(connection, domain, recordType);
     if (linkHandle) {
-      const resolved = resolveHandle(linkHandle);
+      const resolved = resolveHandle(linkHandle) || "";
       const type = [SNSRecord.CNAME, SNSRecord.Url].includes(recordType)
         ? PlatformType.website
         : recordType;
       linksObj[type] = {
-        link: getSocialMediaLink(resolved, type)!,
+        link: getSocialMediaLink(resolved, type as PlatformType)!,
         handle: resolved!,
       };
     }

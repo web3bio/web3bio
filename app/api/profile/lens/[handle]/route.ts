@@ -1,24 +1,28 @@
+import { isAddress } from "viem";
+import { NextRequest } from "next/server";
 import {
+  errorHandle,
   getSocialMediaLink,
+  isValidEthereumAddress,
   resolveEipAssetURL,
   resolveHandle,
-} from "@/utils/resolver";
+  respondWithCache,
+} from "../../../../../components/utils/utils";
 import {
   LensGraphQLEndpoint,
   LensParamType,
   LensProtocolProfileCollectionAddress,
   getLensProfileQuery,
-} from "@/utils/lens";
-import { isAddress } from "viem";
+} from "../../../../../components/utils/lens";
 import {
-  errorHandle,
-  respondWithCache,
-  isValidEthereumAddress,
-} from "@/utils/base";
-import { PlatformType, PlatformData } from "@/utils/platform";
-import { regexEth, regexLens } from "@/utils/regexp";
-import { ErrorMessages, LinksItem } from "@/utils/types";
-import { NextRequest } from "next/server";
+  ErrorMessages,
+  LinksItem,
+} from "../../../../../components/utils/types";
+import {
+  PlatformData,
+  PlatformType,
+} from "../../../../../components/utils/platform";
+import { regexLens, regexEth } from "../../../../../components/utils/regexp";
 
 export const getLensProfile = async (handle: string, type: LensParamType) => {
   const query = getLensProfileQuery(type);

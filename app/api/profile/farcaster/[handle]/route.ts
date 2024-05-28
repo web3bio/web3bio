@@ -1,12 +1,10 @@
-import {
-  errorHandle,
-  respondWithCache,
-} from "@/utils/base";
-import { PlatformType } from "@/utils/platform";
-import { regexFarcaster } from "@/utils/regexp";
-import { ErrorMessages } from "@/utils/types";
+
 import { NextRequest } from "next/server";
 import { resolveFarcasterHandle } from "./utils";
+import { errorHandle, respondWithCache } from "../../../../../components/utils/utils";
+import { PlatformType } from "../../../../../components/utils/platform";
+import { regexFarcaster } from "../../../../../components/utils/regexp";
+import { ErrorMessages } from "../../../../../components/utils/types";
 
 const resolveFarcasterRespond = async (handle: string) => {
   try {

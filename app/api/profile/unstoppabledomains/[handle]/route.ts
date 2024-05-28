@@ -1,10 +1,20 @@
-import { errorHandle, respondWithCache } from "@/utils/base";
-import { PlatformData, PlatformType } from "@/utils/platform";
-import { regexEth, regexUnstoppableDomains } from "@/utils/regexp";
-import { getSocialMediaLink, resolveHandle } from "@/utils/resolver";
-import { ErrorMessages } from "@/utils/types";
 import { NextRequest } from "next/server";
 import { resolveUDResponse } from "./utils";
+import {
+  PlatformType,
+  PlatformData,
+} from "../../../../../components/utils/platform";
+import {
+  regexUnstoppableDomains,
+  regexEth,
+} from "../../../../../components/utils/regexp";
+import { ErrorMessages } from "../../../../../components/utils/types";
+import {
+  resolveHandle,
+  getSocialMediaLink,
+  respondWithCache,
+  errorHandle,
+} from "../../../../../components/utils/utils";
 
 const formatContenthash = (string: string) => {
   if (string) {
@@ -43,7 +53,7 @@ const resolveUDHandle = async (handle: string) => {
     UDSocialAccountsList.forEach((x) => {
       const item = metadata.socialAccounts[x];
       if (item && item.location && PlatformData[x]) {
-        const resolvedHandle = resolveHandle(item?.location, x);
+        const resolvedHandle = resolveHandle(item?.location, x) || "";
         linksObj[x] = {
           link: getSocialMediaLink(resolvedHandle, x),
           handle: resolvedHandle,

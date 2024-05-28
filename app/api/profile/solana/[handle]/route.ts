@@ -1,9 +1,12 @@
-import { errorHandle, respondWithCache } from "@/utils/base";
-import { PlatformType } from "@/utils/platform";
-import { regexSns, regexSolana } from "@/utils/regexp";
-import { ErrorMessages } from "@/utils/types";
 import { NextRequest } from "next/server";
 import { resolveSNSHandle } from "../../sns/[handle]/utils";
+import { PlatformType } from "../../../../../components/utils/platform";
+import { regexSns, regexSolana } from "../../../../../components/utils/regexp";
+import { ErrorMessages } from "../../../../../components/utils/types";
+import {
+  respondWithCache,
+  errorHandle,
+} from "../../../../../components/utils/utils";
 
 const resolveSolanaRespond = async (handle: string) => {
   try {

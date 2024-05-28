@@ -40,7 +40,9 @@ const resolveHandleFromRelationService = (
       },
     }),
   })
-    .then((res) => res.json())
+    .then((res) => {
+      return res.json()
+    })
     .catch((e) => ({
       error: e,
     }));
@@ -128,8 +130,12 @@ export const resolveUniversalRespondFromRelation = async ({
     };
   return await Promise.allSettled([
     ...resolvedRequestArray.map((x: { platform: string; identity: string }) => {
-      if (x.identity && shouldPlatformFetch(x.platform as PlatformType)) {
-        const fetchURL = `${req.nextUrl.origin}/${
+      if (
+        x.identity &&
+        shouldPlatformFetch(x.platform as PlatformType) &&
+        x.platform !== PlatformType.dotbit
+      ) {
+        const fetchURL = `${req.nextUrl.origin}/api/${
           ns ? "ns" : "profile"
         }/${x.platform.toLowerCase()}/${x.identity}`;
         return fetch(fetchURL).then((res) => res.json());

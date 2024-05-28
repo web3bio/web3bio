@@ -1,11 +1,14 @@
-import { isValidEthereumAddress } from "@/utils/base";
-import { getSocialMediaLink, resolveHandle } from "@/utils/resolver";
-import { PlatformType } from "@/utils/platform";
-import { regexEns } from "@/utils/regexp";
 import { createPublicClient, http } from "viem";
 import { mainnet } from "viem/chains";
 import { normalize } from "viem/ens";
-import { ErrorMessages } from "@/utils/types";
+import { PlatformType } from "../../../../../components/utils/platform";
+import {
+  getSocialMediaLink,
+  isValidEthereumAddress,
+  resolveHandle,
+} from "../../../../../components/utils/utils";
+import { ErrorMessages } from "../../../../../components/utils/types";
+import { regexEns } from "../../../../../components/utils/regexp";
 
 const originBase = "https://api.warpcast.com/v2/";
 const regexTwitterLink = /(\S*)(.|@)twitter/i;
@@ -96,7 +99,7 @@ const resolveFarcasterLinks = (
   const twitterMatch = bioText.match(regexTwitterLink);
   if (twitterMatch) {
     const matched = twitterMatch[1];
-    const resolveMatch = resolveHandle(matched, PlatformType.farcaster);
+    const resolveMatch = resolveHandle(matched, PlatformType.farcaster) || "";
     linksObj[PlatformType.twitter] = {
       link: getSocialMediaLink(resolveMatch, PlatformType.twitter),
       handle: resolveMatch,
