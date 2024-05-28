@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "rimraf .next && next build",
+    "test": "jest",
     "export": "next export",
     "start": "next start",
     "lint": "next lint"
@@ -22,6 +23,7 @@
     "react-markdown": "^9.0.0",
     "viem": "^1.21.4",
     "wagmi": "^1.4.13",
+    "sharp": "^0.32.6",
     "yaqrcode": "^0.2.1"
   },
   "devDependencies": {
@@ -40,6 +42,9 @@
     "react-dom": "^18.2.0",
     "react-inlinesvg": "^4.1.0",
     "react-redux": "^8.0.5",
+    "jest": "^29.7.0",
+    "@types/jest": "^29.5.12",
+    "ts-jest": "^29.1.2",
     "sass": "^1.69.5",
     "swr": "^2.2.0",
     "typescript": "^5.3.3",

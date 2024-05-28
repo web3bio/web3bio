@@ -1,10 +1,11 @@
+import { CoinType } from "../../../../../components/utils/cointype";
+import { PlatformType } from "../../../../../components/utils/platform";
+import { ErrorMessages } from "../../../../../components/utils/types";
 import {
   isValidEthereumAddress,
-} from "@/utils/base";
-import { getSocialMediaLink, resolveHandle } from "@/utils/resolver";
-import { PlatformType } from "@/utils/platform";
-import { CoinType } from "@/utils/cointype";
-import { ErrorMessages } from "@/utils/types";
+  resolveHandle,
+  getSocialMediaLink,
+} from "../../../../../components/utils/utils";
 
 const DotbitEndPoint = "https://indexer-v1.did.id/";
 

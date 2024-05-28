@@ -1,26 +1,12 @@
 import { NextRequest } from "next/server";
-import { resolveDotbitHandle } from "./utils";
 import { PlatformType } from "../../../../../components/utils/platform";
 import { regexDotbit, regexEth } from "../../../../../components/utils/regexp";
 import { ErrorMessages } from "../../../../../components/utils/types";
 import {
-  respondWithCache,
   errorHandle,
+  respondWithCache,
 } from "../../../../../components/utils/utils";
-
-const resolveDotbitRespond = async (handle: string) => {
-  try {
-    const json = await resolveDotbitHandle(handle);
-    return respondWithCache(JSON.stringify(json));
-  } catch (e: any) {
-    return errorHandle({
-      identity: handle,
-      platform: PlatformType.dotbit,
-      code: e.cause || 500,
-      message: e.message,
-    });
-  }
-};
+import { resolveDotbitResponse } from "../../../profile/dotbit/[handle]/utils";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
@@ -36,5 +22,31 @@ export async function GET(req: NextRequest) {
     });
   return resolveDotbitRespond(lowercaseName);
 }
+
+const resolveDotbitHandleNS = async (handle: string) => {
+  const { address, domain, recordsMap } = await resolveDotbitResponse(handle);
+  return {
+    address,
+    identity: domain,
+    platform: PlatformType.dotbit,
+    displayName: domain || null,
+    avatar: recordsMap.get("profile.avatar")?.value || null,
+    description: recordsMap.get("profile.description")?.value || null,
+  };
+};
+
+const resolveDotbitRespond = async (handle: string) => {
+  try {
+    const json = await resolveDotbitHandleNS(handle);
+    return respondWithCache(JSON.stringify(json));
+  } catch (e: any) {
+    return errorHandle({
+      identity: handle,
+      platform: PlatformType.dotbit,
+      code: e.cause || 500,
+      message: e.message,
+    });
+  }
+};
 
 export const runtime = "edge";

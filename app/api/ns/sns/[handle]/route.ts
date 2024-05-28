@@ -1,21 +1,21 @@
 import { NextRequest } from "next/server";
-import { resolveDotbitHandle } from "./utils";
+import { resolveSNSHandleNS } from "./utils";
 import { PlatformType } from "../../../../../components/utils/platform";
-import { regexDotbit, regexEth } from "../../../../../components/utils/regexp";
+import { regexSns, regexSolana } from "../../../../../components/utils/regexp";
 import { ErrorMessages } from "../../../../../components/utils/types";
 import {
   respondWithCache,
   errorHandle,
 } from "../../../../../components/utils/utils";
 
-const resolveDotbitRespond = async (handle: string) => {
+const resolveSNSRespondNS = async (handle: string) => {
   try {
-    const json = await resolveDotbitHandle(handle);
+    const json = await resolveSNSHandleNS(handle);
     return respondWithCache(JSON.stringify(json));
   } catch (e: any) {
     return errorHandle({
       identity: handle,
-      platform: PlatformType.dotbit,
+      platform: PlatformType.sns,
       code: e.cause || 500,
       message: e.message,
     });
@@ -24,17 +24,16 @@ const resolveDotbitRespond = async (handle: string) => {
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
-  const inputName = searchParams.get("handle");
-  const lowercaseName = inputName?.toLowerCase() || "";
-
-  if (!regexDotbit.test(lowercaseName) && !regexEth.test(lowercaseName))
+  const inputName = searchParams.get("handle") || "";
+  if (!regexSns.test(inputName) && !regexSolana.test(inputName))
     return errorHandle({
-      identity: lowercaseName,
-      platform: PlatformType.dotbit,
+      identity: inputName,
+      platform: PlatformType.sns,
       code: 404,
       message: ErrorMessages.invalidIdentity,
     });
-  return resolveDotbitRespond(lowercaseName);
+
+  return resolveSNSRespondNS(inputName);
 }
 
 export const runtime = "edge";
