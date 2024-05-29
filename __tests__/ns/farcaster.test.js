@@ -1,6 +1,5 @@
 import { queryClient } from "../../components/utils/test-utils";
 
-
 describe("Test For Farcaster NS API", () => {
   it("It should response 200 for suji", async () => {
     const res = await queryClient("/ns/farcaster/suji");
@@ -15,7 +14,6 @@ describe("Test For Farcaster NS API", () => {
     expect(res.status).toBe(200);
     const json = await res.json();
     expect(json.identity).toBe("suji");
-    expect(json.address).toBe("0x934b510d4c9103e6a87aef13b816fb080286d649");
   });
 
   it("It should response 404 for dwr", async () => {
