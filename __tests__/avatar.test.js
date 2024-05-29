@@ -1,4 +1,4 @@
-import { queryClient } from "../components/utils/utils";
+import { queryClient } from "../components/utils/test-utils";
 
 describe("Test For Avatar Service API", () => {
   it("It should response 200 for vitalik.eth", async () => {
@@ -28,9 +28,7 @@ describe("Test For Avatar Service API", () => {
     expect(text.startsWith("https"));
   });
   it("It should response 200 for suji.eth", async () => {
-    const res = await queryClient(
-      "/avatar/suji.eth"
-    );
+    const res = await queryClient("/avatar/suji.eth");
     expect(res.status).toBe(200);
     const text = await res.text();
     expect(text.startsWith("<svg"));

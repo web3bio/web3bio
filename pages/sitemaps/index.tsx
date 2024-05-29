@@ -1,28 +1,28 @@
 import Link from "next/link";
-import Head from 'next/head'
+import Head from "next/head";
 import "../../styles/web3bio.scss";
+import { baseURL } from "../../components/utils/test-utils";
 
 export async function getStaticProps({}) {
-  const res = await fetch(`https://sitemaps.web3.bio/sitemap-index.json`)
-  const data = await res.json()
-  return { props: { data } }
+  const res = await fetch(`https://sitemaps.web3.bio/sitemap-index.json`);
+  const data = await res.json();
+  return { props: { data } };
 }
 
-export default function Sitemap({data}) {
-  const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
-  
+export default function Sitemap({ data }) {
   return (
     <div className="web3bio-container">
       <Head>
         <title>Web3.bio Sitemaps</title>
-        <meta name="description" content="Web3.bio is a platform for Web3 and Web 2.0 Identity Graph search and link in bio profiles. It provides a list of relevant identities when searching for a Twitter handle, Ethereum address, ENS domain, Lens profile, Farcaster account, Unstoppable Domains, and other Web3 identities."></meta>
+        <meta
+          name="description"
+          content="Web3.bio is a platform for Web3 and Web 2.0 Identity Graph search and link in bio profiles. It provides a list of relevant identities when searching for a Twitter handle, Ethereum address, ENS domain, Lens profile, Farcaster account, Unstoppable Domains, and other Web3 identities."
+        ></meta>
         <link rel="canonical" href={`${baseURL}/sitemaps`}></link>
         <meta name="robots" content="index, follow"></meta>
       </Head>
       <div className="web3bio-cover flare"></div>
-      <div
-        className={"web3bio-search focused"}
-      >
+      <div className={"web3bio-search focused"}>
         <div className="container grid-sm">
           <div className="search-form">
             <Link
@@ -56,9 +56,7 @@ export default function Sitemap({data}) {
           </div>
           <div className="sitemap-result">
             <div className="sitemap-result-header">
-              <h1 className="sitemap-result-text text-gray">
-                Sitemaps
-              </h1>
+              <h1 className="sitemap-result-text text-gray">Sitemaps</h1>
             </div>
             <div className="sitemap-result-body">
               {data?.data.map((page) => (
@@ -77,7 +75,7 @@ export default function Sitemap({data}) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 // export const runtime = "nodejs";

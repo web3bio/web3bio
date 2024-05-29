@@ -70,9 +70,6 @@ export const respondWithCache = (
   });
 };
 
-export const baseURL =
-  process.env.NEXT_PUBLIC_BASE_URL || "https://localhost:3000";
-
 export const formatText = (string, length?) => {
   if (!string) return "";
   const splitter = new GraphemeSplitter();
@@ -457,7 +454,6 @@ export const shouldPlatformFetch = (platform?: PlatformType | null) => {
   return false;
 };
 
-
 export const resolveHandle = (handle: string, platform?: PlatformType) => {
   if (!handle) return null;
   let handleToResolve = handle;
@@ -492,7 +488,7 @@ export const resolveEipAssetURL = async (source: string) => {
 
       if (contractAddress && tokenId && network) {
         const fetchURL =
-        SIMPLEHASH_URL +
+          SIMPLEHASH_URL +
           `/api/v0/nfts/${network}/${contractAddress}/${tokenId}`;
         const res = await SimplehashFetcher(fetchURL);
 
@@ -525,8 +521,4 @@ export const decodeContenthash = (encoded: string) => {
     decoded = null;
   }
   return decoded;
-};
-
-export const queryClient = async (path: string) => {
-  return await fetch(baseURL + path);
 };

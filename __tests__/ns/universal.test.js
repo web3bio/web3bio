@@ -1,4 +1,4 @@
-import { queryClient } from "../../components/utils/utils";
+import { queryClient } from "../../components/utils/test-utils";
 
 
 describe("Test For Universal NS API", () => {

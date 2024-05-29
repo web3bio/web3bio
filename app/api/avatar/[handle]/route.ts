@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { resolveUniversalRespondFromRelation } from "../../profile/[handle]/utils";
 import { respondWithSVG } from "../svg/utils";
 import {
-  baseURL,
   handleSearchPlatform,
   shouldPlatformFetch,
 } from "../../../../components/utils/utils";
+import { baseURL } from "../../../../components/utils/test-utils";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;

@@ -1,4 +1,4 @@
-import { queryClient } from "../components/utils/utils";
+import { queryClient } from "../components/utils/test-utils";
 
 describe("Test For Farcaster Profile API", () => {
   it("It should response 200 for suji", async () => {
