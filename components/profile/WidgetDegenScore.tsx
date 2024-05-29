@@ -1,8 +1,9 @@
 "use client";
 import { memo, useEffect } from "react";
 import useSWR from "swr";
+import Link from "next/link";
 import { DegenFetcher, DEGENSCORE_ENDPOINT } from "../apis/degenscore";
-import SVG from "react-inlinesvg";
+import { formatDistanceToNow } from "date-fns";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { Loading } from "../shared/Loading";
 import { updateDegenWidget } from "../state/widgets/action";
@@ -46,37 +47,57 @@ const RenderWidgetDegenScore = ({ address }) => {
   }
 
   return (
-    <div className="profile-widget profile-widget-degenscore">
-      <div className="scores-item-title">
-        {isLoading ? (
-          <Loading />
-        ) : (
+    isLoading ? (
+      <Loading />
+    ) : (
+      <Link className="profile-widget profile-widget-degenscore"
+        href={data?.external_url}
+        target="_blank"
+      >
+        <div className="profile-widget-header">
           <h2 className="profile-widget-title">
             <span className="emoji-large mr-2">
               {WidgetInfoMapping(WidgetTypes.degen).icon}{" "}
             </span>
-            DegenScore{" "}
-            <span className="label ml-2">{data.properties?.DegenScore}</span>
+            {WidgetInfoMapping(WidgetTypes.degen).title}{" "}
           </h2>
-        )}
-      </div>
-      {data.traits.actions?.metadata.actions.actions && (
-        <div className="widget-trait-list">
-          {(data.traits.actions?.metadata.actions.actions).map((item, idx) => {
-            return (
-              <div
-                key={idx}
-                className={`trait-item label ${item.actionTier?.toLowerCase()}`}
-                title={item.description}
-              >
-                {item.actionTier == "ACTION_TIER_LEGENDARY" && ("💎 ")}
-                {item.name}
-              </div>
-            );
-          })}
         </div>
-      )}
-    </div>
+        <div className="profile-widget-body"></div>
+
+        <div className="profile-widget-footer">
+          <div className="widget-degen-number">
+            {data.properties?.DegenScore}
+          </div>
+          <div className="widget-degen-title">
+            Updated:{" "}
+            {formatDistanceToNow(new Date(data?.updatedAt), {
+              addSuffix: true,
+            })}
+          </div>
+          
+        </div>
+
+        {data.traits.actions?.metadata.actions.actions && (
+          <div className="profile-widget-hover">
+            <div className="widget-trait-list">
+              {(data.traits.actions?.metadata.actions.actions).map((item, idx) => {
+                return (
+                  <div
+                    key={idx}
+                    className={`trait-item label ${item.actionTier?.toLowerCase()}`}
+                    title={item.description}
+                  >
+                    {item.actionTier == "ACTION_TIER_LEGENDARY" && ("💎 ")}
+                    {item.actionTier == "ACTION_TIER_EPIC" && ("✨ ")}
+                    {item.name}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </Link>
+    )
   );
 };
 

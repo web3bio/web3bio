@@ -1081,7 +1081,7 @@
 
       .profile-widget {
         flex: 0 0 12rem;
-        min-height: 8rem;
+        min-height: 9rem;
         padding: 1rem;
         text-decoration: none;
         width: 12rem;
@@ -1153,6 +1153,7 @@
         }
 
         .dao-icon {
+          background: $bg-color;
           border-radius: 50%;
           height: 1.2rem;
           width: 1.2rem;
@@ -1201,33 +1202,61 @@
 
   // DegenScore Widget
   .profile-widget-degenscore {
-    background: lighten($bg-color, 5%);
-    border: .05rem solid rgba($dark-color, .025);
+    background: linear-gradient(-45deg, rgba(#A381EB, .15) 0, rgba(#fff, 1) 55%);
     border-radius: .6rem;
     box-shadow: 0 .1rem .4rem rgba($dark-color, .04);
     position: relative;
     width: 100%;
 
-    .profile-widget-title {
-      .label {
-        background: darken(#a855f7, 25%);
-        box-shadow: inset 0 0 .25rem rgba($dark-color, .15);
-        color: #fff;
+    .profile-widget-body {
+      flex: 1;
+    }
+
+    .profile-widget-hover {
+      background: rgba(#121212, .95);
+      border-radius: .6rem;
+      bottom: 0;
+      display: none;
+      height: 100%;
+      left: 0;
+      padding: 1rem;
+      position: absolute;
+      width: 100%;
+    }
+
+    &:focus,
+    &:hover {
+      .profile-widget-hover {
+        display: flex;
       }
+    }
+
+    .widget-degen-title {
+      font-size: .6rem;
+    }
+
+    .widget-degen-number {
+      align-items: center;
+      display: flex;
+      font-size: 1.2rem;
+      font-weight: 800;
+      gap: .4rem;
     }
 
     .widget-trait-list {
       display: flex;
       flex-wrap: wrap;
-      gap: .25rem;
-      margin-top: .5rem;
+      gap: .2rem;
+      height: 100%;
+      width: 100%;
 
       .trait-item {
-        background-color: #333;
         background-clip: text;
         border-radius: .2rem;
         color: transparent;
         font-weight: 500;
+        height: .8rem;
+        padding: 0;
 
         &.action_tier_legendary {
           background-image: linear-gradient(124.2deg, #d6fdff 8%, #bad1ff 34%, #7cd4f0 74%, #b4fffa 95%);
@@ -1263,10 +1292,9 @@
 
   // Webacy Widget
   .profile-widget-webacy {
-    background: linear-gradient(-60deg, rgba(#556DD0, 1) 0, rgba(#121212, 1) 35%);
-    border: .05rem solid rgba($dark-color, .5);
+    background: linear-gradient(-45deg, rgba(#556DD0, .15) 0, rgba(#fff, 1) 55%);
     border-radius: .6rem;
-    color: $light-color;
+    box-shadow: 0 .1rem .4rem rgba($dark-color, .04);
     min-height: 8rem;
     position: relative;
     width: 100%;
@@ -1276,8 +1304,7 @@
     }
 
     .widget-risk-title {
-      font-size: .7rem;
-      margin-bottom: .5rem;
+      font-size: .6rem;
     }
 
     .widget-risk-number {
@@ -1286,26 +1313,26 @@
       font-size: 1.2rem;
       font-weight: 800;
       gap: .4rem;
-      line-height: 1.2rem;
 
       .widget-risk-label {
-        background: linear-gradient(-60deg, rgba($light-color, .05) 0, rgba($light-color, .15) 35%);
-        border: .05rem solid rgba($light-color, .25);
-        border-radius: .4rem;
+        background: linear-gradient(-60deg, rgba(#556DD0, .05) 0, rgba(#556DD0, .15) 35%);
+        border: .05rem solid rgba(#556DD0, .05);
+        border-radius: .35rem;
+        color: rgba(#556DD0, .75);
         font-size: .65rem;
         font-weight: 400;
         padding: 0 .25rem;
 
         &.high-risk {
           background: linear-gradient(-60deg, rgba(#EF4444, .05) 0, rgba(#EF4444, .15) 35%);
-          border: .05rem solid rgba(#EF4444, .25);
-          color: rgba(#EF4444, .75);
+          border: .05rem solid rgba(#EF4444, .05);
+          color: rgba(#EF4444, .65);
         }
 
         &.medium-risk {
-          background: linear-gradient(-60deg, rgba(#F9E796, .15) 0, rgba(#F9E796, .25) 35%);
-          border: .05rem solid rgba(#F9E796, .25);
-          color: rgba(#F9E796, .85);
+          background: linear-gradient(-60deg, rgba(#ffb700, .05) 0, rgba(#ffb700, .15) 35%);
+          border: .05rem solid rgba(#ffb700, .05);
+          color: rgba(#ffb700, .85);
         }
       }
     }

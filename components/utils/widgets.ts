@@ -68,7 +68,7 @@ export const WidgetInfoMapping = (widgetType: WidgetTypes) => {
       key: "degen",
       icon: "👾",
       title: "DegenScore",
-      description: "",
+      description: "The DegenScore Beacon is an Ethereum soulbound token that highlights your on-chain skills & traits across one or more wallets.",
     },
     [WidgetTypes.webacy]: {
       key: "webacy",

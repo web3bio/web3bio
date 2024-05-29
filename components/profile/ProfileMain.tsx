@@ -337,12 +337,6 @@ export default function ProfileMain(props) {
         </div>
         <div className="column col-7 col-lg-12">
           <div className="web3-section-widgets">
-            <WidgetScores
-              states={profileWidgetStates}
-              address={data.address}
-            />
-          </div>
-          <div className="web3-section-widgets">
             {links?.map((item, idx) => {
               if (item.handle) {
                 return (
@@ -406,12 +400,12 @@ export default function ProfileMain(props) {
 
               {isBasicLoadingFinished && (
                 <>
-                  {/* <div className="web3-section-widgets">
+                  <div className="web3-section-widgets">
                     <WidgetScores
                       states={profileWidgetStates}
                       address={data.address}
                     />
-                  </div> */}
+                  </div>
 
                   {([PlatformType.ens, PlatformType.dotbit].includes(
                     data.platform
