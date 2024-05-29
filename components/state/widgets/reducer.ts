@@ -27,10 +27,10 @@ export interface WidgetState {
   [WidgetTypes.feeds]?: WidgetStateDetail;
   [WidgetTypes.poaps]?: WidgetStateDetail;
   [WidgetTypes.rss]?: WidgetStateDetail;
+  [WidgetTypes.scores]?: WidgetStateDetail;
   [WidgetTypes.article]?: WidgetStateDetail;
   [WidgetTypes.tally]?: WidgetStateDetail;
   [WidgetTypes.philand]?: WidgetStateDetail;
-  [WidgetTypes.scores]?: WidgetStateDetail;
   [WidgetTypes.degen]?: WidgetStateDetail;
   [WidgetTypes.webacy]?: WidgetStateDetail;
   [WidgetTypes.walletLabels]?: WidgetStateDetail;
@@ -57,6 +57,12 @@ export const initialState: WidgetState = {
     initLoading: true,
     loaded: false,
   },
+  [WidgetTypes.scores]: {
+    isEmpty: null,
+    initLoading: true,
+    loaded: false,
+    children: [WidgetTypes.webacy, WidgetTypes.walletLabels, WidgetTypes.degen],
+  },
   [WidgetTypes.article]: {
     isEmpty: null,
     initLoading: true,
@@ -71,12 +77,6 @@ export const initialState: WidgetState = {
     isEmpty: null,
     initLoading: true,
     loaded: false,
-  },
-  [WidgetTypes.scores]: {
-    isEmpty: null,
-    initLoading: true,
-    loaded: false,
-    children: [WidgetTypes.webacy, WidgetTypes.walletLabels, WidgetTypes.degen],
   },
   [WidgetTypes.webacy]: {
     isEmpty: null,
@@ -145,6 +145,17 @@ export default createReducer(initialState, (builder) =>
       }
     )
     .addCase(
+      updateScoresWidget,
+      (state, { payload: { isEmpty, initLoading } }) => {
+        state[WidgetTypes.scores] = {
+          ...state[WidgetTypes.scores],
+          isEmpty,
+          initLoading,
+          loaded: true,
+        };
+      }
+    )
+    .addCase(
       updateArticleWidget,
       (state, { payload: { isEmpty, initLoading } }) => {
         state[WidgetTypes.article] = {
@@ -171,17 +182,6 @@ export default createReducer(initialState, (builder) =>
       (state, { payload: { isEmpty, initLoading } }) => {
         state[WidgetTypes.philand] = {
           ...state[WidgetTypes.philand],
-          isEmpty,
-          initLoading,
-          loaded: true,
-        };
-      }
-    )
-    .addCase(
-      updateScoresWidget,
-      (state, { payload: { isEmpty, initLoading } }) => {
-        state[WidgetTypes.scores] = {
-          ...state[WidgetTypes.scores],
           isEmpty,
           initLoading,
           loaded: true,

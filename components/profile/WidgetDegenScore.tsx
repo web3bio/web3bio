@@ -46,8 +46,8 @@ const RenderWidgetDegenScore = ({ address }) => {
   }
 
   return (
-    <div className="rss-item">
-      <div className="rss-item-title">
+    <div className="profile-widget profile-widget-degenscore">
+      <div className="scores-item-title">
         {isLoading ? (
           <Loading />
         ) : (
@@ -66,20 +66,11 @@ const RenderWidgetDegenScore = ({ address }) => {
             return (
               <div
                 key={idx}
-                className={`trait-item ${item.actionTier?.toLowerCase()}`}
+                className={`trait-item label ${item.actionTier?.toLowerCase()}`}
                 title={item.description}
               >
-                <div className="trait-item-bg">
-                  <div className="trait-label">
-                    {item.actionTier == "ACTION_TIER_LEGENDARY" && (
-                      <div className="value">💎</div>
-                    )}
-                    {item.actionTier == "ACTION_TIER_EPIC" && (
-                      <div className="value">&#127942;</div>
-                    )}
-                  </div>
-                  <div className="trait-name">{item.name}</div>
-                </div>
+                {item.actionTier == "ACTION_TIER_LEGENDARY" && ("💎 ")}
+                {item.name}
               </div>
             );
           })}

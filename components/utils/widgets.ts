@@ -3,13 +3,13 @@ export enum WidgetTypes {
   poaps = "poaps",
   feeds = "feeds",
   rss = "rss",
+  scores = "scores",
   article = "article",
   philand = "philand",
   tally = "tally",
   degen = "degen",
   webacy = "webacy",
   walletLabels = "walletLabels",
-  scores = "scores",
   default = "default",
 }
 export const WidgetInfoMapping = (widgetType: WidgetTypes) => {

@@ -3,7 +3,6 @@ import useSWR from "swr";
 import { WEBACY_API_ENDPOINT, webacyFetcher } from "../apis/webacy";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { regexSolana } from "../utils/regexp";
-import { Loading } from "../shared/Loading";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { updateWebacyWidget } from "../state/widgets/action";
@@ -26,22 +25,31 @@ export function WidgetWebacy({ address }) {
       );
     }
   }, [data, dispatch]);
+
+  if (process.env.NODE_ENV !== "production") {
+    console.log("Webacy Data:", data);
+  }
+    
   return (
-    <div className="rss-item">
-      <div className="rss-item-title">
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <h2 className="profile-widget-title">
-            <span className="emoji-large mr-2">
-              {WidgetInfoMapping(WidgetTypes.webacy).icon}{" "}
-            </span>
-            WebacyScore{" "}
-            <span className="label ml-2">
-              {Number(data?.overallRisk).toFixed(2)}
-            </span>
-          </h2>
-        )}
+    data && 
+    <div className="profile-widget profile-widget-webacy">
+      <div className="profile-widget-header">
+        <h2 className="profile-widget-title">
+          <span className="emoji-large mr-2">
+            {WidgetInfoMapping(WidgetTypes.webacy).icon}{" "}
+          </span>
+          {WidgetInfoMapping(WidgetTypes.webacy).title}{" "}
+        </h2>
+      </div>
+      
+      <div className="profile-widget-body"></div>
+
+      <div className="profile-widget-footer">
+        <div className="widget-risk-title">Safety Score</div>
+        <div className="widget-risk-number">
+          {Number(data?.overallRisk).toFixed(2)}
+          <div className={`widget-risk-label ${data?.high > 0 ? "high-risk" : data?.medium > 0 ? "medium-risk" : "low-risk"}`}>{ data?.high > 0 ? "High Risk" : data?.medium > 0 ? "Medium Risk" : "Low Risk" }</div>
+        </div>
       </div>
     </div>
   );
