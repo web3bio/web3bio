@@ -9,9 +9,10 @@ import {
   respondWithCache,
   errorHandle,
 } from "../../../../../components/utils/utils";
+import { resolveUDResponse } from "../../../profile/unstoppabledomains/[handle]/utils";
 
 const resolveUDHandleNS = async (handle: string) => {
-  const { address, domain, metadata } = await resolveUDRespond(handle);
+  const { address, domain, metadata } = await resolveUDResponse(handle);
   return {
     address,
     identity: domain,
@@ -22,7 +23,7 @@ const resolveUDHandleNS = async (handle: string) => {
   };
 };
 
-const resolveUDRespond = async (handle: string) => {
+const resolveUDRespondNS = async (handle: string) => {
   try {
     const json = await resolveUDHandleNS(handle);
     return respondWithCache(JSON.stringify(json));
@@ -51,7 +52,7 @@ export async function GET(req: NextRequest) {
       code: 404,
       message: ErrorMessages.invalidIdentity,
     });
-  return resolveUDRespond(lowercaseName);
+  return resolveUDRespondNS(lowercaseName);
 }
 
 export const runtime = "edge";

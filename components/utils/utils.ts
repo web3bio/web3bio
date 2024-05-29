@@ -244,6 +244,10 @@ const resolveSocialMediaLink = (name: string, type: PlatformType) => {
     case PlatformType.dns:
     case PlatformType.website:
       return `https://${name}`;
+    case PlatformType.discord:
+      if (name.includes("https://"))
+        return SocialPlatformMapping(type).urlPrefix + name;
+      return "";
     default:
       return SocialPlatformMapping(type).urlPrefix
         ? SocialPlatformMapping(type).urlPrefix + name
@@ -485,7 +489,7 @@ export const resolveEipAssetURL = async (source: string) => {
       const contractAddress = match?.[3];
       const tokenId = match?.[4];
       const network = chainIdToNetwork(chainId);
-
+      
       if (contractAddress && tokenId && network) {
         const fetchURL =
           SIMPLEHASH_URL +

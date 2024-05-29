@@ -111,15 +111,15 @@ export const resolveLensHandle = async (handle: string) => {
       ...(await getLink()),
     };
   }
-  const avatarUri = response.metadata
-    ? response.metadata?.picture?.raw?.uri ||
-      response.metadata?.picture?.optimized?.uri
-    : await resolveEipAssetURL(
-        `eip155:137/erc721:${LensProtocolProfileCollectionAddress}/${parseInt(
-          response.id?.slice(2),
-          16
-        )}`
-      );
+  const avatarUri =
+    response.metadata?.picture?.raw?.uri ||
+    response.metadata?.picture?.optimized?.uri ||
+    (await resolveEipAssetURL(
+      `eip155:137/erc721:${LensProtocolProfileCollectionAddress}/${parseInt(
+        response.id?.slice(2),
+        16
+      )}`
+    ));
   const coverPictureUri =
     response.metadata?.coverPicture?.optimized?.url ||
     response.metadata?.coverPicture?.raw?.uri ||
