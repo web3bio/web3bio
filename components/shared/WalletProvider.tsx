@@ -1,52 +1,20 @@
 "use client";
-import {
-  connectorsForWallets,
-  RainbowKitProvider,
-} from "@rainbow-me/rainbowkit";
-import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import {
-  metaMaskWallet,
-  okxWallet,
-  rainbowWallet,
-  safeWallet,
-  walletConnectWallet,
-} from "@rainbow-me/rainbowkit/wallets";
+import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { WagmiProvider, http } from "wagmi";
 import { mainnet, polygon, optimism, arbitrum, base, zora } from "wagmi/chains";
-import { publicProvider } from "wagmi/providers/public";
+import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 
-const { chains, publicClient } = configureChains(
-  [mainnet, polygon, optimism, arbitrum, base, zora],
-  [publicProvider()]
-);
-
-const walletsOptions = {
-  chains,
+const config = getDefaultConfig({
+  appName: "RainbowKit demo",
   projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_ID || "",
-};
-const wallets = [
-  okxWallet({ ...walletsOptions }),
-  metaMaskWallet({ ...walletsOptions, shimDisconnect: true }),
-  walletConnectWallet(walletsOptions),
-  rainbowWallet(walletsOptions),
-  safeWallet({
-    ...walletsOptions,
-    debug: false,
-    allowedDomains: [/gnosis-safe.io$/, /app.safe.global$/],
-  }),
-];
-
-const connectors = connectorsForWallets([
-  {
-    groupName: "Supported Wallets",
-    wallets,
+  chains: [mainnet, polygon, optimism, arbitrum, base, zora],
+  transports: {
+    [mainnet.id]: http(),
   },
-]);
-
-const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors,
-  publicClient,
 });
+
+const queryClient = new QueryClient();
 
 export default function WalletProvider({
   children,
@@ -54,10 +22,12 @@ export default function WalletProvider({
   children: React.ReactNode;
 }) {
   return (
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider modalSize="compact" locale="en-US" chains={chains}>
-        {children}
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <RainbowKitProvider modalSize="compact" locale="en-US">
+          {children}
+        </RainbowKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
   );
 }
