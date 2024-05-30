@@ -2,6 +2,12 @@ import { gql } from "@apollo/client";
 import { PlatformType } from "./platform";
 import { IdentityRecord, RelationServiceQueryResponse } from "./types";
 
+export const platformsToExclude = [
+  PlatformType.dotbit,
+  PlatformType.sns,
+  PlatformType.solana,
+];
+
 const GET_PROFILES = gql`
   query GET_PROFILES($platform: String, $identity: String) {
     identity(platform: $platform, identity: $identity) {
@@ -100,6 +106,9 @@ export const primaryDomainResolvedRequestArray = (
       platform: resolvedRecord.platform,
       reverse: false,
     };
+    if (platformsToExclude.includes(platform)) {
+      return [defaultReturn];
+    }
     if (
       (directPass(resolvedRecord) ||
         resolvedRecord.platform === PlatformType.nextid) &&

@@ -6,6 +6,7 @@ import {
 } from "../../../../components/utils/types";
 import {
   getProfileQuery,
+  platformsToExclude,
   primaryDomainResolvedRequestArray,
 } from "../../../../components/utils/queries";
 import {
@@ -73,7 +74,7 @@ const sortByPlatform = (
     if (x.platform === order[1]) second.push(x);
     if (x.platform === order[2]) third.push(x);
     if (x.platform === order[3]) forth.push(x);
-    fifth.push(x);
+    if (x.platform === order[4]) fifth.push(x);
   });
   return [
     first.find((x) => x.identity === handle),
@@ -152,7 +153,9 @@ export const resolveUniversalRespondFromRelation = async ({
           (response) =>
             (response as PromiseFulfilledResult<ProfileAPIResponse>)?.value
         );
-      const returnRes = sortByPlatform(responsesToSort, platform, handle);
+      const returnRes = platformsToExclude.includes(platform)
+        ? responsesToSort
+        : sortByPlatform(responsesToSort, platform, handle);
 
       if (
         platform === PlatformType.ethereum &&
