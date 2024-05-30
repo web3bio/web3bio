@@ -9,7 +9,6 @@ export enum WidgetTypes {
   tally = "tally",
   degen = "degen",
   webacy = "webacy",
-  walletLabels = "walletLabels",
   default = "default",
 }
 export const WidgetInfoMapping = (widgetType: WidgetTypes) => {
@@ -33,16 +32,16 @@ export const WidgetInfoMapping = (widgetType: WidgetTypes) => {
       description:
         "POAP is a curated ecosystem for the preservation of memories. By checking-in at different events, POAP collectors build a digital scrapbook where each POAP is an anchor to a place and space in time.",
     },
-    [WidgetTypes.rss]: {
-      key: "rss",
-      icon: "🌐",
-      title: "Website",
-      description: "",
-    },
     [WidgetTypes.scores]: {
       key: "scores",
       icon: "🏆",
       title: "Badges and Scores",
+      description: "",
+    },
+    [WidgetTypes.rss]: {
+      key: "rss",
+      icon: "🌐",
+      title: "Website",
       description: "",
     },
     [WidgetTypes.article]: {
@@ -61,8 +60,7 @@ export const WidgetInfoMapping = (widgetType: WidgetTypes) => {
       key: "philand",
       icon: "🏝️",
       title: "Phi Land",
-      description:
-        "Phi is a new Web3 world created from ENS domains & On-Chain Activity, enabling the easy visualization of On-Chain Identities, currently built on Polygon. Virtually interact with crypto protocols from around the Ethereum ecosystem.",
+      description: "Phi is a new Web3 world created from ENS domains & On-Chain Activity, enabling the easy visualization of On-Chain Identities, currently built on Polygon. Virtually interact with crypto protocols from around the Ethereum ecosystem.",
     },
     [WidgetTypes.degen]: {
       key: "degen",
@@ -74,19 +72,13 @@ export const WidgetInfoMapping = (widgetType: WidgetTypes) => {
       key: "webacy",
       icon: "🛡️",
       title: "Webacy",
-      description: "",
-    },
-    [WidgetTypes.walletLabels]: {
-      key: "walletLabels",
-      icon: "🏷️",
-      title: "WalletLabels",
-      description: "",
+      description: "Powered by Webacy's proprietary algorithm, the Safety Score gives you a real-time understanding of your wallet risk and vulnerabilities to attack vectors. ",
     },
   };
   return (
     WidgetsInfoData[widgetType] || {
       key: "default",
-      icon: "😊",
+      icon: "🌐",
       title: "",
       description: "",
     }

@@ -1,7 +1,6 @@
 "use client";
 import { memo, useEffect, useMemo } from "react";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
-// import { WidgetWalletLabels } from "./WidgetWalletLabels";
 import { WidgetDegenScore } from "./WidgetDegenScore";
 import { WidgetWebacy } from "./WidgetWebacy";
 import { updateScoresWidget } from "../state/widgets/action";
@@ -19,10 +18,6 @@ const RenderWidgetScores = ({ address, states }) => {
         key: WidgetTypes.webacy,
         render: () => <WidgetWebacy address={address} />,
       },
-      // {
-      //   key: WidgetTypes.walletLabels,
-      //   render: () => <WidgetWalletLabels address={address} />,
-      // },
     ];
   }, [address]);
 
@@ -30,7 +25,6 @@ const RenderWidgetScores = ({ address, states }) => {
     const childs = [
       WidgetTypes.webacy,
       WidgetTypes.degen,
-      WidgetTypes.walletLabels,
     ];
     childs.forEach((x) => {
       if (states[x].isEmpty === false && !states[WidgetTypes.scores].loaded) {

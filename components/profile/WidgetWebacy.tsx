@@ -1,4 +1,4 @@
-import SVG from "react-inlinesvg";
+"use client";
 import useSWR from "swr";
 import { WEBACY_API_ENDPOINT, webacyFetcher } from "../apis/webacy";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";

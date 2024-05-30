@@ -8,7 +8,6 @@ import {
   updateTallyDAOWidget,
   updateArticleWidget,
   updateScoresWidget,
-  updateWalletLabels,
   updateWebacyWidget,
   updateDegenWidget,
 } from "./action";
@@ -26,14 +25,13 @@ export interface WidgetState {
   [WidgetTypes.nft]: WidgetStateDetail;
   [WidgetTypes.feeds]?: WidgetStateDetail;
   [WidgetTypes.poaps]?: WidgetStateDetail;
-  [WidgetTypes.rss]?: WidgetStateDetail;
   [WidgetTypes.scores]?: WidgetStateDetail;
+  [WidgetTypes.rss]?: WidgetStateDetail;
   [WidgetTypes.article]?: WidgetStateDetail;
   [WidgetTypes.tally]?: WidgetStateDetail;
   [WidgetTypes.philand]?: WidgetStateDetail;
   [WidgetTypes.degen]?: WidgetStateDetail;
   [WidgetTypes.webacy]?: WidgetStateDetail;
-  [WidgetTypes.walletLabels]?: WidgetStateDetail;
 }
 
 export const initialState: WidgetState = {
@@ -52,16 +50,16 @@ export const initialState: WidgetState = {
     initLoading: true,
     loaded: false,
   },
-  [WidgetTypes.rss]: {
-    isEmpty: null,
-    initLoading: true,
-    loaded: false,
-  },
   [WidgetTypes.scores]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
-    children: [WidgetTypes.webacy, WidgetTypes.walletLabels, WidgetTypes.degen],
+    children: [WidgetTypes.webacy, WidgetTypes.degen],
+  },
+  [WidgetTypes.rss]: {
+    isEmpty: null,
+    initLoading: true,
+    loaded: false,
   },
   [WidgetTypes.article]: {
     isEmpty: null,
@@ -79,12 +77,6 @@ export const initialState: WidgetState = {
     loaded: false,
   },
   [WidgetTypes.webacy]: {
-    isEmpty: null,
-    initLoading: true,
-    loaded: false,
-    parent: WidgetTypes.scores,
-  },
-  [WidgetTypes.walletLabels]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
@@ -134,10 +126,10 @@ export default createReducer(initialState, (builder) =>
       }
     )
     .addCase(
-      updateRssWidget,
+      updateScoresWidget,
       (state, { payload: { isEmpty, initLoading } }) => {
-        state[WidgetTypes.rss] = {
-          ...state[WidgetTypes.rss],
+        state[WidgetTypes.scores] = {
+          ...state[WidgetTypes.scores],
           isEmpty,
           initLoading,
           loaded: true,
@@ -145,10 +137,10 @@ export default createReducer(initialState, (builder) =>
       }
     )
     .addCase(
-      updateScoresWidget,
+      updateRssWidget,
       (state, { payload: { isEmpty, initLoading } }) => {
-        state[WidgetTypes.scores] = {
-          ...state[WidgetTypes.scores],
+        state[WidgetTypes.rss] = {
+          ...state[WidgetTypes.rss],
           isEmpty,
           initLoading,
           loaded: true,
@@ -193,17 +185,6 @@ export default createReducer(initialState, (builder) =>
       (state, { payload: { isEmpty, initLoading } }) => {
         state[WidgetTypes.webacy] = {
           ...state[WidgetTypes.webacy],
-          isEmpty,
-          initLoading,
-          loaded: true,
-        };
-      }
-    )
-    .addCase(
-      updateWalletLabels,
-      (state, { payload: { isEmpty, initLoading } }) => {
-        state[WidgetTypes.walletLabels] = {
-          ...state[WidgetTypes.walletLabels],
           isEmpty,
           initLoading,
           loaded: true,

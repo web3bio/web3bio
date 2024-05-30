@@ -1,4 +1,4 @@
-import { WidgetTypes } from "../utils/widgets";
+import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 
 export default function LoadingSkeleton(props) {
   const { type } = props;
@@ -115,7 +115,7 @@ export default function LoadingSkeleton(props) {
           <div className={`profile-widget profile-widget-loading ${type}`}>
             <div className="profile-widget-header">
               <h2 className="profile-widget-title">
-                <span className="emoji-large mr-2">🌐 </span>
+                <span className="emoji-large mr-2">{WidgetInfoMapping(type).icon} </span>
                 Loading
               </h2>
             </div>

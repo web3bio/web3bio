@@ -74,7 +74,6 @@ export enum PlatformType {
   genome = "genome",
   gnosis = "gnosis",
   webacy = "webacy",
-  walletLabels="walletLabels"
 }
 
 export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
@@ -484,14 +483,6 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     color: "#000000",
     icon: "",
     label: "Webacy",
-    urlPrefix: "https://dapp.webacy.com/",
-    system: PlatformSystem.web3,
-  },
-  [PlatformType.walletLabels]: {
-    key: PlatformType.walletLabels,
-    color: "#000000",
-    icon: "",
-    label: "WalletLabels",
     urlPrefix: "https://dapp.webacy.com/",
     system: PlatformSystem.web3,
   },

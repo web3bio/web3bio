@@ -4,12 +4,11 @@ import {
   walletLabelsFetcher,
 } from "../apis/walletLabels";
 import { regexSolana } from "../utils/regexp";
-import SVG from "react-inlinesvg";
 import { Loading } from "../shared/Loading";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { updateWalletLabels } from "../state/widgets/action";
+// import { updateWalletLabels } from "../state/widgets/action";
 
 function useWalletLabelsInfo(address: string) {
   const { data, error, isLoading } = useSWR(
@@ -36,14 +35,14 @@ export function WidgetWalletLabels(props) {
   const { data, error, loading } = useWalletLabelsInfo(address);
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!!data?.data) {
-      dispatch(
-        updateWalletLabels({
-          isEmpty: !data?.data?.length,
-          initLoading: false,
-        })
-      );
-    }
+    // if (!!data?.data) {
+    //   dispatch(
+    //     updateWalletLabels({
+    //       isEmpty: !data?.data?.length,
+    //       initLoading: false,
+    //     })
+    //   );
+    // }
   }, [data, dispatch]);
   if (process.env.NODE_ENV !== "production") {
     console.log("WalletLabels Data:", data?.data);
@@ -56,7 +55,7 @@ export function WidgetWalletLabels(props) {
         ) : (
           <h2 className="profile-widget-title">
             <span className="emoji-large mr-2">
-              {WidgetInfoMapping(WidgetTypes.walletLabels).icon}{" "}
+              🏷️{" "}
             </span>
             WalletLabels{" "}
           </h2>
