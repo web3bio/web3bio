@@ -173,7 +173,12 @@ const RenderFeedItem = (props) => {
                     : PlatformType.ethereum
                 }
                 offset={[50, -5]}
-                identity={feed.owner}
+                identity={
+                  feed.platform ===
+                  SocialPlatformMapping(PlatformType.farcaster).label
+                    ? feed?.actions?.[0]?.metadata?.handle
+                    : feed.owner
+                }
                 remoteFetch
                 fullProfile
               />

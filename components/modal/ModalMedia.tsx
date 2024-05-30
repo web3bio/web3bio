@@ -29,11 +29,13 @@ export default function MediaModalContent(props) {
             }}
             onClick={onClose}
           ></div>
-          <div className="preview-image">
+          <div className="preview-media">
             <NFTAssetPlayer
               className="img-container"
               src={resolveMediaURL(url)}
               type={type}
+              width={"auto"}
+              height={"auto"}
               alt={alt ?? "media"}
             />
           </div>

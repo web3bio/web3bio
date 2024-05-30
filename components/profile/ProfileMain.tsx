@@ -22,7 +22,6 @@ import Modal from "../modal/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../state";
 import { WidgetState } from "../state/widgets/reducer";
-import { WidgetDegenScore } from "./WidgetDegenScore";
 import { WidgetRSS } from "./WidgetRSS";
 // import { WidgetPhiland } from "./WidgetPhiland";
 import { WidgetTally } from "./WidgetTally";
@@ -34,6 +33,7 @@ import WidgetIndicator from "./WidgetIndicator";
 import { WidgetTypes } from "../utils/widgets";
 import { GET_PROFILES } from "../utils/queries";
 import { useLazyQuery } from "@apollo/client";
+import { WidgetScores } from "./WidgetScores";
 import { updateUniversalBatchedProfile } from "../state/universal/actions";
 
 export default function ProfileMain(props) {
@@ -66,7 +66,7 @@ export default function ProfileMain(props) {
         })
       );
     }
-  }, [relations]);
+  }, [relations, dispatch]);
   useEffect(() => {
     if (!mounted) setMounted(true);
     if (domain && platform) {
@@ -143,7 +143,6 @@ export default function ProfileMain(props) {
       />
     );
   }
-
   return (
     <>
       <div
@@ -400,6 +399,13 @@ export default function ProfileMain(props) {
 
               {isBasicLoadingFinished && (
                 <>
+                  <div className="web3-section-widgets">
+                    <WidgetScores
+                      states={profileWidgetStates}
+                      address={data.address}
+                    />
+                  </div>
+
                   {([PlatformType.ens, PlatformType.dotbit].includes(
                     data.platform
                   ) ||
@@ -426,16 +432,10 @@ export default function ProfileMain(props) {
 
                   <div className="web3-section-widgets">
                     {isValidEthereumAddress(data.address) && (
-                      <Suspense fallback={<p>Loading DAO Memberships...</p>}>
+                      <Suspense fallback={<LoadingSkeleton type={WidgetTypes.tally} />}>
                         <WidgetTally address={data.address} />
                       </Suspense>
                     )}
-                  </div>
-
-                  <div className="web3-section-widgets">
-                    <Suspense fallback={<p>Loading DegenScore...</p>}>
-                      <WidgetDegenScore address={data.address} />
-                    </Suspense>
                   </div>
 
                   {/* todo: Due to philand error background color, hide phi widget for now */}

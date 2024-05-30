@@ -228,7 +228,7 @@ export default function WidgetFeed({ profile, openModal }) {
           </div>
         )}
         {expand && (
-          <div className="profile-widget-footer">
+          <div className="profile-widget-about">
             Powered by <strong>RSS3</strong>
           </div>
         )}

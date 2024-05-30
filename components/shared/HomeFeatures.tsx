@@ -4,6 +4,53 @@ import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 export const HomeFeatures = () => {
   return (
     <div className="home-features">
+      {/* <div className="container grid-sm">
+        <h3 className="home-title">
+          Explore Web3 
+          <div className="home-label-pride">
+            <SVG
+              fill={"#121212"}
+              src={SocialPlatformMapping(PlatformType.farcaster).icon || ""}
+              width={32}
+              height={32}
+              className="icon"
+            />
+            <SVG
+              fill={"#121212"}
+              src={SocialPlatformMapping(PlatformType.lens).icon || ""}
+              width={32}
+              height={32}
+              className="icon"
+            />
+            identities
+          </div>
+           and 
+          <div className="home-label-pride">
+            <SVG
+              fill={"#121212"}
+              src={SocialPlatformMapping(PlatformType.ens).icon || ""}
+              width={32}
+              height={32}
+              className="icon"
+            />
+            <SVG
+              fill={"#121212"}
+              src={SocialPlatformMapping(PlatformType.unstoppableDomains).icon || ""}
+              width={32}
+              height={32}
+              className="icon"
+            />
+            <SVG
+              fill={"#121212"}
+              src={SocialPlatformMapping(PlatformType.dotbit).icon || ""}
+              width={32}
+              height={32}
+              className="icon"
+            />
+            domains
+          </div>
+          in a whole new way</h3>
+      </div> */}
       <div className="container grid-lg">
         <div className="columns mt-4 mb-4">
           <div className="column col-6 col-sm-12 mt-2 mb-2">
