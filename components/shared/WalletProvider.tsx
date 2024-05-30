@@ -5,7 +5,7 @@ import { WagmiProvider, http } from "wagmi";
 import { mainnet, polygon, optimism, arbitrum, base, zora } from "wagmi/chains";
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 
-const config = getDefaultConfig({
+export const config = getDefaultConfig({
   appName: "RainbowKit demo",
   projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_ID || "",
   chains: [mainnet, polygon, optimism, arbitrum, base, zora],
