@@ -61,18 +61,24 @@ export default function HomePage({}) {
         <WalletButton />
         <div className="web3bio-cover flare"></div>
         {/* <div className="web3bio-header">
-          <div className="header-menu">
-            <div className="web3bio-logo">
-              <h1 className="text-pride">
-                WEB3
-                <br />
-                BIO
-              </h1>
+          <div className="container grid-lg">
+            <div className="header-menu">
+              <div className="web3bio-logo">
+                <h1 className="text-pride">
+                  WEB3
+                  <br />
+                  BIO
+                </h1>
+              </div>
+              <div className="btn-group">
+                <a href="#search" className="btn btm-sm btn-link">Search</a>
+                <a href="#profile" className="btn btm-sm btn-link">Profile</a>
+                <a href="#profile-api" className="btn btm-sm btn-link">API</a>
+              </div>
+              <div className="btn-group">
+                <a href="#" className="btn btm-sm">Connect</a>
+              </div>
             </div>
-            <div className="ml-2 mr-4 text-gray">|</div>
-            <a href="#search" className="btn btm-sm btn-link">Search</a>
-            <a href="#profile" className="btn btm-sm btn-link">Profile</a>
-            <a href="#profile-api" className="btn btm-sm btn-link">API</a>
           </div>
         </div> */}
         <IndexPageRender />

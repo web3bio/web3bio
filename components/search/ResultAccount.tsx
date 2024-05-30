@@ -24,7 +24,7 @@ const getNSAddress = (item) => {
 const RenderAccount = (props) => {
   const { identityGraph, graphTitle, platform } = props;
   const { isOpen, modalType, closeModal, openModal, params } = useModal();
-  const profiles = useProfiles()
+  const profiles = useProfiles();
   const resolvedListData = (() => {
     if (!identityGraph?.nodes) return [];
     const domainSkipMap = [
@@ -61,16 +61,9 @@ const RenderAccount = (props) => {
         }
       });
 
-    const _resolved = _identityGraph.nodes
-      .filter((x) => {
-        return !domainSkipMap.some((i) => i.ns === x.platform);
-      })
-      .map((x) => {
-        return {
-          ...x,
-          profile: profiles.find((i) => i?.uuid === x.uuid),
-        };
-      });
+    const _resolved = _identityGraph.nodes.filter((x) => {
+      return !domainSkipMap.some((i) => i.ns === x.platform);
+    });
     if (
       domainSkipMap.some((x) => x.ns === platform) &&
       !_resolved.some((x) => x.displayName === graphTitle)
@@ -155,7 +148,6 @@ const RenderAccount = (props) => {
             <ResultAccountItem
               identity={avatar}
               sources={resolveSources(`${avatar.platform},${avatar.identity}`)}
-              profile={avatar?.profile}
               key={avatar.uuid + idx}
             />
           ))}

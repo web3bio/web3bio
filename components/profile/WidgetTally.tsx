@@ -116,13 +116,17 @@ const RenderWidgetTally = ({ address }) => {
                           <tr key={"td" + idx}>
                             <td>
                               <div className="table-item">
-                                <Image
-                                  className="dao-icon"
-                                  src={x.organization.metadata?.icon || ""}
-                                  height={24}
-                                  width={24}
-                                  alt={x.organization.name}
-                                />
+                                {x.organization.metadata?.icon ? (
+                                  <Image
+                                    className="dao-icon"
+                                    src={x.organization.metadata?.icon || ""}
+                                    height={24}
+                                    width={24}
+                                    alt={x.organization.name}
+                                  />
+                                ) : (
+                                  <div className="dao-icon"></div>
+                                )}
                                 {x.organization.name}
                               </div>
                             </td>

@@ -270,7 +270,7 @@ const RenderSocialCard = (props) => {
                                 placeholder={true}
                                 alt={"Feed Image"}
                               />
-                            ) : x.address
+                            ) : metadata.target?.body ? "" : x.address
                           )}
                         </div>
                       )}
