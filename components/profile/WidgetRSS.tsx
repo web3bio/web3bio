@@ -1,13 +1,13 @@
 "use client";
 import { useEffect, memo } from "react";
+import { useDispatch } from "react-redux";
 import useSWR from "swr";
 import { RSSFetcher, RSS_ENDPOINT } from "../apis/rss";
 import SVG from "react-inlinesvg";
 import Link from "next/link";
-import { useDispatch } from "react-redux";
 import { updateRssWidget } from "../state/widgets/action";
-import RssItem from "./RssItem";
 import { WidgetTypes } from "../utils/widgets";
+import RssItem from "./RssItem";
 
 function useRSS(domain: string) {
   const fetchUrl = (() => {

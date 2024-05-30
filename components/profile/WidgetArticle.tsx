@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, memo } from "react";
-import useSWR from "swr";
 import { useDispatch } from "react-redux";
 import SVG from "react-inlinesvg";
+import useSWR from "swr";
 import { updateArticleWidget } from "../state/widgets/action";
 import { FIREFLY_ENDPOINT, FireflyFetcher } from "../apis/firefly";
 import { ModalType } from "../hooks/useModal";
@@ -63,7 +63,7 @@ const RenderWidgetArticle = ({ profile, openModal }) => {
         <div className="profile-widget-header">
           <h2 className="profile-widget-title">
             <span className="emoji-large mr-2">📰 </span>
-            Articles
+            Articles from Mirror and Paragraph
           </h2>
         </div>
 
