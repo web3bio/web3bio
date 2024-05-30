@@ -46,7 +46,7 @@ const RenderWidgetDegenScore = ({ address }) => {
   }
 
   return isLoading ? (
-    <p>loading degen...</p>
+    <></>
   ) : (
     <Link
       className="profile-widget profile-widget-degenscore"

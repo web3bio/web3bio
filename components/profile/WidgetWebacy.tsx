@@ -32,7 +32,7 @@ export function WidgetWebacy({ address }) {
   // }
 
   return isLoading ? (
-    <p>loading webacy...</p>
+    <></>
   ) : (
     <div className="profile-widget profile-widget-webacy">
       <div className="profile-widget-header">

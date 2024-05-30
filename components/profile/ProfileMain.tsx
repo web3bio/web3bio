@@ -399,10 +399,12 @@ export default function ProfileMain(props) {
 
               {isBasicLoadingFinished && (
                 <>
-                  <WidgetScores
-                    states={profileWidgetStates}
-                    address={data.address}
-                  />
+                  <div className="web3-section-widgets">
+                    <WidgetScores
+                      states={profileWidgetStates}
+                      address={data.address}
+                    />
+                  </div>
 
                   {([PlatformType.ens, PlatformType.dotbit].includes(
                     data.platform
@@ -430,7 +432,7 @@ export default function ProfileMain(props) {
 
                   <div className="web3-section-widgets">
                     {isValidEthereumAddress(data.address) && (
-                      <Suspense fallback={<p>Loading DAO Memberships...</p>}>
+                      <Suspense fallback={<LoadingSkeleton type={WidgetTypes.tally} />}>
                         <WidgetTally address={data.address} />
                       </Suspense>
                     )}
