@@ -63,7 +63,7 @@ const RenderWidgetArticle = ({ profile, openModal }) => {
         <div className="profile-widget-header">
           <h2 className="profile-widget-title">
             <span className="emoji-large mr-2">📰 </span>
-            Articles from Mirror and Paragraph
+            Articles
           </h2>
         </div>
 

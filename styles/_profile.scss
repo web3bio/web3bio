@@ -357,6 +357,28 @@
       }
     }
 
+    .widget-hero {
+      border-radius: .4rem;
+      display: flex;
+      flex: 0 0 14rem;
+      flex-direction: column;
+      height: 100%;
+      justify-content: center;
+      padding: 0;
+      text-decoration: none;
+      width: 14rem;
+
+      .widget-hero-title {
+        font-size: .8rem;
+        font-weight: 700;
+        letter-spacing: -.025em;
+      }
+
+      .widget-hero-description {
+        font-size: .65rem;
+      }
+    }
+
     &.profile-widget-loading {
       background: lighten($bg-color, 5%);
       border: .05rem solid rgba($dark-color, .01);
@@ -900,7 +922,7 @@
           background: $light-color;
           border: .05rem solid #2f2a47;
           border-radius: 50%;
-          box-shadow: -.1rem .1rem 0 .1rem #E4E2FD;
+          box-shadow: 0 0 0 .1rem #E4E2FD;
           height: 3.2rem;
           padding: .25rem;
           width: 3.2rem;
@@ -964,25 +986,6 @@
       margin: -1rem;
       overflow-x: auto;
       padding: 1rem;
-
-      .rss-website {
-        border-radius: .4rem;
-        flex: 0 0 14rem;
-        min-height: 5rem;
-        padding: 1rem 1rem .5rem 0;
-        text-decoration: none;
-        width: 14rem;
-
-        .rss-website-title {
-          font-size: .8rem;
-          font-weight: 700;
-          letter-spacing: -.025em;
-        }
-
-        .rss-website-description {
-          font-size: .65rem;
-        }
-      }
 
       .rss-item {
         background: lighten($bg-color, 5%);
@@ -1059,25 +1062,6 @@
       margin: -1rem;
       overflow-x: auto;
       padding: 1rem;
-
-      .rss-website {
-        border-radius: .4rem;
-        flex: 0 0 14rem;
-        min-height: 5rem;
-        padding: 1rem 1rem .5rem 0;
-        text-decoration: none;
-        width: 14rem;
-
-        .rss-website-title {
-          font-size: .8rem;
-          font-weight: 700;
-          letter-spacing: -.025em;
-        }
-
-        .rss-website-description {
-          font-size: .65rem;
-        }
-      }
 
       .profile-widget {
         flex: 0 0 12rem;

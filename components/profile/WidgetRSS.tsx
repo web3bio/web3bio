@@ -58,19 +58,21 @@ const RenderWidgetRSS = ({ domain }) => {
         </div>
 
         <div className="widget-rss-list noscrollbar">
-          <div className="rss-website">
-            <div className="rss-website-title mb-1">{data.title}</div>
-            <div className="rss-website-description mb-4">
+          <div className="widget-hero">
+            <div className="widget-hero-title mb-1">{data.title}</div>
+            <div className="widget-hero-description mb-4">
               {data.description}
             </div>
-            <Link
-              className="btn btn-sm"
-              title="More Articles"
-              href={data.link}
-              target={"_blank"}
-            >
-              <SVG src="icons/icon-open.svg" width={20} height={20} /> More
-            </Link>
+            <div className="widget-hero-action">
+              <Link
+                className="btn btn-sm"
+                title="More Articles"
+                href={data.link}
+                target={"_blank"}
+              >
+                <SVG src="icons/icon-open.svg" width={20} height={20} /> More
+              </Link>
+            </div>
           </div>
           {data?.items.map((x, idx) => {
             return <RssItem data={x} key={idx} />;
