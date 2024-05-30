@@ -1,6 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
 import {
-  updateDegenscoreWidget,
   updateNFTWidget,
   updatePoapsWidget,
   updateRssWidget,
@@ -8,6 +7,9 @@ import {
   updatePhilandWidget,
   updateTallyDAOWidget,
   updateArticleWidget,
+  updateScoresWidget,
+  updateWebacyWidget,
+  updateDegenWidget,
 } from "./action";
 import { WidgetTypes } from "../../utils/widgets";
 
@@ -16,16 +18,20 @@ interface WidgetStateDetail {
   initLoading?: boolean;
   position?: string;
   loaded?: boolean | null;
+  parent?: WidgetTypes | null;
+  children?: WidgetTypes[] | null;
 }
 export interface WidgetState {
   [WidgetTypes.nft]: WidgetStateDetail;
   [WidgetTypes.feeds]?: WidgetStateDetail;
   [WidgetTypes.poaps]?: WidgetStateDetail;
+  [WidgetTypes.scores]?: WidgetStateDetail;
   [WidgetTypes.rss]?: WidgetStateDetail;
   [WidgetTypes.article]?: WidgetStateDetail;
   [WidgetTypes.tally]?: WidgetStateDetail;
-  [WidgetTypes.degenscore]?: WidgetStateDetail;
   [WidgetTypes.philand]?: WidgetStateDetail;
+  [WidgetTypes.degen]?: WidgetStateDetail;
+  [WidgetTypes.webacy]?: WidgetStateDetail;
 }
 
 export const initialState: WidgetState = {
@@ -44,6 +50,12 @@ export const initialState: WidgetState = {
     initLoading: true,
     loaded: false,
   },
+  [WidgetTypes.scores]: {
+    isEmpty: null,
+    initLoading: true,
+    loaded: false,
+    children: [WidgetTypes.webacy, WidgetTypes.degen],
+  },
   [WidgetTypes.rss]: {
     isEmpty: null,
     initLoading: true,
@@ -59,15 +71,22 @@ export const initialState: WidgetState = {
     initLoading: true,
     loaded: false,
   },
-  [WidgetTypes.degenscore]: {
-    isEmpty: null,
-    initLoading: true,
-    loaded: false,
-  },
   [WidgetTypes.philand]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
+  },
+  [WidgetTypes.webacy]: {
+    isEmpty: null,
+    initLoading: true,
+    loaded: false,
+    parent: WidgetTypes.scores,
+  },
+  [WidgetTypes.degen]: {
+    isEmpty: null,
+    initLoading: true,
+    loaded: false,
+    parent: WidgetTypes.scores,
   },
 };
 
@@ -100,6 +119,17 @@ export default createReducer(initialState, (builder) =>
       (state, { payload: { isEmpty, initLoading } }) => {
         state[WidgetTypes.poaps] = {
           ...state[WidgetTypes.poaps],
+          isEmpty,
+          initLoading,
+          loaded: true,
+        };
+      }
+    )
+    .addCase(
+      updateScoresWidget,
+      (state, { payload: { isEmpty, initLoading } }) => {
+        state[WidgetTypes.scores] = {
+          ...state[WidgetTypes.scores],
           isEmpty,
           initLoading,
           loaded: true,
@@ -140,10 +170,10 @@ export default createReducer(initialState, (builder) =>
       }
     )
     .addCase(
-      updateDegenscoreWidget,
+      updatePhilandWidget,
       (state, { payload: { isEmpty, initLoading } }) => {
-        state[WidgetTypes.degenscore] = {
-          ...state[WidgetTypes.degenscore],
+        state[WidgetTypes.philand] = {
+          ...state[WidgetTypes.philand],
           isEmpty,
           initLoading,
           loaded: true,
@@ -151,10 +181,21 @@ export default createReducer(initialState, (builder) =>
       }
     )
     .addCase(
-      updatePhilandWidget,
+      updateWebacyWidget,
       (state, { payload: { isEmpty, initLoading } }) => {
-        state[WidgetTypes.philand] = {
-          ...state[WidgetTypes.philand],
+        state[WidgetTypes.webacy] = {
+          ...state[WidgetTypes.webacy],
+          isEmpty,
+          initLoading,
+          loaded: true,
+        };
+      }
+    )
+    .addCase(
+      updateDegenWidget,
+      (state, { payload: { isEmpty, initLoading } }) => {
+        state[WidgetTypes.degen] = {
+          ...state[WidgetTypes.degen],
           isEmpty,
           initLoading,
           loaded: true,

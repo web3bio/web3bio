@@ -2,12 +2,10 @@ import { memo } from "react";
 import SVG from "react-inlinesvg";
 import { ResultAccountItem } from "./ResultAccountItem";
 import _ from "lodash";
-import { useSelector } from "react-redux";
-import { AppState } from "../state";
-import { ProfileInterface } from "../utils/profile";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import Modal from "../modal/Modal";
 import useModal, { ModalType } from "../hooks/useModal";
+import { useProfiles } from "../hooks/useReduxProfiles";
 
 const getNSAddress = (item) => {
   const _chain =
@@ -25,11 +23,8 @@ const getNSAddress = (item) => {
 
 const RenderAccount = (props) => {
   const { identityGraph, graphTitle, platform } = props;
-  const cached = useSelector<AppState, { [address: string]: ProfileInterface }>(
-    (state) => state.universal.profiles
-  );
   const { isOpen, modalType, closeModal, openModal, params } = useModal();
-  const profiles = _.flatten(Object.values(cached).map((x) => x));
+  const profiles = useProfiles();
   const resolvedListData = (() => {
     if (!identityGraph?.nodes) return [];
     const domainSkipMap = [
@@ -66,16 +61,9 @@ const RenderAccount = (props) => {
         }
       });
 
-    const _resolved = _identityGraph.nodes
-      .filter((x) => {
-        return !domainSkipMap.some((i) => i.ns === x.platform);
-      })
-      .map((x) => {
-        return {
-          ...x,
-          profile: profiles.find((i) => i?.uuid === x.uuid),
-        };
-      });
+    const _resolved = _identityGraph.nodes.filter((x) => {
+      return !domainSkipMap.some((i) => i.ns === x.platform);
+    });
     if (
       domainSkipMap.some((x) => x.ns === platform) &&
       !_resolved.some((x) => x.displayName === graphTitle)
@@ -160,7 +148,6 @@ const RenderAccount = (props) => {
             <ResultAccountItem
               identity={avatar}
               sources={resolveSources(`${avatar.platform},${avatar.identity}`)}
-              profile={avatar?.profile}
               key={avatar.uuid + idx}
             />
           ))}

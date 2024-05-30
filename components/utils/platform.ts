@@ -73,6 +73,7 @@ export enum PlatformType {
   paragraph = "paragraph",
   genome = "genome",
   gnosis = "gnosis",
+  webacy = "webacy",
 }
 
 export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
@@ -475,6 +476,14 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     icon: "icons/icon-degenscore.svg",
     label: "DegenScore",
     urlPrefix: "https://degenscore.com/beacon/",
+    system: PlatformSystem.web3,
+  },
+  [PlatformType.webacy]: {
+    key: PlatformType.webacy,
+    color: "#000000",
+    icon: "",
+    label: "Webacy",
+    urlPrefix: "https://dapp.webacy.com/",
     system: PlatformSystem.web3,
   },
   [PlatformType.firefly]: {

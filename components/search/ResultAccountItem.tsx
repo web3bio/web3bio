@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { formatText } from "../utils/utils";
@@ -11,6 +11,7 @@ import _ from "lodash";
 import { fetchProfile } from "../hooks/fetchProfile";
 import { updateUniversalBatchedProfile } from "../state/universal/actions";
 import ResultAccountItemAction from "./ResultAccountAction";
+import { useProfiles } from "../hooks/useReduxProfiles";
 
 const RenderAccountItem = (props) => {
   const onCopySuccess = () => {
@@ -21,19 +22,17 @@ const RenderAccountItem = (props) => {
   };
   const ref = useRef<HTMLDivElement>(null);
   const nftContainer = useRef<HTMLDivElement>(null);
-  const { identity, sources, profile, onClick } = props;
+  const { identity, sources, onClick } = props;
   const [isCopied, setIsCopied] = useState(false);
   const [visible, setVisible] = useState(false);
   const [expand, setExpand] = useState(false);
   const dispatch = useDispatch();
-  const [fetched, setFetched] = useState(!!profile);
-  const rawDisplayName = profile?.displayName
-    ? profile.displayName
-    : identity.displayName || identity.identity;
-  const resolvedPlatform = identity.platform;
-  // const resolvedDisplayName = isWeb3Address(rawDisplayName)
-  //   ? formatText(rawDisplayName)
-  //   : rawDisplayName;
+  const profiles = useProfiles();
+  const profile = useMemo(() => {
+    return profiles.find((x) => x.uuid === identity.uuid);
+  }, [profiles, identity.uuid]);
+  const rawDisplayName =
+    profile?.displayName || identity.displayName || identity.identity;
   const resolvedIdentity =
     profile?.address ||
     identity.resolveAddress?.[0].address ||
@@ -64,20 +63,19 @@ const RenderAccountItem = (props) => {
         uuid: identity.uuid,
       }));
       if (response) {
-        await dispatch(
+        dispatch(
           updateUniversalBatchedProfile({
             profiles: [response],
           })
         );
-        setFetched(true);
       }
     };
     if (
-      !fetched &&
       (identity?.reverse ||
         [PlatformType.farcaster, PlatformType.lens].includes(
-          resolvedPlatform
+          identity.platform
         )) &&
+      !profile &&
       visible
     ) {
       fetchProfileData();
@@ -88,9 +86,9 @@ const RenderAccountItem = (props) => {
         observer.unobserve(element);
       }
     };
-  }, [fetched, identity, visible, dispatch]);
+  }, [visible, profile, dispatch]);
 
-  switch (resolvedPlatform) {
+  switch (identity.platform) {
     case PlatformType.ens:
     case PlatformType.ethereum:
     case PlatformType.unstoppableDomains:
@@ -105,7 +103,7 @@ const RenderAccountItem = (props) => {
         <div
           onClick={onClick}
           ref={ref}
-          className={`social-item ${resolvedPlatform}${
+          className={`social-item ${identity.platform}${
             identity.isOwner ? " social-item-owner" : ""
           }`}
         >
@@ -125,12 +123,12 @@ const RenderAccountItem = (props) => {
                 <div
                   className="icon"
                   style={{
-                    background: SocialPlatformMapping(resolvedPlatform).color,
+                    background: SocialPlatformMapping(identity.platform).color,
                     color: "#fff",
                   }}
                 >
                   <SVG
-                    src={SocialPlatformMapping(resolvedPlatform)?.icon || ""}
+                    src={SocialPlatformMapping(identity.platform)?.icon || ""}
                     fill={"#fff"}
                     width={20}
                     height={20}
@@ -254,7 +252,7 @@ const RenderAccountItem = (props) => {
         <div
           onClick={onClick}
           ref={ref}
-          className={`social-item ${resolvedPlatform}`}
+          className={`social-item ${identity.platform}`}
         >
           <div className="social-main">
             <div className="social">
@@ -271,11 +269,11 @@ const RenderAccountItem = (props) => {
                 <div
                   className="icon"
                   style={{
-                    background: SocialPlatformMapping(resolvedPlatform).color,
+                    background: SocialPlatformMapping(identity.platform).color,
                   }}
                 >
                   <SVG
-                    src={SocialPlatformMapping(resolvedPlatform)?.icon || ""}
+                    src={SocialPlatformMapping(identity.platform)?.icon || ""}
                     fill={"#fff"}
                     width={20}
                     height={20}
@@ -294,9 +292,9 @@ const RenderAccountItem = (props) => {
                       <div
                         className="address"
                         title={`${
-                          SocialPlatformMapping(resolvedPlatform)?.label
+                          SocialPlatformMapping(identity.platform)?.label
                         } ${
-                          resolvedPlatform === PlatformType.farcaster
+                          identity.platform === PlatformType.farcaster
                             ? "FID"
                             : "UID"
                         }`}
@@ -346,7 +344,7 @@ const RenderAccountItem = (props) => {
         <div
           onClick={onClick}
           ref={ref}
-          className={`social-item ${resolvedPlatform}`}
+          className={`social-item ${identity.platform}`}
         >
           <div className="social-main">
             <Link
@@ -363,7 +361,7 @@ const RenderAccountItem = (props) => {
               <div className="icon">
                 <SVG
                   fill={"#000"}
-                  src={SocialPlatformMapping(resolvedPlatform)?.icon || ""}
+                  src={SocialPlatformMapping(identity.platform)?.icon || ""}
                   width={20}
                   height={20}
                 />
@@ -391,7 +389,7 @@ const RenderAccountItem = (props) => {
               <Link
                 target={"_blank"}
                 className="btn btn-sm btn-link action"
-                href={`${SocialPlatformMapping(resolvedPlatform)?.urlPrefix}${
+                href={`${SocialPlatformMapping(identity.platform)?.urlPrefix}${
                   identity.identity
                 }`}
                 prefetch={false}

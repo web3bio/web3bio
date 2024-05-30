@@ -205,7 +205,7 @@ export default function WidgetNFT({ profile, onShowDetail }) {
         />
 
         {expand && (
-          <div className="profile-widget-footer">
+          <div className="profile-widget-about">
             Powered by <strong>SimpleHash</strong>
           </div>
         )}

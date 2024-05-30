@@ -1,12 +1,12 @@
 "use client";
 import { memo, useEffect } from "react";
 import useSWR from "swr";
-import { DegenFetcher, DEGENSCORE_ENDPOINT } from "../apis/degenscore";
 import Link from "next/link";
-import SVG from "react-inlinesvg";
-import { updateDegenscoreWidget } from "../state/widgets/action";
+import { DegenFetcher, DEGENSCORE_ENDPOINT } from "../apis/degenscore";
+import { formatDistanceToNow } from "date-fns";
+import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
+import { updateDegenWidget } from "../state/widgets/action";
 import { useDispatch } from "react-redux";
-import { WidgetTypes } from "../utils/widgets";
 
 function useDegenInfo(address: string) {
   const { data, error } = useSWR(
@@ -30,73 +30,71 @@ const RenderWidgetDegenScore = ({ address }) => {
   const { data, isLoading } = useDegenInfo(address);
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!isLoading) {
-      dispatch(updateDegenscoreWidget({ isEmpty: !data?.name, initLoading: false }));
+    if (data?.name) {
+      dispatch(
+        updateDegenWidget({
+          isEmpty: false,
+          initLoading: false,
+        })
+      );
     }
-  }, [data, isLoading, dispatch]);
+  }, [data, dispatch]);
+  if (!isLoading && !data?.name) return null;
 
-  if (!data || !data.name) return null;
+  if (process.env.NODE_ENV !== "production") {
+    console.log("DegenScore Data:", data);
+  }
 
-  // if (process.env.NODE_ENV !== "production") {
-  //   console.log("DegenScore Data:", data);
-  // }
+  return isLoading ? (
+    <></>
+  ) : (
+    <Link
+      className="profile-widget profile-widget-degenscore"
+      href={data?.external_url}
+      target="_blank"
+    >
+      <div className="profile-widget-header">
+        <h2 className="profile-widget-title">
+          <span className="emoji-large mr-2">
+            {WidgetInfoMapping(WidgetTypes.degen).icon}{" "}
+          </span>
+          {WidgetInfoMapping(WidgetTypes.degen).title}{" "}
+        </h2>
+      </div>
+      <div className="profile-widget-body"></div>
 
-  return (
-    <div className="profile-widget-full" id={WidgetTypes.degenscore}>
-      <div className="profile-widget profile-widget-degenscore">
-        <div className="profile-widget-header">
-          <h2 className="profile-widget-title">
-            <span className="emoji-large mr-2">👾 </span>
-            DegenScore{" "}
-            <span className="label ml-2">{data.properties?.DegenScore}</span>
-          </h2>
-          <h3 className="text-assistive">
-            The DegenScore Beacon is an Ethereum soulbound token that highlights
-            your on-chain skills & traits across one or more wallets.\nUse it to
-            leverage your on-chain reputation in the DegenScore Cafe and across
-            web3.
-          </h3>
-          <div className="widget-action">
-            <Link
-              className="btn btn-sm btn-action"
-              title="More on DegenScore"
-              href={`https://degenscore.com/beacon/${address}`}
-              target={"_blank"}
-            >
-              <SVG src="icons/icon-open.svg" width={20} height={20} />
-            </Link>
-          </div>
+      <div className="profile-widget-footer">
+        <div className="widget-degen-number">{data.properties?.DegenScore}</div>
+        <div className="widget-degen-title">
+          Updated:{" "}
+          {formatDistanceToNow(new Date(data?.updatedAt), {
+            addSuffix: true,
+          })}
         </div>
+      </div>
 
-        {data.traits.actions?.metadata.actions.actions && (
+      {data.traits.actions?.metadata.actions.actions && (
+        <div className="profile-widget-hover">
           <div className="widget-trait-list">
             {(data.traits.actions?.metadata.actions.actions).map(
               (item, idx) => {
                 return (
                   <div
                     key={idx}
-                    className={`trait-item ${item.actionTier?.toLowerCase()}`}
+                    className={`trait-item label ${item.actionTier?.toLowerCase()}`}
                     title={item.description}
                   >
-                    <div className="trait-item-bg">
-                      <div className="trait-label">
-                        {item.actionTier == "ACTION_TIER_LEGENDARY" && (
-                          <div className="value">💎</div>
-                        )}
-                        {item.actionTier == "ACTION_TIER_EPIC" && (
-                          <div className="value">&#127942;</div>
-                        )}
-                      </div>
-                      <div className="trait-name">{item.name}</div>
-                    </div>
+                    {item.actionTier == "ACTION_TIER_LEGENDARY" && "💎 "}
+                    {item.actionTier == "ACTION_TIER_EPIC" && "✨ "}
+                    {item.name}
                   </div>
                 );
               }
             )}
           </div>
-        )}
-      </div>
-    </div>
+        </div>
+      )}
+    </Link>
   );
 };
 

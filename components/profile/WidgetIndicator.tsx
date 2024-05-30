@@ -6,7 +6,7 @@ interface WidgetIndicatorInterface {
 export default function WidgetIndicator(props: WidgetIndicatorInterface) {
   const { states } = props;
   const arr = Object.entries(states).filter(
-    (x) => x[1].loaded && !x[1].isEmpty
+    (x) => x[1].loaded && !x[1].isEmpty && !x[1].parent
   );
   return (
     arr.length > 0 && (

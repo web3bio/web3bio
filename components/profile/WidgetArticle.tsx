@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, memo } from "react";
-import useSWR from "swr";
 import { useDispatch } from "react-redux";
 import SVG from "react-inlinesvg";
+import useSWR from "swr";
 import { updateArticleWidget } from "../state/widgets/action";
 import { FIREFLY_ENDPOINT, FireflyFetcher } from "../apis/firefly";
 import { ModalType } from "../hooks/useModal";

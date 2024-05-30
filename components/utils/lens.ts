@@ -4,43 +4,6 @@ export const GET_PROFILE_LENS = gql`
   query Profile($request: ProfileRequest!) {
     profile(request: $request) {
       id
-      ownedBy {
-        chainId
-        address
-      }
-      metadata {
-        displayName
-        bio
-        rawURI
-        appId
-        coverPicture {
-          optimized {
-            uri
-            mimeType
-          }
-          raw {
-            mimeType
-            uri
-          }
-        }
-        attributes {
-          value
-          key
-          type
-        }
-        picture {
-          ... on ImageSet {
-            raw {
-              uri
-              mimeType
-            }
-            optimized {
-              mimeType
-              uri
-            }
-          }
-        }
-      }
       onchainIdentity {
         proofOfHumanity
         sybilDotOrg {
@@ -65,24 +28,6 @@ export const GET_PROFILE_LENS = gql`
         publications
       }
       interests
-      handle {
-        id
-        fullHandle
-        namespace
-        localName
-        suggestedFormatted {
-          full
-          localName
-        }
-        linkedTo {
-          nftTokenId
-          contract {
-            address
-            chainId
-          }
-        }
-        ownedBy
-      }
     }
   }
 `;
