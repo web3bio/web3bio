@@ -22,10 +22,7 @@ const RenderWidgetScores = ({ address, states }) => {
   }, [address]);
 
   useEffect(() => {
-    const childs = [
-      WidgetTypes.webacy,
-      WidgetTypes.degen,
-    ];
+    const childs = [WidgetTypes.webacy, WidgetTypes.degen];
     childs.forEach((x) => {
       if (states[x].isEmpty === false && !states[WidgetTypes.scores].loaded) {
         dispatch(
@@ -37,18 +34,25 @@ const RenderWidgetScores = ({ address, states }) => {
       }
     });
   }, [states, dispatch]);
+  const loading = useMemo(() => {
+    return !states[WidgetTypes.scores].loaded;
+  }, [states]);
 
   return (
     <div className="profile-widget-full" id={WidgetTypes.scores}>
       <div className="profile-widget profile-widget-scores">
-        <div className="profile-widget-header">
-          <h2 className="profile-widget-title">
-            <span className="emoji-large mr-2">
-              {WidgetInfoMapping(WidgetTypes.scores).icon}{" "}
-            </span>
-            {WidgetInfoMapping(WidgetTypes.scores).title}
-          </h2>
-        </div>
+        {loading ? (
+          "loading scores ..."
+        ) : (
+          <div className="profile-widget-header">
+            <h2 className="profile-widget-title">
+              <span className="emoji-large mr-2">
+                {WidgetInfoMapping(WidgetTypes.scores).icon}{" "}
+              </span>
+              {WidgetInfoMapping(WidgetTypes.scores).title}
+            </h2>
+          </div>
+        )}
 
         <div className={`widget-scores-list noscrollbar`}>
           {scoresArr?.map((x, idx) => {

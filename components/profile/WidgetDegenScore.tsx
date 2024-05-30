@@ -5,7 +5,6 @@ import Link from "next/link";
 import { DegenFetcher, DEGENSCORE_ENDPOINT } from "../apis/degenscore";
 import { formatDistanceToNow } from "date-fns";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
-import { Loading } from "../shared/Loading";
 import { updateDegenWidget } from "../state/widgets/action";
 import { useDispatch } from "react-redux";
 
@@ -40,64 +39,62 @@ const RenderWidgetDegenScore = ({ address }) => {
       );
     }
   }, [data, dispatch]);
-  if (!data || !data.name) return null;
+  if (!isLoading && !data?.name) return null;
 
   if (process.env.NODE_ENV !== "production") {
     console.log("DegenScore Data:", data);
   }
 
-  return (
-    isLoading ? (
-      <Loading />
-    ) : (
-      <Link className="profile-widget profile-widget-degenscore"
-        href={data?.external_url}
-        target="_blank"
-      >
-        <div className="profile-widget-header">
-          <h2 className="profile-widget-title">
-            <span className="emoji-large mr-2">
-              {WidgetInfoMapping(WidgetTypes.degen).icon}{" "}
-            </span>
-            {WidgetInfoMapping(WidgetTypes.degen).title}{" "}
-          </h2>
-        </div>
-        <div className="profile-widget-body"></div>
+  return isLoading ? (
+    <p>loading degen...</p>
+  ) : (
+    <Link
+      className="profile-widget profile-widget-degenscore"
+      href={data?.external_url}
+      target="_blank"
+    >
+      <div className="profile-widget-header">
+        <h2 className="profile-widget-title">
+          <span className="emoji-large mr-2">
+            {WidgetInfoMapping(WidgetTypes.degen).icon}{" "}
+          </span>
+          {WidgetInfoMapping(WidgetTypes.degen).title}{" "}
+        </h2>
+      </div>
+      <div className="profile-widget-body"></div>
 
-        <div className="profile-widget-footer">
-          <div className="widget-degen-number">
-            {data.properties?.DegenScore}
-          </div>
-          <div className="widget-degen-title">
-            Updated:{" "}
-            {formatDistanceToNow(new Date(data?.updatedAt), {
-              addSuffix: true,
-            })}
-          </div>
-          
+      <div className="profile-widget-footer">
+        <div className="widget-degen-number">{data.properties?.DegenScore}</div>
+        <div className="widget-degen-title">
+          Updated:{" "}
+          {formatDistanceToNow(new Date(data?.updatedAt), {
+            addSuffix: true,
+          })}
         </div>
+      </div>
 
-        {data.traits.actions?.metadata.actions.actions && (
-          <div className="profile-widget-hover">
-            <div className="widget-trait-list">
-              {(data.traits.actions?.metadata.actions.actions).map((item, idx) => {
+      {data.traits.actions?.metadata.actions.actions && (
+        <div className="profile-widget-hover">
+          <div className="widget-trait-list">
+            {(data.traits.actions?.metadata.actions.actions).map(
+              (item, idx) => {
                 return (
                   <div
                     key={idx}
                     className={`trait-item label ${item.actionTier?.toLowerCase()}`}
                     title={item.description}
                   >
-                    {item.actionTier == "ACTION_TIER_LEGENDARY" && ("💎 ")}
-                    {item.actionTier == "ACTION_TIER_EPIC" && ("✨ ")}
+                    {item.actionTier == "ACTION_TIER_LEGENDARY" && "💎 "}
+                    {item.actionTier == "ACTION_TIER_EPIC" && "✨ "}
                     {item.name}
                   </div>
                 );
-              })}
-            </div>
+              }
+            )}
           </div>
-        )}
-      </Link>
-    )
+        </div>
+      )}
+    </Link>
   );
 };
 

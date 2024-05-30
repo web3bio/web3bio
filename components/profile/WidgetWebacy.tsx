@@ -26,12 +26,14 @@ export function WidgetWebacy({ address }) {
     }
   }, [data, dispatch]);
 
+  if (!isLoading && isNaN(data?.overallRisk)) return null;
   // if (process.env.NODE_ENV !== "production") {
   //   console.log("Webacy Data:", data);
   // }
-    
-  return (
-    data && 
+
+  return isLoading ? (
+    <p>loading webacy...</p>
+  ) : (
     <div className="profile-widget profile-widget-webacy">
       <div className="profile-widget-header">
         <h2 className="profile-widget-title">
@@ -41,13 +43,27 @@ export function WidgetWebacy({ address }) {
           {WidgetInfoMapping(WidgetTypes.webacy).title}{" "}
         </h2>
       </div>
-      
+
       <div className="profile-widget-body"></div>
 
       <div className="profile-widget-footer">
         <div className="widget-risk-number">
           {Number(data?.overallRisk).toFixed(2)}
-          <div className={`widget-risk-label ${data?.high > 0 ? "high-risk" : data?.medium > 0 ? "medium-risk" : "low-risk"}`}>{ data?.high > 0 ? "High Risk" : data?.medium > 0 ? "Medium Risk" : "Low Risk" }</div>
+          <div
+            className={`widget-risk-label ${
+              data?.high > 0
+                ? "high-risk"
+                : data?.medium > 0
+                ? "medium-risk"
+                : "low-risk"
+            }`}
+          >
+            {data?.high > 0
+              ? "High Risk"
+              : data?.medium > 0
+              ? "Medium Risk"
+              : "Low Risk"}
+          </div>
         </div>
         <div className="widget-risk-title">Safety Score</div>
       </div>

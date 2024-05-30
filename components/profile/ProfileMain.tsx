@@ -143,7 +143,6 @@ export default function ProfileMain(props) {
       />
     );
   }
-
   return (
     <>
       <div
