@@ -38,29 +38,37 @@ const RenderWidgetScores = ({ address, states }) => {
     return !states[WidgetTypes.scores].loaded;
   }, [states]);
 
-  return (
-    <div className="profile-widget-full" id={WidgetTypes.scores}>
-      <div className="profile-widget profile-widget-scores">
-        {loading ? (
-          "loading scores ..."
-        ) : (
-          <div className="profile-widget-header">
-            <h2 className="profile-widget-title">
-              <span className="emoji-large mr-2">
-                {WidgetInfoMapping(WidgetTypes.scores).icon}{" "}
-              </span>
-              {WidgetInfoMapping(WidgetTypes.scores).title}
-            </h2>
-          </div>
-        )}
+  const empty = useMemo(() => {
+    return states[WidgetTypes.scores].isEmpty;
+  }, [states]);
 
-        <div className={`widget-scores-list noscrollbar`}>
-          {scoresArr?.map((x, idx) => {
-            return <x.render key={idx} />;
-          })}
+  return (
+    !empty && (
+      <div className="web3-section-widgets">
+        <div className="profile-widget-full" id={WidgetTypes.scores}>
+          <div className="profile-widget profile-widget-scores">
+            {loading ? (
+              "loading scores ..."
+            ) : (
+              <div className="profile-widget-header">
+                <h2 className="profile-widget-title">
+                  <span className="emoji-large mr-2">
+                    {WidgetInfoMapping(WidgetTypes.scores).icon}{" "}
+                  </span>
+                  {WidgetInfoMapping(WidgetTypes.scores).title}
+                </h2>
+              </div>
+            )}
+
+            <div className={`widget-scores-list noscrollbar`}>
+              {scoresArr?.map((x, idx) => {
+                return <x.render key={idx} />;
+              })}
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    )
   );
 };
 
