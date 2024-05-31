@@ -1,4 +1,4 @@
-import { queryClient } from "../../components/utils/test-utils";
+import { queryClient } from "../../components/utils/queries";
 
 
 describe("Test For ENS NS API", () => {

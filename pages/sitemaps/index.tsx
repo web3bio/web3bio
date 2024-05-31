@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Head from "next/head";
 import "../../styles/web3bio.scss";
-import { baseURL } from "../../components/utils/test-utils";
+import { baseURL } from "../../components/utils/queries";
 
 export async function getStaticProps({}) {
   const res = await fetch(`https://sitemaps.web3.bio/sitemap-index.json`);
