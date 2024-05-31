@@ -41,15 +41,11 @@ export const QUERY_DAO_DELEGATORS = gql`
             name
             symbol
           }
-          governor {
-            id
+          organization {
             name
-            organization {
-              name
-              slug
-              metadata {
-                icon
-              }
+            slug
+            metadata {
+              icon
             }
           }
         }
