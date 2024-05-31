@@ -2,11 +2,11 @@ import ApolloProvider from "../components/shared/ApolloProvider";
 import GoogleAnalytics from "../components/shared/GoogleAnalytics";
 import ReduxProvider from "../components/shared/ReduxProvider";
 import WalletProvider from "../components/shared/WalletProvider";
+import { baseURL } from "../components/utils/test-utils";
 import "../styles/web3bio.scss";
 import "@rainbow-me/rainbowkit/styles.css";
 
 export function generateMetadata() {
-  const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
   const defaultTitle =
     "Web3.bio - Web3 Identity Graph Search and Link in Bio Profile";
   const description =
@@ -79,9 +79,7 @@ export default function RootLayout({ children }) {
         <main>
           <ReduxProvider>
             <ApolloProvider>
-              <WalletProvider>
-                {children}
-              </WalletProvider>
+              <WalletProvider>{children}</WalletProvider>
             </ApolloProvider>
           </ReduxProvider>
           <GoogleAnalytics />

@@ -12,6 +12,9 @@ import { LENS_GRAPHQL_END_POINT } from "../apis/lens";
 
 const defaultLink = new HttpLink({
   uri: process.env.NEXT_PUBLIC_GRAPHQL_SERVER,
+  headers: {
+    "x-api-key": process.env.NEXT_PUBLIC_RELATION_API_KEY || "",
+  },
 });
 
 const philandLink = new HttpLink({

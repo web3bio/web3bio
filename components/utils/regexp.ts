@@ -12,4 +12,6 @@ export const regexEns = /.*?\.(eth|xyz|app|luxe|kred|art|ceo|club)$/i,
   regexSpaceid = /.*\.(bnb|arb)$/i,
   regexCrossbell = /.*\.csb$/i,
   regexGenome = /.*\.gno$/i,
-  regexAvatar = /^0x[a-f0-9]{66}$/i;
+  regexAvatar = /^0x[a-f0-9]{66}$/i,
+  regexEIP = /^eip155:(\d+)\/(erc1155|erc721):(.*)\/(.*)$/,
+  regexDomain = /^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)/;

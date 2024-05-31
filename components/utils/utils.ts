@@ -21,6 +21,8 @@ import {
   regexBtc,
   regexGenome,
   regexAvatar,
+  regexEIP,
+  regexDomain,
 } from "./regexp";
 import _ from "lodash";
 import {
@@ -30,6 +32,43 @@ import {
 } from "./constants";
 import { SearchListItemType } from "../search/SearchInput";
 import GraphemeSplitter from "grapheme-splitter";
+import { NextResponse } from "next/server";
+import { errorHandleProps } from "./types";
+import * as contentHash from "@ensdomains/content-hash";
+import { chainIdToNetwork } from "./network";
+import { SIMPLEHASH_URL, SimplehashFetcher } from "../apis/simplehash";
+
+export const errorHandle = (props: errorHandleProps) => {
+  const isValidAddress = isValidEthereumAddress(props.identity || "");
+  return NextResponse.json(
+    {
+      address: isValidAddress ? props.identity : null,
+      identity: !isValidAddress ? props.identity : null,
+      platform: props.platform,
+      error: props.message,
+    },
+    {
+      status: isNaN(props.code) ? 500 : props.code,
+      headers: {
+        "Cache-Control": "no-store",
+        ...props.headers,
+      },
+    }
+  );
+};
+export const respondWithCache = (
+  json: string,
+  headers?: { [index: string]: string }
+) => {
+  return NextResponse.json(JSON.parse(json), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json",
+      "Cache-Control": "public, s-maxage=604800, stale-while-revalidate=86400",
+      ...headers,
+    },
+  });
+};
 
 export const formatText = (string, length?) => {
   if (!string) return "";
@@ -41,7 +80,7 @@ export const formatText = (string, length?) => {
   if (stringSplitArr.length <= maxLength) {
     return string;
   }
-  
+
   if (string.startsWith("0x")) {
     return `${stringSplitArr.slice(0, chars + 2).join("")}...${stringSplitArr
       .slice(stringSplitArr.length - chars)
@@ -205,6 +244,10 @@ const resolveSocialMediaLink = (name: string, type: PlatformType) => {
     case PlatformType.dns:
     case PlatformType.website:
       return `https://${name}`;
+    case PlatformType.discord:
+      if (name.includes("https://"))
+        return SocialPlatformMapping(type).urlPrefix + name;
+      return "";
     default:
       return SocialPlatformMapping(type).urlPrefix
         ? SocialPlatformMapping(type).urlPrefix + name
@@ -413,4 +456,73 @@ export const shouldPlatformFetch = (platform?: PlatformType | null) => {
   )
     return true;
   return false;
+};
+
+export const resolveHandle = (handle: string, platform?: PlatformType) => {
+  if (!handle) return null;
+  let handleToResolve = handle;
+  if (platform === PlatformType.website)
+    return handle.replace(/http(s?):\/\//g, "").replace(/\/$/g, "");
+  if (platform === PlatformType.youtube)
+    return handle.match(/@(.*?)(?=[\/]|$)/)?.[0] || "";
+  if (
+    platform &&
+    [PlatformType.lens, PlatformType.hey].includes(platform) &&
+    handle.endsWith(".lens")
+  )
+    handleToResolve = handle.replace(".lens", "");
+  if (regexDomain.test(handleToResolve)) {
+    const arr = handleToResolve.split("/");
+    return (
+      handleToResolve.endsWith("/") ? arr[arr.length - 2] : arr[arr.length - 1]
+    ).replaceAll("@", "");
+  }
+
+  return handleToResolve.replaceAll("@", "");
+};
+export const resolveEipAssetURL = async (source: string) => {
+  if (!source) return null;
+  try {
+    if (regexEIP.test(source)) {
+      const match = source.match(regexEIP);
+      const chainId = match?.[1];
+      const contractAddress = match?.[3];
+      const tokenId = match?.[4];
+      const network = chainIdToNetwork(chainId);
+      
+      if (contractAddress && tokenId && network) {
+        const fetchURL =
+          SIMPLEHASH_URL +
+          `/api/v0/nfts/${network}/${contractAddress}/${tokenId}`;
+        const res = await SimplehashFetcher(fetchURL);
+
+        if (res || res.nft_id) {
+          return resolveMediaURL(
+            res.image_url || res.previews?.image_large_url
+          );
+        }
+      }
+    }
+    return resolveMediaURL(source);
+  } catch (e) {
+    return null;
+  }
+};
+
+export const decodeContenthash = (encoded: string) => {
+  let decoded;
+  if (
+    !encoded ||
+    ["0x", "0x0000000000000000000000000000000000000000"].includes(encoded)
+  ) {
+    return null;
+  }
+  const codec = contentHash.getCodec(encoded);
+  const decodedId = contentHash.decode(encoded);
+  try {
+    decoded = `${codec}://${decodedId}`;
+  } catch (e) {
+    decoded = null;
+  }
+  return decoded;
 };

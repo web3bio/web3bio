@@ -6,6 +6,7 @@ import { disconnect } from "@wagmi/core";
 import Clipboard from "react-clipboard.js";
 import { useEffect, useRef, useState } from "react";
 import { Loading } from "./Loading";
+import { config } from "./WalletProvider";
 
 export default function WalletButton(props) {
   const {} = props;
@@ -57,7 +58,10 @@ export default function WalletButton(props) {
               {(() => {
                 if (!connected) {
                   return (
-                    <div onClick={openConnectModal} className="btn btn-primary connect-btn">
+                    <div
+                      onClick={openConnectModal}
+                      className="btn btn-primary connect-btn"
+                    >
                       Connect Wallet
                     </div>
                   );
@@ -169,7 +173,7 @@ export default function WalletButton(props) {
                             href="/"
                             onClick={async (e) => {
                               e.preventDefault();
-                              await disconnect();
+                              await disconnect(config);
                             }}
                           >
                             <SVG
