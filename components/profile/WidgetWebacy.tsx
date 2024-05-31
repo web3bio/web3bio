@@ -12,7 +12,12 @@ export function WidgetWebacy({ address }) {
     `${WEBACY_API_ENDPOINT}/addresses/${address}?chain=${
       regexSolana.test(address) ? "sol" : "eth"
     }`,
-    webacyFetcher
+    webacyFetcher,
+    {
+      revalidateOnMount: true,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
   );
   const dispatch = useDispatch();
   useEffect(() => {
@@ -27,9 +32,10 @@ export function WidgetWebacy({ address }) {
   }, [data, dispatch, isLoading]);
 
   if (!isLoading && isNaN(data?.overallRisk)) return null;
-  if (process.env.NODE_ENV !== "production") {
-    console.log("Webacy Data:", data);
-  }
+
+  // if (process.env.NODE_ENV !== "production") {
+  //   console.log("Webacy Data:", data);
+  // }
 
   return isLoading ? (
     <></>
