@@ -1,4 +1,4 @@
-import { queryClient } from "../components/utils/test-utils";
+import { queryClient } from "../components/utils/queries";
 
 describe("Test For Universal Profile API", () => {
   it("It should response 200 data for 0x028f936e528de34fc95179780751ec21256825ce604950580978a8961c5af03e50", async () => {

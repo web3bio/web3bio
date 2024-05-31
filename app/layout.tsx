@@ -2,7 +2,7 @@ import ApolloProvider from "../components/shared/ApolloProvider";
 import GoogleAnalytics from "../components/shared/GoogleAnalytics";
 import ReduxProvider from "../components/shared/ReduxProvider";
 import WalletProvider from "../components/shared/WalletProvider";
-import { baseURL } from "../components/utils/test-utils";
+import { baseURL } from "../components/utils/queries";
 import "../styles/web3bio.scss";
 import "@rainbow-me/rainbowkit/styles.css";
 
