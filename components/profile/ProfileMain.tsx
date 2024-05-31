@@ -31,10 +31,10 @@ import Web3bioBadge from "./ProfileFooter";
 import { WidgetArticle } from "./WidgetArticle";
 import WidgetIndicator from "./WidgetIndicator";
 import { WidgetTypes } from "../utils/widgets";
-import { GET_PROFILES } from "../utils/queries";
-import { useLazyQuery } from "@apollo/client";
+import { DocumentNode, useLazyQuery } from "@apollo/client";
 import { WidgetScores } from "./WidgetScores";
 import { updateUniversalBatchedProfile } from "../state/universal/actions";
+import { getProfileQuery } from "../utils/queries";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
@@ -42,7 +42,7 @@ export default function ProfileMain(props) {
   const [isCopied, setIsCopied] = useState(false);
   const [links, setLinks] = useState(data?.links);
   const [getQuery, { loading, error, data: identityGraph }] = useLazyQuery(
-    GET_PROFILES,
+    getProfileQuery() as DocumentNode,
     {
       variables: {
         platform: platform,
@@ -432,7 +432,9 @@ export default function ProfileMain(props) {
 
                   <div className="web3-section-widgets">
                     {isValidEthereumAddress(data.address) && (
-                      <Suspense fallback={<LoadingSkeleton type={WidgetTypes.tally} />}>
+                      <Suspense
+                        fallback={<LoadingSkeleton type={WidgetTypes.tally} />}
+                      >
                         <WidgetTally address={data.address} />
                       </Suspense>
                     )}

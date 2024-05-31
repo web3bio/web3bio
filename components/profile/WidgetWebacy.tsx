@@ -12,11 +12,16 @@ export function WidgetWebacy({ address }) {
     `${WEBACY_API_ENDPOINT}/addresses/${address}?chain=${
       regexSolana.test(address) ? "sol" : "eth"
     }`,
-    webacyFetcher
+    webacyFetcher,
+    {
+      revalidateOnMount: true,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
   );
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!!data) {
+    if (!isLoading) {
       dispatch(
         updateWebacyWidget({
           isEmpty: isNaN(data?.overallRisk),
@@ -24,9 +29,10 @@ export function WidgetWebacy({ address }) {
         })
       );
     }
-  }, [data, dispatch]);
+  }, [data, dispatch, isLoading]);
 
   if (!isLoading && isNaN(data?.overallRisk)) return null;
+
   // if (process.env.NODE_ENV !== "production") {
   //   console.log("Webacy Data:", data);
   // }

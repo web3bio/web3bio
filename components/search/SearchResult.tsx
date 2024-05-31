@@ -1,13 +1,13 @@
-import { useLazyQuery } from "@apollo/client";
+import { DocumentNode, useLazyQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
 import { Loading } from "../shared/Loading";
 import { ResultAccount } from "./ResultAccount";
-import { GET_PROFILES } from "../utils/queries";
+import { getProfileQuery } from "../utils/queries";
 
 export default function SearchResult({ searchTerm, searchPlatform }) {
-  const [getQuery, { loading, error, data }] = useLazyQuery(GET_PROFILES, {
+  const [getQuery, { loading, error, data }] = useLazyQuery(getProfileQuery() as DocumentNode, {
     variables: {
       platform: searchPlatform,
       identity: searchTerm,

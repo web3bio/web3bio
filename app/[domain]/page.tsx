@@ -11,6 +11,7 @@ import { notFound, redirect } from "next/navigation";
 import { Metadata } from "next";
 import ProfileMain from "../../components/profile/ProfileMain";
 import { regexAvatar } from "../../components/utils/regexp";
+import { baseURL } from "../../components/utils/queries";
 
 async function fetchDataFromServer(domain: string) {
   if (!domain) return null;
@@ -58,8 +59,6 @@ export async function generateMetadata({
     profile?.identity == profile?.displayName
       ? `${profile?.displayName}`
       : `${profile?.displayName} (${profile?.identity})`;
-
-  const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
 
   const profileDescription =
     profile?.description ||
@@ -147,7 +146,7 @@ export default async function ProfilePage({
       domain={domain}
       relations={
         data?.map((x) => ({
-          ...x
+          ...x,
         })) || []
       }
       data={{
