@@ -1,6 +1,5 @@
 import { queryClient } from "../../components/utils/test-utils";
 
-
 describe("Test For Universal NS API", () => {
   it("It should response 200 data for 0x028f936e528de34fc95179780751ec21256825ce604950580978a8961c5af03e50", async () => {
     const res = await queryClient(
@@ -28,9 +27,11 @@ describe("Test For Universal NS API", () => {
     expect(json[0].identity).toBe("stani.lens");
   });
 
-  it("It should response 404 data for jeffx.bit", async () => {
-    const res = await queryClient("/ns/jeffx.bit");
-    expect(res.status).toBe(404);
+  it("It should response 404 data for hello.bit", async () => {
+    const res = await queryClient("/ns/hello.bit");
+    expect(res.status).toBe(200);
+    const json = await res.json();
+    expect(json.length).toBe(1);
   });
 
   it("It should response 200 data for gamedb.eth", async () => {

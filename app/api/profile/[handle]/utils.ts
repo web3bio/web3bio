@@ -129,11 +129,7 @@ export const resolveUniversalRespondFromRelation = async ({
     };
   return await Promise.allSettled([
     ...resolvedRequestArray.map((x: { platform: string; identity: string }) => {
-      if (
-        x.identity &&
-        shouldPlatformFetch(x.platform as PlatformType) &&
-        x.platform !== PlatformType.dotbit
-      ) {
+      if (x.identity && shouldPlatformFetch(x.platform as PlatformType)) {
         const fetchURL = `${req.nextUrl.origin}/api/${
           ns ? "ns" : "profile"
         }/${x.platform.toLowerCase()}/${x.identity}`;
