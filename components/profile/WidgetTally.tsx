@@ -177,23 +177,23 @@ const RenderWidgetTally = ({ address }) => {
                               <Image
                                 className="dao-icon"
                                 src={
-                                  x.governor.organization.metadata?.icon || ""
+                                  x.organization.metadata?.icon || ""
                                 }
                                 height={24}
                                 width={24}
-                                alt={x.governor.organization.name}
+                                alt={x.organization.name}
                               />
                               <div
                                 className="dao-content text-ellipsis"
                                 title={
-                                  x.governor.organization.name +
+                                  x.organization.name +
                                   " - " +
-                                  x.governor.name
+                                  x.slug
                                 }
                               >
-                                {x.governor.organization.name}{" "}
+                                {x.organization.name}{" "}
                                 <small className="label">
-                                  {x.governor.name}
+                                  {x.organization.slug}
                                 </small>
                               </div>
                             </div>

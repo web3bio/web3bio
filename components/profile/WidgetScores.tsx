@@ -22,9 +22,9 @@ const RenderWidgetScores = ({ address, states }) => {
   }, [address]);
 
   useEffect(() => {
-    const childs = [WidgetTypes.webacy, WidgetTypes.degen];
+    const childs = [states[WidgetTypes.webacy], states[WidgetTypes.degen]];
     childs.forEach((x) => {
-      if (states[x].isEmpty === false && !states[WidgetTypes.scores].loaded) {
+      if (x.isEmpty === false && !states[WidgetTypes.scores].loaded) {
         dispatch(
           updateScoresWidget({
             initLoading: false,
@@ -35,17 +35,23 @@ const RenderWidgetScores = ({ address, states }) => {
     });
   }, [states, dispatch]);
   const loading = useMemo(() => {
-    return !states[WidgetTypes.scores].loaded;
+    return states[WidgetTypes.scores].initLoading;
   }, [states]);
 
   const empty = useMemo(() => {
-    return states[WidgetTypes.scores].isEmpty;
+    return [states[WidgetTypes.webacy], states[WidgetTypes.degen]].every(
+      (x) => x.loaded && x.isEmpty
+    );
   }, [states]);
 
   return (
     !empty && (
       <div className="profile-widget-full" id={WidgetTypes.scores}>
-        <div className={`profile-widget profile-widget-scores ${loading && "profile-widget-loading"}`}>
+        <div
+          className={`profile-widget profile-widget-scores ${
+            loading && "profile-widget-loading"
+          }`}
+        >
           <div className="profile-widget-header">
             <h2 className="profile-widget-title">
               <span className="emoji-large mr-2">
