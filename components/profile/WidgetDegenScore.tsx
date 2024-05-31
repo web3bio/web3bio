@@ -30,15 +30,15 @@ const RenderWidgetDegenScore = ({ address }) => {
   const { data, isLoading } = useDegenInfo(address);
   const dispatch = useDispatch();
   useEffect(() => {
-    if (data?.name) {
+    if (!isLoading) {
       dispatch(
         updateDegenWidget({
-          isEmpty: false,
+          isEmpty: !data?.name,
           initLoading: false,
         })
       );
     }
-  }, [data, dispatch]);
+  }, [data, dispatch, isLoading]);
   if (!isLoading && !data?.name) return null;
 
   if (process.env.NODE_ENV !== "production") {
