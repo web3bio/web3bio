@@ -26,7 +26,7 @@ export const QUERY_DAO_DELEGATORS = gql`
     }
     delegatees(input: $delegatee) {
       nodes {
-        ... on DelegationV2 {
+        ... on Delegation {
           delegate {
             id
           }
