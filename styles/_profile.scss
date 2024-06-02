@@ -332,6 +332,21 @@
       font-size: 1.2rem;
     }
 
+    .btn-widget-more {
+      align-items: flex-end;
+      background: linear-gradient(to bottom, rgba($light-color, 0) 40%, rgba($light-color, 1) 80%);
+      bottom: 0;
+      display: flex;
+      height: 12rem;
+      justify-content: center;
+      left: 0;
+      padding: 1rem;
+      position: absolute;
+      right: 0;
+      width: 100%;
+      z-index: 99;
+    }
+
     .widget-loading {
       align-items: center;
       background: lighten($bg-color, 3%);
@@ -957,21 +972,6 @@
         overscroll-behavior: contain;
       }
     }
-
-    .btn-widget-more {
-      align-items: flex-end;
-      background: linear-gradient(to bottom, rgba($light-color, 0) 40%, rgba($light-color, 1) 80%);
-      bottom: 0;
-      display: flex;
-      height: 12rem;
-      justify-content: center;
-      left: 0;
-      padding: 1rem;
-      position: absolute;
-      right: 0;
-      width: 100%;
-      z-index: 99;
-    }
   }
 
   // RSS Widget
@@ -1075,12 +1075,19 @@
 
   // TallyDAO Widget
   .profile-widget-tally {
+    max-height: 15rem;
     overflow-x: hidden;
     position: relative;
     width: 100%;
 
     .profile-widget-body {
       overflow-x: auto;
+      padding-bottom: 1rem;
+    }
+
+    &.active {
+      height: 100%;
+      max-height: none;
     }
 
     .tab {

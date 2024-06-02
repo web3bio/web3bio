@@ -15,6 +15,7 @@ import { WidgetTypes } from "../utils/widgets";
 const RenderWidgetTally = ({ address }) => {
   // 0:delegators  1:delegating to
   const [activeTab, setActiveTab] = useState(0);
+  const [expand, setExpand] = useState(false);
   const queryVar = {
     filters: {
       address,
@@ -24,7 +25,7 @@ const RenderWidgetTally = ({ address }) => {
     },
     sort: {
       isDescending: true,
-      sortBy: "VOTES",
+      sortBy: "votes",
     },
   };
   const { data, loading, error } = useQuery(QUERY_DAO_DELEGATORS, {
@@ -60,7 +61,9 @@ const RenderWidgetTally = ({ address }) => {
 
   return (
     <div className="profile-widget-full" id={WidgetTypes.tally}>
-      <div className="profile-widget profile-widget-tally">
+      <div className={`profile-widget profile-widget-tally${
+          expand ? " active" : ""
+        }`}>
         <div className="profile-widget-header">
           <h2 className="profile-widget-title">
             <span className="emoji-large mr-2"> 🏛️</span>
@@ -247,6 +250,22 @@ const RenderWidgetTally = ({ address }) => {
                   text={`Please switch to Delegators tab`}
                 />
               ))}
+          </div>
+        )}
+
+        {!loading && !expand && (data?.delegates?.nodes?.length > 4 || data?.delegatees?.nodes?.length > 4) && (
+          <div
+            className="btn-widget-more"
+            onClick={() => {
+              setExpand(true);
+            }}
+          >
+            <button className="btn btn-block">View More</button>
+          </div>
+        )}
+        {expand && (
+          <div className="profile-widget-about">
+            Powered by <strong>Tally</strong>
           </div>
         )}
       </div>
