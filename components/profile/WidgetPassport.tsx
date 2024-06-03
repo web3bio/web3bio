@@ -6,35 +6,27 @@ import { useDispatch } from "react-redux";
 import { updateWebacyWidget } from "../state/widgets/action";
 import { GITCOIN_PASSPORT_API_END_POINT, gitcoinFetcher } from "../apis/gitcoin";
 
-export function WidgetWebacy({ address,scorer_id }) {
-  const { data, error, isLoading } = useSWR(
-    `${GITCOIN_PASSPORT_API_END_POINT}/registry/v2/score/${scorer_id}/${address}`,
-    gitcoinFetcher,
-    {
-      revalidateOnMount: true,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
-  );
-  const dispatch = useDispatch();
-  useEffect(() => {
-    if (!isLoading) {
-      dispatch(
-        updateWebacyWidget({
-          isEmpty: isNaN(data?.overallRisk),
-          initLoading: false,
-        })
-      );
-    }
-  }, [data, dispatch, isLoading]);
+export function WidgetGitcoin({ address }) {
 
-  if (!isLoading && isNaN(data?.overallRisk)) return null;
+  const dispatch = useDispatch();
+  // useEffect(() => {
+  //   if (!isLoading) {
+  //     dispatch(
+  //       updateWebacyWidget({
+  //         isEmpty: isNaN(data?.overallRisk),
+  //         initLoading: false,
+  //       })
+  //     );
+  //   }
+  // }, [data, dispatch, isLoading]);
+
+  // if (!isLoading && isNaN(data?.overallRisk)) return null;
 
   // if (process.env.NODE_ENV !== "production") {
   //   console.log("Webacy Data:", data);
   // }
 
-  return isLoading ? (
+  return true ? (
     <></>
   ) : (
     <div className="profile-widget profile-widget-webacy">
