@@ -459,12 +459,12 @@
       cursor: pointer;
       overflow: hidden;
       position: relative;
-      
+
       &:focus,
       &:hover {
         box-shadow: 0 .4rem 1.6rem -.4rem rgba($dark-color, .15), 0 .1rem .2rem rgba($dark-color, .01);
         z-index: 99;
-       
+
         .platform-action {
           opacity: 1;
         }
@@ -485,7 +485,7 @@
         position: relative;
         transition: all .25s ease-in-out;
         width: 1.8rem;
-  
+
         .icon-verified {
           animation: bounce-in 1s ease-in-out 1;
           backdrop-filter: blur(.2rem);
@@ -497,7 +497,7 @@
           position: absolute;
           right: -.4rem;
           width: 1.2rem;
-  
+
           svg {
             filter: drop-shadow(0 .2rem .2rem rgba($dark-color, .2));
           }
@@ -508,25 +508,25 @@
         font-weight: 500;
         width: 100%;
       }
-  
+
       .platform-handle {
         color: $gray-color;
         font-size: .6rem;
         width: 100%;
       }
-  
+
       .platform-action {
         opacity: 0;
         padding: .1rem;
         position: absolute;
         right: .5rem;
         top: .5rem;
-  
+
         .tooltip-copy {
           bottom: .35rem;
           left: -100%;
         }
-  
+
         &.active {
           opacity: 1;
         }
@@ -535,7 +535,7 @@
       &.website {
         .platform-icon {
           background: $light-color;
-  
+
           img {
             border-radius: .3rem;
             height: 1.2rem;
@@ -1123,7 +1123,7 @@
         line-height: 1rem;
         text-align: left;
         width: 30%;
-        
+
         &:first-child {
           width: 40%;
         }
@@ -1148,13 +1148,13 @@
           border-radius: 50%;
           height: 1.2rem;
           width: 1.2rem;
-  
+
           .img-placeholder {
             border-radius: 50%;
             height: 100%;
             width: 100%;
           }
-  
+
           img {
             border-radius: 1rem;
           }
@@ -1235,7 +1235,7 @@
 
     .widget-trait-list {
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
       gap: .4rem;
       height: 100%;
       width: 100%;
@@ -1245,8 +1245,11 @@
         border-radius: .2rem;
         color: transparent;
         font-weight: 500;
-        height: .8rem;
         padding: 0;
+
+        &.label {
+          background-image: linear-gradient(124.2deg, #d6fdff 8%, #bad1ff 34%, #7cd4f0 74%, #b4fffa 95%);
+        }
 
         &.action_tier_legendary {
           background-image: linear-gradient(124.2deg, #d6fdff 8%, #bad1ff 34%, #7cd4f0 74%, #b4fffa 95%);

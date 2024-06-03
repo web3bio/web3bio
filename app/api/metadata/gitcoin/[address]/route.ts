@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { gitcoinPassportMapping } from "../../../../../components/utils/gitcoin";
 import BigNumber from "bignumber.js";
+import {
+  isValidEthereumAddress,
+  respondWithCache,
+} from "../../../../../components/utils/utils";
 
 const GITCOIN_PASSPORT_API_END_POINT = "https://api.scorer.gitcoin.co";
+
 const fetchStamps = async (address) => {
   const res = await fetch(
     `${GITCOIN_PASSPORT_API_END_POINT}/registry/stamps/${address}?limit=1000&include_metadata=false`,
@@ -23,14 +28,14 @@ const fetchStamps = async (address) => {
 const emptyReturn = () =>
   NextResponse.json({
     score: 0,
-    updateAt: new Date(),
+    updatedAt: new Date(),
     stamps: [],
   });
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
   const address = searchParams.get("address");
-  if (!address) {
+  if (!address || !isValidEthereumAddress(address)) {
     return emptyReturn();
   }
   const stamps = await fetchStamps(address);
@@ -43,10 +48,12 @@ export async function GET(req: NextRequest) {
     return pre;
   }, 0);
 
-  return NextResponse.json({
-    score: score,
-    updateAt: new Date(),
-    stamps: detailsArr,
-  });
+  return respondWithCache(
+    JSON.stringify({
+      score: score,
+      updatedAt: new Date(),
+      stamps: detailsArr,
+    })
+  );
 }
 export const runtime = "edge";

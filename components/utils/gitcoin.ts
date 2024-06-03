@@ -129,7 +129,7 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
     [GitcoinPassport.ethGasMoreThan025]: {
       key: GitcoinPassport.ethGasMoreThan025,
       weight: 1.003,
-      label: "Spend more than 0.25 ETH on gas:",
+      label: "Spend more than 0.25 ETH on gas",
       type: "ETH",
     },
     [GitcoinPassport.gitcoinGrants10]: {
