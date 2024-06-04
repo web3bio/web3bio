@@ -7,7 +7,8 @@ import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { getSocialMediaLink } from "../utils/utils";
 import useSWR from "swr";
 import { SimplehashFetcher, SIMPLEHASH_URL } from "../apis/simplehash";
-import { NetworkMapping } from "../utils/network";
+import { Network, NetworkMapping } from "../utils/network";
+import { useMemo } from "react";
 
 const renderSocialMediaLinks = (_collection) => {
   const renderArr = {
@@ -49,11 +50,16 @@ const renderSocialMediaLinks = (_collection) => {
 
 export default function NFTModalContentRender(props) {
   const { onClose, asset } = props;
-
+  const resolvedNetwork = useMemo(() => {
+    if (asset.network.includes("arbitrum")) {
+      return Network.arbitrum;
+    }
+    return asset.network;
+  }, [asset.network]);
   const { data: fetchedAsset, isValidating } = useSWR(
     asset?.remoteFetch
       ? SIMPLEHASH_URL +
-          `/api/v0/nfts/${asset.network}/${asset.contractAddress}/${asset.tokenId}`
+          `/api/v0/nfts/${resolvedNetwork}/${asset.contractAddress}/${asset.tokenId}`
       : null,
     SimplehashFetcher
   );
