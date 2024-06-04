@@ -4,7 +4,7 @@ import "../../styles/web3bio.scss";
 import { baseURL } from "../../components/utils/queries";
 
 export async function getStaticPaths() {
-  const res = await fetch("https://sitemaps.web3.bio/sitemap-index.json");
+  const res = await fetch(process.env.NEXT_PUBLIC_SITEMAP_INDEX || "https://sitemaps.web3.bio/sitemap-staging.json");
   const sitemaps = await res.json();
 
   const paths = sitemaps.data.map((item) => ({

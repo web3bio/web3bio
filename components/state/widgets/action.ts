@@ -4,16 +4,14 @@ interface UpdateWidgetState {
   isEmpty: boolean;
   initLoading: boolean;
 }
-export const updateNFTWidget = 
-  createAction<UpdateWidgetState>("widgets/nft");
+export const updateNFTWidget = createAction<UpdateWidgetState>("widgets/nft");
 export const updateFeedsWidget =
   createAction<UpdateWidgetState>("widgets/feeds");
 export const updatePoapsWidget =
   createAction<UpdateWidgetState>("widgets/poaps");
 export const updateScoresWidget =
   createAction<UpdateWidgetState>("widgets/scores");
-export const updateRssWidget = 
-  createAction<UpdateWidgetState>("widgets/rss");
+export const updateRssWidget = createAction<UpdateWidgetState>("widgets/rss");
 export const updateArticleWidget =
   createAction<UpdateWidgetState>("widgets/article");
 export const updateTallyDAOWidget =
@@ -24,3 +22,5 @@ export const updateWebacyWidget =
   createAction<UpdateWidgetState>("widgets/webacy");
 export const updateDegenWidget =
   createAction<UpdateWidgetState>("widgets/degen");
+export const updateGitcoinWidget =
+  createAction<UpdateWidgetState>("widgets/gitcoin");

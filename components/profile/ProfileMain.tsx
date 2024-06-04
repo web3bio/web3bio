@@ -429,16 +429,15 @@ export default function ProfileMain(props) {
                       </Suspense>
                     </div>
                   )}
-
-                  <div className="web3-section-widgets">
-                    {isValidEthereumAddress(data.address) && (
+                  {isValidEthereumAddress(data.address) && (
+                    <div className="web3-section-widgets">
                       <Suspense
                         fallback={<LoadingSkeleton type={WidgetTypes.tally} />}
                       >
                         <WidgetTally address={data.address} />
                       </Suspense>
-                    )}
-                  </div>
+                    </div>
+                  )}
 
                   {/* todo: Due to philand error background color, hide phi widget for now */}
                   {/* <div className="web3-section-widgets">
