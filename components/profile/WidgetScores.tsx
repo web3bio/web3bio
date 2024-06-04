@@ -5,11 +5,16 @@ import { WidgetDegenScore } from "./WidgetDegenScore";
 import { WidgetWebacy } from "./WidgetWebacy";
 import { updateScoresWidget } from "../state/widgets/action";
 import { useDispatch } from "react-redux";
+import { WidgetGitcoin } from "./WidgetGitcoin";
 
 const RenderWidgetScores = ({ address, states }) => {
   const dispatch = useDispatch();
   const scoresArr = useMemo(() => {
     return [
+      {
+        key: WidgetTypes.gitcoin,
+        render: () => <WidgetGitcoin address={address} />,
+      },
       {
         key: WidgetTypes.degen,
         render: () => <WidgetDegenScore address={address} />,
@@ -20,10 +25,16 @@ const RenderWidgetScores = ({ address, states }) => {
       },
     ];
   }, [address]);
-
+  const childWidgets = useMemo(
+    () => [
+      states[WidgetTypes.webacy],
+      states[WidgetTypes.degen],
+      states[WidgetTypes.gitcoin],
+    ],
+    [states]
+  );
   useEffect(() => {
-    const childs = [states[WidgetTypes.webacy], states[WidgetTypes.degen]];
-    childs.forEach((x) => {
+    childWidgets.forEach((x) => {
       if (x.isEmpty === false && !states[WidgetTypes.scores].loaded) {
         dispatch(
           updateScoresWidget({
@@ -33,16 +44,14 @@ const RenderWidgetScores = ({ address, states }) => {
         );
       }
     });
-  }, [states, dispatch]);
+  }, [childWidgets, dispatch, states]);
   const loading = useMemo(() => {
     return states[WidgetTypes.scores].initLoading;
   }, [states]);
 
   const empty = useMemo(() => {
-    return [states[WidgetTypes.webacy], states[WidgetTypes.degen]].every(
-      (x) => x.loaded && x.isEmpty
-    );
-  }, [states]);
+    return childWidgets.every((x) => x.loaded && x.isEmpty);
+  }, [childWidgets]);
 
   return (
     !empty && (

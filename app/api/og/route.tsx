@@ -82,7 +82,7 @@ export async function GET(request: NextRequest) {
               width={120}
               height={120}
               src={avatarImg}
-              alt=""
+              alt="avatar"
             />
           )}
 
@@ -137,7 +137,7 @@ export async function GET(request: NextRequest) {
                 src={qrcode(`https://web3.bio/${path}`, {
                   size: 100,
                 })}
-                alt={""}
+                alt={"qrcode"}
               />
             </div>
           )}
@@ -171,6 +171,7 @@ export async function GET(request: NextRequest) {
           width={size.width}
           height={size.height}
           src={"https://web3.bio/img/web3bio-social.jpg"}
+          alt="social"
         />
       ),
       {

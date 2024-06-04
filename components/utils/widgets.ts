@@ -9,6 +9,7 @@ export enum WidgetTypes {
   tally = "tally",
   degen = "degen",
   webacy = "webacy",
+  gitcoin = "gitcoin",
   default = "default",
 }
 export const WidgetInfoMapping = (widgetType: WidgetTypes) => {
@@ -60,19 +61,28 @@ export const WidgetInfoMapping = (widgetType: WidgetTypes) => {
       key: "philand",
       icon: "🏝️",
       title: "Phi Land",
-      description: "Phi is a new Web3 world created from ENS domains & On-Chain Activity, enabling the easy visualization of On-Chain Identities, currently built on Polygon. Virtually interact with crypto protocols from around the Ethereum ecosystem.",
+      description:
+        "Phi is a new Web3 world created from ENS domains & On-Chain Activity, enabling the easy visualization of On-Chain Identities, currently built on Polygon. Virtually interact with crypto protocols from around the Ethereum ecosystem.",
     },
     [WidgetTypes.degen]: {
       key: "degen",
       icon: "👾",
       title: "DegenScore",
-      description: "The DegenScore Beacon is an Ethereum soulbound token that highlights your on-chain skills & traits across one or more wallets.",
+      description:
+        "The DegenScore Beacon is an Ethereum soulbound token that highlights your on-chain skills & traits across one or more wallets.",
     },
     [WidgetTypes.webacy]: {
       key: "webacy",
       icon: "🛡️",
       title: "Webacy",
-      description: "Powered by Webacy's proprietary algorithm, the Safety Score gives you a real-time understanding of your wallet risk and vulnerabilities to attack vectors. ",
+      description:
+        "Powered by Webacy's proprietary algorithm, the Safety Score gives you a real-time understanding of your wallet risk and vulnerabilities to attack vectors. ",
+    },
+    [WidgetTypes.gitcoin]: {
+      key: "gitcoin",
+      icon: "🌀",
+      title: "Gitcoin Passport",
+      description: "Gitcoin Passport helps you collect “stamps” that prove your humanity and reputation. You decide what stamps are shown. And your privacy is protected at each step of the way.",
     },
   };
   return (
