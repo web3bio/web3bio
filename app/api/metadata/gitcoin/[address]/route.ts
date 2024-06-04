@@ -18,9 +18,14 @@ const fetchStamps = async (address) => {
     }
   );
   if (res.ok) {
-    return (await res.json()).items.map(
-      (x) => x.credential.credentialSubject.provider
-    );
+    return (await res.json()).items
+      .filter((x) => {
+        return (
+          new Date(x?.credential?.expirationDate).getTime() >
+          new Date().getTime()
+        );
+      })
+      .map((x) => x?.credential?.credentialSubject?.provider);
   }
   return [];
 };
