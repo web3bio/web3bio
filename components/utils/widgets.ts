@@ -81,8 +81,8 @@ export const WidgetInfoMapping = (widgetType: WidgetTypes) => {
     [WidgetTypes.gitcoin]: {
       key: "gitcoin",
       icon: "🌀",
-      title: "Gitcoin",
-      description: "",
+      title: "Gitcoin Passport",
+      description: "Gitcoin Passport helps you collect “stamps” that prove your humanity and reputation. You decide what stamps are shown. And your privacy is protected at each step of the way.",
     },
   };
   return (

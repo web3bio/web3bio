@@ -12,16 +12,16 @@ const RenderWidgetScores = ({ address, states }) => {
   const scoresArr = useMemo(() => {
     return [
       {
+        key: WidgetTypes.gitcoin,
+        render: () => <WidgetGitcoin address={address} />,
+      },
+      {
         key: WidgetTypes.degen,
         render: () => <WidgetDegenScore address={address} />,
       },
       {
         key: WidgetTypes.webacy,
         render: () => <WidgetWebacy address={address} />,
-      },
-      {
-        key: WidgetTypes.gitcoin,
-        render: () => <WidgetGitcoin address={address} />,
       },
     ];
   }, [address]);

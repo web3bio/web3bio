@@ -41,7 +41,7 @@ const RenderWidgetGitcoin = ({ address }) => {
   return isLoading ? (
     <></>
   ) : (
-    <div className="profile-widget profile-widget-degenscore">
+    <div className="profile-widget profile-widget-gitcoin">
       <div className="profile-widget-header">
         <h2 className="profile-widget-title">
           <span className="emoji-large mr-2">
@@ -53,12 +53,9 @@ const RenderWidgetGitcoin = ({ address }) => {
       <div className="profile-widget-body"></div>
 
       <div className="profile-widget-footer">
-        <div className="widget-degen-number">{data.score}</div>
-        <div className="widget-degen-title">
-          Updated:{" "}
-          {formatDistanceToNow(new Date(data?.updatedAt), {
-            addSuffix: true,
-          })}
+        <div className="widget-gitcoin-number">{data.score}</div>
+        <div className="widget-gitcoin-title" title="Humanity Score is based out of 100 and measures identity's uniqueness. The current passing threshold is 20.">
+          Humanity Score &#9432;
         </div>
       </div>
 
@@ -69,10 +66,10 @@ const RenderWidgetGitcoin = ({ address }) => {
               return (
                 <div
                   key={idx}
-                  className={`trait-item label ${item.type?.toLowerCase()}`}
+                  className={`trait-item label ${item.type?.toLowerCase()} ${item.weight >= 2 && "label-tier-rare"}`}
                   title={item.label}
                 >
-                  {(item.type === "ETH" && "💎 ") || "✨ "}
+                  {item.weight >= 2 && "💎 "}
                   {item.label}
                 </div>
               );

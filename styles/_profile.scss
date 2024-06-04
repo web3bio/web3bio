@@ -1082,12 +1082,15 @@
 
     .profile-widget-body {
       overflow-x: auto;
-      padding-bottom: 1rem;
     }
 
     &.active {
       height: 100%;
       max-height: none;
+
+      .profile-widget-body {
+        padding-bottom: 1rem;
+      }
     }
 
     .tab {
@@ -1202,14 +1205,13 @@
     }
 
     .profile-widget-hover {
-      background: rgba(#121212, .95);
+      background: rgba(#fff, .95);
       border-radius: .6rem;
       bottom: 0;
       display: none;
       height: 100%;
       left: 0;
-      overflow-y: auto;
-      padding: 1rem;
+      padding: 0;
       position: absolute;
       width: 100%;
     }
@@ -1235,21 +1237,17 @@
 
     .widget-trait-list {
       display: flex;
-      flex-direction: column;
+      flex-wrap: wrap;
       gap: .4rem;
       height: 100%;
+      overflow-y: auto;
+      padding: 1rem;
       width: 100%;
 
       .trait-item {
-        background-clip: text;
         border-radius: .2rem;
-        color: transparent;
         font-weight: 500;
-        padding: 0;
-
-        &.label {
-          background-image: linear-gradient(124.2deg, #d6fdff 8%, #bad1ff 34%, #7cd4f0 74%, #b4fffa 95%);
-        }
+        padding: .15rem .25rem;
 
         &.action_tier_legendary {
           background-image: linear-gradient(124.2deg, #d6fdff 8%, #bad1ff 34%, #7cd4f0 74%, #b4fffa 95%);
@@ -1323,6 +1321,68 @@
           background: linear-gradient(-60deg, rgba(#F3AC3C, .05) 0, rgba(#F3AC3C, .15) 35%);
           border: .05rem solid rgba(#F3AC3C, .1);
           color: rgba(#F3AC3C, .75);
+        }
+      }
+    }
+  }
+
+  // Gitcoin Widget
+  .profile-widget-gitcoin {
+    background: linear-gradient(45deg, rgba(#4341B7, .15) 0, rgba(#fff, 1) 25%);
+    position: relative;
+    width: 100%;
+
+    .profile-widget-body {
+      flex: 1;
+    }
+
+    .profile-widget-hover {
+      background: rgba(#fff, .95);
+      border-radius: .6rem;
+      bottom: 0;
+      display: none;
+      height: 100%;
+      left: 0;
+      padding: 0;
+      position: absolute;
+      width: 100%;
+    }
+
+    &:focus,
+    &:hover {
+      .profile-widget-hover {
+        display: flex;
+      }
+    }
+
+    .widget-gitcoin-title {
+      font-size: .6rem;
+    }
+
+    .widget-gitcoin-number {
+      align-items: center;
+      display: flex;
+      font-size: 1.2rem;
+      font-weight: 800;
+      gap: .4rem;
+    }
+
+    .widget-trait-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .4rem;
+      height: 100%;
+      overflow-y: auto;
+      padding: 1rem;
+      width: 100%;
+
+      .trait-item {
+        border-radius: .2rem;
+        font-weight: 500;
+        padding: .15rem .25rem;
+
+        &.label-tier-rare {
+          background-image: linear-gradient(124.2deg, #d6fdff 8%, #bad1ff 34%, #7cd4f0 74%, #b4fffa 95%);
         }
       }
     }
