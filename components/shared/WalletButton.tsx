@@ -117,8 +117,7 @@ export default function WalletButton(props) {
                           }}
                           src={
                             account.ensAvatar ||
-                            process.env.NEXT_PUBLIC_PROFILE_END_POINT +
-                              `/avatar/${account.ensName || account.address}`
+                            `/api/avatar/${account.ensName || account.address}`
                           }
                           alt={account.address}
                         />

@@ -13,7 +13,7 @@ interface RenderProfileBadgeProps {
   remoteFetch?: boolean;
   parentRef?: Element;
   fullProfile?: boolean;
-  offset?: Array<number>
+  offset?: Array<number>;
 }
 
 export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
@@ -31,8 +31,7 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
   const ref = useRef(null);
   const { data, isValidating, error } = useSWR(
     !fetched && remoteFetch && visible && identity && platform
-      ? process.env.NEXT_PUBLIC_PROFILE_END_POINT +
-          `/ns/${platform.toLowerCase()}/${identity}`
+      ? `/api/ns/${platform.toLowerCase()}/${identity}`
       : null,
     ProfileFetcher,
     { keepPreviousData: true }
@@ -79,9 +78,7 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
       }}
       autoDestroy
       onPopupVisibleChange={(visible) => setShowPopup(visible)}
-      popup={
-       <ProfileCard data={data} />
-      }
+      popup={<ProfileCard data={data} />}
     >
       <div ref={ref} className="feed-token c-hand">
         {data?.identity && (
@@ -96,17 +93,22 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
         )}
         <span
           className="feed-token-value"
-          title={data?.displayName ? `${data?.displayName} (${identity})` : identity}
+          title={
+            data?.displayName ? `${data?.displayName} (${identity})` : identity
+          }
         >
-          {data?.displayName || (isWeb3Address(identity) ? formatText(identity) : identity)}
+          {data?.displayName ||
+            (isWeb3Address(identity) ? formatText(identity) : identity)}
         </span>
         {data?.identity && fullProfile && (
           <span className="feed-token-meta">
-            {isWeb3Address(data?.identity) ? 
-              formatText(data?.identity) === data?.displayName ? 
-                "" : formatText(data?.identity)
-              : data?.identity === data?.displayName ?
-                "" : data?.identity}
+            {isWeb3Address(data?.identity)
+              ? formatText(data?.identity) === data?.displayName
+                ? ""
+                : formatText(data?.identity)
+              : data?.identity === data?.displayName
+              ? ""
+              : data?.identity}
           </span>
         )}
       </div>

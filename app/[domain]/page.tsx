@@ -22,7 +22,7 @@ async function fetchDataFromServer(domain: string) {
     );
 
     if (!shouldPlatformFetch(platform)) return null;
-    const url = `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile${
+    const url = `${baseURL}/api/profile${
       useSolana ? "/solana/" : ""
     }/${domain}`;
     const response = await fetch(url, {

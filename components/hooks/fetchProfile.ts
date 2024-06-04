@@ -11,11 +11,8 @@ export const fetchProfile = async (identity) => {
     if (!handle || !shouldPlatformFetch(identity.platform)) return null;
 
     const platform = identity.platform;
-    const url =
-      process.env.NEXT_PUBLIC_PROFILE_END_POINT +
-      `/ns/${platform.toLowerCase()}/${handle}`;
     console.time(`Profile API call for ${handle}`);
-    const res = await fetch(url, {
+    const res = await fetch(`/api/ns/${platform.toLowerCase()}/${handle}`, {
       next: { revalidate: 86400 },
     });
     console.timeEnd(`Profile API call for ${handle}`);

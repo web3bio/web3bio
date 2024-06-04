@@ -2,6 +2,7 @@ import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
 import { formatText } from "../../../components/utils/utils";
 import qrcode from "yaqrcode";
+import { baseURL } from "../../../components/utils/queries";
 
 export const runtime = "edge";
 
@@ -21,8 +22,7 @@ export async function GET(request: NextRequest) {
     const address = searchParams.get("address");
     const displayName = searchParams.get("displayName");
     const description = searchParams.get("description");
-    const avatarImg =
-      process.env.NEXT_PUBLIC_PROFILE_END_POINT + `/avatar/${path}`;
+    const avatarImg = `${baseURL}/api/avatar/${path}`;
     const isShowDefault = ![address, path, displayName].some((x) => !!x);
 
     if (isShowDefault) {
@@ -58,7 +58,6 @@ export async function GET(request: NextRequest) {
               display: "flex",
               backgroundColor: "#fff",
               backgroundImage: `url(${avatarImg})`,
-              // backgroundImage: `url(${avatarImg}), url(${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/avatar/svg?handle=${path})`,
               backgroundPosition: "0 top",
               backgroundRepeat: "no-repeat",
               backgroundSize: "100% 200px",
