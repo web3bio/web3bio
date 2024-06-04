@@ -51,12 +51,12 @@ const renderSocialMediaLinks = (_collection) => {
 export default function NFTModalContentRender(props) {
   const { onClose, asset } = props;
   const resolvedNetwork = useMemo(() => {
-    if (asset.network.includes("arbitrum")) {
+    if (asset.network?.includes("arbitrum")) {
       return Network.arbitrum;
     }
     return asset.network;
   }, [asset.network]);
-  const { data: fetchedAsset, isValidating } = useSWR(
+  const { data: fetchedAsset } = useSWR(
     asset?.remoteFetch
       ? SIMPLEHASH_URL +
           `/api/v0/nfts/${resolvedNetwork}/${asset.contractAddress}/${asset.tokenId}`
