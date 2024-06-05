@@ -11,27 +11,22 @@ import { notFound, redirect } from "next/navigation";
 import { Metadata } from "next";
 import ProfileMain from "../../components/profile/ProfileMain";
 import { regexAvatar } from "../../components/utils/regexp";
-import { baseURL } from "../../components/utils/queries";
+import { baseURL, profileAPIBaseURL } from "../../components/utils/queries";
 
 async function fetchDataFromServer(domain: string) {
   if (!domain) return null;
   try {
     const platform = handleSearchPlatform(domain);
-    const useSolana = [PlatformType.sns, PlatformType.solana].includes(
-      platform
-    );
 
     if (!shouldPlatformFetch(platform)) return null;
-    const url = `${process.env.NEXT_PUBLIC_PROFILE_END_POINT}/profile${
-      useSolana ? "/solana/" : ""
-    }/${domain}`;
+    const url = `${profileAPIBaseURL}/profile/${domain}`;
     const response = await fetch(url, {
       next: { revalidate: 86400 },
     });
     if (response.status === 404) return null;
     const data = await response.json();
     return {
-      data: useSolana ? [data] : data,
+      data: data,
       platform,
     };
   } catch (e) {

@@ -1,14 +1,13 @@
 import Image from "next/image";
 import { AssetPlayerProps } from "./NFTAssetPlayer";
 interface Avatar extends AssetPlayerProps {
-  identity?: string,
+  identity?: string;
   itemProp?: string;
 }
 
 export const Avatar = (props: Avatar) => {
   const { src, width, height, alt, identity, itemProp } = props;
-  const profileAvatarAPIURL =
-    process.env.NEXT_PUBLIC_PROFILE_END_POINT + `/avatar/svg?handle=${identity}`;
+  const profileAvatarAPIURL = `/api/avatar/svg?handle=${identity}`;
   return (
     <Image
       className="avatar"

@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
         return respondWithSVG(name, 240);
       }
       if (rawAvatarUrl?.includes(".webp")) {
-        avatarURL = `${baseURL}/avatar/process?url=${encodeURIComponent(
+        avatarURL = `${baseURL}/api/avatar/process?url=${encodeURIComponent(
           rawAvatarUrl
         )}`;
       }
