@@ -6,6 +6,7 @@ import { PlatformType } from "../utils/platform";
 import { Avatar } from "../shared/Avatar";
 import Trigger from "@rc-component/trigger";
 import ProfileCard from "./ProfileCard";
+import { profileAPIBaseURL } from "../utils/queries";
 
 interface RenderProfileBadgeProps {
   identity: string;
@@ -31,7 +32,7 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
   const ref = useRef(null);
   const { data, isValidating, error } = useSWR(
     !fetched && remoteFetch && visible && identity && platform
-      ? `/api/ns/${platform.toLowerCase()}/${identity}`
+      ? `${profileAPIBaseURL}/api/ns/${platform.toLowerCase()}/${identity}`
       : null,
     ProfileFetcher,
     { keepPreviousData: true }

@@ -3,6 +3,7 @@ import {
   SIMPLEHASH_CHAINS,
   SIMPLEHASH_PAGE_SIZE,
 } from "../apis/simplehash";
+import { profileAPIBaseURL } from "../utils/queries";
 import { shouldPlatformFetch } from "../utils/utils";
 
 export const fetchProfile = async (identity) => {
@@ -12,9 +13,12 @@ export const fetchProfile = async (identity) => {
 
     const platform = identity.platform;
     console.time(`Profile API call for ${handle}`);
-    const res = await fetch(`/api/ns/${platform.toLowerCase()}/${handle}`, {
-      next: { revalidate: 86400 },
-    });
+    const res = await fetch(
+      profileAPIBaseURL + `/api/ns/${platform.toLowerCase()}/${handle}`,
+      {
+        next: { revalidate: 86400 },
+      }
+    );
     console.timeEnd(`Profile API call for ${handle}`);
     return await res.json();
   } catch (e) {

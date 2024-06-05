@@ -11,7 +11,7 @@ import { notFound, redirect } from "next/navigation";
 import { Metadata } from "next";
 import ProfileMain from "../../components/profile/ProfileMain";
 import { regexAvatar } from "../../components/utils/regexp";
-import { baseURL } from "../../components/utils/queries";
+import { baseURL, profileAPIBaseURL } from "../../components/utils/queries";
 
 async function fetchDataFromServer(domain: string) {
   if (!domain) return null;
@@ -19,7 +19,7 @@ async function fetchDataFromServer(domain: string) {
     const platform = handleSearchPlatform(domain);
 
     if (!shouldPlatformFetch(platform)) return null;
-    const url = `${baseURL}/api/profile/${domain}`;
+    const url = `${profileAPIBaseURL}/api/profile/${domain}`;
     const response = await fetch(url, {
       next: { revalidate: 86400 },
     });
