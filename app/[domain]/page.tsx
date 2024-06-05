@@ -17,21 +17,16 @@ async function fetchDataFromServer(domain: string) {
   if (!domain) return null;
   try {
     const platform = handleSearchPlatform(domain);
-    const useSolana = [PlatformType.sns, PlatformType.solana].includes(
-      platform
-    );
 
     if (!shouldPlatformFetch(platform)) return null;
-    const url = `${baseURL}/api/profile${
-      useSolana ? "/solana/" : ""
-    }/${domain}`;
+    const url = `${baseURL}/api/profile/${domain}`;
     const response = await fetch(url, {
       next: { revalidate: 86400 },
     });
     if (response.status === 404) return null;
     const data = await response.json();
     return {
-      data: useSolana ? [data] : data,
+      data: data,
       platform,
     };
   } catch (e) {
