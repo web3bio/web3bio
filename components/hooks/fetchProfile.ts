@@ -14,7 +14,7 @@ export const fetchProfile = async (identity) => {
     const platform = identity.platform;
     console.time(`Profile API call for ${handle}`);
     const res = await fetch(
-      profileAPIBaseURL + `/api/ns/${platform.toLowerCase()}/${handle}`,
+      profileAPIBaseURL + `/ns/${platform.toLowerCase()}/${handle}`,
       {
         next: { revalidate: 86400 },
       }

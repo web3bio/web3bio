@@ -32,7 +32,7 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
   const ref = useRef(null);
   const { data, isValidating, error } = useSWR(
     !fetched && remoteFetch && visible && identity && platform
-      ? `${profileAPIBaseURL}/api/ns/${platform.toLowerCase()}/${identity}`
+      ? `${profileAPIBaseURL}/ns/${platform.toLowerCase()}/${identity}`
       : null,
     ProfileFetcher,
     { keepPreviousData: true }
