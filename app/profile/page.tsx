@@ -8,7 +8,10 @@ import { ProfileFetcher } from "../../components/apis/profile";
 import WalletProfileMain from "../../components/manage/WalletProfileMain";
 import { DocumentNode, useLazyQuery } from "@apollo/client";
 import { PlatformType } from "../../components/utils/platform";
-import { getProfileQuery } from "../../components/utils/queries";
+import {
+  getProfileQuery,
+  profileAPIBaseURL,
+} from "../../components/utils/queries";
 
 export default function WalletProfilePage() {
   const { address } = useAccount();
@@ -18,9 +21,7 @@ export default function WalletProfilePage() {
   const router = useRouter();
 
   const { data, isLoading, error } = useSWR(
-    authed
-      ? process.env.NEXT_PUBLIC_PROFILE_END_POINT + `/profile/${address}`
-      : null,
+    authed ? `${profileAPIBaseURL}/profile/${address}` : null,
     ProfileFetcher
   );
 
