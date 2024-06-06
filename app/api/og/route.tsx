@@ -5,12 +5,18 @@ import qrcode from "yaqrcode";
 import { baseURL } from "../../../components/utils/queries";
 
 export const runtime = "edge";
+export const preferredRegion = ["hnd1", "sfo1"];
 
 let filename = "og.png";
 
 const size = {
   width: 1200,
   height: 630,
+};
+
+const headers = {
+  "Cache-Control": "public, s-maxage=604800, stale-while-revalidate=86400",
+  "CDN-Cache-Control": "max-age=604800",
 };
 
 export async function GET(request: NextRequest) {
@@ -147,6 +153,7 @@ export async function GET(request: NextRequest) {
         ...size,
         headers: {
           "Content-Disposition": "filename=" + filename,
+          ...headers,
         },
         fonts: [
           {
@@ -175,6 +182,9 @@ export async function GET(request: NextRequest) {
         />
       ),
       {
+        headers: {
+          ...headers,
+        },
         ...size,
       }
     );

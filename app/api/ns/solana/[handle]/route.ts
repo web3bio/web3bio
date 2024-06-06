@@ -35,3 +35,4 @@ export async function GET(req: NextRequest) {
   return resolveSolanaRespondNS(inputName);
 }
 export const runtime = "edge";
+export const preferredRegion = ["hnd1", "sfo1"];

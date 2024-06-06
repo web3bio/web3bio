@@ -10,3 +10,4 @@ export async function GET(req: NextRequest) {
   return await respondWithSVG(name, Number(size));
 }
 export const runtime = "edge";
+export const preferredRegion = ["hnd1", "sfo1"];

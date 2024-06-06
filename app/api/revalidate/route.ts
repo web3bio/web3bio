@@ -16,3 +16,6 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.json({ path: path, revalidated: true, now: Date.now() });
 }
+export const runtime = "edge";
+export const preferredRegion = ["hnd1", "sfo1"];
+export const dynamic = "force-dynamic";

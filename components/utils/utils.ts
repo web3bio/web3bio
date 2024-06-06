@@ -65,6 +65,7 @@ export const respondWithCache = (
     headers: {
       "Content-Type": "application/json",
       "Cache-Control": "public, s-maxage=604800, stale-while-revalidate=86400",
+      "CDN-Cache-Control": "max-age=604800",
       ...headers,
     },
   });
@@ -489,7 +490,7 @@ export const resolveEipAssetURL = async (source: string) => {
       const contractAddress = match?.[3];
       const tokenId = match?.[4];
       const network = chainIdToNetwork(chainId);
-      
+
       if (contractAddress && tokenId && network) {
         const fetchURL =
           SIMPLEHASH_URL +

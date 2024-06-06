@@ -43,6 +43,7 @@ export async function GET(req: NextRequest) {
                 response.headers.get("content-type") || "image/png",
               "Cache-Control":
                 "public, s-maxage=604800, stale-while-revalidate=86400",
+              "CDN-Cache-Control": "max-age=604800",
             },
           });
         } else {
@@ -58,3 +59,4 @@ export async function GET(req: NextRequest) {
 }
 
 export const runtime = "edge";
+export const preferredRegion = ["hnd1", "sfo1"];
