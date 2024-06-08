@@ -22,4 +22,4 @@ export async function GET(req: NextRequest) {
   return await resolveUniversalHandle(inputName, req, platform, true);
 }
 export const runtime = "edge";
-export const preferredRegion = ["sfo1", "hnd1"];
+// export const preferredRegion = ["sfo1", "hnd1"];

@@ -9,4 +9,4 @@ export default function DomainLayout({ children }) {
 }
 
 export const runtime = "edge";
-export const preferredRegion = ["sfo1", "hnd1"];
+// export const preferredRegion = ["sfo1", "hnd1"];

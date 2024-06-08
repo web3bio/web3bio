@@ -50,4 +50,4 @@ const resolveDotbitRespond = async (handle: string) => {
 };
 
 export const runtime = "edge";
-export const preferredRegion = ["sfo1", "hnd1"];
+// export const preferredRegion = ["sfo1", "hnd1"];
