@@ -57,6 +57,7 @@ export default function ShareModalContent(props) {
   if (path) params.append("path", path);
   if (profile) params.append("address", profile.address);
   params.append("displayName", profile.displayName);
+  if (profile.avatar) params.append("avatar", profile.avatar);
   if (profile.description) params.append("description", profile.description);
   const relativeOGURL = params.toString()
     ? `/api/og?${params.toString()}`

@@ -20,7 +20,9 @@ export async function GET(req: NextRequest) {
       headers: {
         "Content-Type": "image/jpeg",
         "Cache-Control":
-          "public, s-maxage=604800, stale-while-revalidate=86400",
+          "public, s-maxage=604800, stale-while-revalidate=604800",
+        "CDN-Cache-Control":
+          "public, s-maxage=604800",
       },
     });
   } catch (e) {

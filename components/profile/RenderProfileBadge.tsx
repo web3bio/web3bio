@@ -44,7 +44,7 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
       // parent element or window
       root: parentRef,
       rootMargin: "0px",
-      threshold: 0.6,
+      threshold: 1.0,
     };
 
     const observer = new IntersectionObserver(([entry]) => {

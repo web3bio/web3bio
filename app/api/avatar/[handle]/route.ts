@@ -5,7 +5,7 @@ import {
   handleSearchPlatform,
   shouldPlatformFetch,
 } from "../../../../components/utils/utils";
-import { baseURL } from "../../../../components/utils/queries";
+// import { profileAPIBaseURL } from "../../../../components/utils/queries";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
@@ -27,29 +27,19 @@ export async function GET(req: NextRequest) {
       } catch (e) {
         return respondWithSVG(name, 240);
       }
-      if (rawAvatarUrl?.includes(".webp")) {
-        avatarURL = `${baseURL}/api/avatar/process?url=${encodeURIComponent(
-          rawAvatarUrl
-        )}`;
-      }
+      // if (rawAvatarUrl?.includes(".webp")) {
+      //   avatarURL = `${profileAPIBaseURL}/avatar/process?url=${encodeURIComponent(
+      //     rawAvatarUrl
+      //   )}`;
+      // }
       try {
-        const response = await fetch(avatarURL, {
-          redirect: "manual",
-        });
-        if (response.ok) {
-          return new Response(response.body, {
-            headers: {
-              "Content-Type":
-                response.headers.get("content-type") || "image/png",
-              "Cache-Control":
-                "public, s-maxage=604800, stale-while-revalidate=86400",
-            },
-          });
+        if (avatarURL) {
+          return NextResponse.redirect(avatarURL);
         } else {
           return respondWithSVG(name, 240);
         }
       } catch (e) {
-        return NextResponse.redirect(avatarURL);
+        return respondWithSVG(name, 240);
       }
     }
   }
@@ -58,3 +48,4 @@ export async function GET(req: NextRequest) {
 }
 
 export const runtime = "edge";
+export const preferredRegion = ["sfo1", "hnd1"];
