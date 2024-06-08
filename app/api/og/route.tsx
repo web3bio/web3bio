@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
 import { formatText } from "../../../components/utils/utils";
 import qrcode from "yaqrcode";
-import { baseURL } from "../../../components/utils/queries";
+import { profileAPIBaseURL } from "../../../components/utils/queries";
 
 export const runtime = "edge";
 
@@ -22,7 +22,8 @@ export async function GET(request: NextRequest) {
     const address = searchParams.get("address");
     const displayName = searchParams.get("displayName");
     const description = searchParams.get("description");
-    const avatarImg = `${baseURL}/api/avatar/${path}`;
+    const avatar = searchParams.get("avatar");
+    const avatarImg = avatar ? avatar : `${profileAPIBaseURL}/avatar/svg?handle=${path}`;
     const isShowDefault = ![address, path, displayName].some((x) => !!x);
 
     if (isShowDefault) {
