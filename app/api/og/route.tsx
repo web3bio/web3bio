@@ -5,6 +5,7 @@ import qrcode from "yaqrcode";
 import { profileAPIBaseURL } from "../../../components/utils/queries";
 
 export const runtime = "edge";
+export const preferredRegion = ["sfo1", "hnd1"];
 
 let filename = "og.png";
 
