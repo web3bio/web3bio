@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { resolveIPFS_URL } from "../utils/ipfs";
@@ -17,8 +17,8 @@ import ActionExternalMenu from "./ActionExternalMenu";
 import { ActivityType, ActivityTypeMapping } from "../utils/activity";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
 import { formatDistanceToNow } from "date-fns";
-import { PlatformType, SocialPlatformMapping } from "../utils/platform";
-import { NetworkMapping } from "../utils/network";
+import { PlatformType } from "../utils/platform";
+import { Network, NetworkMapping } from "../utils/network";
 
 export const RenderToken = ({ key, name, symbol, image, value }) => {
   return (
@@ -120,45 +120,43 @@ const RenderFeedContent = (props) => {
   }
 };
 
-const RenderFeedItem = (props) => {
-  const { feed, identity, openModal } = props;
-  const isOwner = isSameAddress(feed.owner, identity.address);
-  const platformName = feed.platform?.toLowerCase();
-  const networkName = feed.network?.toLowerCase();
-  const actions = feed.actions?.filter((x) => x);
-  if (!actions?.length) return null;
-  const feedOwner = isOwner
-    ? identity.displayName || formatText(identity.address)
-    : formatText(feed.from);
+const renderFeedBadge = (key) => {
+  return (
+    <div
+      className={`feed-icon-platform ${key}`}
+      style={{ backgroundColor: NetworkMapping(key).bgColor }}
+      title={NetworkMapping(key).label}
+    >
+      <SVG
+        fill={NetworkMapping(key).primaryColor}
+        src={NetworkMapping(key).icon || ""}
+      />
+    </div>
+  );
+};
 
+const RenderFeedItem = (props) => {
+  const { feed, identity, openModal, actions } = props;
+  const isOwner = useMemo(
+    () => isSameAddress(feed.owner, identity.address),
+    [feed, identity]
+  );
+  const platformName = useMemo(() => feed.platform?.toLowerCase(), [feed]);
+  const networkName = useMemo(() => feed.network?.toLowerCase(), [feed]);
+  const feedOwner = useMemo(
+    () =>
+      isOwner
+        ? identity.displayName || formatText(identity.address)
+        : formatText(feed.from),
+    [feed, identity, isOwner]
+  );
+  if (!actions?.length) return null;
   return (
     <>
       <div className="feed-item-icon">
         <div className="feed-icon-emoji">
           {ActivityTypeMapping(feed.type).emoji}
-          {networkName && platformName !== "lens" ? (
-            <div
-              className={`feed-icon-platform ${networkName}`}
-              style={{ backgroundColor: NetworkMapping(networkName).bgColor }}
-              title={NetworkMapping(networkName).label}
-            >
-              <SVG
-                fill={NetworkMapping(networkName).primaryColor}
-                src={NetworkMapping(networkName).icon || ""}
-              />
-            </div>
-          ) : (
-            <div
-              className={`feed-icon-platform ${platformName}`}
-              style={{ backgroundColor: NetworkMapping(platformName).bgColor }}
-              title={NetworkMapping(platformName).label}
-            >
-              <SVG
-                fill={SocialPlatformMapping(platformName).color}
-                src={SocialPlatformMapping(platformName).icon || ""}
-              />
-            </div>
-          )}
+          {renderFeedBadge(networkName.replace(Network.polygon, Network.lens))}
         </div>
       </div>
       <div className="feed-item-content">
@@ -167,15 +165,13 @@ const RenderFeedItem = (props) => {
             {(
               <RenderProfileBadge
                 platform={
-                  feed?.platform &&
-                  shouldPlatformFetch(feed?.platform.toLowerCase())
-                    ? feed.platform
+                  shouldPlatformFetch(platformName)
+                    ? platformName
                     : PlatformType.ethereum
                 }
                 offset={[50, -5]}
                 identity={
-                  feed.platform ===
-                  SocialPlatformMapping(PlatformType.farcaster).label
+                  platformName === PlatformType.farcaster
                     ? feed?.actions?.[0]?.metadata?.handle
                     : feed.owner
                 }
@@ -191,13 +187,13 @@ const RenderFeedItem = (props) => {
               className="feed-timestamp"
             >
               <span>
-                {formatDistanceToNow(new Date(feed.timestamp * 1000), {
+                {formatDistanceToNow(new Date(feed?.timestamp * 1000), {
                   addSuffix: false,
                 })}
               </span>
             </Link>
             <ActionExternalMenu
-              platform={feed.platform}
+              platform={platformName}
               date={feed.timestamp}
               action={actions?.[0]}
               links={actions?.[0]?.related_urls.map((x) => resolveIPFS_URL(x))}
@@ -205,8 +201,8 @@ const RenderFeedItem = (props) => {
           </div>
         </div>
         <RenderFeedContent
-          platform={feed.platform}
-          network={feed.network}
+          platform={platformName}
+          network={networkName}
           openModal={openModal}
           id={feed.id}
           actions={actions}

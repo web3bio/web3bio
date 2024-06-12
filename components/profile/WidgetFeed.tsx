@@ -14,9 +14,7 @@ import { updateFeedsWidget } from "../state/widgets/action";
 import { ActivityFeeds } from "./ActivityFeeds";
 import { PlatformType } from "../utils/platform";
 import { isSameAddress } from "../utils/utils";
-import { WidgetTypes } from "../utils/widgets";
-
-const FEEDS_PAGE_SIZE = 20;
+import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 
 const processFeedsData = (data) => {
   if (!data?.[0]?.data?.length) return [];
@@ -69,8 +67,7 @@ const getURL = (index, address, previous, filter) => {
   const url = RSS3_ENDPOINT + `/data/accounts/activities`;
   const data = {
     account: [address],
-    limit: FEEDS_PAGE_SIZE,
-    // todo: check https://docs.rss3.io/reference/postaccountsactivities, action_limit only valid below 10
+    limit: 20,
     action_limit: 20,
     status: "successful",
     direction: "out",
@@ -114,7 +111,11 @@ function useFeeds({ address, filter }) {
   );
   return {
     hasNextPage: !!data?.[data.length - 1]?.meta?.cursor,
-    data: processFeedsData(data),
+    data: processFeedsData(data).filter((x) => {
+      if (x.tag === ActivityTag.transaction && !isSameAddress(x.from, address))
+        return false;
+      return true;
+    }),
     isError: error,
     size,
     isValidating,
@@ -156,15 +157,8 @@ export default function WidgetFeed({ profile, openModal }) {
       );
     }
   }, [expand, isValidating, data?.length, dispatch]);
-  const resolvedData = data?.filter((x) => {
-    if (
-      x.tag === ActivityTag.transaction &&
-      !isSameAddress(x.from, profile.address)
-    )
-      return false;
-    return true;
-  });
-  if ((filter === "all" && !resolvedData?.length) || isError) return null;
+
+  if ((filter === "all" && !data?.length) || isError) return null;
 
   // if (process.env.NODE_ENV !== "production") {
   //   console.log("Feed Data:", data);
@@ -183,8 +177,10 @@ export default function WidgetFeed({ profile, openModal }) {
       >
         <div className="profile-widget-header">
           <h2 className="profile-widget-title">
-            <span className="emoji-large mr-2">🌈 </span>
-            Activity Feeds
+            <span className="emoji-large mr-2">
+              {WidgetInfoMapping(WidgetTypes.feeds).icon}{" "}
+            </span>
+            {WidgetInfoMapping(WidgetTypes.feeds).title}
           </h2>
           <div className="widget-action">
             <FeedFilter
@@ -208,7 +204,7 @@ export default function WidgetFeed({ profile, openModal }) {
           expand={expand}
           parentScrollRef={scrollContainer}
           identity={profile}
-          data={resolvedData}
+          data={data}
           isLoadingMore={isValidating}
           hasNextPage={hasNextPage}
           isError={isError}
@@ -217,7 +213,7 @@ export default function WidgetFeed({ profile, openModal }) {
             setSize(size + 1);
           }}
         />
-        {!isValidating && !expand && resolvedData?.length > 2 && (
+        {!isValidating && !expand && data?.length > 2 && (
           <div
             className="btn-widget-more"
             onClick={() => {
