@@ -321,6 +321,8 @@ export const ActionStructMapping = (action, owner) => {
     // finance
     case ActivityType.approval:
       break;
+    case ActivityType.deploy:
+      break;
     case ActivityType.transfer:
       verb = isOwner
         ? ActivityTypeData[ActivityType.transfer].action.receive
@@ -333,7 +335,7 @@ export const ActionStructMapping = (action, owner) => {
     case ActivityType.liquidity:
       verb =
         ActivityTypeData[ActivityType.liquidity].action[
-          action.metadata.action || "default"
+          metadata.action || "default"
         ];
       objects = metadata.tokens;
       platform = action.platform;
@@ -347,7 +349,33 @@ export const ActionStructMapping = (action, owner) => {
       ];
       platform = action.platform;
       break;
+    case ActivityType.multisig:
+      verb =
+        ActivityTypeData[ActivityType.multisig].action[
+          metadata.action || "default"
+        ];
+      objects = metadata.owner ? [{ identity: metadata.owner }] : [];
+      if (metadata.vault?.address) {
+        objects = objects.concat([" on", { identity: metadata.vault.address }]);
+      }
+      platform = action.platform;
+      break;
+    case ActivityType.bridge:
+      verb =
+        ActivityTypeData[ActivityType.bridge].action[
+          metadata.action || "default"
+        ];
+      objects = [metadata.token];
+      platform = action.platform;
+    case ActivityType.burn:
+      verb =  ActivityTypeData[ActivityType.burn].action.default;
+      objects = action.duplicatedObjects;
+      platform = action.platform
     default:
+      // verb = ActivityTypeData[action.type].action[metadata.action || "default"];
+      // prep = ActivityTypeData[action.type].prep;
+      // objects = action.duplicatedObjects || [metadata];
+      // platform = action.platform;
       break;
   }
 

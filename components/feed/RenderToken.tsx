@@ -7,7 +7,6 @@ export const RenderToken = (props) => {
   const { name, symbol, image, value, standard, openModal, network, asset } =
     props;
   if ([721, 1155].includes(standard) && asset.contract_address) {
-    console.log(asset,'kkk')
     return (
       <div
         className="feed-token c-hand"

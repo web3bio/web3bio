@@ -13,7 +13,6 @@ function RenderFeedActionCard(props) {
     <div className="feed-item-body" key={id}>
       {renderData.map((x, idx) => {
         const { verb, objects, prep, target, platform, details } = x;
-        console.log(objects, "kkk");
         return (
           verb && (
             <div className="feed-content" key={"content_" + id + idx}>
@@ -23,6 +22,8 @@ function RenderFeedActionCard(props) {
                 .map((i, idx) =>
                   typeof i === "string" ? (
                     i
+                  ) : i.identity ? (
+                    <RenderProfileBadge identity={i.identity} remoteFetch />
                   ) : (
                     <RenderToken
                       key={`${id + idx}_${x.name || x.symbol}_${x.value}`}
