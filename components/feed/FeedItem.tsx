@@ -81,17 +81,6 @@ const RenderFeedContent = (props) => {
           owner={owner}
         />
       );
-    // return (
-    //   <TransactionCard
-    //     id={id}
-    //     network={network}
-    //     openModal={openModal}
-    //     actions={resolveDuplicatedActions(actions, id, [
-    //       ActivityType.transfer,
-    //     ])}
-    //     owner={owner}
-    //   />
-    // );
     case "collectible":
       return (
         <FeedActionCard

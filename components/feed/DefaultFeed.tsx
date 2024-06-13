@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { memo } from "react";
 import { resolveMediaURL } from "../utils/utils";
-import { RenderToken } from "./FeedItem";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { isArray } from "@apollo/client/cache/inmemory/helpers";
 import { ActivityType, ActivityTypeMapping } from "../utils/activity";
+import { RenderToken } from "./RenderToken";
 
 const RenderDefaultCard = (props) => {
   const { actions, id } = props;
