@@ -316,18 +316,37 @@ export const ActionStructMapping = (action, owner) => {
     platform,
     details = null;
   const isOwner = isSameAddress(action.to, owner);
+  const metadata = action.metadata;
   switch (action.type) {
-    // transaction
+    // finance
+    case ActivityType.approval:
+      break;
     case ActivityType.transfer:
       verb = isOwner
         ? ActivityTypeData[ActivityType.transfer].action.receive
         : ActivityTypeData[ActivityType.transfer].action.default;
-      objects = action.duplicatedObjects || [action.metadata];
+      objects = action.duplicatedObjects || [metadata];
       prep = isOwner ? null : ActivityTypeData[ActivityType.transfer].prep;
       target = isOwner ? null : action.to;
       platform = action.platform;
       break;
     case ActivityType.liquidity:
+      verb =
+        ActivityTypeData[ActivityType.liquidity].action[
+          action.metadata.action || "default"
+        ];
+      objects = metadata.tokens;
+      platform = action.platform;
+      break;
+    case ActivityType.swap:
+      verb = ActivityTypeData[ActivityType.swap].action.default;
+      objects = [
+        metadata.from,
+        ActivityTypeData[ActivityType.swap].prep,
+        metadata.to,
+      ];
+      platform = action.platform;
+      break;
     default:
       break;
   }

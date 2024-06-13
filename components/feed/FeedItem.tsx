@@ -7,7 +7,11 @@ import { SocialCard } from "./SocialFeed";
 import { CollectibleCard } from "./CollectibleFeed";
 import { formatText, isSameAddress, shouldPlatformFetch } from "../utils/utils";
 import ActionExternalMenu from "./ActionExternalMenu";
-import { ActivityType, ActivityTypeMapping } from "../utils/activity";
+import {
+  ActivityTag,
+  ActivityType,
+  ActivityTypeMapping,
+} from "../utils/activity";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
 import { formatDistanceToNow } from "date-fns";
 import { PlatformType } from "../utils/platform";
@@ -142,7 +146,11 @@ const RenderFeedItem = (props) => {
       <div className="feed-item-icon">
         <div className="feed-icon-emoji">
           {ActivityTypeMapping(feed.type).emoji}
-          {renderFeedBadge(networkName.replace(Network.polygon, Network.lens))}
+          {renderFeedBadge(
+            feed.tag === ActivityTag.social
+              ? networkName.replace(Network.polygon, Network.lens)
+              : networkName
+          )}
         </div>
       </div>
       <div className="feed-item-content">
