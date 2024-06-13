@@ -2,10 +2,10 @@ import { memo } from "react";
 import { ActivityType, ActivityTypeMapping } from "../utils/activity";
 import { formatText, resolveMediaURL, isSameAddress } from "../utils/utils";
 import { ModalType } from "../hooks/useModal";
-import { RenderToken } from "./FeedItem";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
 import _ from "lodash";
+import { RenderToken } from "./RenderToken";
 
 const RenderTransactionCard = (props) => {
   const { actions, openModal, network, owner } = props;
@@ -42,9 +42,7 @@ const RenderTransactionCard = (props) => {
                 })
               )}
               {ActivityTypeMapping(action.type).prep}
-              {action.platform && (
-                <>{" "}on {action.platform}</>
-              )}
+              {action.platform && <> on {action.platform}</>}
             </div>
           );
         case ActivityType.swap:
@@ -76,9 +74,7 @@ const RenderTransactionCard = (props) => {
                   decimals: metadata.to.decimals,
                 },
               })}
-              {action.platform && (
-                <>{" "}on {action.platform}</>
-              )}
+              {action.platform && <> on {action.platform}</>}
             </div>
           );
         case ActivityType.multisig:
@@ -94,16 +90,15 @@ const RenderTransactionCard = (props) => {
               )}
               {metadata.vault?.address && (
                 <>
-                  {" "} on
+                  {" "}
+                  on
                   <RenderProfileBadge
                     identity={metadata.vault.address}
                     remoteFetch
                   />
                 </>
               )}
-              {action.platform && (
-                <>{" "}on {action.platform}</>
-              )}
+              {action.platform && <> on {action.platform}</>}
             </div>
           );
         case ActivityType.deploy:
@@ -117,9 +112,7 @@ const RenderTransactionCard = (props) => {
               {metadata.address && (
                 <RenderProfileBadge identity={metadata.address} remoteFetch />
               )}
-              {action.platform && (
-                <>{" "}on {action.platform}</>
-              )}
+              {action.platform && <> on {action.platform}</>}
             </div>
           );
         case ActivityType.bridge:
@@ -144,9 +137,7 @@ const RenderTransactionCard = (props) => {
                       decimals: metadata.token.decimals,
                     },
                   })}
-                {action.platform && (
-                  <>{" "}on {action.platform}</>
-                )}
+                {action.platform && <> on {action.platform}</>}
               </div>
             </>
           );
@@ -155,11 +146,9 @@ const RenderTransactionCard = (props) => {
 
           return (
             <div className="feed-content">
-              { isOwner ? (
+              {isOwner ? (
                 <>
-                  {
-                    ActivityTypeMapping(action.type).action["receive"]
-                  }
+                  {ActivityTypeMapping(action.type).action["receive"]}
                   {action.duplicatedObjects.map((x, idx) => {
                     return x.contract_address &&
                       (x.standard === 721 || x.standard === 1155) ? (
@@ -199,7 +188,9 @@ const RenderTransactionCard = (props) => {
                       </span>
                     ) : (
                       RenderToken({
-                        key: `${actionId + idx}_${x.name || x.symbol}_${x.value}`,
+                        key: `${actionId + idx}_${x.name || x.symbol}_${
+                          x.value
+                        }`,
                         name: x.name,
                         symbol: x.symbol,
                         image: x.image,
@@ -257,7 +248,9 @@ const RenderTransactionCard = (props) => {
                       </span>
                     ) : (
                       RenderToken({
-                        key: `${actionId + idx}_${x.name || x.symbol}_${x.value}`,
+                        key: `${actionId + idx}_${x.name || x.symbol}_${
+                          x.value
+                        }`,
                         name: x.name,
                         symbol: x.symbol,
                         image: x.image,
@@ -276,9 +269,7 @@ const RenderTransactionCard = (props) => {
                   )}
                 </>
               )}
-              {action.platform && (
-                <>{" "}on {action.platform}</>
-              )}
+              {action.platform && <> on {action.platform}</>}
             </div>
           );
       }

@@ -1,3 +1,5 @@
+import { isSameAddress } from "./utils";
+
 export enum ActivityTag {
   collectible = "collectible",
   donation = "donation",
@@ -38,7 +40,7 @@ export enum ActivityType {
   vote = "vote",
 }
 
-export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
+export const ActivityTypeData: { [key in ActivityType]: any } = {
   [ActivityType.approval]: {
     key: ActivityType.approval,
     emoji: "✅",
@@ -306,6 +308,40 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
   },
 };
 
+export const ActionStructMapping = (action, owner) => {
+  let verb,
+    objects,
+    prep,
+    target,
+    platform,
+    details = null;
+  const isOwner = isSameAddress(action.to, owner);
+  switch (action.type) {
+    // transaction
+    case ActivityType.transfer:
+      verb = isOwner
+        ? ActivityTypeData[ActivityType.transfer].action.receive
+        : ActivityTypeData[ActivityType.transfer].action.default;
+      objects = action.duplicatedObjects || [action.metadata];
+      prep = isOwner ? null : ActivityTypeData[ActivityType.transfer].prep;
+      target = isOwner ? null : action.to;
+      platform = action.platform;
+      break;
+    case ActivityType.liquidity:
+    default:
+      break;
+  }
+
+  return {
+    verb,
+    objects,
+    prep,
+    target,
+    platform,
+    details,
+  };
+};
+
 export interface ActivityTypeData {
   key: string;
   emoji: string;
@@ -337,7 +373,6 @@ export const TagsFilterMapping = {
     filters: [ActivityTag.collectible, ActivityTag.metaverse],
   },
 };
-
 
 export const ActivityTypeMapping = (type: ActivityType) => {
   return (

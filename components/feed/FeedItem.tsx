@@ -1,47 +1,19 @@
 import { memo, useMemo } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { resolveIPFS_URL } from "../utils/ipfs";
 import SVG from "react-inlinesvg";
 import { DefaultCard } from "./DefaultFeed";
-import { TransactionCard } from "./TransactionFeed";
 import { SocialCard } from "./SocialFeed";
 import { CollectibleCard } from "./CollectibleFeed";
-import {
-  formatValue,
-  formatText,
-  isSameAddress,
-  shouldPlatformFetch,
-} from "../utils/utils";
+import { formatText, isSameAddress, shouldPlatformFetch } from "../utils/utils";
 import ActionExternalMenu from "./ActionExternalMenu";
 import { ActivityType, ActivityTypeMapping } from "../utils/activity";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
 import { formatDistanceToNow } from "date-fns";
 import { PlatformType } from "../utils/platform";
 import { Network, NetworkMapping } from "../utils/network";
-
-export const RenderToken = ({ key, name, symbol, image, value }) => {
-  return (
-    <div
-      className="feed-token"
-      key={key}
-      title={formatValue(value) + " " + symbol}
-    >
-      {image && (
-        <Image
-          className="feed-token-icon"
-          src={resolveIPFS_URL(image) || ""}
-          alt={name}
-          height={20}
-          width={20}
-          loading="lazy"
-        />
-      )}
-      <span className="feed-token-value">{formatText(formatValue(value))}</span>
-      {symbol && <small className="feed-token-meta">{symbol}</small>}
-    </div>
-  );
-};
+import FeedActionCard from "../profile/FeedActionCard";
+import _ from "lodash";
 
 const resolveDuplicatedActions = (
   actions,
@@ -92,16 +64,30 @@ const RenderFeedContent = (props) => {
     case "exchange":
     case "transaction":
       return (
-        <TransactionCard
+        <FeedActionCard
           id={id}
           network={network}
           openModal={openModal}
-          actions={resolveDuplicatedActions(actions, id, [
-            ActivityType.transfer,
-          ])}
+          actions={_.sortBy(
+            resolveDuplicatedActions(actions, id, [ActivityType.transfer]),
+            (x) =>
+              x.type !== ActivityType.multisig ||
+              x.metadata.action !== "execution"
+          )}
           owner={owner}
         />
       );
+    // return (
+    //   <TransactionCard
+    //     id={id}
+    //     network={network}
+    //     openModal={openModal}
+    //     actions={resolveDuplicatedActions(actions, id, [
+    //       ActivityType.transfer,
+    //     ])}
+    //     owner={owner}
+    //   />
+    // );
     case "collectible":
       return (
         <CollectibleCard

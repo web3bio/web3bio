@@ -4,7 +4,7 @@ import { ActivityType, ActivityTypeMapping } from "../utils/activity";
 import { formatText, resolveMediaURL, isSameAddress } from "../utils/utils";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { RenderToken } from "./FeedItem";
+import { RenderToken } from "./RenderToken";
 
 const RenderCollectibleCard = (props) => {
   const { actions, openModal, network, owner } = props;
