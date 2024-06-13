@@ -356,7 +356,7 @@ export const ActionStructMapping = (action, owner) => {
         ];
       objects = metadata.owner ? [{ identity: metadata.owner }] : [];
       if (metadata.vault?.address) {
-        objects = objects.concat([" on", { identity: metadata.vault.address }]);
+        objects = objects.concat(["on", { identity: metadata.vault.address }]);
       }
       platform = action.platform;
       break;
@@ -367,10 +367,22 @@ export const ActionStructMapping = (action, owner) => {
         ];
       objects = [metadata.token];
       platform = action.platform;
+      break;
     case ActivityType.burn:
-      verb =  ActivityTypeData[ActivityType.burn].action.default;
+      verb = ActivityTypeData[ActivityType.burn].action.default;
       objects = action.duplicatedObjects;
-      platform = action.platform
+      platform = action.platform;
+      break;
+    // collectible
+    case ActivityType.trade:
+    case ActivityType.mint:
+      verb =
+        ActivityTypeData[action.type].action[
+          metadata.action || "default"
+        ];
+      objects = action.duplicatedObjects || [metadata];
+      platform = action.platform;
+      break;
     default:
       // verb = ActivityTypeData[action.type].action[metadata.action || "default"];
       // prep = ActivityTypeData[action.type].prep;

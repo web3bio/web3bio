@@ -21,9 +21,13 @@ function RenderFeedActionCard(props) {
                 .filter((i) => !!i)
                 .map((i, idx) =>
                   typeof i === "string" ? (
-                    i
+                    " " + i
                   ) : i.identity ? (
-                    <RenderProfileBadge identity={i.identity} remoteFetch />
+                    <RenderProfileBadge
+                      key={`${id + idx}_${x.name || x.symbol}_${x.value}`}
+                      identity={i.identity}
+                      remoteFetch
+                    />
                   ) : (
                     <RenderToken
                       key={`${id + idx}_${x.name || x.symbol}_${x.value}`}

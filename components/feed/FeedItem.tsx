@@ -94,7 +94,8 @@ const RenderFeedContent = (props) => {
     // );
     case "collectible":
       return (
-        <CollectibleCard
+        <FeedActionCard
+          id={id}
           network={network}
           openModal={openModal}
           actions={resolveDuplicatedActions(actions, id, [
@@ -105,6 +106,18 @@ const RenderFeedContent = (props) => {
           owner={owner}
         />
       );
+    // return (
+    //   <CollectibleCard
+    //     network={network}
+    //     openModal={openModal}
+    //     actions={resolveDuplicatedActions(actions, id, [
+    //       ActivityType.mint,
+    //       ActivityType.trade,
+    //       ActivityType.transfer,
+    //     ])}
+    //     owner={owner}
+    //   />
+    // );
     default:
       return <DefaultCard id={id} actions={actions} />;
   }
