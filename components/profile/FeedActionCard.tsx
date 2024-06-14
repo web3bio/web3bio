@@ -26,8 +26,17 @@ function RenderFeedActionCard(props) {
   return (
     <div className="feed-item-body" key={id}>
       {renderData.map((x, idx) => {
-        const { verb, objects, prep, target, platform, assets, socialDetails } =
-          x;
+        const {
+          verb,
+          objects,
+          prep,
+          target,
+          platform,
+          assets,
+          choices,
+          socialDetails,
+          content,
+        } = x;
         const checkEmojis =
           /^(\p{Emoji}\uFE0F|\p{Emoji_Presentation})+$/gu.test(verb);
         return (
@@ -222,6 +231,44 @@ function RenderFeedActionCard(props) {
                   </div>
                 )}
               </>
+            )}
+            {choices &&
+              choices?.map((x) => (
+                <span className="feed-token" key={`choice_${x}`}>
+                  {x}
+                </span>
+              ))}
+            {content && (
+              <div className="feed-content">
+                <Link
+                  className="feed-target"
+                  href={content.url}
+                  target="_blank"
+                >
+                  <div className="feed-target-name">{content.title}</div>
+                  <div className="feed-target-content">
+                    {content.image && (
+                      <NFTAssetPlayer
+                        className="feed-content-img float-right"
+                        src={content.image}
+                        height={40}
+                        width={40}
+                        placeholder={true}
+                        type={"image/png"}
+                        alt={content.title}
+                      />
+                    )}
+                    <div className="feed-target-content">
+                      {content.body}
+                      {content.subTitle && (
+                        <small className="text-gray-dark">
+                          ({content.subTitle})
+                        </small>
+                      )}
+                    </div>
+                  </div>
+                </Link>
+              </div>
             )}
           </>
         );

@@ -1,4 +1,4 @@
-import { isSameAddress } from "./utils";
+import { isSameAddress, resolveMediaURL } from "./utils";
 
 export enum ActivityTag {
   collectible = "collectible",
@@ -316,6 +316,8 @@ export const ActionStructMapping = (action, owner) => {
     platform,
     // assets for collectibles details
     assets,
+    choices,
+    content,
     socialDetails = null as any;
   const isOwner = isSameAddress(action.to, owner);
   const metadata = action.metadata;
@@ -416,7 +418,44 @@ export const ActionStructMapping = (action, owner) => {
         target: metadata.target,
       };
       break;
+    // others
+    case ActivityType.donate:
+      prep =
+        ActivityTypeData[action.type].action[metadata?.action || "default"];
+      (objects = [
+        metadata.token,
+        ActivityTypeData[action.type].prep,
+        metadata.title,
+      ]),
+        (platform = action.platform);
+      content = {
+        url: action.related_urls[action.related_urls.length - 1],
+        title: metadata.title,
+        image: resolveMediaURL(metadata.logo),
+        body: metadata.description,
+      };
+      break;
+    case ActivityType.vote:
+      const _choices = JSON.parse(metadata?.choice || "[]");
+      prep =
+        ActivityTypeData[action.type].action[metadata?.action || "default"];
+
+      platform = action.platform;
+      choices =
+        _choices.length > 0
+          ? [..._choices.map((x) => metadata.proposal?.options[x - 1])]
+          : [metadata.proposal?.options[_choices - 1]];
+      content = {
+        url: metadata.proposal?.link,
+        title: metadata.proposal?.title,
+        body: metadata.proposal?.organization.name,
+        subTitle: `(${metadata.proposal?.organization.id})`,
+      };
+      break;
     default:
+      (prep =
+        ActivityTypeData[action.type].action[metadata?.action || "default"]),
+        (platform = action.platform);
       break;
   }
 
@@ -427,6 +466,8 @@ export const ActionStructMapping = (action, owner) => {
     target,
     platform,
     assets,
+    choices,
+    content,
     socialDetails,
   };
 };

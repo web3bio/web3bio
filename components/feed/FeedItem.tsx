@@ -2,7 +2,6 @@ import { memo, useMemo } from "react";
 import Link from "next/link";
 import { resolveIPFS_URL } from "../utils/ipfs";
 import SVG from "react-inlinesvg";
-import { DefaultCard } from "./DefaultFeed";
 import { formatText, isSameAddress, shouldPlatformFetch } from "../utils/utils";
 import ActionExternalMenu from "./ActionExternalMenu";
 import {
@@ -92,7 +91,10 @@ const RenderFeedContent = (props) => {
       };
       break;
     default:
-      return <DefaultCard id={id} actions={actions} />;
+      comProps = {
+        id,
+        actions,
+      };
   }
   return <FeedActionCard {...comProps} />;
 };
