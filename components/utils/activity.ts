@@ -314,7 +314,9 @@ export const ActionStructMapping = (action, owner) => {
     prep,
     target,
     platform,
-    details = null;
+    // assets for collectibles details
+    assets,
+    socialDetails = null as any;
   const isOwner = isSameAddress(action.to, owner);
   const metadata = action.metadata;
   switch (action.type) {
@@ -376,18 +378,45 @@ export const ActionStructMapping = (action, owner) => {
     // collectible
     case ActivityType.trade:
     case ActivityType.mint:
-      verb =
-        ActivityTypeData[action.type].action[
-          metadata.action || "default"
-        ];
+      if (action.tag === ActivityTag.social) {
+        verb = ActivityTypeMapping(action.type).action["post"];
+        platform = action.platform;
+        socialDetails = {
+          content: null,
+          target: metadata,
+        };
+        break;
+      }
+      verb = ActivityTypeData[action.type].action[metadata.action || "default"];
       objects = action.duplicatedObjects || [metadata];
       platform = action.platform;
+      assets = action.duplicatedObjects || [metadata];
+      break;
+    // social
+    case ActivityType.profile:
+      verb =
+        ActivityTypeData[action.type].action[
+          metadata.key && !metadata?.value
+            ? "delete"
+            : metadata.action || "default"
+        ];
+      objects = action.duplicatedObjects.map((x) => ({ identity: x.handle }));
+      break;
+    case ActivityType.post:
+    case ActivityType.comment:
+    case ActivityType.share:
+      verb = metadata.body
+        ? metadata.body
+        : ActivityTypeData[action.type].action[metadata.action || "default"];
+      platform = metadata.body ? null : action.platform;
+      socialDetails = {
+        content:
+          ["Mirror"].includes(platform) || metadata.summary ? metadata : null,
+        media: metadata.media,
+        target: metadata.target,
+      };
       break;
     default:
-      // verb = ActivityTypeData[action.type].action[metadata.action || "default"];
-      // prep = ActivityTypeData[action.type].prep;
-      // objects = action.duplicatedObjects || [metadata];
-      // platform = action.platform;
       break;
   }
 
@@ -397,7 +426,8 @@ export const ActionStructMapping = (action, owner) => {
     prep,
     target,
     platform,
-    details,
+    assets,
+    socialDetails,
   };
 };
 

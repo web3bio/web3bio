@@ -3,8 +3,6 @@ import Link from "next/link";
 import { resolveIPFS_URL } from "../utils/ipfs";
 import SVG from "react-inlinesvg";
 import { DefaultCard } from "./DefaultFeed";
-import { SocialCard } from "./SocialFeed";
-import { CollectibleCard } from "./CollectibleFeed";
 import { formatText, isSameAddress, shouldPlatformFetch } from "../utils/utils";
 import ActionExternalMenu from "./ActionExternalMenu";
 import {
@@ -51,65 +49,52 @@ const resolveDuplicatedActions = (
 };
 const RenderFeedContent = (props) => {
   const { actions, tag, openModal, network, id, platform, owner } = props;
+  let comProps = {};
   switch (tag) {
     case "social":
-      return (
-        <SocialCard
-          platform={platform}
-          openModal={openModal}
-          actions={resolveDuplicatedActions(
-            actions,
-            id,
-            ["renew", "update"],
-            true
-          )}
-        />
-      );
+      comProps = {
+        platform,
+        openModal,
+        actions: resolveDuplicatedActions(
+          actions,
+          id,
+          ["renew", "update"],
+          true
+        ),
+      };
+      break;
     case "exchange":
     case "transaction":
-      return (
-        <FeedActionCard
-          id={id}
-          network={network}
-          openModal={openModal}
-          actions={_.sortBy(
-            resolveDuplicatedActions(actions, id, [ActivityType.transfer]),
-            (x) =>
-              x.type !== ActivityType.multisig ||
-              x.metadata.action !== "execution"
-          )}
-          owner={owner}
-        />
-      );
+      comProps = {
+        id,
+        network,
+        openModal,
+        owner,
+        actions: _.sortBy(
+          resolveDuplicatedActions(actions, id, [ActivityType.transfer]),
+          (x) =>
+            x.type !== ActivityType.multisig ||
+            x.metadata.action !== "execution"
+        ),
+      };
+      break;
     case "collectible":
-      return (
-        <FeedActionCard
-          id={id}
-          network={network}
-          openModal={openModal}
-          actions={resolveDuplicatedActions(actions, id, [
-            ActivityType.mint,
-            ActivityType.trade,
-            ActivityType.transfer,
-          ])}
-          owner={owner}
-        />
-      );
-    // return (
-    //   <CollectibleCard
-    //     network={network}
-    //     openModal={openModal}
-    //     actions={resolveDuplicatedActions(actions, id, [
-    //       ActivityType.mint,
-    //       ActivityType.trade,
-    //       ActivityType.transfer,
-    //     ])}
-    //     owner={owner}
-    //   />
-    // );
+      comProps = {
+        id,
+        network,
+        openModal,
+        actions: resolveDuplicatedActions(actions, id, [
+          ActivityType.mint,
+          ActivityType.trade,
+          ActivityType.transfer,
+        ]),
+        owner,
+      };
+      break;
     default:
       return <DefaultCard id={id} actions={actions} />;
   }
+  return <FeedActionCard {...comProps} />;
 };
 
 const renderFeedBadge = (key) => {
