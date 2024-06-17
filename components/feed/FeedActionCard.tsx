@@ -292,7 +292,6 @@ function RenderFeedActionCard(props) {
       </>
     );
   };
-
   return (
     <div className="feed-item-body">
       {renderData

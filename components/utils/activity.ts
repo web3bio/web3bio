@@ -333,7 +333,11 @@ export const ActionStructMapping = (action, owner) => {
         ? ActivityTypeData[ActivityType.transfer].action.receive
         : ActivityTypeData[ActivityType.transfer].action.default;
       objects = action.duplicatedObjects || [metadata];
-      prep = isOwner ? null : ActivityTypeData[ActivityType.transfer].prep;
+      prep = isOwner
+        ? null
+        : action.to
+        ? ActivityTypeData[ActivityType.transfer].prep
+        : null;
       target = isOwner ? null : action.to;
       platform = action.platform;
       break;
@@ -408,11 +412,12 @@ export const ActionStructMapping = (action, owner) => {
           ? action.duplicatedObjects.map((x) => ({ identity: x.handle }))
           : [{ identity: metadata.handle }];
       platform = action.platform;
-      profileContent = action.duplicatedObjects?.filter((x) => x.key).map(x=>({
-        ...x,
-        url:  action.related_urls?.[0] ||
-                          `https://web3.bio/${x.handle}`
-      }));
+      profileContent = action.duplicatedObjects
+        ?.filter((x) => x.key)
+        .map((x) => ({
+          ...x,
+          url: action.related_urls?.[0] || `https://web3.bio/${x.handle}`,
+        }));
       break;
     case ActivityType.post:
     case ActivityType.comment:
