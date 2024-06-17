@@ -38,6 +38,7 @@ function RenderFeedActionCard(props) {
             assets,
             choices,
             socialDetails,
+            profileContent,
             content,
           } = x;
           const checkEmojis =
@@ -87,6 +88,25 @@ function RenderFeedActionCard(props) {
                   />
                 )}
                 {platform && <> on {overridePlatform || platform}</>}
+                {profileContent?.length > 0 &&
+                  profileContent.map((x, idx) => (
+                    <div
+                      key={`profile_content_${idx}_${x.handle}`}
+                      className="feed-content"
+                    >
+                      <Link
+                        className="feed-target"
+                        href={x.url}
+                        target="_blank"
+                      >
+                        <div className="feed-target-name">{x.key}</div>
+                        <div className="feed-target-content">{x.value}</div>
+                        {x.handle && (
+                          <div className="feed-target-address">{x.handle}</div>
+                        )}
+                      </Link>
+                    </div>
+                  ))}
                 {assets?.length > 0 && (
                   <div
                     key={`medias_` + id + idx}

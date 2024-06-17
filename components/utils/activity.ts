@@ -318,6 +318,7 @@ export const ActionStructMapping = (action, owner) => {
     assets,
     choices,
     content,
+    profileContent,
     socialDetails = null as any;
   const isOwner = isSameAddress(action.to, owner);
   const metadata = action.metadata;
@@ -402,7 +403,16 @@ export const ActionStructMapping = (action, owner) => {
             ? "delete"
             : metadata.action || "default"
         ];
-      objects = action.duplicatedObjects.map((x) => ({ identity: x.handle }));
+      objects =
+        metadata.action === "renew"
+          ? action.duplicatedObjects.map((x) => ({ identity: x.handle }))
+          : [{ identity: metadata.handle }];
+      platform = action.platform;
+      profileContent = action.duplicatedObjects?.filter((x) => x.key).map(x=>({
+        ...x,
+        url:  action.related_urls?.[0] ||
+                          `https://web3.bio/${x.handle}`
+      }));
       break;
     case ActivityType.post:
     case ActivityType.comment:
@@ -468,6 +478,7 @@ export const ActionStructMapping = (action, owner) => {
     assets,
     choices,
     content,
+    profileContent,
     socialDetails,
   };
 };
