@@ -1,6 +1,5 @@
 import { memo, useMemo } from "react";
 import { ActionStructMapping } from "../utils/activity";
-import RenderProfileBadge from "./RenderProfileBadge";
 import { RenderToken } from "../feed/RenderToken";
 import { NFTAssetPlayer, isImage, isVideo } from "../shared/NFTAssetPlayer";
 import { ModalType } from "../hooks/useModal";
@@ -9,6 +8,7 @@ import { PlatformType } from "../utils/platform";
 import { domainRegexp } from "../feed/ActionExternalMenu";
 import Link from "next/link";
 import { resolveIPFS_URL } from "../utils/ipfs";
+import RenderProfileBadge from "../profile/RenderProfileBadge";
 
 function RenderFeedActionCard(props) {
   const {

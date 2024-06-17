@@ -13,8 +13,8 @@ import RenderProfileBadge from "../profile/RenderProfileBadge";
 import { formatDistanceToNow } from "date-fns";
 import { PlatformType } from "../utils/platform";
 import { Network, NetworkMapping } from "../utils/network";
-import FeedActionCard from "../profile/FeedActionCard";
 import _ from "lodash";
+import FeedActionCard from "./FeedActionCard";
 
 const resolveDuplicatedActions = (
   actions,
