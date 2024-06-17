@@ -47,11 +47,12 @@ const resolveDuplicatedActions = (
   return duplicatedObjects;
 };
 const RenderFeedContent = (props) => {
-  const { actions, tag, openModal, network, id, platform, owner } = props;
+  const { actions, tag, openModal, network, id, platform, owner, feed } = props;
   let comProps = {};
   switch (tag) {
     case "social":
       comProps = {
+        overridePlatform: feed.platform,
         platform,
         openModal,
         actions: resolveDuplicatedActions(
@@ -184,6 +185,7 @@ const RenderFeedItem = (props) => {
           </div>
         </div>
         <RenderFeedContent
+          feed={feed}
           platform={platformName}
           network={networkName}
           openModal={openModal}
