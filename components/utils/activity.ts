@@ -40,6 +40,16 @@ export enum ActivityType {
   vote = "vote",
 }
 
+type FeedAttachments = {
+  nfts: any[];
+  identity: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  body: string;
+  socialTarget: any;
+};
+
 export const ActivityTypeData: { [key in ActivityType]: any } = {
   [ActivityType.approval]: {
     key: ActivityType.approval,
@@ -314,12 +324,7 @@ export const ActionStructMapping = (action, owner) => {
     prep,
     target,
     platform,
-    // assets for collectibles details
-    assets,
-    choices,
-    content,
-    profileContent,
-    socialDetails = null as any;
+    attachments = null as any;
   const isOwner = isSameAddress(action.to, owner);
   const metadata = action.metadata;
   switch (action.type) {
@@ -353,7 +358,7 @@ export const ActionStructMapping = (action, owner) => {
       verb = ActivityTypeData[ActivityType.swap].action.default;
       objects = [
         metadata.from,
-        ActivityTypeData[ActivityType.swap].prep,
+        { text: ActivityTypeData[ActivityType.swap].prep },
         metadata.to,
       ];
       platform = action.platform;
@@ -365,7 +370,10 @@ export const ActionStructMapping = (action, owner) => {
         ];
       objects = metadata.owner ? [{ identity: metadata.owner }] : [];
       if (metadata.vault?.address) {
-        objects = objects.concat(["on", { identity: metadata.vault.address }]);
+        objects = objects.concat([
+          { text: "on" },
+          { identity: metadata.vault.address },
+        ]);
       }
       platform = action.platform;
       break;
@@ -388,16 +396,22 @@ export const ActionStructMapping = (action, owner) => {
       if (action.tag === ActivityTag.social) {
         verb = ActivityTypeMapping(action.type).action["post"];
         platform = action.platform;
-        socialDetails = {
-          content: null,
-          target: metadata,
+        attachments = {
+          social: {
+            content: null,
+            target: metadata,
+          },
         };
         break;
       }
       verb = ActivityTypeData[action.type].action[metadata.action || "default"];
       objects = action.duplicatedObjects || [metadata];
       platform = action.platform;
-      assets = action.duplicatedObjects || [metadata];
+      attachments = {
+        nfts: (action.duplicatedObjects || [metadata]).filter(
+          (x) => [1155, 721].includes(x.standard) && x.image_url
+        ),
+      };
       break;
     // social
     case ActivityType.profile:
@@ -412,12 +426,14 @@ export const ActionStructMapping = (action, owner) => {
           ? action.duplicatedObjects.map((x) => ({ identity: x.handle }))
           : [{ identity: metadata.handle }];
       platform = action.platform;
-      profileContent = action.duplicatedObjects
-        ?.filter((x) => x.key)
-        .map((x) => ({
-          ...x,
-          url: action.related_urls?.[0] || `https://web3.bio/${x.handle}`,
-        }));
+      attachments = {
+        profiles: action.duplicatedObjects
+          ?.filter((x) => x.key)
+          .map((x) => ({
+            ...x,
+            url: action.related_urls?.[0] || `https://web3.bio/${x.handle}`,
+          })),
+      };
       break;
     case ActivityType.post:
     case ActivityType.comment:
@@ -426,11 +442,13 @@ export const ActionStructMapping = (action, owner) => {
         ? metadata.body
         : ActivityTypeData[action.type].action[metadata.action || "default"];
       platform = metadata.body ? null : action.platform;
-      socialDetails = {
-        content:
-          ["Mirror"].includes(platform) || metadata.summary ? metadata : null,
-        media: metadata.media,
-        target: metadata.target,
+      attachments = {
+        social: {
+          content:
+            ["Mirror"].includes(platform) || metadata.summary ? metadata : null,
+          media: metadata.media,
+          target: metadata.target,
+        },
       };
       break;
     // others
@@ -439,11 +457,11 @@ export const ActionStructMapping = (action, owner) => {
         ActivityTypeData[action.type].action[metadata?.action || "default"];
       (objects = [
         metadata.token,
-        ActivityTypeData[action.type].prep,
+        { text: ActivityTypeData[action.type].prep },
         metadata.title,
       ]),
         (platform = action.platform);
-      content = {
+      attachments = {
         url: action.related_urls[action.related_urls.length - 1],
         title: metadata.title,
         image: resolveMediaURL(metadata.logo),
@@ -456,11 +474,21 @@ export const ActionStructMapping = (action, owner) => {
         ActivityTypeData[action.type].action[metadata?.action || "default"];
 
       platform = action.platform;
-      choices =
+      objects =
         _choices.length > 0
-          ? [..._choices.map((x) => metadata.proposal?.options[x - 1])]
-          : [metadata.proposal?.options[_choices - 1]];
-      content = {
+          ? [
+              ..._choices.map((x) => ({
+                isToken: true,
+                text: metadata.proposal?.options[x - 1],
+              })),
+            ]
+          : [
+              {
+                isToken: true,
+                text: metadata.proposal?.options[_choices - 1],
+              },
+            ];
+      attachments = {
         url: metadata.proposal?.link,
         title: metadata.proposal?.title,
         body: metadata.proposal?.organization.name,
@@ -480,11 +508,7 @@ export const ActionStructMapping = (action, owner) => {
     prep,
     target,
     platform,
-    assets,
-    choices,
-    content,
-    profileContent,
-    socialDetails,
+    attachments,
   };
 };
 
