@@ -161,8 +161,9 @@ export const ActivityTypeData: { [key in ActivityType]: any } = {
     label: "Loan",
     action: {
       default: "Loaned",
+      create: "Loaned",
     },
-    prep: "to",
+    prep: "for",
   },
   [ActivityType.mint]: {
     key: ActivityType.mint,
@@ -330,7 +331,6 @@ export const ActionStructMapping = (action, owner) => {
   switch (action.type) {
     // finance
     case ActivityType.approval:
-      break;
     case ActivityType.deploy:
       break;
     case ActivityType.transfer:
@@ -390,29 +390,6 @@ export const ActionStructMapping = (action, owner) => {
       objects = action.duplicatedObjects;
       platform = action.platform;
       break;
-    // collectible
-    case ActivityType.trade:
-    case ActivityType.mint:
-      if (action.tag === ActivityTag.social) {
-        verb = ActivityTypeMapping(action.type).action["post"];
-        platform = action.platform;
-        attachments = {
-          social: {
-            content: null,
-            target: metadata,
-          },
-        };
-        break;
-      }
-      verb = ActivityTypeData[action.type].action[metadata.action || "default"];
-      objects = action.duplicatedObjects || [metadata];
-      platform = action.platform;
-      attachments = {
-        nfts: (action.duplicatedObjects || [metadata]).filter(
-          (x) => [1155, 721].includes(x.standard) && x.image_url
-        ),
-      };
-      break;
     // social
     case ActivityType.profile:
       verb =
@@ -451,16 +428,51 @@ export const ActionStructMapping = (action, owner) => {
         },
       };
       break;
+    // collectible
+    case ActivityType.auction:
+    case ActivityType.trade:
+    case ActivityType.mint:
+      if (action.tag === ActivityTag.social) {
+        verb = ActivityTypeMapping(action.type).action["post"];
+        platform = action.platform;
+        attachments = {
+          social: {
+            content: null,
+            target: metadata,
+          },
+        };
+        break;
+      }
+      verb = ActivityTypeData[action.type].action[metadata.action || "default"];
+      objects = action.duplicatedObjects || [metadata];
+      platform = action.platform;
+      attachments = {
+        nfts: (action.duplicatedObjects || [metadata]).filter(
+          (x) => [1155, 721].includes(x.standard) && x.image_url
+        ),
+      };
+      break;
+    case ActivityType.loan:
+      verb = ActivityTypeData[action.type].action[metadata.action || "default"];
+      objects = [
+        metadata.collateral,
+        { text: ActivityTypeData[ActivityType.loan].prep },
+        metadata.amount,
+      ];
+      platform = action.platform;
+      break;
     // others
     case ActivityType.donate:
-      prep =
-        ActivityTypeData[action.type].action[metadata?.action || "default"];
-      (objects = [
+      verb = ActivityTypeData[action.type].action[metadata.action || "default"];
+      objects = [
         metadata.token,
         { text: ActivityTypeData[action.type].prep },
-        metadata.title,
-      ]),
-        (platform = action.platform);
+        {
+          isToken: true,
+          text: metadata.title,
+        },
+      ];
+      platform = action.platform;
       attachments = {
         url: action.related_urls[action.related_urls.length - 1],
         title: metadata.title,
@@ -496,9 +508,8 @@ export const ActionStructMapping = (action, owner) => {
       };
       break;
     default:
-      (prep =
-        ActivityTypeData[action.type].action[metadata?.action || "default"]),
-        (platform = action.platform);
+      verb = ActivityTypeData[action.type].action[metadata.action || "default"];
+      platform = action.platform;
       break;
   }
 

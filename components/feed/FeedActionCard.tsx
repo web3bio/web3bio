@@ -274,7 +274,7 @@ function RenderFeedActionCard(props) {
                       alt={attachments.title}
                     />
                   )}
-                  <div className="feed-target-content">
+                  <div className="feed-target-description">
                     {attachments.body}
                     {attachments.subTitle && (
                       <small className="text-gray-dark">
