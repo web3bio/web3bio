@@ -1,3 +1,4 @@
+import { resolveIPFS_URL } from "./ipfs";
 import { isSameAddress, resolveMediaURL } from "./utils";
 
 export enum ActivityTag {
@@ -47,7 +48,7 @@ type FeedAttachments = {
   subtitle: string;
   description: string;
   body: string;
-  socialTarget: any;
+  targets: any[];
 };
 
 export const ActivityTypeData: { [key in ActivityType]: any } = {
@@ -404,10 +405,12 @@ export const ActionStructMapping = (action, owner) => {
           : [{ identity: metadata.handle }];
       platform = action.platform;
       attachments = {
-        profiles: action.duplicatedObjects
+        targets: action.duplicatedObjects
           ?.filter((x) => x.key)
           .map((x) => ({
-            ...x,
+            name: x.key,
+            content: x.value,
+            address: x.handle,
             url: action.related_urls?.[0] || `https://web3.bio/${x.handle}`,
           })),
       };
@@ -419,14 +422,28 @@ export const ActionStructMapping = (action, owner) => {
         ? metadata.body
         : ActivityTypeData[action.type].action[metadata.action || "default"];
       platform = metadata.body ? null : action.platform;
+      const article =
+        ["Mirror"].includes(platform) || metadata.summary ? metadata : null;
+
       attachments = {
-        social: {
-          content:
-            ["Mirror"].includes(platform) || metadata.summary ? metadata : null,
-          media: metadata.media,
-          target: metadata.target,
-        },
+        targets: [],
+        medias: [metadata.media],
       };
+      if (metadata.target) {
+        attachments.targets.push({
+          identity: metadata.target?.handle,
+          url: resolveIPFS_URL(action.target_url),
+          content: metadata.target?.body,
+          media: metadata.target?.media,
+        });
+      }
+      if (article) {
+        attachments.targets.unshift({
+          article,
+          name: article.title,
+          content: article.body,
+        });
+      }
       break;
     // collectible
     case ActivityType.auction:
@@ -436,10 +453,14 @@ export const ActionStructMapping = (action, owner) => {
         verb = ActivityTypeMapping(action.type).action["post"];
         platform = action.platform;
         attachments = {
-          social: {
-            content: null,
-            target: metadata,
-          },
+          targets: [
+            {
+              identity: metadata.handle,
+              url: action.related_urls[0],
+              content: metadata.body,
+              media: metadata.media,
+            },
+          ],
         };
         break;
       }
@@ -447,7 +468,7 @@ export const ActionStructMapping = (action, owner) => {
       objects = action.duplicatedObjects || [metadata];
       platform = action.platform;
       attachments = {
-        nfts: (action.duplicatedObjects || [metadata]).filter(
+        medias: (action.duplicatedObjects || [metadata]).filter(
           (x) => [1155, 721].includes(x.standard) && x.image_url
         ),
       };
@@ -475,9 +496,9 @@ export const ActionStructMapping = (action, owner) => {
       platform = action.platform;
       attachments = {
         url: action.related_urls[action.related_urls.length - 1],
-        title: metadata.title,
+        name: metadata.title,
         image: resolveMediaURL(metadata.logo),
-        body: metadata.description,
+        content: metadata.description,
       };
       break;
     case ActivityType.vote:

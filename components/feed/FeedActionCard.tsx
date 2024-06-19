@@ -89,197 +89,150 @@ function RenderFeedActionCard(props) {
         </div>
         {attachments && (
           <div key={`attachments_${id}_${idx}`} className="feed-content">
-            {attachments.nfts?.length > 0 && (
-              <div className="feed-content media-gallery">
-                {attachments.nfts.map((x, cIdx) => {
-                  return (
-                    <NFTAssetPlayer
-                      key={`${cIdx}_image`}
-                      onClick={(e) => {
-                        openModal(ModalType.nft, {
-                          remoteFetch: true,
-                          network: network,
-                          standard: x.standard,
-                          contractAddress: x.contract_address,
-                          tokenId: x.id,
-                        });
-                      }}
-                      className="feed-content-img"
-                      src={resolveMediaURL(x.image_url)}
-                      type={"image/png"}
-                      width="auto"
-                      height="100%"
-                      placeholder={true}
-                      alt={x.title}
-                    />
-                  );
-                })}
-              </div>
-            )}
-            {attachments.profiles?.length > 0 &&
-              attachments.profiles.map((x) => (
-                <div
-                  key={`profile_content_${idx}_${x.handle}`}
-                  className="feed-content"
+            {attachments.targets?.filter((x) => x)?.length > 0 &&
+              attachments.targets.map((target) => (
+                <Link
+                  key={`profile_target_${idx}_${target.address}`}
+                  onClick={(e) => {
+                    if (target.article) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      const article = target.article;
+                      openModal(ModalType.article, {
+                        title: article.title,
+                        content: article.body,
+                        baseURL: `https://${
+                          domainRegexp.exec(
+                            actions[idx].content_uri ||
+                              actions[idx].related_urls[0]
+                          )?.[1]
+                        }`,
+                        link: actions[idx].content_uri,
+                      });
+                    }
+                  }}
+                  className="feed-target"
+                  href={target.url || ""}
+                  target="_blank"
                 >
-                  <Link className="feed-target" href={x.url} target="_blank">
-                    <div className="feed-target-name">{x.key}</div>
-                    <div className="feed-target-content">{x.value}</div>
-                    {x.handle && (
-                      <div className="feed-target-address">{x.handle}</div>
-                    )}
-                  </Link>
-                </div>
-              ))}
-            {attachments.social && (
-              <>
-                {attachments.social.content && (
-                  <div
-                    className="feed-target c-hand"
-                    onClick={(e) => {
-                      if (attachments.social.content.body) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        openModal(ModalType.article, {
-                          title: attachments.social.content.title,
-                          content: attachments.social.content.body,
-                          baseURL: `https://${
-                            domainRegexp.exec(
-                              actions[idx].content_uri ||
-                                actions[idx].related_urls[0]
-                            )?.[1]
-                          }`,
-                          link: actions[idx].content_uri,
-                        });
-                      }
-                    }}
-                  >
-                    <div className="feed-target-name">
-                      {attachments.social.content.title}
-                    </div>
-                    <div className="feed-target-description">
-                      {attachments.social.content.body}
-                    </div>
-                  </div>
-                )}
-                {attachments.social.media?.length > 0 && (
-                  <div
-                    className={`feed-content${
-                      attachments.social.media.length > 1
-                        ? " media-gallery"
-                        : ""
-                    }`}
-                  >
-                    {attachments.social.media?.map((x) =>
-                      isImage(x.mime_type) || isVideo(x.mime_type) ? (
-                        <NFTAssetPlayer
-                          key={x.address}
-                          onClick={(e) => {
-                            openModal(ModalType.media, {
-                              type: x.mime_type || "image/png",
-                              url: resolveMediaURL(x.address),
-                            });
-                            e.stopPropagation();
-                            e.preventDefault();
-                          }}
-                          className="feed-content-img"
-                          src={resolveMediaURL(x.address)}
-                          type={x.mime_type}
-                          width="auto"
-                          height="auto"
-                          placeholder={true}
-                          alt={"Feed Image"}
-                        />
-                      ) : null
-                    )}
-                  </div>
-                )}
-                {attachments.social.target && (
-                  <Link
-                    className="feed-target"
-                    href={resolveIPFS_URL(actions[idx].target_url) || ""}
-                    target="_blank"
-                  >
-                    <div className="feed-target-name">
+                  <div className="feed-target-name">
+                    {target.identity ? (
                       <RenderProfileBadge
                         platform={feedPlatform}
-                        identity={attachments.social.target?.handle}
+                        identity={target.identity}
                         remoteFetch
                         fullProfile
                       />
-                    </div>
-                    <div className="feed-target-content">
-                      {attachments.social.target?.body}
-                    </div>
-                    {attachments.social.target?.media?.length > 0 && (
-                      <div
-                        className={`feed-target-content${
-                          attachments.social.target?.media?.length > 1
-                            ? " media-gallery"
-                            : ""
-                        }`}
-                      >
-                        {attachments.social.target?.media?.map((x) =>
-                          isImage(x.mime_type) || isVideo(x.mime_type) ? (
-                            <NFTAssetPlayer
-                              onClick={(e) => {
-                                openModal(ModalType.media, {
-                                  type: x.mime_type || "image/png",
-                                  url: resolveMediaURL(x.address),
-                                });
-                                e.stopPropagation();
-                                e.preventDefault();
-                              }}
-                              className="feed-content-img"
-                              src={resolveMediaURL(x.address)}
-                              type={x.mime_type}
-                              key={x.address}
-                              width="auto"
-                              height="auto"
-                              placeholder={true}
-                              alt={"Feed Image"}
-                            />
-                          ) : attachments.social.target?.body ? (
-                            ""
-                          ) : (
-                            x.address
-                          )
+                    ) : (
+                      target.name
+                    )}
+                  </div>
+
+                  <div className="feed-target-content">
+                    {attachments.image && (
+                      <NFTAssetPlayer
+                        className="feed-content-img float-right"
+                        src={attachments.image}
+                        height={40}
+                        width={40}
+                        placeholder={true}
+                        type={"image/png"}
+                        alt={attachments.title}
+                      />
+                    )}
+                    {target.content}
+                    {target.description && (
+                      <div className="feed-target-description">
+                        {target.description}
+                        {target.subTitle && (
+                          <small className="text-gray-dark">
+                            ({attachments.subTitle})
+                          </small>
                         )}
                       </div>
                     )}
-                  </Link>
-                )}
-              </>
-            )}
-            {attachments.url && (
-              <Link
-                className="feed-target"
-                href={attachments.url}
-                target="_blank"
-              >
-                <div className="feed-target-name">{attachments.title}</div>
-                <div className="feed-target-content">
-                  {attachments.image && (
-                    <NFTAssetPlayer
-                      className="feed-content-img float-right"
-                      src={attachments.image}
-                      height={40}
-                      width={40}
-                      placeholder={true}
-                      type={"image/png"}
-                      alt={attachments.title}
-                    />
-                  )}
-                  <div className="feed-target-description">
-                    {attachments.body}
-                    {attachments.subTitle && (
-                      <small className="text-gray-dark">
-                        ({attachments.subTitle})
-                      </small>
-                    )}
                   </div>
-                </div>
-              </Link>
+                  {target.address && (
+                    <div className="feed-target-address">{target.address}</div>
+                  )}
+                  {target?.media?.length > 0 && (
+                    <div
+                      className={`feed-target-content${
+                        target?.media?.length > 1 ? " media-gallery" : ""
+                      }`}
+                    >
+                      {target.media.map((x) =>
+                        isImage(x.mime_type) || isVideo(x.mime_type) ? (
+                          <NFTAssetPlayer
+                            onClick={(e) => {
+                              openModal(ModalType.media, {
+                                type: x.mime_type || "image/png",
+                                url: resolveMediaURL(x.address),
+                              });
+                              e.stopPropagation();
+                              e.preventDefault();
+                            }}
+                            className="feed-content-img"
+                            src={resolveMediaURL(x.address)}
+                            type={x.mime_type}
+                            key={x.address}
+                            width="auto"
+                            height="auto"
+                            placeholder={true}
+                            alt={"Feed Image"}
+                          />
+                        ) : target?.content ? (
+                          ""
+                        ) : (
+                          x.address
+                        )
+                      )}
+                    </div>
+                  )}
+                </Link>
+              ))}
+
+            {attachments.medias?.filter((x) => x)?.length > 0 && (
+              <div
+                className={`feed-content ${
+                  attachments.medias.some((x) => x?.mime_type).length == 1
+                    ? ""
+                    : "media-gallery"
+                }`}
+              >
+                {attachments.medias?.map((x, cIdx) =>
+                  isImage(x.mime_type) || isVideo(x.mime_type) || x.standard ? (
+                    <NFTAssetPlayer
+                      key={`${cIdx}_media_image`}
+                      onClick={(e) => {
+                        x.mime_type
+                          ? openModal(ModalType.media, {
+                              type: x.mime_type || "image/png",
+                              url: resolveMediaURL(x.address),
+                            })
+                          : openModal(ModalType.nft, {
+                              remoteFetch: true,
+                              network: network,
+                              standard: x.standard,
+                              contractAddress: x.contract_address,
+                              tokenId: x.id,
+                            });
+                        e.stopPropagation();
+                        e.preventDefault();
+                      }}
+                      className="feed-content-img"
+                      src={resolveMediaURL(
+                        x.standard ? x.image_url : x.address
+                      )}
+                      type={x.mime_type || "image/png"}
+                      width="auto"
+                      height="auto"
+                      placeholder={true}
+                      alt={"Feed Image"}
+                    />
+                  ) : null
+                )}
+              </div>
             )}
           </div>
         )}
