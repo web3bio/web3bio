@@ -87,7 +87,11 @@ function RenderFeedActionCard(props) {
                   alt={target.title}
                 />
               )}
-              {target.content}
+              {target.content && (
+                <div className="feed-target-description">
+                  {target.content}
+                </div>
+              )}
               {target.description && (
                 <div className="feed-target-description">
                   {target.description}

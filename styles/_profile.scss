@@ -367,6 +367,9 @@
     }
 
     .action-icon {
+      display: flex;
+      height: 1.4rem;
+      
       svg {
         flex: 0 0 1rem;
       }
