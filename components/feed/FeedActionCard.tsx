@@ -134,33 +134,31 @@ function RenderFeedActionCard(props) {
             {attachments.social && (
               <>
                 {attachments.social.content && (
-                  <div className="feed-content">
-                    <div
-                      className="feed-target c-hand"
-                      onClick={(e) => {
-                        if (attachments.social.content.body) {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          openModal(ModalType.article, {
-                            title: attachments.social.content.title,
-                            content: attachments.social.content.body,
-                            baseURL: `https://${
-                              domainRegexp.exec(
-                                actions[idx].content_uri ||
-                                  actions[idx].related_urls[0]
-                              )?.[1]
-                            }`,
-                            link: actions[idx].content_uri,
-                          });
-                        }
-                      }}
-                    >
-                      <div className="feed-target-name">
-                        {attachments.social.content.title}
-                      </div>
-                      <div className="feed-target-description">
-                        {attachments.social.content.body}
-                      </div>
+                  <div
+                    className="feed-target c-hand"
+                    onClick={(e) => {
+                      if (attachments.social.content.body) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        openModal(ModalType.article, {
+                          title: attachments.social.content.title,
+                          content: attachments.social.content.body,
+                          baseURL: `https://${
+                            domainRegexp.exec(
+                              actions[idx].content_uri ||
+                                actions[idx].related_urls[0]
+                            )?.[1]
+                          }`,
+                          link: actions[idx].content_uri,
+                        });
+                      }
+                    }}
+                  >
+                    <div className="feed-target-name">
+                      {attachments.social.content.title}
+                    </div>
+                    <div className="feed-target-description">
+                      {attachments.social.content.body}
                     </div>
                   </div>
                 )}
@@ -197,61 +195,59 @@ function RenderFeedActionCard(props) {
                   </div>
                 )}
                 {attachments.social.target && (
-                  <div className="feed-content">
-                    <Link
-                      className="feed-target"
-                      href={resolveIPFS_URL(actions[idx].target_url) || ""}
-                      target="_blank"
-                    >
-                      <div className="feed-target-name">
-                        <RenderProfileBadge
-                          platform={feedPlatform}
-                          identity={attachments.social.target?.handle}
-                          remoteFetch
-                          fullProfile
-                        />
+                  <Link
+                    className="feed-target"
+                    href={resolveIPFS_URL(actions[idx].target_url) || ""}
+                    target="_blank"
+                  >
+                    <div className="feed-target-name">
+                      <RenderProfileBadge
+                        platform={feedPlatform}
+                        identity={attachments.social.target?.handle}
+                        remoteFetch
+                        fullProfile
+                      />
+                    </div>
+                    <div className="feed-target-content">
+                      {attachments.social.target?.body}
+                    </div>
+                    {attachments.social.target?.media?.length > 0 && (
+                      <div
+                        className={`feed-target-content${
+                          attachments.social.target?.media?.length > 1
+                            ? " media-gallery"
+                            : ""
+                        }`}
+                      >
+                        {attachments.social.target?.media?.map((x) =>
+                          isImage(x.mime_type) || isVideo(x.mime_type) ? (
+                            <NFTAssetPlayer
+                              onClick={(e) => {
+                                openModal(ModalType.media, {
+                                  type: x.mime_type || "image/png",
+                                  url: resolveMediaURL(x.address),
+                                });
+                                e.stopPropagation();
+                                e.preventDefault();
+                              }}
+                              className="feed-content-img"
+                              src={resolveMediaURL(x.address)}
+                              type={x.mime_type}
+                              key={x.address}
+                              width="auto"
+                              height="auto"
+                              placeholder={true}
+                              alt={"Feed Image"}
+                            />
+                          ) : attachments.social.target?.body ? (
+                            ""
+                          ) : (
+                            x.address
+                          )
+                        )}
                       </div>
-                      <div className="feed-target-content">
-                        {attachments.social.target?.body}
-                      </div>
-                      {attachments.social.target?.media?.length > 0 && (
-                        <div
-                          className={`feed-target-content${
-                            attachments.social.target?.media?.length > 1
-                              ? " media-gallery"
-                              : ""
-                          }`}
-                        >
-                          {attachments.social.target?.media?.map((x) =>
-                            isImage(x.mime_type) || isVideo(x.mime_type) ? (
-                              <NFTAssetPlayer
-                                onClick={(e) => {
-                                  openModal(ModalType.media, {
-                                    type: x.mime_type || "image/png",
-                                    url: resolveMediaURL(x.address),
-                                  });
-                                  e.stopPropagation();
-                                  e.preventDefault();
-                                }}
-                                className="feed-content-img"
-                                src={resolveMediaURL(x.address)}
-                                type={x.mime_type}
-                                key={x.address}
-                                width="auto"
-                                height="auto"
-                                placeholder={true}
-                                alt={"Feed Image"}
-                              />
-                            ) : attachments.social.target?.body ? (
-                              ""
-                            ) : (
-                              x.address
-                            )
-                          )}
-                        </div>
-                      )}
-                    </Link>
-                  </div>
+                    )}
+                  </Link>
                 )}
               </>
             )}
