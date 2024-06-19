@@ -427,7 +427,7 @@ export const ActionStructMapping = (action, owner) => {
 
       attachments = {
         targets: [],
-        medias: [metadata.media],
+        medias: metadata.media,
       };
       if (metadata.target) {
         attachments.targets.push({
