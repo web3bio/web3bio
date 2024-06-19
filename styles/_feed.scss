@@ -16,17 +16,17 @@
     &:not(:last-child) {
       margin-bottom: .5rem;
       padding-bottom: .5rem;
-    }
 
-    &::after {
-      border-left: .05rem solid $border-color;
-      bottom: -.5rem;
-      content: "";
-      display: flex;
-      left: 1rem;
-      position: absolute;
-      top: 2.5rem;
-      width: .05rem;
+      &::after {
+        border-left: .05rem solid $border-color;
+        bottom: -.5rem;
+        content: "";
+        display: flex;
+        left: 1rem;
+        position: absolute;
+        top: 2.5rem;
+        width: .05rem;
+      }
     }
 
     .feed-item-icon {
