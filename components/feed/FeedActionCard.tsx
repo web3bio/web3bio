@@ -76,15 +76,15 @@ function RenderFeedActionCard(props) {
             </div>
 
             <div className="feed-target-content">
-              {attachments.image && (
+              {target.image && (
                 <NFTAssetPlayer
                   className="feed-content-img float-right"
-                  src={attachments.image}
+                  src={target.image}
                   height={40}
                   width={40}
                   placeholder={true}
                   type={"image/png"}
-                  alt={attachments.title}
+                  alt={target.title}
                 />
               )}
               {target.content}
@@ -93,7 +93,7 @@ function RenderFeedActionCard(props) {
                   {target.description}
                   {target.subTitle && (
                     <small className="text-gray-dark">
-                      ({attachments.subTitle})
+                      ({target.subTitle})
                     </small>
                   )}
                 </div>
@@ -186,6 +186,7 @@ function RenderFeedActionCard(props) {
         );
       }
     }, [attachments?.medias]);
+
     return (
       <>
         <div

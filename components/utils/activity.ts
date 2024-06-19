@@ -41,16 +41,6 @@ export enum ActivityType {
   vote = "vote",
 }
 
-type FeedAttachments = {
-  nfts: any[];
-  identity: string;
-  title: string;
-  subtitle: string;
-  description: string;
-  body: string;
-  targets: any[];
-};
-
 export const ActivityTypeData: { [key in ActivityType]: any } = {
   [ActivityType.approval]: {
     key: ActivityType.approval,
@@ -495,10 +485,14 @@ export const ActionStructMapping = (action, owner) => {
       ];
       platform = action.platform;
       attachments = {
-        url: action.related_urls[action.related_urls.length - 1],
-        name: metadata.title,
-        image: resolveMediaURL(metadata.logo),
-        content: metadata.description,
+        targets: [
+          {
+            url: action.related_urls[action.related_urls.length - 1],
+            name: metadata.title,
+            image: resolveMediaURL(metadata.logo),
+            content: metadata.description,
+          },
+        ],
       };
       break;
     case ActivityType.vote:
@@ -522,10 +516,14 @@ export const ActionStructMapping = (action, owner) => {
               },
             ];
       attachments = {
-        url: metadata.proposal?.link,
-        title: metadata.proposal?.title,
-        body: metadata.proposal?.organization.name,
-        subTitle: `(${metadata.proposal?.organization.id})`,
+        targets: [
+          {
+            url: metadata.proposal?.link,
+            title: metadata.proposal?.title,
+            body: metadata.proposal?.organization.name,
+            subTitle: `(${metadata.proposal?.organization.id})`,
+          },
+        ],
       };
       break;
     default:

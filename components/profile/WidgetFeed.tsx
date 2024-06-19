@@ -158,7 +158,7 @@ export default function WidgetFeed({ profile, openModal }) {
     }
   }, [expand, isValidating, data?.length, dispatch]);
 
-  if ((filter === "all" && !data?.length) || isError) return null;
+  if (filter === "all" && !data?.length) return null;
 
   // if (process.env.NODE_ENV !== "production") {
   //   console.log("Feed Data:", data);
