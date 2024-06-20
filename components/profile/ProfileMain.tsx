@@ -406,7 +406,7 @@ export default function ProfileMain(props) {
 
                   <div className="web3-section-widgets">
                     <Suspense
-                      fallback={<LoadingSkeleton type={WidgetTypes.rss} />}
+                      fallback={<LoadingSkeleton type={WidgetTypes.article} />}
                     >
                       <WidgetArticle domain={data.identity} />
                     </Suspense>

@@ -4,13 +4,13 @@ import { useDispatch } from "react-redux";
 import useSWR from "swr";
 import SVG from "react-inlinesvg";
 import Link from "next/link";
-import { WidgetTypes } from "../utils/widgets";
-import RssItem from "./RssItem";
+import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { profileAPIBaseURL } from "../utils/queries";
 import { updateArticleWidget } from "../state/widgets/action";
 import { ArticlesFetcher } from "../apis/articles";
+import ArticleItem from "./ArticleItem";
 
-function useRSS(domain: string) {
+function useArticles(domain: string) {
   const fetchUrl = (() => {
     return `${profileAPIBaseURL}/articles/${domain}?limit=10`;
   })();
@@ -28,8 +28,7 @@ function useRSS(domain: string) {
 }
 
 const RenderWidgetArticles = ({ domain }) => {
-  const { data, isLoading } = useRSS(domain);
-  console.log(data, "data");
+  const { data, isLoading } = useArticles(domain);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -57,8 +56,8 @@ const RenderWidgetArticles = ({ domain }) => {
         {
           <div className="profile-widget-header">
             <h2 className="profile-widget-title">
-              <span className="emoji-large mr-2">🌐 </span>
-              {siteInfo.platform}
+              <span className="emoji-large mr-2">{WidgetInfoMapping(WidgetTypes.article).icon}</span>
+              {WidgetInfoMapping(WidgetTypes.article).label}
             </h2>
             {siteInfo.description && (
               <h3 className="text-assistive">{siteInfo.description}</h3>
@@ -84,7 +83,7 @@ const RenderWidgetArticles = ({ domain }) => {
             </div>
           </div>
           {data?.items.map((x, idx) => {
-            return <RssItem data={x} key={idx} />;
+            return <ArticleItem data={x} key={idx} />;
           })}
         </div>
       </div>
