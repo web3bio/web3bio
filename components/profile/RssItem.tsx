@@ -1,6 +1,8 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
+import SVG from "react-inlinesvg";
+import { SocialPlatformMapping } from "../utils/platform";
 
 export default function RssItem(props) {
   const { data } = props;
@@ -16,6 +18,18 @@ export default function RssItem(props) {
           width={200}
         />
       )}
+      <div className="rss-item-tag">
+        <span className="label text-dark">
+          <SVG
+            fill={"#121212"}
+            src={SocialPlatformMapping(data.platform).icon || ""}
+            height={18}
+            width={18}
+            className="mr-1"
+          />
+          {SocialPlatformMapping(data.platform)?.label}
+        </span>
+      </div>
       <div className="rss-item-title">
         {data.title ? data.title : "Untitled"}
       </div>

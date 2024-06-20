@@ -22,19 +22,17 @@ import Modal from "../modal/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../state";
 import { WidgetState } from "../state/widgets/reducer";
-import { WidgetRSS } from "./WidgetRSS";
 // import { WidgetPhiland } from "./WidgetPhiland";
 import { WidgetTally } from "./WidgetTally";
-import { regexEns } from "../utils/regexp";
 import LoadingSkeleton from "./LoadingSkeleton";
 import Web3bioBadge from "./ProfileFooter";
-import { WidgetArticle } from "./WidgetArticle";
 import WidgetIndicator from "./WidgetIndicator";
 import { WidgetTypes } from "../utils/widgets";
 import { DocumentNode, useLazyQuery } from "@apollo/client";
 import { WidgetScores } from "./WidgetScores";
 import { updateUniversalBatchedProfile } from "../state/universal/actions";
 import { getProfileQuery } from "../utils/queries";
+import { WidgetArticle } from "./WidgetArticle";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
@@ -123,8 +121,8 @@ export default function ProfileMain(props) {
   };
   const isEmptyProfile = useCallback(() => {
     const source = Object.values(profileWidgetStates).filter((x) => x.loaded);
-    // 5 is all widgets num - basic widgets num (nft, poaps, feeds)
-    return source.length > 5 && source.every((x) => x.isEmpty);
+    // 4 is all widgets num - basic widgets num (nft, poaps, feeds)
+    return source.length > 4 && source.every((x) => x.isEmpty);
   }, [profileWidgetStates])();
 
   const isBasicLoadingFinished = useCallback(() => {
@@ -406,29 +404,14 @@ export default function ProfileMain(props) {
                     />
                   </div>
 
-                  {([PlatformType.ens, PlatformType.dotbit].includes(
-                    data.platform
-                  ) ||
-                    regexEns.test(data.identity)) &&
-                    data.contenthash && (
-                      <div className="web3-section-widgets">
-                        <Suspense
-                          fallback={<LoadingSkeleton type={WidgetTypes.rss} />}
-                        >
-                          <WidgetRSS domain={data.identity} />
-                        </Suspense>
-                      </div>
-                    )}
+                  <div className="web3-section-widgets">
+                    <Suspense
+                      fallback={<LoadingSkeleton type={WidgetTypes.rss} />}
+                    >
+                      <WidgetArticle domain={data.identity} />
+                    </Suspense>
+                  </div>
 
-                  {isValidEthereumAddress(data.address) && (
-                    <div className="web3-section-widgets">
-                      <Suspense
-                        fallback={<LoadingSkeleton type={WidgetTypes.rss} />}
-                      >
-                        <WidgetArticle profile={data} openModal={openModal} />
-                      </Suspense>
-                    </div>
-                  )}
                   {isValidEthereumAddress(data.address) && (
                     <div className="web3-section-widgets">
                       <Suspense

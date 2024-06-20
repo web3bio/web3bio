@@ -2,7 +2,6 @@ import { createReducer } from "@reduxjs/toolkit";
 import {
   updateNFTWidget,
   updatePoapsWidget,
-  updateRssWidget,
   updateFeedsWidget,
   updatePhilandWidget,
   updateTallyDAOWidget,
@@ -27,7 +26,6 @@ export interface WidgetState {
   [WidgetTypes.feeds]?: WidgetStateDetail;
   [WidgetTypes.poaps]?: WidgetStateDetail;
   [WidgetTypes.scores]?: WidgetStateDetail;
-  [WidgetTypes.rss]?: WidgetStateDetail;
   [WidgetTypes.article]?: WidgetStateDetail;
   [WidgetTypes.tally]?: WidgetStateDetail;
   [WidgetTypes.philand]?: WidgetStateDetail;
@@ -57,11 +55,6 @@ export const initialState: WidgetState = {
     initLoading: true,
     loaded: false,
     children: [WidgetTypes.webacy, WidgetTypes.degen],
-  },
-  [WidgetTypes.rss]: {
-    isEmpty: null,
-    initLoading: true,
-    loaded: false,
   },
   [WidgetTypes.article]: {
     isEmpty: null,
@@ -138,17 +131,6 @@ export default createReducer(initialState, (builder) =>
       (state, { payload: { isEmpty, initLoading } }) => {
         state[WidgetTypes.scores] = {
           ...state[WidgetTypes.scores],
-          isEmpty,
-          initLoading,
-          loaded: true,
-        };
-      }
-    )
-    .addCase(
-      updateRssWidget,
-      (state, { payload: { isEmpty, initLoading } }) => {
-        state[WidgetTypes.rss] = {
-          ...state[WidgetTypes.rss],
           isEmpty,
           initLoading,
           loaded: true,

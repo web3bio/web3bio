@@ -1,57 +1,51 @@
 "use client";
-import { useEffect, memo } from "react";
+import { useEffect, memo, useMemo } from "react";
 import { useDispatch } from "react-redux";
-import SVG from "react-inlinesvg";
 import useSWR from "swr";
-import { updateArticleWidget } from "../state/widgets/action";
-import { FIREFLY_ENDPOINT, FireflyFetcher } from "../apis/firefly";
-import { ModalType } from "../hooks/useModal";
+import SVG from "react-inlinesvg";
+import Link from "next/link";
 import { WidgetTypes } from "../utils/widgets";
-import { PlatformType, SocialPlatformMapping } from "../utils/platform";
+import RssItem from "./RssItem";
+import { profileAPIBaseURL } from "../utils/queries";
+import { updateArticleWidget } from "../state/widgets/action";
+import { ArticlesFetcher } from "../apis/articles";
 
-const MirrorBaseURL = "https://mirror.xyz";
-const ParagraphBaseURL = "https://paragraph.xyz";
-
-function useArticles(address: string) {
-  // platform: mirror(1) paragraph(2)
-  const { data, error, isValidating } = useSWR(
-    [
-      FIREFLY_ENDPOINT + "/article/v1/article",
-      {
-        addresses: [address],
-        limit: 20,
-      },
-    ],
-    FireflyFetcher,
-    {
-      suspense: true,
-      revalidateOnFocus: false,
-      revalidateOnMount: true,
-      revalidateOnReconnect: false,
-    }
-  );
+function useRSS(domain: string) {
+  const fetchUrl = (() => {
+    return `${profileAPIBaseURL}/articles/${domain}?limit=10`;
+  })();
+  const { data, error, isValidating } = useSWR(fetchUrl, ArticlesFetcher, {
+    suspense: true,
+    revalidateOnFocus: false,
+    revalidateOnMount: true,
+    revalidateOnReconnect: false,
+  });
   return {
-    data: data?.data || [],
+    data: data || [],
     isLoading: isValidating,
     isError: error,
   };
 }
 
-const RenderWidgetArticle = ({ profile, openModal }) => {
-  const { data, isLoading } = useArticles(profile.address);
+const RenderWidgetArticles = ({ domain }) => {
+  const { data, isLoading } = useRSS(domain);
+  console.log(data, "data");
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (!isLoading) {
       dispatch(
         updateArticleWidget({
-          isEmpty: !data?.length,
+          isEmpty: !data?.items?.length,
           initLoading: false,
         })
       );
     }
   }, [data, isLoading, dispatch]);
-  if (!data?.length) return null;
+  const siteInfo = useMemo(() => {
+    return data?.sites[0];
+  }, [data?.sites]);
+  if (!siteInfo || !data?.items?.length) return null;
 
   // if (process.env.NODE_ENV !== "production") {
   //   console.log("Article Data:", data);
@@ -60,74 +54,37 @@ const RenderWidgetArticle = ({ profile, openModal }) => {
   return (
     <div className="profile-widget-full" id={WidgetTypes.article}>
       <div className="profile-widget profile-widget-rss">
-        <div className="profile-widget-header">
-          <h2 className="profile-widget-title">
-            <span className="emoji-large mr-2">📰 </span>
-            Articles
-          </h2>
-        </div>
+        {
+          <div className="profile-widget-header">
+            <h2 className="profile-widget-title">
+              <span className="emoji-large mr-2">🌐 </span>
+              {siteInfo.platform}
+            </h2>
+            {siteInfo.description && (
+              <h3 className="text-assistive">{siteInfo.description}</h3>
+            )}
+          </div>
+        }
 
         <div className="widget-rss-list noscrollbar">
-          {data?.map((x, idx) => {
-            const content = JSON.parse(x.content_body);
-            
-            return (
-              <div
-                className="rss-item"
-                onClick={() => {
-                  openModal(ModalType.article, {
-                    title:
-                      x.platform === 1 ? content.content.title : content.title,
-                    content:
-                      x.platform === 1
-                        ? content.content.body
-                        : content.markdown,
-                    link:
-                      x.platform === 1
-                        ? `${MirrorBaseURL}/${profile.identity}/${x.original_id}`
-                        : content.url
-                        ? `https://${content.url}`
-                        : `${ParagraphBaseURL}/@${profile.identity}/${content.slug}`,
-                  });
-                }}
-                key={idx}
+          <div className="widget-hero">
+            <div className="widget-hero-title mb-1">{siteInfo.name}</div>
+            <div className="widget-hero-description mb-4">
+              {siteInfo.description}
+            </div>
+            <div className="widget-hero-action">
+              <Link
+                className="btn btn-sm"
+                title="More Articles"
+                href={siteInfo.link}
+                target={"_blank"}
               >
-                <div className="rss-item-tag">
-                  {x.platform === 1 && (
-                    <span className="label text-dark">
-                      <SVG
-                        fill={"#121212"}
-                        src={SocialPlatformMapping(PlatformType.mirror).icon || ""}
-                        height={18}
-                        width={18}
-                        className="mr-1"
-                      />
-                      Mirror
-                    </span>
-                  )}
-                  {x.platform === 2 && (
-                    <span className="label text-dark">
-                      <SVG
-                        fill={"#121212"}
-                        src={SocialPlatformMapping(PlatformType.paragraph).icon || ""}
-                        height={18}
-                        width={18}
-                        className="mr-1"
-                      />
-                      Paragraph
-                    </span>
-                  )}
-                </div>
-                <div className="rss-item-title">{x.content_title}</div>
-                <time
-                  dateTime={x.content_timestamp * 1000 + ""}
-                  suppressHydrationWarning
-                  className="rss-item-date"
-                >
-                  {new Date(x.content_timestamp * 1000).toDateString()}
-                </time>
-              </div>
-            );
+                <SVG src="icons/icon-open.svg" width={20} height={20} /> More
+              </Link>
+            </div>
+          </div>
+          {data?.items.map((x, idx) => {
+            return <RssItem data={x} key={idx} />;
           })}
         </div>
       </div>
@@ -135,4 +92,4 @@ const RenderWidgetArticle = ({ profile, openModal }) => {
   );
 };
 
-export const WidgetArticle = memo(RenderWidgetArticle);
+export const WidgetArticle = memo(RenderWidgetArticles);
