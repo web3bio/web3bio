@@ -1,14 +1,12 @@
 import { memo, useMemo } from "react";
 import { ActionStructMapping } from "../utils/activity";
-import { RenderToken } from "../feed/RenderToken";
 import { NFTAssetPlayer, isImage, isVideo } from "../shared/NFTAssetPlayer";
 import { ModalType } from "../hooks/useModal";
 import { resolveMediaURL } from "../utils/utils";
-import { PlatformType } from "../utils/platform";
 import { domainRegexp } from "../feed/ActionExternalMenu";
 import Link from "next/link";
-import { resolveIPFS_URL } from "../utils/ipfs";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
+import RenderObjects from "./RenderObjects";
 
 function RenderFeedActionCard(props) {
   const {
@@ -22,7 +20,7 @@ function RenderFeedActionCard(props) {
   } = props;
   const renderData = useMemo(() => {
     return actions.map((x) => ({ ...ActionStructMapping(x, owner) }));
-  }, [actions]);
+  }, [actions, owner]);
 
   const ActionContent = (props) => {
     const {
@@ -35,10 +33,9 @@ function RenderFeedActionCard(props) {
       checkEmojis,
       attachments,
     } = props;
-
     const TargetsRender = useMemo(() => {
       if (attachments?.targets?.filter((x) => x)?.length > 0) {
-        return attachments.targets.map((target,targetIdx) => (
+        return attachments.targets.map((target, targetIdx) => (
           <Link
             key={`profile_target_${targetIdx}_${target.address}`}
             onClick={(e) => {
@@ -63,16 +60,12 @@ function RenderFeedActionCard(props) {
             target="_blank"
           >
             <div className="feed-target-name">
-              {target.identity ? (
-                <RenderProfileBadge
-                  platform={feedPlatform}
-                  identity={target.identity}
-                  remoteFetch
-                  fullProfile
-                />
-              ) : (
-                target.name
-              )}
+              <RenderProfileBadge
+                platform={feedPlatform}
+                identity={target.identity || target.name}
+                remoteFetch
+                fullProfile
+              />
             </div>
 
             <div className="feed-target-content">
@@ -139,7 +132,7 @@ function RenderFeedActionCard(props) {
           </Link>
         ));
       }
-    }, [attachments?.targets]);
+    }, []);
     const MediasRender = useMemo(() => {
       if (attachments?.medias?.filter((x) => x)?.length > 0) {
         return (
@@ -186,7 +179,18 @@ function RenderFeedActionCard(props) {
         );
       }
     }, [attachments?.medias]);
-
+    const ObjectsRender = useMemo(() => {
+      return objects
+        ?.filter((i) => !!i)
+        .map((i, idx) => (
+          <RenderObjects
+            key={`text_object_${idx}`}
+            openModal={openModal}
+            data={i}
+            network={network}
+          />
+        ));
+    }, [objects]);
     return (
       <>
         <div
@@ -194,41 +198,7 @@ function RenderFeedActionCard(props) {
           key={"content_" + id + idx}
         >
           {verb}
-          {objects
-            ?.filter((i) => !!i)
-            .map((i, idx) =>
-              i.text ? (
-                <span
-                  className={i.isToken ? "feed-token" : ""}
-                  key={`text_object_${idx}`}
-                >
-                  {" "}
-                  {i.text}
-                </span>
-              ) : i.identity ? (
-                <RenderProfileBadge
-                  key={`${id + idx}_${i.name || i.symbol}_${i.value}`}
-                  identity={i.identity}
-                  platform={i.platform || PlatformType.ens}
-                  remoteFetch
-                />
-              ) : (
-                <RenderToken
-                  key={`${id + idx}_${i.name || i.symbol}_${i.value}`}
-                  name={i.name}
-                  symbol={i.symbol}
-                  image={i.image}
-                  network={network}
-                  openModal={openModal}
-                  standard={i.standard}
-                  value={{
-                    value: i.value,
-                    decimals: i.decimals,
-                  }}
-                  asset={i}
-                />
-              )
-            )}
+          {ObjectsRender}
           {prep && prep}
           {target && (
             <RenderProfileBadge

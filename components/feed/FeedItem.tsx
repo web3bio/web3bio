@@ -6,99 +6,13 @@ import { formatText, isSameAddress, shouldPlatformFetch } from "../utils/utils";
 import ActionExternalMenu from "./ActionExternalMenu";
 import {
   ActivityTag,
-  ActivityType,
   ActivityTypeMapping,
 } from "../utils/activity";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
 import { formatDistanceToNow } from "date-fns";
 import { PlatformType } from "../utils/platform";
 import { Network, NetworkMapping } from "../utils/network";
-import _ from "lodash";
-import FeedActionCard from "./FeedActionCard";
-
-const resolveDuplicatedActions = (
-  actions,
-  id,
-  specificTypes,
-  isMetadataAction?
-) => {
-  const _data = JSON.parse(JSON.stringify(actions));
-  const duplicatedObjects = new Array();
-  _data.forEach((x, idx) => {
-    const dupIndex = duplicatedObjects.findIndex(
-      (i) =>
-        i.tag === x.tag &&
-        i.type === x.type &&
-        i.from === x.from &&
-        i.to === x.to &&
-        specificTypes.includes(isMetadataAction ? i.metadata.action : i.type)
-    );
-    if (dupIndex === -1) {
-      duplicatedObjects.push({
-        ...x,
-        duplicatedObjects: [x.metadata],
-        action_id: id + idx,
-      });
-    } else {
-      duplicatedObjects[dupIndex].duplicatedObjects.push(x.metadata);
-    }
-  });
-
-  return duplicatedObjects;
-};
-const RenderFeedContent = (props) => {
-  const { actions, tag, openModal, network, id, platform, owner, feed } = props;
-  let comProps = {};
-  switch (tag) {
-    case "social":
-      comProps = {
-        overridePlatform: feed.platform,
-        platform,
-        openModal,
-        actions: resolveDuplicatedActions(
-          actions,
-          id,
-          ["renew", "update"],
-          true
-        ),
-      };
-      break;
-    case "exchange":
-    case "transaction":
-      comProps = {
-        id,
-        network,
-        openModal,
-        owner,
-        actions: _.sortBy(
-          resolveDuplicatedActions(actions, id, [ActivityType.transfer]),
-          (x) =>
-            x.type !== ActivityType.multisig ||
-            x.metadata.action !== "execution"
-        ),
-      };
-      break;
-    case "collectible":
-      comProps = {
-        id,
-        network,
-        openModal,
-        actions: resolveDuplicatedActions(actions, id, [
-          ActivityType.mint,
-          ActivityType.trade,
-          ActivityType.transfer,
-        ]),
-        owner,
-      };
-      break;
-    default:
-      comProps = {
-        id,
-        actions,
-      };
-  }
-  return <FeedActionCard {...comProps} />;
-};
+import { RenderFeedContent } from "./RenderFeedContent";
 
 const renderFeedBadge = (key) => {
   return (
