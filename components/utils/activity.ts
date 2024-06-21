@@ -1,5 +1,9 @@
 import { resolveIPFS_URL } from "./ipfs";
-import { isSameAddress, resolveMediaURL } from "./utils";
+import {
+  isSameAddress,
+  isValidEthereumAddress,
+  resolveMediaURL,
+} from "./utils";
 
 export enum ActivityTag {
   collectible = "collectible",
@@ -331,10 +335,14 @@ export const ActionStructMapping = (action, owner) => {
       objects = action.duplicatedObjects || [metadata];
       prep = isOwner
         ? null
-        : action.to
+        : isValidEthereumAddress(action.to)
         ? ActivityTypeData[ActivityType.transfer].prep
         : null;
-      target = isOwner ? null : action.to;
+      target = isOwner
+        ? null
+        : isValidEthereumAddress(action.to)
+        ? action.to
+        : null;
       platform = action.platform;
       break;
     case ActivityType.liquidity:
@@ -395,12 +403,11 @@ export const ActionStructMapping = (action, owner) => {
           : [{ identity: metadata.handle }];
       platform = action.platform;
       attachments = {
-        targets: action.duplicatedObjects
+        profiles: action.duplicatedObjects
           ?.filter((x) => x.key)
           .map((x) => ({
-            name: x.key,
-            content: x.value,
-            address: x.handle,
+            key: x.key,
+            value: x.value,
             url: action.related_urls?.[0] || `https://web3.bio/${x.handle}`,
           })),
       };

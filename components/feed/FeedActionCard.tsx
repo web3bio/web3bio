@@ -59,15 +59,16 @@ function RenderFeedActionCard(props) {
             href={target.url || ""}
             target="_blank"
           >
-            <div className="feed-target-name">
-              <RenderProfileBadge
-                platform={feedPlatform}
-                identity={target.identity || target.name}
-                remoteFetch
-                fullProfile
-              />
-            </div>
-
+            {(target.identity || target.name) && (
+              <div className="feed-target-name">
+                <RenderProfileBadge
+                  platform={feedPlatform}
+                  identity={target.identity || target.name}
+                  remoteFetch
+                  fullProfile
+                />
+              </div>
+            )}
             <div className="feed-target-content">
               {target.image && (
                 <NFTAssetPlayer
@@ -81,9 +82,7 @@ function RenderFeedActionCard(props) {
                 />
               )}
               {target.content && (
-                <div className="feed-target-description">
-                  {target.content}
-                </div>
+                <div className="feed-target-description">{target.content}</div>
               )}
               {target.description && (
                 <div className="feed-target-description">
@@ -195,6 +194,25 @@ function RenderFeedActionCard(props) {
           />
         ));
     }, [objects]);
+    const ProfilesRender = useMemo(() => {
+      if (attachments?.profiles?.length > 0) {
+        return (
+          <div className="feed-profiles-list">
+            {attachments.profiles?.map((x, idx) => (
+              <Link
+                key={`profile_${x.key}_${idx}`}
+                className="profile-list-item"
+                href={x.url}
+                target="_blank"
+              >
+                <div className="list-item-left">{x.key}</div>
+                <div className="list-item-right">{x.value}</div>
+              </Link>
+            ))}
+          </div>
+        );
+      }
+    }, [attachments?.profiles]);
     return (
       <>
         <div
@@ -217,6 +235,7 @@ function RenderFeedActionCard(props) {
           <div key={`attachments_${id}_${idx}`} className="feed-content">
             {TargetsRender}
             {MediasRender}
+            {ProfilesRender}
           </div>
         )}
       </>

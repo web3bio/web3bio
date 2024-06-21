@@ -175,6 +175,36 @@
         }
       }
 
+      .feed-profiles-list {
+        background: rgba($color: $bg-color, $alpha: .25);
+        border: .05rem solid rgba($dark-color, 0.01);
+        border-radius: .4rem;
+        box-shadow: 0 .2rem .8rem -.2rem rgba($dark-color, 0.1);
+        color: $dark-color;
+        margin: 1rem 0;
+        width: 100%;
+
+        .profile-list-item {
+          display: flex;
+          justify-content: space-between;
+          padding: .6rem;
+          width: 100%;
+
+          .list-item-right {
+            align-items: center;
+            display: flex;
+            font-size: .8rem;
+            max-width: 70%;
+            font-weight: 500;
+            text-align: right;
+          }
+
+          &:not(:first-child) {
+            border-top: .05rem solid rgba($dark-color, 0.025);
+          }
+        }
+      }
+
       .feed-target {
         position: relative;
         border: .05rem solid $border-color;
@@ -246,6 +276,7 @@
       }
 
       a.feed-target {
+
         &:focus,
         &:hover {
           border-color: darken($border-color, 2%);
