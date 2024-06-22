@@ -7,14 +7,13 @@ export const domainRegexp =
 
 export default function ActionExternalMenu({ links, date, action, platform }) {
   const fireflyWebUrl = (() => {
-    const source = platform?.toLowerCase();
     if (
-      !source ||
-      ![PlatformType.farcaster, PlatformType.lens].includes(source)
+      !platform ||
+      ![PlatformType.farcaster, PlatformType.lens].includes(platform)
     )
       return null;
     let path = "";
-    if (source === PlatformType.lens) {
+    if (platform === PlatformType.lens) {
       const pathExp = /\/([^\/]+)$/;
       const matches = (
         action.type === ActivityType.share
@@ -31,13 +30,15 @@ export default function ActionExternalMenu({ links, date, action, platform }) {
           : action.metadata.publication_id;
     }
 
-    return `https://firefly.mask.social/post/${path}?source=${platform?.toLowerCase()}`;
+    return `https://firefly.mask.social/post/${path}?source=${platform}`;
   })();
 
   return (
     <>
       <div
-        className={`btn btn-sm btn-link btn-action ${links?.length && "dropdown-toggle"}`}
+        className={`btn btn-sm btn-link btn-action ${
+          links?.length && "dropdown-toggle"
+        }`}
         tabIndex={0}
       >
         <SVG
@@ -50,9 +51,7 @@ export default function ActionExternalMenu({ links, date, action, platform }) {
       </div>
       <ul className="menu">
         <li className="menu-item dropdown-menu-item">
-          <div>
-            {new Date(date * 1000).toLocaleString()}
-          </div>
+          <div>{new Date(date * 1000).toLocaleString()}</div>
         </li>
         <li className="divider" data-content="LINKS"></li>
         {fireflyWebUrl && (

@@ -1,1 +1,0 @@
-export const LENS_GRAPHQL_END_POINT = "https://api-v2.lens.dev/";

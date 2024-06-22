@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { ProfileFetcher } from "../apis/profile";
 import { formatText, isWeb3Address } from "../utils/utils";
@@ -17,7 +17,7 @@ interface RenderProfileBadgeProps {
   offset?: Array<number>;
 }
 
-export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
+function RenderProfileBadge(props: RenderProfileBadgeProps) {
   const {
     parentRef,
     identity,
@@ -26,6 +26,7 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
     fullProfile = false,
     offset,
   } = props;
+
   const [visible, setVisible] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [fetched, setFetched] = useState(false);
@@ -116,3 +117,5 @@ export default function RenderProfileBadge(props: RenderProfileBadgeProps) {
     </Trigger>
   );
 }
+
+export default memo(RenderProfileBadge);

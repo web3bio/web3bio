@@ -1,3 +1,10 @@
+import { resolveIPFS_URL } from "./ipfs";
+import {
+  isSameAddress,
+  isValidEthereumAddress,
+  resolveMediaURL,
+} from "./utils";
+
 export enum ActivityTag {
   collectible = "collectible",
   donation = "donation",
@@ -38,7 +45,7 @@ export enum ActivityType {
   vote = "vote",
 }
 
-export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
+export const ActivityTypeData: { [key in ActivityType]: any } = {
   [ActivityType.approval]: {
     key: ActivityType.approval,
     emoji: "✅",
@@ -149,8 +156,9 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
     label: "Loan",
     action: {
       default: "Loaned",
+      create: "Loaned",
     },
-    prep: "to",
+    prep: "for",
   },
   [ActivityType.mint]: {
     key: ActivityType.mint,
@@ -306,6 +314,241 @@ export const ActivityTypeData: { [key in ActivityType]: ActivityTypeData } = {
   },
 };
 
+export const ActionStructMapping = (action, owner) => {
+  let verb,
+    objects,
+    prep,
+    target,
+    platform,
+    attachments = null as any;
+  const isOwner = isSameAddress(action.to, owner);
+  const metadata = action.metadata;
+  switch (action.type) {
+    // finance
+    case ActivityType.approval:
+    case ActivityType.deploy:
+      break;
+    case ActivityType.transfer:
+      verb = isOwner
+        ? ActivityTypeData[ActivityType.transfer].action.receive
+        : ActivityTypeData[ActivityType.transfer].action.default;
+      objects = action.duplicatedObjects || [metadata];
+      prep = isOwner
+        ? null
+        : isValidEthereumAddress(action.to)
+        ? ActivityTypeData[ActivityType.transfer].prep
+        : null;
+      target = isOwner
+        ? null
+        : isValidEthereumAddress(action.to)
+        ? action.to
+        : null;
+      platform = action.platform;
+      break;
+    case ActivityType.liquidity:
+      verb =
+        ActivityTypeData[ActivityType.liquidity].action[
+          metadata.action || "default"
+        ];
+      objects = metadata.tokens;
+      platform = action.platform;
+      break;
+    case ActivityType.swap:
+      verb = ActivityTypeData[ActivityType.swap].action.default;
+      objects = [
+        metadata.from,
+        { text: ActivityTypeData[ActivityType.swap].prep },
+        metadata.to,
+      ];
+      platform = action.platform;
+      break;
+    case ActivityType.multisig:
+      verb =
+        ActivityTypeData[ActivityType.multisig].action[
+          metadata.action || "default"
+        ];
+      objects = metadata.owner ? [{ identity: metadata.owner }] : [];
+      if (metadata.vault?.address) {
+        objects = objects.concat([
+          { text: "on" },
+          { identity: metadata.vault.address },
+        ]);
+      }
+      platform = action.platform;
+      break;
+    case ActivityType.bridge:
+      verb =
+        ActivityTypeData[ActivityType.bridge].action[
+          metadata.action || "default"
+        ];
+      objects = [metadata.token];
+      platform = action.platform;
+      break;
+    case ActivityType.burn:
+      verb = ActivityTypeData[ActivityType.burn].action.default;
+      objects = action.duplicatedObjects;
+      platform = action.platform;
+      break;
+    // social
+    case ActivityType.profile:
+      verb =
+        ActivityTypeData[action.type].action[
+          metadata.key && !metadata?.value
+            ? "delete"
+            : metadata.action || "default"
+        ];
+      objects =
+        metadata.action === "renew"
+          ? action.duplicatedObjects.map((x) => ({ identity: x.handle }))
+          : [{ identity: metadata.handle }];
+      platform = action.platform;
+      attachments = {
+        profiles: action.duplicatedObjects
+          ?.filter((x) => x.key)
+          .map((x) => ({
+            key: x.key,
+            value: x.value,
+            url: action.related_urls?.[0] || `https://web3.bio/${x.handle}`,
+          })),
+      };
+      break;
+    case ActivityType.post:
+    case ActivityType.comment:
+    case ActivityType.share:
+      verb = metadata.body
+        ? metadata.body
+        : ActivityTypeData[action.type].action[metadata.action || "default"];
+      platform = metadata.body ? null : action.platform;
+      const article =
+        ["Mirror"].includes(platform) || metadata.summary ? metadata : null;
+
+      attachments = {
+        targets: [],
+        medias: metadata.media,
+      };
+      if (metadata.target) {
+        attachments.targets.push({
+          identity: metadata.target?.handle,
+          url: resolveIPFS_URL(action.target_url),
+          content: metadata.target?.body,
+          media: metadata.target?.media,
+        });
+      }
+      if (article) {
+        attachments.targets.unshift({
+          article,
+          name: article.title,
+          content: article.body,
+        });
+      }
+      break;
+    // collectible
+    case ActivityType.auction:
+    case ActivityType.trade:
+    case ActivityType.mint:
+      if (action.tag === ActivityTag.social) {
+        verb = ActivityTypeMapping(action.type).action["post"];
+        platform = action.platform;
+        attachments = {
+          targets: [
+            {
+              identity: metadata.handle,
+              url: action.related_urls[0],
+              content: metadata.body,
+              media: metadata.media,
+            },
+          ],
+        };
+        break;
+      }
+      verb = ActivityTypeData[action.type].action[metadata.action || "default"];
+      objects = action.duplicatedObjects || [metadata];
+      platform = action.platform;
+      attachments = {
+        medias: (action.duplicatedObjects || [metadata]).filter(
+          (x) => [1155, 721].includes(x.standard) && x.image_url
+        ),
+      };
+      break;
+    case ActivityType.loan:
+      verb = ActivityTypeData[action.type].action[metadata.action || "default"];
+      objects = [
+        metadata.collateral,
+        { text: ActivityTypeData[ActivityType.loan].prep },
+        metadata.amount,
+      ];
+      platform = action.platform;
+      break;
+    // others
+    case ActivityType.donate:
+      verb = ActivityTypeData[action.type].action[metadata.action || "default"];
+      objects = [
+        metadata.token,
+        { text: ActivityTypeData[action.type].prep },
+        {
+          isToken: true,
+          text: metadata.title,
+        },
+      ];
+      platform = action.platform;
+      attachments = {
+        targets: [
+          {
+            url: action.related_urls[action.related_urls.length - 1],
+            name: metadata.title,
+            image: resolveMediaURL(metadata.logo),
+            content: metadata.description,
+          },
+        ],
+      };
+      break;
+    case ActivityType.vote:
+      const _choices = JSON.parse(metadata?.choice || "[]");
+      prep =
+        ActivityTypeData[action.type].action[metadata?.action || "default"];
+
+      platform = action.platform;
+      objects =
+        _choices.length > 0
+          ? [
+              ..._choices.map((x) => ({
+                isToken: true,
+                text: metadata.proposal?.options[x - 1],
+              })),
+            ]
+          : [
+              {
+                isToken: true,
+                text: metadata.proposal?.options[_choices - 1],
+              },
+            ];
+      attachments = {
+        targets: [
+          {
+            url: metadata.proposal?.link,
+            title: metadata.proposal?.title,
+            body: metadata.proposal?.organization.name,
+            subTitle: `(${metadata.proposal?.organization.id})`,
+          },
+        ],
+      };
+      break;
+    default:
+      verb = ActivityTypeData[action.type].action[metadata.action || "default"];
+      platform = action.platform;
+      break;
+  }
+
+  return {
+    verb,
+    objects,
+    prep,
+    target,
+    platform,
+    attachments,
+  };
+};
+
 export interface ActivityTypeData {
   key: string;
   emoji: string;
@@ -337,7 +580,6 @@ export const TagsFilterMapping = {
     filters: [ActivityTag.collectible, ActivityTag.metaverse],
   },
 };
-
 
 export const ActivityTypeMapping = (type: ActivityType) => {
   return (
