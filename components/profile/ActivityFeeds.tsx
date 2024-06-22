@@ -60,6 +60,7 @@ const RenderActivityFeeds = (props) => {
                   network={network}
                   identity={identity}
                   feed={x}
+                  actions={x.actions.filter((x) => !!x)}
                 />
               </div>
             )

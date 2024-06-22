@@ -44,7 +44,7 @@ export default function LensProfileCard(props) {
           </div>
           <span>Lens Profile</span>
           <span> · </span>
-          <span title="Lens UID"># {parseInt(data?.profile?.id, 16) || "…"}</span>
+          <span title="Lens UID">#{_profile.social.uid}</span>
         </div>
         <div className="modal-profile-body">
           <Avatar
@@ -77,11 +77,11 @@ export default function LensProfileCard(props) {
           </div>
           <div className="mt-2 mb-4">
             <strong className="text-large">
-              {data?.profile?.stats?.following?.toLocaleString() || "…"}
+              {_profile.social.following.toLocaleString()}
             </strong>{" "}
             Following ·{" "}
             <strong className="text-large">
-              {data?.profile?.stats?.followers?.toLocaleString() || "…"}
+              {_profile.social.follower.toLocaleString()}
             </strong>{" "}
             Followers
           </div>

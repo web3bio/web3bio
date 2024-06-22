@@ -1,163 +1,59 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { resolveIPFS_URL } from "../utils/ipfs";
 import SVG from "react-inlinesvg";
-import { DefaultCard } from "./DefaultFeed";
-import { TransactionCard } from "./TransactionFeed";
-import { SocialCard } from "./SocialFeed";
-import { CollectibleCard } from "./CollectibleFeed";
-import {
-  formatValue,
-  formatText,
-  isSameAddress,
-  shouldPlatformFetch,
-} from "../utils/utils";
+import { formatText, isSameAddress, shouldPlatformFetch } from "../utils/utils";
 import ActionExternalMenu from "./ActionExternalMenu";
-import { ActivityType, ActivityTypeMapping } from "../utils/activity";
+import {
+  ActivityTag,
+  ActivityTypeMapping,
+} from "../utils/activity";
 import RenderProfileBadge from "../profile/RenderProfileBadge";
 import { formatDistanceToNow } from "date-fns";
-import { PlatformType, SocialPlatformMapping } from "../utils/platform";
-import { NetworkMapping } from "../utils/network";
+import { PlatformType } from "../utils/platform";
+import { Network, NetworkMapping } from "../utils/network";
+import { RenderFeedContent } from "./RenderFeedContent";
 
-export const RenderToken = ({ key, name, symbol, image, value }) => {
+const renderFeedBadge = (key) => {
   return (
     <div
-      className="feed-token"
-      key={key}
-      title={formatValue(value) + " " + symbol}
+      className={`feed-icon-platform ${key}`}
+      style={{ backgroundColor: NetworkMapping(key).bgColor }}
+      title={NetworkMapping(key).label}
     >
-      {image && (
-        <Image
-          className="feed-token-icon"
-          src={resolveIPFS_URL(image) || ""}
-          alt={name}
-          height={20}
-          width={20}
-          loading="lazy"
-        />
-      )}
-      <span className="feed-token-value">{formatText(formatValue(value))}</span>
-      {symbol && <small className="feed-token-meta">{symbol}</small>}
+      <SVG
+        fill={NetworkMapping(key).primaryColor}
+        src={NetworkMapping(key).icon || ""}
+      />
     </div>
   );
 };
 
-const resolveDuplicatedActions = (
-  actions,
-  id,
-  specificTypes,
-  isMetadataAction?
-) => {
-  const _data = JSON.parse(JSON.stringify(actions));
-  const duplicatedObjects = new Array();
-  _data.forEach((x, idx) => {
-    const dupIndex = duplicatedObjects.findIndex(
-      (i) =>
-        i.tag === x.tag &&
-        i.type === x.type &&
-        i.from === x.from &&
-        i.to === x.to &&
-        specificTypes.includes(isMetadataAction ? i.metadata.action : i.type)
-    );
-    if (dupIndex === -1) {
-      duplicatedObjects.push({
-        ...x,
-        duplicatedObjects: [x.metadata],
-        action_id: id + idx,
-      });
-    } else {
-      duplicatedObjects[dupIndex].duplicatedObjects.push(x.metadata);
-    }
-  });
-
-  return duplicatedObjects;
-};
-const RenderFeedContent = (props) => {
-  const { actions, tag, openModal, network, id, platform, owner } = props;
-  switch (tag) {
-    case "social":
-      return (
-        <SocialCard
-          platform={platform}
-          openModal={openModal}
-          actions={resolveDuplicatedActions(
-            actions,
-            id,
-            ["renew", "update"],
-            true
-          )}
-        />
-      );
-    case "exchange":
-    case "transaction":
-      return (
-        <TransactionCard
-          id={id}
-          network={network}
-          openModal={openModal}
-          actions={resolveDuplicatedActions(actions, id, [
-            ActivityType.transfer,
-          ])}
-          owner={owner}
-        />
-      );
-    case "collectible":
-      return (
-        <CollectibleCard
-          network={network}
-          openModal={openModal}
-          actions={resolveDuplicatedActions(actions, id, [
-            ActivityType.mint,
-            ActivityType.trade,
-            ActivityType.transfer,
-          ])}
-          owner={owner}
-        />
-      );
-    default:
-      return <DefaultCard id={id} actions={actions} />;
-  }
-};
-
 const RenderFeedItem = (props) => {
-  const { feed, identity, openModal } = props;
-  const isOwner = isSameAddress(feed.owner, identity.address);
-  const platformName = feed.platform?.toLowerCase();
-  const networkName = feed.network?.toLowerCase();
-  const actions = feed.actions?.filter((x) => x);
+  const { feed, identity, openModal, actions } = props;
+  const isOwner = useMemo(
+    () => isSameAddress(feed.owner, identity.address),
+    [feed, identity]
+  );
+  const platformName = useMemo(() => feed.platform?.toLowerCase(), [feed]);
+  const networkName = useMemo(() => feed.network?.toLowerCase(), [feed]);
+  const feedOwner = useMemo(
+    () =>
+      isOwner
+        ? identity.displayName || formatText(identity.address)
+        : formatText(feed.from),
+    [feed, identity, isOwner]
+  );
   if (!actions?.length) return null;
-  const feedOwner = isOwner
-    ? identity.displayName || formatText(identity.address)
-    : formatText(feed.from);
-
   return (
     <>
       <div className="feed-item-icon">
         <div className="feed-icon-emoji">
           {ActivityTypeMapping(feed.type).emoji}
-          {networkName && platformName !== "lens" ? (
-            <div
-              className={`feed-icon-platform ${networkName}`}
-              style={{ backgroundColor: NetworkMapping(networkName).bgColor }}
-              title={NetworkMapping(networkName).label}
-            >
-              <SVG
-                fill={NetworkMapping(networkName).primaryColor}
-                src={NetworkMapping(networkName).icon || ""}
-              />
-            </div>
-          ) : (
-            <div
-              className={`feed-icon-platform ${platformName}`}
-              style={{ backgroundColor: NetworkMapping(platformName).bgColor }}
-              title={NetworkMapping(platformName).label}
-            >
-              <SVG
-                fill={SocialPlatformMapping(platformName).color}
-                src={SocialPlatformMapping(platformName).icon || ""}
-              />
-            </div>
+          {renderFeedBadge(
+            feed.tag === ActivityTag.social
+              ? networkName.replace(Network.polygon, Network.lens)
+              : networkName
           )}
         </div>
       </div>
@@ -167,15 +63,13 @@ const RenderFeedItem = (props) => {
             {(
               <RenderProfileBadge
                 platform={
-                  feed?.platform &&
-                  shouldPlatformFetch(feed?.platform.toLowerCase())
-                    ? feed.platform
+                  shouldPlatformFetch(platformName)
+                    ? platformName
                     : PlatformType.ethereum
                 }
                 offset={[50, -5]}
                 identity={
-                  feed.platform ===
-                  SocialPlatformMapping(PlatformType.farcaster).label
+                  platformName === PlatformType.farcaster
                     ? feed?.actions?.[0]?.metadata?.handle
                     : feed.owner
                 }
@@ -191,13 +85,13 @@ const RenderFeedItem = (props) => {
               className="feed-timestamp"
             >
               <span>
-                {formatDistanceToNow(new Date(feed.timestamp * 1000), {
+                {formatDistanceToNow(new Date(feed?.timestamp * 1000), {
                   addSuffix: false,
                 })}
               </span>
             </Link>
             <ActionExternalMenu
-              platform={feed.platform}
+              platform={platformName}
               date={feed.timestamp}
               action={actions?.[0]}
               links={actions?.[0]?.related_urls.map((x) => resolveIPFS_URL(x))}
@@ -205,8 +99,9 @@ const RenderFeedItem = (props) => {
           </div>
         </div>
         <RenderFeedContent
-          platform={feed.platform}
-          network={feed.network}
+          feed={feed}
+          platform={platformName}
+          network={networkName}
           openModal={openModal}
           id={feed.id}
           actions={actions}
