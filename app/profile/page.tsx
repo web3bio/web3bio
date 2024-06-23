@@ -20,7 +20,7 @@ export default function WalletProfilePage() {
   const [resolvedData, setResolvedData] = useState([]);
   const router = useRouter();
 
-  const { data, isLoading, error } = useSWR(
+  const { data, isLoading } = useSWR(
     authed ? `${profileAPIBaseURL}/profile/${address}` : null,
     ProfileFetcher
   );

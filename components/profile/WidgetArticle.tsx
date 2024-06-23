@@ -17,7 +17,6 @@ function useArticles(domain: string) {
   const { data, error, isValidating } = useSWR(fetchUrl, ArticlesFetcher, {
     suspense: true,
     revalidateOnFocus: false,
-    revalidateOnMount: true,
     revalidateOnReconnect: false,
   });
   return {

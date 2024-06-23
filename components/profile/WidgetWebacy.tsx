@@ -8,13 +8,12 @@ import { useDispatch } from "react-redux";
 import { updateWebacyWidget } from "../state/widgets/action";
 
 export function WidgetWebacy({ address }) {
-  const { data, error, isLoading } = useSWR(
+  const { data, isLoading } = useSWR(
     `${WEBACY_API_ENDPOINT}/addresses/${address}?chain=${
       regexSolana.test(address) ? "sol" : "eth"
     }`,
     webacyFetcher,
     {
-      revalidateOnMount: true,
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
     }

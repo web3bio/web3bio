@@ -81,7 +81,6 @@ function useNFTs({ address, filter, network }) {
     {
       suspense: true,
       revalidateOnFocus: false,
-      revalidateOnMount: true,
       revalidateOnReconnect: false,
     }
   );

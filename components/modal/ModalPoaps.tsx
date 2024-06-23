@@ -13,7 +13,11 @@ export default function PoapsModalContent({ onClose, asset }) {
   const [owners, setOwners] = useState(new Array());
   const { data: poapDetail } = useSWR(
     `${SIMPLEHASH_URL}/api/v0/nfts/poap_event/` + asset.asset.event.id,
-    SimplehashFetcher
+    SimplehashFetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
   );
   useEffect(() => {
     if (poapDetail?.nfts?.length > 0) {

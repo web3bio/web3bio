@@ -10,7 +10,11 @@ import { ProfileFetcher } from "../apis/profile";
 function useGitcoinInfo(address: string) {
   const { data, error } = useSWR(
     `/api/metadata/gitcoin/${address}`,
-    ProfileFetcher
+    ProfileFetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
   );
   return {
     data: data,
