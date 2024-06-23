@@ -16,17 +16,17 @@
     &:not(:last-child) {
       margin-bottom: .5rem;
       padding-bottom: .5rem;
-    }
 
-    &::after {
-      border-left: .05rem solid $border-color;
-      bottom: -.5rem;
-      content: "";
-      display: flex;
-      left: 1rem;
-      position: absolute;
-      top: 2.5rem;
-      width: .05rem;
+      &::after {
+        border-left: .05rem solid $border-color;
+        bottom: -.5rem;
+        content: "";
+        display: flex;
+        left: 1rem;
+        position: absolute;
+        top: 2.5rem;
+        width: .05rem;
+      }
     }
 
     .feed-item-icon {
@@ -175,6 +175,40 @@
         }
       }
 
+      .feed-profiles-list {
+        background: rgba($color: $bg-color, $alpha: .25);
+        border: .05rem solid rgba($dark-color, 0.05);
+        border-radius: .4rem;
+        box-shadow: 0 .1rem .4rem rgba($dark-color, .05);
+        color: $dark-color;
+        margin: 1rem 0;
+        max-width: 24rem;
+        width: 100%;
+
+        .profile-list-item {
+          display: flex;
+          font-size: .65rem;
+          justify-content: space-between;
+          padding: .6rem;
+          width: 100%;
+
+          .list-item-left {
+            color: $gray-color-dark;
+          }
+
+          .list-item-right {
+            align-items: center;
+            display: flex;
+            max-width: 70%;
+            text-align: right;
+          }
+
+          &:not(:first-child) {
+            border-top: .05rem solid rgba($dark-color, 0.025);
+          }
+        }
+      }
+
       .feed-target {
         position: relative;
         border: .05rem solid $border-color;
@@ -246,6 +280,7 @@
       }
 
       a.feed-target {
+
         &:focus,
         &:hover {
           border-color: darken($border-color, 2%);

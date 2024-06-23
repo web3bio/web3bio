@@ -61,7 +61,11 @@ export default function NFTModalContentRender(props) {
       ? SIMPLEHASH_URL +
           `/api/v0/nfts/${resolvedNetwork}/${asset.contractAddress}/${asset.tokenId}`
       : null,
-    SimplehashFetcher
+    SimplehashFetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
   );
 
   if (!asset || (asset.remoteFetch && !fetchedAsset)) return null;

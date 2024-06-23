@@ -34,10 +34,10 @@ export default function FarcasterProfileCard(props) {
   }, [profiles, handle]);
 
   useEffect(() => {
-    if (data?.data?.fid) {
-      setFid(data.data.fid);
+    if (_profile.social.uid) {
+      setFid(_profile.social.uid);
     }
-  }, [data]);
+  }, [_profile]);
   return (
     _profile && (
       <>
@@ -59,7 +59,7 @@ export default function FarcasterProfileCard(props) {
           </div>
           <span>Farcaster Profile</span>
           <span> · </span>
-          <span title="Farcaster FID"># {fid || "…"}</span>
+          <span title="Farcaster FID">#{fid || "…"}</span>
         </div>
         <div className="modal-profile-body">
           <Avatar
@@ -87,11 +87,11 @@ export default function FarcasterProfileCard(props) {
           </div>
           <div className="mt-2 mb-4">
             <strong className="text-large">
-              {data?.data?.following.toLocaleString() || "…"}
+              {_profile.social.following.toLocaleString()}
             </strong>{" "}
             Following ·{" "}
             <strong className="text-large">
-              {data?.data.followers.toLocaleString() || "…"}
+              {_profile.social.follower.toLocaleString()}
             </strong>{" "}
             Followers
           </div>
