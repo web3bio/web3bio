@@ -11,7 +11,6 @@ export const updatePoapsWidget =
   createAction<UpdateWidgetState>("widgets/poaps");
 export const updateScoresWidget =
   createAction<UpdateWidgetState>("widgets/scores");
-export const updateRssWidget = createAction<UpdateWidgetState>("widgets/rss");
 export const updateArticleWidget =
   createAction<UpdateWidgetState>("widgets/article");
 export const updateTallyDAOWidget =

@@ -86,9 +86,7 @@ const getURL = (index, address, previous, filter) => {
       ActivityType.post,
       ActivityType.profile,
       ActivityType.propose,
-      ActivityType.reward,
       ActivityType.share,
-      ActivityType.staking,
       ActivityType.swap,
       ActivityType.trade,
       ActivityType.transfer,
@@ -105,7 +103,6 @@ function useFeeds({ address, filter }) {
     {
       suspense: true,
       revalidateOnFocus: false,
-      revalidateOnMount: true,
       revalidateOnReconnect: false,
     }
   );

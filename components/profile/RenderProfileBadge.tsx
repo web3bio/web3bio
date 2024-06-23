@@ -31,7 +31,7 @@ function RenderProfileBadge(props: RenderProfileBadgeProps) {
   const [showPopup, setShowPopup] = useState(false);
   const [fetched, setFetched] = useState(false);
   const ref = useRef(null);
-  const { data, isValidating, error } = useSWR(
+  const { data } = useSWR(
     !fetched && remoteFetch && visible && identity && platform
       ? `${profileAPIBaseURL}/ns/${platform.toLowerCase()}/${identity}`
       : null,

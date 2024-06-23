@@ -1,7 +1,6 @@
 "use client";
 import { memo, useEffect } from "react";
 import useSWR from "swr";
-import { formatDistanceToNow } from "date-fns";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { updateGitcoinWidget } from "../state/widgets/action";
 import { useDispatch } from "react-redux";
@@ -10,7 +9,11 @@ import { ProfileFetcher } from "../apis/profile";
 function useGitcoinInfo(address: string) {
   const { data, error } = useSWR(
     `/api/metadata/gitcoin/${address}`,
-    ProfileFetcher
+    ProfileFetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
   );
   return {
     data: data,

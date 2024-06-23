@@ -2,7 +2,6 @@ export enum WidgetTypes {
   nft = "nft",
   poaps = "poaps",
   feeds = "feeds",
-  rss = "rss",
   scores = "scores",
   article = "article",
   philand = "philand",
@@ -37,12 +36,6 @@ export const WidgetInfoMapping = (widgetType: WidgetTypes) => {
       key: "scores",
       icon: "🏆",
       title: "Badges and Scores",
-      description: "",
-    },
-    [WidgetTypes.rss]: {
-      key: "rss",
-      icon: "🌐",
-      title: "Website",
       description: "",
     },
     [WidgetTypes.article]: {
