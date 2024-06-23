@@ -177,25 +177,29 @@
 
       .feed-profiles-list {
         background: rgba($color: $bg-color, $alpha: .25);
-        border: .05rem solid rgba($dark-color, 0.01);
+        border: .05rem solid rgba($dark-color, 0.05);
         border-radius: .4rem;
-        box-shadow: 0 .2rem .8rem -.2rem rgba($dark-color, 0.1);
+        box-shadow: 0 .1rem .4rem rgba($dark-color, .05);
         color: $dark-color;
         margin: 1rem 0;
+        max-width: 24rem;
         width: 100%;
 
         .profile-list-item {
           display: flex;
+          font-size: .65rem;
           justify-content: space-between;
           padding: .6rem;
           width: 100%;
 
+          .list-item-left {
+            color: $gray-color-dark;
+          }
+
           .list-item-right {
             align-items: center;
             display: flex;
-            font-size: .8rem;
             max-width: 70%;
-            font-weight: 500;
             text-align: right;
           }
 

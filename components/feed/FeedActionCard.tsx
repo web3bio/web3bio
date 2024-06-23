@@ -140,10 +140,10 @@ function RenderFeedActionCard(props) {
       if (attachments?.medias?.filter((x) => x)?.length > 0) {
         return (
           <div
-            className={`feed-content ${
+            className={`feed-content${
               attachments.medias.filter((x) => x?.mime_type).length == 1
                 ? ""
-                : "media-gallery"
+                : " media-gallery"
             }`}
           >
             {attachments.medias?.map((x, cIdx) => {
@@ -199,15 +199,13 @@ function RenderFeedActionCard(props) {
         return (
           <div className="feed-profiles-list">
             {attachments.profiles?.map((x, idx) => (
-              <Link
+              <div
                 key={`profile_${x.key}_${idx}`}
                 className="profile-list-item"
-                href={x.url}
-                target="_blank"
               >
                 <div className="list-item-left">{x.key}</div>
                 <div className="list-item-right">{x.value}</div>
-              </Link>
+              </div>
             ))}
           </div>
         );
