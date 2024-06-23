@@ -128,7 +128,6 @@ export default function ProfileMain(props) {
   const isBasicLoadingFinished = useCallback(() => {
     return (
       !profileWidgetStates.nft.initLoading &&
-      !profileWidgetStates.poaps?.initLoading &&
       !profileWidgetStates.feeds?.initLoading
     );
   }, [profileWidgetStates])();
