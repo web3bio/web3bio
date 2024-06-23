@@ -56,11 +56,8 @@ const RenderWidgetArticles = ({ domain }) => {
           <div className="profile-widget-header">
             <h2 className="profile-widget-title">
               <span className="emoji-large mr-2">{WidgetInfoMapping(WidgetTypes.article).icon}</span>
-              {WidgetInfoMapping(WidgetTypes.article).label}
+              {WidgetInfoMapping(WidgetTypes.article).title}
             </h2>
-            {siteInfo.description && (
-              <h3 className="text-assistive">{siteInfo.description}</h3>
-            )}
           </div>
         }
 

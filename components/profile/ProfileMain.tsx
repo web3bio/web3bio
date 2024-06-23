@@ -382,19 +382,6 @@ export default function ProfileMain(props) {
                   <WidgetFeed openModal={openModal} profile={data} />
                 </Suspense>
               </div>
-              <div className="web3-section-widgets">
-                <Suspense
-                  fallback={<LoadingSkeleton type={WidgetTypes.poaps} />}
-                >
-                  <WidgetPOAP
-                    onShowDetail={(v) => {
-                      openModal(ModalType.poaps, v);
-                    }}
-                    address={data.address}
-                  />
-                </Suspense>
-              </div>
-
               {isBasicLoadingFinished && (
                 <>
                   <div className="web3-section-widgets">
@@ -409,6 +396,19 @@ export default function ProfileMain(props) {
                       fallback={<LoadingSkeleton type={WidgetTypes.article} />}
                     >
                       <WidgetArticle domain={data.identity} />
+                    </Suspense>
+                  </div>
+
+                  <div className="web3-section-widgets">
+                    <Suspense
+                      fallback={<LoadingSkeleton type={WidgetTypes.poaps} />}
+                    >
+                      <WidgetPOAP
+                        onShowDetail={(v) => {
+                          openModal(ModalType.poaps, v);
+                        }}
+                        address={data.address}
+                      />
                     </Suspense>
                   </div>
 

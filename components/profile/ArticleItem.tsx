@@ -8,8 +8,9 @@ import { useMemo } from "react";
 export default function ArticleItem(props) {
   const { data } = props;
   const platformName = useMemo(()=>{
-    return data.platform.replace('contenthash',PlatformType.website)
-  },[data.platform])
+    return data.platform.replace('contenthash', PlatformType.website)
+  }, [data.platform])
+  
   return (
     <Link href={data.link} className="rss-item" target={"_blank"}>
       {data.thumbnail && (

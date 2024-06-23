@@ -1,7 +1,6 @@
 "use client";
 import { memo, useEffect } from "react";
 import useSWR from "swr";
-import { formatDistanceToNow } from "date-fns";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { updateGitcoinWidget } from "../state/widgets/action";
 import { useDispatch } from "react-redux";
