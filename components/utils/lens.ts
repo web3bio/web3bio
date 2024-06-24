@@ -19,8 +19,6 @@ export const GET_PROFILE_LENS = gql`
         }
       }
       stats {
-        followers
-        following
         comments
         posts
         mirrors

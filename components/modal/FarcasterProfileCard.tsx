@@ -8,6 +8,8 @@ import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { FIREFLY_ENDPOINT } from "../apis/firefly";
 import { ProfileFetcher } from "../apis/profile";
 import { useProfiles } from "../hooks/useReduxProfiles";
+import { useQuery } from "@apollo/client";
+import { QUERY_FARCASTER_STATS } from "../apis/airstack";
 
 export default function FarcasterProfileCard(props) {
   const { handle, link } = props;
@@ -15,12 +17,15 @@ export default function FarcasterProfileCard(props) {
 
   const profiles = useProfiles();
 
-  const { data } = useSWR(
-    handle
-      ? FIREFLY_ENDPOINT + `/v2/farcaster-hub/user/profile?handle=${handle}`
-      : null,
-    ProfileFetcher
-  );
+  const { data, loading, error } = useQuery(QUERY_FARCASTER_STATS, {
+    variables: {
+      name: handle,
+    },
+    context: {
+      clientName: "airstack",
+    },
+  });
+  console.log(data,'kkk')
   const { data: channelsData } = useSWR(
     fid
       ? FIREFLY_ENDPOINT + `/v2/farcaster-hub/active_channels?fid=${fid}`
