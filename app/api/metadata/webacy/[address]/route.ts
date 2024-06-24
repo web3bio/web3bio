@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { regexSolana } from "../../../../../components/utils/regexp";
 import { respondWithCache } from "../../../../../components/utils/utils";
 
-export const WEBACY_API_ENDPOINT = "https://api.webacy.com";
+const WEBACY_API_ENDPOINT = "https://api.webacy.com";
 const fetchWebacy = async (address) => {
   const res = await fetch(
     `${WEBACY_API_ENDPOINT}/addresses/${address}?chain=${
