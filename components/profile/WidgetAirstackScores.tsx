@@ -1,5 +1,4 @@
 "use client";
-import useSWR from "swr";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -28,9 +27,9 @@ export function WidgetAirStackScores({ handle }) {
     }
   }, [data, dispatch, loading]);
 
-  const socialCaptial = data?.Socials?.Social?.[0]?.socialCaptial;
-  if (!loading && !socialCaptial) return null;
+  const socialCapital = data?.Socials?.Social?.[0]?.socialCapital;
 
+  if (!loading && !socialCapital) return null;
   return loading ? (
     <></>
   ) : (
@@ -48,20 +47,20 @@ export function WidgetAirStackScores({ handle }) {
 
       <div className="profile-widget-footer">
         <div className="widget-risk-number">
-          {Number(socialCaptial?.socialCapitalScore).toFixed(2)}
+          {Number(socialCapital?.socialCapitalScore).toFixed(2)}
           <div
             className={`widget-risk-label ${
-              socialCaptial?.socialCapitalRank < 10
+              socialCapital?.socialCapitalRank < 10
                 ? "high-risk"
-                : socialCaptial?.socialCapitalRank < 100
+                : socialCapital?.socialCapitalRank < 100
                 ? "medium-risk"
                 : "low-risk"
             }`}
           >
-            {socialCaptial?.socialCapitalRank}
+            Rank: {socialCapital?.socialCapitalRank}
           </div>
         </div>
-        <div className="widget-risk-title">Social Captial Scores</div>
+        <div className="widget-risk-title">Social Capital Scores</div>
       </div>
     </div>
   );

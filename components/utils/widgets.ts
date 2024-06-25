@@ -81,7 +81,7 @@ export const WidgetInfoMapping = (widgetType: WidgetTypes) => {
     },
     [WidgetTypes.airstackScores]: {
       key: "airstackScores",
-      icon: "🌀",
+      icon: "☁️",
       title: "AirStack Scores",
       description: "",
     },

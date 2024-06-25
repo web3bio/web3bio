@@ -17,7 +17,7 @@ export default function FarcasterProfileCard(props) {
 
   const profiles = useProfiles();
 
-  const { data, loading, error } = useQuery(QUERY_FARCASTER_STATS, {
+  const { data: airstack } = useQuery(QUERY_FARCASTER_STATS, {
     variables: {
       name: handle,
     },
@@ -25,7 +25,6 @@ export default function FarcasterProfileCard(props) {
       clientName: "airstack",
     },
   });
-  console.log(data,'kkk')
   const { data: channelsData } = useSWR(
     fid
       ? FIREFLY_ENDPOINT + `/v2/farcaster-hub/active_channels?fid=${fid}`
@@ -77,7 +76,7 @@ export default function FarcasterProfileCard(props) {
           />
           <div className="d-flex mt-4" style={{ alignItems: "center" }}>
             <strong className="h4 text-bold">{_profile.displayName}</strong>
-            {data?.data.isPowerUser ? (
+            {airstack?.Socials?.Social?.[0]?.isFarcasterPowerUser ? (
               <div className="active-badge" title="Power User of Farcaster">
                 ϟ
               </div>
