@@ -577,10 +577,10 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
   },
   [PlatformType.clusters]: {
     key: PlatformType.clusters,
-    color: "#1c352a",
+    color: "#f0555d",
     icon: "",
     label: "Clusters",
-    urlPrefix: "",
+    urlPrefix: "https://clusters.xyz/",
     system: PlatformSystem.web3,
   },
 };
