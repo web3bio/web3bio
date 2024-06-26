@@ -74,6 +74,7 @@ export enum PlatformType {
   genome = "genome",
   gnosis = "gnosis",
   webacy = "webacy",
+  clusters = "clusters",
 }
 
 export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
@@ -572,6 +573,14 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     icon: "icons/icon-gnosis.svg",
     label: "Gnosis",
     urlPrefix: "https://gnosisscan.io/address/",
+    system: PlatformSystem.web3,
+  },
+  [PlatformType.clusters]: {
+    key: PlatformType.clusters,
+    color: "#1c352a",
+    icon: "",
+    label: "Clusters",
+    urlPrefix: "",
     system: PlatformSystem.web3,
   },
 };
