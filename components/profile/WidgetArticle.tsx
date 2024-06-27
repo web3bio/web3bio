@@ -14,7 +14,7 @@ function useArticles(address: string, domain?: string | null) {
   const fetchUrl = (() => {
     return `${profileAPIBaseURL}/articles/${address}?limit=10${
       domain ? "&domian=" + domain : ""
-    }`;
+    }${domain ? "&contenthash=true" : ""}`;
   })();
   const { data, error, isValidating } = useSWR(fetchUrl, ArticlesFetcher, {
     suspense: true,
