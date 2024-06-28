@@ -25,6 +25,11 @@ export default function FarcasterProfileCard(props) {
       clientName: "airstack",
     },
   });
+
+  const isPowerUser = useMemo(
+    () => airstack?.Socials?.Social?.[0]?.isFarcasterPowerUser,
+    [airstack]
+  );
   const { data: channelsData } = useSWR(
     fid
       ? FIREFLY_ENDPOINT + `/v2/farcaster-hub/active_channels?fid=${fid}`
@@ -76,7 +81,7 @@ export default function FarcasterProfileCard(props) {
           />
           <div className="d-flex mt-4" style={{ alignItems: "center" }}>
             <strong className="h4 text-bold">{_profile.displayName}</strong>
-            {airstack?.Socials?.Social?.[0]?.isFarcasterPowerUser ? (
+            {isPowerUser ? (
               <div className="active-badge" title="Power User of Farcaster">
                 ϟ
               </div>
