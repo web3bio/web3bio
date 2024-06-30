@@ -8,6 +8,8 @@ import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { FIREFLY_ENDPOINT } from "../apis/firefly";
 import { ProfileFetcher } from "../apis/profile";
 import { useProfiles } from "../hooks/useReduxProfiles";
+import { useQuery } from "@apollo/client";
+import { QUERY_FARCASTER_STATS } from "../apis/airstack";
 
 export default function FarcasterProfileCard(props) {
   const { handle, link } = props;
@@ -15,11 +17,18 @@ export default function FarcasterProfileCard(props) {
 
   const profiles = useProfiles();
 
-  const { data } = useSWR(
-    handle
-      ? FIREFLY_ENDPOINT + `/v2/farcaster-hub/user/profile?handle=${handle}`
-      : null,
-    ProfileFetcher
+  const { data: airstack } = useQuery(QUERY_FARCASTER_STATS, {
+    variables: {
+      name: handle,
+    },
+    context: {
+      clientName: "airstack",
+    },
+  });
+
+  const isPowerUser = useMemo(
+    () => airstack?.Socials?.Social?.[0]?.isFarcasterPowerUser,
+    [airstack]
   );
   const { data: channelsData } = useSWR(
     fid
@@ -72,7 +81,7 @@ export default function FarcasterProfileCard(props) {
           />
           <div className="d-flex mt-4" style={{ alignItems: "center" }}>
             <strong className="h4 text-bold">{_profile.displayName}</strong>
-            {data?.data.isPowerUser ? (
+            {isPowerUser ? (
               <div className="active-badge" title="Power User of Farcaster">
                 ϟ
               </div>

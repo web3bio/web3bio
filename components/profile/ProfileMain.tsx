@@ -385,6 +385,11 @@ export default function ProfileMain(props) {
                 <>
                   <div className="web3-section-widgets">
                     <WidgetScores
+                      handle={
+                        relations.find(
+                          (x) => x.platform === PlatformType.farcaster
+                        )?.identity
+                      }
                       states={profileWidgetStates}
                       address={data.address}
                     />
@@ -394,7 +399,10 @@ export default function ProfileMain(props) {
                     <Suspense
                       fallback={<LoadingSkeleton type={WidgetTypes.article} />}
                     >
-                      <WidgetArticle domain={data.identity} />
+                      <WidgetArticle
+                        address={data.address}
+                        domain={data.contenthash ? data.identity : null}
+                      />
                     </Suspense>
                   </div>
 
