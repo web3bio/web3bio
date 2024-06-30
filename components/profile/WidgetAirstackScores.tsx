@@ -35,7 +35,7 @@ export function WidgetAirStackScores({ handle }) {
   if ((!loading && !socialCapital) || error) return null;
   return (
     socialCapital && (
-      <div className="profile-widget profile-widget-webacy">
+      <div className="profile-widget profile-widget-airstack">
         <div className="profile-widget-header">
           <h2 className="profile-widget-title">
             <span className="emoji-large mr-2">
@@ -48,21 +48,21 @@ export function WidgetAirStackScores({ handle }) {
         <div className="profile-widget-body"></div>
 
         <div className="profile-widget-footer">
-          <div className="widget-risk-number">
+          <div className="widget-rank-number">
             {Number(socialCapital?.socialCapitalScore).toFixed(2)}
             <div
-              className={`widget-risk-label ${
-                socialCapital?.socialCapitalRank < 10
-                  ? "high-risk"
-                  : socialCapital?.socialCapitalRank < 100
-                  ? "medium-risk"
-                  : "low-risk"
+              className={`widget-rank-label ${
+                socialCapital?.socialCapitalRank < 50
+                  ? "high-rank"
+                  : "low-rank"
               }`}
             >
               Rank: {socialCapital?.socialCapitalRank}
             </div>
           </div>
-          <div className="widget-risk-title">Social Capital Scores</div>
+          <div className="widget-risk-title" title="Social Capital Value (SCV) is a metric developed by Airstack to identify high-quality Trending Casts on Farcaster.">
+            Social Capital Scores <span className="c-hand">&#9432;</span>
+          </div>
         </div>
       </div>
     )

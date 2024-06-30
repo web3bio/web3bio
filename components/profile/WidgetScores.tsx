@@ -21,21 +21,21 @@ const RenderWidgetScores = ({ address, states, handle }) => {
         render: () => <WidgetDegenScore address={address} />,
       },
       {
-        key: WidgetTypes.webacy,
-        render: () => <WidgetWebacy address={address} />,
-      },
-      {
         key: WidgetTypes.airstackScores,
         render: () => <WidgetAirStackScores handle={handle} />,
+      },
+      {
+        key: WidgetTypes.webacy,
+        render: () => <WidgetWebacy address={address} />,
       },
     ];
   }, [address, handle]);
   const childWidgets = useMemo(
     () => [
-      states[WidgetTypes.webacy],
       states[WidgetTypes.degen],
       states[WidgetTypes.gitcoin],
       states[WidgetTypes.airstackScores],
+      states[WidgetTypes.webacy],
     ],
     [states]
   );

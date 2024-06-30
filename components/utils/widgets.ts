@@ -81,9 +81,9 @@ export const WidgetInfoMapping = (widgetType: WidgetTypes) => {
     },
     [WidgetTypes.airstackScores]: {
       key: "airstackScores",
-      icon: "☁️",
-      title: "AirStack Scores",
-      description: "",
+      icon: "🤝",
+      title: "AirStack",
+      description: "Social Capital Value (SCV) is a metric developed by Airstack to identify high-quality Trending Casts on Farcaster.",
     },
   };
   return (
