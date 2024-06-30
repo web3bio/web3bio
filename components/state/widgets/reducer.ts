@@ -10,6 +10,7 @@ import {
   updateWebacyWidget,
   updateDegenWidget,
   updateGitcoinWidget,
+  updateAirstackScoresWidget,
 } from "./action";
 import { WidgetTypes } from "../../utils/widgets";
 
@@ -32,6 +33,7 @@ export interface WidgetState {
   [WidgetTypes.degen]?: WidgetStateDetail;
   [WidgetTypes.webacy]?: WidgetStateDetail;
   [WidgetTypes.gitcoin]?: WidgetStateDetail;
+  [WidgetTypes.airstackScores]?: WidgetStateDetail;
 }
 
 export const initialState: WidgetState = {
@@ -84,6 +86,12 @@ export const initialState: WidgetState = {
     parent: WidgetTypes.scores,
   },
   [WidgetTypes.gitcoin]: {
+    isEmpty: null,
+    initLoading: true,
+    loaded: false,
+    parent: WidgetTypes.scores,
+  },
+  [WidgetTypes.airstackScores]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
@@ -197,6 +205,17 @@ export default createReducer(initialState, (builder) =>
       (state, { payload: { isEmpty, initLoading } }) => {
         state[WidgetTypes.gitcoin] = {
           ...state[WidgetTypes.gitcoin],
+          isEmpty,
+          initLoading,
+          loaded: true,
+        };
+      }
+    )
+    .addCase(
+      updateAirstackScoresWidget,
+      (state, { payload: { isEmpty, initLoading } }) => {
+        state[WidgetTypes.airstackScores] = {
+          ...state[WidgetTypes.airstackScores],
           isEmpty,
           initLoading,
           loaded: true,

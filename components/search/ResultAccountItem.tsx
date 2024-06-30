@@ -99,6 +99,7 @@ const RenderAccountItem = (props) => {
     case PlatformType.genome:
     case PlatformType.nextid:
     case PlatformType.crossbell:
+    case PlatformType.clusters:
       return (
         <div
           onClick={onClick}

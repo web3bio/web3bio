@@ -46,7 +46,9 @@ export default function SearchInput(props) {
 
   const onKeyDown = (e) => {
     if (e.keyCode === 13) {
-      const _value = searchList[activeIndex] ? searchList[activeIndex] : query.replaceAll("。", ".");
+      const _value = searchList[activeIndex]
+        ? searchList[activeIndex]
+        : query.replaceAll("。", ".");
       emitSubmit(e, _value);
     }
     if (e.keyCode === 27) {
@@ -83,7 +85,7 @@ export default function SearchInput(props) {
     if (!query || query === defaultValue) {
       setSearchList([]);
     } else {
-      setSearchList(getSearchSuggestions(query.replaceAll('。','.')));
+      setSearchList(getSearchSuggestions(query.replaceAll("。", ".")));
     }
 
     if (
@@ -167,8 +169,7 @@ export default function SearchInput(props) {
                 </div>
               );
             })}
-          {!query.includes(".") &&
-            !query.includes("。") &&
+          {![".", "。", "/"].some((x) => query.includes(x)) &&
             query.length < 25 && (
               <>
                 <li className="divider" />

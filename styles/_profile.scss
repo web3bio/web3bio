@@ -337,7 +337,7 @@
       background: linear-gradient(to bottom, rgba($light-color, 0) 40%, rgba($light-color, 1) 80%);
       bottom: 0;
       display: flex;
-      height: 12rem;
+      height: 6rem;
       justify-content: center;
       left: 0;
       padding: 1rem;
@@ -551,6 +551,7 @@
 
     .profile-widget-header {
       align-items: center;
+      backdrop-filter: blur(5px);
       display: flex;
       flex-wrap: wrap;
       gap: .5rem;
@@ -1061,7 +1062,7 @@
     .widget-scores-list {
       display: flex;
       flex-wrap: nowrap;
-      gap: .5rem;
+      gap: 1rem;
       margin: -1rem;
       overflow-x: auto;
       padding: 1rem;
@@ -1329,6 +1330,45 @@
     }
   }
 
+  // Airstack Widget
+  .profile-widget-airstack {
+    background: linear-gradient(45deg, rgba(#556DD0, .1) 0, rgba(#fff, 1) 25%);
+    position: relative;
+    width: 100%;
+
+    .profile-widget-body {
+      flex: 1;
+    }
+
+    .widget-risk-title {
+      font-size: .6rem;
+    }
+
+    .widget-rank-number {
+      align-items: center;
+      display: flex;
+      font-size: 1.2rem;
+      font-weight: 800;
+      gap: .4rem;
+
+      .widget-rank-label {
+        background: linear-gradient(-60deg, rgba(#556DD0, .05) 0, rgba(#556DD0, .15) 35%);
+        border: .05rem solid rgba(#556DD0, .05);
+        border-radius: .35rem;
+        color: rgba(#556DD0, .75);
+        font-size: .65rem;
+        font-weight: 400;
+        padding: 0 .25rem;
+
+        &.high-rank {
+          background: linear-gradient(-60deg, rgba(#EF4444, .05) 0, rgba(#EF4444, .15) 35%);
+          border: .05rem solid rgba(#EF4444, .05);
+          color: rgba(#EF4444, .75);
+        }
+      }
+    }
+  }
+
   // Gitcoin Widget
   .profile-widget-gitcoin {
     background: linear-gradient(45deg, rgba(#4341B7, .15) 0, rgba(#fff, 1) 25%);
@@ -1382,6 +1422,7 @@
       .trait-item {
         border-radius: .2rem;
         font-weight: 500;
+        height: fit-content;
         padding: .15rem .25rem;
 
         &.label-tier-rare {

@@ -10,9 +10,11 @@ import { updateArticleWidget } from "../state/widgets/action";
 import { ArticlesFetcher } from "../apis/articles";
 import ArticleItem from "./ArticleItem";
 
-function useArticles(domain: string) {
+function useArticles(address: string, domain?: string | null) {
   const fetchUrl = (() => {
-    return `${profileAPIBaseURL}/articles/${domain}?limit=10`;
+    return `${profileAPIBaseURL}/articles/${address}?limit=10${
+      domain ? "&domian=" + domain : ""
+    }${domain ? "&contenthash=true" : ""}`;
   })();
   const { data, error, isValidating } = useSWR(fetchUrl, ArticlesFetcher, {
     suspense: true,
@@ -26,8 +28,8 @@ function useArticles(domain: string) {
   };
 }
 
-const RenderWidgetArticles = ({ domain }) => {
-  const { data, isLoading } = useArticles(domain);
+const RenderWidgetArticles = ({ address, domain }) => {
+  const { data, isLoading } = useArticles(address, domain);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -55,7 +57,9 @@ const RenderWidgetArticles = ({ domain }) => {
         {
           <div className="profile-widget-header">
             <h2 className="profile-widget-title">
-              <span className="emoji-large mr-2">{WidgetInfoMapping(WidgetTypes.article).icon}</span>
+              <span className="emoji-large mr-2">
+                {WidgetInfoMapping(WidgetTypes.article).icon}
+              </span>
               {WidgetInfoMapping(WidgetTypes.article).title}
             </h2>
           </div>
