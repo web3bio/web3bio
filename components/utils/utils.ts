@@ -23,6 +23,7 @@ import {
   regexAvatar,
   regexEIP,
   regexDomain,
+  regexCluster,
 } from "./regexp";
 import _ from "lodash";
 import {
@@ -185,6 +186,8 @@ export const handleSearchPlatform = (term: string) => {
       return PlatformType.bitcoin;
     case regexSolana.test(term):
       return PlatformType.solana;
+    case regexCluster.test(term):
+      return PlatformType.clusters;
     case regexTwitter.test(term):
       return PlatformType.twitter;
     case regexFarcaster.test(term):
@@ -362,6 +365,17 @@ const isQuerySplit = (query: string) => {
 };
 
 export const getSearchSuggestions = (query) => {
+  if (query.includes("/")) {
+    const platformClusters = SocialPlatformMapping(PlatformType.clusters);
+    return [
+      {
+        key: PlatformType.clusters,
+        icon: platformClusters.icon,
+        label: query,
+        system: PlatformSystem.web3,
+      },
+    ];
+  }
   const isLastDot = query[query.length - 1] === ".";
   // address or query.x
   if (
@@ -490,7 +504,7 @@ export const resolveEipAssetURL = async (source: string) => {
       const contractAddress = match?.[3];
       const tokenId = match?.[4];
       const network = chainIdToNetwork(chainId);
-      
+
       if (contractAddress && tokenId && network) {
         const fetchURL =
           SIMPLEHASH_URL +
