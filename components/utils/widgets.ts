@@ -10,6 +10,7 @@ export enum WidgetTypes {
   webacy = "webacy",
   gitcoin = "gitcoin",
   default = "default",
+  airstackScores = "airstackScores",
 }
 export const WidgetInfoMapping = (widgetType: WidgetTypes) => {
   const WidgetsInfoData = {
@@ -75,7 +76,14 @@ export const WidgetInfoMapping = (widgetType: WidgetTypes) => {
       key: "gitcoin",
       icon: "🌀",
       title: "Gitcoin Passport",
-      description: "Gitcoin Passport helps you collect “stamps” that prove your humanity and reputation. You decide what stamps are shown. And your privacy is protected at each step of the way.",
+      description:
+        "Gitcoin Passport helps you collect “stamps” that prove your humanity and reputation. You decide what stamps are shown. And your privacy is protected at each step of the way.",
+    },
+    [WidgetTypes.airstackScores]: {
+      key: "airstackScores",
+      icon: "🤝",
+      title: "AirStack",
+      description: "Social Capital Value (SCV) is a metric developed by Airstack to identify high-quality Trending Casts on Farcaster.",
     },
   };
   return (
