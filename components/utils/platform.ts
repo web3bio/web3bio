@@ -578,7 +578,7 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.clusters]: {
     key: PlatformType.clusters,
     color: "#f0555d",
-    icon: "",
+    icon: "icons/icon-clusters.svg",
     label: "Clusters",
     urlPrefix: "https://clusters.xyz/",
     system: PlatformSystem.web3,
