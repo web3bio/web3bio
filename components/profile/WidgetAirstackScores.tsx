@@ -5,8 +5,10 @@ import { useDispatch } from "react-redux";
 import { updateAirstackScoresWidget } from "../state/widgets/action";
 import { useQuery } from "@apollo/client";
 import { QUERY_FARCASTER_STATS } from "../apis/airstack";
+import { ModalType } from "../hooks/useModal";
+import { PlatformType } from "../utils/platform";
 
-export function WidgetAirStackScores({ handle }) {
+export function WidgetAirStackScores({ handle, openModal }) {
   const { data, loading, error } = useQuery(QUERY_FARCASTER_STATS, {
     variables: {
       name: handle,
@@ -35,7 +37,15 @@ export function WidgetAirStackScores({ handle }) {
   if ((!loading && !socialCapital) || error) return null;
   return (
     socialCapital && (
-      <div className="profile-widget profile-widget-airstack">
+      <div
+        className="profile-widget profile-widget-airstack"
+        onClick={() => {
+          openModal(ModalType.profile, {
+            platform: PlatformType.farcaster,
+            handle: handle,
+          });
+        }}
+      >
         <div className="profile-widget-header">
           <h2 className="profile-widget-title">
             <span className="emoji-large mr-2">
@@ -52,15 +62,16 @@ export function WidgetAirStackScores({ handle }) {
             {Number(socialCapital?.socialCapitalScore).toFixed(2)}
             <div
               className={`widget-rank-label ${
-                socialCapital?.socialCapitalRank < 50
-                  ? "high-rank"
-                  : "low-rank"
+                socialCapital?.socialCapitalRank < 50 ? "high-rank" : "low-rank"
               }`}
             >
               Rank: {socialCapital?.socialCapitalRank}
             </div>
           </div>
-          <div className="widget-risk-title" title="Social Capital Value (SCV) is a metric developed by Airstack to identify high-quality Trending Casts on Farcaster.">
+          <div
+            className="widget-risk-title"
+            title="Social Capital Value (SCV) is a metric developed by Airstack to identify high-quality Trending Casts on Farcaster."
+          >
             Social Capital Scores <span className="c-hand">&#9432;</span>
           </div>
         </div>

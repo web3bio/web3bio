@@ -369,7 +369,6 @@
     .action-icon {
       display: flex;
       height: 1.4rem;
-      
       svg {
         flex: 0 0 1rem;
       }
@@ -1332,6 +1331,7 @@
 
   // Airstack Widget
   .profile-widget-airstack {
+    cursor: pointer;
     background: linear-gradient(45deg, rgba(#556DD0, .1) 0, rgba(#fff, 1) 25%);
     position: relative;
     width: 100%;

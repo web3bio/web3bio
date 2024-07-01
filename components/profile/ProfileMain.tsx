@@ -385,7 +385,8 @@ export default function ProfileMain(props) {
                 <>
                   <div className="web3-section-widgets">
                     <WidgetScores
-                      handle={
+                      openModal={openModal}
+                      farcasterHandle={
                         relations.find(
                           (x) => x.platform === PlatformType.farcaster
                         )?.identity
