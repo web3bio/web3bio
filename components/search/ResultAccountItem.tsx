@@ -22,7 +22,7 @@ const RenderAccountItem = (props) => {
   };
   const ref = useRef<HTMLDivElement>(null);
   const nftContainer = useRef<HTMLDivElement>(null);
-  const { identity, sources, onClick } = props;
+  const { identity, sources, onClick, isChild, idx } = props;
   const [isCopied, setIsCopied] = useState(false);
   const [visible, setVisible] = useState(false);
   const [expand, setExpand] = useState(false);
@@ -101,151 +101,169 @@ const RenderAccountItem = (props) => {
     case PlatformType.crossbell:
     case PlatformType.clusters:
       return (
-        <div
-          onClick={onClick}
-          ref={ref}
-          className={`social-item ${identity.platform}${
-            identity.isOwner ? " social-item-owner" : ""
-          }`}
-        >
-          <div className="social-main">
-            <div className="social">
-              <div className="avatar">
-                {profile?.avatar && (
-                  <Image
-                    width={36}
-                    height={36}
-                    alt="avatar"
-                    title="Profile Picture"
-                    src={profile?.avatar}
-                    className="avatar-img"
-                  />
-                )}
-                <div
-                  className="icon"
-                  style={{
-                    background: SocialPlatformMapping(identity.platform).color,
-                    color: "#fff",
-                  }}
-                >
-                  <SVG
-                    src={SocialPlatformMapping(identity.platform)?.icon || ""}
-                    fill={"#fff"}
-                    width={20}
-                    height={20}
-                  />
-                </div>
-              </div>
-              <div className="content">
-                <div
-                  className="content-title text-ellipsis text-bold"
-                  title={rawDisplayName}
-                >
-                  {rawDisplayName}
-                </div>
-                <div className="content-subtitle text-gray">
-                  {profile?.displayName !== profile?.identity && (
-                    <>
-                      <div className="address">
-                        {profile.identity || identity.identity}
-                      </div>
-                      <div className="ml-1 mr-1"> · </div>
-                    </>
+        <>
+          <div
+            onClick={onClick}
+            ref={ref}
+            className={`social-item ${identity.platform} ${
+              isChild ? "social-item-child" : ""
+            } ${idx === 0 ? "first" : ""} `}
+          >
+            <div className="social-main">
+              <div className="social">
+                <div className="avatar">
+                  {profile?.avatar && (
+                    <Image
+                      width={36}
+                      height={36}
+                      alt="avatar"
+                      title="Profile Picture"
+                      src={profile?.avatar}
+                      className="avatar-img"
+                    />
                   )}
-                  {identity.platform === PlatformType.crossbell && (
-                    <>
-                      <div className="address">
-                        {formatText(identity.identity)}
-                      </div>
-                      <div className="ml-1 mr-1"> · </div>
-                    </>
-                  )}
-                  <div className="address">{formatText(resolvedIdentity)}</div>
-                  <Clipboard
-                    component="div"
-                    className="action"
-                    data-clipboard-text={resolvedIdentity}
-                    onSuccess={onCopySuccess}
+                  <div
+                    className="icon"
+                    style={{
+                      background: SocialPlatformMapping(identity.platform)
+                        .color,
+                      color: "#fff",
+                    }}
                   >
                     <SVG
-                      src={
-                        isCopied
-                          ? "../icons/icon-check.svg"
-                          : "../icons/icon-copy.svg"
-                      }
+                      src={SocialPlatformMapping(identity.platform)?.icon || ""}
+                      fill={"#fff"}
                       width={20}
                       height={20}
                     />
-                    {isCopied && <div className="tooltip-copy">COPIED</div>}
-                  </Clipboard>
+                  </div>
                 </div>
-              </div>
-            </div>
-            {!profile?.error && (
-              <ResultAccountItemAction
-                isActive={!!profile?.identity}
-                href={`/${
-                  profile?.identity || identity.displayName || resolvedIdentity
-                }`}
-                classes=""
-                prefetch={false}
-                platform={identity.platform}
-                text={"Profile"}
-              />
-            )}
-          </div>
-          {identity.nft?.length > 0 && (
-            <div
-              className="nfts"
-              ref={nftContainer}
-              style={{
-                maxHeight: expand ? "unset" : "7.6rem",
-              }}
-            >
-              <div className={`nfts-list-container `}>
-                {identity.nft.map((nft) => {
-                  const nftPlatform =
-                    nft.chain === PlatformType.ethereum
-                      ? PlatformType.ens
-                      : PlatformType.sns;
-
-                  return (
-                    <Link
-                      key={`${nft.uuid}`}
-                      href={{
-                        pathname: "/",
-                        query: { s: nft.id },
-                      }}
-                      prefetch={false}
+                <div className="content">
+                  <div
+                    className="content-title text-ellipsis text-bold"
+                    title={rawDisplayName}
+                  >
+                    {rawDisplayName}
+                  </div>
+                  <div className="content-subtitle text-gray">
+                    {profile?.displayName !== profile?.identity && (
+                      <>
+                        <div className="address">
+                          {profile.identity || identity.identity}
+                        </div>
+                        <div className="ml-1 mr-1"> · </div>
+                      </>
+                    )}
+                    {identity.platform === PlatformType.crossbell && (
+                      <>
+                        <div className="address">
+                          {formatText(identity.identity)}
+                        </div>
+                        <div className="ml-1 mr-1"> · </div>
+                      </>
+                    )}
+                    <div className="address">
+                      {formatText(resolvedIdentity)}
+                    </div>
+                    <Clipboard
+                      component="div"
+                      className="action"
+                      data-clipboard-text={resolvedIdentity}
+                      onSuccess={onCopySuccess}
                     >
-                      <div className="label-domain" title={nft.id}>
-                        <SVG
-                          fill={SocialPlatformMapping(nftPlatform).color}
-                          src={SocialPlatformMapping(nftPlatform).icon!}
-                          width="20"
-                          height="20"
-                          className="icon"
-                        />
-                        <span>{nft.identity || nft.id}</span>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-              {!expand && (
-                <div
-                  className="btn-list-more"
-                  onClick={() => {
-                    setExpand(true);
-                  }}
-                >
-                  <button className="btn btn-sm btn-block">View More</button>
+                      <SVG
+                        src={
+                          isCopied
+                            ? "../icons/icon-check.svg"
+                            : "../icons/icon-copy.svg"
+                        }
+                        width={20}
+                        height={20}
+                      />
+                      {isCopied && <div className="tooltip-copy">COPIED</div>}
+                    </Clipboard>
+                  </div>
                 </div>
+              </div>
+              {!profile?.error && (
+                <ResultAccountItemAction
+                  isActive={!!profile?.identity}
+                  href={`/${encodeURIComponent(
+                    profile?.identity ||
+                      identity.displayName ||
+                      resolvedIdentity
+                  )}`}
+                  classes=""
+                  prefetch={false}
+                  platform={identity.platform}
+                  text={"Profile"}
+                />
               )}
             </div>
-          )}
-          <RenderSourceFooter sources={sources} />
-        </div>
+            {identity.nft?.length > 0 && (
+              <div
+                className="nfts"
+                ref={nftContainer}
+                style={{
+                  maxHeight: expand ? "unset" : "7.6rem",
+                }}
+              >
+                <div className={`nfts-list-container `}>
+                  {identity.nft.map((nft) => {
+                    const nftPlatform =
+                      nft.chain === PlatformType.ethereum
+                        ? PlatformType.ens
+                        : PlatformType.sns;
+
+                    return (
+                      <Link
+                        key={`${nft.uuid}`}
+                        href={{
+                          pathname: "/",
+                          query: { s: nft.id },
+                        }}
+                        prefetch={false}
+                      >
+                        <div className="label-domain" title={nft.id}>
+                          <SVG
+                            fill={SocialPlatformMapping(nftPlatform).color}
+                            src={SocialPlatformMapping(nftPlatform).icon!}
+                            width="20"
+                            height="20"
+                            className="icon"
+                          />
+                          <span>{nft.identity || nft.id}</span>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+                {!expand && (
+                  <div
+                    className="btn-list-more"
+                    onClick={() => {
+                      setExpand(true);
+                    }}
+                  >
+                    <button className="btn btn-sm btn-block">View More</button>
+                  </div>
+                )}
+              </div>
+            )}
+            <RenderSourceFooter sources={sources} />
+          </div>
+          {identity.child?.length > 0 &&
+            identity.child.map((x) => (
+              <ResultAccountItem
+                idx={idx}
+                isChild
+                key={x.identity}
+                identity={x}
+                sources={sources}
+                onClick={onClick}
+              />
+            ))}
+        </>
       );
     case PlatformType.lens:
     case PlatformType.farcaster:
