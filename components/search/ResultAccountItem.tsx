@@ -185,20 +185,22 @@ const RenderAccountItem = (props) => {
                   </div>
                 </div>
               </div>
-              {!profile?.error && (
-                <ResultAccountItemAction
-                  isActive={!!profile?.identity}
-                  href={`/${encodeURIComponent(
-                    profile?.identity ||
-                      identity.displayName ||
-                      resolvedIdentity
-                  )}`}
-                  classes=""
-                  prefetch={false}
-                  platform={identity.platform}
-                  text={"Profile"}
-                />
-              )}
+
+              <ResultAccountItemAction
+                isActive={!!profile?.identity}
+                href={
+                  profile?.identity
+                    ? `/${encodeURIComponent(
+                        profile?.identity || resolvedIdentity
+                      )}`
+                    : SocialPlatformMapping(identity.platform).urlPrefix +
+                      identity.identity.split("/")[0]
+                }
+                classes=""
+                prefetch={false}
+                platform={identity.platform}
+                text={profile?.identity ? "Profile" : "Open"}
+              />
             </div>
             {identity.nft?.length > 0 && (
               <div
