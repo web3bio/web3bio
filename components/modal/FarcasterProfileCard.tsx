@@ -12,7 +12,7 @@ import { useQuery } from "@apollo/client";
 import { QUERY_FARCASTER_STATS } from "../apis/airstack";
 
 export default function FarcasterProfileCard(props) {
-  const { handle, link } = props;
+  const { handle } = props;
   const [fid, setFid] = useState(null);
 
   const profiles = useProfiles();
@@ -66,9 +66,7 @@ export default function FarcasterProfileCard(props) {
               height={14}
             />
           </div>
-          <span>Farcaster Profile</span>
-          <span> · </span>
-          <span title="Farcaster FID">#{fid || "…"}</span>
+          <span>Farcaster Profile</span>          
         </div>
         <div className="modal-profile-body">
           <Avatar
@@ -89,7 +87,7 @@ export default function FarcasterProfileCard(props) {
               ""
             )}
           </div>
-          <div className="text-gray">@{_profile.identity}</div>
+          <div className="text-gray">@{_profile.identity}<span> · </span><span title="Farcaster FID">#{fid || "…"}</span></div>
           <div className="mt-2">{_profile.description}</div>
           <div className="mt-2">
             {(_profile.location && `📍 ${_profile.location}`) || ""}
@@ -145,7 +143,11 @@ export default function FarcasterProfileCard(props) {
         </div>
         <div className="modal-profile-footer">
           <div className="btn-group btn-group-block">
-            <Link href={link} target="_blank" className="btn">
+            <Link
+              href={`https://warpcast.com/${handle}`}
+              target="_blank"
+              className="btn"
+            >
               <SVG src={"icons/icon-open.svg"} width={20} height={20} />
               Open in Warpcast
             </Link>

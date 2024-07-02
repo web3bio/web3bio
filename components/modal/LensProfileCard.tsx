@@ -43,8 +43,6 @@ export default function LensProfileCard(props) {
             />
           </div>
           <span>Lens Profile</span>
-          <span> · </span>
-          <span title="Lens UID">#{_profile.social.uid}</span>
         </div>
         <div className="modal-profile-body">
           <Avatar
@@ -70,6 +68,8 @@ export default function LensProfileCard(props) {
           </div>
           <div className="text-gray">
             @{_profile.identity.replace(".lens", "")}
+            <span> · </span>
+            <span title="Lens UID">#{_profile.social.uid}</span>
           </div>
           <div className="mt-2">{_profile.description}</div>
           <div className="mt-2">

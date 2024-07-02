@@ -429,7 +429,7 @@ export const ActionStructMapping = (action, owner) => {
       if (metadata.target) {
         attachments.targets.push({
           identity: metadata.target?.handle,
-          url: resolveIPFS_URL(action.target_url),
+          url: resolveIPFS_URL(action.metadata.target_url),
           content: metadata.target?.body,
           media: metadata.target?.media,
         });

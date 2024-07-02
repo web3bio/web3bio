@@ -51,15 +51,19 @@ export const DefaultSearchSuffix = [
     system: PlatformSystem.web2,
   },
   {
+    key: PlatformType.clusters,
+    system: PlatformSystem.web2,
+  },
+  {
+    key: PlatformType.keybase,
+    system: PlatformSystem.web2,
+  },
+  {
     key: PlatformType.linkedin,
     system: PlatformSystem.web2,
   },
   {
     key: PlatformType.reddit,
-    system: PlatformSystem.web2,
-  },
-  {
-    key: PlatformType.keybase,
     system: PlatformSystem.web2,
   },
 ];

@@ -500,7 +500,7 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     color: "#9945FF",
     icon: "icons/icon-solana.svg",
     label: "Solana",
-    urlPrefix: "https://solscan.io/",
+    urlPrefix: "https://solscan.io/address/",
     system: PlatformSystem.web3,
   },
   [PlatformType.sns]: {
