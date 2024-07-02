@@ -70,7 +70,7 @@ export function WidgetAirStackScores({ handle, openModal }) {
           </div>
           <div
             className="widget-risk-title"
-            title="Social Capital Value (SCV) is a metric developed by Airstack to identify high-quality Trending Casts on Farcaster."
+            title="Social Capital Scores (SCS) are a measure of each Farcaster user's influence in the network."
           >
             Social Capital Scores <span className="c-hand">&#9432;</span>
           </div>
