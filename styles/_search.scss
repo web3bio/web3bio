@@ -211,11 +211,7 @@
       background: rgba($gray-color, .15);
     }
 
-    &:first-child {
-      order: -2;
-    }
-
-    &.social-item-owner {
+    &.social-item-child {
       margin-left: 2rem;
 
       .social-main {
@@ -233,6 +229,10 @@
           width: .8rem;
         }
       }
+    }
+
+    &.first {
+      order: -2
     }
 
     &.ethereum,
