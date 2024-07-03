@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import SVG from "react-inlinesvg";
 import { ResultAccountItem } from "./ResultAccountItem";
 import _ from "lodash";
@@ -25,7 +25,7 @@ const RenderAccount = (props) => {
   const { identityGraph, graphTitle, platform } = props;
   const { isOpen, modalType, closeModal, openModal, params } = useModal();
   const profiles = useProfiles();
-  const resolvedListData = (() => {
+  const resolvedListData = useMemo(() => {
     if (!identityGraph?.nodes) return [];
     const domainSkipMap = [
       {
@@ -61,9 +61,37 @@ const RenderAccount = (props) => {
         }
       });
 
-    const _resolved = _identityGraph.nodes.filter((x) => {
+    let _resolved = _identityGraph.nodes.filter((x) => {
       return !domainSkipMap.some((i) => i.ns === x.platform);
     });
+    //clusters resolution
+    if (
+      _resolved.filter((x) => x.platform === PlatformType.clusters).length > 1
+    ) {
+      const _res = [
+        ..._resolved.map((x) => {
+          if (
+            x.platform === PlatformType.clusters &&
+            !x.identity.includes("/")
+          ) {
+            const child = _resolved.filter(
+              (i) =>
+                i.platform === PlatformType.clusters &&
+                i.identity.includes("/") &&
+                i.identity.split("/")[0] === x.identity
+            );
+            return { ...x, child: child };
+          }
+          return x;
+        }),
+      ];
+
+      _resolved = _res.filter(
+        (x) =>
+          !(x.platform === PlatformType.clusters && x.identity.includes("/"))
+      );
+    }
+
     if (
       domainSkipMap.some((x) => x.ns === platform) &&
       !_resolved.some((x) => x.displayName === graphTitle)
@@ -86,7 +114,7 @@ const RenderAccount = (props) => {
           ? x.displayName === graphTitle && x.platform === PlatformType.ethereum
           : platform === PlatformType.sns
           ? x.displayName === graphTitle && x.platform === PlatformType.solana
-          : x.identity === graphTitle && x.platform === platform;
+          : graphTitle.includes(x.identity) && x.platform === platform;
       });
 
       if (index !== -1) {
@@ -95,8 +123,9 @@ const RenderAccount = (props) => {
         _resolved.unshift(firstItem);
       }
     }
+
     return _resolved;
-  })();
+  }, [identityGraph, platform,graphTitle]);
 
   const resolveSources = (id: string) => {
     let res: string[] = [];
@@ -146,6 +175,7 @@ const RenderAccount = (props) => {
         <div className="search-result-body">
           {resolvedListData.map((avatar, idx) => (
             <ResultAccountItem
+              idx={idx}
               identity={avatar}
               sources={resolveSources(`${avatar.platform},${avatar.identity}`)}
               key={avatar.uuid + idx}

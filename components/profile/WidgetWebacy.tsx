@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { updateWebacyWidget } from "../state/widgets/action";
 import { ProfileFetcher } from "../apis/profile";
+import Link from "next/link";
 
 export function WidgetWebacy({ address }) {
   const { data, isLoading } = useSWR(
@@ -36,7 +37,11 @@ export function WidgetWebacy({ address }) {
   return isLoading ? (
     <></>
   ) : (
-    <div className="profile-widget profile-widget-webacy">
+    <Link
+      href={"https://dapp.webacy.com/web3bio/" + address}
+      className="profile-widget profile-widget-webacy"
+      target="_blank"
+    >
       <div className="profile-widget-header">
         <h2 className="profile-widget-title">
           <span className="emoji-large mr-2">
@@ -69,6 +74,6 @@ export function WidgetWebacy({ address }) {
         </div>
         <div className="widget-risk-title">Safety Score</div>
       </div>
-    </div>
+    </Link>
   );
 }

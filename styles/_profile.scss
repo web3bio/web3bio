@@ -369,7 +369,6 @@
     .action-icon {
       display: flex;
       height: 1.4rem;
-      
       svg {
         flex: 0 0 1rem;
       }
@@ -1332,7 +1331,8 @@
 
   // Airstack Widget
   .profile-widget-airstack {
-    background: linear-gradient(45deg, rgba(#556DD0, .1) 0, rgba(#fff, 1) 25%);
+    cursor: pointer;
+    background: linear-gradient(45deg, rgba(#8a63d2, .15) 0, rgba(#fff, 1) 25%);
     position: relative;
     width: 100%;
 
@@ -1352,10 +1352,10 @@
       gap: .4rem;
 
       .widget-rank-label {
-        background: linear-gradient(-60deg, rgba(#556DD0, .05) 0, rgba(#556DD0, .15) 35%);
-        border: .05rem solid rgba(#556DD0, .05);
+        background: linear-gradient(-60deg, rgba(#8a63d2, .1) 0, rgba(#8a63d2, .15) 35%);
+        border: .05rem solid rgba(#8a63d2, .05);
         border-radius: .35rem;
-        color: rgba(#556DD0, .75);
+        color: rgba(#8a63d2, .75);
         font-size: .65rem;
         font-weight: 400;
         padding: 0 .25rem;

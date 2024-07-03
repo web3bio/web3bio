@@ -140,11 +140,7 @@ export default async function ProfilePage({
   return (
     <ProfileMain
       domain={domain}
-      relations={
-        data?.map((x) => ({
-          ...x,
-        })) || []
-      }
+      relations={data}
       data={{
         ...data[0],
         links: mapLinks(data),
