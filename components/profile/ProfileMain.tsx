@@ -329,6 +329,17 @@ export default function ProfileMain(props) {
                 <a href={`mailto:${data.email}`}>{data.email}</a>
               </div>
             )}
+            {/* Tip button maybe random text and emoji */}
+            <div
+              className="btn btn-primary"
+              onClick={() => {
+                openModal(ModalType.tip, {
+                  owner: data.address,
+                });
+              }}
+            >
+              🍺 Buy me a beer
+            </div>
           </div>
         </div>
         <div className="column col-7 col-lg-12">
@@ -402,7 +413,7 @@ export default function ProfileMain(props) {
                     >
                       <WidgetArticle
                         address={data.address}
-                        domain={relations?.find(x=>x.contenthash)?.identity}
+                        domain={relations?.find((x) => x.contenthash)?.identity}
                       />
                     </Suspense>
                   </div>
