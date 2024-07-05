@@ -1,27 +1,30 @@
 import { useMemo, useState } from "react";
 import SVG from "react-inlinesvg";
 import { useAccount } from "wagmi";
-import CurrencyInput from "../shared/CurrencyInput";
 import { useCurrencyBalance } from "../hooks/useCurrency";
-import { isGreaterThan } from "../utils/number";
-import BigNumber from "bignumber.js";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { formatEther } from "viem";
 
 export default function TipModalContent(props) {
-  const { owner, onClose } = props;
-  const [amount, setAmount] = useState(0);
+  const { onClose, profile } = props;
+  const [amount, setAmount] = useState(0.01);
   const [symbol, setSymbol] = useState("ETH");
-  const [nickName, setNickName] = useState("");
+  const [nickName, setNickName] = useState(profile.displayName);
   const [message, setMessage] = useState("");
   const { address } = useAccount();
   const balance = useCurrencyBalance();
 
   const RenderButton = useMemo(() => {
-    const ButtonText = (() => {
-      if (isGreaterThan(new BigNumber(amount), 0))
-        return "Insufficient balance";
+    const isBalanceLow =
+      amount >= Number(formatEther(balance?.data?.value || 0n));
 
-      return "Donate" + amount + symbol;
+    const buttonHandle = () => {
+      if (isBalanceLow) return null;
+    };
+    const ButtonText = (() => {
+      if (isBalanceLow) return "Insufficient Balance";
+
+      return `Donate ${amount} ${symbol}`;
     })();
     return (
       <ConnectButton.Custom>
@@ -47,10 +50,20 @@ export default function TipModalContent(props) {
                       onClick={openChainModal}
                       className="btn btn-primary connect-btn wrong-network"
                     >
-                      Wrong network
+                      Wrong Network
                     </div>
                   );
                 }
+                return (
+                  <div
+                    onClick={buttonHandle}
+                    className={`btn btn-primary donate-btn ${
+                      isBalanceLow ? "disabled" : ""
+                    }`}
+                  >
+                    {ButtonText}
+                  </div>
+                );
               })()}
             </>
           );
@@ -67,15 +80,22 @@ export default function TipModalContent(props) {
         </div>
       </div>
       <div className="modal-tip-body">
-        <CurrencyInput />
         <input
-          className="name-input"
+          className="common-input"
+          value={amount}
+          onChange={(e) => {
+            setAmount(Number(e.target.value.replace(/[^0-9]/g, "")));
+          }}
+        />
+        <input
+          className="common-input"
           type="text"
+          placeholder="Text your nickname here"
           value={nickName}
           onChange={(e) => setNickName(e.target.value)}
         />
         <textarea
-          className="message-input"
+          className="common-input message-input"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Text your message here"

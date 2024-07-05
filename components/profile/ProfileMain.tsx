@@ -33,11 +33,13 @@ import { WidgetScores } from "./WidgetScores";
 import { updateUniversalBatchedProfile } from "../state/universal/actions";
 import { getProfileQuery } from "../utils/queries";
 import { WidgetArticle } from "./WidgetArticle";
+import { useTipEmoji } from "../hooks/useTipEmoji";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
     props;
   const [isCopied, setIsCopied] = useState(false);
+  const { tipText, tipEmoji } = useTipEmoji();
   const [links, setLinks] = useState(data?.links);
   const [getQuery, { loading, error, data: identityGraph }] = useLazyQuery(
     getProfileQuery() as DocumentNode,
@@ -330,16 +332,18 @@ export default function ProfileMain(props) {
               </div>
             )}
             {/* Tip button maybe random text and emoji */}
-            <div
-              className="btn btn-primary"
-              onClick={() => {
-                openModal(ModalType.tip, {
-                  owner: data.address,
-                });
-              }}
-            >
-              🍺 Buy me a beer
-            </div>
+           {
+            tipEmoji &&  <div
+            className="btn btn-primary"
+            onClick={() => {
+              openModal(ModalType.tip, {
+                profile: data,
+              });
+            }}
+          >
+            {tipEmoji} Buy me a {tipText}
+          </div>
+           }
           </div>
         </div>
         <div className="column col-7 col-lg-12">
