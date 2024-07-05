@@ -262,6 +262,19 @@
         min-height: 3rem;
         outline: none;
       }
+
+      .connect-btn {
+        width: 100%;
+      }
+
+      .wrong-network {
+        background: #F0415E;
+        border-color: #F0415E;
+
+        &:hover {
+          box-shadow: 0 0.1rem 1.2rem rgba(#F0415E, .25);
+        }
+      }
     }
   }
 

@@ -5,7 +5,6 @@ export default function CurrencyInput(props) {
   return (
     <input
       className="token-input"
-      type="text"
       value={amount}
       onChange={(e) => setAmount(Number(e.target.value))}
     />
