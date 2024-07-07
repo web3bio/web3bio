@@ -157,7 +157,7 @@ export default function WalletButton(props) {
                         </Clipboard>
 
                         <li className="menu-item dropdown-menu-item">
-                          <Link href={`/profile`}>
+                          <Link href={`/dashboard`}>
                             <SVG
                               src="../icons/icon-wallet.svg"
                               width={20}

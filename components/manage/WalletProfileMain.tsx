@@ -126,7 +126,7 @@ export default function WalletProfileMain(props) {
               </div>
 
               <button
-                className="profile-share btn btn-sm ml-2"
+                className="profile-share btn btn-sm"
                 title="Share this profile"
                 onClick={() =>
                   openModal(ModalType.share, {

@@ -4,8 +4,7 @@ import SVG from "react-inlinesvg";
 import useModal, { ModalType } from "../hooks/useModal";
 import Modal from "../modal/Modal";
 
-export default function Web3bioBadge(props) {
-  const { domain } = props;
+export default function ProfileFooter() {
   const { isOpen, modalType, openModal, params, closeModal } = useModal();
 
   useEffect(() => {
@@ -14,9 +13,7 @@ export default function Web3bioBadge(props) {
         if (isOpen) {
           closeModal();
         } else {
-          openModal(ModalType.search, {
-            domain,
-          });
+          openModal(ModalType.search, {});
         }
       }
     };
@@ -44,9 +41,7 @@ export default function Web3bioBadge(props) {
           className={"btn btn-search"}
           title="Try it out – press ⌘+K (macOS) or CTRL+K (Windows) to search Web3 identities"
           onClick={() =>
-            openModal(ModalType.search, {
-              domain,
-            })
+            openModal(ModalType.search, {})
           }
         >
           <SVG
