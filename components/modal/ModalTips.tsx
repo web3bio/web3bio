@@ -11,6 +11,7 @@ import { formatEther, parseEther } from "viem";
 import { tipsTokenMapping } from "../utils/tips";
 import { Network } from "../utils/network";
 import { Loading } from "../shared/Loading";
+import toast from "react-hot-toast";
 
 export default function TipModalContent(props) {
   const { onClose, profile } = props;
@@ -24,6 +25,7 @@ export default function TipModalContent(props) {
     sendTransaction,
     data: txData,
     isPending: txPrepareLoading,
+    error: txPrepareError,
   } = useSendTransaction();
   const { isLoading: txLoading, status: txStatus } =
     useWaitForTransactionReceipt({
@@ -31,11 +33,15 @@ export default function TipModalContent(props) {
     });
 
   useEffect(() => {
-    if (txStatus === "success") {
-      //todo: UX use toast here
-      alert("success");
+    if (txPrepareError) {
+      toast.error("Transaction Rejected");
     }
-  }, [txStatus]);
+    if (txStatus === "success") {
+      toast.success(
+        `Successfully tipped ${profile.displayName} for ${amount} ${token.symbol}`
+      );
+    }
+  }, [txStatus, txPrepareError]);
   const { data: allowance } = useCurrencyAllowance(token.address!);
   const RenderButton = useMemo(() => {
     const isBalanceLow = amount >= Number(formatEther(balance?.value || 0n));
