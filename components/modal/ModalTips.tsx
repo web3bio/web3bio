@@ -1,26 +1,42 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import SVG from "react-inlinesvg";
-import { useAccount } from "wagmi";
+import {
+  useAccount,
+  useSendTransaction,
+  useWaitForTransactionReceipt,
+} from "wagmi";
 import { useCurrencyAllowance, useCurrencyBalance } from "../hooks/useCurrency";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { formatEther } from "viem";
+import { formatEther, parseEther } from "viem";
 import { tipsTokenMapping } from "../utils/tips";
 import { Network } from "../utils/network";
+import { Loading } from "../shared/Loading";
 
 export default function TipModalContent(props) {
   const { onClose, profile } = props;
   const [amount, setAmount] = useState(0.01);
-  const [token, setToken] = useState(tipsTokenMapping[Network.polygon]);
+  const [token, setToken] = useState(tipsTokenMapping[Network.ethereum]);
   const [nickName, setNickName] = useState(profile.displayName);
   const [message, setMessage] = useState("");
   const { address } = useAccount();
   const { data: balance } = useCurrencyBalance(token.address!);
-
   const {
-    data: allowance,
-    isLoading,
-    status,
-  } = useCurrencyAllowance(token.address!);
+    sendTransaction,
+    data: txData,
+    isPending: txPrepareLoading,
+  } = useSendTransaction();
+  const { isLoading: txLoading, status: txStatus } =
+    useWaitForTransactionReceipt({
+      hash: txData,
+    });
+
+  useEffect(() => {
+    if (txStatus === "success") {
+      //todo: UX use toast here
+      alert("success");
+    }
+  }, [txStatus]);
+  const { data: allowance } = useCurrencyAllowance(token.address!);
   const RenderButton = useMemo(() => {
     const isBalanceLow = amount >= Number(formatEther(balance?.value || 0n));
     const isAllowanceLow =
@@ -28,11 +44,17 @@ export default function TipModalContent(props) {
       Number(formatEther(balance?.value || 0n));
     const buttonHandle = () => {
       if (isBalanceLow) return null;
+      if (token.isNativeToken)
+        return sendTransaction({
+          to: profile.address,
+          value: parseEther(amount.toString()),
+        });
     };
     const ButtonText = (() => {
       if (isBalanceLow) return "Insufficient Balance";
       if (!token.isNativeToken && isAllowanceLow)
         return `Approve ${amount} ${token.symbol}`;
+      if (txLoading || txPrepareLoading) return "Loading";
       return `Donate ${amount} ${token.symbol}`;
     })();
     return (
@@ -67,9 +89,16 @@ export default function TipModalContent(props) {
                   <div
                     onClick={buttonHandle}
                     className={`btn btn-primary donate-btn ${
-                      isBalanceLow ? "disabled" : ""
+                      isBalanceLow || txLoading || txPrepareLoading
+                        ? "disabled"
+                        : ""
                     }`}
                   >
+                    {(txLoading || txPrepareLoading) && (
+                      <div className="loading-btn">
+                        <Loading />
+                      </div>
+                    )}
                     {ButtonText}
                   </div>
                 );
@@ -79,7 +108,7 @@ export default function TipModalContent(props) {
         }}
       </ConnectButton.Custom>
     );
-  }, [address, amount, token, balance]);
+  }, [address, amount, token, balance, txLoading, txPrepareLoading]);
 
   return (
     <>
@@ -90,10 +119,11 @@ export default function TipModalContent(props) {
       </div>
       <div className="modal-tip-body">
         <input
+          disabled={txLoading || txPrepareLoading}
           className="common-input"
           value={amount}
           onChange={(e) => {
-            setAmount(Number(e.target.value.replace(/[^0-9]/g, "")));
+            setAmount(e.target.value as any);
           }}
         />
         <input

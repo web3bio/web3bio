@@ -23,3 +23,4 @@ export const useCurrencyBalance = (tokenAddress?: `0x${string}`) => {
     token: tokenAddress || undefined,
   });
 };
+

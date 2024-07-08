@@ -351,18 +351,18 @@ export default function ProfileMain(props) {
               </div>
             )}
             {/* Tip button maybe random text and emoji */}
-           {
-            tipEmoji &&  <div
-            className="btn btn-primary"
-            onClick={() => {
-              openModal(ModalType.tip, {
-                profile: data,
-              });
-            }}
-          >
-            {tipEmoji} Buy me a {tipText}
-          </div>
-           }
+            {tipEmoji && (
+              <div
+                className="btn btn-primary"
+                onClick={() => {
+                  openModal(ModalType.tip, {
+                    profile: data,
+                  });
+                }}
+              >
+                {tipEmoji} Buy me a {tipText}
+              </div>
+            )}
           </div>
         </div>
         <div className="column col-7 col-lg-12">
@@ -398,7 +398,7 @@ export default function ProfileMain(props) {
           )}
           {(data.address && mounted && (
             <>
-              <div className="web3-section-widgets">
+              {/* <div className="web3-section-widgets">
                 <Suspense fallback={<LoadingSkeleton type={WidgetTypes.nft} />}>
                   <WidgetNFT
                     profile={data}
@@ -407,14 +407,14 @@ export default function ProfileMain(props) {
                     }}
                   />
                 </Suspense>
-              </div>
-              <div className="web3-section-widgets">
+              </div> */}
+              {/* <div className="web3-section-widgets">
                 <Suspense
                   fallback={<LoadingSkeleton type={WidgetTypes.feeds} />}
                 >
                   <WidgetFeed openModal={openModal} profile={data} />
                 </Suspense>
-              </div>
+              </div> */}
               {isBasicLoadingFinished && (
                 <>
                   <div className="web3-section-widgets">
