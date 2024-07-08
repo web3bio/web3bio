@@ -3,13 +3,14 @@
   align-items: center;
   appearance: none;
   background: rgba($gray-color-light, .5);
-  border: $border-width solid transparent;
+  border: $border-width-sm solid transparent;
   border-radius: $border-radius;
   box-shadow: none;
   color: $dark-color;
   cursor: pointer;
   display: inline-flex;
   font-size: $font-size;
+  gap: .1rem;
   height: $control-size;
   justify-content: center;
   line-height: $line-height;
@@ -147,6 +148,23 @@
   
     &.btn-lg {
       width: $control-size-lg;
+    }
+  }
+
+  // Button Emoji
+  .btn-emoji {
+    font-size: .85rem;
+  }
+
+  &.btn-sm {
+    .btn-emoji {
+      font-size: .65rem;
+    }
+  }
+
+  &.btn-lg {
+    .btn-emoji {
+      font-size: 1rem;
     }
   }
 }

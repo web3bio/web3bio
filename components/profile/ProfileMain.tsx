@@ -25,7 +25,7 @@ import { WidgetState } from "../state/widgets/reducer";
 // import { WidgetPhiland } from "./WidgetPhiland";
 import { WidgetTally } from "./WidgetTally";
 import LoadingSkeleton from "./LoadingSkeleton";
-import Web3bioBadge from "./ProfileFooter";
+import ProfileFooter from "./ProfileFooter";
 import WidgetIndicator from "./WidgetIndicator";
 import { WidgetTypes } from "../utils/widgets";
 import { DocumentNode, useLazyQuery } from "@apollo/client";
@@ -213,11 +213,11 @@ export default function ProfileMain(props) {
                   >
                     <SVG
                       src="../icons/icon-wallet.svg"
-                      width={20}
-                      height={20}
+                      width={18}
+                      height={18}
                       className="action-gray"
                     />
-                    <span className="profile-label ml-1 mr-1">
+                    <span className="profile-label">
                       {formatText(data.address)}
                     </span>
                   </Clipboard>
@@ -225,7 +225,7 @@ export default function ProfileMain(props) {
                 </div>
               )}
               <button
-                className={`profile-share btn btn-sm ${data.address && "ml-2"}`}
+                className={`profile-share btn btn-sm`}
                 title="Share this profile"
                 onClick={() =>
                   openModal(ModalType.share, {
@@ -235,7 +235,7 @@ export default function ProfileMain(props) {
                   })
                 }
               >
-                <SVG src="icons/icon-share.svg" width={20} height={20} />
+                <SVG src="icons/icon-share.svg" width={18} height={18} />
                 Share
               </button>
             </div>
@@ -313,6 +313,25 @@ export default function ProfileMain(props) {
                 );
               })}
             </div>
+
+            {/* <div className="profile-actions">
+              <div className="btn-group">
+                <button
+                  className={`profile-share btn btn-lg active`}
+                  title="Donate"
+                >
+                  <span className="btn-emoji">💸</span>
+                  Donate
+                </button>
+                <button
+                  className={`profile-share btn btn-lg`}
+                  title="Message"
+                >
+                  <span className="btn-emoji">💬</span>
+                  Message
+                </button>
+              </div>
+            </div> */}
 
             {data.description && (
               <h2 className="profile-description" itemProp="description">
@@ -469,7 +488,7 @@ export default function ProfileMain(props) {
             null}
         </div>
       </div>
-      <Web3bioBadge domain={domain} />
+      <ProfileFooter />
       {isOpen && (
         <Modal params={params} onDismiss={closeModal} modalType={modalType} />
       )}
