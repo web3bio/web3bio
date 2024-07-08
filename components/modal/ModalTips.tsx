@@ -1,30 +1,39 @@
 import { useMemo, useState } from "react";
 import SVG from "react-inlinesvg";
 import { useAccount } from "wagmi";
-import { useCurrencyBalance } from "../hooks/useCurrency";
+import { useCurrencyAllowance, useCurrencyBalance } from "../hooks/useCurrency";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { formatEther } from "viem";
+import { tipsTokenMapping } from "../utils/tips";
+import { Network } from "../utils/network";
 
 export default function TipModalContent(props) {
   const { onClose, profile } = props;
   const [amount, setAmount] = useState(0.01);
-  const [symbol, setSymbol] = useState("ETH");
+  const [token, setToken] = useState(tipsTokenMapping[Network.polygon]);
   const [nickName, setNickName] = useState(profile.displayName);
   const [message, setMessage] = useState("");
   const { address } = useAccount();
-  const balance = useCurrencyBalance();
+  const { data: balance } = useCurrencyBalance(token.address!);
 
+  const {
+    data: allowance,
+    isLoading,
+    status,
+  } = useCurrencyAllowance(token.address!);
   const RenderButton = useMemo(() => {
-    const isBalanceLow =
-      amount >= Number(formatEther(balance?.data?.value || 0n));
-
+    const isBalanceLow = amount >= Number(formatEther(balance?.value || 0n));
+    const isAllowanceLow =
+      Number(formatEther(allowance || 0n)) <=
+      Number(formatEther(balance?.value || 0n));
     const buttonHandle = () => {
       if (isBalanceLow) return null;
     };
     const ButtonText = (() => {
       if (isBalanceLow) return "Insufficient Balance";
-
-      return `Donate ${amount} ${symbol}`;
+      if (!token.isNativeToken && isAllowanceLow)
+        return `Approve ${amount} ${token.symbol}`;
+      return `Donate ${amount} ${token.symbol}`;
     })();
     return (
       <ConnectButton.Custom>
@@ -70,7 +79,7 @@ export default function TipModalContent(props) {
         }}
       </ConnectButton.Custom>
     );
-  }, [address, amount, symbol, balance]);
+  }, [address, amount, token, balance]);
 
   return (
     <>
