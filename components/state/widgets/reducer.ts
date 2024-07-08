@@ -25,9 +25,9 @@ interface WidgetStateDetail {
 export interface WidgetState {
   [WidgetTypes.nft]: WidgetStateDetail;
   [WidgetTypes.feeds]?: WidgetStateDetail;
-  [WidgetTypes.poaps]?: WidgetStateDetail;
   [WidgetTypes.scores]?: WidgetStateDetail;
   [WidgetTypes.article]?: WidgetStateDetail;
+  [WidgetTypes.poaps]?: WidgetStateDetail;
   [WidgetTypes.tally]?: WidgetStateDetail;
   [WidgetTypes.philand]?: WidgetStateDetail;
   [WidgetTypes.degen]?: WidgetStateDetail;
@@ -47,11 +47,6 @@ export const initialState: WidgetState = {
     initLoading: true,
     loaded: false,
   },
-  [WidgetTypes.poaps]: {
-    isEmpty: null,
-    initLoading: true,
-    loaded: false,
-  },
   [WidgetTypes.scores]: {
     isEmpty: null,
     initLoading: true,
@@ -59,6 +54,11 @@ export const initialState: WidgetState = {
     children: [WidgetTypes.webacy, WidgetTypes.degen],
   },
   [WidgetTypes.article]: {
+    isEmpty: null,
+    initLoading: true,
+    loaded: false,
+  },
+  [WidgetTypes.poaps]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,

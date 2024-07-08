@@ -91,10 +91,10 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
   },
   [PlatformType.ens]: {
     key: PlatformType.ens,
-    color: "#5298FF",
+    color: "#0080bc",
     icon: "icons/icon-ens.svg",
     label: "ENS",
-    urlPrefix: "https://app.ens.domains/search/",
+    urlPrefix: "https://app.ens.domains/",
     system: PlatformSystem.web3,
   },
   [PlatformType.ethereum]: {
