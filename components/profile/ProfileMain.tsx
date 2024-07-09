@@ -398,7 +398,7 @@ export default function ProfileMain(props) {
           )}
           {(data.address && mounted && (
             <>
-              {/* <div className="web3-section-widgets">
+              <div className="web3-section-widgets">
                 <Suspense fallback={<LoadingSkeleton type={WidgetTypes.nft} />}>
                   <WidgetNFT
                     profile={data}
@@ -407,14 +407,14 @@ export default function ProfileMain(props) {
                     }}
                   />
                 </Suspense>
-              </div> */}
-              {/* <div className="web3-section-widgets">
+              </div>
+              <div className="web3-section-widgets">
                 <Suspense
                   fallback={<LoadingSkeleton type={WidgetTypes.feeds} />}
                 >
                   <WidgetFeed openModal={openModal} profile={data} />
                 </Suspense>
-              </div> */}
+              </div>
               {isBasicLoadingFinished && (
                 <>
                   <div className="web3-section-widgets">
