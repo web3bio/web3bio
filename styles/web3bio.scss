@@ -70,6 +70,66 @@ body {
   width: 100vw;
 }
 
+//- Web3.bio Cover
+.web3bio-cover {
+  &.ui2 {
+    background-image:
+      radial-gradient(at 40% 33%, $pride-color-1 0px, transparent 50%),
+      radial-gradient(at 82% 10%, $pride-color-2 0px, transparent 50%),
+      radial-gradient(at 17% 94%, $pride-color-3 0px, transparent 50%),
+      radial-gradient(at 89% 75%, $pride-color-6 0px, transparent 50%);
+    display: block;
+    height: 100vh;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    z-index: -1;
+    
+    &::after,
+    &::before {
+      border-radius: 50%;
+      content: "";
+      display: block;
+      filter: blur(6rem);
+      height: 50vh;
+      position: fixed;
+      width: 50vh;
+      z-index: 1;
+    }
+
+    &::before {
+      animation: bg-animation 40s ease infinite;
+      animation-delay: -10s;
+      background: linear-gradient(45deg, $pride-color-1 5%, $pride-color-2 50%, $pride-color-3 95%);
+      bottom: 15vh;
+      left: 15vw;
+    }
+
+    &::after {
+      animation: bg-animation 60s ease infinite;
+      animation-delay: 0;
+      background: linear-gradient(-45deg, $pride-color-7 5%, $pride-color-6 50%, $pride-color-5 95%);
+      bottom: 5vh;
+      right: 15vw;
+    }
+  }
+}
+
+@keyframes bg-animation {
+  0% {
+    transform: skewX(30deg) translateX(-50vh);
+  }
+
+  50% {
+    transform: skewX(-30deg) translateX(50vh);
+  }
+
+  100% {
+    transform: skewX(30deg) translateX(-50vh);
+  }
+}
+
 .wallet-btn {
   position: fixed;
   top: 1rem;
@@ -127,68 +187,6 @@ body {
         }
       }
     }
-  }
-}
-
-
-//- Web3.bio Cover
-.web3bio-cover {
-  background-image:
-    radial-gradient(at 40% 33%, $pride-color-1 0px, transparent 50%),
-    radial-gradient(at 82% 10%, $pride-color-2 0px, transparent 50%),
-    radial-gradient(at 17% 94%, $pride-color-3 0px, transparent 50%),
-    radial-gradient(at 22% 12%, $pride-color-4 0px, transparent 50%),
-    radial-gradient(at -10% -22%, $pride-color-5 0px, transparent 50%),
-    radial-gradient(at 96% 88%, $pride-color-6 0px, transparent 50%),
-    radial-gradient(at 61% 57%, $pride-color-7 0px, transparent 50%);
-  display: block;
-  height: 100vh;
-  left: 0;
-  position: fixed;
-  top: 0;
-  width: 100vw;
-  z-index: -1;
-
-  &::after,
-  &::before {
-    border-radius: 50%;
-    content: "";
-    display: block;
-    filter: blur(4rem);
-    height: 50vh;
-    position: fixed;
-    width: 75vh;
-    z-index: 1;
-  }
-
-  &::before {
-    animation: bg-animation 24s ease infinite;
-    animation-delay: -8s;
-    background: linear-gradient(45deg, $pride-color-1 5%, $pride-color-2 50%, $pride-color-4 95%);
-    bottom: 10vh;
-    left: 10vh;
-  }
-
-  &::after {
-    animation: bg-animation 24s ease infinite;
-    animation-delay: 0;
-    background: linear-gradient(-45deg, $pride-color-7 5%, $pride-color-6 50%, $pride-color-5 95%);
-    bottom: 0;
-    right: 10vh;
-  }
-}
-
-@keyframes bg-animation {
-  0% {
-    transform: skewX(30deg) translateX(-50vh);
-  }
-
-  50% {
-    transform: skewX(-30deg) translateX(50vh);
-  }
-
-  100% {
-    transform: skewX(30deg) translateX(-50vh);
   }
 }
 
@@ -400,6 +398,10 @@ body {
 }
 
 // Home
+.home-container {
+
+}
+
 .home-features {
   // color: rgba($dark-color, .5);
   font-size: .7rem;

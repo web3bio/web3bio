@@ -21,7 +21,7 @@ export default function Sitemap({ data }) {
         <link rel="canonical" href={`${baseURL}/sitemaps`}></link>
         <meta name="robots" content="index, follow"></meta>
       </Head>
-      <div className="web3bio-cover flare"></div>
+      <div className="web3bio-cover ui2"></div>
       <div className={"web3bio-search focused"}>
         <div className="container grid-sm">
           <div className="search-form">

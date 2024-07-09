@@ -57,9 +57,9 @@ export async function generateMetadata({ searchParams }) {
 export default function HomePage({}) {
   return (
     <>
-      <div className="web3bio-container">
+      <div className="web3bio-container home-container">
         <WalletButton />
-        <div className="web3bio-cover flare"></div>
+        <div className="web3bio-cover ui2"></div>
         {/* <div className="web3bio-header">
           <div className="container grid-lg">
             <div className="header-menu">
