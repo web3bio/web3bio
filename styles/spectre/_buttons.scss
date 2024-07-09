@@ -3,7 +3,7 @@
   align-items: center;
   appearance: none;
   background: rgba($gray-color-light, .5);
-  border: $border-width-sm solid transparent;
+  border: $border-width-sm solid rgba($gray-color-light, .15);
   border-radius: $border-radius;
   box-shadow: none;
   color: $dark-color;
