@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import SVG from "react-inlinesvg";
 import {
   useAccount,
+  useChainId,
   useSendTransaction,
   useWaitForTransactionReceipt,
 } from "wagmi";
@@ -9,14 +10,22 @@ import { useCurrencyAllowance, useCurrencyBalance } from "../hooks/useCurrency";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { formatEther, parseEther } from "viem";
 import { tipsTokenMapping } from "../utils/tips";
-import { Network } from "../utils/network";
+import { Network, chainIdToNetwork } from "../utils/network";
 import { Loading } from "../shared/Loading";
 import toast from "react-hot-toast";
+import CurrencyInput from "./CurrencyInput";
 
 export default function TipModalContent(props) {
   const { onClose, profile } = props;
   const [amount, setAmount] = useState(0.01);
-  const [token, setToken] = useState(tipsTokenMapping[Network.ethereum]);
+  const chainId = useChainId();
+  const defaultToken = useMemo(() => {
+    const network = chainIdToNetwork(chainId);
+    if (network) return tipsTokenMapping[network][0];
+    return tipsTokenMapping[Network.ethereum][0];
+  }, [chainId]);
+
+  const [token, setToken] = useState(defaultToken);
   const [nickName, setNickName] = useState(profile.displayName);
   const [message, setMessage] = useState("");
   const { address } = useAccount();
@@ -124,14 +133,14 @@ export default function TipModalContent(props) {
         </div>
       </div>
       <div className="modal-tip-body">
-        <input
-          disabled={txLoading || txPrepareLoading}
-          className="common-input"
+        <CurrencyInput
+          selected={token}
           value={amount}
-          onChange={(e) => {
-            setAmount(e.target.value as any);
-          }}
+          disabled={txLoading || txPrepareLoading}
+          onChange={(v) => setAmount(v)}
+          onSelect={(v) => setToken(v)}
         />
+
         <input
           className="common-input"
           type="text"

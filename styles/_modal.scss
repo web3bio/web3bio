@@ -245,7 +245,61 @@
       align-content: center;
       gap: .75rem;
 
+      .currency-input-container {
+        width: 100%;
+        position: relative;
+
+        .token-selector {
+          position: absolute;
+          top: 50%;
+          width: 5rem;
+          transform: translateY(-50%);
+          right: 0rem;
+          border-radius: .5rem;
+
+
+          .btn {
+            width: 100%;
+            line-height: 1;
+            height: unset;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          }
+
+          .btn-primary {
+            font-size: .55rem;
+            padding: .3rem .5rem;
+            border-radius: .5rem;
+          }
+
+          .menu {
+            font-size: .55rem;
+            font-weight: 500;
+            padding: 0;
+            right: 0;
+            min-width: 6rem;
+
+            .dropdown-menu-item {
+              width: 100%;
+              display: flex;
+              align-items: center;
+              gap: .5rem;
+              cursor: pointer;
+              border-radius: .4rem;
+              padding: .25rem .5rem;
+              transition: all .5s ease;
+
+              &:hover {
+                background-color: rgba($color: #cecece, $alpha: .3);
+              }
+            }
+          }
+        }
+      }
+
       .common-input {
+        width: 100%;
         outline: none;
         border: 1px solid #cecece;
         padding: .25rem .5rem;
@@ -268,7 +322,8 @@
       .donate-btn {
         background: #5298FF;
         border-color: #5298FF;
-        .loading-btn{
+
+        .loading-btn {
           width: 2rem;
         }
       }
