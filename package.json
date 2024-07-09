@@ -18,7 +18,7 @@
     "@reduxjs/toolkit": "^1.9.5",
     "d3": "^7.8.5",
     "grapheme-splitter": "^1.0.4",
-    "next": "^14.2.2",
+    "next": "^14.2.4",
     "react-infinite-scroll-hook": "^4.1.1",
     "react-markdown": "^9.0.0",
     "sharp": "^0.32.6",
@@ -27,8 +27,8 @@
     "yaqrcode": "^0.2.1"
   },
   "devDependencies": {
-    "@tanstack/react-query": "^5.40.0",
     "@apollo/client": "^3.6.9",
+    "@tanstack/react-query": "^5.40.0",
     "@types/jest": "^29.5.12",
     "@types/node": "^18.7.14",
     "@types/react": "^18.0.18",

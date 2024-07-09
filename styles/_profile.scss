@@ -123,21 +123,12 @@
     display: flex;
     flex-wrap: wrap;
     font-size: .6rem;
-    gap: .2rem;
+    gap: .25rem;
     line-height: 1rem;
     margin-bottom: 1rem;
 
     .btn-group {
       gap: .1rem;
-    }
-
-    .btn {
-      background: rgba($gray-color, .1);
-
-      &:focus,
-      &:hover {
-        background: rgba($gray-color, .2);
-      }
     }
 
     .menu {
@@ -164,10 +155,11 @@
       background-color: var(--badge-bg-color, rgba($dark-color, .05));
       border: .05rem solid transparent;
       border-color: var(--badge-bg-color, transparent);
-      border-radius: .8rem;
+      border-radius: .35rem;
       box-shadow: 0 .05rem .1rem var(--badge-bg-color, rgba($dark-color, .05));
       display: flex;
-      height: 1.6rem;
+      gap: .1rem;
+      height: 1.4rem;
       max-width: 100%;
       padding: .25rem;
       text-decoration: none;
@@ -175,7 +167,7 @@
 
       &:focus,
       &:hover {
-        box-shadow: 0 .05rem .1rem var(--badge-bg-color, rgba($dark-color, .05)), 0 .05rem .8rem rgba($dark-color, .05);
+        box-shadow: 0 0 .05rem .05rem var(--badge-primary-color, transparent), 0 .05rem .1rem var(--badge-bg-color, rgba($dark-color, .05)), 0 .05rem .8rem rgba($dark-color, .05);
       }
 
       &.nextid {
@@ -192,19 +184,34 @@
       border-radius: .7rem;
       color: var(--badge-primary-color);
       display: flex;
-      flex: 0 0 1.3rem;
-      height: 1.3rem;
+      flex: 0 0 .9rem;
+      height: .9rem;
       justify-content: center;
-      padding: .15rem;
-      width: 1.3rem;
+      padding: .05rem;
+      width: .9rem;
     }
 
     .platform-badge-name {
       flex: 1 1 auto;
       overflow: hidden;
-      padding: 0 .3rem 0 .1rem;
+      padding: 0 .1rem;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+  }
+
+  .profile-actions {
+    align-items: center;
+    color: $gray-color-dark;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: .6rem;
+    gap: .25rem;
+    line-height: 1rem;
+    margin-bottom: 1rem;
+
+    .btn-group {
+      gap: .1rem;
     }
   }
 
@@ -954,7 +961,7 @@
     background: $light-color;
     border-color: lighten($bg-color, 3%);
     height: 100%;
-    max-height: 50vh;
+    max-height: 40vh;
     position: relative;
 
     @media screen and (max-width: $size-sm) {
@@ -1545,6 +1552,7 @@
   gap: .5rem;
   opacity: .95;
   padding: .5rem;
+  text-indent: -.15em;
   transition: opacity .25s ease-in-out;
   z-index: 10;
 
@@ -1564,6 +1572,7 @@
   }
 
   .badge-emoji {
+    font-size: .85rem;
     transition: transform .15s ease-in-out;
   }
 
