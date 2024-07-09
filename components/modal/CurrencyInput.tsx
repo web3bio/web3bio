@@ -24,8 +24,8 @@ export default function CurrencyInput(props) {
           onChange(e.target.value as any);
         }}
       />
-      <div className="token-selector dropdown dropdown-left">
-        <div className="btn btn-primary dropdown-toggle">
+      <div className="token-selector dropdown">
+        <div className="btn btn-primary dropdown-toggle" tabIndex={0}>
           <Image
             width={16}
             height={16}

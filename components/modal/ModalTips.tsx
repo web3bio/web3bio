@@ -5,10 +5,11 @@ import {
   useChainId,
   useSendTransaction,
   useWaitForTransactionReceipt,
+  useWriteContract,
 } from "wagmi";
 import { useCurrencyAllowance, useCurrencyBalance } from "../hooks/useCurrency";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { formatEther, parseEther } from "viem";
+import { erc20Abi, formatEther, parseEther } from "viem";
 import { tipsTokenMapping } from "../utils/tips";
 import { Network, chainIdToNetwork } from "../utils/network";
 import { Loading } from "../shared/Loading";
@@ -29,6 +30,11 @@ export default function TipModalContent(props) {
   const [nickName, setNickName] = useState(profile.displayName);
   const [message, setMessage] = useState("");
   const { address } = useAccount();
+  useEffect(() => {
+    if (defaultToken) {
+      setToken(defaultToken);
+    }
+  }, [defaultToken]);
   const { data: balance } = useCurrencyBalance(token.address!);
   const {
     sendTransaction,
@@ -36,6 +42,14 @@ export default function TipModalContent(props) {
     isPending: txPrepareLoading,
     error: txPrepareError,
   } = useSendTransaction();
+
+  const { writeContract: onApprove, data: approveTx } = useWriteContract();
+
+  const { isLoading: approveLoading, status: approveStatus } =
+    useWaitForTransactionReceipt({
+      hash: approveTx,
+    });
+
   const { isLoading: txLoading, status: txStatus } =
     useWaitForTransactionReceipt({
       hash: txData,
@@ -45,12 +59,15 @@ export default function TipModalContent(props) {
     if (txPrepareError) {
       toast.error("Transaction Rejected");
     }
+    if (approveStatus === "success") {
+      toast.success(`Successfully approved ${amount} ${token.symbol}`);
+    }
     if (txStatus === "success") {
       toast.success(
         `Successfully tipped ${profile.displayName} for ${amount} ${token.symbol}`
       );
     }
-  }, [txStatus, txPrepareError]);
+  }, [txStatus, txPrepareError, approveStatus]);
   const { data: allowance } = useCurrencyAllowance(token.address!);
   const RenderButton = useMemo(() => {
     const isBalanceLow = amount >= Number(formatEther(balance?.value || 0n));
@@ -63,6 +80,13 @@ export default function TipModalContent(props) {
         return sendTransaction({
           to: profile.address,
           value: parseEther(amount.toString()),
+        });
+      if (isAllowanceLow)
+        return onApprove({
+          abi: erc20Abi,
+          address: token.address!,
+          functionName: "approve",
+          args: [token.address!, parseEther(amount.toString())],
         });
     };
     const ButtonText = (() => {
