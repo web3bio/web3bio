@@ -1,6 +1,6 @@
 //- Web3.bio Search
 .web3bio-search {
-  min-height: 75vh;
+  min-height: 50vh;
   padding: .5rem;
 
   &.focused {
@@ -18,7 +18,7 @@
     flex-direction: column;
     justify-content: flex-start;
     position: relative;
-    transform: translateY(20vh);
+    transform: translateY(10vh);
     transition: all .25s ease-in-out;
     z-index: 99;
   }
@@ -46,7 +46,7 @@
   }
 
   .form-input-group {
-    margin: .3rem 0;
+    margin: 0 0 .3rem 0;
     position: relative;
 
     .form-input {

@@ -1,4 +1,3 @@
-import Script from "next/script";
 import ApolloProvider from "../components/shared/ApolloProvider";
 import GoogleAnalytics from "../components/shared/GoogleAnalytics";
 import ReduxProvider from "../components/shared/ReduxProvider";
@@ -85,7 +84,6 @@ export default function RootLayout({ children }) {
           </ReduxProvider>
           <GoogleAnalytics />
         </main>
-        <Script src="https://scripts.simpleanalyticscdn.com/latest.js"  />
       </body>
     </html>
   );

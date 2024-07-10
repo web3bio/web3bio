@@ -2,7 +2,8 @@ import IndexPageRender from "../components/search/IndexPage";
 import { Footer } from "../components/shared/Footer";
 import { PlatformData } from "../components/utils/platform";
 import { handleSearchPlatform } from "../components/utils/utils";
-import WalletButton from "../components/shared/WalletButton";
+import { HomeFeatures } from "../components/shared/HomeFeatures";
+import { Header } from "../components/shared/Header";
 
 export async function generateMetadata({ searchParams }) {
   const searchTerm = searchParams?.s;
@@ -58,32 +59,12 @@ export default function HomePage({}) {
   return (
     <>
       <div className="web3bio-container home-container">
-        <WalletButton />
         <div className="web3bio-cover ui2"></div>
-        {/* <div className="web3bio-header">
-          <div className="container grid-lg">
-            <div className="header-menu">
-              <div className="web3bio-logo">
-                <h1 className="text-pride">
-                  WEB3
-                  <br />
-                  BIO
-                </h1>
-              </div>
-              <div className="header-btn">
-                <a href="#search" className="btn btm-sm btn-link">Search</a>
-                <a href="#profile" className="btn btm-sm btn-link">Profile</a>
-                <a href="#profile-api" className="btn btm-sm btn-link">API</a>
-              </div>
-              <div className="header-btn">
-                <a href="#" className="btn btm-sm">Connect</a>
-              </div>
-            </div>
-          </div>
-        </div> */}
+        <Header />
         <IndexPageRender />
+        <HomeFeatures />
+        <Footer />
       </div>
-      <Footer />
     </>
   );
 }
