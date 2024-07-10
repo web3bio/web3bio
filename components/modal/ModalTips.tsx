@@ -8,7 +8,7 @@ import {
   useWriteContract,
 } from "wagmi";
 import { useCurrencyAllowance, useCurrencyBalance } from "../hooks/useCurrency";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { ConnectButton, useChainModal } from "@rainbow-me/rainbowkit";
 import { erc20Abi, formatEther, parseEther } from "viem";
 import { tipsTokenMapping } from "../utils/tips";
 import { Network, chainIdToNetwork } from "../utils/network";
@@ -29,6 +29,7 @@ export default function TipModalContent(props) {
   const [token, setToken] = useState(defaultToken);
   const [nickName, setNickName] = useState(profile.displayName);
   const [message, setMessage] = useState("");
+  const { openChainModal } = useChainModal();
   const { address } = useAccount();
   useEffect(() => {
     if (defaultToken) {
@@ -43,11 +44,16 @@ export default function TipModalContent(props) {
     error: txPrepareError,
   } = useSendTransaction();
 
-  const { writeContract: onApprove, data: approveTx } = useWriteContract();
+  const {
+    writeContract: onCallContract,
+    data: contractTx,
+    isPending: contractPrepareLoading,
+    error: contractPrepareError,
+  } = useWriteContract();
 
   const { isLoading: approveLoading, status: approveStatus } =
     useWaitForTransactionReceipt({
-      hash: approveTx,
+      hash: contractTx,
     });
 
   const { isLoading: txLoading, status: txStatus } =
@@ -56,7 +62,7 @@ export default function TipModalContent(props) {
     });
 
   useEffect(() => {
-    if (txPrepareError) {
+    if (txPrepareError || contractPrepareError) {
       toast.error("Transaction Rejected");
     }
     if (approveStatus === "success") {
@@ -67,13 +73,15 @@ export default function TipModalContent(props) {
         `Successfully tipped ${profile.displayName} for ${amount} ${token.symbol}`
       );
     }
-  }, [txStatus, txPrepareError, approveStatus]);
+  }, [txStatus, txPrepareError, approveStatus, contractPrepareError]);
   const { data: allowance } = useCurrencyAllowance(token.address!);
+
   const RenderButton = useMemo(() => {
     const isBalanceLow = amount >= Number(formatEther(balance?.value || 0n));
-    const isAllowanceLow =
-      Number(formatEther(allowance || 0n)) <=
-      Number(formatEther(balance?.value || 0n));
+    const isAllowanceLow = Number(formatEther(allowance || 0n)) < amount;
+    const isButtonLoading =
+      txLoading || txPrepareLoading || approveLoading || contractPrepareLoading;
+    contractPrepareLoading;
     const buttonHandle = () => {
       if (isBalanceLow) return null;
       if (token.isNativeToken)
@@ -82,18 +90,26 @@ export default function TipModalContent(props) {
           value: parseEther(amount.toString()),
         });
       if (isAllowanceLow)
-        return onApprove({
+        return onCallContract({
           abi: erc20Abi,
           address: token.address!,
           functionName: "approve",
           args: [token.address!, parseEther(amount.toString())],
         });
+
+      return onCallContract({
+        abi: erc20Abi,
+        address: token.address!,
+        functionName: "transfer",
+        args: [profile.address, parseEther(amount.toString())],
+      });
     };
     const ButtonText = (() => {
       if (isBalanceLow) return "Insufficient Balance";
+      if (isButtonLoading) return "Loading...";
       if (!token.isNativeToken && isAllowanceLow)
         return `Approve ${amount} ${token.symbol}`;
-      if (txLoading || txPrepareLoading) return "Loading";
+
       return `Donate ${amount} ${token.symbol}`;
     })();
     return (
@@ -128,12 +144,10 @@ export default function TipModalContent(props) {
                   <div
                     onClick={buttonHandle}
                     className={`btn btn-primary donate-btn ${
-                      isBalanceLow || txLoading || txPrepareLoading
-                        ? "disabled"
-                        : ""
+                      isBalanceLow || isButtonLoading ? "disabled" : ""
                     }`}
                   >
-                    {(txLoading || txPrepareLoading) && (
+                    {isButtonLoading && (
                       <div className="loading-btn">
                         <Loading />
                       </div>
@@ -147,7 +161,17 @@ export default function TipModalContent(props) {
         }}
       </ConnectButton.Custom>
     );
-  }, [address, amount, token, balance, txLoading, txPrepareLoading]);
+  }, [
+    address,
+    amount,
+    token,
+    balance,
+    allowance,
+    txLoading,
+    txPrepareLoading,
+    contractPrepareLoading,
+    approveLoading,
+  ]);
 
   return (
     <>
@@ -180,7 +204,12 @@ export default function TipModalContent(props) {
           rows={4}
           maxLength={300}
         />
-        {RenderButton}
+        <div className="btn-group">
+          {RenderButton}
+          <div onClick={openChainModal} className="btn btn-primary">
+            Switch Network
+          </div>
+        </div>
       </div>
     </>
   );

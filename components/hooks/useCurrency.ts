@@ -1,4 +1,4 @@
-import { useAccount, useBalance, useReadContract } from "wagmi";
+import { useAccount, useBalance, useChainId, useReadContract } from "wagmi";
 import { erc20Abi } from "viem";
 export const useCurrencyAllowance = (tokenAddress?: `0x${string}`) => {
   const { address: owner } = useAccount();
@@ -18,10 +18,10 @@ export const useCurrencyAllowance = (tokenAddress?: `0x${string}`) => {
 
 export const useCurrencyBalance = (tokenAddress?: `0x${string}`) => {
   const { address: owner } = useAccount();
+  const chainId = useChainId();
   return useBalance({
+    chainId,
     address: owner,
     token: tokenAddress || undefined,
   });
 };
-
-

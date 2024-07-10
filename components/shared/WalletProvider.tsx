@@ -6,11 +6,12 @@ import { mainnet, polygon, optimism, arbitrum, base, zora } from "wagmi/chains";
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 
 export const config = getDefaultConfig({
-  appName: "RainbowKit demo",
+  appName: "Web3.bio",
   projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_ID || "",
   chains: [mainnet, polygon, optimism, arbitrum, base, zora],
   transports: {
     [mainnet.id]: http(),
+    [polygon.id]: http(),
   },
 });
 
