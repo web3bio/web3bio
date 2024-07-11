@@ -549,6 +549,10 @@
       margin: auto;
       max-width: 30rem;
 
+      .web3bio-logo {
+        margin-bottom: 1rem;
+      }
+
       .form-input-group {
         animation: bounce-in .2s cubic-bezier(.5, .25, .5, 1) 1;
       }

@@ -23,7 +23,7 @@ export default function SearchModalContent(props) {
           className="web3bio-logo"
           title="Web3.bio"
         >
-          <h1 className="text-pride">
+          <h1 className="text-conic-pride">
             WEB3
             <br />
             BIO
