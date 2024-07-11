@@ -237,6 +237,25 @@
     max-width: 28rem;
     padding: 1.5rem 2rem;
     width: calc(100vw - .5rem);
+    position: relative;
+
+    .network-badge {
+      position: absolute;
+      right: .8rem;
+      bottom: .25rem;
+      display: flex;
+      align-items: center;
+      gap: .2rem;
+      font-size: .5rem;
+      color: #999;
+
+      .green-dot {
+        background: #73e175;
+        width: .25rem;
+        height: .25rem;
+        border-radius: 99%;
+      }
+    }
 
     .modal-tip-body {
       width: 100%;
@@ -244,6 +263,7 @@
       flex-direction: column;
       align-content: center;
       gap: .75rem;
+      position: relative;
 
       .currency-input-container {
         width: 100%;

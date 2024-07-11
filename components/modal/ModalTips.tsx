@@ -11,7 +11,7 @@ import { useCurrencyAllowance, useCurrencyBalance } from "../hooks/useCurrency";
 import { ConnectButton, useChainModal } from "@rainbow-me/rainbowkit";
 import { erc20Abi, formatEther, parseEther } from "viem";
 import { tipsTokenMapping } from "../utils/tips";
-import { Network, chainIdToNetwork } from "../utils/network";
+import { Network, NetworkMapping, chainIdToNetwork } from "../utils/network";
 import { Loading } from "../shared/Loading";
 import toast from "react-hot-toast";
 import CurrencyInput from "./CurrencyInput";
@@ -216,7 +216,12 @@ export default function TipModalContent(props) {
             Switch Network
           </div>
         </div>
+
+    
       </div>
+      <div className="network-badge" >
+           <span className="green-dot"></span> {chainIdToNetwork(chainId)}
+        </div>
     </>
   );
 }
