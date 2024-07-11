@@ -185,7 +185,13 @@ export default function TipModalContent(props) {
           selected={token}
           value={amount}
           disabled={txLoading || txPrepareLoading}
-          onChange={(v) => setAmount(v)}
+          onChange={(v) => {
+            let value = v;
+            if (!/^[0-9]*\.?[0-9]*$/.test(v)) {
+              value = value.slice(0, -1);
+            }
+            setAmount(value);
+          }}
           onSelect={(v) => setToken(v)}
         />
 
