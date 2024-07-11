@@ -7,7 +7,7 @@ export const HomeFeatures = () => {
     <div className="home-features">
       <div className="container grid-sm">
         <h3 className="home-title">
-          Explore <strong className="">Web3</strong> identities{" "}
+          <span>Explore Web3 identities{" "}</span>
           <div className="home-title-icons">
             <div 
               className="home-title-icon"
@@ -64,7 +64,7 @@ export const HomeFeatures = () => {
               />
             </div>
           </div>
-          {" "} <br/>and domains{" "}
+          <span>{" "}and domains{" "}</span>
           <div className="home-title-icons">
             <div 
               className="home-title-icon" 
@@ -74,7 +74,7 @@ export const HomeFeatures = () => {
                 ).color,
                 ["--widget-bg-color" as string]: colorMod(
                   SocialPlatformMapping(PlatformType.ens)?.color,
-                  75
+                  65
                 ),
               }}
             >
@@ -92,7 +92,7 @@ export const HomeFeatures = () => {
               style={{
                 ["--widget-bg-color" as string]: colorMod(
                   SocialPlatformMapping(PlatformType.unstoppableDomains)?.color,
-                  75
+                  65
                 ),
               }}
             >
@@ -110,7 +110,7 @@ export const HomeFeatures = () => {
               style={{
                 ["--widget-bg-color" as string]: colorMod(
                   SocialPlatformMapping(PlatformType.clusters)?.color,
-                  75
+                  65
                 ),
               }}
             >
@@ -196,7 +196,7 @@ export const HomeFeatures = () => {
               />
             </div>
           </div>
-          {" "} <br/> in a whole new informative way</h3>
+          <span>{" "}in a whole new informative way</span></h3>
       </div>
       <div className="container grid-sm">
         <h3 className="home-subtitle">With Web3.bio you can:</h3>

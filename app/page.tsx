@@ -1,4 +1,4 @@
-import IndexPageRender from "../components/search/IndexPage";
+import SearchPage from "../components/search/SearchPage";
 import { Footer } from "../components/shared/Footer";
 import { PlatformData } from "../components/utils/platform";
 import { handleSearchPlatform } from "../components/utils/utils";
@@ -61,7 +61,7 @@ export default function HomePage({}) {
       <div className="web3bio-container home-container">
         <div className="web3bio-cover ui2"></div>
         <Header />
-        <IndexPageRender />
+        <SearchPage />
         <HomeFeatures />
         <Footer />
       </div>

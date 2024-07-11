@@ -429,20 +429,27 @@ body {
   }
 
   .home-title {
+    align-items: flex-start;
     color: $dark-color;
+    display: flex;
+    flex-wrap: wrap;
     font-size: 2rem;
     font-weight: 400;
     gap: .2rem;
     letter-spacing: -.05em;
-    line-height: 1.25;
+    line-height: 2.8rem;
     margin: 1rem 0;
+
+    @media screen and (max-width: $size-md) {
+      font-size: 1.4rem;
+    }
   }
 
   .home-title-icons {
     align-items: center;
     border-radius: 4rem;
     display: inline-flex;
-    height: 2.4rem;
+    height: 2.8rem;
     margin-left: .4rem;
     position: relative;
   }
@@ -450,13 +457,13 @@ body {
   .home-title-icon {
     align-items: center;
     background: var(--widget-bg-color, $light-color);
+    border: .05rem solid rgba($dark-color, .05);
     border-radius: .8rem;
-    color: #333;
     display: inline-flex;
-    height: 2.2rem;
+    height: 2rem;
     justify-content: center;
-    margin-left: -.35rem;
-    width: 2.2rem;
+    margin-left: -.25rem;
+    width: 2rem;
 
     .icon {
       filter: drop-shadow(0 0 .2rem rgba($dark-color, .15));

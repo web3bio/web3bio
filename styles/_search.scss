@@ -149,6 +149,60 @@
   text-align: center;
 }
 
+// Search suggestions
+.search-badges {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .25rem;
+  line-height: 1rem;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+
+  .platform-badge {
+    cursor: pointer;
+    color: rgba($dark-color, .9);
+    align-items: center;
+    background-color: rgba($light-color, .75);
+    border: .05rem solid rgba($gray-color-light, .15);
+    border-radius: .35rem;
+    box-shadow: 0 .05rem .1rem rgba($dark-color, .05);
+    display: flex;
+    font-size: .6rem;
+    gap: .1rem;
+    height: 1.4rem;
+    max-width: 100%;
+    padding: .25rem;
+    text-decoration: none;
+    transition: all .2s ease;
+
+    &:focus,
+    &:hover {
+      box-shadow: 0 .05rem .1rem rgba($dark-color, .05), 0 .05rem .8rem rgba($dark-color, .05);
+    }
+
+    .platform-badge-icon {
+      align-items: center;
+      border-radius: .7rem;
+      display: flex;
+      flex: 0 0 .9rem;
+      height: .9rem;
+      justify-content: center;
+      padding: .05rem;
+      width: .9rem;
+    }
+  
+    .platform-badge-name {
+      flex: 1 1 auto;
+      line-height: .9rem;
+      overflow: hidden;
+      padding: 0 .1rem;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}
+
 // Search results
 .search-result {
   animation: slide-down .2s ease 1;

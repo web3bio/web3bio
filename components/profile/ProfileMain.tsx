@@ -295,6 +295,7 @@ export default function ProfileMain(props) {
                       <SVG
                         fill={SocialPlatformMapping(x.platform).color}
                         width={20}
+                        height={20}
                         src={SocialPlatformMapping(x.platform).icon || ""}
                       />
                     </div>
