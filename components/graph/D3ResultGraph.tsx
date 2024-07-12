@@ -162,7 +162,7 @@ export default function D3IdentityGraph(props) {
             d3
               .forceCollide()
               .radius((d) =>
-                d.isIdentity ? IdentityNodeSize * 2 : IdentityNodeSize * 2.25
+                d.isIdentity ? IdentityNodeSize * 2.5 : IdentityNodeSize * 1.25
               )
           )
           .force("center", d3.forceCenter(width / 2, height / 2))
