@@ -151,17 +151,18 @@ export default function D3IdentityGraph(props) {
             d3
               .forceLink(links)
               .id((d) => d.id)
-              .distance((d) => (d.target.isIdentity ? 60 : 10))
+              .distance(100)
+              .strength(0.8)
           )
-          .force("charge", d3.forceManyBody())
+          .force("charge", d3.forceManyBody().strength(-200))
           .force("x", d3.forceX(width / 2).strength(0.5))
-          .force("y", d3.forceY(height / 2).strength(1.3))
+          .force("y", d3.forceY(height / 2).strength(1.5))
           .force(
             "collision",
             d3
               .forceCollide()
               .radius((d) =>
-                d.isIdentity ? IdentityNodeSize * 2 : NFTNodeSize * 2.25
+                d.isIdentity ? IdentityNodeSize * 2 : IdentityNodeSize * 2.25
               )
           )
           .force("center", d3.forceCenter(width / 2, height / 2))
@@ -483,10 +484,12 @@ export default function D3IdentityGraph(props) {
                   {currentNode.resolvedAddress || ""}
                 </li>
               )}
-              <li>
-                <span className="text-gray">Owner: </span>
-                {currentNode.owner || ""}
-              </li>
+              {currentNode.owner && (
+                <li>
+                  <span className="text-gray">Owner: </span>
+                  {currentNode.owner || ""}
+                </li>
+              )}
             </ul>
           )}
         </div>

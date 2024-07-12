@@ -2,6 +2,19 @@ import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { formatText, isSameAddress } from "../utils/utils";
 import _ from "lodash";
 
+const IdentitySizePlatforms = [
+  PlatformType.ethereum,
+  PlatformType.lens,
+  PlatformType.clusters,
+  PlatformType.farcaster,
+  PlatformType.bitcoin,
+  PlatformType.solana,
+  PlatformType.dotbit,
+  PlatformType.crossbell,
+  PlatformType.space_id,
+  PlatformType.unstoppableDomains,
+];
+
 export const resolveIdentityGraphData = (source) => {
   const nodes = new Array<any>();
   const edges = new Array<any>();
@@ -24,9 +37,7 @@ export const resolveIdentityGraphData = (source) => {
       uid: x.uid,
       uuid: x.uuid,
       address: x.profile?.address || resolvedAddress,
-      isIdentity: [PlatformType.ens, PlatformType.sns].includes(x.platform)
-        ? false
-        : true,
+      isIdentity: IdentitySizePlatforms.includes(x.platform),
       owner: ownerAddress,
       resolvedAddress: resolvedAddress,
     };
