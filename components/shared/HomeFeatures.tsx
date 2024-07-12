@@ -7,7 +7,7 @@ export const HomeFeatures = () => {
     <div className="home-features">
       <div className="container grid-sm">
         <h3 className="home-title">
-          <span>Explore Web3 identities{" "}</span>
+          <span>Explore{" "}</span><span className="text-pride text-large">✦</span><span>Web3 identities{" "}</span>
           <div className="home-title-icons">
             <div 
               className="home-title-icon"
@@ -64,7 +64,7 @@ export const HomeFeatures = () => {
               />
             </div>
           </div>
-          <span>{" "}and domains{" "}</span>
+          <span>and{" "}</span><span>crypto domains{" "}</span>
           <div className="home-title-icons">
             <div 
               className="home-title-icon" 
@@ -196,7 +196,13 @@ export const HomeFeatures = () => {
               />
             </div>
           </div>
-          <span>{" "}in a whole new informative way</span></h3>
+          <span>in{" "}</span><span>a{" "}</span><span>whole{" "}</span><span>new{" "}</span> <span>{" "}informative way.{" "}</span>
+        </h3>  
+      </div>
+      <div className="container grid-sm">
+        <h3 className="home-title">
+          <span>This is also explorable for Web2 accounts.</span>
+        </h3>
       </div>
       <div className="container grid-sm">
         <h3 className="home-subtitle">With Web3.bio you can:</h3>

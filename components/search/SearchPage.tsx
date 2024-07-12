@@ -74,10 +74,10 @@ export default function SearchPage() {
         <div className="container grid-sm">
           <div className="search-form">
             <div className="form-label">
-              Web3 Identity Search
+              Search Web3 Identity
               <br />
               <small>
-                Explore Web3 identities and domains in a whole new way
+                Dive into the Web3 Identity Graph and Profiles
               </small>
             </div>
             <div className="form-input-group">
@@ -96,6 +96,7 @@ export default function SearchPage() {
                 {renderBadge(PlatformType.ethereum, "0xd8da6bf26964af9d7eed9e03e53415d37aa96045")}
                 {renderBadge(PlatformType.farcaster, "dwr.eth")}
                 {renderBadge(PlatformType.lens, "stani.lens")}
+                {renderBadge(PlatformType.twitter, "suji_yan")}
               </div>
             )}
           </div>

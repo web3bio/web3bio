@@ -543,7 +543,7 @@
 
       &.website {
         .platform-icon {
-          background: $light-color;
+          // background: $light-color;
 
           img {
             border-radius: .3rem;
@@ -913,7 +913,7 @@
       flex-wrap: nowrap;
       margin: 0 -1rem;
       overflow-x: auto;
-      padding: 0 1rem .2rem 1rem;
+      padding: .2rem 1rem;
 
       .poap-main {
         border-radius: .4rem;
