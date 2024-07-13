@@ -429,13 +429,20 @@ body {
   }
 
   .home-title {
+    align-items: flex-start;
     color: $dark-color;
-    font-size: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 1.6rem;
     font-weight: 400;
     gap: .2rem;
-    letter-spacing: -.05em;
-    line-height: 1.25;
+    letter-spacing: -.025em;
+    line-height: 2.4rem;
     margin: 1rem 0;
+
+    @media screen and (max-width: $size-md) {
+      font-size: 1.4rem;
+    }
   }
 
   .home-title-icons {
@@ -443,20 +450,20 @@ body {
     border-radius: 4rem;
     display: inline-flex;
     height: 2.4rem;
-    margin-left: .4rem;
+    margin-left: .25rem;
     position: relative;
   }
 
   .home-title-icon {
     align-items: center;
     background: var(--widget-bg-color, $light-color);
-    border-radius: .8rem;
-    color: #333;
+    border: .05rem solid rgba($dark-color, .05);
+    border-radius: .6rem;
     display: inline-flex;
-    height: 2.2rem;
+    height: 1.8rem;
     justify-content: center;
-    margin-left: -.35rem;
-    width: 2.2rem;
+    margin-left: -.25rem;
+    width: 1.8rem;
 
     .icon {
       filter: drop-shadow(0 0 .2rem rgba($dark-color, .15));

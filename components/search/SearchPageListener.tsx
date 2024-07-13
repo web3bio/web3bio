@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import _ from "lodash";
-export default function IndexPageListener({ inputRef }) {
+
+export default function SearchPageListener({ inputRef }) {
   useEffect(() => {
     const onKeyDown = (e) => {
       if ((e.ctrlKey && e.keyCode === 75) || (e.metaKey && e.keyCode === 75)) {
