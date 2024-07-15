@@ -1,4 +1,4 @@
-import IndexPageRender from "../components/search/IndexPage";
+import SearchPage from "../components/search/SearchPage";
 import { Footer } from "../components/shared/Footer";
 import { PlatformData } from "../components/utils/platform";
 import { handleSearchPlatform } from "../components/utils/utils";
@@ -23,7 +23,7 @@ export async function generateMetadata({ searchParams }) {
         platform
           ? PlatformData[platform.toLowerCase()].label
           : PlatformData[handleSearchPlatform(searchTerm)].label
-      } - Web3.bio Search`
+      } - Web3.bio Identity Search`
     : defaultTitle;
   const description = searchTerm
     ? `Search ${searchTerm} on ${
@@ -61,7 +61,7 @@ export default function HomePage({}) {
       <div className="web3bio-container home-container">
         <div className="web3bio-cover ui2"></div>
         <Header />
-        <IndexPageRender />
+        <SearchPage />
         <HomeFeatures />
         <Footer />
       </div>

@@ -81,9 +81,9 @@ export enum PlatformType {
 export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.twitter]: {
     key: PlatformType.twitter,
-    color: "#4A99E9",
-    icon: "icons/icon-twitter.svg",
-    label: "Twitter",
+    color: "#000000",
+    icon: "icons/icon-x.svg",
+    label: "X.com",
     urlPrefix: "https://x.com/",
     ensText: ["com.twitter", "vnd.twitter", "twitter"],
     dotbitText: ["profile.twitter"],

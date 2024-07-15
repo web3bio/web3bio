@@ -344,7 +344,7 @@
       background: linear-gradient(to bottom, rgba($light-color, 0) 40%, rgba($light-color, 1) 80%);
       bottom: 0;
       display: flex;
-      height: 6rem;
+      height: 10rem;
       justify-content: center;
       left: 0;
       padding: 1rem;
@@ -433,7 +433,7 @@
       }
 
       &.feeds {
-        height: 50vh;
+        height: 40vh;
 
         .feed-item-text {
           border-radius: .4rem;
@@ -543,7 +543,7 @@
 
       &.website {
         .platform-icon {
-          background: $light-color;
+          // background: $light-color;
 
           img {
             border-radius: .3rem;
@@ -913,7 +913,7 @@
       flex-wrap: nowrap;
       margin: 0 -1rem;
       overflow-x: auto;
-      padding: 0 1rem .2rem 1rem;
+      padding: .2rem 1rem;
 
       .poap-main {
         border-radius: .4rem;
