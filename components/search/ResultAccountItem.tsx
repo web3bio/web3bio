@@ -3,7 +3,7 @@ import Link from "next/link";
 import { memo, useEffect, useMemo, useRef, useState } from "react";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
-import { formatText } from "../utils/utils";
+import { formatText, isWeb3Address } from "../utils/utils";
 import { RenderSourceFooter } from "./SourcesFooter";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { useDispatch } from "react-redux";
@@ -31,12 +31,16 @@ const RenderAccountItem = (props) => {
   const profile = useMemo(() => {
     return profiles.find((x) => x.uuid === identity.uuid);
   }, [profiles, identity.uuid]);
+
   const rawDisplayName =
     profile?.displayName || identity.displayName || identity.identity;
+  const resolvedDisplayName = 
+    isWeb3Address(rawDisplayName) ? formatText(rawDisplayName) : rawDisplayName;
+  const rawIdentity = 
+    profile?.address || identity.resolveAddress?.[0].address || identity.identity;
   const resolvedIdentity =
-    profile?.address ||
-    identity.resolveAddress?.[0].address ||
-    identity.identity;
+    identity.identity === rawDisplayName ? rawIdentity : identity.identity;
+
   useEffect(() => {
     if (nftContainer.current?.offsetHeight! <= 110) {
       setExpand(true);
@@ -96,18 +100,18 @@ const RenderAccountItem = (props) => {
     case PlatformType.space_id:
     case PlatformType.solana:
     case PlatformType.sns:
+    case PlatformType.bitcoin:
     case PlatformType.genome:
     case PlatformType.nextid:
-    case PlatformType.crossbell:
     case PlatformType.clusters:
       return (
         <>
           <div
             onClick={onClick}
             ref={ref}
-            className={`social-item ${identity.platform} ${
-              isChild ? "social-item-child" : ""
-            } ${idx === 0 ? "first" : ""} `}
+            className={`social-item ${identity.platform}${
+              isChild ? " social-item-child" : ""
+            }${idx === 0 ? " first" : ""}`}
           >
             <div className="social-main">
               <div className="social">
@@ -143,32 +147,24 @@ const RenderAccountItem = (props) => {
                     className="content-title text-ellipsis text-bold"
                     title={rawDisplayName}
                   >
-                    {rawDisplayName}
+                    {resolvedDisplayName}
                   </div>
                   <div className="content-subtitle text-gray">
-                    {profile?.displayName !== profile?.identity && (
+                    {resolvedIdentity !== rawIdentity && (
                       <>
                         <div className="address">
-                          {profile.identity || identity.identity}
+                          {resolvedIdentity}
                         </div>
                         <div className="ml-1 mr-1"> · </div>
                       </>
                     )}
-                    {identity.platform === PlatformType.crossbell && (
-                      <>
-                        <div className="address">
-                          {formatText(identity.identity)}
-                        </div>
-                        <div className="ml-1 mr-1"> · </div>
-                      </>
-                    )}
-                    <div className="address">
-                      {formatText(resolvedIdentity)}
+                    <div className="address text-ellipsis">
+                      {rawIdentity}
                     </div>
                     <Clipboard
                       component="div"
                       className="action"
-                      data-clipboard-text={resolvedIdentity}
+                      data-clipboard-text={rawIdentity}
                       onSuccess={onCopySuccess}
                     >
                       <SVG
@@ -269,11 +265,12 @@ const RenderAccountItem = (props) => {
       );
     case PlatformType.lens:
     case PlatformType.farcaster:
+    case PlatformType.crossbell:
       return (
         <div
           onClick={onClick}
           ref={ref}
-          className={`social-item ${identity.platform}`}
+          className={`social-item ${identity.platform}${idx === 0 ? " first" : ""}`}
         >
           <div className="social-main">
             <div className="social">
@@ -303,9 +300,7 @@ const RenderAccountItem = (props) => {
               </div>
               <div className="content">
                 <div className="content-title text-bold">
-                  {profile?.displayName ||
-                    identity.displayName ||
-                    identity.identity}
+                  {resolvedDisplayName}
                 </div>
                 <div className="content-subtitle text-gray">
                   {identity.uid && (
@@ -365,7 +360,7 @@ const RenderAccountItem = (props) => {
         <div
           onClick={onClick}
           ref={ref}
-          className={`social-item ${identity.platform}`}
+          className={`social-item ${identity.platform}${idx === 0 ? " first" : ""}`}
         >
           <div className="social-main">
             <Link
@@ -387,7 +382,7 @@ const RenderAccountItem = (props) => {
                   height={20}
                 />
               </div>
-              <div className="title">{rawDisplayName}</div>
+              <div className="title">{resolvedDisplayName}</div>
             </Link>
             <div className={`actions`}>
               <Clipboard

@@ -1,56 +1,212 @@
 import SVG from "react-inlinesvg";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
+import { colorMod } from "../utils/utils";
 
 export const HomeFeatures = () => {
   return (
     <div className="home-features">
-      {/* <div className="container grid-sm">
+      <div className="container grid-sm">
         <h3 className="home-title">
-          Explore Web3 
-          <div className="home-label-pride">
-            <SVG
-              fill={"#121212"}
-              src={SocialPlatformMapping(PlatformType.farcaster).icon || ""}
-              width={32}
-              height={32}
-              className="icon"
-            />
-            <SVG
-              fill={"#121212"}
-              src={SocialPlatformMapping(PlatformType.lens).icon || ""}
-              width={32}
-              height={32}
-              className="icon"
-            />
-            identities
+          <span>Explore{" "}</span><span className="text-pride text-large">✦</span><span>Web3 identities{" "}</span>
+          <div className="home-title-icons">
+            <div 
+              className="home-title-icon"
+              style={{
+                ["--widget-bg-color" as string]: colorMod(
+                  SocialPlatformMapping(PlatformType.ethereum)?.color,
+                  75
+                ),
+              }}
+            >
+              <SVG
+                fill={SocialPlatformMapping(PlatformType.ethereum).color}
+                src={SocialPlatformMapping(PlatformType.ethereum).icon || ""}
+                width={24}
+                height={24}
+                className="icon"
+                title={SocialPlatformMapping(PlatformType.ethereum).label || ""}
+              />
+            </div>
+            <div 
+              className="home-title-icon" 
+              style={{
+                ["--widget-bg-color" as string]: colorMod(
+                  SocialPlatformMapping(PlatformType.farcaster)?.color,
+                  75
+                ),
+              }}
+            >
+              <SVG
+                fill={SocialPlatformMapping(PlatformType.farcaster).color}
+                src={SocialPlatformMapping(PlatformType.farcaster).icon || ""}
+                width={24}
+                height={24}
+                className="icon"
+                title={SocialPlatformMapping(PlatformType.farcaster).label || ""}
+              />
+            </div>
+            <div 
+              className="home-title-icon" 
+              style={{
+                ["--widget-bg-color" as string]: colorMod(
+                  SocialPlatformMapping(PlatformType.lens)?.color,
+                  75
+                ),
+              }}
+            >
+              <SVG
+                fill={SocialPlatformMapping(PlatformType.lens).color}
+                src={SocialPlatformMapping(PlatformType.lens).icon || ""}
+                width={24}
+                height={24}
+                className="icon"
+                title={SocialPlatformMapping(PlatformType.lens).label || ""}
+              />
+            </div>
           </div>
-           and 
-          <div className="home-label-pride">
-            <SVG
-              fill={"#121212"}
-              src={SocialPlatformMapping(PlatformType.ens).icon || ""}
-              width={32}
-              height={32}
-              className="icon"
-            />
-            <SVG
-              fill={"#121212"}
-              src={SocialPlatformMapping(PlatformType.unstoppableDomains).icon || ""}
-              width={32}
-              height={32}
-              className="icon"
-            />
-            <SVG
-              fill={"#121212"}
-              src={SocialPlatformMapping(PlatformType.dotbit).icon || ""}
-              width={32}
-              height={32}
-              className="icon"
-            />
-            domains
+          <span>and{" "}</span><span>crypto domains{" "}</span>
+          <div className="home-title-icons">
+            <div 
+              className="home-title-icon" 
+              style={{
+                ["--widget-primary-color" as string]: SocialPlatformMapping(
+                  PlatformType.ens
+                ).color,
+                ["--widget-bg-color" as string]: colorMod(
+                  SocialPlatformMapping(PlatformType.ens)?.color,
+                  65
+                ),
+              }}
+            >
+              <SVG
+                fill={SocialPlatformMapping(PlatformType.ens).color}
+                src={SocialPlatformMapping(PlatformType.ens).icon || ""}
+                width={24}
+                height={24}
+                className="icon"
+                title={SocialPlatformMapping(PlatformType.ens).label || ""}
+              />
+            </div>
+            <div 
+              className="home-title-icon" 
+              style={{
+                ["--widget-bg-color" as string]: colorMod(
+                  SocialPlatformMapping(PlatformType.unstoppableDomains)?.color,
+                  65
+                ),
+              }}
+            >
+              <SVG
+                fill={SocialPlatformMapping(PlatformType.unstoppableDomains).color}
+                src={SocialPlatformMapping(PlatformType.unstoppableDomains).icon || ""}
+                width={24}
+                height={24}
+                className="icon"
+                title={SocialPlatformMapping(PlatformType.unstoppableDomains).label || ""}
+              />
+            </div>
+            <div 
+              className="home-title-icon" 
+              style={{
+                ["--widget-bg-color" as string]: colorMod(
+                  SocialPlatformMapping(PlatformType.clusters)?.color,
+                  65
+                ),
+              }}
+            >
+              <SVG
+                fill={SocialPlatformMapping(PlatformType.clusters).color}
+                src={SocialPlatformMapping(PlatformType.clusters).icon || ""}
+                width={24}
+                height={24}
+                className="icon"
+                title={SocialPlatformMapping(PlatformType.clusters).label || ""}
+              />
+            </div>
+            <div 
+              className="home-title-icon" 
+              style={{
+                ["--widget-bg-color" as string]: colorMod(
+                  SocialPlatformMapping(PlatformType.crossbell)?.color,
+                  75
+                ),
+              }}
+            >
+              <SVG
+                fill={SocialPlatformMapping(PlatformType.crossbell).color}
+                src={SocialPlatformMapping(PlatformType.crossbell).icon || ""}
+                width={24}
+                height={24}
+                className="icon"
+                title={SocialPlatformMapping(PlatformType.crossbell).label || ""}
+              />
+            </div>
+            <div 
+              className="home-title-icon" 
+              style={{
+                ["--widget-bg-color" as string]: colorMod(
+                  SocialPlatformMapping(PlatformType.space_id)?.color,
+                  75
+                ),
+              }}
+            >
+              <SVG
+                fill={SocialPlatformMapping(PlatformType.space_id).color}
+                src={SocialPlatformMapping(PlatformType.space_id).icon || ""}
+                width={24}
+                height={24}
+                className="icon"
+                title={SocialPlatformMapping(PlatformType.space_id).label || ""}
+              />
+            </div>
+            <div 
+              className="home-title-icon" 
+              style={{
+                ["--widget-bg-color" as string]: colorMod(
+                  SocialPlatformMapping(PlatformType.dotbit)?.color,
+                  75
+                ),
+              }}
+            >
+              <SVG
+                fill={SocialPlatformMapping(PlatformType.dotbit).color}
+                src={SocialPlatformMapping(PlatformType.dotbit).icon || ""}
+                width={24}
+                height={24}
+                className="icon"
+                title={SocialPlatformMapping(PlatformType.dotbit).label || ""}
+              />
+            </div>
+            <div 
+              className="home-title-icon" 
+              style={{
+                ["--widget-bg-color" as string]: colorMod(
+                  SocialPlatformMapping(PlatformType.sns)?.color,
+                  75
+                ),
+              }}
+            >
+              <SVG
+                fill={SocialPlatformMapping(PlatformType.sns).color}
+                src={SocialPlatformMapping(PlatformType.sns).icon || ""}
+                width={24}
+                height={24}
+                className="icon"
+                title={SocialPlatformMapping(PlatformType.sns).label || ""}
+              />
+            </div>
           </div>
-          in a whole new way</h3>
-      </div> */}
+          <span>in{" "}</span><span>a{" "}</span><span>whole{" "}</span><span>new{" "}</span> <span>{" "}informative way.{" "}</span>
+        </h3>  
+      </div>
+      <div className="container grid-sm">
+        <h3 className="home-title">
+          <span></span>
+        </h3>
+      </div>
+      <div className="container grid-sm">
+        <h3 className="home-subtitle">With Web3.bio you can:</h3>
+      </div>
       <div className="container grid-lg">
         <div className="columns mt-4 mb-4">
           <div className="column col-6 col-sm-12 mt-2 mb-2">

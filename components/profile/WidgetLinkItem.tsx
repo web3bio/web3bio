@@ -19,21 +19,12 @@ const WidgetItem = (props) => {
     return (
       <>
         <div className="platform-icon">
-          {item.platform === PlatformType.website ? (
-            <Image
-              src={`https://icon.horse/icon/${item.handle.split("/")[0]}`}
-              alt={`${item.handle} Website Favicon`}
-              loading="lazy"
-              height={24}
-              width={24}
-            />
-          ) : (
-            <SVG
-              src={`../${SocialPlatformMapping(item.platform)?.icon}`}
-              width={20}
-              height={20}
-            />
-          )}
+          <SVG
+            src={`../${SocialPlatformMapping(item.platform)?.icon}`}
+            width={20}
+            height={20}
+            title={"Social Icon"}
+          />
           {item.verified && (
             <div className="icon-verified">
               <SVG

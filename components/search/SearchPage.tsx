@@ -2,14 +2,37 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import SearchInput from "../search/SearchInput";
-import { handleSearchPlatform } from "../utils/utils";
+import SVG from "react-inlinesvg";
+import SearchInput from "./SearchInput";
+import { handleSearchPlatform, formatText } from "../utils/utils";
 import { regexBtc, regexSolana } from "../utils/regexp";
-import IndexPageListener from "./IndexPageListener";
+import { PlatformType, SocialPlatformMapping } from "../utils/platform";
+import SearchPageListener from "./SearchPageListener";
 import SearchResult from "./SearchResult";
-import { HomeFeatures } from "../shared/HomeFeatures";
 
-export default function HomePage() {
+export const renderBadge = (platform, identity) => {
+  return (
+    <Link
+      href={`/?s=${identity}&platform=${platform}`}
+      className={`platform-badge`}
+      title={`Search ${identity} on ${SocialPlatformMapping(platform).label}`}
+    >
+      <div className="platform-badge-icon">
+        <SVG
+          fill={SocialPlatformMapping(platform).color}
+          width={20}
+          height={20}
+          src={SocialPlatformMapping(platform).icon || ""}
+        />
+      </div>
+      <span className="platform-badge-name">
+        {formatText(identity)}
+      </span>
+    </Link>
+  );
+};
+
+export default function SearchPage() {
   const [searchFocus, setSearchFocus] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchPlatform, setSearchPlatform] = useState("");
@@ -50,32 +73,11 @@ export default function HomePage() {
       >
         <div className="container grid-sm">
           <div className="search-form">
-            <Link
-              href={{
-                pathname: "/",
-                query: {},
-              }}
-              className="web3bio-logo"
-              title="Web3.bio"
-            >
-              <h1 className="text-pride">
-                WEB3
-                <br />
-                BIO
-              </h1>
-              <h2 className="text-assistive">
-                Web3.bio is a platform for Web3 and Web 2.0 Identity Graph
-                search and link in bio profiles. It provides a list of relevant
-                identities when searching for a Twitter handle, Ethereum
-                address, ENS domain, Lens profile, Farcaster account,
-                Unstoppable Domains, and other Web3 identities.
-              </h2>
-            </Link>
             <div className="form-label">
               Web3 Identity Search
               <br />
               <small>
-                Explore Web3 identities and domains in a whole new way
+                Dive into the Web3 Identity Graph and Profiles
               </small>
             </div>
             <div className="form-input-group">
@@ -87,6 +89,16 @@ export default function HomePage() {
                 handleSubmit={handleSubmit}
               />
             </div>
+            {!searchTerm && (
+              <div className="search-badges">
+                <div className="search-badges-title mr-2">Trending: {" "}</div>
+                {renderBadge(PlatformType.ens, "vitalik.eth")}
+                {renderBadge(PlatformType.ethereum, "0xd8da6bf26964af9d7eed9e03e53415d37aa96045")}
+                {renderBadge(PlatformType.farcaster, "dwr.eth")}
+                {renderBadge(PlatformType.lens, "stani.lens")}
+                {renderBadge(PlatformType.twitter, "suji_yan")}
+              </div>
+            )}
           </div>
           {searchPlatform && (
             <SearchResult
@@ -99,9 +111,8 @@ export default function HomePage() {
             />
           )}
         </div>
-        <IndexPageListener inputRef={inputRef} />
+        <SearchPageListener inputRef={inputRef} />
       </div>
-      <HomeFeatures />
     </>
   );
 }
