@@ -74,7 +74,7 @@ export default function SearchPage() {
         <div className="container grid-sm">
           <div className="search-form">
             <div className="form-label">
-              Search Web3 Identity
+              Web3 Identity Search
               <br />
               <small>
                 Dive into the Web3 Identity Graph and Profiles

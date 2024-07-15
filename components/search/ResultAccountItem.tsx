@@ -109,9 +109,9 @@ const RenderAccountItem = (props) => {
           <div
             onClick={onClick}
             ref={ref}
-            className={`social-item ${identity.platform} ${
-              isChild ? "social-item-child" : ""
-            } ${idx === 0 ? "first" : ""} `}
+            className={`social-item ${identity.platform}${
+              isChild ? " social-item-child" : ""
+            }${idx === 0 ? " first" : ""}`}
           >
             <div className="social-main">
               <div className="social">
@@ -270,7 +270,7 @@ const RenderAccountItem = (props) => {
         <div
           onClick={onClick}
           ref={ref}
-          className={`social-item ${identity.platform}`}
+          className={`social-item ${identity.platform}${idx === 0 ? " first" : ""}`}
         >
           <div className="social-main">
             <div className="social">
@@ -360,7 +360,7 @@ const RenderAccountItem = (props) => {
         <div
           onClick={onClick}
           ref={ref}
-          className={`social-item ${identity.platform}`}
+          className={`social-item ${identity.platform}${idx === 0 ? " first" : ""}`}
         >
           <div className="social-main">
             <Link

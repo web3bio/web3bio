@@ -137,33 +137,32 @@
     }
 
     .svg-canvas {
+      .edge-path {
+        fill: transparent;
+        pointer-events: none;
+        stroke: #cecece;
+        stroke-opacity: .65;
+      }
+
+      .edge-label {
+        fill: transparent;
+        font-size: 10px;
+        font-weight: 400;
+        pointer-events: none;
+        user-select: none;
+      }
+
+      .edge-label-selected {
+        fill: $dark-color;
+      }
+
       .edge-selected {
         stroke-width: 1.5;
       }
 
       .node-selected {
-        stroke-width: 3;
+        stroke-width: 2;
         stroke-opacity: 1;
-      }
-
-      .edge-path {
-        stroke: #cecece;
-        stroke-opacity: .65;
-        fill: transparent;
-        pointer-events: none;
-
-      }
-
-      .edge-label {
-        user-select: none;
-        fill: #999;
-        font-size: 10px;
-        font-weight: 400;
-        pointer-events: none;
-      }
-
-      .edge-label-selected {
-        fill: $dark-color;
       }
 
       .node {

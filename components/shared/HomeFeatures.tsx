@@ -201,7 +201,7 @@ export const HomeFeatures = () => {
       </div>
       <div className="container grid-sm">
         <h3 className="home-title">
-          <span>This is also explorable for Web2 accounts.</span>
+          <span></span>
         </h3>
       </div>
       <div className="container grid-sm">
