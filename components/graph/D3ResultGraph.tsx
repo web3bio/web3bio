@@ -149,34 +149,37 @@ export default function D3IdentityGraph(props) {
             d3
               .forceLink(links)
               .id((d) => d.id)
-              .strength(0.5)
-              .distance(10)
+              .distance((d) => (d.source.group === d.target.group ? 100 : 200))
           )
-          .force("charge", d3.forceManyBody().strength(-200))
-          .force("x", d3.forceX())
-          .force("y", d3.forceY())
+          .force("charge", d3.forceManyBody().strength(-1000))
+          .force(
+            "x",
+            d3.forceX((d) => {
+              if (d.group === 2) {
+                return -width / 2;
+              } else if (d.group === 3) {
+                return (2 * width) / 3;
+              } else {
+                return width / 2;
+              }
+            })
+          )
+          .force("y", d3.forceY(height / 2))
           .force(
             "collide",
             d3
-              .forceCollide(100)
+              .forceCollide(80)
               .radius((d) =>
-                d.platform === PlatformType.ens ||
-                d.platform === PlatformType.sns
-                  ? IdentityNodeSize * 0.75
-                  : IdentityNodeSize * 1.85
+                d.isIdentity ? IdentityNodeSize * 1.5 : NFTNodeSize * 2.75
               )
           )
           .force("center", d3.forceCenter(width / 2, height / 2))
-          .force(
-            "attract",
-            d3.forceRadial(0, width / 2, height / 2).strength(0.075)
-          )
           .stop();
 
         return simulation;
       };
-
       const simulation = generateSimulation();
+
       // marker
       svg
         .append("defs")
