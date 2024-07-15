@@ -23,7 +23,7 @@ export async function generateMetadata({ searchParams }) {
         platform
           ? PlatformData[platform.toLowerCase()].label
           : PlatformData[handleSearchPlatform(searchTerm)].label
-      } - Web3.bio Search`
+      } - Web3.bio Identity Search`
     : defaultTitle;
   const description = searchTerm
     ? `Search ${searchTerm} on ${

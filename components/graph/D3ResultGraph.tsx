@@ -151,20 +151,22 @@ export default function D3IdentityGraph(props) {
             d3
               .forceLink(links)
               .id((d) => d.id)
-              .distance((d) => (d.target.isIdentity ? 60 : 10))
+              .strength(.5)
+              .distance(10)
           )
-          .force("charge", d3.forceManyBody())
-          .force("x", d3.forceX(width / 2).strength(0.5))
-          .force("y", d3.forceY(height / 2).strength(1.3))
+          .force("charge", d3.forceManyBody().strength(-200))
+          .force("x", d3.forceX())
+          .force("y", d3.forceY())
           .force(
-            "collision",
+            "collide",
             d3
-              .forceCollide()
+              .forceCollide(100)
               .radius((d) =>
-                d.isIdentity ? IdentityNodeSize * 2 : NFTNodeSize * 2.25
+                d.platform === PlatformType.ens || d.platform === PlatformType.sns ? IdentityNodeSize * .25 : IdentityNodeSize * 1.85
               )
           )
           .force("center", d3.forceCenter(width / 2, height / 2))
+          .force('attract', d3.forceRadial(0, width / 2, height / 2).strength(0.075))
           .stop();
 
         return simulation;
@@ -209,7 +211,7 @@ export default function D3IdentityGraph(props) {
         .attr("dy", "3px")
         .attr("text-anchor", "middle")
         .text((d) =>
-          d.source.isIdentity && d.target.isIdentity ? d.label : ""
+          d.source.platform === PlatformType.ens || d.target.platform === PlatformType.ens ? "" : d.label
         );
 
       const dragged = (event, d) => {
@@ -245,7 +247,7 @@ export default function D3IdentityGraph(props) {
 
       const circle = nodeContainer
         .append("circle")
-        .attr("stroke-width", 2)
+        .attr("stroke-width", 1.5)
         .attr("r", (d) => getNodeRadius(d.isIdentity))
         .attr("stroke", (d) => SocialPlatformMapping(d.platform).color)
         .attr("fill", (d) =>
@@ -446,7 +448,7 @@ export default function D3IdentityGraph(props) {
                       : "UID"}
                     :{" "}
                   </span>
-                  {currentNode.uid}
+                  #{currentNode.uid}
                 </li>
               )) ||
                 ""}
@@ -483,10 +485,12 @@ export default function D3IdentityGraph(props) {
                   {currentNode.resolvedAddress || ""}
                 </li>
               )}
-              <li>
-                <span className="text-gray">Owner: </span>
-                {currentNode.owner || ""}
-              </li>
+              {currentNode.owner && (
+                <li>
+                  <span className="text-gray">Owner: </span>
+                  {currentNode.owner || ""}
+                </li>
+              )}
             </ul>
           )}
         </div>

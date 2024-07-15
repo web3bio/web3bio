@@ -125,19 +125,18 @@ const RenderAccount = (props) => {
     }
 
     return _resolved;
-  }, [identityGraph, platform,graphTitle]);
+  }, [identityGraph, platform, graphTitle]);
 
   const resolveSources = (id: string) => {
-    let res: string[] = [];
-    identityGraph.edges.forEach((x) => {
+    return identityGraph.edges.reduce((pre, x) => {
       if (x.target === id) {
         const label = SocialPlatformMapping(x.dataSource)?.label;
-        if (label && !res.includes(label)) {
-          res.push(label);
+        if (label && !pre.includes(label)) {
+          pre.push(label);
         }
       }
-    });
-    return res;
+      return pre
+    }, []);
   };
   return (
     <>
