@@ -11,6 +11,7 @@ export enum WidgetTypes {
   gitcoin = "gitcoin",
   default = "default",
   airstackScores = "airstackScores",
+  guild = "guild",
 }
 export const WidgetInfoMapping = (widgetType: WidgetTypes) => {
   const WidgetsInfoData = {
@@ -83,7 +84,14 @@ export const WidgetInfoMapping = (widgetType: WidgetTypes) => {
       key: "airstackScores",
       icon: "🟣",
       title: "Farcaster",
-      description: "Social Capital Scores (SCS) are a measure of each Farcaster user's influence in the network.",
+      description:
+        "Social Capital Scores (SCS) are a measure of each Farcaster user's influence in the network.",
+    },
+    [WidgetTypes.guild]: {
+      key: "guild",
+      icon: "🏯",
+      title: "Guild",
+      description: "Guild.xyz",
     },
   };
   return (

@@ -33,6 +33,7 @@ import { WidgetScores } from "./WidgetScores";
 import { updateUniversalBatchedProfile } from "../state/universal/actions";
 import { getProfileQuery } from "../utils/queries";
 import { WidgetArticle } from "./WidgetArticle";
+import WidgetGuild from "./WidgetGuild";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
@@ -422,7 +423,7 @@ export default function ProfileMain(props) {
                     >
                       <WidgetArticle
                         address={data.address}
-                        domain={relations?.find(x=>x.contenthash)?.identity}
+                        domain={relations?.find((x) => x.contenthash)?.identity}
                       />
                     </Suspense>
                   </div>
@@ -439,6 +440,16 @@ export default function ProfileMain(props) {
                       />
                     </Suspense>
                   </div>
+
+                  {isValidEthereumAddress(data.address) && (
+                    <div className="web3-section-widgets">
+                      <Suspense
+                        fallback={<LoadingSkeleton type={WidgetTypes.guild} />}
+                      >
+                        <WidgetGuild address={data.address} />
+                      </Suspense>
+                    </div>
+                  )}
 
                   {isValidEthereumAddress(data.address) && (
                     <div className="web3-section-widgets">
