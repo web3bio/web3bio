@@ -446,7 +446,12 @@ export default function ProfileMain(props) {
                       <Suspense
                         fallback={<LoadingSkeleton type={WidgetTypes.guild} />}
                       >
-                        <WidgetGuild address={data.address} />
+                        <WidgetGuild
+                          onShowDetail={(v) => {
+                            openModal(ModalType.poaps, v);
+                          }}
+                          address={data.address}
+                        />
                       </Suspense>
                     </div>
                   )}

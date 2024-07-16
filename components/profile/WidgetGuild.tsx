@@ -27,7 +27,7 @@ function useGuildMemberships(address: string) {
   };
 }
 
-export default function WidgetGuild({ address }) {
+export default function WidgetGuild({ address, onShowDetail }) {
   const { data, isLoading } = useGuildMemberships(address);
   const [render, setRender] = useState(false);
   const dispatch = useDispatch();
@@ -92,7 +92,13 @@ export default function WidgetGuild({ address }) {
             {getBoundaryRender() ||
               data.map((x, idx) => {
                 return (
-                  <div key={idx} className="poap-item c-hand">
+                  <div
+                    onClick={() => {
+                      onShowDetail(x);
+                    }}
+                    key={idx}
+                    className="poap-item c-hand"
+                  >
                     <NFTAssetPlayer
                       className="img-container"
                       src={x.imageUrl}
