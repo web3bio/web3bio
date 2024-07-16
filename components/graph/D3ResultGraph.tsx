@@ -9,7 +9,7 @@ import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import _ from "lodash";
 import SVG from "react-inlinesvg";
 import { Empty } from "../shared/Empty";
-import { calcTranslation, resolveIdentityGraphData } from "./utils";
+import { resolveIdentityGraphData } from "./utils";
 
 let CurrentId = null;
 
@@ -19,9 +19,7 @@ const NFTNodeSize = 14;
 const getNodeRadius = (isIdentity) =>
   isIdentity ? IdentityNodeSize : NFTNodeSize;
 const getMarkerRefX = (d) => {
-  return d.target.isIdentity
-    ? IdentityNodeSize + (d.isSingle ? 30 : 26)
-    : NFTNodeSize + (d.isSingle ? 16 : 8);
+  return d.target.isIdentity ? IdentityNodeSize + 30 : NFTNodeSize + 16;
 };
 
 const updateNodes = (nodeContainer) => {
@@ -151,28 +149,37 @@ export default function D3IdentityGraph(props) {
             d3
               .forceLink(links)
               .id((d) => d.id)
-              .strength(.5)
-              .distance(10)
+              .distance((d) => (d.source.group === d.target.group ? 100 : 50))
           )
           .force("charge", d3.forceManyBody().strength(-200))
-          .force("x", d3.forceX())
-          .force("y", d3.forceY())
+          .force(
+            "x",
+            d3.forceX((d) => {
+              if (d.group === 2) {
+                return - width / 4;
+              } else if (d.group === 3) {
+                return (2 * width) / 3;
+              } else {
+                return width / 4;
+              }
+            })
+          )
+          .force("y", d3.forceY(height / 2))
           .force(
             "collide",
             d3
-              .forceCollide(100)
+              .forceCollide(80)
               .radius((d) =>
-                d.platform === PlatformType.ens || d.platform === PlatformType.sns ? IdentityNodeSize * .25 : IdentityNodeSize * 1.85
+                d.isIdentity ? IdentityNodeSize * 1.75 : NFTNodeSize * 2.25
               )
           )
           .force("center", d3.forceCenter(width / 2, height / 2))
-          .force('attract', d3.forceRadial(0, width / 2, height / 2).strength(0.075))
           .stop();
 
         return simulation;
       };
-
       const simulation = generateSimulation();
+
       // marker
       svg
         .append("defs")
@@ -211,7 +218,10 @@ export default function D3IdentityGraph(props) {
         .attr("dy", "3px")
         .attr("text-anchor", "middle")
         .text((d) =>
-          d.source.platform === PlatformType.ens || d.target.platform === PlatformType.ens ? "" : d.label
+          d.source.platform === PlatformType.ens ||
+          d.target.platform === PlatformType.ens
+            ? ""
+            : d.label
         );
 
       const dragged = (event, d) => {
@@ -273,17 +283,15 @@ export default function D3IdentityGraph(props) {
       const ticked = () => {
         // tick
         edgePath.attr("d", (d) => {
-          const delta = calcTranslation(4, d.source, d.target);
-          const rightwardSign = d.target.x > d.source.x ? 2 : -2;
           return (
             "M" +
-            (d.isSingle ? d.source.x : d.source.x + rightwardSign * delta.dx) +
+            d.source.x +
             "," +
-            (d.isSingle ? d.source.y : d.source.y + -rightwardSign * delta.dy) +
+            d.source.y +
             "L" +
-            (d.isSingle ? d.target.x : d.target.x + rightwardSign * delta.dx) +
+            d.target.x +
             "," +
-            (d.isSingle ? d.target.y : d.target.y + -rightwardSign * delta.dy)
+            d.target.y
           );
         });
 
@@ -371,8 +379,10 @@ export default function D3IdentityGraph(props) {
         ) {
           // initial center the root node before every tick
           const rootNode = nodes.find((x) => x.id === root.id);
-          rootNode.x = width / 2;
-          rootNode.y = height / 2;
+          if (rootNode) {
+            rootNode.x = width / 2;
+            rootNode.y = height / 2;
+          }
           simulation.tick();
         }
         ticked();
