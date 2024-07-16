@@ -149,18 +149,18 @@ export default function D3IdentityGraph(props) {
             d3
               .forceLink(links)
               .id((d) => d.id)
-              .distance((d) => (d.source.group === d.target.group ? 100 : 200))
+              .distance((d) => (d.source.group === d.target.group ? 100 : 50))
           )
-          .force("charge", d3.forceManyBody().strength(-1000))
+          .force("charge", d3.forceManyBody().strength(-200))
           .force(
             "x",
             d3.forceX((d) => {
               if (d.group === 2) {
-                return -width / 2;
+                return - width / 4;
               } else if (d.group === 3) {
                 return (2 * width) / 3;
               } else {
-                return width / 2;
+                return width / 4;
               }
             })
           )
@@ -170,7 +170,7 @@ export default function D3IdentityGraph(props) {
             d3
               .forceCollide(80)
               .radius((d) =>
-                d.isIdentity ? IdentityNodeSize * 1.5 : NFTNodeSize * 2.75
+                d.isIdentity ? IdentityNodeSize * 1.75 : NFTNodeSize * 2.25
               )
           )
           .force("center", d3.forceCenter(width / 2, height / 2))
