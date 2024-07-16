@@ -91,7 +91,8 @@ export const WidgetInfoMapping = (widgetType: WidgetTypes) => {
       key: "guild",
       icon: "🏯",
       title: "Guild",
-      description: "Guild.xyz",
+      description:
+        "A summary of everything we've collected on our tools, live integrations, features and more.",
     },
   };
   return (
