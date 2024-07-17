@@ -76,6 +76,7 @@ export enum PlatformType {
   gnosis = "gnosis",
   webacy = "webacy",
   clusters = "clusters",
+  guild="guild"
 }
 
 export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
@@ -590,6 +591,14 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     icon: "icons/icon-clusters.svg",
     label: "Clusters",
     urlPrefix: "https://clusters.xyz/",
+    system: PlatformSystem.web3,
+  },
+  [PlatformType.guild]: {
+    key: PlatformType.guild,
+    color: "#36363a",
+    icon: "icons/icon-guild.svg",
+    label: "Guild",
+    urlPrefix: "https://guild.xyz/",
     system: PlatformSystem.web3,
   },
 };
