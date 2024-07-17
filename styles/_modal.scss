@@ -600,7 +600,9 @@
     justify-content: center;
     margin: 0 auto;
     position: relative;
-
+    &.preview-image-guild {
+      padding: 3rem;
+    }
     &.preview-image-poap {
       padding: 3rem;
 

@@ -66,6 +66,7 @@ export default function ProfileMain(props) {
       );
     }
   }, [relations, dispatch]);
+
   useEffect(() => {
     if (!mounted) setMounted(true);
     if (domain && platform) {
@@ -448,7 +449,9 @@ export default function ProfileMain(props) {
                       >
                         <WidgetGuild
                           onShowDetail={(v) => {
-                            openModal(ModalType.poaps, v);
+                            openModal(ModalType.guild, {
+                              guild: v,
+                            });
                           }}
                           address={data.address}
                         />
