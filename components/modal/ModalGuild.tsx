@@ -93,7 +93,7 @@ export default function GuildModalContent({ onClose, guild }) {
                   return (
                     <Link
                       key={x.id}
-                      href={`https://warpcast.com/~/channel/${x.id}`}
+                      href={`https://guild.xyz/${guild.urlName}`}
                       className="channel-item"
                       target="_blank"
                     >
