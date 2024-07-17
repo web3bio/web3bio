@@ -72,18 +72,19 @@ export default function GuildModalContent({ onClose, guild }) {
             <span title="Guild ID">#{guild.id || "…"}</span>
           </div>
           <div className="mt-2">{guildDetail?.description}</div>
-          {/* <div className="mt-2">
-            {(_profile.location && `📍 ${_profile.location}`) || ""}
-          </div> */}
-          <div className="mt-2 mb-4">
-            <strong className="text-large">{guildDetail?.memberCount}</strong>{" "}
-            Members{" "}
-            {guildDetail?.guildPin?.chain && (
-              <>
-                · <strong>{guildDetail.guildPin?.chain}</strong>
-              </>
-            )}
-          </div>
+
+          {guildDetail && (
+            <div className="mt-2 mb-4">
+              <strong className="text-large">{guildDetail?.memberCount}</strong>{" "}
+              Members{" "}
+              {guildDetail?.guildPin?.chain && (
+                <>
+                  · <strong>{guildDetail.guildPin?.chain}</strong>
+                </>
+              )}
+            </div>
+          )}
+
           <div className="divider"></div>
           {guildDetail?.roles?.length > 0 && (
             <div className="panel-widget">
@@ -145,6 +146,16 @@ export default function GuildModalContent({ onClose, guild }) {
               <SVG src={"icons/icon-open.svg"} width={20} height={20} />
               Open in Guild.xyz
             </Link>
+            {guildDetail?.eventSources?.LUMA && (
+              <Link
+                href={guildDetail?.eventSources?.LUMA}
+                target="_blank"
+                className="btn btn-primary"
+              >
+                <SVG src={"icons/icon-open.svg"} width={20} height={20} />
+                Event Source
+              </Link>
+            )}
           </div>
         </div>
       </>
