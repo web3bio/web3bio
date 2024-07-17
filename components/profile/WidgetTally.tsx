@@ -134,7 +134,7 @@ const RenderWidgetTally = ({ address }) => {
                               </div>
                             </td>
                             <td>
-                              {votesCount} (
+                              {Number(votesCount).toFixed(2)} (
                               {(
                                 Math.abs(
                                   Number(x.votesCount) /

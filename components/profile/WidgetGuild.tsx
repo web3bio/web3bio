@@ -1,9 +1,7 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
-import Link from "next/link";
 import useSWR from "swr";
 import { Loading } from "../shared/Loading";
-import SVG from "react-inlinesvg";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { useDispatch } from "react-redux";
 import { updateGuildWidget } from "../state/widgets/action";
@@ -74,18 +72,6 @@ export default function WidgetGuild({ address, onShowDetail }) {
             <h3 className="text-assistive">
               {WidgetInfoMapping(WidgetTypes.guild).description}
             </h3>
-            <div className="widget-action">
-              <div className="action-icon">
-                <Link
-                  className="btn btn-sm btn-action"
-                  title="More on Guild.xyz"
-                  href={`https://guild.xyz/explorer`}
-                  target={"_blank"}
-                >
-                  <SVG src="icons/icon-open.svg" width={20} height={20} />
-                </Link>
-              </div>
-            </div>
           </div>
 
           <div className="widget-poap-list noscrollbar">

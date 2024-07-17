@@ -595,11 +595,11 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
   },
   [PlatformType.guild]: {
     key: PlatformType.guild,
-    color: "#36363a",
+    color: "#6062eb",
     icon: "icons/icon-guild.svg",
     label: "Guild",
     urlPrefix: "https://guild.xyz/",
-    system: PlatformSystem.web3,
+    system: PlatformSystem.web2,
   },
 };
 

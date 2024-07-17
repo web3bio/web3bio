@@ -43,7 +43,7 @@ export default function GuildModalContent({ onClose, guild }) {
               height={14}
             />
           </div>
-          <span>Guildhall</span>
+          <span>Guild</span>
         </div>
         <div className="modal-profile-body">
           <Avatar

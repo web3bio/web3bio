@@ -89,10 +89,10 @@ export const WidgetInfoMapping = (widgetType: WidgetTypes) => {
     },
     [WidgetTypes.guild]: {
       key: "guild",
-      icon: "🏯",
-      title: "Guild",
+      icon: "🏰",
+      title: "Guilds",
       description:
-        "A summary of everything we've collected on our tools, live integrations, features and more.",
+        "Automated membership management for the platforms your community already uses.",
     },
   };
   return (

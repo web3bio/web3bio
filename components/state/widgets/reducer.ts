@@ -65,6 +65,11 @@ export const initialState: WidgetState = {
     initLoading: true,
     loaded: false,
   },
+  [WidgetTypes.guild]: {
+    isEmpty: null,
+    initLoading: true,
+    loaded: false,
+  },
   [WidgetTypes.tally]: {
     isEmpty: null,
     initLoading: true,
@@ -98,11 +103,6 @@ export const initialState: WidgetState = {
     initLoading: true,
     loaded: false,
     parent: WidgetTypes.scores,
-  },
-  [WidgetTypes.guild]: {
-    isEmpty: null,
-    initLoading: true,
-    loaded: false,
   },
 };
 
@@ -157,6 +157,17 @@ export default createReducer(initialState, (builder) =>
       (state, { payload: { isEmpty, initLoading } }) => {
         state[WidgetTypes.article] = {
           ...state[WidgetTypes.article],
+          isEmpty,
+          initLoading,
+          loaded: true,
+        };
+      }
+    )
+    .addCase(
+      updateGuildWidget,
+      (state, { payload: { isEmpty, initLoading } }) => {
+        state[WidgetTypes.guild] = {
+          ...state[WidgetTypes.guild],
           isEmpty,
           initLoading,
           loaded: true,
@@ -223,17 +234,6 @@ export default createReducer(initialState, (builder) =>
       (state, { payload: { isEmpty, initLoading } }) => {
         state[WidgetTypes.airstackScores] = {
           ...state[WidgetTypes.airstackScores],
-          isEmpty,
-          initLoading,
-          loaded: true,
-        };
-      }
-    )
-    .addCase(
-      updateGuildWidget,
-      (state, { payload: { isEmpty, initLoading } }) => {
-        state[WidgetTypes.guild] = {
-          ...state[WidgetTypes.guild],
           isEmpty,
           initLoading,
           loaded: true,
