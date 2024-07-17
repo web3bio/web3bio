@@ -58,7 +58,7 @@ export default function WidgetGuild({ address, onShowDetail }) {
   return (
     render && (
       <div className="profile-widget-full" id={WidgetTypes.guild}>
-        <div className="profile-widget profile-widget-poap">
+        <div className="profile-widget profile-widget-guild">
           <div className="profile-widget-header">
             <h2
               className="profile-widget-title"
@@ -74,7 +74,7 @@ export default function WidgetGuild({ address, onShowDetail }) {
             </h3>
           </div>
 
-          <div className="widget-poap-list noscrollbar">
+          <div className="widget-guild-list noscrollbar">
             {getBoundaryRender() ||
               data.map((x, idx) => {
                 return (
@@ -83,7 +83,7 @@ export default function WidgetGuild({ address, onShowDetail }) {
                       onShowDetail(x);
                     }}
                     key={idx}
-                    className="poap-item c-hand"
+                    className="guild-item c-hand"
                   >
                     <NFTAssetPlayer
                       className="img-container"

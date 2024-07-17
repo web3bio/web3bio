@@ -79,7 +79,8 @@ export default function GuildModalContent({ onClose, guild }) {
               Members{" "}
               {guildDetail?.guildPin?.chain && (
                 <>
-                  · <strong>{guildDetail.guildPin?.chain}</strong>
+                  <span> · </span>
+                  <strong className="text-large">{guildDetail.guildPin?.chain}</strong>{" "}Chain
                 </>
               )}
             </div>

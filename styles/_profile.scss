@@ -901,13 +901,6 @@
     aspect-ratio: auto;
     position: relative;
 
-    .platform-icon {
-      box-shadow: inset 0 0 0 .05rem rgba($dark-color, .05), 0 .2rem .4rem rgba($dark-color, .01), 2rem -4rem 6rem 10rem var(--widget-bg-color);
-      flex: 0 0 1.4rem;
-      height: 1.4rem;
-      width: 1.4rem;
-    }
-
     .widget-poap-list {
       display: flex;
       flex-wrap: nowrap;
@@ -948,6 +941,41 @@
           border: .05rem solid #2f2a47;
           border-radius: 50%;
           box-shadow: 0 0 0 .1rem #E4E2FD;
+          height: 3.2rem;
+          padding: .25rem;
+          width: 3.2rem;
+        }
+      }
+    }
+  }
+
+  // Guild Widget
+  .profile-widget-guild {
+    aspect-ratio: auto;
+    position: relative;
+
+    .widget-guild-list {
+      display: flex;
+      flex-wrap: nowrap;
+      margin: 0 -1rem;
+      overflow-x: auto;
+      padding: .2rem 1rem;
+
+      .guild-item {
+        flex: 0 0 3.2rem;
+        height: 3.2rem;
+        width: 3.2rem;
+
+        &:not(:first-child) {
+          margin-left: -.5rem;
+        }
+
+        .img-responsive,
+        .video-responsive {
+          background: $light-color;
+          border: .05rem solid #212252;
+          border-radius: 50%;
+          box-shadow: 0 0 0 .1rem #E1E1FB;
           height: 3.2rem;
           padding: .25rem;
           width: 3.2rem;
