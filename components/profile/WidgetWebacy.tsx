@@ -78,7 +78,7 @@ export function WidgetWebacy({ address }) {
               : "Low Risk"}
           </div>
         </div>
-        <div className="widget-risk-title">Safety Score</div>
+        <div className="widget-risk-title">Address Risk Score </div>
       </div>
     </Link>
   );
