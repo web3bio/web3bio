@@ -1,16 +1,22 @@
 "use client";
 import useSWR from "swr";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
+import { WEBACY_API_ENDPOINT, webacyFetcher } from "../apis/webacy";
+// import { ProfileFetcher } from "../apis/profile";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { regexSolana } from "../utils/regexp";
 import { updateWebacyWidget } from "../state/widgets/action";
-import { ProfileFetcher } from "../apis/profile";
 import Link from "next/link";
 
 export function WidgetWebacy({ address }) {
   const { data, isLoading } = useSWR(
-    `/api/metadata/webacy/${address}`,
-    ProfileFetcher,
+    // `/api/metadata/webacy/${address}`,
+    // ProfileFetcher,
+    `${WEBACY_API_ENDPOINT}/addresses/${address}?chain=${
+      regexSolana.test(address) ? "sol" : "eth"
+    }`,
+    webacyFetcher,
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
@@ -72,7 +78,7 @@ export function WidgetWebacy({ address }) {
               : "Low Risk"}
           </div>
         </div>
-        <div className="widget-risk-title">Safety Score</div>
+        <div className="widget-risk-title">Address Risk Score </div>
       </div>
     </Link>
   );

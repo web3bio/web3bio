@@ -102,5 +102,18 @@ export const resolveIdentityGraphData = (source) => {
   const _nodes = _.uniqBy(nodes, "id");
   const _edges = _.uniqBy(edges, "id");
 
-  return { nodes: _nodes, edges: _edges };
+  return {
+    nodes: _.sortBy(
+      _nodes.map((x) => ({
+        ...x,
+        group: x.isIdentity
+          ? 1
+          : [PlatformType.sns, PlatformType.ens].includes(x.platform)
+          ? 2
+          : 3,
+      })),
+      "group"
+    ),
+    edges: _edges,
+  };
 };
