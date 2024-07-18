@@ -450,10 +450,10 @@ export default function ProfileMain(props) {
                         <WidgetGuild
                           onShowDetail={(v) => {
                             openModal(ModalType.guild, {
-                              guild: v,
+                              ...v,
                             });
                           }}
-                          address={data.address}
+                          profile={data}
                         />
                       </Suspense>
                     </div>

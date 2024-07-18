@@ -10,7 +10,7 @@ import { GUILD_XYZ_ENDPOINT, GuildFetcher } from "../apis/guild";
 
 function useGuildMemberships(address: string) {
   const { data, error, isValidating } = useSWR(
-    `${GUILD_XYZ_ENDPOINT}/guilds?user=${address}`,
+    `${GUILD_XYZ_ENDPOINT}/users/${address}/memberships`,
     GuildFetcher,
     {
       suspense: true,
@@ -25,19 +25,21 @@ function useGuildMemberships(address: string) {
   };
 }
 
-export default function WidgetGuild({ address, onShowDetail }) {
-  const { data, isLoading } = useGuildMemberships(address);
+export default function WidgetGuild({ profile, onShowDetail }) {
+  const { data, isLoading } = useGuildMemberships(profile?.address);
   const [render, setRender] = useState(false);
+  const [infoLoading, setInfoLoading] = useState(false);
+  const [guilds, setGuilds] = useState(new Array());
   const dispatch = useDispatch();
   const getBoundaryRender = useCallback(() => {
-    if (isLoading)
+    if (isLoading || infoLoading)
       return (
         <div className="widget-loading">
           <Loading />
         </div>
       );
     return null;
-  }, [isLoading]);
+  }, [isLoading, infoLoading]);
   useEffect(() => {
     setRender(true);
     if (!isLoading) {
@@ -45,7 +47,36 @@ export default function WidgetGuild({ address, onShowDetail }) {
         updateGuildWidget({ isEmpty: !data?.length, initLoading: false })
       );
     }
-  }, [data, isLoading, dispatch]);
+    const fetchGuildsInfo = async () => {
+      const res = await Promise.allSettled([
+        ...data.map(({ guildId }) =>
+          fetch(`${GUILD_XYZ_ENDPOINT}/guilds/${guildId}`)
+            .then((res) => res.json())
+            .catch((e) => null)
+        ),
+      ]);
+      if (!guilds.length) {
+        setGuilds([
+          ...res
+            .filter((x) => x.status === "fulfilled" && x.value?.id)
+            .reduce((pre, cur) => {
+              const guildInfo = (cur as any).value;
+              const _guildBase = data?.find((i) => i.guildId === guildInfo.id);
+              pre.push({
+                ..._guildBase,
+                ...guildInfo,
+              });
+              return pre;
+            }, new Array()),
+        ]);
+      }
+      setInfoLoading(false);
+    };
+    if (data?.length > 0 && !infoLoading && !guilds?.length) {
+      setInfoLoading(true);
+      fetchGuildsInfo();
+    }
+  }, [data, isLoading, dispatch, infoLoading]);
 
   if (!data || !data.length || !render) {
     return null;
@@ -76,24 +107,37 @@ export default function WidgetGuild({ address, onShowDetail }) {
 
           <div className="widget-guild-list noscrollbar">
             {getBoundaryRender() ||
-              data.map((x, idx) => {
+              guilds.map((x, idx) => {
+                const imageURL = x?.imageUrl.includes("/guildLogos/")
+                  ? "https://guild.xyz" + x.imageUrl
+                  : x.imageUrl;
                 return (
                   <div
                     onClick={() => {
-                      onShowDetail(x);
+                      onShowDetail({
+                        guild: {
+                          ...x,
+                          imageUrl: imageURL,
+                        },
+
+                        profile,
+                      });
                     }}
                     key={idx}
                     className="guild-item c-hand"
                   >
                     <NFTAssetPlayer
-                      className="img-container"
-                      src={x.imageUrl}
+                      className={
+                        x?.imageUrl?.includes("/guildLogos/")
+                          ? "img-container dark-img"
+                          : "img-container"
+                      }
+                      src={imageURL}
                       alt={x.id}
                       height={64}
                       width={64}
                       placeholder={true}
                     />
-                    <div className="text-ellipsis">{x.name}</div>
                   </div>
                 );
               })}

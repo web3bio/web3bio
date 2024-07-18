@@ -376,6 +376,7 @@
     .action-icon {
       display: flex;
       height: 1.4rem;
+
       svg {
         flex: 0 0 1rem;
       }
@@ -970,8 +971,13 @@
           margin-left: -.5rem;
         }
 
-        .img-responsive,
-        .video-responsive {
+        .dark-img {
+          .img-responsive {
+            background: #000;
+          }
+        }
+
+        .img-container {
           background: $light-color;
           border: .05rem solid #212252;
           border-radius: 50%;
@@ -979,6 +985,10 @@
           height: 3.2rem;
           padding: .25rem;
           width: 3.2rem;
+        }
+        .img-responsive,
+        .video-responsive{
+          border-radius: 50%;
         }
       }
     }

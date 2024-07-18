@@ -7,18 +7,19 @@ import Link from "next/link";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { Avatar } from "../shared/Avatar";
 import Image from "next/image";
-export default function GuildModalContent({ onClose, guild }) {
-  const { data: guildDetail } = useSWR(
-    `${GUILD_XYZ_ENDPOINT}/guilds/guild-page/${guild.urlName}`,
+export default function GuildModalContent({ onClose, guild, profile }) {
+  const { data: guildRoles } = useSWR(
+    `${GUILD_XYZ_ENDPOINT}/guilds/${guild.id}/roles`,
     SimplehashFetcher,
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
     }
   );
-  if (guildDetail) {
-    console.log("baseInfo:", guild, "detail:", guildDetail);
+  if (guildRoles) {
+    console.log("baseInfo:", guild, "roles:", guildRoles);
   }
+
   return (
     <>
       <div className="modal-actions">
@@ -52,6 +53,11 @@ export default function GuildModalContent({ onClose, guild }) {
             className="avatar"
             alt={guild.name}
             src={guild?.imageUrl}
+            style={{
+              background: guild?.imageUrl?.includes("/guildLogos/")
+                ? "#000"
+                : "",
+            }}
           />
           <div className="d-flex mt-4" style={{ alignItems: "center" }}>
             <strong className="h4 text-bold">{guild.name}</strong>
@@ -71,27 +77,38 @@ export default function GuildModalContent({ onClose, guild }) {
             <span> · </span>
             <span title="Guild ID">#{guild.id || "…"}</span>
           </div>
-          <div className="mt-2">{guildDetail?.description}</div>
+          <div className="mt-2">{guild?.description}</div>
 
-          {guildDetail && (
+          <div className="mt-2 mb-4">
+            <strong className="text-large">{guild?.memberCount}</strong> Members{" "}
+            {guild?.guildPin?.chain && (
+              <>
+                <span> · </span>
+                <strong className="text-large">
+                  {guild.guildPin?.chain}
+                </strong>{" "}
+                Chain
+              </>
+            )}
+          </div>
+
+          {guildRoles?.length > 0 && (
             <div className="mt-2 mb-4">
-              <strong className="text-large">{guildDetail?.memberCount}</strong>{" "}
-              Members{" "}
-              {guildDetail?.guildPin?.chain && (
-                <>
-                  <span> · </span>
-                  <strong className="text-large">{guildDetail.guildPin?.chain}</strong>{" "}Chain
-                </>
-              )}
+              Roles with {profile.displayName}:{" "}
+              <span className="text-bold">
+                {guild.roleIds
+                  .map((x) => guildRoles.find((i) => i.id === x)?.name)
+                  .join(" , ")}
+              </span>
             </div>
           )}
 
           <div className="divider"></div>
-          {guildDetail?.roles?.length > 0 && (
+          {guildRoles?.length > 0 && (
             <div className="panel-widget">
               <div className="panel-widget-title">Roles</div>
               <div className="panel-widget-content">
-                {guildDetail.roles.map((x) => {
+                {guildRoles.map((x) => {
                   return (
                     <Link
                       key={x.id}
@@ -147,9 +164,9 @@ export default function GuildModalContent({ onClose, guild }) {
               <SVG src={"icons/icon-open.svg"} width={20} height={20} />
               Open in Guild.xyz
             </Link>
-            {guildDetail?.eventSources?.LUMA && (
+            {guild?.eventSources?.LUMA && (
               <Link
-                href={guildDetail?.eventSources?.LUMA}
+                href={guild?.eventSources?.LUMA}
                 target="_blank"
                 className="btn btn-primary"
               >
