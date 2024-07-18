@@ -54,6 +54,10 @@ const RenderWidgetTally = ({ address }) => {
     }
   }, [data, loading, dispatch]);
 
+  // if (process.env.NODE_ENV !== "production") {
+  //   console.log("Tally Data:", data);
+  // }
+
   if (
     !(data?.delegates?.nodes?.length > 0 || data?.delegatees?.nodes?.length > 0)
   )
@@ -134,7 +138,7 @@ const RenderWidgetTally = ({ address }) => {
                               </div>
                             </td>
                             <td>
-                              {Number(votesCount).toFixed(2)} (
+                              {votesCount} (
                               {(
                                 Math.abs(
                                   Number(x.votesCount) /
@@ -191,7 +195,7 @@ const RenderWidgetTally = ({ address }) => {
                                 title={
                                   x.organization.name +
                                   " - " +
-                                  x.slug
+                                  x.organization.slug
                                 }
                               >
                                 {x.organization.name}{" "}

@@ -93,7 +93,7 @@ export default function WidgetGuild({ address, onShowDetail }) {
                       width={64}
                       placeholder={true}
                     />
-                    <div>{x.name}</div>
+                    <div className="text-ellipsis">{x.name}</div>
                   </div>
                 );
               })}
