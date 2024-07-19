@@ -47,34 +47,27 @@ export default function WidgetGuild({ profile, onShowDetail }) {
         updateGuildWidget({ isEmpty: !data?.length, initLoading: false })
       );
     }
-    const fetchGuildsInfo = async () => {
-      const res = await Promise.allSettled([
-        ...data.map(({ guildId }) =>
-          fetch(`${GUILD_XYZ_ENDPOINT}/guilds/${guildId}`)
-            .then((res) => res.json())
-            .catch((e) => null)
-        ),
-      ]);
-      if (!guilds.length) {
-        setGuilds([
-          ...res
-            .filter((x) => x.status === "fulfilled" && x.value?.id)
-            .reduce((pre, cur) => {
-              const guildInfo = (cur as any).value;
-              const _guildBase = data?.find((i) => i.guildId === guildInfo.id);
-              pre.push({
-                ..._guildBase,
-                ...guildInfo,
-              });
-              return pre;
-            }, new Array()),
-        ]);
-      }
+    const fetchGuildsBatch = async () => {
+      const res = await fetch(
+        `${GUILD_XYZ_ENDPOINT}/guilds?guildIds=${data
+          .map((x) => x.guildId)
+          ?.join(",")}`
+      ).then((res) => res.json());
+      setGuilds(
+        res.reduce((pre, cur) => {
+          const _guildBase = data?.find((i) => i.guildId === cur.id);
+          pre.push({
+            ..._guildBase,
+            ...cur,
+          });
+          return pre;
+        }, new Array())
+      );
       setInfoLoading(false);
     };
     if (data?.length > 0 && !infoLoading && !guilds?.length) {
       setInfoLoading(true);
-      fetchGuildsInfo();
+      fetchGuildsBatch();
     }
   }, [data, isLoading, dispatch, infoLoading]);
 

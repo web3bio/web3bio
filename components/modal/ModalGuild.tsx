@@ -1,8 +1,7 @@
 import SVG from "react-inlinesvg";
 import useSWR from "swr";
-import { SimplehashFetcher } from "../apis/simplehash";
 import _ from "lodash";
-import { GUILD_XYZ_ENDPOINT } from "../apis/guild";
+import { GUILD_XYZ_ENDPOINT, GuildFetcher } from "../apis/guild";
 import Link from "next/link";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { Avatar } from "../shared/Avatar";
@@ -10,14 +9,29 @@ import Image from "next/image";
 export default function GuildModalContent({ onClose, guild, profile }) {
   const { data: guildRoles } = useSWR(
     `${GUILD_XYZ_ENDPOINT}/guilds/${guild.id}/roles`,
-    SimplehashFetcher,
+    GuildFetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  );
+  const { data: guildDetail } = useSWR(
+    `${GUILD_XYZ_ENDPOINT}/guilds/${guild.id}`,
+    GuildFetcher,
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
     }
   );
   if (guildRoles) {
-    console.log("baseInfo:", guild, "roles:", guildRoles);
+    console.log(
+      "baseInfo:",
+      guild,
+      "roles:",
+      guildRoles,
+      "details:",
+      guildDetail
+    );
   }
 
   return (
@@ -77,15 +91,15 @@ export default function GuildModalContent({ onClose, guild, profile }) {
             <span> · </span>
             <span title="Guild ID">#{guild.id || "…"}</span>
           </div>
-          <div className="mt-2">{guild?.description}</div>
+          <div className="mt-2">{guildDetail?.description}</div>
 
           <div className="mt-2 mb-4">
             <strong className="text-large">{guild?.memberCount}</strong> Members{" "}
-            {guild?.guildPin?.chain && (
+            {guildDetail?.guildPin?.chain && (
               <>
                 <span> · </span>
                 <strong className="text-large">
-                  {guild.guildPin?.chain}
+                  {guildDetail.guildPin?.chain}
                 </strong>{" "}
                 Chain
               </>
