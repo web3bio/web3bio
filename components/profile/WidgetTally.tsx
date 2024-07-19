@@ -52,6 +52,12 @@ const RenderWidgetTally = ({ address }) => {
     if (data && !data?.delegates?.nodes?.length) {
       setActiveTab(1);
     }
+    if (
+      (data?.delegates?.nodes?.length > 0 && data?.delegates?.nodes?.length < 4) 
+      || (!data?.delegates?.nodes?.length && data?.delegatees?.nodes?.length < 4)
+    ) {
+      setExpand(true);
+    }
   }, [data, loading, dispatch]);
 
   // if (process.env.NODE_ENV !== "production") {
@@ -82,6 +88,7 @@ const RenderWidgetTally = ({ address }) => {
                   e.preventDefault();
                   e.stopPropagation();
                   setActiveTab(0);
+                  setExpand(true);
                 }}
                 className={`btn btn-sm${(activeTab === 0 && " active") || ""}`}
               >
@@ -92,6 +99,7 @@ const RenderWidgetTally = ({ address }) => {
                   e.preventDefault();
                   e.stopPropagation();
                   setActiveTab(1);
+                  setExpand(true);
                 }}
                 className={`btn btn-sm${(activeTab === 1 && " active") || ""}`}
               >
@@ -136,7 +144,15 @@ const RenderWidgetTally = ({ address }) => {
                                 ) : (
                                   <div className="dao-icon"></div>
                                 )}
-                                {x.organization.name}
+                                <div
+                                  className="dao-content text-ellipsis"
+                                  title={x.organization.name + " - " + x.organization.slug}
+                                >
+                                  {x.organization.name}{" "}
+                                  <small className="label">
+                                    {x.organization.slug}
+                                  </small>
+                                </div>
                               </div>
                             </td>
                             <td>
@@ -194,7 +210,7 @@ const RenderWidgetTally = ({ address }) => {
                               />
                               <div
                                 className="dao-content text-ellipsis"
-                                title={x.organization.name + " - " + x.slug}
+                                title={x.organization.name + " - " + x.organization.slug}
                               >
                                 {x.organization.name}{" "}
                                 <small className="label">
@@ -209,20 +225,37 @@ const RenderWidgetTally = ({ address }) => {
                           </td>
                           <td>
                             <div className="table-item">
-                              {x.delegate.id && (
-                                <Link
-                                  className="feed-token"
-                                  href={`${
-                                    process.env.NEXT_PUBLIC_BASE_URL ||
-                                    "https://web3.bio"
-                                  }/${delegateeId}`}
-                                  title={x.delegator.id}
-                                  target="_blank"
-                                >
-                                  <small className="feed-token-value">
-                                    {formatText(delegateeId)}
-                                  </small>
-                                </Link>
+                              {delegateeId === x.delegator.address ? (
+                                  <Link
+                                    className="feed-token"
+                                    href={`${
+                                      process.env.NEXT_PUBLIC_BASE_URL ||
+                                      "https://web3.bio"
+                                    }/${x.delegator?.ens || x.delegator?.address}`}
+                                    title={x.delegator?.ens || x.delegator?.address}
+                                    target="_blank"
+                                  >
+                                    <div className="feed-token-value">
+                                      {x.delegator?.ens}
+                                    </div>
+                                    <small className="feed-token-meta">
+                                      {formatText(x.delegator?.address).toLowerCase()}
+                                    </small>
+                                  </Link>
+                                ) : (
+                                  <Link
+                                    className="feed-token"
+                                    href={`${
+                                      process.env.NEXT_PUBLIC_BASE_URL ||
+                                      "https://web3.bio"
+                                    }/${delegateeId}`}
+                                    title={x.delegator.id}
+                                    target="_blank"
+                                  >
+                                    <div className="feed-token-value">
+                                      {formatText(delegateeId.toLowerCase())}
+                                    </div>
+                                  </Link>
                               )}
                             </div>
                           </td>
@@ -241,9 +274,7 @@ const RenderWidgetTally = ({ address }) => {
         )}
 
         {!loading &&
-          !expand &&
-          (data?.delegates?.nodes?.length > 4 ||
-            data?.delegatees?.nodes?.length > 4) && (
+          !expand && (
             <div
               className="btn-widget-more"
               onClick={() => {

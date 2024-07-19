@@ -23,7 +23,7 @@ export default function GuildModalContent({ onClose, guild, profile }) {
       revalidateOnReconnect: false,
     }
   );
-  if (guildRoles) {
+  if (process.env.NODE_ENV !== "production") {
     console.log(
       "baseInfo:",
       guild,
@@ -92,7 +92,41 @@ export default function GuildModalContent({ onClose, guild, profile }) {
             <span title="Guild ID">#{guild.id || "…"}</span>
           </div>
           <div className="mt-2">{guildDetail?.description}</div>
-
+          {guildRoles?.length > 0 && (
+            <div className="panel-widget">
+              <div className="panel-widget-title">Guild Roles</div>
+              <div className="panel-widget-content">
+                {guildRoles.map((x) => {
+                  return (
+                    <div
+                      key={x.id}
+                      className="role-item feed-token"
+                      title={x.description}
+                    >
+                      <Image
+                        alt={x.name}
+                        width={20}
+                        height={20}
+                        src={
+                          x.imageUrl.includes("/guildLogos/")
+                            ? `https://guild.xyz${x.imageUrl}`
+                            : x.imageUrl
+                        }
+                        className={"role-item-icon feed-token-icon"}
+                        style={{
+                          background: x.imageUrl.includes("/guildLogos/")
+                            ? "#000"
+                            : "unset",
+                        }}
+                      />
+                      <span className="feed-token-value">{x.name}</span>
+                      <span className="feed-token-meta">{x.memberCount?.toLocaleString()} Members</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
           <div className="mt-2 mb-4">
             <strong className="text-large">{guild?.memberCount}</strong> Members{" "}
             {guildDetail?.guildPin?.chain && (
@@ -106,66 +140,18 @@ export default function GuildModalContent({ onClose, guild, profile }) {
             )}
           </div>
 
-          {guildRoles?.length > 0 && (
-            <div className="mt-2 mb-4">
-              Roles with {profile.displayName}:{" "}
-              <span className="text-bold">
-                {guild.roleIds
-                  .map((x) => guildRoles.find((i) => i.id === x)?.name)
-                  .join(" , ")}
-              </span>
-            </div>
-          )}
-
-          <div className="divider"></div>
-          {guildRoles?.length > 0 && (
-            <div className="panel-widget">
-              <div className="panel-widget-title">Roles</div>
-              <div className="panel-widget-content">
-                {guildRoles.map((x) => {
-                  return (
-                    <Link
-                      key={x.id}
-                      href={`https://guild.xyz/${guild.urlName}`}
-                      className="channel-item"
-                      target="_blank"
-                    >
-                      <Image
-                        alt={x.name}
-                        width={40}
-                        height={40}
-                        src={
-                          x.imageUrl.includes("/guildLogos/")
-                            ? `https://guild.xyz${x.imageUrl}`
-                            : x.imageUrl
-                        }
-                        color={
-                          SocialPlatformMapping(PlatformType.guild).color || ""
-                        }
-                        className={"channel-item-icon"}
-                        style={{
-                          background: x.imageUrl.includes("/guildLogos/")
-                            ? "#000"
-                            : "unset",
-                        }}
-                      />
-                      <div className="channel-item-body">
-                        <div className="channel-item-title">
-                          <strong>{x.name}</strong>{" "}
-                          <span className="text-gray">#{x.id}</span>
-                        </div>
-                        <div className="channel-item-subtitle">
-                          {x.description}
-                        </div>
-                        <div className="channel-item-subtitle text-gray">
-                          {x.memberCount?.toLocaleString()} Members
-                        </div>
-                      </div>
-                    </Link>
-                  );
-                })}
+          {guild.roleIds?.length > 0 && guildRoles && (
+            <>
+              <div className="divider"></div>
+              <div className="mt-2 mb-4">
+                Roles with {profile.displayName}:{" "}
+                <span className="text-bold">
+                  {guild.roleIds
+                    .map((x) => guildRoles.find((i) => i.id === x)?.name)
+                    .join(" , ")}
+                </span>
               </div>
-            </div>
+            </>
           )}
         </div>
         <div className="modal-profile-footer">
@@ -182,10 +168,10 @@ export default function GuildModalContent({ onClose, guild, profile }) {
               <Link
                 href={guild?.eventSources?.LUMA}
                 target="_blank"
-                className="btn btn-primary"
+                className="btn"
               >
                 <SVG src={"icons/icon-open.svg"} width={20} height={20} />
-                Event Source
+                Events
               </Link>
             )}
           </div>

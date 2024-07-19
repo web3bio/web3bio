@@ -112,7 +112,6 @@ export default function WidgetGuild({ profile, onShowDetail }) {
                           ...x,
                           imageUrl: imageURL,
                         },
-
                         profile,
                       });
                     }}
@@ -131,6 +130,7 @@ export default function WidgetGuild({ profile, onShowDetail }) {
                       width={64}
                       placeholder={true}
                     />
+                    <div className="text-assistive">{x.name}</div>
                   </div>
                 );
               })}

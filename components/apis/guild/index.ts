@@ -1,4 +1,5 @@
 export const GUILD_XYZ_ENDPOINT = "https://api.guild.xyz/v2";
+
 export const GuildFetcher = async (url) => {
   console.time("Guild API call");
   try {

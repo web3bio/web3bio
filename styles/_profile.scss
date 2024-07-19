@@ -1293,10 +1293,6 @@
       width: 100%;
 
       .trait-item {
-        border-radius: .2rem;
-        font-weight: 500;
-        padding: .15rem .25rem;
-
         &.action_tier_legendary {
           background-image: linear-gradient(124.2deg, #d6fdff 8%, #bad1ff 34%, #7cd4f0 74%, #b4fffa 95%);
           order: -12;
@@ -1468,7 +1464,6 @@
         border-radius: .2rem;
         font-weight: 500;
         height: fit-content;
-        padding: .15rem .25rem;
 
         &.label-tier-rare {
           background-image: linear-gradient(124.2deg, #d6fdff 8%, #bad1ff 34%, #7cd4f0 74%, #b4fffa 95%);
