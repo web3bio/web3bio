@@ -41,7 +41,7 @@ const shareMap = [
 ];
 
 export default function ShareModalContent(props) {
-  const { profile, path, onClose } = props;
+  const { profile, path, onClose, avatar } = props;
   const url = `${
     process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio"
   }/${path}`;
@@ -57,7 +57,7 @@ export default function ShareModalContent(props) {
   if (path) params.append("path", path);
   if (profile) params.append("address", profile.address);
   params.append("displayName", profile.displayName);
-  if (profile.avatar) params.append("avatar", profile.avatar);
+  if (avatar) params.append("avatar", avatar);
   if (profile.description) params.append("description", profile.description);
   const relativeOGURL = params.toString()
     ? `/api/og?${params.toString()}`
@@ -125,7 +125,9 @@ export default function ShareModalContent(props) {
             onSuccess={onCopySuccess}
           >
             <SVG
-              src={isCopied ? "../icons/icon-check.svg" : "../icons/icon-copy.svg"}
+              src={
+                isCopied ? "../icons/icon-check.svg" : "../icons/icon-copy.svg"
+              }
               width={20}
               height={20}
               className="action"

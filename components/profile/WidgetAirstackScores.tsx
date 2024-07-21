@@ -72,7 +72,7 @@ export function WidgetAirStackScores({ handle, openModal }) {
             className="widget-risk-title"
             title="Social Capital Scores (SCS) are a measure of each Farcaster user's influence in the network."
           >
-            Social Capital Scores <span className="c-hand">&#9432;</span>
+            Airstack Social Score <span className="c-hand">&#9432;</span>
           </div>
         </div>
       </div>

@@ -6,7 +6,7 @@ interface Avatar extends AssetPlayerProps {
 }
 
 export const Avatar = (props: Avatar) => {
-  const { src, width, height, alt, identity, itemProp } = props;
+  const { src, width, height, alt, identity, itemProp, style } = props;
   const profileAvatarAPIURL = `/api/avatar/svg?handle=${identity}`;
   return (
     <Image
@@ -14,6 +14,7 @@ export const Avatar = (props: Avatar) => {
       style={{
         width: width ? width : "100%",
         height: height ? height : "auto",
+        ...style,
       }}
       src={src || profileAvatarAPIURL}
       width={Number(width) || 0}

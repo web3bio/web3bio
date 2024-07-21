@@ -33,6 +33,7 @@ import { WidgetScores } from "./WidgetScores";
 import { updateUniversalBatchedProfile } from "../state/universal/actions";
 import { getProfileQuery } from "../utils/queries";
 import { WidgetArticle } from "./WidgetArticle";
+import WidgetGuild from "./WidgetGuild";
 import { useTipEmoji } from "../hooks/useTipEmoji";
 
 export default function ProfileMain(props) {
@@ -67,6 +68,7 @@ export default function ProfileMain(props) {
       );
     }
   }, [relations, dispatch]);
+
   useEffect(() => {
     if (!mounted) setMounted(true);
     if (domain && platform) {
@@ -123,8 +125,8 @@ export default function ProfileMain(props) {
   };
   const isEmptyProfile = useCallback(() => {
     const source = Object.values(profileWidgetStates).filter((x) => x.loaded);
-    // 4 is all widgets num - basic widgets num (nft, poaps, feeds)
-    return source.length > 4 && source.every((x) => x.isEmpty);
+    // 5 is all widgets num - basic widgets num (nft, poaps, feeds)
+    return source.length > 5 && source.every((x) => x.isEmpty);
   }, [profileWidgetStates])();
 
   const isBasicLoadingFinished = useCallback(() => {
@@ -454,6 +456,23 @@ export default function ProfileMain(props) {
                       />
                     </Suspense>
                   </div>
+
+                  {isValidEthereumAddress(data.address) && (
+                    <div className="web3-section-widgets">
+                      <Suspense
+                        fallback={<LoadingSkeleton type={WidgetTypes.guild} />}
+                      >
+                        <WidgetGuild
+                          onShowDetail={(v) => {
+                            openModal(ModalType.guild, {
+                              ...v,
+                            });
+                          }}
+                          profile={data}
+                        />
+                      </Suspense>
+                    </div>
+                  )}
 
                   {isValidEthereumAddress(data.address) && (
                     <div className="web3-section-widgets">

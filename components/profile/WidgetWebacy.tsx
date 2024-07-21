@@ -1,10 +1,10 @@
 "use client";
 import useSWR from "swr";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
+import { ProfileFetcher } from "../apis/profile";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { updateWebacyWidget } from "../state/widgets/action";
-import { ProfileFetcher } from "../apis/profile";
 import Link from "next/link";
 
 export function WidgetWebacy({ address }) {
@@ -72,7 +72,7 @@ export function WidgetWebacy({ address }) {
               : "Low Risk"}
           </div>
         </div>
-        <div className="widget-risk-title">Safety Score</div>
+        <div className="widget-risk-title">Address Risk Score </div>
       </div>
     </Link>
   );

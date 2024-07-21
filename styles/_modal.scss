@@ -20,16 +20,17 @@
     z-index: 999;
 
     .btn {
-      background: rgba($gray-color-light, .5);
+      background: rgba($bg-color, .5);
 
       &:focus,
       &:hover {
-        background: rgba($gray-color-light, .65);
+        background: rgba($bg-color, .65);
       }
+
 
       &:active,
       &.active {
-        background: rgba($gray-color-light, .75);
+        background: rgba($bg-color, .75);
       }
     }
   }
@@ -379,17 +380,15 @@
       padding: 1.5rem;
     }
 
+    .modal-actions {
+      position: absolute;
+    }
+
     .profile-share-header {
       align-items: center;
       display: flex;
       justify-content: space-between;
       padding-bottom: 1.5rem;
-
-      .btn-close {
-        position: absolute;
-        right: 1rem;
-        top: 1rem;
-      }
     }
 
     .profile-share-body {
@@ -458,12 +457,13 @@
     }
   }
 
-  // Modal Profile
-  &.modal-profile-container {
+  // Modal Profile, Modal Guild
+  &.modal-profile-container,
+  &.modal-guild-container {
     background: #fff;
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 2rem);
+    height: calc(100vh - 6rem);
     max-width: 28rem;
     padding: 1.5rem 2rem;
     width: 95%;
@@ -477,6 +477,10 @@
       }
     }
 
+    .modal-actions {
+      position: absolute;
+    }
+
     .modal-profile-header {
       align-items: center;
       display: flex;
@@ -488,7 +492,7 @@
     }
 
     .modal-profile-cover {
-      backdrop-filter: blur(1rem);
+      backdrop-filter: blur(1rem);  
       height: 7rem;
       left: -2rem;
       position: absolute;
@@ -496,12 +500,16 @@
       top: -2rem;
       z-index: -1;
 
+      &.guild {
+        background: linear-gradient(to top, rgba(#6062eb, 0) 0%, rgba(#6062eb, .35) 200%);
+      }
+
       &.farcaster {
-        background: linear-gradient(to top, rgba(#8a63d2, 0) 0%, rgba(#8a63d2, .35) 100%);
+        background: linear-gradient(to top, rgba(#8a63d2, 0) 0%, rgba(#8a63d2, .35) 200%);
       }
 
       &.lens {
-        background: linear-gradient(to top, rgba(#6bc674, 0) 0%, rgba(#6bc674, .35) 100%);
+        background: linear-gradient(to top, rgba(#6bc674, 0) 0%, rgba(#6bc674, .35) 200%);
       }
     }
 
@@ -741,6 +749,10 @@
     margin: 0 auto;
     position: relative;
 
+    &.preview-image-guild {
+      padding: 3rem;
+    }
+
     &.preview-image-poap {
       padding: 3rem;
 
@@ -748,6 +760,7 @@
       .img-responsive {
         border-radius: 50%;
       }
+
     }
 
     .img-responsive,

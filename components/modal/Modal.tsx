@@ -9,6 +9,7 @@ import SearchModalContent from "./ModalSearch";
 import ShareModalContent from "./ModalShare";
 import IdentityGraphModalContent from "./ModalIdentityGraph";
 import ProfileModalContent from "./ModalProfile";
+import GuildModalContent from "./ModalGuild";
 import TipModalContent from "./ModalTips";
 
 export default function Modal(props) {
@@ -62,8 +63,6 @@ export default function Modal(props) {
         return <ProfileModalContent identity={params} onClose={onDismiss} />;
       case ModalType.article:
         return <ArticleModalContent {...params} onClose={onDismiss} />;
-      case ModalType.tip:
-        return <TipModalContent {...params} onClose={onDismiss} />;
       default:
         return children;
     }
