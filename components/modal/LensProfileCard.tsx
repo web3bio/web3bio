@@ -53,7 +53,7 @@ export default function LensProfileCard(props) {
             src={_profile.avatar}
             identity={handle}
           />
-          <div className="d-flex mt-4" style={{ alignItems: "center" }}>
+          <div className="d-flex mt-2" style={{ alignItems: "center" }}>
             <strong className="h4 text-bold">{_profile.displayName}</strong>
             {data?.profile?.onchainIdentity?.proofOfHumanity && (
               <div className="profile-badge" title="Proof of Humanity">

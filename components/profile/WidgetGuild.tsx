@@ -76,7 +76,7 @@ export default function WidgetGuild({ profile, onShowDetail }) {
   }
 
   // if (process.env.NODE_ENV !== "production") {
-  //   console.log("Guild Data:", data);
+  //   console.log("Guild Data:", guilds);
   // }
 
   return (
@@ -125,7 +125,7 @@ export default function WidgetGuild({ profile, onShowDetail }) {
                           : "img-container"
                       }
                       src={imageURL}
-                      alt={x.id}
+                      alt={x.name}
                       height={64}
                       width={64}
                       placeholder={true}
