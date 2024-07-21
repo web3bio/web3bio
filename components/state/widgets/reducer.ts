@@ -11,6 +11,7 @@ import {
   updateDegenWidget,
   updateGitcoinWidget,
   updateAirstackScoresWidget,
+  updateGuildWidget,
 } from "./action";
 import { WidgetTypes } from "../../utils/widgets";
 
@@ -34,6 +35,7 @@ export interface WidgetState {
   [WidgetTypes.webacy]?: WidgetStateDetail;
   [WidgetTypes.gitcoin]?: WidgetStateDetail;
   [WidgetTypes.airstackScores]?: WidgetStateDetail;
+  [WidgetTypes.guild]?: WidgetStateDetail;
 }
 
 export const initialState: WidgetState = {
@@ -59,6 +61,11 @@ export const initialState: WidgetState = {
     loaded: false,
   },
   [WidgetTypes.poaps]: {
+    isEmpty: null,
+    initLoading: true,
+    loaded: false,
+  },
+  [WidgetTypes.guild]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
@@ -150,6 +157,17 @@ export default createReducer(initialState, (builder) =>
       (state, { payload: { isEmpty, initLoading } }) => {
         state[WidgetTypes.article] = {
           ...state[WidgetTypes.article],
+          isEmpty,
+          initLoading,
+          loaded: true,
+        };
+      }
+    )
+    .addCase(
+      updateGuildWidget,
+      (state, { payload: { isEmpty, initLoading } }) => {
+        state[WidgetTypes.guild] = {
+          ...state[WidgetTypes.guild],
           isEmpty,
           initLoading,
           loaded: true,

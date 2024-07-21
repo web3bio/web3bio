@@ -8,7 +8,7 @@ export const webacyFetcher = async (url) => {
         accept: "application/json",
         "x-api-key": apiKey || "",
       },
-      next: { revalidate: 86400 },
+      cache: "no-store",
     });
 
     console.timeEnd("Webacy API call");

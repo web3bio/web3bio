@@ -1,22 +1,16 @@
 "use client";
 import useSWR from "swr";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
-import { WEBACY_API_ENDPOINT, webacyFetcher } from "../apis/webacy";
-// import { ProfileFetcher } from "../apis/profile";
+import { ProfileFetcher } from "../apis/profile";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { regexSolana } from "../utils/regexp";
 import { updateWebacyWidget } from "../state/widgets/action";
 import Link from "next/link";
 
 export function WidgetWebacy({ address }) {
   const { data, isLoading } = useSWR(
-    // `/api/metadata/webacy/${address}`,
-    // ProfileFetcher,
-    `${WEBACY_API_ENDPOINT}/addresses/${address}?chain=${
-      regexSolana.test(address) ? "sol" : "eth"
-    }`,
-    webacyFetcher,
+    `/api/metadata/webacy/${address}`,
+    ProfileFetcher,
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,

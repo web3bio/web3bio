@@ -19,9 +19,12 @@ export const updatePhilandWidget =
   createAction<UpdateWidgetState>("widgets/philand");
 export const updateWebacyWidget =
   createAction<UpdateWidgetState>("widgets/webacy");
-  export const updateAirstackScoresWidget =
-  createAction<UpdateWidgetState>("widgets/airstackScores");
+export const updateAirstackScoresWidget = createAction<UpdateWidgetState>(
+  "widgets/airstackScores"
+);
 export const updateDegenWidget =
   createAction<UpdateWidgetState>("widgets/degen");
 export const updateGitcoinWidget =
   createAction<UpdateWidgetState>("widgets/gitcoin");
+export const updateGuildWidget =
+  createAction<UpdateWidgetState>("widgets/guild");
