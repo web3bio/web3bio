@@ -59,6 +59,10 @@ export default function Modal(props) {
             onClose={onDismiss}
           />
         );
+      case ModalType.tip:
+        return <TipModalContent {...params} onClose={onDismiss} />;
+      case ModalType.guild:
+        return <GuildModalContent {...params} onClose={onDismiss} />;
       case ModalType.profile:
         return <ProfileModalContent identity={params} onClose={onDismiss} />;
       case ModalType.article:
