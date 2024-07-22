@@ -33,8 +33,8 @@ import { WidgetScores } from "./WidgetScores";
 import { updateUniversalBatchedProfile } from "../state/universal/actions";
 import { getProfileQuery } from "../utils/queries";
 import { WidgetArticle } from "./WidgetArticle";
-import { useTipEmoji } from "../hooks/useTipEmoji";
 import WidgetGuild from "./WidgetGuild";
+import { useTipEmoji } from "../hooks/useTipEmoji";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
