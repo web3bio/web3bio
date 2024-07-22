@@ -2,6 +2,16 @@ import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { formatText, isSameAddress } from "../utils/utils";
 import _ from "lodash";
 
+const IdentitySizePlatforms = [
+  PlatformType.ethereum,
+  PlatformType.lens,
+  PlatformType.clusters,
+  PlatformType.farcaster,
+  PlatformType.bitcoin,
+  PlatformType.solana,
+  PlatformType.crossbell,
+];
+
 export const resolveIdentityGraphData = (source) => {
   const nodes = new Array<any>();
   const edges = new Array<any>();
@@ -24,9 +34,7 @@ export const resolveIdentityGraphData = (source) => {
       uid: x.uid,
       uuid: x.uuid,
       address: x.profile?.address || resolvedAddress,
-      isIdentity: [PlatformType.ens, PlatformType.sns].includes(x.platform)
-        ? false
-        : true,
+      isIdentity: IdentitySizePlatforms.includes(x.platform),
       owner: ownerAddress,
       resolvedAddress: resolvedAddress,
     };
@@ -90,35 +98,19 @@ export const resolveIdentityGraphData = (source) => {
   });
   const _nodes = _.uniqBy(nodes, "id");
   const _edges = _.uniqBy(edges, "id");
-  const resolvedEdges = _edges.map((x) => ({
-    ...x,
-    isSingle: isSingleEdge(_edges, x),
-  }));
-  return { nodes: _nodes, edges: resolvedEdges };
-};
-export const isSingleEdge = (data, d) => {
-  if (
-    data.find((x) => d.source === x.target) &&
-    data.find((x) => d.target === x.source)
-  )
-    return false;
-  return true;
-};
-export function calcTranslation(targetDistance, point0, point1) {
-  let x1_x0 = point1.x - point0.x,
-    y1_y0 = point1.y - point0.y,
-    x2_x0,
-    y2_y0;
-  if (y1_y0 === 0) {
-    x2_x0 = 0;
-    y2_y0 = targetDistance;
-  } else {
-    let angle = Math.atan(x1_x0 / y1_y0);
-    x2_x0 = -targetDistance * Math.cos(angle);
-    y2_y0 = targetDistance * Math.sin(angle);
-  }
+
   return {
-    dx: x2_x0,
-    dy: y2_y0,
+    nodes: _.sortBy(
+      _nodes.map((x) => ({
+        ...x,
+        group: x.isIdentity
+          ? 1
+          : [PlatformType.sns, PlatformType.ens].includes(x.platform)
+          ? 2
+          : 3,
+      })),
+      "group"
+    ),
+    edges: _edges,
   };
-}
+};

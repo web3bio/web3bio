@@ -65,7 +65,8 @@ export async function generateMetadata({
   if (domain) params.append("path", domain);
   if (profile) params.append("address", profile.address);
   params.append("displayName", profile.displayName);
-  if (profile.avatar) params.append("avatar", profile.avatar);
+  if (data.some((x) => x.avatar))
+    params.append("avatar", data?.find((x) => !!x.avatar)?.avatar);
   if (profile.description) params.append("description", profile.description);
   const relativeOGURL = params.toString()
     ? `/api/og?${params.toString()}`

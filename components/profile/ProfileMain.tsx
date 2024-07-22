@@ -34,6 +34,7 @@ import { updateUniversalBatchedProfile } from "../state/universal/actions";
 import { getProfileQuery } from "../utils/queries";
 import { WidgetArticle } from "./WidgetArticle";
 import { useTipEmoji } from "../hooks/useTipEmoji";
+import WidgetGuild from "./WidgetGuild";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
@@ -67,6 +68,7 @@ export default function ProfileMain(props) {
       );
     }
   }, [relations, dispatch]);
+
   useEffect(() => {
     if (!mounted) setMounted(true);
     if (domain && platform) {
@@ -123,8 +125,8 @@ export default function ProfileMain(props) {
   };
   const isEmptyProfile = useCallback(() => {
     const source = Object.values(profileWidgetStates).filter((x) => x.loaded);
-    // 4 is all widgets num - basic widgets num (nft, poaps, feeds)
-    return source.length > 4 && source.every((x) => x.isEmpty);
+    // 5 is all widgets num - basic widgets num (nft, poaps, feeds)
+    return source.length > 5 && source.every((x) => x.isEmpty);
   }, [profileWidgetStates])();
 
   const isBasicLoadingFinished = useCallback(() => {
@@ -297,6 +299,7 @@ export default function ProfileMain(props) {
                       <SVG
                         fill={SocialPlatformMapping(x.platform).color}
                         width={20}
+                        height={20}
                         src={SocialPlatformMapping(x.platform).icon || ""}
                       />
                     </div>
@@ -453,6 +456,23 @@ export default function ProfileMain(props) {
                       />
                     </Suspense>
                   </div>
+
+                  {isValidEthereumAddress(data.address) && (
+                    <div className="web3-section-widgets">
+                      <Suspense
+                        fallback={<LoadingSkeleton type={WidgetTypes.guild} />}
+                      >
+                        <WidgetGuild
+                          onShowDetail={(v) => {
+                            openModal(ModalType.guild, {
+                              ...v,
+                            });
+                          }}
+                          profile={data}
+                        />
+                      </Suspense>
+                    </div>
+                  )}
 
                   {isValidEthereumAddress(data.address) && (
                     <div className="web3-section-widgets">

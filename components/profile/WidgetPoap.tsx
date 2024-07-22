@@ -118,6 +118,7 @@ export default function WidgetPOAP({ address, onShowDetail }) {
                       width={64}
                       placeholder={true}
                     />
+                    <div className="text-assistive">{x.event.name}</div>
                   </div>
                 );
               })}
