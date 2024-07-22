@@ -29,6 +29,7 @@ const renderSocialMediaLinks = (_collection) => {
       const item = renderArr[key];
       links.push(
         <Link
+          onClick={(e) => e.stopPropagation()}
           href={getSocialMediaLink(item, key as PlatformType) || ""}
           className="btn"
           key={key}
