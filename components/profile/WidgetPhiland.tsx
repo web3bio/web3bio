@@ -2,10 +2,10 @@
 import { useEffect, memo } from "react";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
-import { updatePhilandWidget } from "../state/widgets/action";
 import { QUERY_PHILAND_INFO } from "../apis/philand";
 import { useQuery } from "@apollo/client";
 import { WidgetTypes } from "../utils/widgets";
+import { updatePhilandWidget } from "../state/widgets/reducer";
 
 const RenderWidgetPhiland = ({ domain, onShowDetail }) => {
   const { data, loading, error } = useQuery(QUERY_PHILAND_INFO, {
@@ -36,23 +36,25 @@ const RenderWidgetPhiland = ({ domain, onShowDetail }) => {
 
   return (
     <div className="profile-widget-half" id={WidgetTypes.philand}>
-      <div 
-        className="profile-widget profile-widget-philand" 
+      <div
+        className="profile-widget profile-widget-philand"
         onClick={() =>
           onShowDetail({
             imageurl: data?.philandImage?.imageurl,
-            links: data?.philandLink?.data?.filter(
-              (x) => x.title && x.url
-            ),
+            links: data?.philandLink?.data?.filter((x) => x.title && x.url),
           })
-      }>
+        }
+      >
         <div className="profile-widget-header">
           <h2 className="profile-widget-title">
             <span className="emoji-large mr-2">🏝️ </span>
             Phi Land
           </h2>
           <h3 className="text-assistive">
-            Phi is a new Web3 world created from ENS domains & On-Chain Activity, enabling the easy visualization of On-Chain Identities, currently built on Polygon. Virtually interact with crypto protocols from around the Ethereum ecosystem.
+            Phi is a new Web3 world created from ENS domains & On-Chain
+            Activity, enabling the easy visualization of On-Chain Identities,
+            currently built on Polygon. Virtually interact with crypto protocols
+            from around the Ethereum ecosystem.
           </h3>
         </div>
         <div className="profile-widget-body">

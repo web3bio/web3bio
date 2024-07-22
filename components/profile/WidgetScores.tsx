@@ -3,10 +3,10 @@ import { memo, useEffect, useMemo } from "react";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { WidgetDegenScore } from "./WidgetDegenScore";
 import { WidgetWebacy } from "./WidgetWebacy";
-import { updateScoresWidget } from "../state/widgets/action";
 import { useDispatch } from "react-redux";
 import { WidgetGitcoin } from "./WidgetGitcoin";
 import { WidgetAirStackScores } from "./WidgetAirstackScores";
+import { updateScoresWidget } from "../state/widgets/reducer";
 
 const RenderWidgetScores = ({
   address,

@@ -10,11 +10,11 @@ import {
   SIMPLEHASH_PAGE_SIZE,
 } from "../apis/simplehash";
 import NFTFilter from "./NFTFilter";
-import { updateNFTWidget } from "../state/widgets/action";
 import { useDispatch } from "react-redux";
 import { PlatformType } from "../utils/platform";
 import { NetworkData } from "../utils/network";
 import { WidgetTypes } from "../utils/widgets";
+import { updateNFTWidget } from "../state/widgets/reducer";
 
 const CURSOR_PARAM = "&cursor=";
 
