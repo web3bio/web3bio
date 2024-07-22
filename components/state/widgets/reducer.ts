@@ -23,20 +23,10 @@ interface WidgetStateDetail {
   parent?: WidgetTypes | null;
   children?: WidgetTypes[] | null;
 }
-export interface WidgetState {
-  [WidgetTypes.nft]: WidgetStateDetail;
-  [WidgetTypes.feeds]?: WidgetStateDetail;
-  [WidgetTypes.scores]?: WidgetStateDetail;
-  [WidgetTypes.article]?: WidgetStateDetail;
-  [WidgetTypes.poaps]?: WidgetStateDetail;
-  [WidgetTypes.tally]?: WidgetStateDetail;
-  [WidgetTypes.philand]?: WidgetStateDetail;
-  [WidgetTypes.degen]?: WidgetStateDetail;
-  [WidgetTypes.webacy]?: WidgetStateDetail;
-  [WidgetTypes.gitcoin]?: WidgetStateDetail;
-  [WidgetTypes.airstackScores]?: WidgetStateDetail;
-  [WidgetTypes.guild]?: WidgetStateDetail;
-}
+
+export type WidgetState = {
+  [index in WidgetTypes]: WidgetStateDetail;
+};
 
 export const initialState: WidgetState = {
   [WidgetTypes.nft]: {
