@@ -9,10 +9,7 @@ const IdentitySizePlatforms = [
   PlatformType.farcaster,
   PlatformType.bitcoin,
   PlatformType.solana,
-  PlatformType.dotbit,
   PlatformType.crossbell,
-  PlatformType.space_id,
-  PlatformType.unstoppableDomains,
 ];
 
 export const resolveIdentityGraphData = (source) => {
