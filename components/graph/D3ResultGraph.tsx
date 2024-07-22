@@ -157,10 +157,8 @@ export default function D3IdentityGraph(props) {
             d3.forceX((d) => {
               if (d.group === 2) {
                 return - width / 4;
-              } else if (d.group === 3) {
-                return (2 * width) / 3;
               } else {
-                return width / 4;
+                return width / 2;
               }
             })
           )

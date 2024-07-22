@@ -7,7 +7,7 @@ export const HomeFeatures = () => {
     <div className="home-features">
       <div className="container grid-sm">
         <h3 className="home-title">
-          <span>Explore{" "}</span><span className="text-pride text-large">✦</span><span>Web3 identities{" "}</span>
+          <span>Explore{" "}</span><span>Web3 identities{" "}</span>
           <div className="home-title-icons">
             <div 
               className="home-title-icon"
