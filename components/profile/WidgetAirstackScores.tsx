@@ -2,11 +2,11 @@
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
-import { updateAirstackScoresWidget } from "../state/widgets/action";
 import { useQuery } from "@apollo/client";
 import { QUERY_FARCASTER_STATS } from "../apis/airstack";
 import { ModalType } from "../hooks/useModal";
 import { PlatformType } from "../utils/platform";
+import { updateAirstackScoresWidget } from "../state/widgets/reducer";
 
 export function WidgetAirStackScores({ handle, openModal }) {
   const { data, loading, error } = useQuery(QUERY_FARCASTER_STATS, {

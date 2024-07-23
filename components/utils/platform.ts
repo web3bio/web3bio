@@ -76,7 +76,8 @@ export enum PlatformType {
   gnosis = "gnosis",
   webacy = "webacy",
   clusters = "clusters",
-  guild="guild"
+  guild="guild",
+  ton="ton"
 }
 
 export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
@@ -600,6 +601,14 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     label: "Guild",
     urlPrefix: "https://guild.xyz/",
     system: PlatformSystem.web2,
+  },
+  [PlatformType.ton]: {
+    key: PlatformType.ton,
+    color: "#0098EA",
+    icon: "icons/icon-ton.svg",
+    label: "TON",
+    urlPrefix: "https://tonscan.org/address/",
+    system: PlatformSystem.web3,
   },
 };
 

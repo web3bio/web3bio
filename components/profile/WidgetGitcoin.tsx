@@ -2,9 +2,9 @@
 import { memo, useEffect } from "react";
 import useSWR from "swr";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
-import { updateGitcoinWidget } from "../state/widgets/action";
 import { useDispatch } from "react-redux";
 import { ProfileFetcher } from "../apis/profile";
+import { updateGitcoinWidget } from "../state/widgets/reducer";
 
 function useGitcoinInfo(address: string) {
   const { data, error } = useSWR(
@@ -57,7 +57,10 @@ const RenderWidgetGitcoin = ({ address }) => {
 
       <div className="profile-widget-footer">
         <div className="widget-gitcoin-number">{data.score}</div>
-        <div className="widget-gitcoin-title" title="Humanity Score is based out of 100 and measures identity's uniqueness. The current passing threshold is 20.">
+        <div
+          className="widget-gitcoin-title"
+          title="Humanity Score is based out of 100 and measures identity's uniqueness. The current passing threshold is 20."
+        >
           Humanity Score
         </div>
       </div>
@@ -69,7 +72,9 @@ const RenderWidgetGitcoin = ({ address }) => {
               return (
                 <div
                   key={idx}
-                  className={`trait-item label ${item.type?.toLowerCase()} ${item.weight >= 2 && "label-tier-rare"}`}
+                  className={`trait-item label ${item.type?.toLowerCase()} ${
+                    item.weight >= 2 && "label-tier-rare"
+                  }`}
                   title={item.label}
                 >
                   {item.weight >= 2 && "💎 "}
