@@ -34,6 +34,7 @@ import { updateUniversalBatchedProfile } from "../state/universal/actions";
 import { getProfileQuery } from "../utils/queries";
 import { WidgetArticle } from "./WidgetArticle";
 import WidgetGuild from "./WidgetGuild";
+import WidgetSnapshot from "./WidgetSnapshot";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
@@ -465,6 +466,23 @@ export default function ProfileMain(props) {
                         fallback={<LoadingSkeleton type={WidgetTypes.tally} />}
                       >
                         <WidgetTally address={data.address} />
+                      </Suspense>
+                    </div>
+                  )}
+
+                  {isValidEthereumAddress(data.address) && (
+                    <div className="web3-section-widgets">
+                      <Suspense
+                        fallback={
+                          <LoadingSkeleton type={WidgetTypes.snapshot} />
+                        }
+                      >
+                        <WidgetSnapshot
+                          profile={data}
+                          onShowDetail={(v) => {
+                            console.log(v, "space info");
+                          }}
+                        />
                       </Suspense>
                     </div>
                   )}

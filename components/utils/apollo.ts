@@ -41,33 +41,36 @@ const airstackLink = new HttpLink({
   },
 });
 
-const snapshotLink = new HttpLink({
-  uri: SNAPSHOT_GRAPHQL_ENDPOINT,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-
 const lensLink = new HttpLink({
   uri: LensGraphQLEndpoint,
 });
 
-const linkMapping = {
-  [WidgetTypes.philand]: philandLink,
-  [WidgetTypes.tally]: tallyLink,
-  [PlatformType.lens]: lensLink,
-  [WidgetTypes.airstackScores]: airstackLink,
-  [WidgetTypes.snapshot]: snapshotLink,
-};
-
-const getLink = (clientName) => linkMapping[clientName] || defaultLink;
+const snapshotLink = new HttpLink({
+  uri: SNAPSHOT_GRAPHQL_ENDPOINT,
+});
 
 const client = new ApolloClient({
-  link: new ApolloLink((operation, forward) => {
-    const clientName = operation.getContext().clientName;
-    const selectedLink = getLink(clientName);
-    return selectedLink.request(operation, forward);
-  }),
+  link: ApolloLink.split(
+    (o) => o.getContext().clientName === WidgetTypes.philand,
+    philandLink,
+    ApolloLink.split(
+      (o) => o.getContext().clientName === WidgetTypes.tally,
+      tallyLink,
+      ApolloLink.split(
+        (o) => o.getContext().clientName === PlatformType.lens,
+        lensLink,
+        ApolloLink.split(
+          (o) => o.getContext().clientName === WidgetTypes.airstackScores,
+          airstackLink,
+          ApolloLink.split(
+            (o) => o.getContext().clientName === WidgetTypes.snapshot,
+            snapshotLink,
+            defaultLink
+          )
+        )
+      )
+    )
+  ),
   cache: new InMemoryCache(),
 });
 

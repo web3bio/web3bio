@@ -8,10 +8,10 @@ export const QUERY_SPACES_FOLLOWED_BY_USR = gql`
       space {
         id
         name
-        about
         network
         symbol
         members
+        avatar
       }
       created
     }
