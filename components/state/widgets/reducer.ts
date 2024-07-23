@@ -57,6 +57,11 @@ export const initialState: WidgetState = {
     loaded: false,
     parent: WidgetTypes.scores,
   },
+  [WidgetTypes.snapshot]: {
+    isEmpty: null,
+    initLoading: true,
+    loaded: false,
+  },
 };
 
 const updateWidget = createAction<{
@@ -99,6 +104,9 @@ export const updateGitcoinWidget = createAction<UpdateWidgetState>(
 export const updateAirstackScoresWidget = createAction<UpdateWidgetState>(
   WidgetTypes.airstackScores
 );
+export const updateSnapshotScoresWidget = createAction<UpdateWidgetState>(
+  WidgetTypes.snapshot
+);
 
 const widgetActions = [
   updateNFTWidget,
@@ -113,6 +121,7 @@ const widgetActions = [
   updateDegenWidget,
   updateGitcoinWidget,
   updateAirstackScoresWidget,
+  updateSnapshotScoresWidget,
 ];
 
 export default createReducer(initialState, (builder) => {
