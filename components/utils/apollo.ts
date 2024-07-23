@@ -4,7 +4,7 @@ import {
   HttpLink,
   InMemoryCache,
 } from "@apollo/client";
-import { PHI_AUTH, PHI_GRAPHQL_END_POINT } from "../apis/philand";
+// import { PHI_AUTH, PHI_GRAPHQL_END_POINT } from "../apis/philand";
 import { TALLY_AUTH, TALLY_GRAPHQL_ENDPOINT } from "../apis/tally";
 import { WidgetTypes } from "./widgets";
 import { PlatformType } from "./platform";
@@ -19,13 +19,13 @@ const defaultLink = new HttpLink({
   },
 });
 
-const philandLink = new HttpLink({
-  uri: PHI_GRAPHQL_END_POINT,
-  headers: {
-    "Content-Type": "application/json",
-    "x-api-key": PHI_AUTH,
-  },
-});
+// const philandLink = new HttpLink({
+//   uri: PHI_GRAPHQL_END_POINT,
+//   headers: {
+//     "Content-Type": "application/json",
+//     "x-api-key": PHI_AUTH,
+//   },
+// });
 
 const tallyLink = new HttpLink({
   uri: TALLY_GRAPHQL_ENDPOINT,
@@ -41,36 +41,34 @@ const airstackLink = new HttpLink({
   },
 });
 
+const snapshotLink = new HttpLink({
+  uri: SNAPSHOT_GRAPHQL_ENDPOINT,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
 const lensLink = new HttpLink({
   uri: LensGraphQLEndpoint,
 });
 
-const snapshotLink = new HttpLink({
-  uri: SNAPSHOT_GRAPHQL_ENDPOINT,
-});
+const linkMapping = {
+  [WidgetTypes.tally]: tallyLink,
+  [PlatformType.lens]: lensLink,
+  [WidgetTypes.airstackScores]: airstackLink,
+  [WidgetTypes.snapshot]: snapshotLink,
+  // currently hide ⬇️
+  // [WidgetTypes.philand]: philandLink,
+};
+
+const getLink = (clientName) => linkMapping[clientName] || defaultLink;
 
 const client = new ApolloClient({
-  link: ApolloLink.split(
-    (o) => o.getContext().clientName === WidgetTypes.philand,
-    philandLink,
-    ApolloLink.split(
-      (o) => o.getContext().clientName === WidgetTypes.tally,
-      tallyLink,
-      ApolloLink.split(
-        (o) => o.getContext().clientName === PlatformType.lens,
-        lensLink,
-        ApolloLink.split(
-          (o) => o.getContext().clientName === WidgetTypes.airstackScores,
-          airstackLink,
-          ApolloLink.split(
-            (o) => o.getContext().clientName === WidgetTypes.snapshot,
-            snapshotLink,
-            defaultLink
-          )
-        )
-      )
-    )
-  ),
+  link: new ApolloLink((operation, forward) => {
+    const clientName = operation.getContext().clientName;
+    const selectedLink = getLink(clientName);
+    return selectedLink.request(operation, forward);
+  }),
   cache: new InMemoryCache(),
 });
 

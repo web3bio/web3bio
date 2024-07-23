@@ -962,6 +962,7 @@
       overflow-x: auto;
       padding: .2rem 1rem;
 
+
       .guild-item {
         flex: 0 0 3.2rem;
         height: 3.2rem;
@@ -986,8 +987,17 @@
           padding: .25rem;
           width: 3.2rem;
         }
+
+      &.space-item {
+        .img-container {
+          border: .05rem solid #ff9800;
+          box-shadow: 0 0 0 .1rem #ffe3ba;
+       
+        }
+      }
+
         .img-responsive,
-        .video-responsive{
+        .video-responsive {
           border-radius: 50%;
         }
       }

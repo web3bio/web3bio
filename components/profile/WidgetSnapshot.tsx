@@ -1,142 +1,96 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
-import useSWR from "swr";
+import { useCallback, useEffect } from "react";
 import { Loading } from "../shared/Loading";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { useDispatch } from "react-redux";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
-import { GUILD_XYZ_ENDPOINT, GuildFetcher } from "../apis/guild";
-import { updateGuildWidget } from "../state/widgets/reducer";
+import { updateSnapshotScoresWidget } from "../state/widgets/reducer";
+import { useQuery } from "@apollo/client";
+import { QUERY_SPACES_FOLLOWED_BY_USR } from "../apis/snapshot";
 
-function useGuildMemberships(address: string) {
-  const { data, error, isValidating } = useSWR(
-    `${GUILD_XYZ_ENDPOINT}/users/${address}/memberships`,
-    GuildFetcher,
-    {
-      suspense: true,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
-  );
-  return {
-    data: data || [],
-    isLoading: isValidating,
-    isError: error,
-  };
-}
 
 export default function WidgetSnapshot({ profile, onShowDetail }) {
-  const { data, isLoading } = useGuildMemberships(profile?.address);
-  const [render, setRender] = useState(false);
-  const [infoLoading, setInfoLoading] = useState(false);
-  const [guilds, setGuilds] = useState(new Array());
+  const { data, loading, error } = useQuery(QUERY_SPACES_FOLLOWED_BY_USR, {
+    variables: {
+      address: profile.address,
+    },
+    context: {
+      clientName: WidgetTypes.snapshot,
+    },
+  });
+
   const dispatch = useDispatch();
   const getBoundaryRender = useCallback(() => {
-    if (isLoading || infoLoading)
+    if (loading)
       return (
         <div className="widget-loading">
           <Loading />
         </div>
       );
     return null;
-  }, [isLoading, infoLoading]);
+  }, [loading]);
   useEffect(() => {
-    setRender(true);
-    if (!isLoading) {
+    if (!loading) {
       dispatch(
-        updateGuildWidget({ isEmpty: !data?.length, initLoading: false })
+        updateSnapshotScoresWidget({
+          isEmpty: !data?.length,
+          initLoading: false,
+        })
       );
     }
-    const fetchGuildsBatch = async () => {
-      const res = await fetch(
-        `${GUILD_XYZ_ENDPOINT}/guilds?guildIds=${data
-          .map((x) => x.guildId)
-          ?.join(",")}`
-      ).then((res) => res.json());
-      setGuilds(
-        res.reduce((pre, cur) => {
-          const _guildBase = data?.find((i) => i.guildId === cur.id);
-          pre.push({
-            ..._guildBase,
-            ...cur,
-          });
-          return pre;
-        }, new Array())
-      );
-      setInfoLoading(false);
-    };
-    if (data?.length > 0 && !infoLoading && !guilds?.length) {
-      setInfoLoading(true);
-      fetchGuildsBatch();
-    }
-  }, [data, isLoading, dispatch, infoLoading]);
+  }, [data, loading, dispatch]);
 
-  if (!data || !data.length || !render) {
+  if (!data || !data?.follows?.length) {
     return null;
   }
 
   // if (process.env.NODE_ENV !== "production") {
-  //   console.log("Guild Data:", guilds);
+  //   console.log("Snapshot Data:", data);
   // }
 
   return (
-    render && (
-      <div className="profile-widget-full" id={WidgetTypes.guild}>
-        <div className="profile-widget profile-widget-guild">
-          <div className="profile-widget-header">
-            <h2
-              className="profile-widget-title"
-              title="Build communities onchain - Guild.xyz"
-            >
-              <span className="emoji-large mr-2">
-                {WidgetInfoMapping(WidgetTypes.guild).icon}{" "}
-              </span>
-              {WidgetInfoMapping(WidgetTypes.guild).title}
-            </h2>
-            <h3 className="text-assistive">
-              {WidgetInfoMapping(WidgetTypes.guild).description}
-            </h3>
-          </div>
+    <div className="profile-widget-full" id={WidgetTypes.snapshot}>
+      <div className="profile-widget profile-widget-guild">
+        <div className="profile-widget-header">
+          <h2
+            className="profile-widget-title"
+            title="Snapshot - Where decisions get made."
+          >
+            <span className="emoji-large mr-2">
+              {WidgetInfoMapping(WidgetTypes.snapshot).icon}{" "}
+            </span>
+            {WidgetInfoMapping(WidgetTypes.snapshot).title}
+          </h2>
+          <h3 className="text-assistive">
+            {WidgetInfoMapping(WidgetTypes.snapshot).description}
+          </h3>
+        </div>
 
-          <div className="widget-guild-list noscrollbar">
-            {getBoundaryRender() ||
-              guilds.map((x, idx) => {
-                const imageURL = x?.imageUrl.includes("/guildLogos/")
-                  ? "https://guild.xyz" + x.imageUrl
-                  : x.imageUrl;
-                return (
-                  <div
-                    onClick={() => {
-                      onShowDetail({
-                        guild: {
-                          ...x,
-                          imageUrl: imageURL,
-                        },
-                        profile,
-                      });
-                    }}
-                    key={idx}
-                    className="guild-item c-hand"
-                  >
-                    <NFTAssetPlayer
-                      className={
-                        x?.imageUrl?.includes("/guildLogos/")
-                          ? "img-container dark-img"
-                          : "img-container"
-                      }
-                      src={imageURL}
-                      alt={x.name}
-                      height={64}
-                      width={64}
-                      placeholder={true}
-                    />
-                    <div className="text-assistive">{x.name}</div>
-                  </div>
-                );
-              })}
-          </div>
+        <div className="widget-guild-list noscrollbar">
+          {getBoundaryRender() ||
+            data?.follows?.map((x, idx) => {
+              return (
+                <div
+                  onClick={() => {
+                    onShowDetail(x);
+                  }}
+                  key={idx}
+                  className="space-item  guild-item c-hand"
+                >
+                  <NFTAssetPlayer
+                    className={"img-container"}
+                    src={`https://cdn.stamp.fyi/space/${x.space.id}`}
+                    alt={x.space.name}
+                    height={64}
+                    width={64}
+                    placeholder={true}
+                  />
+                  <div className="text-assistive">{x.name}</div>
+                </div>
+              );
+            })}
         </div>
       </div>
-    )
+    </div>
   );
 }
