@@ -3,7 +3,7 @@ import { gql } from "@apollo/client";
 export const SNAPSHOT_GRAPHQL_ENDPOINT = "https://hub.snapshot.org/graphql";
 export const QUERY_SPACES_FOLLOWED_BY_USR = gql`
   query userFollowedSpaces($address: String!) {
-    follows(first: 10, where: { follower: $address }) {
+    follows(where: { follower: $address }) {
       follower
       space {
         id
