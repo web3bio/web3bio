@@ -480,7 +480,9 @@ export default function ProfileMain(props) {
                         <WidgetSnapshot
                           profile={data}
                           onShowDetail={(v) => {
-                            console.log(v, "space info");
+                            openModal(ModalType.snapshot, {
+                              ...v,
+                            });
                           }}
                         />
                       </Suspense>

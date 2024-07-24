@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const SNAPSHOT_GRAPHQL_ENDPOINT = "https://hub.snapshot.org/graphql";
 export const QUERY_SPACES_FOLLOWED_BY_USR = gql`
-  query userFollowedSpaces($address: String) {
+  query userFollowedSpaces($address: String!) {
     follows(first: 10, where: { follower: $address }) {
       follower
       space {
@@ -19,7 +19,7 @@ export const QUERY_SPACES_FOLLOWED_BY_USR = gql`
 `;
 
 export const QUERY_SPACE_BY_ID = gql`
-  query spaceById($id: String) {
+  query spaceById($id: String!) {
     space(id: $id) {
       id
       name
@@ -27,6 +27,13 @@ export const QUERY_SPACE_BY_ID = gql`
       network
       symbol
       members
+      terms
+      skin
+      github
+      twitter
+      website
+      coingecko
+      followersCount
     }
   }
 `;

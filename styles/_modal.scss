@@ -320,6 +320,7 @@
 
   // Modal Profile, Modal Guild
   &.modal-profile-container,
+  &.modal-snapshot-container,
   &.modal-guild-container {
     background: #fff;
     display: flex;
@@ -360,6 +361,10 @@
       right: -2rem;
       top: -2rem;
       z-index: -1;
+
+      &.snapshot {
+        background: linear-gradient(to top, rgba(#f2994a, 0) 0%, rgba(#f2994a, .35) 200%);
+      }
 
       &.guild {
         background: linear-gradient(to top, rgba(#6062eb, 0) 0%, rgba(#6062eb, .35) 200%);

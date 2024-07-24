@@ -8,7 +8,6 @@ import { updateSnapshotScoresWidget } from "../state/widgets/reducer";
 import { useQuery } from "@apollo/client";
 import { QUERY_SPACES_FOLLOWED_BY_USR } from "../apis/snapshot";
 
-
 export default function WidgetSnapshot({ profile, onShowDetail }) {
   const { data, loading, error } = useQuery(QUERY_SPACES_FOLLOWED_BY_USR, {
     variables: {
@@ -69,17 +68,24 @@ export default function WidgetSnapshot({ profile, onShowDetail }) {
         <div className="widget-guild-list noscrollbar">
           {getBoundaryRender() ||
             data?.follows?.map((x, idx) => {
+              const imageUrl = `https://cdn.stamp.fyi/space/${x.space.id}`;
               return (
                 <div
                   onClick={() => {
-                    onShowDetail(x);
+                    onShowDetail({
+                      space: {
+                        ...x.space,
+                        avatar: imageUrl,
+                      },
+                      profile,
+                    });
                   }}
                   key={idx}
                   className="space-item  guild-item c-hand"
                 >
                   <NFTAssetPlayer
                     className={"img-container"}
-                    src={`https://cdn.stamp.fyi/space/${x.space.id}`}
+                    src={imageUrl}
                     alt={x.space.name}
                     height={64}
                     width={64}
