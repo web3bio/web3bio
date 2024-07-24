@@ -1,4 +1,4 @@
-// snapshot
+// ⚡️ snapshot
 import SVG from "react-inlinesvg";
 import _ from "lodash";
 import Link from "next/link";
@@ -8,7 +8,15 @@ import { useQuery } from "@apollo/client";
 import { QUERY_SPACE_BY_ID } from "../apis/snapshot";
 import { WidgetTypes } from "../utils/widgets";
 import { chainIdToNetwork } from "../utils/network";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { fetchProfile } from "../hooks/fetchProfile";
+import { formatText } from "../utils/utils";
+import { isAddress } from "viem";
+
 export default function GuildModalContent({ onClose, space, profile }) {
+  const [members, setMembers] = useState(new Array());
+  const [admins, setAdmins] = useState(new Array());
+  const [mods, setMods] = useState(new Array());
   const {
     data: spaceDetail,
     loading,
@@ -23,17 +31,92 @@ export default function GuildModalContent({ onClose, space, profile }) {
   });
 
   const _spaceDetail = spaceDetail?.space;
-  if (process.env.NODE_ENV !== "production") {
-    console.log(
-      "space base info: ",
-      space,
-      "space detail: ",
-      spaceDetail,
-      "profile:",
-      profile
-    );
-  }
 
+  // if (process.env.NODE_ENV !== "production") {
+  //   console.log(
+  //     "space base info: ",
+  //     space,
+  //     "space detail: ",
+  //     spaceDetail,
+  //     "profile:",
+  //     profile
+  //   );
+  // }
+
+  useEffect(() => {
+    const fetchUserProfiles = async (
+      arr: string[],
+      setter: Dispatch<SetStateAction<any[]>>
+    ) => {
+      const responses = await Promise.allSettled(
+        arr.map((x) =>
+          fetchProfile({
+            identity: x,
+            platform: PlatformType.ethereum,
+          })
+        )
+      ).then((res) => res.filter((x) => x.status === "fulfilled" && x.value));
+      setter(responses.map((x) => (x as any).value));
+    };
+    if (!admins?.length && _spaceDetail?.admins?.length > 0) {
+      setAdmins(_spaceDetail.admins);
+    }
+    if (!members?.length && _spaceDetail?.members?.length > 0) {
+      setMembers(_spaceDetail.members);
+    }
+
+    if (!mods?.length && _spaceDetail?.moderators?.length > 0) {
+      setMods(_spaceDetail.moderators);
+    }
+    if (admins?.length > 0 && admins.every((x) => typeof x === "string")) {
+      fetchUserProfiles(admins, setAdmins);
+    }
+    if (members?.length > 0 && members.every((x) => typeof x === "string")) {
+      fetchUserProfiles(members, setMembers);
+    }
+    if (mods?.length > 0 && mods.every((x) => typeof x === "string")) {
+      fetchUserProfiles(mods, setMods);
+    }
+  }, [_spaceDetail, members, admins, mods]);
+
+  const renderUsersGroup = (title, users) => {
+    return (
+      <>
+        <div className="divider"></div>
+        <div className="panel-widget">
+          <div className="panel-widget-title">{title}</div>
+          <div className="panel-widget-content">
+            {users.map((x) => {
+              return (
+                <Link
+                  href={`/${x.identity}`}
+                  key={x.id}
+                  className="role-item feed-token"
+                  title={x.description}
+                  target="_blank"
+                >
+                  {
+                    <Avatar
+                      alt={x.displayName}
+                      width={20}
+                      height={20}
+                      src={x.avatar}
+                      className={"role-item-icon feed-token-icon"}
+                    />
+                  }
+                  <span className="feed-token-value">
+                    {isAddress(x.identity)
+                      ? formatText(x.identity)
+                      : x.identity || formatText(x)}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </>
+    );
+  };
   return (
     <>
       <div className="modal-actions">
@@ -91,99 +174,9 @@ export default function GuildModalContent({ onClose, space, profile }) {
             </div>
           )}
           <div className="mt-2">{_spaceDetail?.about}</div>
-          {/* {[]?.length > 0 && (
-            <div className="panel-widget">
-          
-              <div className="panel-widget-content">
-                {[].map((x) => {
-                  return (
-                    <div
-                      key={x.id}
-                      className="role-item feed-token"
-                      title={x.description}
-                    >
-                      {x.imageUrl ? (
-                        <Image
-                          alt={x.name}
-                          width={20}
-                          height={20}
-                          src={
-                            x.imageUrl.includes("/guildLogos/")
-                              ? `https://guild.xyz${x.imageUrl}`
-                              : x.imageUrl
-                          }
-                          className={"role-item-icon feed-token-icon"}
-                          style={{
-                            background: x.imageUrl.includes("/guildLogos/")
-                              ? "#000"
-                              : "unset",
-                            padding: x.imageUrl.includes("/guildLogos/")
-                              ? ".1rem"
-                              : "auto",
-                          }}
-                        />
-                      ) : (
-                        <SVG
-                          src={"icons/icon-guild.svg"}
-                          fill={"#ccc"}
-                          width={20}
-                          height={20}
-                        />
-                      )}
-                      <span className="feed-token-value">{x.name}</span>
-                      <span className="feed-token-meta">
-                        <SVG
-                          src={"/icons/icon-groups.svg"}
-                          width="20"
-                          height="20"
-                        />
-                        {x.followersCount?.toLocaleString()}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )} */}
-
-          {/* {rolesAcquired?.length > 0 && (
-            <>
-              <div className="divider"></div>
-              <div className="panel-widget">
-                <div className="panel-widget-title">Roles acquired by {profile.displayName}</div>
-                <div className="panel-widget-content">
-                  {rolesAcquired.map((x) => {
-                    return (
-                      <div
-                        key={x.id}
-                        className="role-item feed-token"
-                        title={x.description}
-                      >
-                        {x.imageUrl ? <Image
-                          alt={x.name}
-                          width={20}
-                          height={20}
-                          src={
-                            x.imageUrl.includes("/guildLogos/")
-                              ? `https://guild.xyz${x.imageUrl}`
-                              : x.imageUrl
-                          }
-                          className={"role-item-icon feed-token-icon"}
-                          style={{
-                            background: x.imageUrl.includes("/guildLogos/")
-                              ? "#000"
-                              : "unset",
-                            padding: x.imageUrl.includes("/guildLogos/") ? ".1rem": "auto",
-                          }}
-                        /> : <SVG src={"icons/icon-guild.svg"} fill={"#ccc"} width={20} height={20} />}
-                        <span className="feed-token-value">{x.name}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </>
-          )} */}
+          {admins?.length > 0 && renderUsersGroup("Admins", admins)}
+          {mods?.length > 0 && renderUsersGroup("Mods", mods)}
+          {members?.length > 0 && renderUsersGroup("Members", members)}
         </div>
         <div className="modal-profile-footer">
           <div className="btn-group btn-group-block">

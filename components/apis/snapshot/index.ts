@@ -27,6 +27,7 @@ export const QUERY_SPACE_BY_ID = gql`
       network
       symbol
       members
+      admins
       terms
       skin
       github
