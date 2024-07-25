@@ -75,7 +75,10 @@ export default function SnapshotModalContent({ onClose, space, profile }) {
     if (members?.length > 0 && members.every((x) => typeof x === "string")) {
       fetchUserProfiles(members, setMembers);
     }
-    if (moderators?.length > 0 && moderators.every((x) => typeof x === "string")) {
+    if (
+      moderators?.length > 0 &&
+      moderators.every((x) => typeof x === "string")
+    ) {
       fetchUserProfiles(moderators, setModerators);
     }
   }, [_spaceDetail, members, admins, moderators]);
@@ -164,8 +167,12 @@ export default function SnapshotModalContent({ onClose, space, profile }) {
                 <>
                   <span> · </span>
                   <strong className="text-large">
-                    {NetworkMapping(chainIdToNetwork(_spaceDetail.network) ||
-                      _spaceDetail.network).label}
+                    {
+                      NetworkMapping(
+                        chainIdToNetwork(_spaceDetail.network) ||
+                          _spaceDetail.network
+                      ).label
+                    }
                   </strong>{" "}
                   Chain
                 </>
@@ -175,9 +182,12 @@ export default function SnapshotModalContent({ onClose, space, profile }) {
           <div className="mt-2">{_spaceDetail?.about}</div>
           <div className="divider mt-4 mb-4"></div>
 
-          {admins?.length > 0 && renderUsersGroup("Admins", admins)}
-          {moderators?.length > 0 && renderUsersGroup("Moderators", moderators)}
-          {members?.length > 0 && renderUsersGroup("Authors", members)}
+          {admins?.some((x) => x.identity) &&
+            renderUsersGroup("Admins", admins)}
+          {moderators?.some((x) => x.identity) &&
+            renderUsersGroup("Moderators", moderators)}
+          {members?.some((x) => x.identity) &&
+            renderUsersGroup("Authors", members)}
         </div>
         <div className="modal-profile-footer">
           <div className="btn-group btn-group-block">

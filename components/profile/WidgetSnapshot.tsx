@@ -32,7 +32,7 @@ export default function WidgetSnapshot({ profile, onShowDetail }) {
     if (!loading) {
       dispatch(
         updateSnapshotWidget({
-          isEmpty: !data?.length,
+          isEmpty: !data?.follows?.length,
           initLoading: false,
         })
       );
