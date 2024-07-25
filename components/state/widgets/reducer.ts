@@ -26,11 +26,12 @@ export const initialState: WidgetState = {
     isEmpty: null,
     initLoading: true,
     loaded: false,
-    children: [WidgetTypes.webacy, WidgetTypes.degen],
+    children: [WidgetTypes.webacy, WidgetTypes.degen, WidgetTypes.gitcoin, WidgetTypes.airstackScores],
   },
   [WidgetTypes.article]: { isEmpty: null, initLoading: true, loaded: false },
   [WidgetTypes.poaps]: { isEmpty: null, initLoading: true, loaded: false },
   [WidgetTypes.guild]: { isEmpty: null, initLoading: true, loaded: false },
+  [WidgetTypes.snapshot]: { isEmpty: null, initLoading: true, loaded: false },
   [WidgetTypes.tally]: { isEmpty: null, initLoading: true, loaded: false },
   [WidgetTypes.philand]: { isEmpty: null, initLoading: true, loaded: false },
   [WidgetTypes.webacy]: {
@@ -56,11 +57,6 @@ export const initialState: WidgetState = {
     initLoading: true,
     loaded: false,
     parent: WidgetTypes.scores,
-  },
-  [WidgetTypes.snapshot]: {
-    isEmpty: null,
-    initLoading: true,
-    loaded: false,
   },
 };
 
@@ -104,7 +100,7 @@ export const updateGitcoinWidget = createAction<UpdateWidgetState>(
 export const updateAirstackScoresWidget = createAction<UpdateWidgetState>(
   WidgetTypes.airstackScores
 );
-export const updateSnapshotScoresWidget = createAction<UpdateWidgetState>(
+export const updateSnapshotWidget = createAction<UpdateWidgetState>(
   WidgetTypes.snapshot
 );
 
@@ -121,7 +117,7 @@ const widgetActions = [
   updateDegenWidget,
   updateGitcoinWidget,
   updateAirstackScoresWidget,
-  updateSnapshotScoresWidget,
+  updateSnapshotWidget,
 ];
 
 export default createReducer(initialState, (builder) => {

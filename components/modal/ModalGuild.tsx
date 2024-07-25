@@ -1,11 +1,12 @@
 import SVG from "react-inlinesvg";
 import useSWR from "swr";
 import _ from "lodash";
-import { GUILD_XYZ_ENDPOINT, GuildFetcher } from "../apis/guild";
 import Link from "next/link";
-import { PlatformType, SocialPlatformMapping } from "../utils/platform";
-import { Avatar } from "../shared/Avatar";
 import Image from "next/image";
+import { GUILD_XYZ_ENDPOINT, GuildFetcher } from "../apis/guild";
+import { PlatformType, SocialPlatformMapping } from "../utils/platform";
+import { NetworkMapping } from "../utils/network";
+
 export default function GuildModalContent({ onClose, guild, profile }) {
   const { data: guildRoles } = useSWR(
     `${GUILD_XYZ_ENDPOINT}/guilds/${guild.id}/roles`,
@@ -65,10 +66,10 @@ export default function GuildModalContent({ onClose, guild, profile }) {
           <span>Guild</span>
         </div>
         <div className="modal-profile-body">
-          <Avatar
+          <Image
             width={80}
             height={80}
-            className="avatar"
+            className="avatar avatar-xl"
             alt={guild.name}
             src={guild?.imageUrl}
           />
@@ -76,7 +77,7 @@ export default function GuildModalContent({ onClose, guild, profile }) {
             <strong className="h4 text-bold">{guild.name}</strong>
           </div>
           <div className="text-gray">
-            @{guild.urlName}
+            {guild.urlName}
             <span> · </span>
             <span title="Guild ID">#{guild.id || "…"}</span>
           </div>
@@ -86,7 +87,7 @@ export default function GuildModalContent({ onClose, guild, profile }) {
               <>
                 <span> · </span>
                 <strong className="text-large">
-                  {guildDetail.guildPin?.chain}
+                  {NetworkMapping(guildDetail.guildPin?.chain.toLowerCase()).label}
                 </strong>{" "}
                 Chain
               </>

@@ -2,21 +2,22 @@
 import SVG from "react-inlinesvg";
 import _ from "lodash";
 import Link from "next/link";
+import Image from "next/image";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { Avatar } from "../shared/Avatar";
 import { useQuery } from "@apollo/client";
 import { QUERY_SPACE_BY_ID } from "../apis/snapshot";
 import { WidgetTypes } from "../utils/widgets";
-import { chainIdToNetwork } from "../utils/network";
+import { NetworkMapping, chainIdToNetwork } from "../utils/network";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { fetchProfile } from "../hooks/fetchProfile";
 import { formatText } from "../utils/utils";
 import { isAddress } from "viem";
 
-export default function GuildModalContent({ onClose, space, profile }) {
+export default function SnapshotModalContent({ onClose, space, profile }) {
   const [members, setMembers] = useState(new Array());
   const [admins, setAdmins] = useState(new Array());
-  const [mods, setMods] = useState(new Array());
+  const [moderators, setModerators] = useState(new Array());
   const {
     data: spaceDetail,
     loading,
@@ -32,16 +33,16 @@ export default function GuildModalContent({ onClose, space, profile }) {
 
   const _spaceDetail = spaceDetail?.space;
 
-  // if (process.env.NODE_ENV !== "production") {
-  //   console.log(
-  //     "space base info: ",
-  //     space,
-  //     "space detail: ",
-  //     spaceDetail,
-  //     "profile:",
-  //     profile
-  //   );
-  // }
+  if (process.env.NODE_ENV !== "production") {
+    console.log(
+      "space base info: ",
+      space,
+      "space detail: ",
+      spaceDetail,
+      "profile:",
+      profile
+    );
+  }
 
   useEffect(() => {
     const fetchUserProfiles = async (
@@ -65,8 +66,8 @@ export default function GuildModalContent({ onClose, space, profile }) {
       setMembers(_spaceDetail.members);
     }
 
-    if (!mods?.length && _spaceDetail?.moderators?.length > 0) {
-      setMods(_spaceDetail.moderators);
+    if (!moderators?.length && _spaceDetail?.moderators?.length > 0) {
+      setModerators(_spaceDetail.moderators);
     }
     if (admins?.length > 0 && admins.every((x) => typeof x === "string")) {
       fetchUserProfiles(admins, setAdmins);
@@ -74,15 +75,14 @@ export default function GuildModalContent({ onClose, space, profile }) {
     if (members?.length > 0 && members.every((x) => typeof x === "string")) {
       fetchUserProfiles(members, setMembers);
     }
-    if (mods?.length > 0 && mods.every((x) => typeof x === "string")) {
-      fetchUserProfiles(mods, setMods);
+    if (moderators?.length > 0 && moderators.every((x) => typeof x === "string")) {
+      fetchUserProfiles(moderators, setModerators);
     }
-  }, [_spaceDetail, members, admins, mods]);
+  }, [_spaceDetail, members, admins, moderators]);
 
   const renderUsersGroup = (title, users) => {
     return (
       <>
-        <div className="divider"></div>
         <div className="panel-widget">
           <div className="panel-widget-title">{title}</div>
           <div className="panel-widget-content">
@@ -91,19 +91,18 @@ export default function GuildModalContent({ onClose, space, profile }) {
                 <Link
                   href={`/${x.identity}`}
                   key={x.id}
-                  className="role-item feed-token"
+                  className="role-item feed-token c-hand"
                   title={x.description}
                   target="_blank"
                 >
-                  {
-                    <Avatar
-                      alt={x.displayName}
-                      width={20}
-                      height={20}
-                      src={x.avatar}
-                      className={"role-item-icon feed-token-icon"}
-                    />
-                  }
+                  <Avatar
+                    alt={x.displayName}
+                    width={20}
+                    height={20}
+                    src={x.avatar}
+                    identity={x.identity}
+                    className={"role-item-icon feed-token-icon"}
+                  />
                   <span className="feed-token-value">
                     {isAddress(x.identity)
                       ? formatText(x.identity)
@@ -144,29 +143,29 @@ export default function GuildModalContent({ onClose, space, profile }) {
           <span>{SocialPlatformMapping(PlatformType.snapshot).label}</span>
         </div>
         <div className="modal-profile-body">
-          <Avatar
+          <Image
             width={80}
             height={80}
-            className="avatar"
+            className="avatar avatar-xl"
             alt={space.name}
             src={space?.avatar}
           />
           <div className="d-flex mt-2" style={{ alignItems: "center" }}>
             <strong className="h4 text-bold">{space.name}</strong>
           </div>
-          <div className="text-gray">#{space.id}</div>
+          <div className="text-gray">{space.id}</div>
           {_spaceDetail && (
             <div className="mt-2 mb-2">
               <strong className="text-large">
                 {_spaceDetail?.followersCount.toLocaleString()}
               </strong>{" "}
-              Followers{" "}
+              Members{" "}
               {_spaceDetail?.network && (
                 <>
                   <span> · </span>
                   <strong className="text-large">
-                    {chainIdToNetwork(_spaceDetail.network) ||
-                      _spaceDetail.network}
+                    {NetworkMapping(chainIdToNetwork(_spaceDetail.network) ||
+                      _spaceDetail.network).label}
                   </strong>{" "}
                   Chain
                 </>
@@ -174,9 +173,11 @@ export default function GuildModalContent({ onClose, space, profile }) {
             </div>
           )}
           <div className="mt-2">{_spaceDetail?.about}</div>
+          <div className="divider mt-4 mb-4"></div>
+
           {admins?.length > 0 && renderUsersGroup("Admins", admins)}
-          {mods?.length > 0 && renderUsersGroup("Mods", mods)}
-          {members?.length > 0 && renderUsersGroup("Members", members)}
+          {moderators?.length > 0 && renderUsersGroup("Moderators", moderators)}
+          {members?.length > 0 && renderUsersGroup("Authors", members)}
         </div>
         <div className="modal-profile-footer">
           <div className="btn-group btn-group-block">
@@ -186,13 +187,13 @@ export default function GuildModalContent({ onClose, space, profile }) {
               className="btn"
             >
               <SVG src={"icons/icon-open.svg"} width={20} height={20} />
-              Open in Snapshot.org
+              Open in Snapshot
             </Link>
             {_spaceDetail?.website && (
               <Link
                 href={_spaceDetail?.website}
                 target="_blank"
-                className="btn btn-primary"
+                className="btn"
               >
                 <SVG src={"icons/icon-open.svg"} width={20} height={20} />
                 Website

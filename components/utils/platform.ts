@@ -613,7 +613,7 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
   },
   [PlatformType.snapshot]: {
     key: PlatformType.snapshot,
-    color: "#f2994a",
+    color: "#ffb503",
     icon: "icons/icon-snapshot.svg",
     label: "Snapshot",
     urlPrefix: "https://snapshot.org/",

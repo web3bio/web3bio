@@ -4,7 +4,7 @@ import { Loading } from "../shared/Loading";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { useDispatch } from "react-redux";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
-import { updateSnapshotScoresWidget } from "../state/widgets/reducer";
+import { updateSnapshotWidget } from "../state/widgets/reducer";
 import { useQuery } from "@apollo/client";
 import { QUERY_SPACES_FOLLOWED_BY_USR } from "../apis/snapshot";
 
@@ -31,7 +31,7 @@ export default function WidgetSnapshot({ profile, onShowDetail }) {
   useEffect(() => {
     if (!loading) {
       dispatch(
-        updateSnapshotScoresWidget({
+        updateSnapshotWidget({
           isEmpty: !data?.length,
           initLoading: false,
         })
@@ -68,7 +68,7 @@ export default function WidgetSnapshot({ profile, onShowDetail }) {
         <div className="widget-guild-list noscrollbar">
           {getBoundaryRender() ||
             data?.follows?.map((x, idx) => {
-              const imageUrl = `https://cdn.stamp.fyi/space/${x.space.id}`;
+              const imageUrl = `https://cdn.stamp.fyi/space/${x.space.id}?s=160`;
               return (
                 <div
                   onClick={() => {
@@ -81,7 +81,7 @@ export default function WidgetSnapshot({ profile, onShowDetail }) {
                     });
                   }}
                   key={idx}
-                  className="space-item  guild-item c-hand"
+                  className="space-item guild-item c-hand"
                 >
                   <NFTAssetPlayer
                     className={"img-container"}

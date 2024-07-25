@@ -667,6 +667,10 @@ body {
   text-overflow: ellipsis;
   white-space: nowrap;
 
+  &.c-hand {
+    cursor: pointer;
+  }
+
   &:focus,
   &:hover {
     text-decoration: none;

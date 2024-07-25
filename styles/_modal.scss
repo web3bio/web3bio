@@ -720,10 +720,12 @@
       font-weight: 800;
       letter-spacing: -.025em;
       line-height: 1.25;
+      width: 100%;
     }
 
     .nft-header-description {
       font-size: .8rem;
+      width: 100%;
 
       h1,
       h2,
@@ -794,6 +796,7 @@
     box-shadow: 0 .2rem .8rem -.2rem rgba($dark-color, 0.1);
     color: $dark-color;
     margin: 1rem 0;
+    width: 100%;
 
     .widget-list-item {
       display: flex;
@@ -826,6 +829,9 @@
   }
 
   .panel-widget-content {
+    display: flex;
+    flex-wrap: wrap;
+
     .traits-cards {
       display: flex;
       flex-wrap: wrap;

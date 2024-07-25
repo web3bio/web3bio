@@ -463,16 +463,6 @@ export default function ProfileMain(props) {
                   {isValidEthereumAddress(data.address) && (
                     <div className="web3-section-widgets">
                       <Suspense
-                        fallback={<LoadingSkeleton type={WidgetTypes.tally} />}
-                      >
-                        <WidgetTally address={data.address} />
-                      </Suspense>
-                    </div>
-                  )}
-
-                  {isValidEthereumAddress(data.address) && (
-                    <div className="web3-section-widgets">
-                      <Suspense
                         fallback={
                           <LoadingSkeleton type={WidgetTypes.snapshot} />
                         }
@@ -489,7 +479,17 @@ export default function ProfileMain(props) {
                     </div>
                   )}
 
-                  {/* todo: Due to philand error background color, hide phi widget for now */}
+                  {isValidEthereumAddress(data.address) && (
+                    <div className="web3-section-widgets">
+                      <Suspense
+                        fallback={<LoadingSkeleton type={WidgetTypes.tally} />}
+                      >
+                        <WidgetTally address={data.address} />
+                      </Suspense>
+                    </div>
+                  )}
+
+                  {/* TODO: Due to Philand error background color, hide Phi widget for now */}
                   {/* <div className="web3-section-widgets">
                     {(data.platform === PlatformType.ens ||
                       regexEns.test(data.identity)) && (
