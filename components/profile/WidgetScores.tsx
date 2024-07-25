@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { WidgetGitcoin } from "./WidgetGitcoin";
 import { WidgetAirStackScores } from "./WidgetAirstackScores";
 import { updateScoresWidget } from "../state/widgets/reducer";
+import { WidgetTalent } from "./WidgetTalent";
 
 const RenderWidgetScores = ({
   address,
@@ -39,6 +40,10 @@ const RenderWidgetScores = ({
         key: WidgetTypes.webacy,
         render: () => <WidgetWebacy address={address} />,
       },
+      {
+        key: WidgetTypes.talent,
+        render: () => <WidgetTalent address={address} />,
+      },
     ];
   }, [address, farcasterHandle]);
   const childWidgets = useMemo(
@@ -47,6 +52,7 @@ const RenderWidgetScores = ({
       states[WidgetTypes.gitcoin],
       states[WidgetTypes.airstackScores],
       states[WidgetTypes.webacy],
+      states[WidgetTypes.talent],
     ],
     [states]
   );

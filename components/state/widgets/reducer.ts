@@ -26,7 +26,12 @@ export const initialState: WidgetState = {
     isEmpty: null,
     initLoading: true,
     loaded: false,
-    children: [WidgetTypes.webacy, WidgetTypes.degen, WidgetTypes.gitcoin, WidgetTypes.airstackScores],
+    children: [
+      WidgetTypes.webacy,
+      WidgetTypes.degen,
+      WidgetTypes.gitcoin,
+      WidgetTypes.airstackScores,
+    ],
   },
   [WidgetTypes.article]: { isEmpty: null, initLoading: true, loaded: false },
   [WidgetTypes.poaps]: { isEmpty: null, initLoading: true, loaded: false },
@@ -53,6 +58,12 @@ export const initialState: WidgetState = {
     parent: WidgetTypes.scores,
   },
   [WidgetTypes.airstackScores]: {
+    isEmpty: null,
+    initLoading: true,
+    loaded: false,
+    parent: WidgetTypes.scores,
+  },
+  [WidgetTypes.talent]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
@@ -104,6 +115,10 @@ export const updateSnapshotWidget = createAction<UpdateWidgetState>(
   WidgetTypes.snapshot
 );
 
+export const updateTalentWidget = createAction<UpdateWidgetState>(
+  WidgetTypes.talent
+);
+
 const widgetActions = [
   updateNFTWidget,
   updatePoapsWidget,
@@ -118,6 +133,7 @@ const widgetActions = [
   updateGitcoinWidget,
   updateAirstackScoresWidget,
   updateSnapshotWidget,
+  updateTalentWidget,
 ];
 
 export default createReducer(initialState, (builder) => {
