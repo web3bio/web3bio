@@ -622,11 +622,11 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
   },
   [PlatformType.coingecko]: {
     key: PlatformType.snapshot,
-    color: "#ffb503",
+    color: "#4BCC00",
     icon: "icons/icon-coingecko.svg",
     label: "CoinGecko",
     urlPrefix: "https://www.coingecko.com/en/coins/",
-    system: PlatformSystem.web3,
+    system: PlatformSystem.web2,
   },
 };
 

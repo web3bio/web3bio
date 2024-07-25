@@ -159,10 +159,10 @@ export default function SnapshotModalContent({ onClose, space, profile }) {
               </>
             )}
           </div>
-          <div className="mt-2">{space?.about}</div>
+          <div className="mt-2 mb-2">{space?.about}</div>
 
           {spaceLinks.map((x) => space[x]).some((x) => !!x) && (
-            <div className="btn-group mt-2">
+            <div className="btn-group mt-2 mb-2">
               {spaceLinks.map((x) => {
                 return (
                   space[x] && (
@@ -170,7 +170,7 @@ export default function SnapshotModalContent({ onClose, space, profile }) {
                       href={SocialPlatformMapping(x).urlPrefix + space[x]}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="btn"
+                      className="btn btn-sm"
                     >
                       <SVG
                         src={
@@ -178,10 +178,10 @@ export default function SnapshotModalContent({ onClose, space, profile }) {
                           `../icons/icon-web.svg`
                         }
                         fill="#121212"
-                        width={20}
-                        height={20}
+                        width={18}
+                        height={18}
                       />
-                      <span className="ml-1">
+                      <span className="">
                         {SocialPlatformMapping(x).label}
                       </span>
                     </Link>
@@ -210,12 +210,6 @@ export default function SnapshotModalContent({ onClose, space, profile }) {
               <SVG src={"icons/icon-open.svg"} width={20} height={20} />
               Open in Snapshot
             </Link>
-            {space?.website && (
-              <Link href={space?.website} target="_blank" className="btn">
-                <SVG src={"icons/icon-open.svg"} width={20} height={20} />
-                Website
-              </Link>
-            )}
           </div>
         </div>
       </>
