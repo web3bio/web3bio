@@ -5,45 +5,27 @@ import Link from "next/link";
 import Image from "next/image";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { Avatar } from "../shared/Avatar";
-import { useQuery } from "@apollo/client";
-import { QUERY_SPACE_BY_ID } from "../apis/snapshot";
-import { WidgetTypes } from "../utils/widgets";
 import { NetworkMapping, chainIdToNetwork } from "../utils/network";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { fetchProfile } from "../hooks/fetchProfile";
 import { formatText } from "../utils/utils";
 import { isAddress } from "viem";
 
+const spaceLinks = [
+  PlatformType.twitter,
+  PlatformType.website,
+  PlatformType.github,
+  PlatformType.coingecko,
+];
+
 export default function SnapshotModalContent({ onClose, space, profile }) {
   const [members, setMembers] = useState(new Array());
   const [admins, setAdmins] = useState(new Array());
   const [moderators, setModerators] = useState(new Array());
-  const {
-    data: spaceDetail,
-    loading,
-    error,
-  } = useQuery(QUERY_SPACE_BY_ID, {
-    variables: {
-      id: space.id,
-    },
-    context: {
-      clientName: WidgetTypes.snapshot,
-    },
-  });
-
-  const _spaceDetail = spaceDetail?.space;
 
   if (process.env.NODE_ENV !== "production") {
-    console.log(
-      "space base info: ",
-      space,
-      "space detail: ",
-      spaceDetail,
-      "profile:",
-      profile
-    );
+    console.log("space base info: ", space, "profile:", profile);
   }
-
   useEffect(() => {
     const fetchUserProfiles = async (
       arr: string[],
@@ -59,15 +41,15 @@ export default function SnapshotModalContent({ onClose, space, profile }) {
       ).then((res) => res.filter((x) => x.status === "fulfilled" && x.value));
       setter(responses.map((x) => (x as any).value));
     };
-    if (!admins?.length && _spaceDetail?.admins?.length > 0) {
-      setAdmins(_spaceDetail.admins);
+    if (!admins?.length && space?.admins?.length > 0) {
+      setAdmins(space.admins);
     }
-    if (!members?.length && _spaceDetail?.members?.length > 0) {
-      setMembers(_spaceDetail.members);
+    if (!members?.length && space?.members?.length > 0) {
+      setMembers(space.members);
     }
 
-    if (!moderators?.length && _spaceDetail?.moderators?.length > 0) {
-      setModerators(_spaceDetail.moderators);
+    if (!moderators?.length && space?.moderators?.length > 0) {
+      setModerators(space.moderators);
     }
     if (admins?.length > 0 && admins.every((x) => typeof x === "string")) {
       fetchUserProfiles(admins, setAdmins);
@@ -81,7 +63,7 @@ export default function SnapshotModalContent({ onClose, space, profile }) {
     ) {
       fetchUserProfiles(moderators, setModerators);
     }
-  }, [_spaceDetail, members, admins, moderators]);
+  }, [space, members, admins, moderators]);
 
   const renderUsersGroup = (title, users) => {
     return (
@@ -157,29 +139,58 @@ export default function SnapshotModalContent({ onClose, space, profile }) {
             <strong className="h4 text-bold">{space.name}</strong>
           </div>
           <div className="text-gray">{space.id}</div>
-          {_spaceDetail && (
-            <div className="mt-2 mb-2">
-              <strong className="text-large">
-                {_spaceDetail?.followersCount.toLocaleString()}
-              </strong>{" "}
-              Members{" "}
-              {_spaceDetail?.network && (
-                <>
-                  <span> · </span>
-                  <strong className="text-large">
-                    {
-                      NetworkMapping(
-                        chainIdToNetwork(_spaceDetail.network) ||
-                          _spaceDetail.network
-                      ).label
-                    }
-                  </strong>{" "}
-                  Chain
-                </>
-              )}
+
+          <div className="mt-2 mb-2">
+            <strong className="text-large">
+              {space?.followersCount.toLocaleString()}
+            </strong>{" "}
+            Members{" "}
+            {space?.network && (
+              <>
+                <span> · </span>
+                <strong className="text-large">
+                  {
+                    NetworkMapping(
+                      chainIdToNetwork(space.network) || space.network
+                    ).label
+                  }
+                </strong>{" "}
+                Chain
+              </>
+            )}
+          </div>
+          <div className="mt-2">{space?.about}</div>
+
+          {spaceLinks.map((x) => space[x]).some((x) => !!x) && (
+            <div className="btn-group mt-2">
+              {spaceLinks.map((x) => {
+                return (
+                  space[x] && (
+                    <Link
+                      href={SocialPlatformMapping(x).urlPrefix + space[x]}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn"
+                    >
+                      <SVG
+                        src={
+                          SocialPlatformMapping(x).icon ||
+                          `../icons/icon-web.svg`
+                        }
+                        fill="#121212"
+                        width={20}
+                        height={20}
+                      />
+                      <span className="ml-1">
+                        {SocialPlatformMapping(x).label}
+                      </span>
+                    </Link>
+                  )
+                );
+              })}
             </div>
           )}
-          <div className="mt-2">{_spaceDetail?.about}</div>
+
           <div className="divider mt-4 mb-4"></div>
 
           {admins?.some((x) => x.identity) &&
@@ -199,12 +210,8 @@ export default function SnapshotModalContent({ onClose, space, profile }) {
               <SVG src={"icons/icon-open.svg"} width={20} height={20} />
               Open in Snapshot
             </Link>
-            {_spaceDetail?.website && (
-              <Link
-                href={_spaceDetail?.website}
-                target="_blank"
-                className="btn"
-              >
+            {space?.website && (
+              <Link href={space?.website} target="_blank" className="btn">
                 <SVG src={"icons/icon-open.svg"} width={20} height={20} />
                 Website
               </Link>
