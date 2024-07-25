@@ -14,7 +14,7 @@ export function WidgetAirStackScores({ handle, openModal }) {
       name: handle,
     },
     context: {
-      clientName: "airstack",
+      clientName: WidgetTypes.airstackScores,
     },
   });
   const dispatch = useDispatch();

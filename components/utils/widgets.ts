@@ -11,6 +11,7 @@ export enum WidgetTypes {
   gitcoin = "gitcoin",
   airstackScores = "airstackScores",
   guild = "guild",
+  snapshot = "snapshot",
 }
 
 const WidgetsInfoData = {
@@ -92,6 +93,12 @@ const WidgetsInfoData = {
     title: "Guilds",
     description:
       "Automated membership management for the platforms your community already uses.",
+  },
+  [WidgetTypes.snapshot]: {
+    key: WidgetTypes.snapshot,
+    icon: "⚡️",
+    title: "Snapshot",
+    description: "Snapshot - Where decisions get made.",
   },
 };
 export const WidgetInfoMapping = (widgetType: WidgetTypes) => {

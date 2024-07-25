@@ -320,6 +320,7 @@
 
   // Modal Profile, Modal Guild
   &.modal-profile-container,
+  &.modal-snapshot-container,
   &.modal-guild-container {
     background: #fff;
     display: flex;
@@ -360,6 +361,10 @@
       right: -2rem;
       top: -2rem;
       z-index: -1;
+
+      &.snapshot {
+        background: linear-gradient(to top, rgba(#f2994a, 0) 0%, rgba(#f2994a, .35) 200%);
+      }
 
       &.guild {
         background: linear-gradient(to top, rgba(#6062eb, 0) 0%, rgba(#6062eb, .35) 200%);
@@ -715,10 +720,12 @@
       font-weight: 800;
       letter-spacing: -.025em;
       line-height: 1.25;
+      width: 100%;
     }
 
     .nft-header-description {
       font-size: .8rem;
+      width: 100%;
 
       h1,
       h2,
@@ -789,6 +796,7 @@
     box-shadow: 0 .2rem .8rem -.2rem rgba($dark-color, 0.1);
     color: $dark-color;
     margin: 1rem 0;
+    width: 100%;
 
     .widget-list-item {
       display: flex;
@@ -821,6 +829,9 @@
   }
 
   .panel-widget-content {
+    display: flex;
+    flex-wrap: wrap;
+
     .traits-cards {
       display: flex;
       flex-wrap: wrap;

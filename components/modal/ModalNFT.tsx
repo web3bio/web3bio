@@ -39,8 +39,8 @@ const renderSocialMediaLinks = (_collection) => {
           <SVG
             src={`../${SocialPlatformMapping(key as PlatformType).icon}`}
             fill="#121212"
-            width={20}
-            height={20}
+            width={18}
+            height={18}
           />
         </Link>
       );

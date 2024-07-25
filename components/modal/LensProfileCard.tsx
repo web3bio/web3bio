@@ -71,11 +71,7 @@ export default function LensProfileCard(props) {
             <span> · </span>
             <span title="Lens UID">#{_profile.social.uid}</span>
           </div>
-          <div className="mt-2">{_profile.description}</div>
-          <div className="mt-2">
-            {_profile.location ? `📍 ${_profile.location}` : ""}
-          </div>
-          <div className="mt-2 mb-4">
+          <div className="mt-2 mb-2">
             <strong className="text-large">
               {_profile.social.following.toLocaleString()}
             </strong>{" "}
@@ -85,30 +81,37 @@ export default function LensProfileCard(props) {
             </strong>{" "}
             Followers
           </div>
+          <div className="mt-2">{_profile.description}</div>
+          <div className="mt-2 mb-4">
+            {_profile.location ? `📍 ${_profile.location}` : ""}
+          </div>
+          
           <div className="divider"></div>
           <div className="panel-widget">
             <div className="panel-widget-title">Stats</div>
             <div className="panel-widget-content">
-              <strong className="text-large">
-                {data?.profile?.stats?.posts.toLocaleString() || "…"}
-              </strong>{" "}
-              Posts ·{" "}
-              <strong className="text-large">
-                {data?.profile?.stats?.comments.toLocaleString() || "…"}
-              </strong>{" "}
-              Comments ·{" "}
-              <strong className="text-large">
-                {data?.profile?.stats?.mirrors.toLocaleString() || "…"}
-              </strong>{" "}
-              Mirrors ·{" "}
-              <strong className="text-large">
-                {data?.profile?.stats?.publications.toLocaleString() || "…"}
-              </strong>{" "}
-              Publications ·{" "}
-              <strong className="text-large">
-                {data?.profile?.stats?.quotes.toLocaleString() || "…"}
-              </strong>{" "}
-              Quotes
+              <div className="content">
+                <strong className="text-large">
+                  {data?.profile?.stats?.posts.toLocaleString() || "…"}
+                </strong>{" "}
+                Posts ·{" "}
+                <strong className="text-large">
+                  {data?.profile?.stats?.comments.toLocaleString() || "…"}
+                </strong>{" "}
+                Comments ·{" "}
+                <strong className="text-large">
+                  {data?.profile?.stats?.mirrors.toLocaleString() || "…"}
+                </strong>{" "}
+                Mirrors ·{" "}
+                <strong className="text-large">
+                  {data?.profile?.stats?.publications.toLocaleString() || "…"}
+                </strong>{" "}
+                Publications ·{" "}
+                <strong className="text-large">
+                  {data?.profile?.stats?.quotes.toLocaleString() || "…"}
+                </strong>{" "}
+                Quotes
+              </div>
             </div>
           </div>
 

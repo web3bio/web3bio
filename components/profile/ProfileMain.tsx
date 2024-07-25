@@ -34,6 +34,7 @@ import { updateUniversalBatchedProfile } from "../state/universal/actions";
 import { getProfileQuery } from "../utils/queries";
 import { WidgetArticle } from "./WidgetArticle";
 import WidgetGuild from "./WidgetGuild";
+import WidgetSnapshot from "./WidgetSnapshot";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
@@ -123,8 +124,8 @@ export default function ProfileMain(props) {
   };
   const isEmptyProfile = useCallback(() => {
     const source = Object.values(profileWidgetStates).filter((x) => x.loaded);
-    // 5 is all widgets num - basic widgets num (nft, poaps, feeds)
-    return source.length > 5 && source.every((x) => x.isEmpty);
+    // 6 is all widgets num - basic widgets num (nft, poaps, feeds)
+    return source.length > 6 && source.every((x) => x.isEmpty);
   }, [profileWidgetStates])();
 
   const isBasicLoadingFinished = useCallback(() => {
@@ -462,6 +463,25 @@ export default function ProfileMain(props) {
                   {isValidEthereumAddress(data.address) && (
                     <div className="web3-section-widgets">
                       <Suspense
+                        fallback={
+                          <LoadingSkeleton type={WidgetTypes.snapshot} />
+                        }
+                      >
+                        <WidgetSnapshot
+                          profile={data}
+                          onShowDetail={(v) => {
+                            openModal(ModalType.snapshot, {
+                              ...v,
+                            });
+                          }}
+                        />
+                      </Suspense>
+                    </div>
+                  )}
+
+                  {isValidEthereumAddress(data.address) && (
+                    <div className="web3-section-widgets">
+                      <Suspense
                         fallback={<LoadingSkeleton type={WidgetTypes.tally} />}
                       >
                         <WidgetTally address={data.address} />
@@ -469,7 +489,7 @@ export default function ProfileMain(props) {
                     </div>
                   )}
 
-                  {/* todo: Due to philand error background color, hide phi widget for now */}
+                  {/* TODO: Due to Philand error background color, hide Phi widget for now */}
                   {/* <div className="web3-section-widgets">
                     {(data.platform === PlatformType.ens ||
                       regexEns.test(data.identity)) && (

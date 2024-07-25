@@ -88,11 +88,7 @@ export default function FarcasterProfileCard(props) {
             )}
           </div>
           <div className="text-gray">@{_profile.identity}<span> · </span><span title="Farcaster FID">#{fid || "…"}</span></div>
-          <div className="mt-2">{_profile.description}</div>
-          <div className="mt-2">
-            {(_profile.location && `📍 ${_profile.location}`) || ""}
-          </div>
-          <div className="mt-2 mb-4">
+          <div className="mt-2 mb-2">
             <strong className="text-large">
               {_profile.social.following.toLocaleString()}
             </strong>{" "}
@@ -102,6 +98,11 @@ export default function FarcasterProfileCard(props) {
             </strong>{" "}
             Followers
           </div>
+          <div className="mt-2">{_profile.description}</div>
+          <div className="mt-2 mb-4">
+            {(_profile.location && `📍 ${_profile.location}`) || ""}
+          </div>
+          
           <div className="divider"></div>
           {channelsData?.data?.length > 0 && (
             <div className="panel-widget">
