@@ -24,7 +24,7 @@ export default function GuildModalContent({ onClose, guild, profile }) {
       revalidateOnReconnect: false,
     }
   );
-  const rolesAcquired = guildRoles?.filter(i => guild.roleIds.includes(i.id));
+  const rolesAcquired = guildRoles?.filter((i) => guild.roleIds.includes(i.id));
 
   // if (process.env.NODE_ENV !== "production") {
   //   console.log(
@@ -82,19 +82,54 @@ export default function GuildModalContent({ onClose, guild, profile }) {
             <span title="Guild ID">#{guild.id || "…"}</span>
           </div>
           <div className="mt-2 mb-2">
-            <strong className="text-large">{guild?.memberCount.toLocaleString()}</strong> Members{" "}
+            <strong className="text-large">
+              {guild?.memberCount.toLocaleString()}
+            </strong>{" "}
+            Members{" "}
             {guildDetail?.guildPin?.chain && (
               <>
                 <span> · </span>
                 <strong className="text-large">
-                  {NetworkMapping(guildDetail.guildPin?.chain.toLowerCase()).label}
+                  {
+                    NetworkMapping(guildDetail.guildPin?.chain.toLowerCase())
+                      .label
+                  }
                 </strong>{" "}
                 Chain
               </>
             )}
           </div>
           <div className="mt-2">{guildDetail?.description}</div>
-
+          {Object.keys(guildDetail?.socialLinks || {})?.length > 0 && (
+            <div className="mt-2 btn-group">
+              {Object.keys(guildDetail.socialLinks).map((x) => {
+                const href = guildDetail.socialLinks[x];
+                const platformKey = x.toLowerCase() as PlatformType;
+                return (
+                  <Link
+                    key={href}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-sm"
+                  >
+                    <SVG
+                      src={
+                        SocialPlatformMapping(platformKey).icon ||
+                        `../icons/icon-web.svg`
+                      }
+                      fill="#121212"
+                      width={18}
+                      height={18}
+                    />
+                    <span className="">
+                      {SocialPlatformMapping(platformKey).label}
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
           {guildRoles?.length > 0 && (
             <div className="panel-widget">
               {/* <div className="panel-widget-title">Guild Roles</div> */}
@@ -106,49 +141,8 @@ export default function GuildModalContent({ onClose, guild, profile }) {
                       className="role-item feed-token"
                       title={x.description}
                     >
-                      {x.imageUrl ? <Image
-                        alt={x.name}
-                        width={20}
-                        height={20}
-                        src={
-                          x.imageUrl.includes("/guildLogos/")
-                            ? `https://guild.xyz${x.imageUrl}`
-                            : x.imageUrl
-                        }
-                        className={"role-item-icon feed-token-icon"}
-                        style={{
-                          background: x.imageUrl.includes("/guildLogos/")
-                            ? "#000"
-                            : "unset",
-                          padding: x.imageUrl.includes("/guildLogos/") ? ".1rem": "auto",
-                        }}
-                      /> : <SVG src={"icons/icon-guild.svg"} fill={"#ccc"} width={20} height={20} />}
-                      <span className="feed-token-value">{x.name}</span>
-                      <span className="feed-token-meta">
-                        <SVG src={"/icons/icon-groups.svg"} width="20" height="20" />
-                        {x.memberCount?.toLocaleString()}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-
-          {rolesAcquired?.length > 0 && (
-            <>
-              <div className="divider"></div>
-              <div className="panel-widget">
-                <div className="panel-widget-title">Roles acquired by {profile.displayName}</div>
-                <div className="panel-widget-content">
-                  {rolesAcquired.map((x) => {
-                    return (
-                      <div
-                        key={x.id}
-                        className="role-item feed-token"
-                        title={x.description}
-                      >
-                        {x.imageUrl ? <Image
+                      {x.imageUrl ? (
+                        <Image
                           alt={x.name}
                           width={20}
                           height={20}
@@ -162,9 +156,78 @@ export default function GuildModalContent({ onClose, guild, profile }) {
                             background: x.imageUrl.includes("/guildLogos/")
                               ? "#000"
                               : "unset",
-                            padding: x.imageUrl.includes("/guildLogos/") ? ".1rem": "auto",
+                            padding: x.imageUrl.includes("/guildLogos/")
+                              ? ".1rem"
+                              : "auto",
                           }}
-                        /> : <SVG src={"icons/icon-guild.svg"} fill={"#ccc"} width={20} height={20} />}
+                        />
+                      ) : (
+                        <SVG
+                          src={"icons/icon-guild.svg"}
+                          fill={"#ccc"}
+                          width={20}
+                          height={20}
+                        />
+                      )}
+                      <span className="feed-token-value">{x.name}</span>
+                      <span className="feed-token-meta">
+                        <SVG
+                          src={"/icons/icon-groups.svg"}
+                          width="20"
+                          height="20"
+                        />
+                        {x.memberCount?.toLocaleString()}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {rolesAcquired?.length > 0 && (
+            <>
+              <div className="divider"></div>
+              <div className="panel-widget">
+                <div className="panel-widget-title">
+                  Roles acquired by {profile.displayName}
+                </div>
+                <div className="panel-widget-content">
+                  {rolesAcquired.map((x) => {
+                    return (
+                      <div
+                        key={x.id}
+                        className="role-item feed-token"
+                        title={x.description}
+                      >
+                        {x.imageUrl ? (
+                          <Image
+                            alt={x.name}
+                            width={20}
+                            height={20}
+                            src={
+                              x.imageUrl.includes("/guildLogos/")
+                                ? `https://guild.xyz${x.imageUrl}`
+                                : x.imageUrl
+                            }
+                            className={"role-item-icon feed-token-icon"}
+                            style={{
+                              background: x.imageUrl.includes("/guildLogos/")
+                                ? "#000"
+                                : "unset",
+                              padding: x.imageUrl.includes("/guildLogos/")
+                                ? ".1rem"
+                                : "auto",
+                            }}
+                          />
+                        ) : (
+                          <SVG
+                            src={"icons/icon-guild.svg"}
+                            fill={"#ccc"}
+                            width={20}
+                            height={20}
+                          />
+                        )}
                         <span className="feed-token-value">{x.name}</span>
                       </div>
                     );
