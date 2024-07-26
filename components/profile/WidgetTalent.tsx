@@ -3,9 +3,7 @@ import { memo, useEffect } from "react";
 import useSWR from "swr";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { useDispatch } from "react-redux";
-import {
-  updateTalentWidget,
-} from "../state/widgets/reducer";
+import { updateTalentWidget } from "../state/widgets/reducer";
 import { TALENT_API_ENDPOINT, talentFetcher } from "../apis/talent";
 
 function useTalentPassportInfo(address: string) {
@@ -31,7 +29,7 @@ const RenderWidgetTalent = ({ address }) => {
     if (!isLoading) {
       dispatch(
         updateTalentWidget({
-          isEmpty: !data.score,
+          isEmpty: !data?.score,
           initLoading: false,
         })
       );
