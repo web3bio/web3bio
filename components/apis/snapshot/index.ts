@@ -16,6 +16,8 @@ export const QUERY_SPACES_FOLLOWED_BY_USR = gql`
         website
         coingecko
         followersCount
+        proposalsCount
+        verified
       }
       created
     }

@@ -58,10 +58,10 @@ export function WidgetAirStackScores({ handle, openModal }) {
         <div className="profile-widget-body"></div>
 
         <div className="profile-widget-footer">
-          <div className="widget-rank-number">
+          <div className="widget-score-title">
             {Number(socialCapital?.socialCapitalScore).toFixed(2)}
             <div
-              className={`widget-rank-label ${
+              className={`widget-score-label ${
                 socialCapital?.socialCapitalRank < 50 ? "high-rank" : "low-rank"
               }`}
             >
@@ -69,7 +69,7 @@ export function WidgetAirStackScores({ handle, openModal }) {
             </div>
           </div>
           <div
-            className="widget-risk-title"
+            className="widget-score-subtitle"
             title="Social Capital Scores (SCS) are a measure of each Farcaster user's influence in the network."
           >
             Airstack Social Score <span className="c-hand">&#9432;</span>

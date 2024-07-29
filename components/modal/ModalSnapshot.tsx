@@ -5,9 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { Avatar } from "../shared/Avatar";
-import { NetworkMapping, chainIdToNetwork } from "../utils/network";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { fetchProfile } from "../hooks/fetchProfile";
+// import { Dispatch, SetStateAction, useEffect, useState } from "react";
+// import { fetchProfile } from "../hooks/fetchProfile";
 import { formatText } from "../utils/utils";
 import { isAddress } from "viem";
 
@@ -19,51 +18,52 @@ const spaceLinks = [
 ];
 
 export default function SnapshotModalContent({ onClose, space, profile }) {
-  const [members, setMembers] = useState(new Array());
-  const [admins, setAdmins] = useState(new Array());
-  const [moderators, setModerators] = useState(new Array());
+  // const [members, setMembers] = useState(new Array());
+  // const [admins, setAdmins] = useState(new Array());
+  // const [moderators, setModerators] = useState(new Array());
 
   if (process.env.NODE_ENV !== "production") {
-    console.log("space base info: ", space, "profile:", profile);
+    console.log("base info: ", space, "profile:", profile);
   }
-  useEffect(() => {
-    const fetchUserProfiles = async (
-      arr: string[],
-      setter: Dispatch<SetStateAction<any[]>>
-    ) => {
-      const responses = await Promise.allSettled(
-        arr.map((x) =>
-          fetchProfile({
-            identity: x,
-            platform: PlatformType.ethereum,
-          })
-        )
-      ).then((res) => res.filter((x) => x.status === "fulfilled" && x.value));
-      setter(responses.map((x) => (x as any).value));
-    };
-    if (!admins?.length && space?.admins?.length > 0) {
-      setAdmins(space.admins);
-    }
-    if (!members?.length && space?.members?.length > 0) {
-      setMembers(space.members);
-    }
 
-    if (!moderators?.length && space?.moderators?.length > 0) {
-      setModerators(space.moderators);
-    }
-    if (admins?.length > 0 && admins.every((x) => typeof x === "string")) {
-      fetchUserProfiles(admins, setAdmins);
-    }
-    if (members?.length > 0 && members.every((x) => typeof x === "string")) {
-      fetchUserProfiles(members, setMembers);
-    }
-    if (
-      moderators?.length > 0 &&
-      moderators.every((x) => typeof x === "string")
-    ) {
-      fetchUserProfiles(moderators, setModerators);
-    }
-  }, [space, members, admins, moderators]);
+  // useEffect(() => {
+  //   const fetchUserProfiles = async (
+  //     arr: string[],
+  //     setter: Dispatch<SetStateAction<any[]>>
+  //   ) => {
+  //     const responses = await Promise.allSettled(
+  //       arr.map((x) =>
+  //         fetchProfile({
+  //           identity: x,
+  //           platform: PlatformType.ethereum,
+  //         })
+  //       )
+  //     ).then((res) => res.filter((x) => x.status === "fulfilled" && x.value));
+  //     setter(responses.map((x) => (x as any).value));
+  //   };
+  //   if (!admins?.length && space?.admins?.length > 0) {
+  //     setAdmins(space.admins);
+  //   }
+  //   if (!members?.length && space?.members?.length > 0) {
+  //     setMembers(space.members);
+  //   }
+
+  //   if (!moderators?.length && space?.moderators?.length > 0) {
+  //     setModerators(space.moderators);
+  //   }
+  //   if (admins?.length > 0 && admins.every((x) => typeof x === "string")) {
+  //     fetchUserProfiles(admins, setAdmins);
+  //   }
+  //   if (members?.length > 0 && members.every((x) => typeof x === "string")) {
+  //     fetchUserProfiles(members, setMembers);
+  //   }
+  //   if (
+  //     moderators?.length > 0 &&
+  //     moderators.every((x) => typeof x === "string")
+  //   ) {
+  //     fetchUserProfiles(moderators, setModerators);
+  //   }
+  // }, [space, members, admins, moderators]);
 
   const renderUsersGroup = (title, users) => {
     return (
@@ -136,7 +136,16 @@ export default function SnapshotModalContent({ onClose, space, profile }) {
             src={space?.avatar}
           />
           <div className="d-flex mt-2" style={{ alignItems: "center" }}>
-            <strong className="h4 text-bold">{space.name}</strong>
+            <strong className="h4 text-bold mr-1">{space.name}</strong>
+            {space.verified && (
+              <SVG
+                src={`icons/icon-badge.svg`}
+                fill={"#121212"}
+                width={20}
+                height={20}
+                title={"Verified Snapshot Space"}
+              />
+            )}
           </div>
           <div className="text-gray">{space.id}</div>
 
@@ -145,19 +154,11 @@ export default function SnapshotModalContent({ onClose, space, profile }) {
               {space?.followersCount.toLocaleString()}
             </strong>{" "}
             Members{" "}
-            {space?.network && (
-              <>
-                <span> · </span>
-                <strong className="text-large">
-                  {
-                    NetworkMapping(
-                      chainIdToNetwork(space.network) || space.network
-                    ).label
-                  }
-                </strong>{" "}
-                Chain
-              </>
-            )}
+            <span> · </span>
+            <strong className="text-large">
+              {space?.proposalsCount.toLocaleString()}
+            </strong>{" "}
+            Proposals{" "}
           </div>
           <div className="mt-2 mb-2">{space?.about}</div>
 
@@ -191,14 +192,14 @@ export default function SnapshotModalContent({ onClose, space, profile }) {
             </div>
           )}
 
-          <div className="divider mt-4 mb-4"></div>
-
-          {admins?.some((x) => x.identity) &&
+          {/* <div className="divider mt-4 mb-4"></div> */}
+          {/* {admins?.some((x) => x.identity) &&
             renderUsersGroup("Admins", admins)}
           {moderators?.some((x) => x.identity) &&
             renderUsersGroup("Moderators", moderators)}
           {members?.some((x) => x.identity) &&
-            renderUsersGroup("Authors", members)}
+            renderUsersGroup("Authors", members)} */}
+
         </div>
         <div className="modal-profile-footer">
           <div className="btn-group btn-group-block">

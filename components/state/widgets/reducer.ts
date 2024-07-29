@@ -27,9 +27,10 @@ export const initialState: WidgetState = {
     initLoading: true,
     loaded: false,
     children: [
-      WidgetTypes.webacy,
       WidgetTypes.degen,
       WidgetTypes.gitcoin,
+      WidgetTypes.talent,
+      WidgetTypes.webacy,
       WidgetTypes.airstackScores,
     ],
   },
@@ -39,12 +40,6 @@ export const initialState: WidgetState = {
   [WidgetTypes.snapshot]: { isEmpty: null, initLoading: true, loaded: false },
   [WidgetTypes.tally]: { isEmpty: null, initLoading: true, loaded: false },
   [WidgetTypes.philand]: { isEmpty: null, initLoading: true, loaded: false },
-  [WidgetTypes.webacy]: {
-    isEmpty: null,
-    initLoading: true,
-    loaded: false,
-    parent: WidgetTypes.scores,
-  },
   [WidgetTypes.degen]: {
     isEmpty: null,
     initLoading: true,
@@ -57,13 +52,19 @@ export const initialState: WidgetState = {
     loaded: false,
     parent: WidgetTypes.scores,
   },
-  [WidgetTypes.airstackScores]: {
+  [WidgetTypes.talent]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
     parent: WidgetTypes.scores,
   },
-  [WidgetTypes.talent]: {
+  [WidgetTypes.webacy]: {
+    isEmpty: null,
+    initLoading: true,
+    loaded: false,
+    parent: WidgetTypes.scores,
+  },
+  [WidgetTypes.airstackScores]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
