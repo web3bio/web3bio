@@ -82,11 +82,11 @@ export default function LensProfileCard(props) {
             Followers
           </div>
           <div className="mt-2">{_profile.description}</div>
-          <div className="mt-2 mb-4">
+          <div className="mt-2 mb-2">
             {_profile.location ? `📍 ${_profile.location}` : ""}
           </div>
           
-          <div className="divider"></div>
+          <div className="divider mt-4 mb-4"></div>
           <div className="panel-widget">
             <div className="panel-widget-title">Stats</div>
             <div className="panel-widget-content">

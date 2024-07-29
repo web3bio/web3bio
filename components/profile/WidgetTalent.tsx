@@ -39,9 +39,9 @@ const RenderWidgetTalent = ({ address }) => {
   }, [data, dispatch, isLoading]);
   if (!isLoading && !data?.score) return null;
 
-  if (process.env.NODE_ENV !== "production") {
-    console.log("Talent Data:", data);
-  }
+  // if (process.env.NODE_ENV !== "production") {
+  //   console.log("Talent Data:", data);
+  // }
 
   return isLoading ? (
     <></>
