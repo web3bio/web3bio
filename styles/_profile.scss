@@ -1363,30 +1363,6 @@
     }
   }
 
-  // Airstack Widget
-  .profile-widget-airstack {
-    cursor: pointer;
-    background: linear-gradient(45deg, rgba(#8a63d2, .15) 0, rgba(#fff, 1) 25%);
-
-    .widget-score-title {
-      .widget-score-label {
-        background: linear-gradient(-60deg, rgba(#8a63d2, .1) 0, rgba(#8a63d2, .15) 35%);
-        border: .05rem solid rgba(#8a63d2, .05);
-        border-radius: .35rem;
-        color: rgba(#8a63d2, .75);
-        font-size: .65rem;
-        font-weight: 400;
-        padding: 0 .25rem;
-
-        &.high-rank {
-          background: linear-gradient(-60deg, rgba(#EF4444, .05) 0, rgba(#EF4444, .15) 35%);
-          border: .05rem solid rgba(#EF4444, .05);
-          color: rgba(#EF4444, .75);
-        }
-      }
-    }
-  }
-
   // Talent Widget
   .profile-widget-talent {
     cursor: pointer;
