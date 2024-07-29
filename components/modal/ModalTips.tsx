@@ -133,7 +133,7 @@ export default function TipModalContent(props) {
       if (!isNativeToken(token?.id) && isAllowanceLow)
         return `Approve ${amount} ${token?.symbol}`;
 
-      return `Donate ${formatText(amount, 8)} ${token?.symbol}`;
+      return `Donate ${formatText(amount?.toString(), 8)} ${token?.symbol}`;
     })();
     return (
       <ConnectButton.Custom>
