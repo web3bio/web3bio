@@ -125,7 +125,7 @@ export default function ProfileMain(props) {
   const isEmptyProfile = useCallback(() => {
     const source = Object.values(profileWidgetStates).filter((x) => x.loaded);
     // 6 is all widgets num - basic widgets num (nft, poaps, feeds)
-    return source.length > 6 && source.every((x) => x.isEmpty);
+    return source.length > 6 && source.every((x) => x.isEmpty && !x.parent);
   }, [profileWidgetStates])();
 
   const isBasicLoadingFinished = useCallback(() => {

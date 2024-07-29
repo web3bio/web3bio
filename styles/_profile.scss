@@ -1108,29 +1108,6 @@
     }
   }
 
-  // Scores Widget
-  .profile-widget-scores {
-    position: relative;
-    width: 100%;
-
-    .widget-scores-list {
-      display: flex;
-      flex-wrap: nowrap;
-      gap: 1rem;
-      margin: -1rem;
-      overflow-x: auto;
-      padding: 1rem;
-
-      .profile-widget {
-        flex: 0 0 12rem;
-        min-height: 9rem;
-        padding: 1rem;
-        text-decoration: none;
-        width: 12rem;
-      }
-    }
-  }
-
   // TallyDAO Widget
   .profile-widget-tally {
     max-height: 15rem;
@@ -1251,47 +1228,69 @@
       }
     }
   }
+  // Scores Widget
+  .profile-widget-scores {
+    position: relative;
+    width: 100%;
+
+    .widget-scores-list {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 1rem;
+      margin: -1rem;
+      overflow-x: auto;
+      padding: 1rem;
+
+      .profile-widget {
+        flex: 0 0 11rem;
+        min-height: 9rem;
+        padding: 1rem;
+        text-decoration: none;
+        position: relative;
+        width: 11rem;
+
+        .profile-widget-body {
+          flex: 1;
+        }
+
+        .profile-widget-hover {
+          background: rgba(#fff, .95);
+          border-radius: .6rem;
+          bottom: 0;
+          display: none;
+          height: 100%;
+          left: 0;
+          padding: 0;
+          position: absolute;
+          width: 100%;
+        }
+    
+        &:focus,
+        &:hover {
+          .profile-widget-hover {
+            display: flex;
+          }
+        }
+
+        .widget-score-title {
+          align-items: center;
+          display: flex;
+          font-size: 1.2rem;
+          font-weight: 800;
+          gap: .4rem;
+        }
+    
+        .widget-score-subtitle {
+          font-size: .6rem;
+        }
+      }
+    }
+  }
+
 
   // DegenScore Widget
   .profile-widget-degenscore {
     background: linear-gradient(45deg, rgba(#A381EB, .1) 0, rgba(#fff, 1) 25%);
-    position: relative;
-    width: 100%;
-
-    .profile-widget-body {
-      flex: 1;
-    }
-
-    .profile-widget-hover {
-      background: rgba(#fff, .95);
-      border-radius: .6rem;
-      bottom: 0;
-      display: none;
-      height: 100%;
-      left: 0;
-      padding: 0;
-      position: absolute;
-      width: 100%;
-    }
-
-    &:focus,
-    &:hover {
-      .profile-widget-hover {
-        display: flex;
-      }
-    }
-
-    .widget-degen-title {
-      font-size: .6rem;
-    }
-
-    .widget-degen-number {
-      align-items: center;
-      display: flex;
-      font-size: 1.2rem;
-      font-weight: 800;
-      gap: .4rem;
-    }
 
     .widget-trait-list {
       display: flex;
@@ -1338,25 +1337,9 @@
   // Webacy Widget
   .profile-widget-webacy {
     background: linear-gradient(45deg, rgba(#556DD0, .1) 0, rgba(#fff, 1) 25%);
-    position: relative;
-    width: 100%;
 
-    .profile-widget-body {
-      flex: 1;
-    }
-
-    .widget-risk-title {
-      font-size: .6rem;
-    }
-
-    .widget-risk-number {
-      align-items: center;
-      display: flex;
-      font-size: 1.2rem;
-      font-weight: 800;
-      gap: .4rem;
-
-      .widget-risk-label {
+    .widget-score-title {
+      .widget-score-label {
         background: linear-gradient(-60deg, rgba(#556DD0, .05) 0, rgba(#556DD0, .15) 35%);
         border: .05rem solid rgba(#556DD0, .05);
         border-radius: .35rem;
@@ -1384,25 +1367,9 @@
   .profile-widget-airstack {
     cursor: pointer;
     background: linear-gradient(45deg, rgba(#8a63d2, .15) 0, rgba(#fff, 1) 25%);
-    position: relative;
-    width: 100%;
 
-    .profile-widget-body {
-      flex: 1;
-    }
-
-    .widget-risk-title {
-      font-size: .6rem;
-    }
-
-    .widget-rank-number {
-      align-items: center;
-      display: flex;
-      font-size: 1.2rem;
-      font-weight: 800;
-      gap: .4rem;
-
-      .widget-rank-label {
+    .widget-score-title {
+      .widget-score-label {
         background: linear-gradient(-60deg, rgba(#8a63d2, .1) 0, rgba(#8a63d2, .15) 35%);
         border: .05rem solid rgba(#8a63d2, .05);
         border-radius: .35rem;
@@ -1420,46 +1387,27 @@
     }
   }
 
+  // Talent Widget
+  .profile-widget-talent {
+    cursor: pointer;
+    background: linear-gradient(45deg, rgba(#6e51ee, .1) 0, rgba(#fff, 1) 25%);
+
+    .widget-score-title {
+      .widget-score-label {
+        background: linear-gradient(-60deg, rgba(#6e51ee, .05) 0, rgba(#6e51ee, .1) 35%);
+        border: .05rem solid rgba(#6e51ee, .05);
+        border-radius: .35rem;
+        color: rgba(#6e51ee, .5);
+        font-size: .65rem;
+        font-weight: 400;
+        padding: 0 .25rem;
+      }
+    }
+  }
+
   // Gitcoin Widget
   .profile-widget-gitcoin {
     background: linear-gradient(45deg, rgba(#4341B7, .15) 0, rgba(#fff, 1) 25%);
-    position: relative;
-    width: 100%;
-
-    .profile-widget-body {
-      flex: 1;
-    }
-
-    .profile-widget-hover {
-      background: rgba(#fff, .95);
-      border-radius: .6rem;
-      bottom: 0;
-      display: none;
-      height: 100%;
-      left: 0;
-      padding: 0;
-      position: absolute;
-      width: 100%;
-    }
-
-    &:focus,
-    &:hover {
-      .profile-widget-hover {
-        display: flex;
-      }
-    }
-
-    .widget-gitcoin-title {
-      font-size: .6rem;
-    }
-
-    .widget-gitcoin-number {
-      align-items: center;
-      display: flex;
-      font-size: 1.2rem;
-      font-weight: 800;
-      gap: .4rem;
-    }
 
     .widget-trait-list {
       display: flex;

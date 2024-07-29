@@ -56,9 +56,9 @@ const RenderWidgetGitcoin = ({ address }) => {
       <div className="profile-widget-body"></div>
 
       <div className="profile-widget-footer">
-        <div className="widget-gitcoin-number">{data.score}</div>
+        <div className="widget-score-title">{data.score}</div>
         <div
-          className="widget-gitcoin-title"
+          className="widget-score-subtitle"
           title="Humanity Score is based out of 100 and measures identity's uniqueness. The current passing threshold is 20."
         >
           Humanity Score

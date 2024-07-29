@@ -12,6 +12,7 @@ export enum WidgetTypes {
   airstackScores = "airstackScores",
   guild = "guild",
   snapshot = "snapshot",
+  talent = 'talent'
 }
 
 const WidgetsInfoData = {
@@ -99,6 +100,12 @@ const WidgetsInfoData = {
     icon: "⚡️",
     title: "Snapshot",
     description: "Snapshot - Where decisions get made.",
+  },
+  [WidgetTypes.talent]: {
+    key: WidgetTypes.talent,
+    icon: "🛠️",
+    title: "Talent Protocol",
+    description: "A new type of resume, for the onchain era of the internet.",
   },
 };
 export const WidgetInfoMapping = (widgetType: WidgetTypes) => {
