@@ -38,6 +38,7 @@ export interface NetworkMetaData {
   bgColor: string;
   scanPrefix: string;
   scanLabel?: string;
+  short?: string;
 }
 
 export const NetworkData: { [key in Network]: NetworkMetaData } = {
@@ -50,6 +51,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
     bgColor: "#ebecf8",
     scanPrefix: "https://etherscan.io/address/",
     scanLabel: "Etherscan.io",
+    short: "eth",
   },
   [Network.polygon]: {
     key: Network.polygon,
@@ -59,6 +61,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
     primaryColor: "#7a4add",
     bgColor: "#ece5fa",
     scanPrefix: "https://polygonscan.com/",
+    short: "matic",
   },
   [Network.avalanche]: {
     key: Network.avalanche,
@@ -85,6 +88,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
     primaryColor: "#2949d4",
     bgColor: "#eaedfb",
     scanPrefix: "https://arbiscan.io/",
+    short: "arb",
   },
   [Network.arbitrum_one]: {
     key: Network.arbitrum_one,
@@ -94,6 +98,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
     primaryColor: "#2949d4",
     bgColor: "#eaedfb",
     scanPrefix: "https://arbiscan.io/",
+    short: "arb",
   },
   [Network.arbitrum_nova]: {
     key: Network.arbitrum_nova,
@@ -103,6 +108,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
     primaryColor: "#ee7c31",
     bgColor: "#fdf2ea",
     scanPrefix: "https://nova.arbiscan.io/",
+    short: "arb",
   },
   [Network.arweave]: {
     key: Network.arweave,
@@ -120,6 +126,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
     primaryColor: "#f0b90b",
     bgColor: "#fdf3d4",
     scanPrefix: "https://bscscan.com/",
+    short: "bsc",
   },
   [Network.base]: {
     key: Network.base,
@@ -327,11 +334,14 @@ export const NetworkMapping = (network: Network) => {
   );
 };
 
-export const chainIdToNetwork = (chainId?: number | string) => {
+export const chainIdToNetwork = (
+  chainId?: number | string,
+  useShort?: boolean
+) => {
   if (!chainId) return null;
   return (
     Object.values(NetworkData).find(
       (x) => x.chainId && x.chainId === Number(chainId)
-    )?.key || null
+    )?.[useShort ? "short" : "key"] || null
   );
 };

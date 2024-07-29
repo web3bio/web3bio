@@ -1,4 +1,5 @@
 export const FIREFLY_ENDPOINT = "https://api.firefly.land";
+export const FIREFLY_PROXY_DEBANK_ENDPOINT = "https://debank-proxy.r2d2.to";
 
 export const FireflyFetcher = async ([url, body]) => {
   console.time("Firefly API call");

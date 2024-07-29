@@ -277,6 +277,9 @@
           right: 0rem;
           border-radius: .5rem;
 
+          img {
+            border-radius: 99%;
+          }
 
           .btn {
             width: 100%;
@@ -285,6 +288,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+
           }
 
           .btn-primary {
@@ -297,8 +301,9 @@
             font-size: .6rem;
             font-weight: 500;
             padding: 0;
+            left: auto;
             right: 0;
-            min-width: 6rem;
+            min-width: 7rem;
 
             .dropdown-menu-item {
               width: 100%;
@@ -316,6 +321,15 @@
             }
           }
         }
+      }
+
+      .balance-text {
+        width: 100%;
+        display: flex;
+        justify-content: end;
+        margin: -.5rem 0;
+        font-size: .5rem;
+        color: rgba($dark-color, .5)
       }
 
       .common-input {

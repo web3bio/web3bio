@@ -7,36 +7,57 @@ import {
   useWaitForTransactionReceipt,
   useWriteContract,
 } from "wagmi";
-import { useCurrencyAllowance, useCurrencyBalance } from "../hooks/useCurrency";
+import { useCurrencyAllowance } from "../hooks/useCurrency";
 import { ConnectButton, useChainModal } from "@rainbow-me/rainbowkit";
 import { erc20Abi, formatEther, parseEther } from "viem";
-import { tipsTokenMapping } from "../utils/tips";
-import { Network, NetworkMapping, chainIdToNetwork } from "../utils/network";
+import { chainIdToNetwork } from "../utils/network";
 import { Loading } from "../shared/Loading";
 import toast from "react-hot-toast";
 import CurrencyInput from "./CurrencyInput";
+import { Token } from "../utils/types";
+import useSWR from "swr";
+import { FIREFLY_PROXY_DEBANK_ENDPOINT } from "../apis/firefly";
+import { ProfileFetcher } from "../apis/profile";
+import { formatText } from "../utils/utils";
+
+const isNativeToken = (id: string) => {
+  return !id.startsWith("0x");
+};
+
+const useTokenList = (address, network) => {
+  const { data, isLoading } = useSWR(
+    `${FIREFLY_PROXY_DEBANK_ENDPOINT}/v1/user/all_token_list?id=${address}&chain_ids=${network}`,
+    ProfileFetcher
+  );
+  return {
+    data: data
+      ?.sort(
+        (a, b) => Number(isNativeToken(b.id)) - Number(isNativeToken(a.id))
+      )
+      .filter((x) => x.is_verified),
+    isLoading: isLoading,
+  };
+};
 
 export default function TipModalContent(props) {
   const { onClose, profile } = props;
   const [amount, setAmount] = useState(0.01);
   const chainId = useChainId();
-  const defaultToken = useMemo(() => {
-    const network = chainIdToNetwork(chainId);
-    if (network) return tipsTokenMapping[network][0];
-    return tipsTokenMapping[Network.ethereum][0];
-  }, [chainId]);
-
-  const [token, setToken] = useState(defaultToken);
   const [nickName, setNickName] = useState(profile.displayName);
   const [message, setMessage] = useState("");
   const { openChainModal } = useChainModal();
   const { address } = useAccount();
+  const { data: tokenList, isLoading } = useTokenList(
+    address,
+    chainIdToNetwork(chainId, true)
+  );
+
+  const [token, setToken] = useState<Token | any>(tokenList?.[0]);
   useEffect(() => {
-    if (defaultToken) {
-      setToken(defaultToken);
+    if (tokenList?.length > 0) {
+      setToken(tokenList[0]);
     }
-  }, [defaultToken]);
-  const { data: balance } = useCurrencyBalance(token.address!);
+  }, [tokenList?.[0]?.chain]);
   const {
     sendTransaction,
     data: txData,
@@ -74,17 +95,17 @@ export default function TipModalContent(props) {
       );
     }
   }, [txStatus, txPrepareError, approveStatus, contractPrepareError]);
-  const { data: allowance } = useCurrencyAllowance(token.address!);
+  const { data: allowance } = useCurrencyAllowance(token?.id!);
 
   const RenderButton = useMemo(() => {
-    const isBalanceLow = amount >= Number(formatEther(balance?.value || 0n));
+    const isBalanceLow = amount >= Number(token?.amount);
     const isAllowanceLow = Number(formatEther(allowance || 0n)) < amount;
     const isButtonLoading =
       txLoading || txPrepareLoading || approveLoading || contractPrepareLoading;
     contractPrepareLoading;
     const buttonHandle = () => {
       if (isBalanceLow) return null;
-      if (token.isNativeToken)
+      if (isNativeToken(token?.id))
         return sendTransaction({
           to: profile.address,
           value: parseEther(amount.toString()),
@@ -92,30 +113,37 @@ export default function TipModalContent(props) {
       if (isAllowanceLow)
         return onCallContract({
           abi: erc20Abi,
-          address: token.address!,
+          address: token?.id!,
           functionName: "approve",
-          args: [token.address!, parseEther(amount.toString())],
+          args: [token?.id!, parseEther(amount.toString())],
         });
 
       return onCallContract({
         abi: erc20Abi,
-        address: token.address!,
+        address: token?.id!,
         functionName: "transfer",
         args: [profile.address, parseEther(amount.toString())],
       });
     };
     const ButtonText = (() => {
+      if (!amount || amount <= 0) return "Invalid Amount";
       if (isBalanceLow) return "Insufficient Balance";
       if (isButtonLoading) return "Loading...";
-      if (!token.isNativeToken && isAllowanceLow)
-        return `Approve ${amount} ${token.symbol}`;
+      if (!tokenList?.length) return "No Token Detected";
+      if (!isNativeToken(token?.id) && isAllowanceLow)
+        return `Approve ${amount} ${token?.symbol}`;
 
-      return `Donate ${amount} ${token.symbol}`;
+      return `Donate ${formatText(amount, 8)} ${token?.symbol}`;
     })();
     return (
       <ConnectButton.Custom>
         {({ account, chain, openChainModal, openConnectModal, mounted }) => {
           const connected = mounted && account && chain;
+          const isButtonDisabled =
+            isBalanceLow ||
+            isButtonLoading ||
+            !tokenList?.length ||
+            amount <= 0;
           return (
             <>
               {(() => {
@@ -144,7 +172,7 @@ export default function TipModalContent(props) {
                   <div
                     onClick={buttonHandle}
                     className={`btn btn-primary donate-btn ${
-                      isBalanceLow || isButtonLoading ? "disabled" : ""
+                      isButtonDisabled ? "disabled" : ""
                     }`}
                   >
                     {isButtonLoading && (
@@ -165,7 +193,6 @@ export default function TipModalContent(props) {
     address,
     amount,
     token,
-    balance,
     allowance,
     txLoading,
     txPrepareLoading,
@@ -182,9 +209,11 @@ export default function TipModalContent(props) {
       </div>
       <div className="modal-tip-body">
         <CurrencyInput
+          isLoading={isLoading}
           selected={token}
+          list={tokenList}
           value={amount}
-          disabled={txLoading || txPrepareLoading}
+          disabled={txLoading || txPrepareLoading || !tokenList?.length}
           onChange={(v) => {
             let value = v;
             if (!/^[0-9]*\.?[0-9]*$/.test(v)) {
@@ -216,12 +245,10 @@ export default function TipModalContent(props) {
             Switch Network
           </div>
         </div>
-
-    
       </div>
-      <div className="network-badge" >
-           <span className="green-dot"></span> {chainIdToNetwork(chainId)}
-        </div>
+      <div className="network-badge">
+        <span className="green-dot"></span> {chainIdToNetwork(chainId)}
+      </div>
     </>
   );
 }
