@@ -26,10 +26,11 @@ export default function FarcasterProfileCard(props) {
     },
   });
 
-  const isPowerUser = useMemo(
-    () => airstack?.Socials?.Social?.[0]?.isFarcasterPowerUser,
+  const socialCaptial = useMemo(
+    () => airstack?.Socials?.Social?.[0],
     [airstack]
   );
+
   const { data: channelsData } = useSWR(
     fid
       ? FIREFLY_ENDPOINT + `/v2/farcaster-hub/active_channels?fid=${fid}`
@@ -47,6 +48,7 @@ export default function FarcasterProfileCard(props) {
       setFid(_profile.social.uid);
     }
   }, [_profile]);
+
   return (
     _profile && (
       <>
@@ -66,7 +68,7 @@ export default function FarcasterProfileCard(props) {
               height={14}
             />
           </div>
-          <span>Farcaster Profile</span>          
+          <span>Farcaster Profile</span>
         </div>
         <div className="modal-profile-body">
           <Avatar
@@ -79,7 +81,7 @@ export default function FarcasterProfileCard(props) {
           />
           <div className="d-flex mt-2" style={{ alignItems: "center" }}>
             <strong className="h4 text-bold">{_profile.displayName}</strong>
-            {isPowerUser ? (
+            {socialCaptial?.isFarcasterPowerUser ? (
               <div className="active-badge" title="Power User of Farcaster">
                 ϟ
               </div>
@@ -87,7 +89,11 @@ export default function FarcasterProfileCard(props) {
               ""
             )}
           </div>
-          <div className="text-gray">@{_profile.identity}<span> · </span><span title="Farcaster FID">#{fid || "…"}</span></div>
+          <div className="text-gray">
+            @{_profile.identity}
+            <span> · </span>
+            <span title="Farcaster FID">#{fid || "…"}</span>
+          </div>
           <div className="mt-2 mb-2">
             <strong className="text-large">
               {_profile.social.following.toLocaleString()}
@@ -102,7 +108,16 @@ export default function FarcasterProfileCard(props) {
           <div className="mt-2 mb-4">
             {(_profile.location && `📍 ${_profile.location}`) || ""}
           </div>
-          
+          {socialCaptial?.socialCaptial && (
+            <div>
+              Airstack Social Score{" "}
+              {Number(socialCaptial?.socialCapital.socialCapitalScore).toFixed(
+                2
+              )}
+              <div>Rank: {socialCaptial?.socialCapital.socialCapitalRank}</div>
+            </div>
+          )}
+
           <div className="divider"></div>
           {channelsData?.data?.length > 0 && (
             <div className="panel-widget">
