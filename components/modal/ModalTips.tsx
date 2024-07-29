@@ -26,15 +26,18 @@ const isNativeToken = (id: string) => {
 
 const useTokenList = (address, network) => {
   const { data, isLoading } = useSWR(
-    `${FIREFLY_PROXY_DEBANK_ENDPOINT}/v1/user/all_token_list?id=${address}&chain_ids=${network}`,
+    address
+      ? `${FIREFLY_PROXY_DEBANK_ENDPOINT}/v1/user/all_token_list?id=${address}&chain_ids=${network}`
+      : null,
     ProfileFetcher
   );
   return {
-    data: data
-      ?.sort(
-        (a, b) => Number(isNativeToken(b.id)) - Number(isNativeToken(a.id))
-      )
-      .filter((x) => x.is_verified),
+    data:
+      data
+        ?.sort(
+          (a, b) => Number(isNativeToken(b.id)) - Number(isNativeToken(a.id))
+        )
+        .filter((x) => x.is_verified) || [],
     isLoading: isLoading,
   };
 };
@@ -241,14 +244,18 @@ export default function TipModalContent(props) {
         />
         <div className="btn-group">
           {RenderButton}
-          <div onClick={openChainModal} className="btn btn-primary">
-            Switch Network
-          </div>
+          {address && (
+            <div onClick={openChainModal} className="btn btn-primary">
+              Switch Network
+            </div>
+          )}
         </div>
       </div>
-      <div className="network-badge">
-        <span className="green-dot"></span> {chainIdToNetwork(chainId)}
-      </div>
+      {address && (
+        <div className="network-badge">
+          <span className="green-dot"></span> {chainIdToNetwork(chainId)}
+        </div>
+      )}
     </>
   );
 }
