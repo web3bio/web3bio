@@ -31,7 +31,6 @@ export const initialState: WidgetState = {
       WidgetTypes.gitcoin,
       WidgetTypes.talent,
       WidgetTypes.webacy,
-      WidgetTypes.airstackScores,
     ],
   },
   [WidgetTypes.article]: { isEmpty: null, initLoading: true, loaded: false },
@@ -59,12 +58,6 @@ export const initialState: WidgetState = {
     parent: WidgetTypes.scores,
   },
   [WidgetTypes.webacy]: {
-    isEmpty: null,
-    initLoading: true,
-    loaded: false,
-    parent: WidgetTypes.scores,
-  },
-  [WidgetTypes.airstackScores]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
@@ -109,9 +102,6 @@ export const updateDegenWidget = createAction<UpdateWidgetState>(
 export const updateGitcoinWidget = createAction<UpdateWidgetState>(
   WidgetTypes.gitcoin
 );
-export const updateAirstackScoresWidget = createAction<UpdateWidgetState>(
-  WidgetTypes.airstackScores
-);
 export const updateSnapshotWidget = createAction<UpdateWidgetState>(
   WidgetTypes.snapshot
 );
@@ -132,7 +122,6 @@ const widgetActions = [
   updateWebacyWidget,
   updateDegenWidget,
   updateGitcoinWidget,
-  updateAirstackScoresWidget,
   updateSnapshotWidget,
   updateTalentWidget,
 ];

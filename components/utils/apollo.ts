@@ -55,7 +55,7 @@ const lensLink = new HttpLink({
 const linkMapping = {
   [WidgetTypes.tally]: tallyLink,
   [PlatformType.lens]: lensLink,
-  [WidgetTypes.airstackScores]: airstackLink,
+  ["airstack"]: airstackLink,
   [WidgetTypes.snapshot]: snapshotLink,
   // currently hide ⬇️
   // [WidgetTypes.philand]: philandLink,

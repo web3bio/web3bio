@@ -9,10 +9,9 @@ export enum WidgetTypes {
   degen = "degen",
   webacy = "webacy",
   gitcoin = "gitcoin",
-  airstackScores = "airstackScores",
   guild = "guild",
   snapshot = "snapshot",
-  talent = 'talent'
+  talent = "talent",
 }
 
 const WidgetsInfoData = {
@@ -80,13 +79,6 @@ const WidgetsInfoData = {
     title: "Gitcoin Passport",
     description:
       "Gitcoin Passport helps you collect “stamps” that prove your humanity and reputation. You decide what stamps are shown. And your privacy is protected at each step of the way.",
-  },
-  [WidgetTypes.airstackScores]: {
-    key: WidgetTypes.airstackScores,
-    icon: "🟣",
-    title: "Farcaster",
-    description:
-      "Social Capital Scores (SCS) are a measure of each Farcaster user's influence in the network.",
   },
   [WidgetTypes.guild]: {
     key: WidgetTypes.guild,

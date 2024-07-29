@@ -26,10 +26,11 @@ export default function FarcasterProfileCard(props) {
     },
   });
 
-  const isPowerUser = useMemo(
-    () => airstack?.Socials?.Social?.[0]?.isFarcasterPowerUser,
+  const socialCapital = useMemo(
+    () => airstack?.Socials?.Social?.[0],
     [airstack]
   );
+
   const { data: channelsData } = useSWR(
     fid
       ? FIREFLY_ENDPOINT + `/v2/farcaster-hub/active_channels?fid=${fid}`
@@ -47,6 +48,7 @@ export default function FarcasterProfileCard(props) {
       setFid(_profile.social.uid);
     }
   }, [_profile]);
+
   return (
     _profile && (
       <>
@@ -66,7 +68,7 @@ export default function FarcasterProfileCard(props) {
               height={14}
             />
           </div>
-          <span>Farcaster Profile</span>          
+          <span>Farcaster Profile</span>
         </div>
         <div className="modal-profile-body">
           <Avatar
@@ -79,67 +81,92 @@ export default function FarcasterProfileCard(props) {
           />
           <div className="d-flex mt-2" style={{ alignItems: "center" }}>
             <strong className="h4 text-bold">{_profile.displayName}</strong>
-            {isPowerUser ? (
-              <div className="active-badge" title="Power User of Farcaster">
+            {socialCapital?.isFarcasterPowerUser ? (
+              <div className="active-badge c-auto" title="Power User of Farcaster">
                 ϟ
               </div>
             ) : (
               ""
             )}
           </div>
-          <div className="text-gray">@{_profile.identity}<span> · </span><span title="Farcaster FID">#{fid || "…"}</span></div>
+          <div className="text-gray">
+            @{_profile.identity}
+            <span> · </span>
+            <span title="Farcaster FID">#{fid || "…"}</span>
+          </div>
           <div className="mt-2 mb-2">
             <strong className="text-large">
               {_profile.social.following.toLocaleString()}
             </strong>{" "}
-            Following ·{" "}
+            Following{" "}·{" "}
             <strong className="text-large">
               {_profile.social.follower.toLocaleString()}
             </strong>{" "}
             Followers
           </div>
           <div className="mt-2">{_profile.description}</div>
-          <div className="mt-2 mb-4">
+          <div className="mt-2 mb-2">
             {(_profile.location && `📍 ${_profile.location}`) || ""}
           </div>
-          
-          <div className="divider"></div>
-          {channelsData?.data?.length > 0 && (
-            <div className="panel-widget">
-              <div className="panel-widget-title">Active Channels</div>
-              <div className="panel-widget-content">
-                {channelsData.data.map((x) => {
-                  return (
-                    <Link
-                      key={x.id}
-                      href={`https://warpcast.com/~/channel/${x.id}`}
-                      className="channel-item"
-                      target="_blank"
-                    >
-                      <Image
-                        alt={x.name}
-                        width={40}
-                        height={40}
-                        src={x.image_url}
-                        className="channel-item-icon"
-                      />
-                      <div className="channel-item-body">
-                        <div className="channel-item-title">
-                          <strong>{x.name}</strong>{" "}
-                          <span className="text-gray">/{x.id}</span>
-                        </div>
-                        <div className="channel-item-subtitle">
-                          {x.description}
-                        </div>
-                        <div className="channel-item-subtitle text-gray">
-                          {x.follower_count?.toLocaleString()} followers
-                        </div>
-                      </div>
-                    </Link>
-                  );
-                })}
+          {socialCapital?.socialCapital && (
+            <>
+              <div className="divider mt-4 mb-4"></div>
+              <div className="panel-widget">
+                <div className="panel-widget-content">
+                  <div className="content">
+                    Social Capital Score{" "}
+                    <strong>
+                      {Number(socialCapital?.socialCapital.socialCapitalScore).toFixed(2)}
+                    </strong>
+                    {" "}·{" "}
+                    Rank{" "}
+                    <strong>{socialCapital?.socialCapital.socialCapitalRank}</strong>
+                  </div>
+                </div>
               </div>
-            </div>
+            </>
+          )}
+
+          
+          {channelsData?.data?.length > 0 && (
+            <>
+              <div className="divider mt-4 mb-4"></div>
+              <div className="panel-widget">
+                <div className="panel-widget-title">Active Channels</div>
+                <div className="panel-widget-content">
+                  {channelsData.data.map((x) => {
+                    return (
+                      <Link
+                        key={x.id}
+                        href={`https://warpcast.com/~/channel/${x.id}`}
+                        className="channel-item"
+                        target="_blank"
+                      >
+                        <Image
+                          alt={x.name}
+                          width={40}
+                          height={40}
+                          src={x.image_url}
+                          className="channel-item-icon"
+                        />
+                        <div className="channel-item-body">
+                          <div className="channel-item-title">
+                            <strong>{x.name}</strong>{" "}
+                            <span className="text-gray">/{x.id}</span>
+                          </div>
+                          <div className="channel-item-subtitle">
+                            {x.description}
+                          </div>
+                          <div className="channel-item-subtitle text-gray">
+                            {x.follower_count?.toLocaleString()} followers
+                          </div>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            </>
           )}
         </div>
         <div className="modal-profile-footer">
