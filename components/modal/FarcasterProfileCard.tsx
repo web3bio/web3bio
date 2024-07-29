@@ -26,7 +26,7 @@ export default function FarcasterProfileCard(props) {
     },
   });
 
-  const socialCaptial = useMemo(
+  const socialCapital = useMemo(
     () => airstack?.Socials?.Social?.[0],
     [airstack]
   );
@@ -81,7 +81,7 @@ export default function FarcasterProfileCard(props) {
           />
           <div className="d-flex mt-2" style={{ alignItems: "center" }}>
             <strong className="h4 text-bold">{_profile.displayName}</strong>
-            {socialCaptial?.isFarcasterPowerUser ? (
+            {socialCapital?.isFarcasterPowerUser ? (
               <div className="active-badge" title="Power User of Farcaster">
                 ϟ
               </div>
@@ -108,13 +108,13 @@ export default function FarcasterProfileCard(props) {
           <div className="mt-2 mb-4">
             {(_profile.location && `📍 ${_profile.location}`) || ""}
           </div>
-          {socialCaptial?.socialCaptial && (
+          {socialCapital?.socialCapital && (
             <div>
               Airstack Social Score{" "}
-              {Number(socialCaptial?.socialCapital.socialCapitalScore).toFixed(
+              {Number(socialCapital?.socialCapital.socialCapitalScore).toFixed(
                 2
               )}
-              <div>Rank: {socialCaptial?.socialCapital.socialCapitalRank}</div>
+              <div>Rank: {socialCapital?.socialCapital.socialCapitalRank}</div>
             </div>
           )}
 
