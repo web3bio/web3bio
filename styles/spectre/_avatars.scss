@@ -24,7 +24,7 @@
     @include avatar-base($unit-12);
   }
   &.avatar-xl {
-    @include avatar-base($unit-24);
+    @include avatar-base($unit-16);
   }
 
   img {

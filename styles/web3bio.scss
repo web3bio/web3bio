@@ -361,7 +361,7 @@ body {
 
   @media screen and (max-width: $size-md) {
     backdrop-filter: blur(1rem);
-    background: rgba($bg-color, .5);
+    background: rgba($light-color, .85);
     bottom: 1rem;
     box-shadow: 0 .1rem 1rem rgba($dark-color, .15);
     flex-direction: row;
@@ -666,6 +666,10 @@ body {
   position: relative;
   text-overflow: ellipsis;
   white-space: nowrap;
+
+  &.c-hand {
+    cursor: pointer;
+  }
 
   &:focus,
   &:hover {

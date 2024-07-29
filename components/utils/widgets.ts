@@ -9,8 +9,9 @@ export enum WidgetTypes {
   degen = "degen",
   webacy = "webacy",
   gitcoin = "gitcoin",
-  airstackScores = "airstackScores",
   guild = "guild",
+  snapshot = "snapshot",
+  talent = "talent",
 }
 
 const WidgetsInfoData = {
@@ -79,19 +80,24 @@ const WidgetsInfoData = {
     description:
       "Gitcoin Passport helps you collect “stamps” that prove your humanity and reputation. You decide what stamps are shown. And your privacy is protected at each step of the way.",
   },
-  [WidgetTypes.airstackScores]: {
-    key: WidgetTypes.airstackScores,
-    icon: "🟣",
-    title: "Farcaster",
-    description:
-      "Social Capital Scores (SCS) are a measure of each Farcaster user's influence in the network.",
-  },
   [WidgetTypes.guild]: {
     key: WidgetTypes.guild,
     icon: "🏰",
     title: "Guilds",
     description:
       "Automated membership management for the platforms your community already uses.",
+  },
+  [WidgetTypes.snapshot]: {
+    key: WidgetTypes.snapshot,
+    icon: "⚡️",
+    title: "Snapshot",
+    description: "Snapshot - Where decisions get made.",
+  },
+  [WidgetTypes.talent]: {
+    key: WidgetTypes.talent,
+    icon: "🛠️",
+    title: "Talent Protocol",
+    description: "A new type of resume, for the onchain era of the internet.",
   },
 };
 export const WidgetInfoMapping = (widgetType: WidgetTypes) => {

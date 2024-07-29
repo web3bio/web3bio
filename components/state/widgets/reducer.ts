@@ -26,19 +26,19 @@ export const initialState: WidgetState = {
     isEmpty: null,
     initLoading: true,
     loaded: false,
-    children: [WidgetTypes.webacy, WidgetTypes.degen],
+    children: [
+      WidgetTypes.degen,
+      WidgetTypes.gitcoin,
+      WidgetTypes.talent,
+      WidgetTypes.webacy,
+    ],
   },
   [WidgetTypes.article]: { isEmpty: null, initLoading: true, loaded: false },
   [WidgetTypes.poaps]: { isEmpty: null, initLoading: true, loaded: false },
   [WidgetTypes.guild]: { isEmpty: null, initLoading: true, loaded: false },
+  [WidgetTypes.snapshot]: { isEmpty: null, initLoading: true, loaded: false },
   [WidgetTypes.tally]: { isEmpty: null, initLoading: true, loaded: false },
   [WidgetTypes.philand]: { isEmpty: null, initLoading: true, loaded: false },
-  [WidgetTypes.webacy]: {
-    isEmpty: null,
-    initLoading: true,
-    loaded: false,
-    parent: WidgetTypes.scores,
-  },
   [WidgetTypes.degen]: {
     isEmpty: null,
     initLoading: true,
@@ -51,7 +51,13 @@ export const initialState: WidgetState = {
     loaded: false,
     parent: WidgetTypes.scores,
   },
-  [WidgetTypes.airstackScores]: {
+  [WidgetTypes.talent]: {
+    isEmpty: null,
+    initLoading: true,
+    loaded: false,
+    parent: WidgetTypes.scores,
+  },
+  [WidgetTypes.webacy]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
@@ -96,8 +102,12 @@ export const updateDegenWidget = createAction<UpdateWidgetState>(
 export const updateGitcoinWidget = createAction<UpdateWidgetState>(
   WidgetTypes.gitcoin
 );
-export const updateAirstackScoresWidget = createAction<UpdateWidgetState>(
-  WidgetTypes.airstackScores
+export const updateSnapshotWidget = createAction<UpdateWidgetState>(
+  WidgetTypes.snapshot
+);
+
+export const updateTalentWidget = createAction<UpdateWidgetState>(
+  WidgetTypes.talent
 );
 
 const widgetActions = [
@@ -112,7 +122,8 @@ const widgetActions = [
   updateWebacyWidget,
   updateDegenWidget,
   updateGitcoinWidget,
-  updateAirstackScoresWidget,
+  updateSnapshotWidget,
+  updateTalentWidget,
 ];
 
 export default createReducer(initialState, (builder) => {
