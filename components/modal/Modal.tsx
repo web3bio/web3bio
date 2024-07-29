@@ -11,6 +11,7 @@ import IdentityGraphModalContent from "./ModalIdentityGraph";
 import ProfileModalContent from "./ModalProfile";
 import TipModalContent from "./ModalTips";
 import GuildModalContent from "./ModalGuild";
+import SnapshotModalContent from "./ModalSnapshot";
 
 export default function Modal(props) {
   const { onDismiss, children, modalType, params } = props;
@@ -71,6 +72,8 @@ export default function Modal(props) {
         return <TipModalContent {...params} onClose={onDismiss} />;
       case ModalType.guild:
         return <GuildModalContent {...params} onClose={onDismiss} />;
+      case ModalType.snapshot:
+        return <SnapshotModalContent {...params} onClose={onDismiss} />;
       default:
         return children;
     }

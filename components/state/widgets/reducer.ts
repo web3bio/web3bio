@@ -1,19 +1,10 @@
-import { createReducer } from "@reduxjs/toolkit";
-import {
-  updateNFTWidget,
-  updatePoapsWidget,
-  updateFeedsWidget,
-  updatePhilandWidget,
-  updateTallyDAOWidget,
-  updateArticleWidget,
-  updateScoresWidget,
-  updateWebacyWidget,
-  updateDegenWidget,
-  updateGitcoinWidget,
-  updateAirstackScoresWidget,
-  updateGuildWidget,
-} from "./action";
+import { createReducer, createAction } from "@reduxjs/toolkit";
 import { WidgetTypes } from "../../utils/widgets";
+
+interface UpdateWidgetState {
+  isEmpty: boolean;
+  initLoading: boolean;
+}
 
 interface WidgetStateDetail {
   isEmpty?: boolean | null;
@@ -23,69 +14,32 @@ interface WidgetStateDetail {
   parent?: WidgetTypes | null;
   children?: WidgetTypes[] | null;
 }
-export interface WidgetState {
-  [WidgetTypes.nft]: WidgetStateDetail;
-  [WidgetTypes.feeds]?: WidgetStateDetail;
-  [WidgetTypes.scores]?: WidgetStateDetail;
-  [WidgetTypes.article]?: WidgetStateDetail;
-  [WidgetTypes.poaps]?: WidgetStateDetail;
-  [WidgetTypes.tally]?: WidgetStateDetail;
-  [WidgetTypes.philand]?: WidgetStateDetail;
-  [WidgetTypes.degen]?: WidgetStateDetail;
-  [WidgetTypes.webacy]?: WidgetStateDetail;
-  [WidgetTypes.gitcoin]?: WidgetStateDetail;
-  [WidgetTypes.airstackScores]?: WidgetStateDetail;
-  [WidgetTypes.guild]?: WidgetStateDetail;
-}
+
+export type WidgetState = {
+  [index in WidgetTypes]: WidgetStateDetail;
+};
 
 export const initialState: WidgetState = {
-  [WidgetTypes.nft]: {
-    isEmpty: null,
-    initLoading: true,
-    loaded: false,
-  },
-  [WidgetTypes.feeds]: {
-    isEmpty: null,
-    initLoading: true,
-    loaded: false,
-  },
+  [WidgetTypes.nft]: { isEmpty: null, initLoading: true, loaded: false },
+  [WidgetTypes.feeds]: { isEmpty: null, initLoading: true, loaded: false },
   [WidgetTypes.scores]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
-    children: [WidgetTypes.webacy, WidgetTypes.degen],
+    children: [
+      WidgetTypes.degen,
+      WidgetTypes.gitcoin,
+      WidgetTypes.talent,
+      WidgetTypes.webacy,
+      WidgetTypes.airstackScores,
+    ],
   },
-  [WidgetTypes.article]: {
-    isEmpty: null,
-    initLoading: true,
-    loaded: false,
-  },
-  [WidgetTypes.poaps]: {
-    isEmpty: null,
-    initLoading: true,
-    loaded: false,
-  },
-  [WidgetTypes.guild]: {
-    isEmpty: null,
-    initLoading: true,
-    loaded: false,
-  },
-  [WidgetTypes.tally]: {
-    isEmpty: null,
-    initLoading: true,
-    loaded: false,
-  },
-  [WidgetTypes.philand]: {
-    isEmpty: null,
-    initLoading: true,
-    loaded: false,
-  },
-  [WidgetTypes.webacy]: {
-    isEmpty: null,
-    initLoading: true,
-    loaded: false,
-    parent: WidgetTypes.scores,
-  },
+  [WidgetTypes.article]: { isEmpty: null, initLoading: true, loaded: false },
+  [WidgetTypes.poaps]: { isEmpty: null, initLoading: true, loaded: false },
+  [WidgetTypes.guild]: { isEmpty: null, initLoading: true, loaded: false },
+  [WidgetTypes.snapshot]: { isEmpty: null, initLoading: true, loaded: false },
+  [WidgetTypes.tally]: { isEmpty: null, initLoading: true, loaded: false },
+  [WidgetTypes.philand]: { isEmpty: null, initLoading: true, loaded: false },
   [WidgetTypes.degen]: {
     isEmpty: null,
     initLoading: true,
@@ -93,6 +47,18 @@ export const initialState: WidgetState = {
     parent: WidgetTypes.scores,
   },
   [WidgetTypes.gitcoin]: {
+    isEmpty: null,
+    initLoading: true,
+    loaded: false,
+    parent: WidgetTypes.scores,
+  },
+  [WidgetTypes.talent]: {
+    isEmpty: null,
+    initLoading: true,
+    loaded: false,
+    parent: WidgetTypes.scores,
+  },
+  [WidgetTypes.webacy]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
@@ -106,138 +72,91 @@ export const initialState: WidgetState = {
   },
 };
 
-export default createReducer(initialState, (builder) =>
-  builder
-    .addCase(
-      updateNFTWidget,
-      (state, { payload: { isEmpty, initLoading } }) => {
-        state[WidgetTypes.nft] = {
-          ...state[WidgetTypes.nft],
-          isEmpty,
-          initLoading,
-          loaded: true,
-        };
-      }
-    )
-    .addCase(
-      updateFeedsWidget,
-      (state, { payload: { isEmpty, initLoading } }) => {
-        state[WidgetTypes.feeds] = {
-          ...state[WidgetTypes.feeds],
-          isEmpty,
-          initLoading,
-          loaded: true,
-        };
-      }
-    )
-    .addCase(
-      updatePoapsWidget,
-      (state, { payload: { isEmpty, initLoading } }) => {
-        state[WidgetTypes.poaps] = {
-          ...state[WidgetTypes.poaps],
-          isEmpty,
-          initLoading,
-          loaded: true,
-        };
-      }
-    )
-    .addCase(
-      updateScoresWidget,
-      (state, { payload: { isEmpty, initLoading } }) => {
-        state[WidgetTypes.scores] = {
-          ...state[WidgetTypes.scores],
-          isEmpty,
-          initLoading,
-          loaded: true,
-        };
-      }
-    )
-    .addCase(
-      updateArticleWidget,
-      (state, { payload: { isEmpty, initLoading } }) => {
-        state[WidgetTypes.article] = {
-          ...state[WidgetTypes.article],
-          isEmpty,
-          initLoading,
-          loaded: true,
-        };
-      }
-    )
-    .addCase(
-      updateGuildWidget,
-      (state, { payload: { isEmpty, initLoading } }) => {
-        state[WidgetTypes.guild] = {
-          ...state[WidgetTypes.guild],
-          isEmpty,
-          initLoading,
-          loaded: true,
-        };
-      }
-    )
-    .addCase(
-      updateTallyDAOWidget,
-      (state, { payload: { isEmpty, initLoading } }) => {
-        state[WidgetTypes.tally] = {
-          ...state[WidgetTypes.tally],
-          isEmpty,
-          initLoading,
-          loaded: true,
-        };
-      }
-    )
-    .addCase(
-      updatePhilandWidget,
-      (state, { payload: { isEmpty, initLoading } }) => {
-        state[WidgetTypes.philand] = {
-          ...state[WidgetTypes.philand],
-          isEmpty,
-          initLoading,
-          loaded: true,
-        };
-      }
-    )
-    .addCase(
-      updateWebacyWidget,
-      (state, { payload: { isEmpty, initLoading } }) => {
-        state[WidgetTypes.webacy] = {
-          ...state[WidgetTypes.webacy],
-          isEmpty,
-          initLoading,
-          loaded: true,
-        };
-      }
-    )
-    .addCase(
-      updateDegenWidget,
-      (state, { payload: { isEmpty, initLoading } }) => {
-        state[WidgetTypes.degen] = {
-          ...state[WidgetTypes.degen],
-          isEmpty,
-          initLoading,
-          loaded: true,
-        };
-      }
-    )
-    .addCase(
-      updateGitcoinWidget,
-      (state, { payload: { isEmpty, initLoading } }) => {
-        state[WidgetTypes.gitcoin] = {
-          ...state[WidgetTypes.gitcoin],
-          isEmpty,
-          initLoading,
-          loaded: true,
-        };
-      }
-    )
-    .addCase(
-      updateAirstackScoresWidget,
-      (state, { payload: { isEmpty, initLoading } }) => {
-        state[WidgetTypes.airstackScores] = {
-          ...state[WidgetTypes.airstackScores],
-          isEmpty,
-          initLoading,
-          loaded: true,
-        };
-      }
-    )
+const updateWidget = createAction<{
+  widgetType: WidgetTypes;
+  isEmpty: boolean | null;
+  initLoading: boolean;
+}>("updateWidget");
+
+export const updateNFTWidget = createAction<UpdateWidgetState>(WidgetTypes.nft);
+export const updatePoapsWidget = createAction<UpdateWidgetState>(
+  WidgetTypes.poaps
 );
+export const updateFeedsWidget = createAction<UpdateWidgetState>(
+  WidgetTypes.feeds
+);
+export const updateScoresWidget = createAction<UpdateWidgetState>(
+  WidgetTypes.scores
+);
+export const updateArticleWidget = createAction<UpdateWidgetState>(
+  WidgetTypes.article
+);
+export const updateGuildWidget = createAction<UpdateWidgetState>(
+  WidgetTypes.guild
+);
+export const updateTallyDAOWidget = createAction<UpdateWidgetState>(
+  WidgetTypes.tally
+);
+export const updatePhilandWidget = createAction<UpdateWidgetState>(
+  WidgetTypes.philand
+);
+export const updateWebacyWidget = createAction<UpdateWidgetState>(
+  WidgetTypes.webacy
+);
+export const updateDegenWidget = createAction<UpdateWidgetState>(
+  WidgetTypes.degen
+);
+export const updateGitcoinWidget = createAction<UpdateWidgetState>(
+  WidgetTypes.gitcoin
+);
+export const updateAirstackScoresWidget = createAction<UpdateWidgetState>(
+  WidgetTypes.airstackScores
+);
+export const updateSnapshotWidget = createAction<UpdateWidgetState>(
+  WidgetTypes.snapshot
+);
+
+export const updateTalentWidget = createAction<UpdateWidgetState>(
+  WidgetTypes.talent
+);
+
+const widgetActions = [
+  updateNFTWidget,
+  updatePoapsWidget,
+  updateFeedsWidget,
+  updateScoresWidget,
+  updateArticleWidget,
+  updateGuildWidget,
+  updateTallyDAOWidget,
+  updatePhilandWidget,
+  updateWebacyWidget,
+  updateDegenWidget,
+  updateGitcoinWidget,
+  updateAirstackScoresWidget,
+  updateSnapshotWidget,
+  updateTalentWidget,
+];
+
+export default createReducer(initialState, (builder) => {
+  builder.addCase(updateWidget, (state, action) => {
+    const { widgetType, isEmpty, initLoading } = action.payload;
+    state[widgetType] = {
+      ...state[widgetType],
+      isEmpty,
+      initLoading,
+      loaded: true,
+    };
+  });
+
+  widgetActions.forEach((action) => {
+    builder.addCase(action, (state, { payload: { isEmpty, initLoading } }) => {
+      const widgetType = action.type;
+      state[widgetType] = {
+        ...state[widgetType],
+        isEmpty,
+        initLoading,
+        loaded: true,
+      };
+    });
+  });
+});

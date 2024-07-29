@@ -84,15 +84,15 @@ export default function PoapsModalContent({ onClose, asset }) {
                         href={`https://collectors.poap.xyz/token/${asset.asset.tokenId}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="btn"
+                        className="btn btn-sm"
                       >
                         <SVG
                           src={`../icons/icon-poap.svg`}
                           fill="#121212"
-                          width={20}
-                          height={20}
+                          width={18}
+                          height={18}
                         />
-                        <span className="ml-1">POAP</span>
+                        <span>POAP</span>
                       </Link>
                     )}
                     {asset.asset.event.event_url && (
@@ -100,15 +100,15 @@ export default function PoapsModalContent({ onClose, asset }) {
                         href={asset.asset.event.event_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="btn"
+                        className="btn btn-sm"
                       >
                         <SVG
                           src={`../icons/icon-web.svg`}
                           fill="#121212"
-                          width={20}
-                          height={20}
+                          width={18}
+                          height={18}
                         />
-                        <span className="ml-1">Website</span>
+                        <span>Website</span>
                       </Link>
                     )}
                   </div>

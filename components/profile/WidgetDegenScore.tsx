@@ -5,8 +5,8 @@ import Link from "next/link";
 import { DegenFetcher, DEGENSCORE_ENDPOINT } from "../apis/degenscore";
 import { formatDistanceToNow } from "date-fns";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
-import { updateDegenWidget } from "../state/widgets/action";
 import { useDispatch } from "react-redux";
+import { updateDegenWidget } from "../state/widgets/reducer";
 
 function useDegenInfo(address: string) {
   const { data, error } = useSWR(
@@ -41,9 +41,9 @@ const RenderWidgetDegenScore = ({ address }) => {
   }, [data, dispatch, isLoading]);
   if (!isLoading && !data?.name) return null;
 
-  if (process.env.NODE_ENV !== "production") {
-    console.log("DegenScore Data:", data);
-  }
+  // if (process.env.NODE_ENV !== "production") {
+  //   console.log("DegenScore Data:", data);
+  // }
 
   return isLoading ? (
     <></>
@@ -64,8 +64,8 @@ const RenderWidgetDegenScore = ({ address }) => {
       <div className="profile-widget-body"></div>
 
       <div className="profile-widget-footer">
-        <div className="widget-degen-number">{data.properties?.DegenScore}</div>
-        <div className="widget-degen-title">
+        <div className="widget-score-title">{data.properties?.DegenScore}</div>
+        <div className="widget-score-subtitle">
           Updated:{" "}
           {formatDistanceToNow(new Date(data?.updatedAt), {
             addSuffix: true,

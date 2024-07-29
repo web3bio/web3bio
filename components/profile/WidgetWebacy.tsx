@@ -1,11 +1,11 @@
 "use client";
 import useSWR from "swr";
+import Link from "next/link";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { ProfileFetcher } from "../apis/profile";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { updateWebacyWidget } from "../state/widgets/action";
-import Link from "next/link";
+import { updateWebacyWidget } from "../state/widgets/reducer";
 
 export function WidgetWebacy({ address }) {
   const { data, isLoading } = useSWR(
@@ -54,10 +54,10 @@ export function WidgetWebacy({ address }) {
       <div className="profile-widget-body"></div>
 
       <div className="profile-widget-footer">
-        <div className="widget-risk-number">
+        <div className="widget-score-title">
           {Number(data?.overallRisk).toFixed(2)}
           <div
-            className={`widget-risk-label ${
+            className={`widget-score-label ${
               data?.high > 0
                 ? "high-risk"
                 : data?.medium > 0
@@ -72,7 +72,7 @@ export function WidgetWebacy({ address }) {
               : "Low Risk"}
           </div>
         </div>
-        <div className="widget-risk-title">Address Risk Score </div>
+        <div className="widget-score-subtitle">Address Risk Score </div>
       </div>
     </Link>
   );

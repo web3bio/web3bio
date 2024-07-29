@@ -76,7 +76,10 @@ export enum PlatformType {
   gnosis = "gnosis",
   webacy = "webacy",
   clusters = "clusters",
-  guild="guild"
+  guild = "guild",
+  ton = "ton",
+  snapshot = "snapshot",
+  coingecko = "coingecko",
 }
 
 export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
@@ -599,6 +602,30 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     icon: "icons/icon-guild.svg",
     label: "Guild",
     urlPrefix: "https://guild.xyz/",
+    system: PlatformSystem.web2,
+  },
+  [PlatformType.ton]: {
+    key: PlatformType.ton,
+    color: "#0098EA",
+    icon: "icons/icon-ton.svg",
+    label: "TON",
+    urlPrefix: "https://tonscan.org/address/",
+    system: PlatformSystem.web3,
+  },
+  [PlatformType.snapshot]: {
+    key: PlatformType.snapshot,
+    color: "#ffb503",
+    icon: "icons/icon-snapshot.svg",
+    label: "Snapshot",
+    urlPrefix: "https://snapshot.org/",
+    system: PlatformSystem.web3,
+  },
+  [PlatformType.coingecko]: {
+    key: PlatformType.snapshot,
+    color: "#4BCC00",
+    icon: "icons/icon-coingecko.svg",
+    label: "CoinGecko",
+    urlPrefix: "https://www.coingecko.com/en/coins/",
     system: PlatformSystem.web2,
   },
 };

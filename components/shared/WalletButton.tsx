@@ -7,6 +7,7 @@ import Clipboard from "react-clipboard.js";
 import { useEffect, useRef, useState } from "react";
 import { Loading } from "./Loading";
 import { config } from "./WalletProvider";
+import { profileAPIBaseURL } from "../utils/queries";
 
 export default function WalletButton(props) {
   const {} = props;
@@ -117,7 +118,9 @@ export default function WalletButton(props) {
                           }}
                           src={
                             account.ensAvatar ||
-                            `/api/avatar/${account.ensName || account.address}`
+                            `${profileAPIBaseURL}/avatar/${
+                              account.ensName || account.address
+                            }`
                           }
                           alt={account.address}
                         />

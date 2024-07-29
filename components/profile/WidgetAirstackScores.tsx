@@ -2,11 +2,11 @@
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
-import { updateAirstackScoresWidget } from "../state/widgets/action";
 import { useQuery } from "@apollo/client";
 import { QUERY_FARCASTER_STATS } from "../apis/airstack";
 import { ModalType } from "../hooks/useModal";
 import { PlatformType } from "../utils/platform";
+import { updateAirstackScoresWidget } from "../state/widgets/reducer";
 
 export function WidgetAirStackScores({ handle, openModal }) {
   const { data, loading, error } = useQuery(QUERY_FARCASTER_STATS, {
@@ -14,7 +14,7 @@ export function WidgetAirStackScores({ handle, openModal }) {
       name: handle,
     },
     context: {
-      clientName: "airstack",
+      clientName: WidgetTypes.airstackScores,
     },
   });
   const dispatch = useDispatch();
@@ -58,10 +58,10 @@ export function WidgetAirStackScores({ handle, openModal }) {
         <div className="profile-widget-body"></div>
 
         <div className="profile-widget-footer">
-          <div className="widget-rank-number">
+          <div className="widget-score-title">
             {Number(socialCapital?.socialCapitalScore).toFixed(2)}
             <div
-              className={`widget-rank-label ${
+              className={`widget-score-label ${
                 socialCapital?.socialCapitalRank < 50 ? "high-rank" : "low-rank"
               }`}
             >
@@ -69,7 +69,7 @@ export function WidgetAirStackScores({ handle, openModal }) {
             </div>
           </div>
           <div
-            className="widget-risk-title"
+            className="widget-score-subtitle"
             title="Social Capital Scores (SCS) are a measure of each Farcaster user's influence in the network."
           >
             Airstack Social Score <span className="c-hand">&#9432;</span>

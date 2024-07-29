@@ -12,7 +12,8 @@ export enum ModalType {
   graph = "graph",
   profile = "profile",
   tip = "tip",
-  guild = 'guild'
+  guild = "guild",
+  snapshot = "snapshot",
 }
 
 const useModal = () => {
