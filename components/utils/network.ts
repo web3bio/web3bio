@@ -133,6 +133,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
     chainId: 8453,
     icon: "icons/icon-base.svg",
     label: "Base",
+    short: "base",
     primaryColor: "#2151f5",
     bgColor: "#e9eefe",
     scanPrefix: "https://basescan.org/",
@@ -182,6 +183,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
   },
   [Network.optimism]: {
     key: Network.optimism,
+    short: "op",
     chainId: 10,
     icon: "icons/icon-optimism.svg",
     label: "Optimism",
@@ -228,9 +230,10 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
   },
   [Network.zora]: {
     key: Network.zora,
+    chainId: 7777777,
     icon: "icons/icon-zora.svg",
     label: "Zora",
-
+    short: "zora",
     primaryColor: "#141414",
     bgColor: "#efefef",
     scanPrefix: "https://explorer.zora.energy/",

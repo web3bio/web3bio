@@ -46,6 +46,7 @@ export default function TipModalContent(props) {
   const { onClose, profile } = props;
   const [amount, setAmount] = useState(0.01);
   const chainId = useChainId();
+  const [wrongNetwork, setWrongNetwork] = useState(false);
   const [nickName, setNickName] = useState(profile.displayName);
   const [message, setMessage] = useState("");
   const { openChainModal } = useChainModal();
@@ -97,7 +98,16 @@ export default function TipModalContent(props) {
         `Successfully tipped ${profile.displayName} for ${amount} ${token.symbol}`
       );
     }
-  }, [txStatus, txPrepareError, approveStatus, contractPrepareError]);
+    if (!tokenList?.length) {
+      setToken(null);
+    }
+  }, [
+    txStatus,
+    txPrepareError,
+    approveStatus,
+    contractPrepareError,
+    tokenList,
+  ]);
   const { data: allowance } = useCurrencyAllowance(token?.id!);
 
   const RenderButton = useMemo(() => {
@@ -147,6 +157,11 @@ export default function TipModalContent(props) {
             isButtonLoading ||
             !tokenList?.length ||
             amount <= 0;
+          if (chain?.unsupported) {
+            setWrongNetwork(true);
+          } else {
+            setWrongNetwork(false);
+          }
           return (
             <>
               {(() => {
@@ -213,8 +228,8 @@ export default function TipModalContent(props) {
       <div className="modal-tip-body">
         <CurrencyInput
           isLoading={isLoading}
-          selected={token}
-          list={tokenList}
+          selected={wrongNetwork ? null : token}
+          list={wrongNetwork ? [] : tokenList}
           value={amount}
           disabled={txLoading || txPrepareLoading || !tokenList?.length}
           onChange={(v) => {
@@ -244,14 +259,14 @@ export default function TipModalContent(props) {
         />
         <div className="btn-group">
           {RenderButton}
-          {address && (
+          {address && !wrongNetwork && (
             <div onClick={openChainModal} className="btn btn-primary">
               Switch Network
             </div>
           )}
         </div>
       </div>
-      {address && (
+      {address && !wrongNetwork && (
         <div className="network-badge">
           <span className="green-dot"></span> {chainIdToNetwork(chainId)}
         </div>
