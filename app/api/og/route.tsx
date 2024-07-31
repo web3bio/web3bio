@@ -24,7 +24,11 @@ export async function GET(request: NextRequest) {
     const displayName = searchParams.get("displayName");
     const description = searchParams.get("description");
     const avatar = searchParams.get("avatar");
-    const avatarImg = avatar ? avatar : `${profileAPIBaseURL}/avatar/svg?handle=${path}`;
+    const avatarImg = avatar?.includes(".webp")
+      ? `${profileAPIBaseURL}/avatar/process?url=${encodeURIComponent(avatar)}`
+      : !!avatar
+      ? avatar
+      : `${profileAPIBaseURL}/avatar/svg?handle=${path}`;
     const isShowDefault = ![address, path, displayName].some((x) => !!x);
 
     if (isShowDefault) {
