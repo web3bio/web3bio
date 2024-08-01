@@ -48,14 +48,14 @@ export default function GuildModalContent({ onClose, guild, profile }) {
       </div>
       <>
         <div
-          className="modal-profile-header"
+          className="modal-header"
           style={{
             ["--widget-primary-color" as string]: SocialPlatformMapping(
               PlatformType.guild
             )?.color,
           }}
         >
-          <div className="modal-profile-cover guild"></div>
+          <div className="modal-cover guild"></div>
           <div className="platform-icon">
             <SVG
               src={`../${SocialPlatformMapping(PlatformType.guild)?.icon}`}
@@ -63,9 +63,9 @@ export default function GuildModalContent({ onClose, guild, profile }) {
               height={14}
             />
           </div>
-          <span>Guild</span>
+          <span className="modal-header-title">Guild</span>
         </div>
-        <div className="modal-profile-body">
+        <div className="modal-body">
           <Image
             width={80}
             height={80}
@@ -240,7 +240,7 @@ export default function GuildModalContent({ onClose, guild, profile }) {
             </>
           )}
         </div>
-        <div className="modal-profile-footer">
+        <div className="modal-footer">
           <div className="btn-group btn-group-block">
             <Link
               href={`https://guild.xyz/${guild.urlName}`}

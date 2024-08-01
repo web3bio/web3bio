@@ -86,7 +86,7 @@ export default function Modal(props) {
           e.stopPropagation();
         }}
         ref={wrapper}
-        className={`web3bio-modal-container modal-${modalType}-container`}
+        className={`modal-container modal-${modalType}-container`}
       >
         {renderContent(children, params)}
       </div>

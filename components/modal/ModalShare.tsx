@@ -70,17 +70,11 @@ export default function ShareModalContent(props) {
           <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
         </div>
       </div>
-      <div className="profile-share-header">
-        <div className="h5">Share this profile</div>
+      <div className="modal-header">
+        <div className="modal-header-title">Share this profile</div>
       </div>
-      <div className="profile-share-body">
-        <div
-          className="profile-share-card mb-4"
-          onClick={(e) => {
-            e.preventDefault();
-            downloadVCard(profile);
-          }}
-        >
+      <div className="modal-body">
+        <div className="profile-share-card mb-4">
           <Image
             className="img-responsive"
             src={`${relativeOGURL}`}
@@ -91,24 +85,24 @@ export default function ShareModalContent(props) {
           />
         </div>
       </div>
-      <div className="profile-share-actions">
-        Share on
-        <div className="btn-group">
-          {shareMap.map((x) => (
-            <a
-              key={x.platform}
-              className="btn share-item"
-              href={x.shareURL(url, profile.displayName)}
-              target="_blank"
-            >
-              <SVG fill="#121212" src={x.icon} height={18} width={18} />
-              {x.action}
-            </a>
-          ))}
+      <div className="modal-footer">
+        <div className="modal-footer-actions d-flex" style={{ alignItems: "center" }}>
+          <div className="mr-2">Share on</div>
+          <div className="btn-group">
+            {shareMap.map((x) => (
+              <a
+                key={x.platform}
+                className="btn share-item"
+                href={x.shareURL(url, profile.displayName)}
+                target="_blank"
+              >
+                <SVG fill="#121212" src={x.icon} height={18} width={18} />
+                {x.action}
+              </a>
+            ))}
+          </div>
         </div>
-      </div>
-
-      <div className="profile-share-footer">
+        <div className="mt-4 mb-4"></div>
         <div className="input-group">
           <input
             type="text"

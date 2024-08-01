@@ -20,23 +20,23 @@
     z-index: 999;
 
     .btn {
-      background: rgba($bg-color, .5);
+      background: rgba($bg-color, .25);
 
       &:focus,
       &:hover {
-        background: rgba($bg-color, .65);
+        background: rgba($bg-color, .45);
       }
 
 
       &:active,
       &.active {
-        background: rgba($bg-color, .75);
+        background: rgba($bg-color, .65);
       }
     }
   }
 }
 
-.web3bio-modal-container {
+.modal-container {
   background: transparent;
   border-radius: 1rem;
   height: 100%;
@@ -58,6 +58,74 @@
 
   @media screen and (max-width: $size-sm) {
     padding: .5rem;
+  }
+
+  .modal-cover {
+    backdrop-filter: blur(1rem);
+    height: 5rem;
+    left: -2rem;
+    position: absolute;
+    right: -2rem;
+    top: -2rem;
+    z-index: -1;
+
+    &.snapshot {
+      background: linear-gradient(to top, rgba(#f2994a, 0) 0%, rgba(#f2994a, .35) 200%);
+    }
+
+    &.guild {
+      background: linear-gradient(to top, rgba(#6062eb, 0) 0%, rgba(#6062eb, .35) 200%);
+    }
+
+    &.farcaster {
+      background: linear-gradient(to top, rgba(#8a63d2, 0) 0%, rgba(#8a63d2, .35) 200%);
+    }
+
+    &.lens {
+      background: linear-gradient(to top, rgba(#6bc674, 0) 0%, rgba(#6bc674, .35) 200%);
+    }
+  }
+
+  .modal-header {
+    align-items: center;
+    display: flex;
+    flex: 0 0;
+    gap: .25rem;
+    line-height: 1rem;
+    padding-bottom: 1rem;
+    position: relative;
+
+    .modal-header-title {
+      font-size: .8rem;
+      font-weight: 500;
+    }
+
+    .platform-icon {
+      align-items: center;
+      background: var(--widget-primary-color, $light-color);
+      border-radius: .4rem;
+      box-shadow: inset 0 0 0 .05rem rgba($dark-color, .1), 0 .2rem .4rem rgba($dark-color, .15);
+      color: $light-color;
+      display: flex;
+      flex: 0 0 1.2rem;
+      height: 1.2rem;
+      justify-content: center;
+      position: relative;
+      transition: all .25s ease-in-out;
+      width: 1.2rem;
+    }
+  }
+
+  .modal-body {
+    flex: 1 1;
+    margin: 0 -1rem;
+    padding: 0 1rem;
+  }
+
+  .modal-footer {
+    flex: 0 0;
+    padding-top: 1rem;
+    position: relative;
   }
 
   // Modal Graph
@@ -398,25 +466,7 @@
       position: absolute;
     }
 
-    .profile-share-header {
-      align-items: center;
-      display: flex;
-      justify-content: space-between;
-      padding-bottom: 1.5rem;
-    }
-
-    .profile-share-body {
-      flex: 1;
-      gap: .2rem;
-      padding: 0;
-    }
-
-    .profile-share-actions {
-      align-items: center;
-      display: flex;
-      gap: .5rem;
-      margin-top: 1rem;
-
+    .modal-footer-actions {
       .btn-group {
         flex: 1;
       }
@@ -426,15 +476,9 @@
       }
     }
 
-    .profile-share-footer {
-      padding-top: 1rem;
-
+    .modal-footer {
       .input-group-btn {
         position: relative;
-      }
-
-      .tooltip-copy {
-        position: absolute;
       }
     }
 
@@ -475,7 +519,7 @@
   &.modal-profile-container,
   &.modal-snapshot-container,
   &.modal-guild-container {
-    background: #fff;
+    background: $light-color;
     display: flex;
     flex-direction: column;
     height: calc(100vh - 6rem);
@@ -494,57 +538,6 @@
 
     .modal-actions {
       position: absolute;
-    }
-
-    .modal-profile-header {
-      align-items: center;
-      display: flex;
-      flex: 0 0;
-      gap: .25rem;
-      line-height: 1rem;
-      padding-bottom: 1rem;
-      position: relative;
-    }
-
-    .modal-profile-cover {
-      backdrop-filter: blur(1rem);
-      height: 5rem;
-      left: -2rem;
-      position: absolute;
-      right: -2rem;
-      top: -2rem;
-      z-index: -1;
-
-      &.snapshot {
-        background: linear-gradient(to top, rgba(#f2994a, 0) 0%, rgba(#f2994a, .35) 200%);
-      }
-
-      &.guild {
-        background: linear-gradient(to top, rgba(#6062eb, 0) 0%, rgba(#6062eb, .35) 200%);
-      }
-
-      &.farcaster {
-        background: linear-gradient(to top, rgba(#8a63d2, 0) 0%, rgba(#8a63d2, .35) 200%);
-      }
-
-      &.lens {
-        background: linear-gradient(to top, rgba(#6bc674, 0) 0%, rgba(#6bc674, .35) 200%);
-      }
-    }
-
-    .platform-icon {
-      align-items: center;
-      background: var(--widget-primary-color, $light-color);
-      border-radius: .4rem;
-      box-shadow: inset 0 0 0 .05rem rgba($dark-color, .1), 0 .2rem .4rem rgba($dark-color, .15);
-      color: $light-color;
-      display: flex;
-      flex: 0 0 1.2rem;
-      height: 1.2rem;
-      justify-content: center;
-      position: relative;
-      transition: all .25s ease-in-out;
-      width: 1.2rem;
     }
 
     .active-badge {
@@ -573,17 +566,8 @@
       width: auto;
     }
 
-    .modal-profile-body {
-      flex: 1 1;
-      margin: 0 -1rem;
+    .modal-body {
       overflow-y: auto;
-      padding: 0 1rem;
-    }
-
-    .modal-profile-footer {
-      flex: 0 0;
-      padding-top: 1rem;
-      position: relative;
     }
   }
 

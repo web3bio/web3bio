@@ -318,24 +318,22 @@ export default function ProfileMain(props) {
               })}
             </div>
 
-            {/* <div className="profile-actions">
+            <div className="profile-actions">
               <div className="btn-group">
                 <button
                   className={`profile-share btn btn-lg active`}
                   title="Donate"
+                  onClick={() => {
+                    openModal(ModalType.tip, {
+                      profile: data,
+                    });
+                  }}
                 >
                   <span className="btn-emoji">💸</span>
-                  Donate
-                </button>
-                <button
-                  className={`profile-share btn btn-lg`}
-                  title="Message"
-                >
-                  <span className="btn-emoji">💬</span>
-                  Message
+                  Tip
                 </button>
               </div>
-            </div> */}
+            </div>
 
             {data.description && (
               <h2 className="profile-description" itemProp="description">
@@ -355,7 +353,7 @@ export default function ProfileMain(props) {
               </div>
             )}
             {/* Tip button maybe random text and emoji */}
-            {tipEmoji && (
+            {/* {tipEmoji && (
               <div
                 className="btn btn-primary"
                 onClick={() => {
@@ -366,7 +364,7 @@ export default function ProfileMain(props) {
               >
                 {tipEmoji} Buy me a {tipText}
               </div>
-            )}
+            )} */}
           </div>
         </div>
         <div className="column col-7 col-lg-12">

@@ -27,14 +27,14 @@ export default function LensProfileCard(props) {
     _profile && (
       <>
         <div
-          className="modal-profile-header"
+          className="modal-header"
           style={{
             ["--widget-primary-color" as string]: SocialPlatformMapping(
               PlatformType.lens
             )?.color,
           }}
         >
-          <div className="modal-profile-cover lens"></div>
+          <div className="modal-cover lens"></div>
           <div className="platform-icon">
             <SVG
               src={`../${SocialPlatformMapping(PlatformType.lens)?.icon}`}
@@ -42,9 +42,9 @@ export default function LensProfileCard(props) {
               height={14}
             />
           </div>
-          <span>Lens Profile</span>
+          <span className="modal-header-title">Lens Profile</span>
         </div>
-        <div className="modal-profile-body">
+        <div className="modal-body">
           <Avatar
             width={80}
             height={80}
@@ -139,7 +139,7 @@ export default function LensProfileCard(props) {
             </div>
           )}
         </div>
-        <div className="modal-profile-footer">
+        <div className="modal-footer">
           <div className="btn-group btn-group-block">
             <Link
               href={`https://hey.xyz/u/${handle}`}

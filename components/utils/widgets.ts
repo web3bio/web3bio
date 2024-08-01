@@ -96,7 +96,7 @@ const WidgetsInfoData = {
   [WidgetTypes.talent]: {
     key: WidgetTypes.talent,
     icon: "🛠️",
-    title: "Talent Protocol",
+    title: "Talent Passport",
     description: "A new type of resume, for the onchain era of the internet.",
   },
 };
