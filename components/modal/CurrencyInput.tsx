@@ -1,5 +1,11 @@
 import SVG from "react-inlinesvg";
 import { formatBalance } from "../utils/utils";
+import TokenListItem from "./TokenListItem";
+
+const getUSDPrice = (amount, price) => {
+  const res = Number(amount * price).toFixed(2);
+  return Number(res) <= 0.01 ? null : res;
+};
 
 export default function CurrencyInput(props) {
   const { disabled, onChange, value, selected, onSelect, list, isLoading } =
@@ -37,23 +43,20 @@ export default function CurrencyInput(props) {
             </div>
           )}
           <ul className="menu">
-            {list?.map((x) => (
-              <li
-                key={x.symbol}
-                className="menu-item dropdown-menu-item"
-                onClick={() => {
-                  onSelect(x);
-                }}
-              >
-                <img
-                  width={16}
-                  height={16}
-                  src={x.logo_url || ""}
-                  alt={x.symbol}
+            {list
+              ?.map((x) => ({
+                ...x,
+                totalPrice: getUSDPrice(x.amount, x.price),
+              }))
+              .filter((x) => x.totalPrice)
+              .sort((a, b) => Number(b.totalPrice) - Number(a.totalPrice))
+              .map((x) => (
+                <TokenListItem
+                  key={`${x.chain}_${x.symbol}`}
+                  token={x}
+                  onSelect={(v) => onSelect(v)}
                 />
-                {x.symbol}
-              </li>
-            ))}
+              ))}
           </ul>
         </div>
       </div>

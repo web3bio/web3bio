@@ -24,10 +24,10 @@ const isNativeToken = (id: string) => {
   return !id.startsWith("0x");
 };
 
-const useTokenList = (address, network) => {
+const useTokenList = (address) => {
   const { data, isLoading } = useSWR(
     address
-      ? `${FIREFLY_PROXY_DEBANK_ENDPOINT}/v1/user/all_token_list?id=${address}&chain_ids=${network}`
+      ? `${FIREFLY_PROXY_DEBANK_ENDPOINT}/v1/user/all_token_list?id=${address}&chain_ids=eth,matic,op,arb,base,zora`
       : null,
     ProfileFetcher
   );
@@ -53,7 +53,6 @@ export default function TipModalContent(props) {
   const { address } = useAccount();
   const { data: tokenList, isLoading } = useTokenList(
     address,
-    chainIdToNetwork(chainId, true)
   );
 
   const [token, setToken] = useState<Token | any>(tokenList?.[0]);
@@ -62,6 +61,7 @@ export default function TipModalContent(props) {
       setToken(tokenList[0]);
     }
   }, [tokenList?.[0]?.chain]);
+
   const {
     sendTransaction,
     data: txData,
