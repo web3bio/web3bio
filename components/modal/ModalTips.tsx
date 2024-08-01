@@ -20,6 +20,12 @@ import { FIREFLY_PROXY_DEBANK_ENDPOINT } from "../apis/firefly";
 import { ProfileFetcher } from "../apis/profile";
 import { formatText } from "../utils/utils";
 
+enum TipsStatus {
+  success = 1,
+  common = 0,
+  failed = 2,
+}
+
 const isNativeToken = (id: string) => {
   return !id.startsWith("0x");
 };
@@ -50,10 +56,9 @@ export default function TipModalContent(props) {
   const [nickName, setNickName] = useState(profile.displayName);
   const [message, setMessage] = useState("");
   const { openChainModal } = useChainModal();
+  const [status, setStatus] = useState(TipsStatus.common);
   const { address } = useAccount();
-  const { data: tokenList, isLoading } = useTokenList(
-    address,
-  );
+  const { data: tokenList, isLoading } = useTokenList(address);
 
   const [token, setToken] = useState<Token | any>(tokenList?.[0]);
   useEffect(() => {
@@ -85,11 +90,12 @@ export default function TipModalContent(props) {
     useWaitForTransactionReceipt({
       hash: txData,
     });
-
   useEffect(() => {
     if (txPrepareError || contractPrepareError) {
       toast.error("Transaction Rejected");
     }
+  }, [txPrepareError, contractPrepareError]);
+  useEffect(() => {
     if (approveStatus === "success") {
       toast.success(`Successfully approved ${amount} ${token.symbol}`);
     }
@@ -97,17 +103,22 @@ export default function TipModalContent(props) {
       toast.success(
         `Successfully tipped ${profile.displayName} for ${amount} ${token.symbol}`
       );
+      setStatus(TipsStatus.success);
     }
+    if (txStatus === "error") {
+      setStatus(TipsStatus.failed);
+    }
+
+    if (status !== TipsStatus.common) {
+      setTimeout(() => {
+        setStatus(TipsStatus.common);
+      }, 3000);
+    }
+
     if (!tokenList?.length) {
       setToken(null);
     }
-  }, [
-    txStatus,
-    txPrepareError,
-    approveStatus,
-    contractPrepareError,
-    tokenList,
-  ]);
+  }, [txStatus, approveStatus, status, tokenList]);
   const { data: allowance } = useCurrencyAllowance(token?.id!);
 
   const RenderButton = useMemo(() => {
@@ -225,47 +236,56 @@ export default function TipModalContent(props) {
           <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
         </div>
       </div>
-      <div className="modal-tip-body">
-        <CurrencyInput
-          isLoading={isLoading}
-          selected={wrongNetwork ? null : token}
-          list={wrongNetwork ? [] : tokenList}
-          value={amount}
-          disabled={txLoading || txPrepareLoading || !tokenList?.length}
-          onChange={(v) => {
-            let value = v;
-            if (!/^[0-9]*\.?[0-9]*$/.test(v)) {
-              value = value.slice(0, -1);
-            }
-            setAmount(value);
-          }}
-          onSelect={(v) => setToken(v)}
-        />
+      {status === TipsStatus.common ? (
+        <div className="modal-tip-body">
+          <CurrencyInput
+            isLoading={isLoading}
+            selected={wrongNetwork ? null : token}
+            list={wrongNetwork ? [] : tokenList}
+            value={amount}
+            disabled={txLoading || txPrepareLoading || !tokenList?.length}
+            onChange={(v) => {
+              let value = v;
+              if (!/^[0-9]*\.?[0-9]*$/.test(v)) {
+                value = value.slice(0, -1);
+              }
+              setAmount(value);
+            }}
+            onSelect={(v) => setToken(v)}
+          />
 
-        <input
-          className="common-input"
-          type="text"
-          placeholder="Text your nickname here"
-          value={nickName}
-          onChange={(e) => setNickName(e.target.value)}
-        />
-        <textarea
-          className="common-input message-input"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Text your message here"
-          rows={4}
-          maxLength={300}
-        />
-        <div className="btn-group">
-          {RenderButton}
-          {address && !wrongNetwork && (
-            <div onClick={openChainModal} className="btn btn-primary">
-              Switch Network
-            </div>
-          )}
+          <input
+            className="common-input"
+            type="text"
+            placeholder="Text your nickname here"
+            value={nickName}
+            onChange={(e) => setNickName(e.target.value)}
+          />
+          <textarea
+            className="common-input message-input"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Text your message here"
+            rows={4}
+            maxLength={300}
+          />
+          <div className="btn-group">
+            {RenderButton}
+            {address && !wrongNetwork && (
+              <div onClick={openChainModal} className="btn btn-primary">
+                Switch Network
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      ) : (
+        // Tips status
+        <div className="modal-tip-body">
+          {status === TipsStatus.success
+            ? `Tipped ${profile.displayName} with ${amount} ${token.symbol} Successfully!`
+            : `Error Occurs`}
+        </div>
+      )}
       {address && !wrongNetwork && (
         <div className="network-badge">
           <span className="green-dot"></span> {chainIdToNetwork(chainId)}
