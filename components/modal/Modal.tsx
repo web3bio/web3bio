@@ -82,7 +82,6 @@ export default function Modal(props) {
     <div ref={overlay} className="web3bio-modal-cover" onClick={onClick}>
       <div
         onClick={(e) => {
-          e.preventDefault();
           e.stopPropagation();
         }}
         ref={wrapper}
