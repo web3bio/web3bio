@@ -249,6 +249,7 @@ export default function TipModalContent(props) {
     txPrepareLoading,
     contractPrepareLoading,
     approveLoading,
+    isPending,
   ]);
 
   return (
