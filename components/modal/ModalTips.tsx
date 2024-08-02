@@ -6,11 +6,12 @@ import {
   useSendTransaction,
   useWaitForTransactionReceipt,
   useWriteContract,
+  useSwitchChain,
 } from "wagmi";
 import { useCurrencyAllowance } from "../hooks/useCurrency";
-import { ConnectButton, useChainModal } from "@rainbow-me/rainbowkit";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { erc20Abi, formatEther, parseEther } from "viem";
-import { chainIdToNetwork } from "../utils/network";
+import { chainIdToNetwork, NetworkData } from "../utils/network";
 import { Loading } from "../shared/Loading";
 import toast from "react-hot-toast";
 import CurrencyInput from "./CurrencyInput";
@@ -52,20 +53,13 @@ export default function TipModalContent(props) {
   const { onClose, profile } = props;
   const [amount, setAmount] = useState(0.01);
   const chainId = useChainId();
-  const [wrongNetwork, setWrongNetwork] = useState(false);
   const [nickName, setNickName] = useState(profile.displayName);
   const [message, setMessage] = useState("");
-  const { openChainModal } = useChainModal();
+  const { switchChainAsync, isPending } = useSwitchChain();
   const [status, setStatus] = useState(TipsStatus.common);
   const { address } = useAccount();
   const { data: tokenList, isLoading } = useTokenList(address);
-
-  const [token, setToken] = useState<Token | any>(tokenList?.[0]);
-  useEffect(() => {
-    if (tokenList?.length > 0) {
-      setToken(tokenList[0]);
-    }
-  }, [tokenList?.[0]?.chain]);
+  const [token, setToken] = useState<Token | any>(null);
 
   const {
     sendTransaction,
@@ -128,6 +122,13 @@ export default function TipModalContent(props) {
       txLoading || txPrepareLoading || approveLoading || contractPrepareLoading;
     contractPrepareLoading;
     const buttonHandle = () => {
+      if (chainIdToNetwork(chainId, true) !== token?.chain) {
+        return switchChainAsync({
+          chainId:
+            Object.values(NetworkData)?.find((x) => x.short === token?.chain)
+              ?.chainId || 1,
+        });
+      }
       if (isBalanceLow) return null;
       if (isNativeToken(token?.id))
         return sendTransaction({
@@ -150,6 +151,8 @@ export default function TipModalContent(props) {
       });
     };
     const ButtonText = (() => {
+      if (chainIdToNetwork(chainId, true) !== token?.chain)
+        return `Switch to ${token?.chain}`;
       if (!amount || amount <= 0) return "Invalid Amount";
       if (isBalanceLow) return "Insufficient Balance";
       if (isButtonLoading) return "Loading...";
@@ -168,11 +171,6 @@ export default function TipModalContent(props) {
             isButtonLoading ||
             !tokenList?.length ||
             amount <= 0;
-          if (chain?.unsupported) {
-            setWrongNetwork(true);
-          } else {
-            setWrongNetwork(false);
-          }
           return (
             <>
               {(() => {
@@ -240,8 +238,8 @@ export default function TipModalContent(props) {
         <div className="modal-tip-body">
           <CurrencyInput
             isLoading={isLoading}
-            selected={wrongNetwork ? null : token}
-            list={wrongNetwork ? [] : tokenList}
+            selected={token}
+            list={tokenList}
             value={amount}
             disabled={txLoading || txPrepareLoading || !tokenList?.length}
             onChange={(v) => {
@@ -269,14 +267,7 @@ export default function TipModalContent(props) {
             rows={4}
             maxLength={300}
           />
-          <div className="btn-group">
-            {RenderButton}
-            {address && !wrongNetwork && (
-              <div onClick={openChainModal} className="btn btn-primary">
-                Switch Network
-              </div>
-            )}
-          </div>
+          <div className="btn-group">{RenderButton}</div>
         </div>
       ) : (
         // Tips status
@@ -284,11 +275,6 @@ export default function TipModalContent(props) {
           {status === TipsStatus.success
             ? `Tipped ${profile.displayName} with ${amount} ${token.symbol} Successfully!`
             : `Error Occurs`}
-        </div>
-      )}
-      {address && !wrongNetwork && (
-        <div className="network-badge">
-          <span className="green-dot"></span> {chainIdToNetwork(chainId)}
         </div>
       )}
     </>
