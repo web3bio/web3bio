@@ -27,6 +27,21 @@ enum TipsStatus {
   failed = 2,
 }
 
+const donateSuggest = [
+  {
+    key: 1,
+    text: "$ 1",
+  },
+  {
+    key: 3,
+    text: "$ 3",
+  },
+  {
+    key: 5,
+    text: "$ 5",
+  },
+];
+
 const isNativeToken = (id: string) => {
   return !id.startsWith("0x");
 };
@@ -51,16 +66,20 @@ const useTokenList = (address) => {
 
 export default function TipModalContent(props) {
   const { onClose, profile } = props;
-  const [amount, setAmount] = useState(0.01);
+
+  const [selected, setSelected] = useState(0);
+  const [disablePriceBtn, setDisablePriceBtn] = useState(false);
+  const [donatePrice, setDonatePrice] = useState(1);
   const chainId = useChainId();
-  const [nickName, setNickName] = useState(profile.displayName);
-  const [message, setMessage] = useState("");
   const { switchChainAsync, isPending } = useSwitchChain();
   const [status, setStatus] = useState(TipsStatus.common);
   const { address } = useAccount();
   const { data: tokenList, isLoading } = useTokenList(address);
-  const [token, setToken] = useState<Token | any>(null);
-
+  const [token, setToken] = useState<Token | any>();
+  const amount = useMemo(() => {
+    if (!token?.price) return 0;
+    return Number((Number(donatePrice) / Number(token.price)).toFixed(5));
+  }, [token, donatePrice]);
   const {
     sendTransaction,
     data: txData,
@@ -119,7 +138,11 @@ export default function TipModalContent(props) {
     const isBalanceLow = amount >= Number(token?.amount);
     const isAllowanceLow = Number(formatEther(allowance || 0n)) < amount;
     const isButtonLoading =
-      txLoading || txPrepareLoading || approveLoading || contractPrepareLoading;
+      txLoading ||
+      txPrepareLoading ||
+      approveLoading ||
+      contractPrepareLoading ||
+      isPending;
     contractPrepareLoading;
     const buttonHandle = () => {
       if (chainIdToNetwork(chainId, true) !== token?.chain) {
@@ -221,6 +244,7 @@ export default function TipModalContent(props) {
     amount,
     token,
     allowance,
+    chainId,
     txLoading,
     txPrepareLoading,
     contractPrepareLoading,
@@ -236,37 +260,49 @@ export default function TipModalContent(props) {
       </div>
       {status === TipsStatus.common ? (
         <div className="modal-tip-body">
+          <div className="price-selector">
+            {donateSuggest.map((x) => (
+              <div
+                key={x?.text}
+                className={`btn btn-text ${
+                  x?.key === selected && !disablePriceBtn ? "btn-primary" : ""
+                }`}
+                onClick={() => {
+                  setDisablePriceBtn(false);
+                  setSelected(x.key);
+                  setDonatePrice(x.key)
+                }}
+              >
+                {x.text}
+              </div>
+            ))}
+
+            <input
+              type="text"
+              className="form-input"
+              value={donatePrice}
+              onChange={(e) => {
+                let value = e.target.value;
+                if (!/^[0-9]*\.?[0-9]*$/.test(value)) {
+                  value = value.slice(0, -1);
+                }
+                if (!disablePriceBtn) {
+                  setDisablePriceBtn(true);
+                }
+                setDonatePrice(Number(value));
+              }}
+              onFocus={(e) => e.target.select()}
+            />
+          </div>
           <CurrencyInput
             isLoading={isLoading}
             selected={token}
             list={tokenList}
             value={amount}
             disabled={txLoading || txPrepareLoading || !tokenList?.length}
-            onChange={(v) => {
-              let value = v;
-              if (!/^[0-9]*\.?[0-9]*$/.test(v)) {
-                value = value.slice(0, -1);
-              }
-              setAmount(value);
-            }}
             onSelect={(v) => setToken(v)}
           />
 
-          <input
-            className="common-input"
-            type="text"
-            placeholder="Text your nickname here"
-            value={nickName}
-            onChange={(e) => setNickName(e.target.value)}
-          />
-          <textarea
-            className="common-input message-input"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Text your message here"
-            rows={4}
-            maxLength={300}
-          />
           <div className="btn-group">{RenderButton}</div>
         </div>
       ) : (

@@ -29,14 +29,6 @@ export default function CurrencyInput(props) {
   }, [selected, resolvedList]);
   return (
     <div className="currency-input-container">
-      <input
-        disabled={disabled}
-        className="common-input"
-        value={value}
-        onChange={(e) => {
-          onChange(e.target.value as any);
-        }}
-      />
       <div className="token-selector dropdown">
         {isLoading ? (
           <div className="btn btn-primary">Loading...</div>
