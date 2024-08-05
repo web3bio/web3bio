@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import SVG from "react-inlinesvg";
 import { NetworkData, NetworkMapping } from "../utils/network";
@@ -11,9 +11,9 @@ const getUSDPrice = (amount, price) => {
 };
 
 export default function TokenSelector(props) {
-  const { disabled, onChange, value, selected, onSelect, list, isLoading } =
-    props;
+  const { selected, onSelect, list, isLoading } = props;
   const [menuDisplay, setMenuDisplay] = useState(false);
+  const menu = useRef<HTMLUListElement>(null);
   const resolvedList = useMemo(
     () =>
       list
@@ -30,6 +30,15 @@ export default function TokenSelector(props) {
     if (!selected) {
       onSelect(resolvedList[0]);
     }
+    const handleClickOutside = (event) => {
+      if (menu?.current && !menu?.current.contains(event.target)) {
+        setMenuDisplay(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, [selected, resolvedList]);
   return (
     <div className="token-selector-container">
@@ -44,7 +53,6 @@ export default function TokenSelector(props) {
           <div
             className="chip chip-full"
             onClick={(e) => {
-              
               setMenuDisplay(true);
             }}
             tabIndex={0}
@@ -76,16 +84,15 @@ export default function TokenSelector(props) {
             </div>
           </div>
         )}
-        <ul className="menu">
+        <ul className="menu" ref={menu}>
           {resolvedList.map((x) => (
             <TokenListItem
               key={`${x.chain}_${x.symbol}`}
               token={x}
               onSelect={(e, v) => {
                 e.stopPropagation();
-                e.preventDefault()
-                onSelect(v);
                 setMenuDisplay(false);
+                onSelect(v);
               }}
             />
           ))}

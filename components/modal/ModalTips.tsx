@@ -340,25 +340,22 @@ export default function TipModalContent(props) {
                 </div>
               </div>
             </div>
-            {address && (
-              <div className="form-group">
-                <div className="col-12 col-sm-12">
-                  <label className="form-label">Pay with</label>
-                </div>
-                <div className="col-12 col-sm-12">
-                  <TokenSelector
-                    isLoading={isLoading}
-                    selected={token}
-                    list={tokenList}
-                    value={amount}
-                    disabled={
-                      txLoading || txPrepareLoading || !tokenList?.length
-                    }
-                    onSelect={(v) => setToken(v)}
-                  />
-                </div>
+
+            <div className="form-group">
+              <div className="col-12 col-sm-12">
+                <label className="form-label">Pay with</label>
               </div>
-            )}
+              <div className="col-12 col-sm-12">
+                <TokenSelector
+                  isLoading={isLoading}
+                  selected={token}
+                  list={tokenList}
+                  value={amount}
+                  disabled={txLoading || txPrepareLoading || !tokenList?.length}
+                  onSelect={(v) => setToken(v)}
+                />
+              </div>
+            </div>
           </div>
         </div>
       ) : (
