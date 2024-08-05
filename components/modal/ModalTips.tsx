@@ -146,6 +146,9 @@ export default function TipModalContent(props) {
       contractPrepareLoading ||
       isPending;
     contractPrepareLoading;
+
+    const shouldChangeNetwork =
+      chainIdToNetwork(chainId, true) !== token?.chain;
     const buttonHandle = () => {
       if (chainIdToNetwork(chainId, true) !== token?.chain) {
         return switchChainAsync({
@@ -176,8 +179,7 @@ export default function TipModalContent(props) {
       });
     };
     const ButtonText = (() => {
-      if (chainIdToNetwork(chainId, true) !== token?.chain)
-        return `Change Network`;
+      if (shouldChangeNetwork) return `Change Network`;
       if (!amount || amount <= 0) return "Invalid Amount";
       if (isBalanceLow) return "Insufficient Balance";
       if (isButtonLoading) return "Loading...";
@@ -192,10 +194,11 @@ export default function TipModalContent(props) {
         {({ account, chain, openChainModal, openConnectModal, mounted }) => {
           const connected = mounted && account && chain;
           const isButtonDisabled =
-            isBalanceLow ||
-            isButtonLoading ||
-            !tokenList?.length ||
-            amount <= 0;
+            !shouldChangeNetwork &&
+            (isBalanceLow ||
+              isButtonLoading ||
+              !tokenList?.length ||
+              amount <= 0);
           return (
             <>
               {(() => {

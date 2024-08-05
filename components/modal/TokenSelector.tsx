@@ -40,6 +40,12 @@ export default function TokenSelector(props) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [selected, resolvedList]);
+  const networkItem = useMemo(() => {
+    return (
+      Object.values(NetworkData).find((x) => x.short === selected?.chain) ||
+      null
+    );
+  }, [selected]);
   return (
     <div className="token-selector-container">
       <div
@@ -65,6 +71,19 @@ export default function TokenSelector(props) {
                 src={selected?.logo_url}
                 alt={selected?.symbol}
               />
+              <div
+                className="chip-status"
+                style={{
+                  background: networkItem?.primaryColor,
+                }}
+              >
+                <SVG
+                  className="chip-status-icon"
+                  title={selected?.chain?.toUpperCase()}
+                  fill={networkItem?.bgColor}
+                  src={networkItem?.icon || ""}
+                />
+              </div>
             </div>
             <div className="chip-content">
               <div className="chip-title">{selected?.name}</div>
