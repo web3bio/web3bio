@@ -42,7 +42,6 @@
   height: 100%;
   max-height: 100vh;
   max-width: $size-xl;
-  overflow-y: auto;
   overscroll-behavior: contain;
   padding: 2rem;
   position: relative;
@@ -302,10 +301,13 @@
     flex-direction: column;
     height: auto;
     max-height: calc(100vh - 4rem);
-    max-width: 28rem;
+    max-width: 24rem;
     padding: 1.5rem 2rem;
     width: calc(100vw - .5rem);
-    position: relative;
+
+    .modal-actions {
+      position: absolute;
+    }
 
     .network-badge {
       position: absolute;
@@ -325,25 +327,72 @@
       }
     }
 
-    .modal-tip-body {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-content: center;
-      gap: .75rem;
-      position: relative;
+    .modal-body {
+      .form-hero {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        margin: 1rem auto;
+      }
 
-      .price-selector {
+      .amount-selector {
         width: 100%;
         display: flex;
         align-items: center;
-        justify-content: flex-end;
+        justify-content: center;
         gap: .5rem;
-        margin-bottom: .5rem;
+        margin-top: 1rem;
 
         .form-input {
           width: 4rem;
         }
+      }
+
+      .token-selector-container {
+        .token-selector {
+          width: 100%;
+        }
+
+        .menu-cover {
+          background: transparent;
+          bottom: 0;
+          display: none;
+          left: 0;
+          position: absolute;
+          right: 0;
+          top: 0;
+          z-index: 99990;
+
+          &.active {
+            display: block;
+          }
+        }
+
+        .menu {
+          max-height: 17rem;
+          min-width: 20rem;
+          z-index: 99999;
+
+          .chip {
+            .chip-content {
+              margin-left: .5rem;
+            }
+
+            &:focus,
+            &:hover {
+              background: rgba($color: $dark-color, $alpha: 0.05);
+              color: $primary-color;
+            }
+  
+            &:active,
+            &.active {
+              background: rgba($color: $dark-color, $alpha: 0.075);
+              color: $primary-color;
+            }
+          }
+        }
+
+        
       }
 
       .currency-input-container {
@@ -357,10 +406,6 @@
           transform: translateY(-50%);
           right: 0rem;
           border-radius: .5rem;
-
-          img {
-            border-radius: 99%;
-          }
 
           .btn {
             width: 100%;
@@ -376,69 +421,6 @@
             font-size: .65rem;
             padding: .3rem .5rem;
             border-radius: .5rem;
-          }
-
-          .menu {
-            font-size: .65rem;
-            font-weight: 500;
-            padding: 0;
-            left: auto;
-            right: 0;
-            min-width: 20rem;
-
-            .dropdown-menu-item {
-              width: 100%;
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              gap: .5rem;
-              cursor: pointer;
-              border-radius: .4rem;
-              transition: all .5s ease;
-
-              &:hover {
-                background-color: rgba($color: #cecece, $alpha: .3);
-              }
-
-              .item-left {
-                .token-logo-container {
-                  align-items: center;
-                  border-radius: 50%;
-                  display: flex;
-                  flex: 0 0 2rem;
-                  height: 2rem;
-                  justify-content: center;
-                  margin: .25rem 1rem .25rem 0;
-                  position: relative;
-                  width: 2rem;
-
-                  .logo-icon {
-                    width: 1.8rem;
-                  }
-
-                  .chain-icon {
-                    align-items: center;
-                    background: $bg-color;
-                    border-radius: 50%;
-                    bottom: -.2rem;
-                    box-shadow: 0 .1rem .4rem -.4rem rgba($dark-color, .25), 0 .1rem .2rem rgba($dark-color, .05);
-                    display: flex;
-                    flex: 0 0;
-                    height: 1rem;
-                    padding: .2rem;
-                    position: absolute;
-                    right: -.2rem;
-                    width: 1rem;
-                  }
-                }
-
-                display: flex;
-                align-items: center;
-                gap: .25rem;
-
-              }
-
-            }
           }
         }
       }
@@ -473,14 +455,6 @@
         width: 100%;
       }
 
-      .donate-btn {
-        background: #5298FF;
-        border-color: #5298FF;
-
-        .loading-btn {
-          width: 2rem;
-        }
-      }
 
       .disabled {
         user-select: none;
@@ -576,6 +550,7 @@
     flex-direction: column;
     height: calc(100vh - 6rem);
     max-width: 28rem;
+    overflow: hidden;
     padding: 1.5rem 2rem;
     width: 95%;
 

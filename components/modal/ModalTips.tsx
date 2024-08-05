@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import SVG from "react-inlinesvg";
+
 import {
   useAccount,
   useChainId,
@@ -13,15 +14,16 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { erc20Abi, formatEther, parseEther } from "viem";
 import { chainIdToNetwork, NetworkData } from "../utils/network";
 import { Loading } from "../shared/Loading";
+import { Avatar } from "../shared/Avatar";
 import toast from "react-hot-toast";
-import CurrencyInput from "./CurrencyInput";
+import TokenSelector from "./TokenSelector";
 import { Token } from "../utils/types";
 import useSWR from "swr";
 import { FIREFLY_PROXY_DEBANK_ENDPOINT } from "../apis/firefly";
 import { ProfileFetcher } from "../apis/profile";
 import { formatText } from "../utils/utils";
 
-enum TipsStatus {
+enum TipStatus {
   success = 1,
   common = 0,
   failed = 2,
@@ -49,7 +51,7 @@ const isNativeToken = (id: string) => {
 const useTokenList = (address) => {
   const { data, isLoading } = useSWR(
     address
-      ? `${FIREFLY_PROXY_DEBANK_ENDPOINT}/v1/user/all_token_list?id=${address}&chain_ids=eth,matic,op,arb,base,zora`
+      ? `${FIREFLY_PROXY_DEBANK_ENDPOINT}/v1/user/all_token_list?id=${address}&chain_ids=eth,matic,op,arb,base,zora&is_all=false`
       : null,
     ProfileFetcher
   );
@@ -65,14 +67,13 @@ const useTokenList = (address) => {
 };
 
 export default function TipModalContent(props) {
-  const { onClose, profile } = props;
-
-  const [selected, setSelected] = useState(0);
+  const { onClose, profile, tipEmoji, tipObject } = props;
+  const [selected, setSelected] = useState(5);
   const [disablePriceBtn, setDisablePriceBtn] = useState(false);
-  const [donatePrice, setDonatePrice] = useState(1);
+  const [donatePrice, setDonatePrice] = useState(5);
   const chainId = useChainId();
   const { switchChainAsync, isPending } = useSwitchChain();
-  const [status, setStatus] = useState(TipsStatus.common);
+  const [status, setStatus] = useState(TipStatus.common);
   const { address } = useAccount();
   const { data: tokenList, isLoading } = useTokenList(address);
   const [token, setToken] = useState<Token | any>();
@@ -116,15 +117,15 @@ export default function TipModalContent(props) {
       toast.success(
         `Successfully tipped ${profile.displayName} for ${amount} ${token.symbol}`
       );
-      setStatus(TipsStatus.success);
+      setStatus(TipStatus.success);
     }
     if (txStatus === "error") {
-      setStatus(TipsStatus.failed);
+      setStatus(TipStatus.failed);
     }
 
-    if (status !== TipsStatus.common) {
+    if (status !== TipStatus.common) {
       setTimeout(() => {
-        setStatus(TipsStatus.common);
+        setStatus(TipStatus.common);
       }, 3000);
     }
 
@@ -175,7 +176,7 @@ export default function TipModalContent(props) {
     };
     const ButtonText = (() => {
       if (chainIdToNetwork(chainId, true) !== token?.chain)
-        return `Switch to ${token?.chain}`;
+        return `Change Network`;
       if (!amount || amount <= 0) return "Invalid Amount";
       if (isBalanceLow) return "Insufficient Balance";
       if (isButtonLoading) return "Loading...";
@@ -183,7 +184,7 @@ export default function TipModalContent(props) {
       if (!isNativeToken(token?.id) && isAllowanceLow)
         return `Approve ${amount} ${token?.symbol}`;
 
-      return `Donate ${formatText(amount?.toString(), 8)} ${token?.symbol}`;
+      return `Pay ${formatText(amount?.toString(), 8)} ${token?.symbol}`;
     })();
     return (
       <ConnectButton.Custom>
@@ -259,61 +260,111 @@ export default function TipModalContent(props) {
           <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
         </div>
       </div>
-      {status === TipsStatus.common ? (
-        <div className="modal-tip-body">
-          <div className="price-selector">
-            {donateSuggest.map((x) => (
-              <div
-                key={x?.text}
-                className={`btn btn-text ${
-                  x?.key === selected && !disablePriceBtn ? "btn-primary" : ""
-                }`}
-                onClick={() => {
-                  setDisablePriceBtn(false);
-                  setSelected(x.key);
-                  setDonatePrice(x.key)
-                }}
-              >
-                {x.text}
+      <div className="modal-header">
+        <div className="modal-header-title">Buy Me a {tipObject}</div>
+      </div>
+      {status === TipStatus.common ? (
+        <div className="modal-body">
+          <div className="form">
+            <div className="form-group form-hero">
+              <label style={{fontSize: "64px", lineHeight: "64px"}}>{tipEmoji}</label>
+              <div className="amount-selector">
+                {donateSuggest.map((x) => (
+                  <div
+                    key={x?.text}
+                    className={`btn btn-text ${
+                      x?.key === selected && !disablePriceBtn ? "btn-primary" : ""
+                    }`}
+                    onClick={() => {
+                      setDisablePriceBtn(false);
+                      setSelected(x.key);
+                      setDonatePrice(x.key)
+                    }}
+                  >
+                    {x.text}
+                  </div>
+                ))}
+
+                <input
+                  type="text"
+                  className="form-input"
+                  value={donatePrice}
+                  placeholder="Custom"
+                  onChange={(e) => {
+                    let value = e.target.value;
+                    if (!/^[0-9]*\.?[0-9]*$/.test(value)) {
+                      value = value.slice(0, -1);
+                    }
+                    if (!disablePriceBtn) {
+                      setDisablePriceBtn(true);
+                    }
+                    setDonatePrice(Number(value));
+                  }}
+                  onFocus={(e) => e.target.select()}
+                />
               </div>
-            ))}
-
-            <input
-              type="text"
-              className="form-input"
-              value={donatePrice}
-              onChange={(e) => {
-                let value = e.target.value;
-                if (!/^[0-9]*\.?[0-9]*$/.test(value)) {
-                  value = value.slice(0, -1);
-                }
-                if (!disablePriceBtn) {
-                  setDisablePriceBtn(true);
-                }
-                setDonatePrice(Number(value));
-              }}
-              onFocus={(e) => e.target.select()}
-            />
+            </div>
+            <div className="form-group">
+              <div className="col-12 col-sm-12">
+                <label className="form-label">To</label>
+              </div>
+              <div className="col-12 col-sm-12">
+                <div className="chip chip-full">
+                  <div className="chip-icon">
+                    <Avatar
+                      src={profile?.avatar }
+                      identity={profile?.identity}
+                      className="avatar"
+                      alt={`Profile Photo`}
+                      height={"1.6rem"}
+                      width={"1.6rem"}
+                      itemProp="image"
+                    />
+                  </div>
+                  <div className="chip-content">
+                    <div className="chip-title">
+                      {profile?.displayName}
+                    </div>
+                    <div className="chip-subtitle text-gray hide-sm">
+                      {profile?.address}
+                    </div>
+                    <div className="chip-subtitle text-gray show-sm" title={profile?.address}>
+                      {formatText(profile?.address)}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="form-group">
+              <div className="col-12 col-sm-12">
+                <label className="form-label">Pay with</label>
+              </div>
+              <div className="col-12 col-sm-12">
+                <TokenSelector
+                  isLoading={isLoading}
+                  selected={token}
+                  list={tokenList}
+                  value={amount}
+                  disabled={txLoading || txPrepareLoading || !tokenList?.length}
+                  onSelect={(v) => setToken(v)}
+                />
+              </div>
+            </div>
           </div>
-          <CurrencyInput
-            isLoading={isLoading}
-            selected={token}
-            list={tokenList}
-            value={amount}
-            disabled={txLoading || txPrepareLoading || !tokenList?.length}
-            onSelect={(v) => setToken(v)}
-          />
-
-          <div className="btn-group">{RenderButton}</div>
         </div>
       ) : (
         // Tips status
-        <div className="modal-tip-body">
-          {status === TipsStatus.success
+        <div className="modal-body">
+          {status === TipStatus.success
             ? `Tipped ${profile.displayName} with ${amount} ${token.symbol} Successfully!`
             : `Error Occurs`}
         </div>
       )}
+      <div className="modal-footer">
+        <div className="btn-group btn-group-block">
+          {RenderButton}
+        </div>
+      </div>
     </>
   );
 }

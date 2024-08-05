@@ -41,7 +41,7 @@ export default function ProfileMain(props) {
   const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
     props;
   const [isCopied, setIsCopied] = useState(false);
-  const { tipText, tipEmoji } = useTipEmoji();
+  const { tipObject, tipEmoji } = useTipEmoji();
   const [links, setLinks] = useState(data?.links);
   const [getQuery, { loading, error, data: identityGraph }] = useLazyQuery(
     getProfileQuery() as DocumentNode,
@@ -326,11 +326,13 @@ export default function ProfileMain(props) {
                   onClick={() => {
                     openModal(ModalType.tip, {
                       profile: data,
+                      tipEmoji: tipEmoji,
+                      tipObject: tipObject,
                     });
                   }}
                 >
-                  <span className="btn-emoji">💸</span>
-                  Tip
+                  <span className="btn-emoji mr-1">{tipEmoji || "💸"}</span>
+                  {tipObject ? `Buy Me a ${tipObject}` : "Tip"}
                 </button>
               </div>
             </div>
@@ -352,19 +354,6 @@ export default function ProfileMain(props) {
                 <a href={`mailto:${data.email}`}>{data.email}</a>
               </div>
             )}
-            {/* Tip button maybe random text and emoji */}
-            {/* {tipEmoji && (
-              <div
-                className="btn btn-primary"
-                onClick={() => {
-                  openModal(ModalType.tip, {
-                    profile: data,
-                  });
-                }}
-              >
-                {tipEmoji} Buy me a {tipText}
-              </div>
-            )} */}
           </div>
         </div>
         <div className="column col-7 col-lg-12">

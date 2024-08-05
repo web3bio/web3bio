@@ -4,7 +4,9 @@
   background: $bg-color-light;
   border-radius: $border-radius;
   color: $dark-color;
+  flex-direction: column;
   font-size: .7rem;
+  gap: $unit-1;
   list-style: none;
   margin: 0;
   min-width: $control-width-xs;
@@ -63,10 +65,6 @@
     .form-radio,
     .form-switch {
       margin: $unit-h 0;
-    }
-
-    &+.menu-item {
-      margin-top: $unit-1;
     }
   }
 

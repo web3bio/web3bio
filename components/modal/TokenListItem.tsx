@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import Image from "next/image";
 import { NetworkData, NetworkMapping } from "../utils/network";
 import SVG from 'react-inlinesvg'
 
@@ -12,26 +13,43 @@ export default function TokenListItem(props) {
   return (
     <li
       className="menu-item dropdown-menu-item"
-      onClick={() => {
-        onSelect(token);
-      }}
     >
-      <div className="item-left">
-        <div className="token-logo-container">
-          <img className="logo-icon" src={token.logo_url} alt={token.symbol} />
-          <SVG
-            className="chain-icon"
-            style={{
-              background: networkItem?.bgColor,
-            }}
-            fill={ networkItem?.primaryColor}
-            src={networkItem?.icon || ''}
+      <div className="chip" onClick={() => {
+        onSelect(token);
+      }}>
+        <div className="chip-icon">
+          <Image
+            width={32}
+            height={32}
+            className="avatar"
+            src={token.logo_url}
+            alt={token.name}
           />
+          <div 
+            className="chip-status" 
+            style={{
+              background: networkItem?.primaryColor,
+            }}
+          >
+            <SVG
+              className="chip-status-icon"
+              title={token.chain.toUpperCase()}
+              fill={networkItem?.bgColor}
+              src={networkItem?.icon || ''}
+            />
+          </div>
         </div>
-        {token.symbol} on {token.chain.toUpperCase()}
+        <div className="chip-content">
+          <div className="chip-title">
+            <span>{token.name}{" "}</span>
+            <span>${token.totalPrice}</span> 
+          </div>
+          <div className="chip-subtitle text-gray">
+            <span>{token.amount.toFixed(2)} {token.symbol}</span>
+            <span>${token.price.toFixed(2)}</span> 
+          </div>
+        </div>
       </div>
-
-      <div>$ {token.totalPrice}</div>
     </li>
   );
 }
