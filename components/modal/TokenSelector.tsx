@@ -33,11 +33,22 @@ export default function TokenSelector(props) {
   }, [selected, resolvedList]);
   return (
     <div className="token-selector-container">
-      <div className={`token-selector dropdown dropdown-top${menuDisplay ? " active": ""}`}>
+      <div
+        className={`token-selector dropdown dropdown-top${
+          menuDisplay ? " active" : ""
+        }`}
+      >
         {isLoading ? (
           <div className="btn btn-primary">Loading...</div>
         ) : !list?.length ? null : (
-          <div className="chip chip-full" onClick={() => setMenuDisplay(true)} tabIndex={0}>
+          <div
+            className="chip chip-full"
+            onClick={(e) => {
+              
+              setMenuDisplay(true);
+            }}
+            tabIndex={0}
+          >
             <div className="chip-icon">
               <Image
                 width={32}
@@ -48,9 +59,7 @@ export default function TokenSelector(props) {
               />
             </div>
             <div className="chip-content">
-              <div className="chip-title">
-                {selected?.name}
-              </div>
+              <div className="chip-title">{selected?.name}</div>
               <div className="chip-subtitle text-gray">
                 {selected?.amount.toFixed(2)} {selected?.symbol}
               </div>
@@ -72,7 +81,12 @@ export default function TokenSelector(props) {
             <TokenListItem
               key={`${x.chain}_${x.symbol}`}
               token={x}
-              onSelect={(v) => onSelect(v)}
+              onSelect={(e, v) => {
+                e.stopPropagation();
+                e.preventDefault()
+                onSelect(v);
+                setMenuDisplay(false);
+              }}
             />
           ))}
         </ul>

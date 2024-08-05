@@ -343,6 +343,11 @@
         gap: .5rem;
         margin-top: 1rem;
 
+        .btn-price::before {
+          content: '$';
+          margin-right: .2rem;
+        }
+
         .form-input {
           width: 4rem;
         }
@@ -383,7 +388,7 @@
               background: rgba($color: $dark-color, $alpha: 0.05);
               color: $primary-color;
             }
-  
+
             &:active,
             &.active {
               background: rgba($color: $dark-color, $alpha: 0.075);
@@ -392,7 +397,7 @@
           }
         }
 
-        
+
       }
 
       .currency-input-container {

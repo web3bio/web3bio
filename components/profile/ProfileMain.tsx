@@ -317,7 +317,6 @@ export default function ProfileMain(props) {
                 );
               })}
             </div>
-
             <div className="profile-actions">
               <div className="btn-group">
                 <button
@@ -325,7 +324,10 @@ export default function ProfileMain(props) {
                   title="Donate"
                   onClick={() => {
                     openModal(ModalType.tip, {
-                      profile: data,
+                      profile: {
+                        ...data,
+                        avatar: fallbackAvatar?.avatar,
+                      },
                       tipEmoji: tipEmoji,
                       tipObject: tipObject,
                     });

@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import Image from "next/image";
 import { NetworkData, NetworkMapping } from "../utils/network";
-import SVG from 'react-inlinesvg'
+import SVG from "react-inlinesvg";
 
 export default function TokenListItem(props) {
   const { token, onSelect } = props;
@@ -11,12 +11,13 @@ export default function TokenListItem(props) {
     );
   }, [token]);
   return (
-    <li
-      className="menu-item dropdown-menu-item"
-    >
-      <div className="chip" onClick={() => {
-        onSelect(token);
-      }}>
+    <li className="menu-item dropdown-menu-item">
+      <div
+        className="chip"
+        onClick={(e) => {
+          onSelect(e, token);
+        }}
+      >
         <div className="chip-icon">
           <Image
             width={32}
@@ -25,8 +26,8 @@ export default function TokenListItem(props) {
             src={token.logo_url}
             alt={token.name}
           />
-          <div 
-            className="chip-status" 
+          <div
+            className="chip-status"
             style={{
               background: networkItem?.primaryColor,
             }}
@@ -35,18 +36,20 @@ export default function TokenListItem(props) {
               className="chip-status-icon"
               title={token.chain.toUpperCase()}
               fill={networkItem?.bgColor}
-              src={networkItem?.icon || ''}
+              src={networkItem?.icon || ""}
             />
           </div>
         </div>
         <div className="chip-content">
           <div className="chip-title">
-            <span>{token.name}{" "}</span>
-            <span>${token.totalPrice}</span> 
+            <span>{token.name} </span>
+            <span>${token.totalPrice}</span>
           </div>
           <div className="chip-subtitle text-gray">
-            <span>{token.amount.toFixed(2)} {token.symbol}</span>
-            <span>${token.price.toFixed(2)}</span> 
+            <span>
+              {token.amount.toFixed(2)} {token.symbol}
+            </span>
+            <span>${token.price.toFixed(2)}</span>
           </div>
         </div>
       </div>

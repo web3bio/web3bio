@@ -32,15 +32,15 @@ enum TipStatus {
 const donateSuggest = [
   {
     key: 1,
-    text: "$ 1",
+    text: "1",
   },
   {
     key: 3,
-    text: "$ 3",
+    text: "3",
   },
   {
     key: 5,
-    text: "$ 5",
+    text: "5",
   },
 ];
 
@@ -68,9 +68,9 @@ const useTokenList = (address) => {
 
 export default function TipModalContent(props) {
   const { onClose, profile, tipEmoji, tipObject } = props;
-  const [selected, setSelected] = useState(5);
   const [disablePriceBtn, setDisablePriceBtn] = useState(false);
-  const [donatePrice, setDonatePrice] = useState(5);
+  const [customPrice, setCustomPrice] = useState("");
+  const [selectPrice, setSelectPrice] = useState(3);
   const chainId = useChainId();
   const { switchChainAsync, isPending } = useSwitchChain();
   const [status, setStatus] = useState(TipStatus.common);
@@ -78,9 +78,10 @@ export default function TipModalContent(props) {
   const { data: tokenList, isLoading } = useTokenList(address);
   const [token, setToken] = useState<Token | any>();
   const amount = useMemo(() => {
+    const donatePrice = customPrice || selectPrice;
     if (!token?.price) return 0;
     return Number((Number(donatePrice) / Number(token.price)).toFixed(5));
-  }, [token, donatePrice]);
+  }, [token, customPrice, selectPrice]);
   const {
     sendTransaction,
     data: txData,
@@ -267,18 +268,22 @@ export default function TipModalContent(props) {
         <div className="modal-body">
           <div className="form">
             <div className="form-group form-hero">
-              <label style={{fontSize: "64px", lineHeight: "64px"}}>{tipEmoji}</label>
+              <label style={{ fontSize: "64px", lineHeight: "64px" }}>
+                {tipEmoji}
+              </label>
               <div className="amount-selector">
                 {donateSuggest.map((x) => (
                   <div
                     key={x?.text}
-                    className={`btn btn-text ${
-                      x?.key === selected && !disablePriceBtn ? "btn-primary" : ""
+                    className={`btn btn-text btn-price ${
+                      x?.key === selectPrice && !disablePriceBtn
+                        ? "btn-primary"
+                        : ""
                     }`}
                     onClick={() => {
                       setDisablePriceBtn(false);
-                      setSelected(x.key);
-                      setDonatePrice(x.key)
+                      setSelectPrice(x.key);
+                      setCustomPrice("");
                     }}
                   >
                     {x.text}
@@ -288,7 +293,7 @@ export default function TipModalContent(props) {
                 <input
                   type="text"
                   className="form-input"
-                  value={donatePrice}
+                  value={customPrice}
                   placeholder="Custom"
                   onChange={(e) => {
                     let value = e.target.value;
@@ -298,7 +303,7 @@ export default function TipModalContent(props) {
                     if (!disablePriceBtn) {
                       setDisablePriceBtn(true);
                     }
-                    setDonatePrice(Number(value));
+                    setCustomPrice(value);
                   }}
                   onFocus={(e) => e.target.select()}
                 />
@@ -312,8 +317,7 @@ export default function TipModalContent(props) {
                 <div className="chip chip-full">
                   <div className="chip-icon">
                     <Avatar
-                      src={profile?.avatar }
-                      identity={profile?.identity}
+                      src={profile?.avatar}
                       className="avatar"
                       alt={`Profile Photo`}
                       height={"1.6rem"}
@@ -322,34 +326,39 @@ export default function TipModalContent(props) {
                     />
                   </div>
                   <div className="chip-content">
-                    <div className="chip-title">
-                      {profile?.displayName}
-                    </div>
+                    <div className="chip-title">{profile?.displayName}</div>
                     <div className="chip-subtitle text-gray hide-sm">
                       {profile?.address}
                     </div>
-                    <div className="chip-subtitle text-gray show-sm" title={profile?.address}>
+                    <div
+                      className="chip-subtitle text-gray show-sm"
+                      title={profile?.address}
+                    >
                       {formatText(profile?.address)}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="form-group">
-              <div className="col-12 col-sm-12">
-                <label className="form-label">Pay with</label>
+            {address && (
+              <div className="form-group">
+                <div className="col-12 col-sm-12">
+                  <label className="form-label">Pay with</label>
+                </div>
+                <div className="col-12 col-sm-12">
+                  <TokenSelector
+                    isLoading={isLoading}
+                    selected={token}
+                    list={tokenList}
+                    value={amount}
+                    disabled={
+                      txLoading || txPrepareLoading || !tokenList?.length
+                    }
+                    onSelect={(v) => setToken(v)}
+                  />
+                </div>
               </div>
-              <div className="col-12 col-sm-12">
-                <TokenSelector
-                  isLoading={isLoading}
-                  selected={token}
-                  list={tokenList}
-                  value={amount}
-                  disabled={txLoading || txPrepareLoading || !tokenList?.length}
-                  onSelect={(v) => setToken(v)}
-                />
-              </div>
-            </div>
+            )}
           </div>
         </div>
       ) : (
@@ -361,9 +370,7 @@ export default function TipModalContent(props) {
         </div>
       )}
       <div className="modal-footer">
-        <div className="btn-group btn-group-block">
-          {RenderButton}
-        </div>
+        <div className="btn-group btn-group-block">{RenderButton}</div>
       </div>
     </>
   );
