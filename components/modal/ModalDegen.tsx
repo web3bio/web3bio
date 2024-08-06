@@ -20,7 +20,7 @@ export default function DegenModalContent({ onClose, degen, profile }) {
           )?.color,
         }}
       >
-        <div className="modal-cover guild"></div>
+        <div className="modal-cover degen"></div>
         <div className="platform-icon">
           <SVG
             src={`../${SocialPlatformMapping(PlatformType.degenscore)?.icon}`}
@@ -44,7 +44,7 @@ export default function DegenModalContent({ onClose, degen, profile }) {
         <div className="text-gray">
           {profile.displayName}
           <span> · </span>
-          <span title="Guild ID">#{profile.identity || "…"}</span>
+          <span title="identity">#{profile.identity || "…"}</span>
         </div>
 
         <div className="mt-2 mb-2">{profile?.description}</div>

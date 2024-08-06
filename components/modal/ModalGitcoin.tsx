@@ -13,6 +13,7 @@ export default function GitcoinModalContent({ onClose, passport, profile }) {
       </div>
       <>
         <div className="modal-header">
+          <div className="modal-cover gitcoin"></div>
           <div className="platform-icon">
             {WidgetInfoMapping(WidgetTypes.gitcoin).icon}
           </div>
@@ -32,7 +33,7 @@ export default function GitcoinModalContent({ onClose, passport, profile }) {
           <div className="text-gray">
             {profile.displayName}
             <span> · </span>
-            <span title="Guild ID">#{profile.identity || "…"}</span>
+            <span title="identity">#{profile.identity || "…"}</span>
           </div>
 
           <div className="mt-2 mb-2">{profile?.description}</div>

@@ -67,7 +67,12 @@
     right: -2rem;
     top: -2rem;
     z-index: -1;
-
+    &.gitcoin{
+      background: linear-gradient(to top, rgba(#6062eb, 0) 0%, rgba(#6062eb, .35) 200%);
+    }
+    &.degen{
+      background: linear-gradient(to top, rgba(#d6fdff, 0) 0%, rgba(#7cd4f0, .35) 200%);
+    }
     &.snapshot {
       background: linear-gradient(to top, rgba(#f2994a, 0) 0%, rgba(#f2994a, .35) 200%);
     }
