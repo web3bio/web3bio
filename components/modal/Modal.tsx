@@ -9,6 +9,7 @@ import SearchModalContent from "./ModalSearch";
 import ShareModalContent from "./ModalShare";
 import IdentityGraphModalContent from "./ModalIdentityGraph";
 import ProfileModalContent from "./ModalProfile";
+import TipModalContent from "./ModalTips";
 import GuildModalContent from "./ModalGuild";
 import SnapshotModalContent from "./ModalSnapshot";
 
@@ -59,10 +60,16 @@ export default function Modal(props) {
             onClose={onDismiss}
           />
         );
+      case ModalType.tip:
+        return <TipModalContent {...params} onClose={onDismiss} />;
+      case ModalType.guild:
+        return <GuildModalContent {...params} onClose={onDismiss} />;
       case ModalType.profile:
         return <ProfileModalContent identity={params} onClose={onDismiss} />;
       case ModalType.article:
         return <ArticleModalContent {...params} onClose={onDismiss} />;
+      case ModalType.tip:
+        return <TipModalContent {...params} onClose={onDismiss} />;
       case ModalType.guild:
         return <GuildModalContent {...params} onClose={onDismiss} />;
       case ModalType.snapshot:
@@ -74,8 +81,11 @@ export default function Modal(props) {
   return (
     <div ref={overlay} className="web3bio-modal-cover" onClick={onClick}>
       <div
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
         ref={wrapper}
-        className={`web3bio-modal-container modal-${modalType}-container`}
+        className={`modal-container modal-${modalType}-container`}
       >
         {renderContent(children, params)}
       </div>

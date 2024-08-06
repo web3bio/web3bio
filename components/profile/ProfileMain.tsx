@@ -34,12 +34,14 @@ import { updateUniversalBatchedProfile } from "../state/universal/actions";
 import { getProfileQuery } from "../utils/queries";
 import { WidgetArticle } from "./WidgetArticle";
 import WidgetGuild from "./WidgetGuild";
+import { useTipEmoji } from "../hooks/useTipEmoji";
 import WidgetSnapshot from "./WidgetSnapshot";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
     props;
   const [isCopied, setIsCopied] = useState(false);
+  const { tipObject, tipEmoji } = useTipEmoji();
   const [links, setLinks] = useState(data?.links);
   const [getQuery, { loading, error, data: identityGraph }] = useLazyQuery(
     getProfileQuery() as DocumentNode,
@@ -315,25 +317,27 @@ export default function ProfileMain(props) {
                 );
               })}
             </div>
-
-            {/* <div className="profile-actions">
+            <div className="profile-actions">
               <div className="btn-group">
                 <button
                   className={`profile-share btn btn-lg active`}
                   title="Donate"
+                  onClick={() => {
+                    openModal(ModalType.tip, {
+                      profile: {
+                        ...data,
+                        avatar: fallbackAvatar?.avatar,
+                      },
+                      tipEmoji: tipEmoji,
+                      tipObject: tipObject,
+                    });
+                  }}
                 >
-                  <span className="btn-emoji">💸</span>
-                  Donate
-                </button>
-                <button
-                  className={`profile-share btn btn-lg`}
-                  title="Message"
-                >
-                  <span className="btn-emoji">💬</span>
-                  Message
+                  <span className="btn-emoji mr-1">{tipEmoji || "💸"}</span>
+                  {tipObject ? `Buy Me a ${tipObject}` : "Tip"}
                 </button>
               </div>
-            </div> */}
+            </div>
 
             {data.description && (
               <h2 className="profile-description" itemProp="description">

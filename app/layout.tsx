@@ -1,3 +1,4 @@
+import { Toaster } from "react-hot-toast";
 import ApolloProvider from "../components/shared/ApolloProvider";
 import GoogleAnalytics from "../components/shared/GoogleAnalytics";
 import ReduxProvider from "../components/shared/ReduxProvider";
@@ -79,7 +80,10 @@ export default function RootLayout({ children }) {
         <main>
           <ReduxProvider>
             <ApolloProvider>
-              <WalletProvider>{children}</WalletProvider>
+              <WalletProvider>
+                {children}
+                 <Toaster />
+              </WalletProvider>
             </ApolloProvider>
           </ReduxProvider>
           <GoogleAnalytics />

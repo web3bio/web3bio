@@ -16,8 +16,8 @@ $gray-color-light: lighten($gray-color, 20%) !default;
 $border-color: lighten($dark-color, 85%) !default;
 $border-color-dark: darken($border-color, 10%) !default;
 $bg-color: lighten($dark-color, 85%) !default;
-$bg-color-dark: darken($bg-color, 3%) !default;
-$bg-color-light: $light-color !default;
+$bg-color-dark: darken($bg-color, 6%) !default;
+$bg-color-light: lighten($bg-color, 6%) !default;
 
 // Control colors
 $success-color: #32b643 !default;

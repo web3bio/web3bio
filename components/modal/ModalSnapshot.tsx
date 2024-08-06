@@ -110,14 +110,14 @@ export default function SnapshotModalContent({ onClose, space, profile }) {
       </div>
       <>
         <div
-          className="modal-profile-header"
+          className="modal-header"
           style={{
             ["--widget-primary-color" as string]: SocialPlatformMapping(
               PlatformType.snapshot
             )?.color,
           }}
         >
-          <div className="modal-profile-cover snapshot"></div>
+          <div className="modal-cover snapshot"></div>
           <div className="platform-icon">
             <SVG
               src={`../${SocialPlatformMapping(PlatformType.snapshot)?.icon}`}
@@ -125,9 +125,9 @@ export default function SnapshotModalContent({ onClose, space, profile }) {
               height={14}
             />
           </div>
-          <span>{SocialPlatformMapping(PlatformType.snapshot).label}</span>
+          <span className="modal-header-title">Snapshot</span>
         </div>
-        <div className="modal-profile-body">
+        <div className="modal-body">
           <Image
             width={80}
             height={80}
@@ -201,7 +201,7 @@ export default function SnapshotModalContent({ onClose, space, profile }) {
             renderUsersGroup("Authors", members)} */}
 
         </div>
-        <div className="modal-profile-footer">
+        <div className="modal-footer">
           <div className="btn-group btn-group-block">
             <Link
               href={`https://snapshot.org/#/${space.id}`}

@@ -53,14 +53,14 @@ export default function FarcasterProfileCard(props) {
     _profile && (
       <>
         <div
-          className="modal-profile-header"
+          className="modal-header"
           style={{
             ["--widget-primary-color" as string]: SocialPlatformMapping(
               PlatformType.farcaster
             )?.color,
           }}
         >
-          <div className="modal-profile-cover farcaster"></div>
+          <div className="modal-cover farcaster"></div>
           <div className="platform-icon">
             <SVG
               src={`../${SocialPlatformMapping(PlatformType.farcaster)?.icon}`}
@@ -68,9 +68,9 @@ export default function FarcasterProfileCard(props) {
               height={14}
             />
           </div>
-          <span>Farcaster Profile</span>
+          <span className="modal-header-title">Farcaster Profile</span>
         </div>
-        <div className="modal-profile-body">
+        <div className="modal-body">
           <Avatar
             width={80}
             height={80}
@@ -169,7 +169,7 @@ export default function FarcasterProfileCard(props) {
             </>
           )}
         </div>
-        <div className="modal-profile-footer">
+        <div className="modal-footer">
           <div className="btn-group btn-group-block">
             <Link
               href={`https://warpcast.com/${handle}`}
