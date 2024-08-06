@@ -23,7 +23,9 @@ const RenderWidgetScores = ({
       },
       {
         key: WidgetTypes.degen,
-        render: () => <WidgetDegenScore address={profile.address} />,
+        render: () => (
+          <WidgetDegenScore openModal={openModal} profile={profile} />
+        ),
       },
       {
         key: WidgetTypes.talent,

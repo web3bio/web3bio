@@ -12,6 +12,7 @@ import TipModalContent from "./ModalTips";
 import GuildModalContent from "./ModalGuild";
 import SnapshotModalContent from "./ModalSnapshot";
 import GitcoinModalContent from "./ModalGitcoin";
+import DegenModalContent from "./ModalDegen";
 
 export default function Modal(props) {
   const { onDismiss, children, modalType, params } = props;
@@ -76,6 +77,8 @@ export default function Modal(props) {
         return <SnapshotModalContent {...params} onClose={onDismiss} />;
       case ModalType.gitcoin:
         return <GitcoinModalContent {...params} onClose={onDismiss} />;
+      case ModalType.degen:
+        return <DegenModalContent {...params} onClose={onDismiss} />;
       default:
         return children;
     }

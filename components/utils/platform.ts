@@ -80,6 +80,7 @@ export enum PlatformType {
   ton = "ton",
   snapshot = "snapshot",
   coingecko = "coingecko",
+  gitcoin = "gitcoin",
 }
 
 export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
@@ -621,12 +622,20 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     system: PlatformSystem.web3,
   },
   [PlatformType.coingecko]: {
-    key: PlatformType.snapshot,
+    key: PlatformType.coingecko,
     color: "#4BCC00",
     icon: "icons/icon-coingecko.svg",
     label: "CoinGecko",
     urlPrefix: "https://www.coingecko.com/en/coins/",
     system: PlatformSystem.web2,
+  },
+  [PlatformType.gitcoin]: {
+    key: PlatformType.gitcoin,
+    color: "#e6e4e4",
+    icon: "icons/icon-gitcoin.svg",
+    label: "Gitcoin",
+    urlPrefix: "https://passport.gitcoin.co/",
+    system: PlatformSystem.web3,
   },
 };
 

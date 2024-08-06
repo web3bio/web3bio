@@ -1,12 +1,12 @@
 "use client";
 import { memo, useEffect } from "react";
 import useSWR from "swr";
-import Link from "next/link";
 import { DegenFetcher, DEGENSCORE_ENDPOINT } from "../apis/degenscore";
 import { formatDistanceToNow } from "date-fns";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { useDispatch } from "react-redux";
 import { updateDegenWidget } from "../state/widgets/reducer";
+import { ModalType } from "../hooks/useModal";
 
 function useDegenInfo(address: string) {
   const { data, error } = useSWR(
@@ -26,8 +26,8 @@ function useDegenInfo(address: string) {
   };
 }
 
-const RenderWidgetDegenScore = ({ address }) => {
-  const { data, isLoading } = useDegenInfo(address);
+const RenderWidgetDegenScore = ({ profile, openModal }) => {
+  const { data, isLoading } = useDegenInfo(profile.address);
   const dispatch = useDispatch();
   useEffect(() => {
     if (!isLoading) {
@@ -48,10 +48,14 @@ const RenderWidgetDegenScore = ({ address }) => {
   return isLoading ? (
     <></>
   ) : (
-    <Link
+    <div
       className="profile-widget profile-widget-degenscore"
-      href={data?.external_url}
-      target="_blank"
+      onClick={() => {
+        openModal(ModalType.degen, {
+          degen: data,
+          profile,
+        });
+      }}
     >
       <div className="profile-widget-header">
         <h2 className="profile-widget-title">
@@ -94,7 +98,7 @@ const RenderWidgetDegenScore = ({ address }) => {
           </div>
         </div>
       )}
-    </Link>
+    </div>
   );
 };
 

@@ -1290,6 +1290,7 @@
 
   // DegenScore Widget
   .profile-widget-degenscore {
+    cursor: pointer;
     background: linear-gradient(45deg, rgba(#A381EB, .1) 0, rgba(#fff, 1) 25%);
 
     .widget-trait-list {

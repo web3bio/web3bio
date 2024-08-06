@@ -74,7 +74,7 @@ const RenderWidgetGitcoin = ({ profile, openModal }) => {
         </div>
       </div>
 
-      {/* {data.stamps && (
+      {data.stamps && (
         <div className="profile-widget-hover">
           <div className="widget-trait-list">
             {data.stamps.map((item, idx) => {
@@ -93,7 +93,7 @@ const RenderWidgetGitcoin = ({ profile, openModal }) => {
             })}
           </div>
         </div>
-      )} */}
+      )}
     </div>
   );
 };
