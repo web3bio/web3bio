@@ -549,6 +549,8 @@
   // Modal Profile, Modal Guild
   &.modal-profile-container,
   &.modal-snapshot-container,
+  &.modal-degen-container,
+  &.modal-gitcoin-container,
   &.modal-guild-container {
     background: $light-color;
     display: flex;

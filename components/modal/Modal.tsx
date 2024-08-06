@@ -3,7 +3,6 @@ import { ModalType } from "../hooks/useModal";
 import ArticleModalContent from "./ModalArticle";
 import MediaModalContent from "./ModalMedia";
 import NFTModalContentRender from "./ModalNFT";
-// import PhilandModalContent from "./ModalPhiland";
 import PoapsModalContent from "./ModalPoaps";
 import SearchModalContent from "./ModalSearch";
 import ShareModalContent from "./ModalShare";
@@ -12,6 +11,7 @@ import ProfileModalContent from "./ModalProfile";
 import TipModalContent from "./ModalTips";
 import GuildModalContent from "./ModalGuild";
 import SnapshotModalContent from "./ModalSnapshot";
+import GitcoinModalContent from "./ModalGitcoin";
 
 export default function Modal(props) {
   const { onDismiss, children, modalType, params } = props;
@@ -74,6 +74,8 @@ export default function Modal(props) {
         return <GuildModalContent {...params} onClose={onDismiss} />;
       case ModalType.snapshot:
         return <SnapshotModalContent {...params} onClose={onDismiss} />;
+      case ModalType.gitcoin:
+        return <GitcoinModalContent {...params} onClose={onDismiss} />;
       default:
         return children;
     }

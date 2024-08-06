@@ -9,7 +9,7 @@ import { updateScoresWidget } from "../state/widgets/reducer";
 import { WidgetTalent } from "./WidgetTalent";
 
 const RenderWidgetScores = ({
-  address,
+  profile,
   states,
   farcasterHandle,
   openModal,
@@ -19,22 +19,22 @@ const RenderWidgetScores = ({
     return [
       {
         key: WidgetTypes.gitcoin,
-        render: () => <WidgetGitcoin address={address} />,
+        render: () => <WidgetGitcoin openModal={openModal} profile={profile} />,
       },
       {
         key: WidgetTypes.degen,
-        render: () => <WidgetDegenScore address={address} />,
+        render: () => <WidgetDegenScore address={profile.address} />,
       },
       {
         key: WidgetTypes.talent,
-        render: () => <WidgetTalent address={address} />,
+        render: () => <WidgetTalent address={profile.address} />,
       },
       {
         key: WidgetTypes.webacy,
-        render: () => <WidgetWebacy address={address} />,
+        render: () => <WidgetWebacy address={profile.address} />,
       },
     ];
-  }, [address, farcasterHandle]);
+  }, [profile.address, farcasterHandle]);
   const childWidgets = useMemo(
     () => [
       states[WidgetTypes.degen],

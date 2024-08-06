@@ -419,7 +419,7 @@ export default function ProfileMain(props) {
                         )?.identity
                       }
                       states={profileWidgetStates}
-                      address={data.address}
+                      profile={data}
                     />
                   </div>
 
