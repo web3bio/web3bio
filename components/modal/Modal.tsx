@@ -44,9 +44,9 @@ export default function Modal(props) {
       case ModalType.share:
         return <ShareModalContent {...params} onClose={onDismiss} />;
       case ModalType.nft:
-        return <NFTModalContentRender asset={params} onClose={onDismiss} />;
+        return <NFTModalContentRender {...params} onClose={onDismiss} />;
       case ModalType.poaps:
-        return <PoapsModalContent asset={params} onClose={onDismiss} />;
+        return <PoapsModalContent {...params} onClose={onDismiss} />;
       // case ModalType.philand:
       //   return <PhilandModalContent {...params} onClose={onDismiss} />;
       case ModalType.media:
@@ -66,7 +66,7 @@ export default function Modal(props) {
       case ModalType.guild:
         return <GuildModalContent {...params} onClose={onDismiss} />;
       case ModalType.profile:
-        return <ProfileModalContent identity={params} onClose={onDismiss} />;
+        return <ProfileModalContent {...params} onClose={onDismiss} />;
       case ModalType.article:
         return <ArticleModalContent {...params} onClose={onDismiss} />;
       case ModalType.tip:
