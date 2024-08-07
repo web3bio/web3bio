@@ -76,28 +76,6 @@ const RenderWidgetDegenScore = ({ profile, openModal }) => {
           })}
         </div>
       </div>
-
-      {data.traits.actions?.metadata.actions.actions && (
-        <div className="profile-widget-hover">
-          <div className="widget-trait-list">
-            {(data.traits.actions?.metadata.actions.actions).map(
-              (item, idx) => {
-                return (
-                  <div
-                    key={idx}
-                    className={`trait-item label ${item.actionTier?.toLowerCase()}`}
-                    title={item.description}
-                  >
-                    {item.actionTier == "ACTION_TIER_LEGENDARY" && "💎 "}
-                    {item.actionTier == "ACTION_TIER_EPIC" && "✨ "}
-                    {item.name}
-                  </div>
-                );
-              }
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 };

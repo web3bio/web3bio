@@ -614,18 +614,29 @@
   }
 
   &.modal-gitcoin-container {
-    .list-item {
-      .list-item-icon {
-        align-items: center;
-        background: linear-gradient(to top, rgba(#121212, 1) 0%, rgba(#121212, 1) 200%);
-        display: flex;
-        height: 2rem;
-        justify-content: center;
-        width: 2rem;
+    .stamp-item {
+      gap: .5rem;
+      margin: .2rem -.4rem;
+      padding: .4rem;
+      width: 100%;
 
-        .item-logo {
-          height: 1.4rem;
-          width: 1.4rem;
+      .stamp-item-body {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+        line-height: 1rem;
+      }
+
+      .stamp-item-subtitle {
+        font-size: .65rem;
+      }
+
+      .stamp-label-item {
+        .feed-token-icon {
+          align-items: center;
+          background: $dark-color;
+          display: flex;
+          justify-content: center;
         }
       }
     }
@@ -1031,10 +1042,10 @@
     display: flex;
     flex-wrap: wrap;
     
-    &.widget-trait-list {
+    .widget-trait-list {
       display: flex;
       flex-wrap: wrap;
-      gap: .4rem;
+      gap: .25rem;
       height: 100%;
       overflow-y: auto;
       width: 100%;

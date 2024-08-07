@@ -141,7 +141,7 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
     [GitcoinPassport.ethActive50Days]: {
       key: GitcoinPassport.ethActive50Days,
       weight: 0.507,
-      label: "Active on ETH over 50 distinct days",
+      label: "50+ days ETH activity",
       icon: "ethereumStampIcon.svg",
       category: "Ethereum Activity",
       type: "Blockchain & Crypto",
@@ -149,7 +149,7 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
     [GitcoinPassport.ethTransactionsOver100]: {
       key: GitcoinPassport.ethTransactionsOver100,
       weight: 0.51,
-      label: "Execute over 100 transactions on ETH",
+      label: "100+ ETH transactions",
       icon: "ethereumStampIcon.svg",
       category: "Ethereum Activity",
       type: "Blockchain & Crypto",
@@ -157,7 +157,7 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
     [GitcoinPassport.ethGasMoreThan025]: {
       key: GitcoinPassport.ethGasMoreThan025,
       weight: 1.003,
-      label: "Spend more than 0.25 ETH on gas",
+      label: "ETH gas > 0.25",
       icon: "ethereumStampIcon.svg",
       category: "Ethereum Activity",
       type: "Blockchain & Crypto",
@@ -189,7 +189,7 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
     [GitcoinPassport.githubActivity30]: {
       key: GitcoinPassport.githubActivity30,
       weight: 2.02,
-      label: "Contributions on GitHub at least 30 distinct days",
+      label: "30+ days GitHub activity",
       icon: "githubWhiteStampIcon.svg",
       category: "GitHub",
       type: "Social & Professional",
@@ -197,7 +197,7 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
     [GitcoinPassport.githubActivity60]: {
       key: GitcoinPassport.githubActivity60,
       weight: 2.021,
-      label: "Contributions on GitHub at least 60 distinct days",
+      label: "60+ days GitHub activity",
       icon: "githubWhiteStampIcon.svg",
       category: "GitHub",
       type: "Social & Professional",
@@ -205,7 +205,7 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
     [GitcoinPassport.githubActivity120]: {
       key: GitcoinPassport.githubActivity120,
       weight: 3.019,
-      label: "Contributions on GitHub at least 120 distinct days",
+      label: "120+ days GitHub activity",
       icon: "githubWhiteStampIcon.svg",
       category: "GitHub",
       type: "Social & Professional",

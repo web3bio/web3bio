@@ -4,6 +4,11 @@ import Image from "next/image";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 
 export default function GitcoinModalContent({ onClose, passport, profile }) {
+  const stamps = passport.stamps as { category: string; weight: number; label: string; icon: string; }[] | undefined;
+  const groupedStamps = stamps 
+    ? _.groupBy(stamps, 'category') 
+    : {};
+
   return (
     <>
       <div className="modal-actions">
@@ -49,37 +54,52 @@ export default function GitcoinModalContent({ onClose, passport, profile }) {
             Humanity Score <strong className="text-large">{passport.score}</strong>
           </div>
 
-          {passport?.stamps?.length > 0 && (
+          {stamps && stamps.length > 0 && (
             <>
               <div className="divider mt-4 mb-4"></div>
               <div className="panel-widget">
                 <div className="panel-widget-title">Gitcoin Passport Stamps</div>
                 <div className="panel-widget-content">
-                  
-                  {passport?.stamps?.map((x) => {
+                  {Object.entries(groupedStamps).map(([category, categoryStamps]) => {
+                    const typedCategoryStamps = categoryStamps as { 
+                      weight: number; 
+                      label: string; 
+                      icon: string;
+                      type: string;
+                    }[];
+                    
+                    // const totalWeight = typedCategoryStamps.reduce((sum, stamp) => sum + stamp.weight, 0);
                     return (
                       <div
-                        key={x.key}
-                        className="list-item"
+                        key={category}
+                        className="stamp-item"
                       >
-                        <div className="list-item-icon">
-                          <SVG
-                            width={40}
-                            height={40}
-                            fill="#fff"
-                            src={`https://passport.gitcoin.co/assets/${x.icon}`}
-                            className="item-logo"
-                          />
-                        </div>
-                        <div className="list-item-body">
-                          <div className="list-item-title">
-                            <strong>{x.category}</strong>{" "}
+                        <div className="stamp-item-body">
+                          <div className="stamp-item-title">
+                            <strong>{category}</strong>{" "}
                           </div>
-                          <div className="list-item-subtitle">
-                            {x.label}
-                          </div>
-                          <div className="list-item-subtitle text-gray">
-                            {x.weight} points
+                          <div className="stamp-item-subtitle">
+                            {typedCategoryStamps.map((x) => {
+                              return (
+                                <div
+                                  key={x.label}
+                                  className="stamp-label-item feed-token"
+                                  title={x.label}
+                                >
+                                  <div className="feed-token-icon">
+                                    <Image
+                                      alt={category}
+                                      width={16}
+                                      height={16}
+                                      src={`https://passport.gitcoin.co/assets/${x.icon}`}
+                                      className="icon"
+                                    />
+                                  </div>
+                                  <span className="feed-token-value">{x.label}</span>
+                                  <span className="feed-token-meta">{x.weight} points</span>
+                                </div>
+                              );
+                            })}
                           </div>
                         </div>
                       </div>

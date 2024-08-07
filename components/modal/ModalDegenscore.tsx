@@ -42,9 +42,7 @@ export default function DegenscoreModalContent({ onClose, degenscore, profile })
           <strong className="h4 text-bold">{profile.displayName}</strong>
         </div>
         <div className="text-gray">
-          {profile.displayName}
-          <span> · </span>
-          <span title="identity">#{profile.identity || "…"}</span>
+          {profile.identity}
         </div>
 
         <div className="mt-2 mb-2">{profile?.description}</div>
@@ -56,23 +54,25 @@ export default function DegenscoreModalContent({ onClose, degenscore, profile })
           <>
             <div className="divider mt-4 mb-4"></div>
             <div className="panel-widget">
-              <div className="panel-widget-title">DegenScore Traits</div>
-              <div className="panel-widget-content widget-trait-list">
-                {(degenscore.traits.actions?.metadata.actions.actions).map(
-                  (item, idx) => {
-                    return (
-                      <div
-                        key={idx}
-                        className={`trait-item label ${item.actionTier?.toLowerCase()}`}
-                        title={item.description}
-                      >
-                        {item.actionTier == "ACTION_TIER_LEGENDARY" && "💎 "}
-                        {item.actionTier == "ACTION_TIER_EPIC" && "✨ "}
-                        {item.name}
-                      </div>
-                    );
-                  }
-                )}
+              <div className="panel-widget-title">DegenScore Onchain Actions</div>
+              <div className="panel-widget-content">
+                <div className="widget-trait-list">
+                  {(degenscore.traits.actions?.metadata.actions.actions).map(
+                    (item, idx) => {
+                      return (
+                        <div
+                          key={idx}
+                          className={`trait-item feed-token ${item.actionTier?.toLowerCase()}`}
+                          title={item.description}
+                        >
+                          {item.actionTier == "ACTION_TIER_LEGENDARY" && "💎 "}
+                          {item.actionTier == "ACTION_TIER_EPIC" && "✨ "}
+                          <span className="feed-token-value">{item.name}</span>
+                        </div>
+                      );
+                    }
+                  )}
+                </div>
               </div>
             </div>
           </>
