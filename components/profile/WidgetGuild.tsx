@@ -5,8 +5,8 @@ import { Loading } from "../shared/Loading";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { useDispatch } from "react-redux";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
-import { GUILD_XYZ_ENDPOINT, GuildFetcher } from "../apis/guild";
 import { updateGuildWidget } from "../state/widgets/reducer";
+import { GUILD_XYZ_ENDPOINT, GuildFetcher } from "../apis";
 
 function useGuildMemberships(address: string) {
   const { data, error, isValidating } = useSWR(

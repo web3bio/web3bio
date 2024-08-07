@@ -6,9 +6,9 @@ import { CollectionAbout } from "../profile/CollectionAbout";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { getSocialMediaLink } from "../utils/utils";
 import useSWR from "swr";
-import { SimplehashFetcher, SIMPLEHASH_URL } from "../apis/simplehash";
 import { Network, NetworkMapping } from "../utils/network";
 import { useMemo } from "react";
+import { SIMPLEHASH_URL, SimplehashFetcher } from "../apis";
 
 const renderSocialMediaLinks = (_collection) => {
   const renderArr = {

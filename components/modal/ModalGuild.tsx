@@ -3,9 +3,9 @@ import useSWR from "swr";
 import _ from "lodash";
 import Link from "next/link";
 import Image from "next/image";
-import { GUILD_XYZ_ENDPOINT, GuildFetcher } from "../apis/guild";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { NetworkMapping } from "../utils/network";
+import { GUILD_XYZ_ENDPOINT, GuildFetcher } from "../apis";
 
 export default function GuildModalContent({ onClose, guild, profile }) {
   const { data: guildRoles } = useSWR(

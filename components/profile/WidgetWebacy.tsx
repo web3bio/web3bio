@@ -2,10 +2,10 @@
 import useSWR from "swr";
 import Link from "next/link";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
-import { ProfileFetcher } from "../apis/profile";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { updateWebacyWidget } from "../state/widgets/reducer";
+import { ProfileFetcher } from "../apis";
 
 export function WidgetWebacy({ address }) {
   const { data, isLoading } = useSWR(

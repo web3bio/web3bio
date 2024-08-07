@@ -3,18 +3,19 @@ import { useEffect, useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { ExpandController } from "./ExpandController";
 import { NFTCollections } from "./NFTCollections";
-import { SimplehashFetcher } from "../apis/simplehash";
-import {
-  SIMPLEHASH_URL,
-  SIMPLEHASH_CHAINS,
-  SIMPLEHASH_PAGE_SIZE,
-} from "../apis/simplehash";
+
 import NFTFilter from "./NFTFilter";
 import { useDispatch } from "react-redux";
 import { PlatformType } from "../utils/platform";
 import { NetworkData } from "../utils/network";
 import { WidgetTypes } from "../utils/widgets";
 import { updateNFTWidget } from "../state/widgets/reducer";
+import {
+  SIMPLEHASH_CHAINS,
+  SIMPLEHASH_PAGE_SIZE,
+  SIMPLEHASH_URL,
+  SimplehashFetcher,
+} from "../apis";
 
 const CURSOR_PARAM = "&cursor=";
 

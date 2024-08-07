@@ -5,11 +5,13 @@ import Image from "next/image";
 import useSWR from "swr";
 import { Avatar } from "../shared/Avatar";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
-import { FIREFLY_ENDPOINT } from "../apis/firefly";
-import { ProfileFetcher } from "../apis/profile";
 import { useProfiles } from "../hooks/useReduxProfiles";
 import { useQuery } from "@apollo/client";
-import { QUERY_FARCASTER_STATS } from "../apis/airstack";
+import {
+  FIREFLY_ENDPOINT,
+  ProfileFetcher,
+  QUERY_FARCASTER_STATS,
+} from "../apis";
 
 export default function FarcasterProfileCard(props) {
   const { handle } = props;
@@ -82,7 +84,10 @@ export default function FarcasterProfileCard(props) {
           <div className="d-flex mt-2" style={{ alignItems: "center" }}>
             <strong className="h4 text-bold">{_profile.displayName}</strong>
             {socialCapital?.isFarcasterPowerUser ? (
-              <div className="active-badge c-auto" title="Power User of Farcaster">
+              <div
+                className="active-badge c-auto"
+                title="Power User of Farcaster"
+              >
                 ϟ
               </div>
             ) : (
@@ -98,7 +103,7 @@ export default function FarcasterProfileCard(props) {
             <strong className="text-large">
               {_profile.social.following.toLocaleString()}
             </strong>{" "}
-            Following{" "}·{" "}
+            Following ·{" "}
             <strong className="text-large">
               {_profile.social.follower.toLocaleString()}
             </strong>{" "}
@@ -116,18 +121,20 @@ export default function FarcasterProfileCard(props) {
                   <div className="content">
                     Social Capital Score{" "}
                     <strong>
-                      {Number(socialCapital?.socialCapital.socialCapitalScore).toFixed(2)}
+                      {Number(
+                        socialCapital?.socialCapital.socialCapitalScore
+                      ).toFixed(2)}
+                    </strong>{" "}
+                    · Rank{" "}
+                    <strong>
+                      {socialCapital?.socialCapital.socialCapitalRank}
                     </strong>
-                    {" "}·{" "}
-                    Rank{" "}
-                    <strong>{socialCapital?.socialCapital.socialCapitalRank}</strong>
                   </div>
                 </div>
               </div>
             </>
           )}
 
-          
           {channelsData?.data?.length > 0 && (
             <>
               <div className="divider mt-4 mb-4"></div>

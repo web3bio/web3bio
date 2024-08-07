@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { updateSnapshotWidget } from "../state/widgets/reducer";
 import { useQuery } from "@apollo/client";
-import { QUERY_SPACES_FOLLOWED_BY_USR } from "../apis/snapshot";
+import { QUERY_SPACES_FOLLOWED_BY_USR } from "../apis";
 
 export default function WidgetSnapshot({ profile, onShowDetail }) {
   const { data, loading, error } = useQuery(QUERY_SPACES_FOLLOWED_BY_USR, {

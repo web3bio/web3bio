@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { regexSolana } from "../../../../../components/utils/regexp";
 import { respondWithCache } from "../../../../../components/utils/utils";
-
-const WEBACY_API_ENDPOINT = "https://api.webacy.com";
-const WEBACY_API_KEY = process.env.NEXT_PUBLIC_WEBACY_API_KEY || "";
-
+import { WEBACY_API_ENDPOINT } from "../../../../../components/apis";
 interface WebacyResponse {
   score: number;
   updatedAt: Date;
@@ -17,7 +14,7 @@ async function fetchWebacy(address: string): Promise<WebacyResponse> {
   url.searchParams.append("chain", chain);
 
   const res = await fetch(url.toString(), {
-    headers: { "x-api-key": WEBACY_API_KEY },
+    headers: { "x-api-key": process.env.NEXT_PUBLIC_WEBACY_API_KEY || "" },
   });
 
   if (!res.ok) {

@@ -2,7 +2,6 @@
 import { useEffect, useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { ExpandController } from "./ExpandController";
-import { RSS3Fetcher, RSS3_ENDPOINT } from "../apis/rss3";
 import {
   ActivityTag,
   ActivityType,
@@ -15,6 +14,7 @@ import { PlatformType } from "../utils/platform";
 import { isSameAddress } from "../utils/utils";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { updateFeedsWidget } from "../state/widgets/reducer";
+import { RSS3_ENDPOINT, RSS3Fetcher } from "../apis";
 
 const processFeedsData = (data) => {
   if (!data?.[0]?.data?.length) return [];

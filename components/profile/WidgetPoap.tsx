@@ -4,12 +4,12 @@ import Link from "next/link";
 import useSWR from "swr";
 import { Loading } from "../shared/Loading";
 import SVG from "react-inlinesvg";
-import { POAPFetcher, POAP_ENDPOINT } from "../apis/poap";
 import { resolveIPFS_URL } from "../utils/ipfs";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { useDispatch } from "react-redux";
 import { WidgetTypes } from "../utils/widgets";
 import { updatePoapsWidget } from "../state/widgets/reducer";
+import { POAP_ENDPOINT, POAPFetcher } from "../apis";
 
 function usePoaps(address: string) {
   const { data, error, isValidating } = useSWR(

@@ -2,13 +2,13 @@ import SVG from "react-inlinesvg";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import Link from "next/link";
 import useSWR from "swr";
-import { SIMPLEHASH_URL, SimplehashFetcher } from "../apis/simplehash";
 import { useEffect, useState } from "react";
 import PoapNFTOwner from "../profile/PoapNFTOwner";
-
 import _ from "lodash";
 import { isSameAddress } from "../utils/utils";
 import { useProfiles } from "../hooks/useReduxProfiles";
+import { SIMPLEHASH_URL, SimplehashFetcher } from "../apis";
+
 export default function PoapsModalContent({ onClose, asset }) {
   const [owners, setOwners] = useState(new Array());
   const { data: poapDetail } = useSWR(
@@ -25,7 +25,7 @@ export default function PoapsModalContent({ onClose, asset }) {
       setOwners(sliced.map((x) => x.owners?.[0]));
     }
   }, [poapDetail]);
-  const profiles = useProfiles()
+  const profiles = useProfiles();
 
   return (
     <>

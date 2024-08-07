@@ -37,7 +37,7 @@ import { NextResponse } from "next/server";
 import { errorHandleProps } from "./types";
 import * as contentHash from "@ensdomains/content-hash";
 import { chainIdToNetwork } from "./network";
-import { SIMPLEHASH_URL, SimplehashFetcher } from "../apis/simplehash";
+import { SIMPLEHASH_URL, SimplehashFetcher } from "../apis";
 
 export const errorHandle = (props: errorHandleProps) => {
   const isValidAddress = isValidEthereumAddress(props.identity || "");

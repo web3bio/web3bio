@@ -1,4 +1,4 @@
-import { SIMPLEHASH_CHAINS } from "../apis/simplehash";
+import { SIMPLEHASH_CHAINS } from "../apis";
 
 export enum Network {
   ethereum = "ethereum",

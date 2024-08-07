@@ -2,11 +2,11 @@
 import { memo, useEffect } from "react";
 import useSWR from "swr";
 import Link from "next/link";
-import { DegenFetcher, DEGENSCORE_ENDPOINT } from "../apis/degenscore";
 import { formatDistanceToNow } from "date-fns";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { useDispatch } from "react-redux";
 import { updateDegenWidget } from "../state/widgets/reducer";
+import { DegenFetcher, DEGENSCORE_ENDPOINT } from "../apis";
 
 function useDegenInfo(address: string) {
   const { data, error } = useSWR(

@@ -3,8 +3,8 @@ import { memo, useEffect } from "react";
 import useSWR from "swr";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { useDispatch } from "react-redux";
-import { ProfileFetcher } from "../apis/profile";
 import { updateGitcoinWidget } from "../state/widgets/reducer";
+import { ProfileFetcher } from "../apis";
 
 function useGitcoinInfo(address: string) {
   const { data, error } = useSWR(

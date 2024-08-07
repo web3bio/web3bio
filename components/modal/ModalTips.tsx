@@ -19,9 +19,8 @@ import toast from "react-hot-toast";
 import TokenSelector from "./TokenSelector";
 import { Token } from "../utils/types";
 import useSWR from "swr";
-import { FIREFLY_PROXY_DEBANK_ENDPOINT } from "../apis/firefly";
-import { ProfileFetcher } from "../apis/profile";
 import { formatText } from "../utils/utils";
+import { FIREFLY_PROXY_DEBANK_ENDPOINT, ProfileFetcher } from "../apis";
 
 enum TipStatus {
   success = 1,
