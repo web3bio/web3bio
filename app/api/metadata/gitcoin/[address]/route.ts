@@ -7,53 +7,57 @@ import {
 } from "../../../../../components/utils/utils";
 
 const GITCOIN_PASSPORT_API_END_POINT = "https://api.scorer.gitcoin.co";
+const API_KEY = process.env.NEXT_PUBLIC_GITCOIN_API_KEY || "";
 
-const fetchStamps = async (address) => {
-  const res = await fetch(
-    `${GITCOIN_PASSPORT_API_END_POINT}/registry/stamps/${address}?limit=1000&include_metadata=false`,
-    {
-      headers: {
-        "x-api-key": process.env.NEXT_PUBLIC_GITCOIN_API_KEY || "",
-      },
-    }
-  );
-  if (res.ok) {
-    return (await res.json()).items
-      .map((x) => x?.credential?.credentialSubject?.provider);
-  }
-  return [];
-};
+interface StampResponse {
+  score: number;
+  updatedAt: Date;
+  stamps: any[];
+}
 
-const emptyReturn = () =>
-  NextResponse.json({
-    score: 0,
-    updatedAt: new Date(),
-    stamps: [],
+async function fetchStamps(address: string): Promise<string[]> {
+  const url = new URL(`${GITCOIN_PASSPORT_API_END_POINT}/registry/stamps/${address}`);
+  url.searchParams.append("limit", "1000");
+  url.searchParams.append("include_metadata", "false");
+
+  const res = await fetch(url, {
+    headers: { "x-api-key": API_KEY },
   });
 
-export async function GET(req: NextRequest) {
-  const { searchParams } = req.nextUrl;
-  const address = searchParams.get("address");
-  if (!address || !isValidEthereumAddress(address)) {
-    return emptyReturn();
-  }
-  const stamps = await fetchStamps(address);
-  if (!stamps.length) return emptyReturn();
-  const detailsArr = stamps
-    .map((x) => gitcoinPassportMapping(x))
-    .filter((x) => !!x);
-  const score = detailsArr.reduce((pre, cur) => {
-    pre = BigNumber(pre).plus(BigNumber(cur.weight)).toNumber();
-    return pre;
-  }, 0);
+  if (!res.ok) return [];
 
-  return respondWithCache(
-    JSON.stringify({
-      score: score,
-      updatedAt: new Date(),
-      stamps: detailsArr,
-    })
-  );
+  const data = await res.json();
+  return data.items.map((x: any) => x?.credential?.credentialSubject?.provider).filter(Boolean);
 }
+
+function calculateScore(detailsArr: any[]): number {
+  return detailsArr.reduce((total, cur) => 
+    BigNumber(total).plus(BigNumber(cur.weight)).toNumber(), 0);
+}
+
+function createResponse(score: number, stamps: any[]): StampResponse {
+  return {
+    score,
+    updatedAt: new Date(),
+    stamps,
+  };
+}
+
+export async function GET(req: NextRequest): Promise<NextResponse> {
+  const address = req.nextUrl.searchParams.get("address");
+
+  if (!address || !isValidEthereumAddress(address)) {
+    return NextResponse.json(createResponse(0, []));
+  }
+
+  const stamps = await fetchStamps(address);
+  if (!stamps.length) return NextResponse.json(createResponse(0, []));
+
+  const detailsArr = stamps.map(gitcoinPassportMapping).filter(Boolean);
+  const score = calculateScore(detailsArr);
+
+  return respondWithCache(JSON.stringify(createResponse(score, detailsArr)));
+}
+
 export const runtime = "edge";
 // export const preferredRegion = ["sfo1", "hnd1"];

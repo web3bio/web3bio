@@ -3,38 +3,54 @@ import { regexSolana } from "../../../../../components/utils/regexp";
 import { respondWithCache } from "../../../../../components/utils/utils";
 
 const WEBACY_API_ENDPOINT = "https://api.webacy.com";
-const fetchWebacy = async (address) => {
-  const res = await fetch(
-    `${WEBACY_API_ENDPOINT}/addresses/${address}?chain=${
-      regexSolana.test(address) ? "sol" : "eth"
-    }`,
-    {
-      headers: {
-        "x-api-key": process.env.NEXT_PUBLIC_WEBACY_API_KEY || "",
-      },
-    }
-  );
-  if (res.ok) {
-    return await res.json();
-  }
-  return [];
-};
+const WEBACY_API_KEY = process.env.NEXT_PUBLIC_WEBACY_API_KEY || "";
 
-const emptyReturn = () =>
-  NextResponse.json({
+interface WebacyResponse {
+  score: number;
+  updatedAt: Date;
+  stamps: any[];
+}
+
+async function fetchWebacy(address: string): Promise<WebacyResponse> {
+  const chain = regexSolana.test(address) ? "sol" : "eth";
+  const url = new URL(`${WEBACY_API_ENDPOINT}/addresses/${address}`);
+  url.searchParams.append("chain", chain);
+
+  const res = await fetch(url.toString(), {
+    headers: { "x-api-key": WEBACY_API_KEY },
+  });
+
+  if (!res.ok) {
+    console.error(`Failed to fetch Webacy data: ${res.statusText}`);
+    return createEmptyResponse();
+  }
+
+  return await res.json();
+}
+
+function createEmptyResponse(): WebacyResponse {
+  return {
     score: 0,
     updatedAt: new Date(),
     stamps: [],
-  });
-
-export async function GET(req: NextRequest) {
-  const { searchParams } = req.nextUrl;
-  const address = searchParams.get("address");
-  if (!address) {
-    return emptyReturn();
-  }
-  const scores = await fetchWebacy(address);
-  return respondWithCache(JSON.stringify(scores));
+  };
 }
+
+export async function GET(req: NextRequest): Promise<NextResponse> {
+  const address = req.nextUrl.searchParams.get("address");
+
+  if (!address) {
+    return NextResponse.json(createEmptyResponse());
+  }
+
+  try {
+    const scores = await fetchWebacy(address);
+    return respondWithCache(JSON.stringify(scores));
+  } catch (error) {
+    console.error("Error fetching Webacy data:", error);
+    return NextResponse.json(createEmptyResponse());
+  }
+}
+
 export const runtime = "edge";
 // export const preferredRegion = ["sfo1", "hnd1"];
