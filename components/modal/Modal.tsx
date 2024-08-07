@@ -12,7 +12,7 @@ import TipModalContent from "./ModalTips";
 import GuildModalContent from "./ModalGuild";
 import SnapshotModalContent from "./ModalSnapshot";
 import GitcoinModalContent from "./ModalGitcoin";
-import DegenModalContent from "./ModalDegen";
+import DegenscoreModalContent from "./ModalDegenscore";
 
 const modalContentMap = {
   [ModalType.share]: ShareModalContent,
@@ -27,7 +27,7 @@ const modalContentMap = {
   [ModalType.article]: ArticleModalContent,
   [ModalType.snapshot]: SnapshotModalContent,
   [ModalType.gitcoin]: GitcoinModalContent,
-  [ModalType.degen]: DegenModalContent,
+  [ModalType.degenscore]: DegenscoreModalContent,
 };
 
 export default function Modal(props) {

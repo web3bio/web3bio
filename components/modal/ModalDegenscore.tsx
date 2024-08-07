@@ -3,7 +3,7 @@ import Image from "next/image";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import Link from "next/link";
 
-export default function DegenModalContent({ onClose, degen, profile }) {
+export default function DegenscoreModalContent({ onClose, degenscore, profile }) {
   return (
     <>
       <div className="modal-actions">
@@ -20,7 +20,7 @@ export default function DegenModalContent({ onClose, degen, profile }) {
           )?.color,
         }}
       >
-        <div className="modal-cover degen"></div>
+        <div className="modal-cover degenscore"></div>
         <div className="platform-icon">
           <SVG
             src={`../${SocialPlatformMapping(PlatformType.degenscore)?.icon}`}
@@ -48,21 +48,17 @@ export default function DegenModalContent({ onClose, degen, profile }) {
         </div>
 
         <div className="mt-2 mb-2">{profile?.description}</div>
-
-        <div className="divider mt-4 mb-4"></div>
-        <div className="panel-widget">
-          <div className="panel-widget-title">
-            Degen Score: {degen.properties?.DegenScore}
-          </div>
+        <div className="mt-2 mb-2">
+          DegenScore <strong className="text-large">{degenscore.properties?.DegenScore}</strong>
         </div>
         
-        {degen.traits.actions?.metadata.actions.actions && (
+        {degenscore.traits.actions?.metadata.actions.actions && (
           <>
             <div className="divider mt-4 mb-4"></div>
             <div className="panel-widget">
               <div className="panel-widget-title">DegenScore Traits</div>
               <div className="panel-widget-content widget-trait-list">
-                {(degen.traits.actions?.metadata.actions.actions).map(
+                {(degenscore.traits.actions?.metadata.actions.actions).map(
                   (item, idx) => {
                     return (
                       <div
@@ -82,11 +78,11 @@ export default function DegenModalContent({ onClose, degen, profile }) {
           </>
         )}
       </div>
-      {degen?.external_url && (
+      {degenscore?.external_url && (
         <div className="modal-footer">
           <div className="btn-group btn-group-block">
             <Link
-              href={degen.external_url}
+              href={degenscore.external_url}
               target="_blank"
               className="btn btn-primary"
             >

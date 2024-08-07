@@ -631,7 +631,7 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
   },
   [PlatformType.gitcoin]: {
     key: PlatformType.gitcoin,
-    color: "#e6e4e4",
+    color: "#19423B",
     icon: "icons/icon-gitcoin.svg",
     label: "Gitcoin",
     urlPrefix: "https://passport.gitcoin.co/",

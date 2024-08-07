@@ -27,7 +27,7 @@ export const initialState: WidgetState = {
     initLoading: true,
     loaded: false,
     children: [
-      WidgetTypes.degen,
+      WidgetTypes.degenscore,
       WidgetTypes.gitcoin,
       WidgetTypes.talent,
       WidgetTypes.webacy,
@@ -39,7 +39,7 @@ export const initialState: WidgetState = {
   [WidgetTypes.snapshot]: { isEmpty: null, initLoading: true, loaded: false },
   [WidgetTypes.tally]: { isEmpty: null, initLoading: true, loaded: false },
   [WidgetTypes.philand]: { isEmpty: null, initLoading: true, loaded: false },
-  [WidgetTypes.degen]: {
+  [WidgetTypes.degenscore]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
@@ -96,8 +96,8 @@ export const updatePhilandWidget = createAction<UpdateWidgetState>(
 export const updateWebacyWidget = createAction<UpdateWidgetState>(
   WidgetTypes.webacy
 );
-export const updateDegenWidget = createAction<UpdateWidgetState>(
-  WidgetTypes.degen
+export const updateDegenscoreWidget = createAction<UpdateWidgetState>(
+  WidgetTypes.degenscore
 );
 export const updateGitcoinWidget = createAction<UpdateWidgetState>(
   WidgetTypes.gitcoin
@@ -120,7 +120,7 @@ const widgetActions = [
   updateTallyDAOWidget,
   updatePhilandWidget,
   updateWebacyWidget,
-  updateDegenWidget,
+  updateDegenscoreWidget,
   updateGitcoinWidget,
   updateSnapshotWidget,
   updateTalentWidget,

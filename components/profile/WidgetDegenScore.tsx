@@ -5,7 +5,7 @@ import { DegenFetcher, DEGENSCORE_ENDPOINT } from "../apis/degenscore";
 import { formatDistanceToNow } from "date-fns";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { useDispatch } from "react-redux";
-import { updateDegenWidget } from "../state/widgets/reducer";
+import { updateDegenscoreWidget } from "../state/widgets/reducer";
 import { ModalType } from "../hooks/useModal";
 
 function useDegenInfo(address: string) {
@@ -32,7 +32,7 @@ const RenderWidgetDegenScore = ({ profile, openModal }) => {
   useEffect(() => {
     if (!isLoading) {
       dispatch(
-        updateDegenWidget({
+        updateDegenscoreWidget({
           isEmpty: !data?.name,
           initLoading: false,
         })
@@ -51,8 +51,8 @@ const RenderWidgetDegenScore = ({ profile, openModal }) => {
     <div
       className="profile-widget profile-widget-degenscore"
       onClick={() => {
-        openModal(ModalType.degen, {
-          degen: data,
+        openModal(ModalType.degenscore, {
+          degenscore: data,
           profile,
         });
       }}
@@ -60,9 +60,9 @@ const RenderWidgetDegenScore = ({ profile, openModal }) => {
       <div className="profile-widget-header">
         <h2 className="profile-widget-title">
           <span className="emoji-large mr-2">
-            {WidgetInfoMapping(WidgetTypes.degen).icon}{" "}
+            {WidgetInfoMapping(WidgetTypes.degenscore).icon}{" "}
           </span>
-          {WidgetInfoMapping(WidgetTypes.degen).title}{" "}
+          {WidgetInfoMapping(WidgetTypes.degenscore).title}{" "}
         </h2>
       </div>
       <div className="profile-widget-body"></div>

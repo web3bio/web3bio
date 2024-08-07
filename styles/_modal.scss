@@ -67,12 +67,15 @@
     right: -2rem;
     top: -2rem;
     z-index: -1;
-    &.gitcoin{
-      background: linear-gradient(to top, rgba(#6062eb, 0) 0%, rgba(#6062eb, .35) 200%);
+
+    &.gitcoin {
+      background: linear-gradient(to top, rgba(#19423B, 0) 0%, rgba(#19423B, .35) 200%);
     }
-    &.degen{
-      background: linear-gradient(to top, rgba(#d6fdff, 0) 0%, rgba(#7cd4f0, .35) 200%);
+
+    &.degenscore {
+      background: linear-gradient(to top, rgba(#a855f7, 0) 0%, rgba(#a855f7, .35) 200%);
     }
+
     &.snapshot {
       background: linear-gradient(to top, rgba(#f2994a, 0) 0%, rgba(#f2994a, .35) 200%);
     }
@@ -554,7 +557,7 @@
   // Modal Profile, Modal Guild
   &.modal-profile-container,
   &.modal-snapshot-container,
-  &.modal-degen-container,
+  &.modal-degenscore-container,
   &.modal-gitcoin-container,
   &.modal-guild-container {
     background: $light-color;
@@ -610,6 +613,24 @@
     }
   }
 
+  &.modal-gitcoin-container {
+    .list-item {
+      .list-item-icon {
+        align-items: center;
+        background: linear-gradient(to top, rgba(#121212, 1) 0%, rgba(#121212, 1) 200%);
+        display: flex;
+        height: 2rem;
+        justify-content: center;
+        width: 2rem;
+
+        .item-logo {
+          height: 1.4rem;
+          width: 1.4rem;
+        }
+      }
+    }
+  }
+
   // Modal Search
   &.modal-search-container {
     padding-top: 15vh;
@@ -627,6 +648,8 @@
       }
     }
   }
+
+
 
   // Modal Article
   &.modal-article-container {
@@ -1007,6 +1030,7 @@
   .panel-widget-content {
     display: flex;
     flex-wrap: wrap;
+    
     &.widget-trait-list {
       display: flex;
       flex-wrap: wrap;
@@ -1119,7 +1143,7 @@
       }
     }
 
-    .channel-item {
+    .list-item {
       border-radius: .4rem;
       display: flex;
       gap: .5rem;
@@ -1133,20 +1157,20 @@
         text-decoration: none;
       }
 
-      .channel-item-icon {
+      .list-item-icon {
         border-radius: .4rem;
         flex: 0 0 2rem;
         object-fit: cover;
         width: 2rem;
       }
 
-      .channel-item-body {
+      .list-item-body {
         display: flex;
         flex-direction: column;
         line-height: 1rem;
       }
 
-      .channel-item-subtitle {
+      .list-item-subtitle {
         font-size: .65rem;
       }
     }

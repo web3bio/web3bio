@@ -73,27 +73,6 @@ const RenderWidgetGitcoin = ({ profile, openModal }) => {
           Humanity Score
         </div>
       </div>
-
-      {data.stamps && (
-        <div className="profile-widget-hover">
-          <div className="widget-trait-list">
-            {data.stamps.map((item, idx) => {
-              return (
-                <div
-                  key={idx}
-                  className={`trait-item label ${item.type?.toLowerCase()} ${
-                    item.weight >= 2 && "label-tier-rare"
-                  }`}
-                  title={item.label}
-                >
-                  {item.weight >= 2 && "💎 "}
-                  {item.label}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
     </div>
   );
 };

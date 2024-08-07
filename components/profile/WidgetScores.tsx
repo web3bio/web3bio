@@ -22,7 +22,7 @@ const RenderWidgetScores = ({
         render: () => <WidgetGitcoin openModal={openModal} profile={profile} />,
       },
       {
-        key: WidgetTypes.degen,
+        key: WidgetTypes.degenscore,
         render: () => (
           <WidgetDegenScore openModal={openModal} profile={profile} />
         ),
@@ -39,7 +39,7 @@ const RenderWidgetScores = ({
   }, [profile.address, farcasterHandle]);
   const childWidgets = useMemo(
     () => [
-      states[WidgetTypes.degen],
+      states[WidgetTypes.degenscore],
       states[WidgetTypes.gitcoin],
       states[WidgetTypes.talent],
       states[WidgetTypes.webacy],
