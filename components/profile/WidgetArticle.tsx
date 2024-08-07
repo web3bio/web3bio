@@ -6,9 +6,9 @@ import SVG from "react-inlinesvg";
 import Link from "next/link";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { profileAPIBaseURL } from "../utils/queries";
-import { ArticlesFetcher } from "../apis/articles";
 import ArticleItem from "./ArticleItem";
 import { updateArticleWidget } from "../state/widgets/reducer";
+import { ArticlesFetcher } from "../apis";
 
 function useArticles(address: string, domain?: string | null) {
   const fetchUrl = (() => {

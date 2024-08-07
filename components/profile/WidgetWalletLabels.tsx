@@ -1,13 +1,10 @@
 import useSWR from "swr";
-import {
-  WALLET_LABELS_END_POINT,
-  walletLabelsFetcher,
-} from "../apis/walletLabels";
 import { regexSolana } from "../utils/regexp";
 import { Loading } from "../shared/Loading";
-import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
+// import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { WALLET_LABELS_END_POINT, walletLabelsFetcher } from "../apis";
 // import { updateWalletLabels } from "../state/widgets/action";
 
 function useWalletLabelsInfo(address: string) {
@@ -54,9 +51,7 @@ export function WidgetWalletLabels(props) {
           <Loading />
         ) : (
           <h2 className="profile-widget-title">
-            <span className="emoji-large mr-2">
-              🏷️{" "}
-            </span>
+            <span className="emoji-large mr-2">🏷️ </span>
             WalletLabels{" "}
           </h2>
         )}

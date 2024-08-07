@@ -21,7 +21,6 @@ export const TALLY_GRAPHQL_ENDPOINT = "https://api.tally.xyz/query";
 export const WALLET_LABELS_END_POINT = "https://api-c.walletlabels.xyz";
 export const WEBACY_API_ENDPOINT = "https://api.webacy.com";
 
-
 // GraphQL Queries
 export const QUERY_FARCASTER_STATS = gql`
   query QUERY_FARCASTER_STATS($name: String!) {
@@ -149,7 +148,6 @@ export const customFetcher = async (config) => {
     const options = {
       method,
       headers: {
-        "Content-Type": "application/json",
         ...headers,
       },
       next: { revalidate },
