@@ -5,6 +5,7 @@ import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { useDispatch } from "react-redux";
 import { ProfileFetcher } from "../apis/profile";
 import { updateGitcoinWidget } from "../state/widgets/reducer";
+import { ModalType } from "../hooks/useModal";
 
 function useGitcoinInfo(address: string) {
   const { data, error } = useSWR(
@@ -22,8 +23,8 @@ function useGitcoinInfo(address: string) {
   };
 }
 
-const RenderWidgetGitcoin = ({ address }) => {
-  const { data, isLoading } = useGitcoinInfo(address);
+const RenderWidgetGitcoin = ({ profile, openModal }) => {
+  const { data, isLoading } = useGitcoinInfo(profile.address);
   const dispatch = useDispatch();
   useEffect(() => {
     if (!isLoading) {
@@ -44,7 +45,15 @@ const RenderWidgetGitcoin = ({ address }) => {
   return isLoading ? (
     <></>
   ) : (
-    <div className="profile-widget profile-widget-gitcoin">
+    <div
+      className="profile-widget profile-widget-gitcoin"
+      onClick={() => {
+        openModal(ModalType.gitcoin, {
+          profile,
+          passport: data,
+        });
+      }}
+    >
       <div className="profile-widget-header">
         <h2 className="profile-widget-title">
           <span className="emoji-large mr-2">
@@ -64,27 +73,6 @@ const RenderWidgetGitcoin = ({ address }) => {
           Humanity Score
         </div>
       </div>
-
-      {data.stamps && (
-        <div className="profile-widget-hover">
-          <div className="widget-trait-list">
-            {data.stamps.map((item, idx) => {
-              return (
-                <div
-                  key={idx}
-                  className={`trait-item label ${item.type?.toLowerCase()} ${
-                    item.weight >= 2 && "label-tier-rare"
-                  }`}
-                  title={item.label}
-                >
-                  {item.weight >= 2 && "💎 "}
-                  {item.label}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
     </div>
   );
 };

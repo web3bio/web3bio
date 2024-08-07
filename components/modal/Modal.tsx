@@ -3,7 +3,6 @@ import { ModalType } from "../hooks/useModal";
 import ArticleModalContent from "./ModalArticle";
 import MediaModalContent from "./ModalMedia";
 import NFTModalContentRender from "./ModalNFT";
-// import PhilandModalContent from "./ModalPhiland";
 import PoapsModalContent from "./ModalPoaps";
 import SearchModalContent from "./ModalSearch";
 import ShareModalContent from "./ModalShare";
@@ -12,6 +11,24 @@ import ProfileModalContent from "./ModalProfile";
 import TipModalContent from "./ModalTips";
 import GuildModalContent from "./ModalGuild";
 import SnapshotModalContent from "./ModalSnapshot";
+import GitcoinModalContent from "./ModalGitcoin";
+import DegenscoreModalContent from "./ModalDegenscore";
+
+const modalContentMap = {
+  [ModalType.share]: ShareModalContent,
+  [ModalType.nft]: NFTModalContentRender,
+  [ModalType.poaps]: PoapsModalContent,
+  [ModalType.media]: MediaModalContent,
+  [ModalType.search]: SearchModalContent,
+  [ModalType.graph]: IdentityGraphModalContent,
+  [ModalType.tip]: TipModalContent,
+  [ModalType.guild]: GuildModalContent,
+  [ModalType.profile]: ProfileModalContent,
+  [ModalType.article]: ArticleModalContent,
+  [ModalType.snapshot]: SnapshotModalContent,
+  [ModalType.gitcoin]: GitcoinModalContent,
+  [ModalType.degenscore]: DegenscoreModalContent,
+};
 
 export default function Modal(props) {
   const { onDismiss, children, modalType, params } = props;
@@ -39,44 +56,13 @@ export default function Modal(props) {
   }, [onKeyDown]);
 
   const renderContent = (children, params) => {
-    switch (modalType) {
-      case ModalType.share:
-        return <ShareModalContent {...params} onClose={onDismiss} />;
-      case ModalType.nft:
-        return <NFTModalContentRender asset={params} onClose={onDismiss} />;
-      case ModalType.poaps:
-        return <PoapsModalContent asset={params} onClose={onDismiss} />;
-      // case ModalType.philand:
-      //   return <PhilandModalContent {...params} onClose={onDismiss} />;
-      case ModalType.media:
-        return <MediaModalContent {...params} onClose={onDismiss} />;
-      case ModalType.search:
-        return <SearchModalContent {...params} onClose={onDismiss} />;
-      case ModalType.graph:
-        return (
-          <IdentityGraphModalContent
-            containerRef={wrapper}
-            {...params}
-            onClose={onDismiss}
-          />
-        );
-      case ModalType.tip:
-        return <TipModalContent {...params} onClose={onDismiss} />;
-      case ModalType.guild:
-        return <GuildModalContent {...params} onClose={onDismiss} />;
-      case ModalType.profile:
-        return <ProfileModalContent identity={params} onClose={onDismiss} />;
-      case ModalType.article:
-        return <ArticleModalContent {...params} onClose={onDismiss} />;
-      case ModalType.tip:
-        return <TipModalContent {...params} onClose={onDismiss} />;
-      case ModalType.guild:
-        return <GuildModalContent {...params} onClose={onDismiss} />;
-      case ModalType.snapshot:
-        return <SnapshotModalContent {...params} onClose={onDismiss} />;
-      default:
-        return children;
+    const ModalContent = modalContentMap[modalType];
+    if (ModalContent) {
+      return (
+        <ModalContent containerRef={wrapper} {...params} onClose={onDismiss} />
+      );
     }
+    return children;
   };
   return (
     <div ref={overlay} className="web3bio-modal-cover" onClick={onClick}>

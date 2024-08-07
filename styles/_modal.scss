@@ -68,6 +68,14 @@
     top: -2rem;
     z-index: -1;
 
+    &.gitcoin {
+      background: linear-gradient(to top, rgba(#19423B, 0) 0%, rgba(#19423B, .35) 200%);
+    }
+
+    &.degenscore {
+      background: linear-gradient(to top, rgba(#a855f7, 0) 0%, rgba(#a855f7, .35) 200%);
+    }
+
     &.snapshot {
       background: linear-gradient(to top, rgba(#f2994a, 0) 0%, rgba(#f2994a, .35) 200%);
     }
@@ -549,6 +557,8 @@
   // Modal Profile, Modal Guild
   &.modal-profile-container,
   &.modal-snapshot-container,
+  &.modal-degenscore-container,
+  &.modal-gitcoin-container,
   &.modal-guild-container {
     background: $light-color;
     display: flex;
@@ -603,6 +613,35 @@
     }
   }
 
+  &.modal-gitcoin-container {
+    .stamp-item {
+      gap: .5rem;
+      margin: .2rem -.4rem;
+      padding: .4rem;
+      width: 100%;
+
+      .stamp-item-body {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+        line-height: 1rem;
+      }
+
+      .stamp-item-subtitle {
+        font-size: .65rem;
+      }
+
+      .stamp-label-item {
+        .feed-token-icon {
+          align-items: center;
+          background: $dark-color;
+          display: flex;
+          justify-content: center;
+        }
+      }
+    }
+  }
+
   // Modal Search
   &.modal-search-container {
     padding-top: 15vh;
@@ -620,6 +659,8 @@
       }
     }
   }
+
+
 
   // Modal Article
   &.modal-article-container {
@@ -1000,7 +1041,46 @@
   .panel-widget-content {
     display: flex;
     flex-wrap: wrap;
+    
+    .widget-trait-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .25rem;
+      height: 100%;
+      overflow-y: auto;
+      width: 100%;
 
+      .trait-item {
+        &.action_tier_legendary {
+          background-image: linear-gradient(124.2deg, #d6fdff 8%, #bad1ff 34%, #7cd4f0 74%, #b4fffa 95%);
+          order: -12;
+        }
+
+        &.action_tier_epic {
+          background-image: linear-gradient(113.06deg, #ffd6d6 19%, #ffbaf8 34%, #9593ff 85%);
+          order: -9;
+        }
+
+        &.action_tier_rare {
+          background-image: linear-gradient(117.25deg, #f1cc9c 20%, #f2a94e 42%, #f07c7c 65%, #fbade5 96%);
+          order: -6;
+        }
+
+        &.action_tier_uncommon {
+          background-image: linear-gradient(90.47deg, #e9f3ad 2%, #c6d390 32%, #7cbc55 98%);
+          order: -3;
+        }
+
+        &.action_tier_common {
+          display: none;
+        }
+
+        &.degen_score {
+          display: none;
+          order: -15;
+        }
+      }
+    }
     .traits-cards {
       display: flex;
       flex-wrap: wrap;
@@ -1074,7 +1154,7 @@
       }
     }
 
-    .channel-item {
+    .list-item {
       border-radius: .4rem;
       display: flex;
       gap: .5rem;
@@ -1088,20 +1168,20 @@
         text-decoration: none;
       }
 
-      .channel-item-icon {
+      .list-item-icon {
         border-radius: .4rem;
         flex: 0 0 2rem;
         object-fit: cover;
         width: 2rem;
       }
 
-      .channel-item-body {
+      .list-item-body {
         display: flex;
         flex-direction: column;
         line-height: 1rem;
       }
 
-      .channel-item-subtitle {
+      .list-item-subtitle {
         font-size: .65rem;
       }
     }

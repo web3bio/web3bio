@@ -6,7 +6,7 @@ export enum WidgetTypes {
   article = "article",
   philand = "philand",
   tally = "tally",
-  degen = "degen",
+  degenscore = "degenscore",
   webacy = "webacy",
   gitcoin = "gitcoin",
   guild = "guild",
@@ -59,8 +59,8 @@ const WidgetsInfoData = {
     description:
       "Phi is a new Web3 world created from ENS domains & On-Chain Activity, enabling the easy visualization of On-Chain Identities, currently built on Polygon. Virtually interact with crypto protocols from around the Ethereum ecosystem.",
   },
-  [WidgetTypes.degen]: {
-    key: WidgetTypes.degen,
+  [WidgetTypes.degenscore]: {
+    key: WidgetTypes.degenscore,
     icon: "👾",
     title: "DegenScore",
     description:

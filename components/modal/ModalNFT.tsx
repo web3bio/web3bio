@@ -51,6 +51,7 @@ const renderSocialMediaLinks = (_collection) => {
 
 export default function NFTModalContentRender(props) {
   const { onClose, asset } = props;
+
   const resolvedNetwork = useMemo(() => {
     if (asset.network?.includes("arbitrum")) {
       return Network.arbitrum;

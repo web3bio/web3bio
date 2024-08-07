@@ -1,12 +1,12 @@
 "use client";
 import { memo, useEffect } from "react";
 import useSWR from "swr";
-import Link from "next/link";
 import { DegenFetcher, DEGENSCORE_ENDPOINT } from "../apis/degenscore";
 import { formatDistanceToNow } from "date-fns";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { useDispatch } from "react-redux";
-import { updateDegenWidget } from "../state/widgets/reducer";
+import { updateDegenscoreWidget } from "../state/widgets/reducer";
+import { ModalType } from "../hooks/useModal";
 
 function useDegenInfo(address: string) {
   const { data, error } = useSWR(
@@ -26,13 +26,13 @@ function useDegenInfo(address: string) {
   };
 }
 
-const RenderWidgetDegenScore = ({ address }) => {
-  const { data, isLoading } = useDegenInfo(address);
+const RenderWidgetDegenScore = ({ profile, openModal }) => {
+  const { data, isLoading } = useDegenInfo(profile.address);
   const dispatch = useDispatch();
   useEffect(() => {
     if (!isLoading) {
       dispatch(
-        updateDegenWidget({
+        updateDegenscoreWidget({
           isEmpty: !data?.name,
           initLoading: false,
         })
@@ -48,17 +48,21 @@ const RenderWidgetDegenScore = ({ address }) => {
   return isLoading ? (
     <></>
   ) : (
-    <Link
+    <div
       className="profile-widget profile-widget-degenscore"
-      href={data?.external_url}
-      target="_blank"
+      onClick={() => {
+        openModal(ModalType.degenscore, {
+          degenscore: data,
+          profile,
+        });
+      }}
     >
       <div className="profile-widget-header">
         <h2 className="profile-widget-title">
           <span className="emoji-large mr-2">
-            {WidgetInfoMapping(WidgetTypes.degen).icon}{" "}
+            {WidgetInfoMapping(WidgetTypes.degenscore).icon}{" "}
           </span>
-          {WidgetInfoMapping(WidgetTypes.degen).title}{" "}
+          {WidgetInfoMapping(WidgetTypes.degenscore).title}{" "}
         </h2>
       </div>
       <div className="profile-widget-body"></div>
@@ -72,29 +76,7 @@ const RenderWidgetDegenScore = ({ address }) => {
           })}
         </div>
       </div>
-
-      {data.traits.actions?.metadata.actions.actions && (
-        <div className="profile-widget-hover">
-          <div className="widget-trait-list">
-            {(data.traits.actions?.metadata.actions.actions).map(
-              (item, idx) => {
-                return (
-                  <div
-                    key={idx}
-                    className={`trait-item label ${item.actionTier?.toLowerCase()}`}
-                    title={item.description}
-                  >
-                    {item.actionTier == "ACTION_TIER_LEGENDARY" && "💎 "}
-                    {item.actionTier == "ACTION_TIER_EPIC" && "✨ "}
-                    {item.name}
-                  </div>
-                );
-              }
-            )}
-          </div>
-        </div>
-      )}
-    </Link>
+    </div>
   );
 };
 

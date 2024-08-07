@@ -14,6 +14,8 @@ export enum ModalType {
   tip = "tip",
   guild = "guild",
   snapshot = "snapshot",
+  gitcoin = "gitcoin",
+  degenscore = "degenscore",
 }
 
 const useModal = () => {

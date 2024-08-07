@@ -13,7 +13,7 @@ const fetchStamps = async (address) => {
     `${GITCOIN_PASSPORT_API_END_POINT}/registry/stamps/${address}?limit=1000&include_metadata=false`,
     {
       headers: {
-        "x-api-key": process.env.NEXT_PUBLIC_GITCOIN_API_KEY || "",
+      "x-api-key": process.env.NEXT_PUBLIC_GITCOIN_API_KEY || "",
       },
     }
   );

@@ -139,7 +139,7 @@ export default function FarcasterProfileCard(props) {
                       <Link
                         key={x.id}
                         href={`https://warpcast.com/~/channel/${x.id}`}
-                        className="channel-item"
+                        className="list-item"
                         target="_blank"
                       >
                         <Image
@@ -147,17 +147,17 @@ export default function FarcasterProfileCard(props) {
                           width={40}
                           height={40}
                           src={x.image_url}
-                          className="channel-item-icon"
+                          className="list-item-icon"
                         />
-                        <div className="channel-item-body">
-                          <div className="channel-item-title">
+                        <div className="list-item-body">
+                          <div className="list-item-title">
                             <strong>{x.name}</strong>{" "}
                             <span className="text-gray">/{x.id}</span>
                           </div>
-                          <div className="channel-item-subtitle">
+                          <div className="list-item-subtitle">
                             {x.description}
                           </div>
-                          <div className="channel-item-subtitle text-gray">
+                          <div className="list-item-subtitle text-gray">
                             {x.follower_count?.toLocaleString()} followers
                           </div>
                         </div>

@@ -367,7 +367,9 @@ export default function ProfileMain(props) {
                     <RenderWidgetItem
                       openModal={(v) => {
                         openModal(ModalType.profile, {
-                          ...v,
+                          identity: {
+                            ...v,
+                          },
                         });
                       }}
                       displayName={pageTitle}
@@ -395,8 +397,10 @@ export default function ProfileMain(props) {
                 <Suspense fallback={<LoadingSkeleton type={WidgetTypes.nft} />}>
                   <WidgetNFT
                     profile={data}
-                    onShowDetail={(e, v) => {
-                      openModal(ModalType.nft, v);
+                    openModal={(v) => {
+                      openModal(ModalType.nft, {
+                        asset: v,
+                      });
                     }}
                   />
                 </Suspense>
@@ -419,7 +423,7 @@ export default function ProfileMain(props) {
                         )?.identity
                       }
                       states={profileWidgetStates}
-                      address={data.address}
+                      profile={data}
                     />
                   </div>
 
@@ -439,7 +443,7 @@ export default function ProfileMain(props) {
                       fallback={<LoadingSkeleton type={WidgetTypes.poaps} />}
                     >
                       <WidgetPOAP
-                        onShowDetail={(v) => {
+                        openModal={(v) => {
                           openModal(ModalType.poaps, v);
                         }}
                         address={data.address}
