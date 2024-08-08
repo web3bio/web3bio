@@ -32,18 +32,15 @@ import { DocumentNode, useLazyQuery } from "@apollo/client";
 import { updateUniversalBatchedProfile } from "../state/universal/actions";
 import { getProfileQuery } from "../utils/queries";
 import { useTipEmoji } from "../hooks/useTipEmoji";
-
-// lazy
-const WidgetNFT = React.lazy(() => import("./WidgetNFT"));
-const WidgetPOAP = React.lazy(() => import("./WidgetPoap"));
-const WidgetFeed = React.lazy(() => import("./WidgetFeed"));
-const AddressMenu = React.lazy(() => import("./AddressMenu"));
-const WidgetTally = React.lazy(() => import("./WidgetTally"));
-const WidgetScores = React.lazy(() => import("./WidgetScores"));
-const WidgetArticle = React.lazy(() => import("./WidgetArticle"));
-const WidgetGuild = React.lazy(() => import("./WidgetGuild"));
-const WidgetSnapshot = React.lazy(() => import("./WidgetSnapshot"));
-// const WidgetPhiland = React.lazy(()=> import('./WidgetPhiland'))
+import WidgetArticle from "./WidgetArticle";
+import AddressMenu from "./AddressMenu";
+import WidgetNFT from "./WidgetNFT";
+import WidgetFeed from "./WidgetFeed";
+import WidgetScores from "./WidgetScores";
+import WidgetPOAP from "./WidgetPoap";
+import WidgetGuild from "./WidgetGuild";
+import WidgetSnapshot from "./WidgetSnapshot";
+import WidgetTally from "./WidgetTally";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
@@ -142,10 +139,7 @@ export default function ProfileMain(props) {
   }, [profileWidgetStates]);
 
   const isBasicLoadingFinished = useMemo(() => {
-    return (
-      !profileWidgetStates.nft.initLoading &&
-      !profileWidgetStates.feeds?.initLoading
-    );
+    return profileWidgetStates.nft.loaded && profileWidgetStates.feeds.loaded;
   }, [profileWidgetStates]);
 
   if (!data || data.error) {

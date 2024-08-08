@@ -17,6 +17,7 @@ function useArticles(address: string, domain?: string | null) {
     }${domain ? "&contenthash=true" : ""}`;
   })();
   const { data, error, isValidating } = useSWR(fetchUrl, ArticlesFetcher, {
+    suspense: true,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
   });
