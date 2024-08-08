@@ -72,4 +72,4 @@ const RenderWidgetPhiland = ({ domain, onShowDetail }) => {
   );
 };
 
-export const WidgetPhiland = memo(RenderWidgetPhiland);
+export default memo(RenderWidgetPhiland);

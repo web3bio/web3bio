@@ -1,5 +1,11 @@
 "use client";
-import React, { Suspense, useCallback, useEffect, useState } from "react";
+import React, {
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import Link from "next/link";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
@@ -12,30 +18,32 @@ import { formatText, isValidEthereumAddress, colorMod } from "../utils/utils";
 import { Error } from "../shared/Error";
 import { Empty } from "../shared/Empty";
 import { RenderWidgetItem } from "./WidgetLinkItem";
-import WidgetNFT from "./WidgetNFT";
-import WidgetPOAP from "./WidgetPoap";
-import WidgetFeed from "./WidgetFeed";
-import AddressMenu from "./AddressMenu";
 import { Avatar } from "../shared/Avatar";
 import useModal, { ModalType } from "../hooks/useModal";
 import Modal from "../modal/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../state";
 import { WidgetState } from "../state/widgets/reducer";
-// import { WidgetPhiland } from "./WidgetPhiland";
-import { WidgetTally } from "./WidgetTally";
 import LoadingSkeleton from "./LoadingSkeleton";
 import ProfileFooter from "./ProfileFooter";
 import WidgetIndicator from "./WidgetIndicator";
 import { WidgetTypes } from "../utils/widgets";
 import { DocumentNode, useLazyQuery } from "@apollo/client";
-import { WidgetScores } from "./WidgetScores";
 import { updateUniversalBatchedProfile } from "../state/universal/actions";
 import { getProfileQuery } from "../utils/queries";
-import { WidgetArticle } from "./WidgetArticle";
-import WidgetGuild from "./WidgetGuild";
 import { useTipEmoji } from "../hooks/useTipEmoji";
-import WidgetSnapshot from "./WidgetSnapshot";
+
+// lazy
+const WidgetNFT = React.lazy(() => import("./WidgetNFT"));
+const WidgetPOAP = React.lazy(() => import("./WidgetPoap"));
+const WidgetFeed = React.lazy(() => import("./WidgetFeed"));
+const AddressMenu = React.lazy(() => import("./AddressMenu"));
+const WidgetTally = React.lazy(() => import("./WidgetTally"));
+const WidgetScores = React.lazy(() => import("./WidgetScores"));
+const WidgetArticle = React.lazy(() => import("./WidgetArticle"));
+const WidgetGuild = React.lazy(() => import("./WidgetGuild"));
+const WidgetSnapshot = React.lazy(() => import("./WidgetSnapshot"));
+// const WidgetPhiland = React.lazy(()=> import('./WidgetPhiland'))
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
@@ -118,24 +126,27 @@ export default function ProfileMain(props) {
       );
     }
   }, [domain, platform, identityGraph, getQuery, mounted, data?.links]);
-  const onCopySuccess = () => {
+  const onCopySuccess = useCallback(() => {
     setIsCopied(true);
-    setTimeout(() => {
-      setIsCopied(false);
-    }, 1500);
-  };
-  const isEmptyProfile = useCallback(() => {
-    const source = Object.values(profileWidgetStates).filter((x) => x.loaded);
+    setTimeout(() => setIsCopied(false), 1500);
+  }, []);
+  const isEmptyProfile = useMemo(() => {
+    const loadedWidgets = Object.values(profileWidgetStates).filter(
+      (x) => x.loaded
+    );
     // 6 is all widgets num - basic widgets num (nft, poaps, feeds)
-    return source.length > 6 && source.every((x) => x.isEmpty && !x.parent);
-  }, [profileWidgetStates])();
+    return (
+      loadedWidgets.length > 6 &&
+      loadedWidgets.every((x) => x.isEmpty && !x.parent)
+    );
+  }, [profileWidgetStates]);
 
-  const isBasicLoadingFinished = useCallback(() => {
+  const isBasicLoadingFinished = useMemo(() => {
     return (
       !profileWidgetStates.nft.initLoading &&
       !profileWidgetStates.feeds?.initLoading
     );
-  }, [profileWidgetStates])();
+  }, [profileWidgetStates]);
 
   if (!data || data.error) {
     return (

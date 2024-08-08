@@ -93,4 +93,4 @@ const RenderWidgetScores = ({
   );
 };
 
-export const WidgetScores = memo(RenderWidgetScores);
+export default memo(RenderWidgetScores);

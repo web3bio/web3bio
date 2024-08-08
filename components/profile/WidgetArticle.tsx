@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, memo, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import useSWR from "swr";
 import SVG from "react-inlinesvg";
@@ -17,7 +17,6 @@ function useArticles(address: string, domain?: string | null) {
     }${domain ? "&contenthash=true" : ""}`;
   })();
   const { data, error, isValidating } = useSWR(fetchUrl, ArticlesFetcher, {
-    suspense: true,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
   });
@@ -28,7 +27,7 @@ function useArticles(address: string, domain?: string | null) {
   };
 }
 
-const RenderWidgetArticles = ({ address, domain }) => {
+export default function WidgetArticle({ address, domain }) {
   const { data, isLoading } = useArticles(address, domain);
   const dispatch = useDispatch();
 
@@ -43,7 +42,7 @@ const RenderWidgetArticles = ({ address, domain }) => {
     }
   }, [data, isLoading, dispatch]);
   const siteInfo = useMemo(() => {
-    return data?.sites[0];
+    return data?.sites?.[0];
   }, [data?.sites]);
   if (!siteInfo || !data?.items?.length) return null;
 
@@ -89,6 +88,4 @@ const RenderWidgetArticles = ({ address, domain }) => {
       </div>
     </div>
   );
-};
-
-export const WidgetArticle = memo(RenderWidgetArticles);
+}

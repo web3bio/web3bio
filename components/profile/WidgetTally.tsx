@@ -326,4 +326,4 @@ const RenderWidgetTally = ({ address }) => {
   );
 };
 
-export const WidgetTally = memo(RenderWidgetTally);
+export default memo(RenderWidgetTally);
