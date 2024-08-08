@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { gitcoinPassportMapping } from "../../../../../components/utils/gitcoin";
+import { gitcoinPassportMapping } from "@/components/utils/gitcoin";
 import BigNumber from "bignumber.js";
 import {
   isValidEthereumAddress,
   respondWithCache,
-} from "../../../../../components/utils/utils";
+} from "@/components/utils/utils";
 
 const GITCOIN_PASSPORT_API_END_POINT = "https://api.scorer.gitcoin.co";
 const API_KEY = process.env.NEXT_PUBLIC_GITCOIN_API_KEY || "";
@@ -66,4 +66,3 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 }
 
 export const runtime = "edge";
-// export const preferredRegion = ["sfo1", "hnd1"];

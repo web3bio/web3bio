@@ -2,16 +2,16 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
-import { Loading } from "../../components/shared/Loading";
+import { Loading } from "@/components/shared/Loading";
 import useSWR from "swr";
-import WalletProfileMain from "../../components/manage/WalletProfileMain";
+import WalletProfileMain from "@/components/manage/WalletProfileMain";
 import { DocumentNode, useLazyQuery } from "@apollo/client";
-import { PlatformType } from "../../components/utils/platform";
+import { PlatformType } from "@/components/utils/platform";
 import {
   getProfileQuery,
   profileAPIBaseURL,
-} from "../../components/utils/queries";
-import { ProfileFetcher } from "../../components/apis";
+} from "@/components/utils/queries";
+import { ProfileFetcher } from "@/components/apis";
 
 export default function WalletProfilePage() {
   const { address } = useAccount();

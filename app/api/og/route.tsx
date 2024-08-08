@@ -1,11 +1,10 @@
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
-import { formatText } from "../../../components/utils/utils";
+import { formatText } from "@/components/utils/utils";
 import qrcode from "yaqrcode";
-import { profileAPIBaseURL } from "../../../components/utils/queries";
+import { profileAPIBaseURL } from "@/components/utils/queries";
 
 export const runtime = "edge";
-// export const preferredRegion = ["sfo1", "hnd1"];
 
 const SIZE = {
   width: 1200,

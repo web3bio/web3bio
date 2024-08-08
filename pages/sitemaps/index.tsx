@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Head from "next/head";
 import "../../styles/web3bio.scss";
-import { baseURL } from "../../components/utils/queries";
+import { baseURL } from "@/components/utils/queries";
 
 export async function getStaticProps({}) {
   const res = await fetch(process.env.NEXT_PUBLIC_SITEMAP_INDEX || "https://sitemaps.web3.bio/sitemap-staging.json");

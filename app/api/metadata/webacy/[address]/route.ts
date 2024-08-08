@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { regexSolana } from "../../../../../components/utils/regexp";
-import { respondWithCache } from "../../../../../components/utils/utils";
-import { WEBACY_API_ENDPOINT } from "../../../../../components/apis";
+import { regexSolana } from "@/components/utils/regexp";
+import { respondWithCache } from "@/components/utils/utils";
+import { WEBACY_API_ENDPOINT } from "@/components/apis";
 interface WebacyResponse {
   score: number;
   updatedAt: Date;
@@ -50,4 +50,3 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 }
 
 export const runtime = "edge";
-// export const preferredRegion = ["sfo1", "hnd1"];
