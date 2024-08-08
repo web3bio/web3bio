@@ -83,7 +83,7 @@ export enum PlatformType {
   gitcoin = "gitcoin",
 }
 
-export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
+export const PLATFORM_DATA: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.twitter]: {
     key: PlatformType.twitter,
     color: "#000000",
@@ -639,14 +639,21 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
   },
 };
 
+const PlatformsMap = new Map(
+  Object.values(PLATFORM_DATA).map((x) => [x.key, x])
+);
+
 export const SocialPlatformMapping = (platform: PlatformType) => {
   return (
-    PlatformData[platform] ?? {
+    PlatformsMap.get(platform) ?? {
       key: platform,
       color: "#000000",
       icon: "",
       label: platform,
+      urlPrefix: "",
       ensText: [],
+      dotbitText: [],
+      system: PlatformSystem.web3,
     }
   );
 };

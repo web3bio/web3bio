@@ -1,6 +1,6 @@
 import SearchPage from "../components/search/SearchPage";
 import { Footer } from "../components/shared/Footer";
-import { PlatformData } from "../components/utils/platform";
+import { SocialPlatformMapping } from "../components/utils/platform";
 import { handleSearchPlatform } from "../components/utils/utils";
 import { HomeFeatures } from "../components/shared/HomeFeatures";
 import { Header } from "../components/shared/Header";
@@ -21,15 +21,15 @@ export async function generateMetadata({ searchParams }) {
   const title = searchTerm
     ? `${searchTerm} on ${
         platform
-          ? PlatformData[platform.toLowerCase()].label
-          : PlatformData[handleSearchPlatform(searchTerm)].label
+          ? SocialPlatformMapping(platform.toLowerCase()).label
+          : SocialPlatformMapping(handleSearchPlatform(searchTerm)).label
       } - Web3.bio Identity Search`
     : defaultTitle;
   const description = searchTerm
     ? `Search ${searchTerm} on ${
         platform
-          ? PlatformData[platform.toLowerCase()].label
-          : PlatformData[handleSearchPlatform(searchTerm)].label
+          ? SocialPlatformMapping(platform.toLowerCase()).label
+          : SocialPlatformMapping(handleSearchPlatform(searchTerm)).label
       } to discover the Web3 decentralized profiles and identities associated with ${searchTerm}. Check out and explore the ${searchTerm} Web3 profile.`
     : defaultDescription;
 

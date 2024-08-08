@@ -1,4 +1,4 @@
-import { PlatformData } from "./platform";
+import { SocialPlatformMapping } from "./platform";
 
 const generateVCardData = (profile) => {
   let vCardString = "";
@@ -10,7 +10,7 @@ const generateVCardData = (profile) => {
   if (profile.description) vCardString += `NOTE:${profile.description}\r\n`;
   vCardString += `X-SOCIALPROFILE;type=Web3;x-user=${profile.identity}:https://web3.bio/${profile.identity}\r\n`;
   profile.links.forEach((x) => {
-    const platform = PlatformData[x.platform];
+    const platform = SocialPlatformMapping(x.platform);
     vCardString += `X-SOCIALPROFILE;type=${platform.label};x-user=${x.handle}${
       x.link ? ":" + x.link : ""
     }\r\n`;

@@ -2,7 +2,7 @@ import { useState } from "react";
 import Link from "next/link";
 import SVG from "react-inlinesvg";
 import Clipboard from "react-clipboard.js";
-import { NetworkData, NetworkMapping } from "../utils/network";
+import { Network, NetworkMapping } from "../utils/network";
 
 export default function AddressMenu({ profile }) {
   const [isCopied, setIsCopied] = useState(false);
@@ -14,9 +14,7 @@ export default function AddressMenu({ profile }) {
     }, 1500);
   };
   const network =
-    profile.platform === NetworkData.solana.key
-      ? profile.platform
-      : NetworkData.ethereum.key;
+    profile.platform === Network.solana ? profile.platform : Network.ethereum;
 
   return (
     <>
@@ -66,7 +64,7 @@ export default function AddressMenu({ profile }) {
             View on {NetworkMapping(network).scanLabel}
           </Link>
         </li>
-        {profile.platform !== NetworkData.solana.key && (
+        {profile.platform !== Network.solana && (
           <li className="menu-item dropdown-menu-item">
             <Link
               href={`https://debank.com/profile/${profile.address}`}

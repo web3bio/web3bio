@@ -1,14 +1,12 @@
 import { useMemo } from "react";
 import Image from "next/image";
-import { NetworkData, NetworkMapping } from "../utils/network";
 import SVG from "react-inlinesvg";
+import { networkByIdOrName } from "../utils/network";
 
 export default function TokenListItem(props) {
   const { token, onSelect } = props;
   const networkItem = useMemo(() => {
-    return (
-      Object.values(NetworkData).find((x) => x.short === token.chain) || null
-    );
+    return networkByIdOrName(0, token.chain);
   }, [token]);
   return (
     <li className="menu-item dropdown-menu-item">

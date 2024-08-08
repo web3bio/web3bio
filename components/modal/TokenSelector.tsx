@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import SVG from "react-inlinesvg";
-import { NetworkData, NetworkMapping } from "../utils/network";
-import { formatBalance } from "../utils/utils";
 import TokenListItem from "./TokenListItem";
+import { networkByIdOrName } from "../utils/network";
 
 const getUSDPrice = (amount, price) => {
   const res = Number(amount * price).toFixed(2);
@@ -41,10 +40,7 @@ export default function TokenSelector(props) {
     };
   }, [selected, resolvedList]);
   const networkItem = useMemo(() => {
-    return (
-      Object.values(NetworkData).find((x) => x.short === selected?.chain) ||
-      null
-    );
+    return networkByIdOrName(0, selected?.chain);
   }, [selected]);
   return (
     <div className="token-selector-container">

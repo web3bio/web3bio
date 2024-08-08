@@ -7,7 +7,7 @@ import { NFTCollections } from "./NFTCollections";
 import NFTFilter from "./NFTFilter";
 import { useDispatch } from "react-redux";
 import { PlatformType } from "../utils/platform";
-import { NetworkData } from "../utils/network";
+
 import { WidgetTypes } from "../utils/widgets";
 import { updateNFTWidget } from "../state/widgets/reducer";
 import {
@@ -16,6 +16,7 @@ import {
   SIMPLEHASH_URL,
   SimplehashFetcher,
 } from "../apis";
+import { Network, NetworkMapping } from "../utils/network";
 
 const CURSOR_PARAM = "&cursor=";
 
@@ -70,7 +71,7 @@ const getURL = (index, address, previous, filter, network) => {
     `/api/v0/nfts/owners_v2?chains=${
       filter || SIMPLEHASH_CHAINS
     }&wallet_addresses=${address}&filters=spam_score__lte%3D${
-      network === NetworkData.solana.key ? "99" : "1"
+      network === Network.solana ? "99" : "1"
     }${cursor ? CURSOR_PARAM + cursor : ""}&limit=${SIMPLEHASH_PAGE_SIZE}`
   );
 };

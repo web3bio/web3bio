@@ -12,7 +12,12 @@ import {
 import { useCurrencyAllowance } from "../hooks/useCurrency";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { erc20Abi, formatEther, parseEther } from "viem";
-import { chainIdToNetwork, NetworkData } from "../utils/network";
+import {
+  chainIdToNetwork,
+  networkByIdOrName,
+  NetworkMapping,
+  NetworksMap,
+} from "../utils/network";
 import { Loading } from "../shared/Loading";
 import { Avatar } from "../shared/Avatar";
 import toast from "react-hot-toast";
@@ -151,9 +156,7 @@ export default function TipModalContent(props) {
     const buttonHandle = () => {
       if (chainIdToNetwork(chainId, true) !== token?.chain) {
         return switchChainAsync({
-          chainId:
-            Object.values(NetworkData)?.find((x) => x.short === token?.chain)
-              ?.chainId || 1,
+          chainId: networkByIdOrName(0, token.chain)?.chainId || 1,
         });
       }
       if (isBalanceLow) return null;

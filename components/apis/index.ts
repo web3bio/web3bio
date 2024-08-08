@@ -18,7 +18,6 @@ export const SIMPLEHASH_PAGE_SIZE = 40;
 export const SNAPSHOT_GRAPHQL_ENDPOINT = "https://hub.snapshot.org/graphql";
 export const TALENT_API_ENDPOINT = "https://api.talentprotocol.com/api/v2/";
 export const TALLY_GRAPHQL_ENDPOINT = "https://api.tally.xyz/query";
-export const WALLET_LABELS_END_POINT = "https://api-c.walletlabels.xyz";
 export const WEBACY_API_ENDPOINT = "https://api.webacy.com";
 
 // GraphQL Queries
@@ -209,11 +208,4 @@ export const talentFetcher = (url) =>
     apiKeyHeader: "x-api-key",
     apiKeyValue: process.env.NEXT_PUBLIC_TALENT_API_KEY,
     logName: "Talent",
-  });
-export const walletLabelsFetcher = (url) =>
-  customFetcher({
-    url,
-    apiKeyHeader: "x-api-key",
-    apiKeyValue: process.env.NEXT_PUBLIC_WALLET_LABELS_API_KEY,
-    logName: "WalletLabels",
   });
