@@ -171,7 +171,7 @@ export const customFetcher = async (config) => {
     return data;
   } catch (error) {
     console.error(`Error in ${logName} API call:`, error);
-    return null;
+    return [];
   }
 };
 

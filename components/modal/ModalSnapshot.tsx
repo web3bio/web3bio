@@ -168,6 +168,7 @@ export default function SnapshotModalContent({ onClose, space, profile }) {
                 return (
                   space[x] && (
                     <Link
+                      key={x}
                       href={SocialPlatformMapping(x).urlPrefix + space[x]}
                       target="_blank"
                       rel="noopener noreferrer"
