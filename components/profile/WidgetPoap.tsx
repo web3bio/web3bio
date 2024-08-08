@@ -28,7 +28,7 @@ function usePoaps(address: string) {
   };
 }
 
-export default function WidgetPOAP({ address, onShowDetail }) {
+export default function WidgetPOAP({ address, openModal }) {
   const { data, isLoading } = usePoaps(address);
   const [render, setRender] = useState(false);
   const dispatch = useDispatch();
@@ -98,15 +98,17 @@ export default function WidgetPOAP({ address, onShowDetail }) {
                     key={idx}
                     className="poap-item c-hand"
                     onClick={(e) => {
-                      onShowDetail({
-                        collection: {
-                          url: "",
-                          name: "",
+                      openModal({
+                        asset: {
+                          collection: {
+                            url: "",
+                            name: "",
+                          },
+                          address: x.owner,
+                          tokenId: x.tokenId,
+                          asset: x,
+                          mediaURL: resolveIPFS_URL(x.event.image_url),
                         },
-                        address: x.owner,
-                        tokenId: x.tokenId,
-                        asset: x,
-                        mediaURL: resolveIPFS_URL(x.event.image_url),
                       });
                     }}
                   >

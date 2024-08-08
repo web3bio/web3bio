@@ -16,7 +16,9 @@ interface StampResponse {
 }
 
 async function fetchStamps(address: string): Promise<string[]> {
-  const url = new URL(`${GITCOIN_PASSPORT_API_END_POINT}/registry/stamps/${address}`);
+  const url = new URL(
+    `${GITCOIN_PASSPORT_API_END_POINT}/registry/stamps/${address}`
+  );
   url.searchParams.append("limit", "1000");
   url.searchParams.append("include_metadata", "false");
 
@@ -27,12 +29,16 @@ async function fetchStamps(address: string): Promise<string[]> {
   if (!res.ok) return [];
 
   const data = await res.json();
-  return data.items.map((x: any) => x?.credential?.credentialSubject?.provider).filter(Boolean);
+  return data.items
+    .map((x: any) => x?.credential?.credentialSubject?.provider)
+    .filter(Boolean);
 }
 
 function calculateScore(detailsArr: any[]): number {
-  return detailsArr.reduce((total, cur) => 
-    BigNumber(total).plus(BigNumber(cur.weight)).toNumber(), 0);
+  return detailsArr.reduce(
+    (total, cur) => BigNumber(total).plus(BigNumber(cur.weight)).toNumber(),
+    0
+  );
 }
 
 function createResponse(score: number, stamps: any[]): StampResponse {

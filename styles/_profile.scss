@@ -1290,6 +1290,7 @@
 
   // DegenScore Widget
   .profile-widget-degenscore {
+    cursor: pointer;
     background: linear-gradient(45deg, rgba(#A381EB, .1) 0, rgba(#fff, 1) 25%);
 
     .widget-trait-list {
@@ -1384,7 +1385,7 @@
   // Gitcoin Widget
   .profile-widget-gitcoin {
     background: linear-gradient(45deg, rgba(#4341B7, .15) 0, rgba(#fff, 1) 25%);
-
+    cursor: pointer;
     .widget-trait-list {
       display: flex;
       flex-wrap: wrap;

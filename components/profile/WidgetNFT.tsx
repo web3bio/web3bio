@@ -96,7 +96,7 @@ function useNFTs({ address, filter, network }) {
   };
 }
 
-export default function WidgetNFT({ profile, onShowDetail }) {
+export default function WidgetNFT({ profile, openModal }) {
   const [expand, setExpand] = useState(
     !!(profile?.platform === PlatformType.solana)
   );
@@ -194,7 +194,7 @@ export default function WidgetNFT({ profile, onShowDetail }) {
           expand={expand}
           setExpand={setExpand}
           data={data}
-          onShowDetail={onShowDetail}
+          onShowDetail={(e, v) => openModal(v)}
           isLoadingMore={isValidating}
           hasNextPage={hasNextPage}
           isError={isError}

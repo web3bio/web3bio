@@ -75,7 +75,7 @@ body {
   &.ui2 {
     background-image:
       radial-gradient(at 50% -10%, darken($pride-color-1, 10%) 0px, transparent 50%),
-      radial-gradient(at 0% 15%,  darken($pride-color-1, 10%) 0px, transparent 50%),
+      radial-gradient(at 0% 15%, darken($pride-color-1, 10%) 0px, transparent 50%),
       radial-gradient(at 0% 70%, $pride-color-2 0px, transparent 40%),
       radial-gradient(at 100% 100%, $pride-color-6 0px, transparent 40%),
       radial-gradient(at 82% 10%, $pride-color-1 0px, transparent 50%);
@@ -86,7 +86,7 @@ body {
     top: 0;
     width: 100vw;
     z-index: -1;
-    
+
     &::after,
     &::before {
       border-radius: 50%;
@@ -156,7 +156,7 @@ body {
 
   .header-btn {
     align-items: center;
-    display: flex; 
+    display: flex;
     gap: .2rem;
 
     .btn {
@@ -324,7 +324,7 @@ body {
 
   &:hover {
     background: rgba($bg-color, .85);
-    
+
     .widget-indicator-item {
       color: initial;
 
@@ -398,6 +398,7 @@ body {
           right: 100%;
           transform: translate($unit-2, 50%);
         }
+
         &:hover {
           &::after {
             transform: translate(-$unit-1, 50%);
@@ -415,9 +416,7 @@ body {
 }
 
 // Home
-.home-container {
-
-}
+.home-container {}
 
 .home-features {
   font-size: .7rem;
@@ -666,6 +665,10 @@ body {
   position: relative;
   text-overflow: ellipsis;
   white-space: nowrap;
+
+  &.label-tier-rare {
+    background-image: linear-gradient(124.2deg, #d6fdff 8%, #bad1ff 34%, #7cd4f0 74%, #b4fffa 95%);
+  }
 
   &.c-hand {
     cursor: pointer;
