@@ -222,8 +222,8 @@ const urlPrefixMap = new Map([
   ["ar://", (url: string) => url.replace("ar://", "https://arweave.net/")],
 ]);
 
-export const resolveMediaURL = (url: string): string | null => {
-  if (!url) return null;
+export const resolveMediaURL = (url: string): string => {
+  if (!url) return "";
 
   for (const [prefix, resolver] of urlPrefixMap) {
     if (url.startsWith(prefix)) {
@@ -232,7 +232,7 @@ export const resolveMediaURL = (url: string): string | null => {
   }
 
   if (isIPFS_Resource(url) || url.includes("ipfs:")) {
-    return resolveIPFS_URL(url) || null;
+    return resolveIPFS_URL(url) || "";
   }
 
   return url;
