@@ -14,7 +14,14 @@ export enum WidgetTypes {
   talent = "talent",
 }
 
-const WidgetsInfoData = {
+interface WidgetInfo {
+  key: WidgetTypes;
+  icon: string;
+  title: string;
+  description: string;
+}
+
+const WidgetsInfoData: Readonly<Record<WidgetTypes, WidgetInfo>> = {
   [WidgetTypes.nft]: {
     key: WidgetTypes.nft,
     icon: "🖼",
@@ -99,7 +106,7 @@ const WidgetsInfoData = {
     title: "Talent Passport",
     description: "A new type of resume, for the onchain era of the internet.",
   },
-};
-export const WidgetInfoMapping = (widgetType: WidgetTypes) => {
-  return WidgetsInfoData[widgetType];
-};
+} as const;
+export const WidgetInfoMapping = (
+  widgetType: WidgetTypes
+): Readonly<WidgetInfo> => WidgetsInfoData[widgetType];
