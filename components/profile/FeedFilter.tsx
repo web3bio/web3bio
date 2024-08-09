@@ -1,5 +1,3 @@
-// ... (previous WidgetFeed code remains the same)
-
 import { useMemo } from "react";
 import { TagsFilterMapping } from "../utils/activity";
 
