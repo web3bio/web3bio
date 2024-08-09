@@ -20,17 +20,17 @@
     z-index: 999;
 
     .btn {
-      background: rgba($bg-color, .25);
+      background: rgba($dark-color, .025);
 
       &:focus,
       &:hover {
-        background: rgba($bg-color, .45);
+        background: rgba($dark-color, .1);
       }
 
 
       &:active,
       &.active {
-        background: rgba($bg-color, .65);
+        background: rgba($dark-color, .15);
       }
     }
   }
@@ -90,6 +90,10 @@
 
     &.lens {
       background: linear-gradient(to top, rgba(#6bc674, 0) 0%, rgba(#6bc674, .35) 200%);
+    }
+
+    &.poaps {
+      background: linear-gradient(to top, rgba(#5E58A5, 0) 0%, rgba(#5E58A5, .35) 200%);
     }
   }
 
@@ -427,7 +431,6 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-
           }
 
           .btn-primary {
@@ -441,7 +444,7 @@
       .balance-text {
         width: 100%;
         display: flex;
-        justify-content: end;
+        justify-content: flex-end;
         margin: -.5rem 0;
         font-size: .5rem;
         color: rgba($dark-color, .5)
@@ -559,7 +562,8 @@
   &.modal-snapshot-container,
   &.modal-degenscore-container,
   &.modal-gitcoin-container,
-  &.modal-guild-container {
+  &.modal-guild-container,
+  &.modal-poaps-container {
     background: $light-color;
     display: flex;
     flex-direction: column;
@@ -582,6 +586,12 @@
       position: absolute;
     }
 
+    .modal-body {
+      overflow-y: auto;
+    }
+  }
+
+  &.modal-profile-container {
     .active-badge {
       align-items: center;
       background: #8a63d2;
@@ -606,10 +616,6 @@
       margin: 0 .2rem;
       padding: 0 .25rem;
       width: auto;
-    }
-
-    .modal-body {
-      overflow-y: auto;
     }
   }
 
@@ -638,6 +644,21 @@
           display: flex;
           justify-content: center;
         }
+      }
+    }
+  }
+
+  &.modal-poaps-container {
+    .img-container {
+      display: flex;
+      justify-content: center;
+      padding: 1rem;
+      width: 100%;
+
+      .img-responsive {
+        border-radius: 50%;
+        height: 10rem;
+        width: 10rem;
       }
     }
   }
@@ -1000,7 +1021,7 @@
   }
 
   .panel-widget-list {
-    background: $bg-color;
+    background: $bg-color-light;
     border: .05rem solid rgba($dark-color, 0.01);
     border-radius: .4rem;
     box-shadow: 0 .2rem .8rem -.2rem rgba($dark-color, 0.1);

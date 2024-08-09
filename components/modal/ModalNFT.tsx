@@ -87,9 +87,9 @@ export default function NFTModalContentRender(props) {
   return (
     <>
       <div className="modal-actions">
-        <div className="btn btn-close" onClick={onClose}>
+        <button className="btn btn-close" onClick={onClose}>
           <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
-        </div>
+        </button>
       </div>
       <div
         id="nft-dialog"

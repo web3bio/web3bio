@@ -8,6 +8,7 @@ import _ from "lodash";
 import { isSameAddress } from "../utils/utils";
 import { useProfiles } from "../hooks/useReduxProfiles";
 import { SIMPLEHASH_URL, SimplehashFetcher } from "../apis";
+import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 
 export default function PoapsModalContent({ onClose, asset }) {
   const [owners, setOwners] = useState(new Array());
@@ -30,149 +31,140 @@ export default function PoapsModalContent({ onClose, asset }) {
   return (
     <>
       <div className="modal-actions">
-        <div className="btn btn-close" onClick={onClose}>
+        <button className="btn btn-close" onClick={onClose}>
           <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
-        </div>
+        </button>
       </div>
-      <div id="nft-dialog" className="nft-preview">
-        <div className="preview-container">
-          <div
-            className="preview-overlay"
-            style={{
-              backgroundImage: "url(" + asset.mediaURL + ")",
-            }}
-            onClick={onClose}
-          ></div>
-          <div className="preview-image preview-image-poap">
-            <NFTAssetPlayer
-              className={"img-container"}
-              type={"image/png"}
-              src={asset.mediaURL}
-              alt={asset.asset.event.name}
-              placeholder={true}
-            />
-          </div>
-          <div className="preview-main">
-            <div className="preview-content">
-              <div className="panel-widget">
-                <div className="panel-widget-content">
-                  <div className="nft-header-collection collection-title mb-4">
-                    <SVG
-                      className="collection-logo"
-                      src="../icons/icon-poap.svg"
-                      width={24}
-                      height={24}
-                      fill={"#5E58A5"}
-                    />
-                    <div
-                      className="collection-name text-ellipsis"
-                      style={{ color: "#5E58A5" }}
-                    >
-                      POAP
-                    </div>
-                  </div>
-                  <div className="nft-header-name h4">
-                    {asset.asset.event.name}
-                  </div>
-                  <div className="nft-header-description mt-2 mb-2">
-                    {asset.asset.event.description}
-                  </div>
+      <div
+        className="modal-header"
+        style={{
+          ["--widget-primary-color" as string]: SocialPlatformMapping(
+            PlatformType.poap
+          )?.color,
+        }}
+      >
+        <div className="modal-cover poaps"></div>
+        <div className="platform-icon">
+          <SVG
+            src={`../${SocialPlatformMapping(PlatformType.poap)?.icon}`}
+            width={14}
+            height={14}
+          />
+        </div>
+        <span className="modal-header-title">POAP</span>
+      </div>
+      <div className="modal-body">
+        <div className="mt-2 mb-2">
+          <NFTAssetPlayer
+            className={"img-container"}
+            type={"image/png"}
+            height={240}
+            width={240}
+            src={asset.mediaURL}
+            alt={asset.asset.event.name}
+            placeholder={true}
+          />
+        </div>
+        <div className="d-flex mt-2" style={{ alignItems: "center" }}>
+          <strong className="h4 text-bold">{asset.asset.event.name}</strong>
+        </div>
+        <div className="text-gray">
+          
+        </div>
+        <div className="mt-2 mb-2">{asset.asset.event.description}</div>
+        <div className="mt-2 mb-2 btn-group">
+          {asset.asset.tokenId && (
+            <Link
+              href={`https://collectors.poap.xyz/token/${asset.asset.tokenId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-sm"
+            >
+              <SVG
+                src={`../icons/icon-poap.svg`}
+                fill="#121212"
+                width={18}
+                height={18}
+              />
+              <span>POAP</span>
+            </Link>
+          )}
+          {asset.asset.event.event_url && (
+            <Link
+              href={asset.asset.event.event_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-sm"
+            >
+              <SVG
+                src={`../icons/icon-web.svg`}
+                fill="#121212"
+                width={18}
+                height={18}
+              />
+              <span>Website</span>
+            </Link>
+          )}
+        </div>
 
-                  <div className="btn-group mt-2 mb-4">
-                    {asset.asset.tokenId && (
-                      <Link
-                        href={`https://collectors.poap.xyz/token/${asset.asset.tokenId}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn btn-sm"
-                      >
-                        <SVG
-                          src={`../icons/icon-poap.svg`}
-                          fill="#121212"
-                          width={18}
-                          height={18}
-                        />
-                        <span>POAP</span>
-                      </Link>
-                    )}
-                    {asset.asset.event.event_url && (
-                      <Link
-                        href={asset.asset.event.event_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn btn-sm"
-                      >
-                        <SVG
-                          src={`../icons/icon-web.svg`}
-                          fill="#121212"
-                          width={18}
-                          height={18}
-                        />
-                        <span>Website</span>
-                      </Link>
-                    )}
-                  </div>
+        <div className="divider mt-4 mb-4"></div>
+        <div className="panel-widget">
+          <div className="panel-widget-title">Attributes</div>
+          <div className="panel-widget-content">
+            <div className="panel-widget-list">
+              <div className="widget-list-item">
+                <div className="list-item-left">Event Start</div>
+                <div className="list-item-right text-bold">
+                  {asset.asset.event.start_date}
                 </div>
               </div>
-
-              <div className="panel-widget">
-                <div className="panel-widget-title">Attributes</div>
-                <div className="panel-widget-content">
-                  <div className="panel-widget-list">
-                    <div className="widget-list-item">
-                      <div className="list-item-left">Event Start</div>
-                      <div className="list-item-right text-bold">
-                        {asset.asset.event.start_date}
-                      </div>
-                    </div>
-                    {(asset.asset.event.city || asset.asset.event.country) && (
-                      <div className="widget-list-item">
-                        <div className="list-item-left">Event Location</div>
-                        <div className="list-item-right text-bold">
-                          {asset.asset.event.city} {asset.asset.event.country}
-                        </div>
-                      </div>
-                    )}
-                    <div className="widget-list-item">
-                      <div className="list-item-left">Chain</div>
-                      <div className="list-item-right text-bold text-uppercase">
-                        {asset.asset.chain}
-                      </div>
-                    </div>
-                    <div className="widget-list-item">
-                      <div className="list-item-left">POAP Supply</div>
-                      <div className="list-item-right text-bold">
-                        {asset.asset.event.supply}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {owners?.length > 0 && (
-                <div className="panel-widget">
-                  <div className="panel-widget-title">Owners</div>
-                  <div className="panel-widget-content">
-                    <div className="panel-widget-list">
-                      {owners.map((x) => {
-                        return (
-                          x?.owner_address && (
-                            <PoapNFTOwner
-                              profile={profiles.find((i) =>
-                                isSameAddress(i.uuid, x.owner_address)
-                              )}
-                              key={x.owner_address}
-                              address={x.owner_address}
-                            />
-                          )
-                        );
-                      })}
-                    </div>
+              {(asset.asset.event.city || asset.asset.event.country) && (
+                <div className="widget-list-item">
+                  <div className="list-item-left">Event Location</div>
+                  <div className="list-item-right text-bold">
+                    {asset.asset.event.city} {asset.asset.event.country}
                   </div>
                 </div>
               )}
+              <div className="widget-list-item">
+                <div className="list-item-left">Chain</div>
+                <div className="list-item-right text-bold text-uppercase">
+                  {asset.asset.chain}
+                </div>
+              </div>
+              <div className="widget-list-item">
+                <div className="list-item-left">POAP Supply</div>
+                <div className="list-item-right text-bold">
+                  {asset.asset.event.supply}
+                </div>
+              </div>
             </div>
           </div>
         </div>
+
+        <div className="divider mt-4 mb-4"></div>
+        {owners?.length > 0 && (
+          <div className="panel-widget">
+            <div className="panel-widget-title">Owners</div>
+            <div className="panel-widget-content">
+              <div className="panel-widget-list">
+                {owners.map((x) => {
+                  return (
+                    x?.owner_address && (
+                      <PoapNFTOwner
+                        profile={profiles.find((i) =>
+                          isSameAddress(i.uuid, x.owner_address)
+                        )}
+                        key={x.owner_address}
+                        address={x.owner_address}
+                      />
+                    )
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

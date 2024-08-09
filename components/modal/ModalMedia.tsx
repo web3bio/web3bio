@@ -16,9 +16,9 @@ export default function MediaModalContent(props) {
           <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
           View Original
         </Link>
-        <div className="btn btn-close" onClick={onClose}>
+        <button className="btn btn-close" onClick={onClose}>
           <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
-        </div>
+        </button>
       </div>
       <div className="nft-preview">
         <div className="preview-container">

@@ -194,7 +194,7 @@ export const POAPFetcher = (url) =>
     headers: { accept: "application/json" },
     apiKeyHeader: "x-api-key",
     apiKeyValue: process.env.NEXT_PUBLIC_POAP_API_KEY,
-    logName: "POAPs",
+    logName: "POAP",
   });
 export const ProfileFetcher = (url, options?) =>
   customFetcher({ url, ...options, logName: "Profile" });
@@ -207,5 +207,5 @@ export const talentFetcher = (url) =>
     url,
     apiKeyHeader: "x-api-key",
     apiKeyValue: process.env.NEXT_PUBLIC_TALENT_API_KEY,
-    logName: "Talent",
+    logName: "Talent Protocol",
   });
