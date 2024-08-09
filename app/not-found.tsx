@@ -1,14 +1,13 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { fallbackEmoji } from "@/components/utils/utils";
 
 export default function NotFound() {
-  const [emoji, setEmoji] = useState("");
+  const [emoji, setEmoji] = useState(() => 
+    fallbackEmoji[Math.floor(Math.random() * fallbackEmoji.length)]
+  );
   const router = useRouter();
-  useEffect(() => {
-    setEmoji(fallbackEmoji[Math.floor(Math.random() * fallbackEmoji.length)]);
-  }, []);
   return (
     <div className="web3-profile container grid-xl">
       <div className="empty error-404">

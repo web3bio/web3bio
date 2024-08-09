@@ -27,19 +27,18 @@ import {
 } from "./regexp";
 import _ from "lodash";
 import {
-  ArweaveAssetPrefix,
   DefaultSearchSuffix,
   fuzzyDomainSuffix,
 } from "./constants";
 import { SearchListItemType } from "../search/SearchInput";
 import GraphemeSplitter from "grapheme-splitter";
 import { NextResponse } from "next/server";
-import { errorHandleProps } from "./types";
+import { ErrorHandleProps } from "./types";
 import * as contentHash from "@ensdomains/content-hash";
 import { chainIdToNetwork } from "./network";
 import { SIMPLEHASH_URL, SimplehashFetcher } from "../apis";
 
-export const errorHandle = (props: errorHandleProps) => {
+export const errorHandle = (props: ErrorHandleProps) => {
   const isValidAddress = isValidEthereumAddress(props.identity || "");
   return NextResponse.json(
     {
@@ -494,6 +493,7 @@ export const resolveHandle = (handle: string, platform?: PlatformType) => {
 
   return handleToResolve.replaceAll("@", "");
 };
+
 export const resolveEipAssetURL = async (source: string) => {
   if (!source) return null;
   try {

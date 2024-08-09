@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { AppState } from "../state";
-import { ProfileInterface } from "../utils/profile";
+import { ProfileInterface } from "../utils/types";
 import _ from "lodash";
 
 export const useProfiles = () => {
