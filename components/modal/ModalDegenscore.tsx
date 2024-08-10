@@ -84,6 +84,7 @@ export default function DegenscoreModalContent({ onClose, degenscore, profile })
             <Link
               href={degenscore.external_url}
               target="_blank"
+              rel="noopener noreferrer"
               className="btn"
             >
               <SVG src={"icons/icon-open.svg"} width={20} height={20} />

@@ -94,7 +94,7 @@ export default function SnapshotModalContent({ onClose, space, profile }) {
               />
             )}
           </div>
-          <div className="text-gray">{space.id}</div>
+          <div className="text-gray">#{space.id}</div>
 
           <div className="mt-2 mb-2">
             <strong className="text-large">
@@ -116,6 +116,7 @@ export default function SnapshotModalContent({ onClose, space, profile }) {
             <Link
               href={`https://snapshot.org/#/${space.id}`}
               target="_blank"
+              rel="noopener noreferrer"
               className="btn"
             >
               <SVG src={"icons/icon-open.svg"} width={20} height={20} />

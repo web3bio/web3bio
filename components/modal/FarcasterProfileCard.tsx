@@ -110,9 +110,9 @@ export default function FarcasterProfileCard(props) {
             Followers
           </div>
           <div className="mt-2">{_profile.description}</div>
-          <div className="mt-2 mb-2">
-            {(_profile.location && `📍 ${_profile.location}`) || ""}
-          </div>
+          {_profile.location && <div className="mt-2 mb-2">
+            📍 {_profile.location}
+          </div>}
           {socialCapital?.socialCapital && (
             <>
               <div className="divider mt-4 mb-4"></div>

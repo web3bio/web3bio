@@ -8,6 +8,7 @@ export const FIREFLY_PROXY_DEBANK_ENDPOINT = "https://debank-proxy.r2d2.to";
 export const GUILD_XYZ_ENDPOINT = "https://api.guild.xyz/v2";
 export const PHI_GRAPHQL_END_POINT = "https://graph-api.phi.blue/graphql";
 export const POAP_ENDPOINT = "https://api.poap.tech/actions/scan/";
+export const POAP_TOKEN_ENDPOINT = "https://api.poap.tech/token/";
 export const RSS3_ENDPOINT = "https://testnet.rss3.io";
 
 export const SIMPLEHASH_URL = "https://simplehash-proxy.r2d2.to";

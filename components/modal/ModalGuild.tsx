@@ -191,6 +191,7 @@ export default function GuildModalContent({ onClose, guild, profile }) {
             <Link
               href={`https://guild.xyz/${guild.urlName}`}
               target="_blank"
+              rel="noopener noreferrer"
               className="btn"
             >
               <SVG src={"icons/icon-open.svg"} width={20} height={20} />
