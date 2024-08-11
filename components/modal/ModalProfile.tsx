@@ -1,16 +1,16 @@
 import SVG from "react-inlinesvg";
 import { PlatformType } from "../utils/platform";
-import FarcasterProfileCard from "./FarcasterProfileCard";
-import LensProfileCard from "./LensProfileCard";
+import FarcasterProfile from "./ModalProfileFarcaster";
+import LensProfile from "./ModalProfileLens";
 
 export default function ProfileModalContent(props) {
   const { identity, onClose } = props;
   const renderContent = (() => {
     switch (identity.platform) {
       case PlatformType.farcaster:
-        return <FarcasterProfileCard {...identity} />;
+        return <FarcasterProfile {...identity} />;
       case PlatformType.lens:
-        return <LensProfileCard {...identity} />;
+        return <LensProfile {...identity} />;
       default:
         return null;
     }

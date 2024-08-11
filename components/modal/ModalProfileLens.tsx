@@ -7,7 +7,7 @@ import { GET_PROFILE_LENS, LensInterestsMapping } from "../utils/lens";
 import { useProfiles } from "../hooks/useReduxProfiles";
 import { useMemo } from "react";
 
-export default function LensProfileCard(props) {
+export default function LensProfile(props) {
   const { handle } = props;
   const { data } = useQuery(GET_PROFILE_LENS, {
     variables: {

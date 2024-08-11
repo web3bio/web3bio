@@ -13,7 +13,7 @@ import {
   QUERY_FARCASTER_STATS,
 } from "../apis";
 
-export default function FarcasterProfileCard(props) {
+export default function FarcasterProfile(props) {
   const { handle } = props;
   const [fid, setFid] = useState(null);
 

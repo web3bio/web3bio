@@ -61,7 +61,7 @@ export default function Modal(props) {
   const renderContent = useCallback(() => {
     const ModalContent = modalContentMap[modalType];
     return ModalContent 
-      ? <ModalContent containerRef={wrapper} {...params} onClose={onDismiss} />
+      ? <ModalContent containerRef={wrapper} {...params} isFullScreen onClose={onDismiss} />
       : children;
   }, [modalType, params, onDismiss, children]);
 
