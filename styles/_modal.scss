@@ -666,11 +666,11 @@
 
   // Modal Search
   &.modal-search-container {
+    max-width: 36rem;
     padding-top: 15vh;
 
     .web3bio-search {
       margin: auto;
-      max-width: 30rem;
 
       .web3bio-logo {
         margin-bottom: 1rem;

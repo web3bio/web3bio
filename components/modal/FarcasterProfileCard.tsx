@@ -81,7 +81,7 @@ export default function FarcasterProfileCard(props) {
             src={_profile?.avatar}
             identity={handle}
           />
-          <div className="d-flex mt-2" style={{ alignItems: "center" }}>
+          <div className="d-flex mt-2" style={{ alignItems: "center", lineHeight: 1.25 }}>
             <strong className="h4 text-bold">{_profile.displayName}</strong>
             {socialCapital?.isFarcasterPowerUser ? (
               <div

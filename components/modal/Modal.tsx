@@ -8,7 +8,7 @@ import SearchModalContent from "./ModalSearch";
 import ShareModalContent from "./ModalShare";
 import IdentityGraphModalContent from "./ModalIdentityGraph";
 import ProfileModalContent from "./ModalProfile";
-import TipModalContent from "./ModalTips";
+import TipModalContent from "./ModalTip";
 import GuildModalContent from "./ModalGuild";
 import SnapshotModalContent from "./ModalSnapshot";
 import GitcoinModalContent from "./ModalGitcoin";

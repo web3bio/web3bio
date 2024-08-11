@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import Link from "next/link";
 import useSWR from "swr";
 import { Loading } from "../shared/Loading";
@@ -48,6 +48,38 @@ export default function WidgetPOAP({ address, openModal }) {
     }
   }, [data, isLoading, dispatch]);
 
+  const memoizedPOAPItems = useMemo(() => {
+    if (!data || !data.length) return null;
+
+    return data.map((x, idx) => (
+      <div
+        key={x.tokenId}
+        className="poap-item c-hand"
+        onClick={() => {
+          openModal({
+            asset: {
+              collection: { url: "", name: "" },
+              address: x.owner,
+              tokenId: x.tokenId,
+              asset: x,
+              mediaURL: resolveIPFS_URL(x.event.image_url),
+            },
+          });
+        }}
+      >
+        <NFTAssetPlayer
+          className="img-container"
+          src={`${resolveIPFS_URL(x.event.image_url)}?size=small`}
+          alt={x.event.name}
+          height={64}
+          width={64}
+          placeholder={true}
+        />
+        <div className="text-assistive">{x.event.name}</div>
+      </div>
+    ));
+  }, [data, openModal]);
+
   if (!data || !data.length) {
     return null;
   }
@@ -78,6 +110,7 @@ export default function WidgetPOAP({ address, openModal }) {
                 className="btn btn-sm btn-action"
                 title="More on POAPs"
                 href={`https://app.poap.xyz/scan/${address}`}
+                rel="noopener noreferrer"
                 target={"_blank"}
               >
                 <SVG src="icons/icon-open.svg" width={20} height={20} />
@@ -87,39 +120,7 @@ export default function WidgetPOAP({ address, openModal }) {
         </div>
 
         <div className="widget-poap-list noscrollbar">
-          {getBoundaryRender() ||
-            data.map((x, idx) => {
-              return (
-                <div
-                  key={idx}
-                  className="poap-item c-hand"
-                  onClick={(e) => {
-                    openModal({
-                      asset: {
-                        collection: {
-                          url: "",
-                          name: "",
-                        },
-                        address: x.owner,
-                        tokenId: x.tokenId,
-                        asset: x,
-                        mediaURL: resolveIPFS_URL(x.event.image_url),
-                      },
-                    });
-                  }}
-                >
-                  <NFTAssetPlayer
-                    className="img-container"
-                    src={`${resolveIPFS_URL(x.event.image_url)}?size=small`}
-                    alt={x.event.name}
-                    height={64}
-                    width={64}
-                    placeholder={true}
-                  />
-                  <div className="text-assistive">{x.event.name}</div>
-                </div>
-              );
-            })}
+          {getBoundaryRender() || memoizedPOAPItems}
         </div>
       </div>
     </div>

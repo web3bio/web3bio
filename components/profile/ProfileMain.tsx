@@ -322,6 +322,25 @@ export default function ProfileMain(props) {
                 );
               })}
             </div>
+
+            {data.description && (
+              <h2 className="profile-description" itemProp="description">
+                {data.description}
+              </h2>
+            )}
+            {data.location && (
+              <div className="profile-location">
+                <span style={{ fontSize: "20px", marginRight: "5px" }}>📍</span>{" "}
+                {data.location}
+              </div>
+            )}
+            {data.email && (
+              <div className="profile-email">
+                <span style={{ fontSize: "20px", marginRight: "5px" }}>✉️</span>
+                <a href={`mailto:${data.email}`}>{data.email}</a>
+              </div>
+            )}
+
             <div className="profile-actions">
               <div className="btn-group">
                 <button
@@ -343,24 +362,6 @@ export default function ProfileMain(props) {
                 </button>
               </div>
             </div>
-
-            {data.description && (
-              <h2 className="profile-description" itemProp="description">
-                {data.description}
-              </h2>
-            )}
-            {data.location && (
-              <div className="profile-location">
-                <span style={{ fontSize: "20px", marginRight: "5px" }}>📍</span>{" "}
-                {data.location}
-              </div>
-            )}
-            {data.email && (
-              <div className="profile-email">
-                <span style={{ fontSize: "20px", marginRight: "5px" }}>✉️</span>
-                <a href={`mailto:${data.email}`}>{data.email}</a>
-              </div>
-            )}
           </div>
         </div>
         <div className="column col-7 col-lg-12">

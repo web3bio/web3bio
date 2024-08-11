@@ -38,10 +38,10 @@ export default function DegenscoreModalContent({ onClose, degenscore, profile })
           alt={profile.identity}
           src={profile?.avatar}
         />
-        <div className="d-flex mt-2" style={{ alignItems: "center" }}>
+        <div className="d-flex mt-2 mb-2" style={{ alignItems: "center", lineHeight: 1.25 }}>
           <strong className="h4 text-bold">{profile.displayName}</strong>
         </div>
-        <div className="text-gray">
+        <div className="text-gray mt-2 mb-2">
           {profile.identity}
         </div>
 

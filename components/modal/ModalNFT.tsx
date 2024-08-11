@@ -2,7 +2,7 @@ import Link from "next/link";
 import SVG from "react-inlinesvg";
 import Markdown from "react-markdown";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { CollectionAbout } from "../profile/CollectionAbout";
+import { CollectionAbout } from "./CollectionAbout";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { getSocialMediaLink } from "../utils/utils";
 import useSWR from "swr";

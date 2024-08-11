@@ -31,7 +31,7 @@ const CollectionAboutRender = (props) => {
             alt={collection.name}
             width={80}
             height={80}
-            placeholder={true}
+            placeholder
           />
         </div>
         <div className="nft-header-name h5">
@@ -56,13 +56,13 @@ const CollectionAboutRender = (props) => {
               </div>
             </div>
           )}
-          {INFO_CONFIG.map((x, idx) => {
-            if (collection[x.key]) {
+          {INFO_CONFIG.map(({key, label}) => {
+            if (collection[key]) {
               return (
-                <div className="widget-list-item" key={`${x.key}-${idx}`}>
-                  <div className="list-item-left">{x.label}</div>
+                <div className="widget-list-item" key={key}>
+                  <div className="list-item-left">{label}</div>
                   <div className="list-item-right text-bold text-uppercase">
-                    {collection[x.key]?.toString()}
+                    {collection[key]?.toString()}
                   </div>
                 </div>
               );

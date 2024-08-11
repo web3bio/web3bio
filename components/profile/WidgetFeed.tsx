@@ -7,7 +7,7 @@ import {
   ActivityType,
   TagsFilterMapping,
 } from "../utils/activity";
-import FeedFilter from "./FeedFilter";
+import FeedFilter from "../feed/FeedFilter";
 import { useDispatch } from "react-redux";
 import { ActivityFeeds } from "./ActivityFeeds";
 import { PlatformType } from "../utils/platform";
