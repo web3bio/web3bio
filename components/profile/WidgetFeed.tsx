@@ -2,14 +2,15 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { ExpandController } from "./ExpandController";
+import SVG from "react-inlinesvg";
+import FeedFilter from "../feed/FeedFilter";
+import { useDispatch } from "react-redux";
+import { ActivityFeeds } from "./ActivityFeeds";
 import {
   ActivityTag,
   ActivityType,
   TagsFilterMapping,
 } from "../utils/activity";
-import FeedFilter from "../feed/FeedFilter";
-import { useDispatch } from "react-redux";
-import { ActivityFeeds } from "./ActivityFeeds";
 import { PlatformType } from "../utils/platform";
 import { isSameAddress } from "../utils/utils";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
@@ -228,22 +229,11 @@ export default function WidgetFeed({ profile, openModal }) {
             }}
           >
             <button className="btn btn-sm">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <polyline points="15 3 21 3 21 9"></polyline>
-                <polyline points="9 21 3 21 3 15"></polyline>
-                <line x1="21" y1="3" x2="14" y2="10"></line>
-                <line x1="3" y1="21" x2="10" y2="14"></line>
-              </svg>
+              <SVG
+                src="../icons/icon-expand.svg"
+                width={18}
+                height={18}
+              />
               View More
             </button>
           </div>

@@ -187,7 +187,7 @@ function RenderFeedActionCard(props) {
         ?.filter((i) => !!i)
         .map((i, idx) => (
           <RenderObjects
-            key={`text_object_${idx}`}
+            key={`object_${idx}`}
             openModal={openModal}
             data={i}
             network={network}

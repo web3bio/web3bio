@@ -37,6 +37,7 @@ const RenderFeedItem = (props) => {
   );
   const platformName = useMemo(() => feed.platform?.toLowerCase(), [feed]);
   const networkName = useMemo(() => feed.network?.toLowerCase(), [feed]);
+  console.log("networkName", networkName);
   const feedOwner = useMemo(
     () =>
       isOwner
