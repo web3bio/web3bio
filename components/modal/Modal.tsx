@@ -13,6 +13,7 @@ import GuildModalContent from "./ModalGuild";
 import SnapshotModalContent from "./ModalSnapshot";
 import GitcoinModalContent from "./ModalGitcoin";
 import DegenscoreModalContent from "./ModalDegenscore";
+import TalentModalContent from "./ModalTalent";
 
 const createModalContentMap = () => ({
   [ModalType.share]: ShareModalContent,
@@ -28,6 +29,7 @@ const createModalContentMap = () => ({
   [ModalType.snapshot]: SnapshotModalContent,
   [ModalType.gitcoin]: GitcoinModalContent,
   [ModalType.degenscore]: DegenscoreModalContent,
+  [ModalType.talent]: TalentModalContent,
 });
 
 export default function Modal(props) {
@@ -60,9 +62,16 @@ export default function Modal(props) {
 
   const renderContent = useCallback(() => {
     const ModalContent = modalContentMap[modalType];
-    return ModalContent 
-      ? <ModalContent containerRef={wrapper} {...params} isFullScreen onClose={onDismiss} />
-      : children;
+    return ModalContent ? (
+      <ModalContent
+        containerRef={wrapper}
+        {...params}
+        isFullScreen
+        onClose={onDismiss}
+      />
+    ) : (
+      children
+    );
   }, [modalType, params, onDismiss, children]);
 
   return (

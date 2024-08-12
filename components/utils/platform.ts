@@ -81,6 +81,7 @@ export enum PlatformType {
   snapshot = "snapshot",
   coingecko = "coingecko",
   gitcoin = "gitcoin",
+  talent = 'talent',
 }
 
 export const PLATFORM_DATA: { [key in PlatformType]: SocialPlatform } = {
@@ -635,6 +636,14 @@ export const PLATFORM_DATA: { [key in PlatformType]: SocialPlatform } = {
     icon: "icons/icon-gitcoin.svg",
     label: "Gitcoin",
     urlPrefix: "https://passport.gitcoin.co/",
+    system: PlatformSystem.web3,
+  },
+  [PlatformType.talent]: {
+    key: PlatformType.talent,
+    color: "#7857ed",
+    icon: "icons/icon-talent.svg",
+    label: "Talent",
+    urlPrefix: "hhttps://passport.talentprotocol.com/profile/",
     system: PlatformSystem.web3,
   },
 };
