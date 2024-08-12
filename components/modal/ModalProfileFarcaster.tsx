@@ -120,13 +120,13 @@ export default function FarcasterProfile(props) {
                 <div className="panel-widget-content">
                   <div className="content">
                     Social Capital Score{" "}
-                    <strong>
+                    <strong className="text-large">
                       {Number(
                         socialCapital?.socialCapital.socialCapitalScore
                       ).toFixed(2)}
                     </strong>{" "}
                     · Rank{" "}
-                    <strong>
+                    <strong className="text-large">
                       {socialCapital?.socialCapital.socialCapitalRank}
                     </strong>
                   </div>

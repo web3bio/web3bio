@@ -21,7 +21,6 @@ function RenderFeedActionCard(props) {
   const renderData = useMemo(() => {
     return actions.map((x) => ({ ...ActionStructMapping(x, owner) }));
   }, [actions, owner]);
-
   const ActionContent = (props) => {
     const {
       verb,
@@ -57,7 +56,7 @@ function RenderFeedActionCard(props) {
                         })
                       : openModal(ModalType.nft, {
                           remoteFetch: true,
-                          network: network,
+                          network,
                           standard: x.standard,
                           contractAddress: x.contract_address,
                           tokenId: x.id,

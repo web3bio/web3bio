@@ -51,31 +51,29 @@ export default function WidgetPOAP({ address, openModal }) {
   const memoizedPOAPItems = useMemo(() => {
     if (!data || !data.length) return null;
 
-    return data.map((x, idx) => (
+    return data.map(({event, tokenId, chain}) => (
       <div
-        key={x.tokenId}
+        key={tokenId}
         className="poap-item c-hand"
         onClick={() => {
           openModal({
-            asset: {
-              collection: { url: "", name: "" },
-              address: x.owner,
-              tokenId: x.tokenId,
-              asset: x,
-              mediaURL: resolveIPFS_URL(x.event.image_url),
+            asset: {  
+              event,
+              tokenId,
+              chain,
             },
           });
         }}
       >
         <NFTAssetPlayer
           className="img-container"
-          src={`${resolveIPFS_URL(x.event.image_url)}?size=small`}
-          alt={x.event.name}
+          src={`${resolveIPFS_URL(event.image_url)}?size=small`}
+          alt={event.name}
           height={64}
           width={64}
           placeholder={true}
         />
-        <div className="text-assistive">{x.event.name}</div>
+        <div className="text-assistive">{event.name}</div>
       </div>
     ));
   }, [data, openModal]);

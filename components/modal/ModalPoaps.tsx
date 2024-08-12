@@ -5,7 +5,7 @@ import _ from "lodash";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 
 export default function PoapsModalContent({ onClose, asset }) {
-  const { event, tokenId, chain } = asset.asset;
+  const { event, tokenId, chain } = asset;
 
   return (
     <>
@@ -39,7 +39,7 @@ export default function PoapsModalContent({ onClose, asset }) {
             type={"image/png"}
             height={240}
             width={240}
-            src={asset.mediaURL}
+            src={event.image_url}
             alt={event.name}
             placeholder={true}
           />

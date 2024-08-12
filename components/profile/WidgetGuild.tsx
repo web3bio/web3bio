@@ -97,7 +97,7 @@ export default function WidgetGuild({ profile, onShowDetail }) {
 
         <div className="widget-guild-list noscrollbar">
           {getBoundaryRender() ||
-            guilds.map((x, idx) => {
+            guilds.map((x) => {
               const imageURL = x?.imageUrl.includes("/guildLogos/")
                 ? "https://guild.xyz" + x.imageUrl
                 : x.imageUrl;
@@ -112,7 +112,7 @@ export default function WidgetGuild({ profile, onShowDetail }) {
                       profile,
                     });
                   }}
-                  key={idx}
+                  key={x.guildId}
                   className="guild-item c-hand"
                 >
                   <NFTAssetPlayer

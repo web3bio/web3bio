@@ -341,7 +341,7 @@ export default function ProfileMain(props) {
               </div>
             )}
 
-            <div className="profile-actions">
+            <div className="profile-actions" style={{display: "none"}}>
               <div className="btn-group">
                 <button
                   className={`profile-share btn btn-lg active`}

@@ -7,7 +7,6 @@ import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { getSocialMediaLink } from "../utils/utils";
 import useSWR from "swr";
 import { Network, NetworkMapping } from "../utils/network";
-import { useMemo } from "react";
 import { SIMPLEHASH_URL, SimplehashFetcher } from "../apis";
 
 const renderSocialMediaLinks = (_collection) => {

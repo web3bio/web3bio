@@ -67,31 +67,31 @@ export default function WidgetSnapshot({ profile, onShowDetail }) {
 
         <div className="widget-guild-list noscrollbar">
           {getBoundaryRender() ||
-            data?.follows?.map((x, idx) => {
-              const imageUrl = `https://cdn.stamp.fyi/space/${x.space.id}?s=160`;
+            data?.follows?.map(({space}) => {
+              const imageUrl = `https://cdn.stamp.fyi/space/${space.id}?s=160`;
               return (
                 <div
                   onClick={() => {
                     onShowDetail({
                       space: {
-                        ...x.space,
+                        ...space,
                         avatar: imageUrl,
                       },
                       profile,
                     });
                   }}
-                  key={idx}
+                  key={space.id}
                   className="space-item guild-item c-hand"
                 >
                   <NFTAssetPlayer
                     className={"img-container"}
                     src={imageUrl}
-                    alt={x.space.name}
+                    alt={space.name}
                     height={64}
                     width={64}
                     placeholder={true}
                   />
-                  <div className="text-assistive">{x.name}</div>
+                  <div className="text-assistive">{space.name}</div>
                 </div>
               );
             })}

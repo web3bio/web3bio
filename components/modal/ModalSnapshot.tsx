@@ -33,9 +33,9 @@ const SpaceLink = ({ platform, url }: SpaceLinkProps) => (
 );
 
 export default function SnapshotModalContent({ onClose, space, profile }) {
-  if (process.env.NODE_ENV !== "production") {
-    console.log("base info: ", space, "profile:", profile);
-  }
+  // if (process.env.NODE_ENV !== "production") {
+  //   console.log("Snapshot:", space);
+  // }
 
   const renderSpaceLinks = () => (
     <div className="btn-group mt-2 mb-2">
