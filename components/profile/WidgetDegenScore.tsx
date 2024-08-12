@@ -1,10 +1,10 @@
 "use client";
 import { memo, useEffect } from "react";
 import useSWR from "swr";
-import { DegenFetcher, DEGENSCORE_ENDPOINT } from "../apis/degenscore";
 import { formatDistanceToNow } from "date-fns";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { useDispatch } from "react-redux";
+import { DegenFetcher, DEGENSCORE_ENDPOINT } from "../apis";
 import { updateDegenscoreWidget } from "../state/widgets/reducer";
 import { ModalType } from "../hooks/useModal";
 

@@ -66,9 +66,9 @@ export default function ShareModalContent(props) {
   return (
     <>
       <div className="modal-actions">
-        <div className="btn btn-close" onClick={onClose}>
+        <button className="btn btn-close" onClick={onClose}>
           <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
-        </div>
+        </button>
       </div>
       <div className="modal-header">
         <div className="modal-header-title">Share this profile</div>

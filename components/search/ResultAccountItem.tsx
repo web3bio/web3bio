@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { memo, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { formatText, isWeb3Address } from "../utils/utils";
@@ -28,16 +28,21 @@ const RenderAccountItem = (props) => {
   const [expand, setExpand] = useState(false);
   const dispatch = useDispatch();
   const profiles = useProfiles();
-  const profile = useMemo(() => {
-    return profiles.find((x) => x.uuid === identity.uuid);
-  }, [profiles, identity.uuid]);
+  const getProfile = useCallback(
+    (uuid) => profiles.find((x) => x.uuid === uuid),
+    [profiles]
+  );
 
+  const profile = getProfile(identity.uuid);
   const rawDisplayName =
     profile?.displayName || identity.displayName || identity.identity;
-  const resolvedDisplayName = 
-    isWeb3Address(rawDisplayName) ? formatText(rawDisplayName) : rawDisplayName;
-  const rawIdentity = 
-    profile?.address || identity.resolveAddress?.[0].address || identity.identity;
+  const resolvedDisplayName = isWeb3Address(rawDisplayName)
+    ? formatText(rawDisplayName)
+    : rawDisplayName;
+  const rawIdentity =
+    profile?.address ||
+    identity.resolveAddress?.[0].address ||
+    identity.identity;
   const resolvedIdentity =
     identity.identity === rawDisplayName ? rawIdentity : identity.identity;
 
@@ -150,17 +155,13 @@ const RenderAccountItem = (props) => {
                     {resolvedDisplayName}
                   </div>
                   <div className="content-subtitle text-gray">
-                    {(profile?.displayName !== profile?.identity) && (
+                    {profile?.displayName !== profile?.identity && (
                       <>
-                        <div className="address">
-                          {profile?.identity}
-                        </div>
+                        <div className="address">{profile?.identity}</div>
                         <div className="ml-1 mr-1"> · </div>
                       </>
                     )}
-                    <div className="address text-ellipsis">
-                      {rawIdentity}
-                    </div>
+                    <div className="address text-ellipsis">{rawIdentity}</div>
                     <Clipboard
                       component="div"
                       className="action"
@@ -270,7 +271,9 @@ const RenderAccountItem = (props) => {
         <div
           onClick={onClick}
           ref={ref}
-          className={`social-item ${identity.platform}${idx === 0 ? " first" : ""}`}
+          className={`social-item ${identity.platform}${
+            idx === 0 ? " first" : ""
+          }`}
         >
           <div className="social-main">
             <div className="social">
@@ -360,7 +363,9 @@ const RenderAccountItem = (props) => {
         <div
           onClick={onClick}
           ref={ref}
-          className={`social-item ${identity.platform}${idx === 0 ? " first" : ""}`}
+          className={`social-item ${identity.platform}${
+            idx === 0 ? " first" : ""
+          }`}
         >
           <div className="social-main">
             <Link

@@ -1,5 +1,11 @@
 "use client";
-import React, { Suspense, useCallback, useEffect, useState } from "react";
+import React, {
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import Link from "next/link";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
@@ -12,30 +18,29 @@ import { formatText, isValidEthereumAddress, colorMod } from "../utils/utils";
 import { Error } from "../shared/Error";
 import { Empty } from "../shared/Empty";
 import { RenderWidgetItem } from "./WidgetLinkItem";
-import WidgetNFT from "./WidgetNFT";
-import WidgetPOAP from "./WidgetPoap";
-import WidgetFeed from "./WidgetFeed";
-import AddressMenu from "./AddressMenu";
 import { Avatar } from "../shared/Avatar";
 import useModal, { ModalType } from "../hooks/useModal";
 import Modal from "../modal/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../state";
 import { WidgetState } from "../state/widgets/reducer";
-// import { WidgetPhiland } from "./WidgetPhiland";
-import { WidgetTally } from "./WidgetTally";
 import LoadingSkeleton from "./LoadingSkeleton";
 import ProfileFooter from "./ProfileFooter";
 import WidgetIndicator from "./WidgetIndicator";
 import { WidgetTypes } from "../utils/widgets";
 import { DocumentNode, useLazyQuery } from "@apollo/client";
-import { WidgetScores } from "./WidgetScores";
 import { updateUniversalBatchedProfile } from "../state/universal/actions";
 import { getProfileQuery } from "../utils/queries";
-import { WidgetArticle } from "./WidgetArticle";
-import WidgetGuild from "./WidgetGuild";
 import { useTipEmoji } from "../hooks/useTipEmoji";
+import WidgetArticle from "./WidgetArticle";
+import AddressMenu from "./AddressMenu";
+import WidgetNFT from "./WidgetNFT";
+import WidgetFeed from "./WidgetFeed";
+import WidgetScores from "./WidgetScores";
+import WidgetPOAP from "./WidgetPoap";
+import WidgetGuild from "./WidgetGuild";
 import WidgetSnapshot from "./WidgetSnapshot";
+import WidgetTally from "./WidgetTally";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
@@ -118,24 +123,24 @@ export default function ProfileMain(props) {
       );
     }
   }, [domain, platform, identityGraph, getQuery, mounted, data?.links]);
-  const onCopySuccess = () => {
+  const onCopySuccess = useCallback(() => {
     setIsCopied(true);
-    setTimeout(() => {
-      setIsCopied(false);
-    }, 1500);
-  };
-  const isEmptyProfile = useCallback(() => {
-    const source = Object.values(profileWidgetStates).filter((x) => x.loaded);
-    // 6 is all widgets num - basic widgets num (nft, poaps, feeds)
-    return source.length > 6 && source.every((x) => x.isEmpty && !x.parent);
-  }, [profileWidgetStates])();
-
-  const isBasicLoadingFinished = useCallback(() => {
-    return (
-      !profileWidgetStates.nft.initLoading &&
-      !profileWidgetStates.feeds?.initLoading
+    setTimeout(() => setIsCopied(false), 1500);
+  }, []);
+  const isEmptyProfile = useMemo(() => {
+    const loadedWidgets = Object.values(profileWidgetStates).filter(
+      (x) => x.loaded
     );
-  }, [profileWidgetStates])();
+    // 6 is all widgets num - basic widgets num (nft, poaps, feeds)
+    return (
+      loadedWidgets.length > 6 &&
+      loadedWidgets.every((x) => x.isEmpty && !x.parent)
+    );
+  }, [profileWidgetStates]);
+
+  const isBasicLoadingFinished = useMemo(() => {
+    return profileWidgetStates.nft.loaded && profileWidgetStates.feeds.loaded;
+  }, [profileWidgetStates]);
 
   if (!data || data.error) {
     return (
@@ -317,7 +322,26 @@ export default function ProfileMain(props) {
                 );
               })}
             </div>
-            <div className="profile-actions">
+
+            {data.description && (
+              <h2 className="profile-description" itemProp="description">
+                {data.description}
+              </h2>
+            )}
+            {data.location && (
+              <div className="profile-location">
+                <span style={{ fontSize: "20px", marginRight: "5px" }}>📍</span>{" "}
+                {data.location}
+              </div>
+            )}
+            {data.email && (
+              <div className="profile-email">
+                <span style={{ fontSize: "20px", marginRight: "5px" }}>✉️</span>
+                <a href={`mailto:${data.email}`}>{data.email}</a>
+              </div>
+            )}
+
+            <div className="profile-actions" style={{display: "none"}}>
               <div className="btn-group">
                 <button
                   className={`profile-share btn btn-lg active`}
@@ -338,24 +362,6 @@ export default function ProfileMain(props) {
                 </button>
               </div>
             </div>
-
-            {data.description && (
-              <h2 className="profile-description" itemProp="description">
-                {data.description}
-              </h2>
-            )}
-            {data.location && (
-              <div className="profile-location">
-                <span style={{ fontSize: "20px", marginRight: "5px" }}>📍</span>{" "}
-                {data.location}
-              </div>
-            )}
-            {data.email && (
-              <div className="profile-email">
-                <span style={{ fontSize: "20px", marginRight: "5px" }}>✉️</span>
-                <a href={`mailto:${data.email}`}>{data.email}</a>
-              </div>
-            )}
           </div>
         </div>
         <div className="column col-7 col-lg-12">

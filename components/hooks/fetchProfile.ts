@@ -1,8 +1,8 @@
 import {
-  SIMPLEHASH_URL,
   SIMPLEHASH_CHAINS,
   SIMPLEHASH_PAGE_SIZE,
-} from "../apis/simplehash";
+  SIMPLEHASH_URL,
+} from "../apis";
 import { profileAPIBaseURL } from "../utils/queries";
 import { shouldPlatformFetch } from "../utils/utils";
 

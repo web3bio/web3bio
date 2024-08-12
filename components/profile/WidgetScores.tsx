@@ -58,20 +58,15 @@ const RenderWidgetScores = ({
       }
     });
   }, [childWidgets, dispatch, states]);
-  const loading = useMemo(() => {
-    return states[WidgetTypes.scores].initLoading;
-  }, [states]);
 
-  const empty = useMemo(() => {
-    return childWidgets.every((x) => x.loaded && x.isEmpty);
-  }, [childWidgets]);
+  const empty = childWidgets.every((x) => x.loaded && x.isEmpty);
 
   return (
     !empty && (
       <div className="profile-widget-full" id={WidgetTypes.scores}>
         <div
           className={`profile-widget profile-widget-scores ${
-            loading && "profile-widget-loading"
+            states[WidgetTypes.scores].initLoading && "profile-widget-loading"
           }`}
         >
           <div className="profile-widget-header">
@@ -93,4 +88,4 @@ const RenderWidgetScores = ({
   );
 };
 
-export const WidgetScores = memo(RenderWidgetScores);
+export default memo(RenderWidgetScores);

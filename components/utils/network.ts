@@ -1,4 +1,4 @@
-import { SIMPLEHASH_CHAINS } from "../apis/simplehash";
+import { SIMPLEHASH_CHAINS } from "../apis";
 
 export enum Network {
   ethereum = "ethereum",
@@ -41,7 +41,7 @@ export interface NetworkMetaData {
   short?: string;
 }
 
-export const NetworkData: { [key in Network]: NetworkMetaData } = {
+export const NETWORK_DATA: { [key in Network]: NetworkMetaData } = {
   [Network.ethereum]: {
     key: Network.ethereum,
     chainId: 1,
@@ -324,9 +324,22 @@ export const NFTFilterMapping = {
   },
 };
 
+export const NetworksMap = new Map(
+  Object.values(NETWORK_DATA).map((x) => [x.key, x])
+);
+
+export const networkByIdOrName = (id: number, name?: string) => {
+  for (const [key, value] of NetworksMap) {
+    if (value.chainId === id || [key, value.short].includes(name)) {
+      return value;
+    }
+  }
+  return null;
+};
+
 export const NetworkMapping = (network: Network) => {
   return (
-    NetworkData[network] ?? {
+    NetworksMap.get(network) ?? {
       key: network,
       icon: "",
       label: network,
@@ -343,8 +356,6 @@ export const chainIdToNetwork = (
 ) => {
   if (!chainId) return null;
   return (
-    Object.values(NetworkData).find(
-      (x) => x.chainId && x.chainId === Number(chainId)
-    )?.[useShort ? "short" : "key"] || null
+    networkByIdOrName(Number(chainId))?.[useShort ? "short" : "key"] || null
   );
 };

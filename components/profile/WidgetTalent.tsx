@@ -1,11 +1,11 @@
 "use client";
-import { memo, useEffect } from "react";
+import { memo, useEffect, useMemo } from "react";
 import useSWR from "swr";
 import Link from "next/link";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { useDispatch } from "react-redux";
 import { updateTalentWidget } from "../state/widgets/reducer";
-import { TALENT_API_ENDPOINT, talentFetcher } from "../apis/talent";
+import { TALENT_API_ENDPOINT, talentFetcher } from "../apis";
 
 function useTalentPassportInfo(address: string) {
   const { data, error } = useSWR(
@@ -23,10 +23,18 @@ function useTalentPassportInfo(address: string) {
   };
 }
 
+const getBuilderLevel = (score: number) => {
+  if (score > 80) return "Expert";
+  if (score > 60) return "Proficient";
+  if (score > 40) return "Competent";
+  if (score > 20) return "Beginner";
+  return "Newbie";
+};
+
 const RenderWidgetTalent = ({ address }) => {
   const { data, isLoading } = useTalentPassportInfo(address);
   const dispatch = useDispatch();
-  const builderLevel = data?.score > 80 ? "Expert" : data?.score > 60 ? "Proficient" : data?.score > 40 ? "Competent" : data?.score > 20 ? "Beginner" : "Newbie"
+  const builderLevel = useMemo(() => getBuilderLevel(data?.score || 0), [data?.score]);
   useEffect(() => {
     if (!isLoading) {
       dispatch(
@@ -37,6 +45,7 @@ const RenderWidgetTalent = ({ address }) => {
       );
     }
   }, [data, dispatch, isLoading]);
+
   if (!isLoading && !data?.score) return null;
 
   // if (process.env.NODE_ENV !== "production") {
@@ -64,11 +73,7 @@ const RenderWidgetTalent = ({ address }) => {
       <div className="profile-widget-footer">
         <div className="widget-score-title">
           {data.score}
-          <div
-            className={`widget-score-label ${
-              builderLevel.toLowerCase()
-            }`}
-          >
+          <div className={`widget-score-label ${builderLevel.toLowerCase()}`}>
             {builderLevel}
           </div>
         </div>

@@ -1,14 +1,14 @@
 "use client";
-import { useEffect, memo, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import useSWR from "swr";
 import SVG from "react-inlinesvg";
 import Link from "next/link";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { profileAPIBaseURL } from "../utils/queries";
-import { ArticlesFetcher } from "../apis/articles";
 import ArticleItem from "./ArticleItem";
 import { updateArticleWidget } from "../state/widgets/reducer";
+import { ArticlesFetcher } from "../apis";
 
 function useArticles(address: string, domain?: string | null) {
   const fetchUrl = (() => {
@@ -28,7 +28,7 @@ function useArticles(address: string, domain?: string | null) {
   };
 }
 
-const RenderWidgetArticles = ({ address, domain }) => {
+export default function WidgetArticle({ address, domain }) {
   const { data, isLoading } = useArticles(address, domain);
   const dispatch = useDispatch();
 
@@ -43,7 +43,7 @@ const RenderWidgetArticles = ({ address, domain }) => {
     }
   }, [data, isLoading, dispatch]);
   const siteInfo = useMemo(() => {
-    return data?.sites[0];
+    return data?.sites?.[0];
   }, [data?.sites]);
   if (!siteInfo || !data?.items?.length) return null;
 
@@ -89,6 +89,4 @@ const RenderWidgetArticles = ({ address, domain }) => {
       </div>
     </div>
   );
-};
-
-export const WidgetArticle = memo(RenderWidgetArticles);
+}

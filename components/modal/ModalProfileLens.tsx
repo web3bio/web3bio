@@ -7,7 +7,7 @@ import { GET_PROFILE_LENS, LensInterestsMapping } from "../utils/lens";
 import { useProfiles } from "../hooks/useReduxProfiles";
 import { useMemo } from "react";
 
-export default function LensProfileCard(props) {
+export default function LensProfile(props) {
   const { handle } = props;
   const { data } = useQuery(GET_PROFILE_LENS, {
     variables: {
@@ -53,7 +53,7 @@ export default function LensProfileCard(props) {
             src={_profile.avatar}
             identity={handle}
           />
-          <div className="d-flex mt-2" style={{ alignItems: "center" }}>
+          <div className="d-flex mt-2 mb-2" style={{ alignItems: "center", lineHeight: 1.25 }}>
             <strong className="h4 text-bold">{_profile.displayName}</strong>
             {data?.profile?.onchainIdentity?.proofOfHumanity && (
               <div className="profile-badge" title="Proof of Humanity">
@@ -66,7 +66,7 @@ export default function LensProfileCard(props) {
               </div>
             )}
           </div>
-          <div className="text-gray">
+          <div className="text-gray mt-2 mb-2">
             @{_profile.identity.replace(".lens", "")}
             <span> · </span>
             <span title="Lens UID">#{_profile.social.uid}</span>

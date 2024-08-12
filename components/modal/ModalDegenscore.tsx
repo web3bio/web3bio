@@ -7,9 +7,9 @@ export default function DegenscoreModalContent({ onClose, degenscore, profile })
   return (
     <>
       <div className="modal-actions">
-        <div className="btn btn-close" onClick={onClose}>
+        <button className="btn btn-close" onClick={onClose}>
           <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
-        </div>
+        </button>
       </div>
 
       <div
@@ -38,10 +38,10 @@ export default function DegenscoreModalContent({ onClose, degenscore, profile })
           alt={profile.identity}
           src={profile?.avatar}
         />
-        <div className="d-flex mt-2" style={{ alignItems: "center" }}>
+        <div className="d-flex mt-2 mb-2" style={{ alignItems: "center", lineHeight: 1.25 }}>
           <strong className="h4 text-bold">{profile.displayName}</strong>
         </div>
-        <div className="text-gray">
+        <div className="text-gray mt-2 mb-2">
           {profile.identity}
         </div>
 
@@ -84,10 +84,11 @@ export default function DegenscoreModalContent({ onClose, degenscore, profile })
             <Link
               href={degenscore.external_url}
               target="_blank"
-              className="btn btn-primary"
+              rel="noopener noreferrer"
+              className="btn"
             >
               <SVG src={"icons/icon-open.svg"} width={20} height={20} />
-              Open in DegenScore.com
+              Open in DegenScore
             </Link>
           </div>
         </div>

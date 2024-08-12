@@ -5,6 +5,26 @@ import { ActivityType } from "../utils/activity";
 export const domainRegexp =
   /^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)/;
 
+const ExternalLink = ({ url }) => {
+  if (!url) return null;
+  
+  const domain = domainRegexp.exec(url)?.[1] || "External Link";
+  
+  return (
+    <li className="menu-item dropdown-menu-item">
+      <Link prefetch={false} href={url} target="_blank">
+        <SVG
+          src="../icons/icon-search.svg"
+          width={20}
+          height={20}
+          className="action mr-1"
+        />
+        {domain}
+      </Link>
+    </li>
+  );
+};
+
 export default function ActionExternalMenu({ links, date, action, platform }) {
   const fireflyWebUrl = (() => {
     if (
@@ -36,9 +56,7 @@ export default function ActionExternalMenu({ links, date, action, platform }) {
   return (
     <>
       <div
-        className={`btn btn-sm btn-link btn-action ${
-          links?.length && "dropdown-toggle"
-        }`}
+        className={`btn btn-sm btn-link btn-action dropdown-toggle`}
         tabIndex={0}
       >
         <SVG
@@ -67,18 +85,8 @@ export default function ActionExternalMenu({ links, date, action, platform }) {
             </Link>
           </li>
         )}
-        {links?.map((x) => (
-          <li key={x} className="menu-item dropdown-menu-item">
-            <Link prefetch={false} href={x} target="_blank">
-              <SVG
-                src="../icons/icon-search.svg"
-                width={20}
-                height={20}
-                className="action mr-1"
-              />
-              {domainRegexp.exec(x)?.[1]}
-            </Link>
-          </li>
+        {links?.filter(Boolean).map((x) => (
+          <ExternalLink key={x} url={x} />
         ))}
       </ul>
     </>

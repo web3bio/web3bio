@@ -2,10 +2,10 @@
 import { useEffect, memo } from "react";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
-import { QUERY_PHILAND_INFO } from "../apis/philand";
 import { useQuery } from "@apollo/client";
 import { WidgetTypes } from "../utils/widgets";
 import { updatePhilandWidget } from "../state/widgets/reducer";
+import { QUERY_PHILAND_INFO } from "../apis";
 
 const RenderWidgetPhiland = ({ domain, onShowDetail }) => {
   const { data, loading, error } = useQuery(QUERY_PHILAND_INFO, {
@@ -72,4 +72,4 @@ const RenderWidgetPhiland = ({ domain, onShowDetail }) => {
   );
 };
 
-export const WidgetPhiland = memo(RenderWidgetPhiland);
+export default memo(RenderWidgetPhiland);

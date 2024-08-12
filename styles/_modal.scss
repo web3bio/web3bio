@@ -10,53 +10,99 @@
   bottom: 0;
   z-index: 1000;
   backdrop-filter: blur(.2rem);
+}
+
+.modal-container {
+  background: $light-color;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 4rem);
+  max-width: 28rem;
+  overflow: hidden;
+  overscroll-behavior: contain;
+  padding: 1.5rem 2rem;
+  position: relative;
+  scroll-behavior: smooth;
+  width: 100%;
+  z-index: 101;
+  
+  @media screen and (max-width: $size-sm) {
+    padding: 1.5rem;
+
+    @supports (height: 100dvh) {
+      height: calc(100dvh - .5rem);
+      width: calc(100dvw - .5rem);
+    }
+  }
 
   .modal-actions {
     display: flex;
     gap: .5rem;
-    position: fixed;
+    position: absolute;
     right: 1rem;
     top: 1rem;
     z-index: 999;
 
     .btn {
-      background: rgba($bg-color, .25);
+      background: rgba($dark-color, .025);
 
       &:focus,
       &:hover {
-        background: rgba($bg-color, .45);
+        background: rgba($dark-color, .1);
       }
 
 
       &:active,
       &.active {
-        background: rgba($bg-color, .65);
+        background: rgba($dark-color, .15);
       }
     }
   }
-}
 
-.modal-container {
-  background: transparent;
-  border-radius: 1rem;
-  height: 100%;
-  max-height: 100vh;
-  max-width: $size-xl;
-  overscroll-behavior: contain;
-  padding: 2rem;
-  position: relative;
-  scroll-behavior: smooth;
-  width: 100%;
-  z-index: 101;
-
-  @media screen and (max-width: $size-sm) {
-    @supports (height: 100dvh) {
-      height: 100dvh;
-    }
+  .modal-body {
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
-  @media screen and (max-width: $size-sm) {
-    padding: .5rem;
+  &.modal-nft-container,
+  &.modal-media-container,
+  &.modal-search-container {
+    background: transparent;
+    height: 100%;
+    max-height: 100vh;
+    max-width: $size-xl;
+    padding: 2rem;
+    position: relative;
+    width: 100%;
+
+    @media screen and (max-width: $size-sm) {
+      @supports (height: 100dvh) {
+        height: 100dvh;
+      }
+    }
+  
+    @media screen and (max-width: $size-sm) {
+      padding: .5rem;
+    }
+
+    .modal-actions {
+      position: fixed;
+
+      .btn {
+        background: rgba($bg-color, .25);
+  
+        &:focus,
+        &:hover {
+          background: rgba($bg-color, .45);
+        }
+  
+        &:active,
+        &.active {
+          background: rgba($bg-color, .65);
+        }
+      }
+    }
   }
 
   .modal-cover {
@@ -90,6 +136,10 @@
 
     &.lens {
       background: linear-gradient(to top, rgba(#6bc674, 0) 0%, rgba(#6bc674, .35) 200%);
+    }
+
+    &.poaps {
+      background: linear-gradient(to top, rgba(#5E58A5, 0) 0%, rgba(#5E58A5, .35) 200%);
     }
   }
 
@@ -404,8 +454,6 @@
             }
           }
         }
-
-
       }
 
       .currency-input-container {
@@ -427,7 +475,6 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-
           }
 
           .btn-primary {
@@ -441,7 +488,7 @@
       .balance-text {
         width: 100%;
         display: flex;
-        justify-content: end;
+        justify-content: flex-end;
         margin: -.5rem 0;
         font-size: .5rem;
         color: rgba($dark-color, .5)
@@ -488,21 +535,10 @@
 
   // Modal Share
   &.modal-share-container {
-    background: #fff;
-    display: flex;
-    flex-direction: column;
     height: auto;
-    max-height: calc(100vh - 4rem);
-    max-width: 28rem;
-    padding: 1.5rem 2rem;
-    width: calc(100vw - .5rem);
 
-    @media screen and (max-width: $size-sm) {
-      padding: 1.5rem;
-    }
-
-    .modal-actions {
-      position: absolute;
+    .modal-body {
+      overflow-y: unset;
     }
 
     .modal-footer-actions {
@@ -554,34 +590,8 @@
     }
   }
 
-  // Modal Profile, Modal Guild
-  &.modal-profile-container,
-  &.modal-snapshot-container,
-  &.modal-degenscore-container,
-  &.modal-gitcoin-container,
-  &.modal-guild-container {
-    background: $light-color;
-    display: flex;
-    flex-direction: column;
-    height: calc(100vh - 6rem);
-    max-width: 28rem;
-    overflow: hidden;
-    padding: 1.5rem 2rem;
-    width: 95%;
-
-    @media screen and (max-width: $size-sm) {
-      padding: 1.5rem;
-
-      @supports (height: 100dvh) {
-        height: calc(100dvh - .5rem);
-        width: calc(100dvw - .5rem);
-      }
-    }
-
-    .modal-actions {
-      position: absolute;
-    }
-
+  // Modal Profile
+  &.modal-profile-container {
     .active-badge {
       align-items: center;
       background: #8a63d2;
@@ -607,12 +617,9 @@
       padding: 0 .25rem;
       width: auto;
     }
-
-    .modal-body {
-      overflow-y: auto;
-    }
   }
 
+  // Modal Gitcoin
   &.modal-gitcoin-container {
     .stamp-item {
       gap: .5rem;
@@ -642,14 +649,29 @@
     }
   }
 
+  // Modal POAP
+  &.modal-poaps-container {
+    .img-container {
+      display: flex;
+      justify-content: center;
+      padding: 1rem;
+      width: 100%;
+
+      .img-responsive {
+        border-radius: 50%;
+        box-shadow: 0 0 0 .25rem #E4E2FD;
+        height: 10rem;
+        width: 10rem;
+      }
+    }
+  }
+
   // Modal Search
   &.modal-search-container {
+    max-width: 36rem;
     padding-top: 15vh;
 
     .web3bio-search {
-      margin: auto;
-      max-width: 30rem;
-
       .web3bio-logo {
         margin-bottom: 1rem;
       }
@@ -659,8 +681,6 @@
       }
     }
   }
-
-
 
   // Modal Article
   &.modal-article-container {
@@ -1000,7 +1020,7 @@
   }
 
   .panel-widget-list {
-    background: $bg-color;
+    background: $bg-color-light;
     border: .05rem solid rgba($dark-color, 0.01);
     border-radius: .4rem;
     box-shadow: 0 .2rem .8rem -.2rem rgba($dark-color, 0.1);

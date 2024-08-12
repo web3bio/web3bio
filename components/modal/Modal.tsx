@@ -1,4 +1,4 @@
-import { useCallback, useRef, useEffect } from "react";
+import React, { useCallback, useRef, useEffect, useMemo } from "react";
 import { ModalType } from "../hooks/useModal";
 import ArticleModalContent from "./ModalArticle";
 import MediaModalContent from "./ModalMedia";
@@ -8,13 +8,13 @@ import SearchModalContent from "./ModalSearch";
 import ShareModalContent from "./ModalShare";
 import IdentityGraphModalContent from "./ModalIdentityGraph";
 import ProfileModalContent from "./ModalProfile";
-import TipModalContent from "./ModalTips";
+import TipModalContent from "./ModalTip";
 import GuildModalContent from "./ModalGuild";
 import SnapshotModalContent from "./ModalSnapshot";
 import GitcoinModalContent from "./ModalGitcoin";
 import DegenscoreModalContent from "./ModalDegenscore";
 
-const modalContentMap = {
+const createModalContentMap = () => ({
   [ModalType.share]: ShareModalContent,
   [ModalType.nft]: NFTModalContentRender,
   [ModalType.poaps]: PoapsModalContent,
@@ -28,42 +28,43 @@ const modalContentMap = {
   [ModalType.snapshot]: SnapshotModalContent,
   [ModalType.gitcoin]: GitcoinModalContent,
   [ModalType.degenscore]: DegenscoreModalContent,
-};
+});
 
 export default function Modal(props) {
   const { onDismiss, children, modalType, params } = props;
   const overlay = useRef<HTMLDivElement>(null);
   const wrapper = useRef<HTMLDivElement>(null);
+
+  const modalContentMap = useMemo(createModalContentMap, []);
+
   const onClick = useCallback(
     (e) => {
       if (e.target === overlay.current || e.target === wrapper.current) {
-        if (onDismiss) onDismiss();
+        onDismiss?.();
       }
     },
-    [onDismiss, overlay, wrapper]
+    [onDismiss]
   );
 
   const onKeyDown = useCallback(
     (e) => {
       if (e.key === "Escape") onDismiss();
-      e.stopPropagation();
     },
     [onDismiss]
   );
+
   useEffect(() => {
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [onKeyDown]);
 
-  const renderContent = (children, params) => {
+  const renderContent = useCallback(() => {
     const ModalContent = modalContentMap[modalType];
-    if (ModalContent) {
-      return (
-        <ModalContent containerRef={wrapper} {...params} onClose={onDismiss} />
-      );
-    }
-    return children;
-  };
+    return ModalContent 
+      ? <ModalContent containerRef={wrapper} {...params} isFullScreen onClose={onDismiss} />
+      : children;
+  }, [modalType, params, onDismiss, children]);
+
   return (
     <div ref={overlay} className="web3bio-modal-cover" onClick={onClick}>
       <div
@@ -73,7 +74,7 @@ export default function Modal(props) {
         ref={wrapper}
         className={`modal-container modal-${modalType}-container`}
       >
-        {renderContent(children, params)}
+        {renderContent()}
       </div>
     </div>
   );

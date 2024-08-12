@@ -1,46 +1,57 @@
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
-import { formatText } from "../../../components/utils/utils";
+import { formatText } from "@/components/utils/utils";
 import qrcode from "yaqrcode";
-import { profileAPIBaseURL } from "../../../components/utils/queries";
+import { profileAPIBaseURL } from "@/components/utils/queries";
 
 export const runtime = "edge";
-// export const preferredRegion = ["sfo1", "hnd1"];
 
-let filename = "og.png";
-
-const size = {
+const SIZE = {
   width: 1200,
   height: 630,
 };
 
+const FONTS = {
+  bold: new URL("./fonts/Geist-Black.otf", import.meta.url),
+  normal: new URL("./fonts/Geist-Regular.otf", import.meta.url),
+};
+
+async function loadFonts() {
+  const [boldFont, normalFont] = await Promise.all([
+    fetch(FONTS.bold).then((res) => res.arrayBuffer()),
+    fetch(FONTS.normal).then((res) => res.arrayBuffer()),
+  ]);
+  return { boldFont, normalFont };
+}
+
+function getAvatarUrl(avatar: string | null, path: string) {
+  if (avatar?.includes(".webp")) {
+    return `${profileAPIBaseURL}/avatar/process?url=${encodeURIComponent(
+      avatar
+    )}`;
+  }
+  return avatar || `${profileAPIBaseURL}/avatar/svg?handle=${path}`;
+}
+function generateQRCode(path: string) {
+  return qrcode(`https://web3.bio/${path}`, { size: 100 });
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = request.nextUrl;
-    const path = searchParams.get("path");
-    filename = path + ".png";
+    const path = searchParams.get("path") || "";
     const url = `web3.bio/${path}`;
     const address = searchParams.get("address");
     const displayName = searchParams.get("displayName");
     const description = searchParams.get("description");
     const avatar = searchParams.get("avatar");
-    const avatarImg = avatar?.includes(".webp")
-      ? `${profileAPIBaseURL}/avatar/process?url=${encodeURIComponent(avatar)}`
-      : !!avatar
-      ? avatar
-      : `${profileAPIBaseURL}/avatar/svg?handle=${path}`;
-    const isShowDefault = ![address, path, displayName].some((x) => !!x);
 
-    if (isShowDefault) {
-      throw new Error("Params is missing");
+    if (![address, path, displayName].some(Boolean)) {
+      throw new Error("Missing required parameters");
     }
 
-    const fontBold = await fetch(
-      new URL("./fonts/Geist-Black.otf", import.meta.url)
-    ).then((res) => res.arrayBuffer());
-    const fontNormal = await fetch(
-      new URL("./fonts/Geist-Regular.otf", import.meta.url)
-    ).then((res) => res.arrayBuffer());
+    const avatarImg = getAvatarUrl(avatar, path);
+    const { boldFont, normalFont } = await loadFonts();
 
     return new ImageResponse(
       (
@@ -150,20 +161,20 @@ export async function GET(request: NextRequest) {
         </div>
       ),
       {
-        ...size,
+        ...SIZE,
         headers: {
-          "Content-Disposition": "filename=" + filename,
+          "Content-Disposition": `filename=${path}.png`,
         },
         fonts: [
           {
             name: "geist",
-            data: fontBold,
+            data: boldFont,
             style: "normal",
             weight: 700,
           },
           {
             name: "geist",
-            data: fontNormal,
+            data: normalFont,
             style: "normal",
             weight: 400,
           },
@@ -174,14 +185,14 @@ export async function GET(request: NextRequest) {
     return new ImageResponse(
       (
         <img
-          width={size.width}
-          height={size.height}
+          width={SIZE.width}
+          height={SIZE.height}
           src={"https://web3.bio/img/web3bio-social.jpg"}
           alt="social"
         />
       ),
       {
-        ...size,
+        ...SIZE,
       }
     );
   }

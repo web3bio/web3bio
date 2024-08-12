@@ -1,39 +1,50 @@
-import { PlatformData } from "./platform";
+import { SocialPlatformMapping } from "./platform";
 
-const generateVCardData = (profile) => {
-  let vCardString = "";
-  vCardString += "BEGIN:VCARD\r\n";
-  vCardString += "VERSION:3.0\r\n";
-  vCardString += `FN:${profile.displayName}\r\n`;
-  if (profile.email) vCardString += `EMAIL:${profile.email}\r\n`;
-  if (profile.avatar) vCardString += `PHOTO;VALUE=uri:${profile.avatar}\r\n`;
-  if (profile.description) vCardString += `NOTE:${profile.description}\r\n`;
-  vCardString += `X-SOCIALPROFILE;type=Web3;x-user=${profile.identity}:https://web3.bio/${profile.identity}\r\n`;
-  profile.links.forEach((x) => {
-    const platform = PlatformData[x.platform];
-    vCardString += `X-SOCIALPROFILE;type=${platform.label};x-user=${x.handle}${
-      x.link ? ":" + x.link : ""
-    }\r\n`;
-  });
-  vCardString += "END:VCARD\r\n";
-  return vCardString;
+const escapeVCardValue = (value: string): string => {
+  return value.replace(/[\\,;]/g, (match) => '\\' + match);
 };
-const createDownloadLink = (data, filename) => {
-  var blob = new Blob([data], { type: "text/vcard" });
+const generateVCardData = (profile): string => {
+  const vCardLines: string[] = [
+    'BEGIN:VCARD',
+    'VERSION:3.0',
+    `FN:${escapeVCardValue(profile.displayName)}`,
+  ];
 
-  var link = document.createElement("a");
-  link.href = window.URL.createObjectURL(blob);
+  if (profile.email) vCardLines.push(`EMAIL:${escapeVCardValue(profile.email)}`);
+  if (profile.avatar) vCardLines.push(`PHOTO;VALUE=uri:${escapeVCardValue(profile.avatar)}`);
+  if (profile.description) vCardLines.push(`NOTE:${escapeVCardValue(profile.description)}`);
+
+  vCardLines.push(`X-SOCIALPROFILE;type=Web3;x-user=${escapeVCardValue(profile.identity)}:https://web3.bio/${encodeURIComponent(profile.identity)}`);
+
+  profile.links.forEach(({ platform, handle, link }) => {
+    const mappedPlatform = SocialPlatformMapping(platform);
+    vCardLines.push(`X-SOCIALPROFILE;type=${escapeVCardValue(mappedPlatform.label)};x-user=${escapeVCardValue(handle)}${link ? ':' + escapeVCardValue(link) : ''}`);
+  });
+
+  vCardLines.push('END:VCARD');
+
+  return vCardLines.join('\r\n');
+};
+
+const createDownloadLink = (data: string, filename: string): HTMLAnchorElement => {
+  const blob = new Blob([data], { type: "text/vcard" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
   link.download = filename;
-
   return link;
 };
-export const downloadVCard = (_profile) => {
-  const vCardData = generateVCardData(_profile);
-  const downloadLink = createDownloadLink(
-    vCardData,
-    `${_profile.identity}.vcard`
-  );
+
+export const downloadVCard = (profile): void => {
+  const vCardData = generateVCardData(profile);
+  const downloadLink = createDownloadLink(vCardData, `${profile.identity}.vcard`);
+  
+  downloadLink.style.display = 'none';
   document.body.appendChild(downloadLink);
   downloadLink.click();
-  document.body.removeChild(downloadLink);
+  
+  // Clean up
+  setTimeout(() => {
+    document.body.removeChild(downloadLink);
+    URL.revokeObjectURL(downloadLink.href);
+  }, 100);
 };

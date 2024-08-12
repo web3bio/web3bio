@@ -5,13 +5,15 @@ import Image from "next/image";
 import useSWR from "swr";
 import { Avatar } from "../shared/Avatar";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
-import { FIREFLY_ENDPOINT } from "../apis/firefly";
-import { ProfileFetcher } from "../apis/profile";
 import { useProfiles } from "../hooks/useReduxProfiles";
 import { useQuery } from "@apollo/client";
-import { QUERY_FARCASTER_STATS } from "../apis/airstack";
+import {
+  FIREFLY_ENDPOINT,
+  ProfileFetcher,
+  QUERY_FARCASTER_STATS,
+} from "../apis";
 
-export default function FarcasterProfileCard(props) {
+export default function FarcasterProfile(props) {
   const { handle } = props;
   const [fid, setFid] = useState(null);
 
@@ -79,10 +81,13 @@ export default function FarcasterProfileCard(props) {
             src={_profile?.avatar}
             identity={handle}
           />
-          <div className="d-flex mt-2" style={{ alignItems: "center" }}>
+          <div className="d-flex mt-2" style={{ alignItems: "center", lineHeight: 1.25 }}>
             <strong className="h4 text-bold">{_profile.displayName}</strong>
             {socialCapital?.isFarcasterPowerUser ? (
-              <div className="active-badge c-auto" title="Power User of Farcaster">
+              <div
+                className="active-badge c-auto"
+                title="Power User of Farcaster"
+              >
                 ϟ
               </div>
             ) : (
@@ -98,16 +103,16 @@ export default function FarcasterProfileCard(props) {
             <strong className="text-large">
               {_profile.social.following.toLocaleString()}
             </strong>{" "}
-            Following{" "}·{" "}
+            Following ·{" "}
             <strong className="text-large">
               {_profile.social.follower.toLocaleString()}
             </strong>{" "}
             Followers
           </div>
           <div className="mt-2">{_profile.description}</div>
-          <div className="mt-2 mb-2">
-            {(_profile.location && `📍 ${_profile.location}`) || ""}
-          </div>
+          {_profile.location && <div className="mt-2 mb-2">
+            📍 {_profile.location}
+          </div>}
           {socialCapital?.socialCapital && (
             <>
               <div className="divider mt-4 mb-4"></div>
@@ -115,19 +120,21 @@ export default function FarcasterProfileCard(props) {
                 <div className="panel-widget-content">
                   <div className="content">
                     Social Capital Score{" "}
-                    <strong>
-                      {Number(socialCapital?.socialCapital.socialCapitalScore).toFixed(2)}
+                    <strong className="text-large">
+                      {Number(
+                        socialCapital?.socialCapital.socialCapitalScore
+                      ).toFixed(2)}
+                    </strong>{" "}
+                    · Rank{" "}
+                    <strong className="text-large">
+                      {socialCapital?.socialCapital.socialCapitalRank}
                     </strong>
-                    {" "}·{" "}
-                    Rank{" "}
-                    <strong>{socialCapital?.socialCapital.socialCapitalRank}</strong>
                   </div>
                 </div>
               </div>
             </>
           )}
 
-          
           {channelsData?.data?.length > 0 && (
             <>
               <div className="divider mt-4 mb-4"></div>

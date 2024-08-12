@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import useInfiniteScroll from "react-infinite-scroll-hook";
 import { FeedItem } from "../feed/FeedItem";
 import { Empty } from "../shared/Empty";
@@ -22,6 +22,17 @@ const RenderActivityFeeds = (props) => {
     onLoadMore: getNext,
     hasNextPage: hasNextPage,
   });
+
+  const memoizedData = useMemo(
+    () =>
+      data
+        ?.filter((x) => x?.actions?.some((action) => action))
+        .map((x) => ({
+          ...x,
+          actions: x.actions.filter((action) => !!action),
+        })),
+    [data]
+  );
 
   if (!data?.length && isLoadingMore)
     return (
@@ -47,23 +58,21 @@ const RenderActivityFeeds = (props) => {
 
   if (!isLoadingMore && !data?.length)
     return <Empty title="No Activities" text="Please try different filter" />;
+
   return (
     <div className="widget-feeds-container">
       <div className="feeds-list">
-        {data.map((x) => {
+        {memoizedData.map((x) => {
           return (
-            x?.actions?.length > 0 &&
-            x.actions?.some((x) => x) && (
-              <div key={x.id} className={`feed-item`}>
-                <FeedItem
-                  openModal={openModal}
-                  network={network}
-                  identity={identity}
-                  feed={x}
-                  actions={x.actions.filter((x) => !!x)}
-                />
-              </div>
-            )
+            <div key={x.id} className="feed-item">
+              <FeedItem
+                openModal={openModal}
+                network={network}
+                identity={identity}
+                feed={x}
+                actions={x.actions.filter((x) => !!x)}
+              />
+            </div>
           );
         })}
       </div>

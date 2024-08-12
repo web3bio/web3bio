@@ -1,16 +1,16 @@
 import SVG from "react-inlinesvg";
 import { PlatformType } from "../utils/platform";
-import FarcasterProfileCard from "./FarcasterProfileCard";
-import LensProfileCard from "./LensProfileCard";
+import FarcasterProfile from "./ModalProfileFarcaster";
+import LensProfile from "./ModalProfileLens";
 
 export default function ProfileModalContent(props) {
   const { identity, onClose } = props;
   const renderContent = (() => {
     switch (identity.platform) {
       case PlatformType.farcaster:
-        return <FarcasterProfileCard {...identity} />;
+        return <FarcasterProfile {...identity} />;
       case PlatformType.lens:
-        return <LensProfileCard {...identity} />;
+        return <LensProfile {...identity} />;
       default:
         return null;
     }
@@ -19,9 +19,9 @@ export default function ProfileModalContent(props) {
   return (
     <>
       <div className="modal-actions">
-        <div className="btn btn-close" onClick={onClose}>
+        <button className="btn btn-close" onClick={onClose}>
           <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
-        </div>
+        </button>
       </div>
       {renderContent}
     </>

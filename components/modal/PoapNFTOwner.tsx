@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { fetchProfile } from "../hooks/fetchProfile";
 import { updateUniversalBatchedProfile } from "../state/universal/actions";
 import { useDispatch } from "react-redux";
-import ProfileCard from "./ProfileCard";
+import ProfileCard from "../profile/ProfileCard";
 import SVG from "react-inlinesvg";
 import { formatText } from "../utils/utils";
 import { PlatformType } from "../utils/platform";

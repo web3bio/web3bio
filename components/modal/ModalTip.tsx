@@ -12,16 +12,20 @@ import {
 import { useCurrencyAllowance } from "../hooks/useCurrency";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { erc20Abi, formatEther, parseEther } from "viem";
-import { chainIdToNetwork, NetworkData } from "../utils/network";
+import {
+  chainIdToNetwork,
+  networkByIdOrName,
+  NetworkMapping,
+  NetworksMap,
+} from "../utils/network";
 import { Loading } from "../shared/Loading";
 import { Avatar } from "../shared/Avatar";
 import toast from "react-hot-toast";
 import TokenSelector from "./TokenSelector";
 import { Token } from "../utils/types";
 import useSWR from "swr";
-import { FIREFLY_PROXY_DEBANK_ENDPOINT } from "../apis/firefly";
-import { ProfileFetcher } from "../apis/profile";
 import { formatText } from "../utils/utils";
+import { FIREFLY_PROXY_DEBANK_ENDPOINT, ProfileFetcher } from "../apis";
 
 enum TipStatus {
   success = 1,
@@ -152,9 +156,7 @@ export default function TipModalContent(props) {
     const buttonHandle = () => {
       if (chainIdToNetwork(chainId, true) !== token?.chain) {
         return switchChainAsync({
-          chainId:
-            Object.values(NetworkData)?.find((x) => x.short === token?.chain)
-              ?.chainId || 1,
+          chainId: networkByIdOrName(0, token.chain)?.chainId || 1,
         });
       }
       if (isBalanceLow) return null;
@@ -260,9 +262,9 @@ export default function TipModalContent(props) {
   return (
     <>
       <div className="modal-actions">
-        <div className="btn btn-close" onClick={onClose}>
+        <button className="btn btn-close" onClick={onClose}>
           <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
-        </div>
+        </button>
       </div>
       <div className="modal-header">
         <div className="modal-header-title">Buy Me a {tipObject}</div>
