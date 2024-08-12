@@ -154,7 +154,7 @@ export const primaryDomainResolvedRequestArray = (
 };
 
 export const baseURL =
-  process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+  process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
 export const profileAPIBaseURL =
   process.env.NEXT_PUBLIC_PROFILE_END_POINT || "https://api.web3.bio";
 

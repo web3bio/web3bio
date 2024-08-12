@@ -400,7 +400,7 @@ export const ActionStructMapping = (action, owner) => {
       objects =
         metadata.action === "renew"
           ? action.duplicatedObjects.map((x) => ({ identity: x.handle }))
-          : [{ identity: metadata.handle }];
+          : metadata.handle ? [{ identity: metadata.handle }] : [];
       platform = action.platform;
       attachments = {
         profiles: action.duplicatedObjects

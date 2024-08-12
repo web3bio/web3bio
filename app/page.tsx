@@ -1,17 +1,14 @@
-import SearchPage from "../components/search/SearchPage";
-import { Footer } from "../components/shared/Footer";
-import { PlatformData } from "../components/utils/platform";
-import { handleSearchPlatform } from "../components/utils/utils";
-import { HomeFeatures } from "../components/shared/HomeFeatures";
-import { Header } from "../components/shared/Header";
+import SearchPage from "@/components/search/SearchPage";
+import { Footer } from "@/components/shared/Footer";
+import { SocialPlatformMapping } from "@/components/utils/platform";
+import { handleSearchPlatform } from "@/components/utils/utils";
+import { HomeFeatures } from "@/components/shared/HomeFeatures";
+import { Header } from "@/components/shared/Header";
 
 export async function generateMetadata({ searchParams }) {
-  const searchTerm = searchParams?.s;
-  const platform = searchParams?.platform;
-  const params = new URLSearchParams();
-  if (searchTerm) params.append("s", searchTerm);
-  if (platform) params.append("platform", platform);
-  const path = params.toString() ? `/?${params.toString()}` : "/";
+  const { s: searchTerm, platform } = searchParams;
+  const params = new URLSearchParams(searchParams);
+  const path = searchTerm ? `/?${params.toString()}` : `/`;
 
   const defaultTitle =
     "Web3.bio - Web3 Identity Graph Search and Link in Bio Profile";
@@ -21,15 +18,15 @@ export async function generateMetadata({ searchParams }) {
   const title = searchTerm
     ? `${searchTerm} on ${
         platform
-          ? PlatformData[platform.toLowerCase()].label
-          : PlatformData[handleSearchPlatform(searchTerm)].label
+          ? SocialPlatformMapping(platform.toLowerCase()).label
+          : SocialPlatformMapping(handleSearchPlatform(searchTerm)).label
       } - Web3.bio Identity Search`
     : defaultTitle;
   const description = searchTerm
     ? `Search ${searchTerm} on ${
         platform
-          ? PlatformData[platform.toLowerCase()].label
-          : PlatformData[handleSearchPlatform(searchTerm)].label
+          ? SocialPlatformMapping(platform.toLowerCase()).label
+          : SocialPlatformMapping(handleSearchPlatform(searchTerm)).label
       } to discover the Web3 decentralized profiles and identities associated with ${searchTerm}. Check out and explore the ${searchTerm} Web3 profile.`
     : defaultDescription;
 
@@ -37,16 +34,17 @@ export async function generateMetadata({ searchParams }) {
     title,
     description,
     alternates: {
-      canonical: `/${path}`,
+      canonical: path,
     },
     openGraph: {
       type: "website",
-      url: `/${path}`,
+      url: path,
       siteName: "Web3.bio",
       title,
       description,
     },
     twitter: {
+      card: "summary_large_image",
       title,
       description,
       site: "@web3bio",

@@ -11,8 +11,11 @@ export enum ModalType {
   search = "search",
   graph = "graph",
   profile = "profile",
+  tip = "tip",
   guild = "guild",
   snapshot = "snapshot",
+  gitcoin = "gitcoin",
+  degenscore = "degenscore",
 }
 
 const useModal = () => {

@@ -208,7 +208,6 @@
     font-size: .6rem;
     gap: .25rem;
     line-height: 1rem;
-    margin-bottom: 1rem;
 
     .btn-group {
       gap: .1rem;
@@ -455,11 +454,11 @@
         }
 
         .img-loading {
-          border-radius: 1.6rem;
-          flex: 0 0 3.2rem;
-          height: 3.2rem;
+          border-radius: 1.8rem;
+          flex: 0 0 3.6rem;
+          height: 3.6rem;
           margin-bottom: .2rem;
-          width: 3.2rem;
+          width: 3.6rem;
         }
       }
     }
@@ -1290,6 +1289,7 @@
 
   // DegenScore Widget
   .profile-widget-degenscore {
+    cursor: pointer;
     background: linear-gradient(45deg, rgba(#A381EB, .1) 0, rgba(#fff, 1) 25%);
 
     .widget-trait-list {
@@ -1384,7 +1384,7 @@
   // Gitcoin Widget
   .profile-widget-gitcoin {
     background: linear-gradient(45deg, rgba(#4341B7, .15) 0, rgba(#fff, 1) 25%);
-
+    cursor: pointer;
     .widget-trait-list {
       display: flex;
       flex-wrap: wrap;

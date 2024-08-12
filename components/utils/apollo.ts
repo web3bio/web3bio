@@ -5,12 +5,14 @@ import {
   InMemoryCache,
 } from "@apollo/client";
 // import { PHI_AUTH, PHI_GRAPHQL_END_POINT } from "../apis/philand";
-import { TALLY_AUTH, TALLY_GRAPHQL_ENDPOINT } from "../apis/tally";
 import { WidgetTypes } from "./widgets";
 import { PlatformType } from "./platform";
 import { LensGraphQLEndpoint } from "./lens";
-import { AIRSTACK_GRAPHQL_ENDPOINT } from "../apis/airstack";
-import { SNAPSHOT_GRAPHQL_ENDPOINT } from "../apis/snapshot";
+import {
+  AIRSTACK_GRAPHQL_ENDPOINT,
+  SNAPSHOT_GRAPHQL_ENDPOINT,
+  TALLY_GRAPHQL_ENDPOINT,
+} from "../apis";
 
 const defaultLink = new HttpLink({
   uri: process.env.NEXT_PUBLIC_GRAPHQL_SERVER,
@@ -31,7 +33,7 @@ const tallyLink = new HttpLink({
   uri: TALLY_GRAPHQL_ENDPOINT,
   headers: {
     "Content-Type": "application/json",
-    "Api-Key": TALLY_AUTH,
+    "Api-Key": process.env.NEXT_PUBLIC_TALLY_API_KEY || "",
   },
 });
 const airstackLink = new HttpLink({

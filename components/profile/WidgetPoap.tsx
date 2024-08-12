@@ -1,15 +1,15 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import Link from "next/link";
 import useSWR from "swr";
 import { Loading } from "../shared/Loading";
 import SVG from "react-inlinesvg";
-import { POAPFetcher, POAP_ENDPOINT } from "../apis/poap";
 import { resolveIPFS_URL } from "../utils/ipfs";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { useDispatch } from "react-redux";
 import { WidgetTypes } from "../utils/widgets";
 import { updatePoapsWidget } from "../state/widgets/reducer";
+import { POAP_ENDPOINT, POAPFetcher } from "../apis";
 
 function usePoaps(address: string) {
   const { data, error, isValidating } = useSWR(
@@ -28,9 +28,8 @@ function usePoaps(address: string) {
   };
 }
 
-export default function WidgetPOAP({ address, onShowDetail }) {
+export default function WidgetPOAP({ address, openModal }) {
   const { data, isLoading } = usePoaps(address);
-  const [render, setRender] = useState(false);
   const dispatch = useDispatch();
   const getBoundaryRender = useCallback(() => {
     if (isLoading)
@@ -42,7 +41,6 @@ export default function WidgetPOAP({ address, onShowDetail }) {
     return null;
   }, [isLoading]);
   useEffect(() => {
-    setRender(true);
     if (!isLoading) {
       dispatch(
         updatePoapsWidget({ isEmpty: !data?.length, initLoading: false })
@@ -50,7 +48,37 @@ export default function WidgetPOAP({ address, onShowDetail }) {
     }
   }, [data, isLoading, dispatch]);
 
-  if (!data || !data.length || !render) {
+  const memoizedPOAPItems = useMemo(() => {
+    if (!data || !data.length) return null;
+
+    return data.map(({event, tokenId, chain}) => (
+      <div
+        key={tokenId}
+        className="poap-item c-hand"
+        onClick={() => {
+          openModal({
+            asset: {  
+              event,
+              tokenId,
+              chain,
+            },
+          });
+        }}
+      >
+        <NFTAssetPlayer
+          className="img-container"
+          src={`${resolveIPFS_URL(event.image_url)}?size=small`}
+          alt={event.name}
+          height={64}
+          width={64}
+          placeholder={true}
+        />
+        <div className="text-assistive">{event.name}</div>
+      </div>
+    ));
+  }, [data, openModal]);
+
+  if (!data || !data.length) {
     return null;
   }
 
@@ -59,72 +87,40 @@ export default function WidgetPOAP({ address, onShowDetail }) {
   // }
 
   return (
-    render && (
-      <div className="profile-widget-full" id={WidgetTypes.poaps}>
-        <div className="profile-widget profile-widget-poap">
-          <div className="profile-widget-header">
-            <h2
-              className="profile-widget-title"
-              title="Proof of Attendance Protocol (POAP)"
-            >
-              <span className="emoji-large mr-2">🔮 </span>
-              POAPs
-            </h2>
-            <h3 className="text-assistive">
-              POAP is a curated ecosystem for the preservation of memories. By
-              checking-in at different events, POAP collectors build a digital
-              scrapbook where each POAP is an anchor to a place and space in
-              time.
-            </h3>
-            <div className="widget-action">
-              <div className="action-icon">
-                <Link
-                  className="btn btn-sm btn-action"
-                  title="More on POAPs"
-                  href={`https://app.poap.xyz/scan/${address}`}
-                  target={"_blank"}
-                >
-                  <SVG src="icons/icon-open.svg" width={20} height={20} />
-                </Link>
-              </div>
+    <div className="profile-widget-full" id={WidgetTypes.poaps}>
+      <div className="profile-widget profile-widget-poap">
+        <div className="profile-widget-header">
+          <h2
+            className="profile-widget-title"
+            title="Proof of Attendance Protocol (POAP)"
+          >
+            <span className="emoji-large mr-2">🔮 </span>
+            POAPs
+          </h2>
+          <h3 className="text-assistive">
+            POAP is a curated ecosystem for the preservation of memories. By
+            checking-in at different events, POAP collectors build a digital
+            scrapbook where each POAP is an anchor to a place and space in time.
+          </h3>
+          <div className="widget-action">
+            <div className="action-icon">
+              <Link
+                className="btn btn-sm btn-action"
+                title="More on POAPs"
+                href={`https://app.poap.xyz/scan/${address}`}
+                rel="noopener noreferrer"
+                target={"_blank"}
+              >
+                <SVG src="icons/icon-open.svg" width={20} height={20} />
+              </Link>
             </div>
           </div>
+        </div>
 
-          <div className="widget-poap-list noscrollbar">
-            {getBoundaryRender() ||
-              data.map((x, idx) => {
-                return (
-                  <div
-                    key={idx}
-                    className="poap-item c-hand"
-                    onClick={(e) => {
-                      onShowDetail({
-                        collection: {
-                          url: "",
-                          name: "",
-                        },
-                        address: x.owner,
-                        tokenId: x.tokenId,
-                        asset: x,
-                        mediaURL: resolveIPFS_URL(x.event.image_url),
-                      });
-                    }}
-                  >
-                    <NFTAssetPlayer
-                      className="img-container"
-                      src={`${resolveIPFS_URL(x.event.image_url)}?size=small`}
-                      alt={x.event.name}
-                      height={64}
-                      width={64}
-                      placeholder={true}
-                    />
-                    <div className="text-assistive">{x.event.name}</div>
-                  </div>
-                );
-              })}
-          </div>
+        <div className="widget-poap-list noscrollbar">
+          {getBoundaryRender() || memoizedPOAPItems}
         </div>
       </div>
-    )
+    </div>
   );
 }

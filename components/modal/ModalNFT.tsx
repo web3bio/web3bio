@@ -2,13 +2,12 @@ import Link from "next/link";
 import SVG from "react-inlinesvg";
 import Markdown from "react-markdown";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
-import { CollectionAbout } from "../profile/CollectionAbout";
+import { CollectionAbout } from "./CollectionAbout";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { getSocialMediaLink } from "../utils/utils";
 import useSWR from "swr";
-import { SimplehashFetcher, SIMPLEHASH_URL } from "../apis/simplehash";
 import { Network, NetworkMapping } from "../utils/network";
-import { useMemo } from "react";
+import { SIMPLEHASH_URL, SimplehashFetcher } from "../apis";
 
 const renderSocialMediaLinks = (_collection) => {
   const renderArr = {
@@ -51,12 +50,14 @@ const renderSocialMediaLinks = (_collection) => {
 
 export default function NFTModalContentRender(props) {
   const { onClose, asset } = props;
-  const resolvedNetwork = useMemo(() => {
+
+  const resolvedNetwork = (() => {
     if (asset.network?.includes("arbitrum")) {
       return Network.arbitrum;
     }
     return asset.network;
-  }, [asset.network]);
+  })();
+  
   const { data: fetchedAsset } = useSWR(
     asset?.remoteFetch
       ? SIMPLEHASH_URL +
@@ -85,9 +86,9 @@ export default function NFTModalContentRender(props) {
   return (
     <>
       <div className="modal-actions">
-        <div className="btn btn-close" onClick={onClose}>
+        <button className="btn btn-close" onClick={onClose}>
           <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
-        </div>
+        </button>
       </div>
       <div
         id="nft-dialog"

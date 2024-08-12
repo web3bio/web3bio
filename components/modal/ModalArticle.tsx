@@ -19,9 +19,9 @@ export default function ArticleModalContent({ title, content, baseURL, link, onC
             View Original
           </Link>
         )}
-        <div className="btn btn-close" onClick={onClose}>
+        <button className="btn btn-close" onClick={onClose}>
           <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
-        </div>
+        </button>
       </div>
       <div className="modal-article-container">
         <h1 className="modal-article-title">{title}</h1>

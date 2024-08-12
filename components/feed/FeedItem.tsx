@@ -8,7 +8,7 @@ import {
   ActivityTag,
   ActivityTypeMapping,
 } from "../utils/activity";
-import RenderProfileBadge from "../profile/RenderProfileBadge";
+import RenderProfileBadge from "./RenderProfileBadge";
 import { formatDistanceToNow } from "date-fns";
 import { PlatformType } from "../utils/platform";
 import { Network, NetworkMapping } from "../utils/network";
@@ -37,6 +37,7 @@ const RenderFeedItem = (props) => {
   );
   const platformName = useMemo(() => feed.platform?.toLowerCase(), [feed]);
   const networkName = useMemo(() => feed.network?.toLowerCase(), [feed]);
+
   const feedOwner = useMemo(
     () =>
       isOwner

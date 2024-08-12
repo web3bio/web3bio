@@ -6,7 +6,7 @@ export enum WidgetTypes {
   article = "article",
   philand = "philand",
   tally = "tally",
-  degen = "degen",
+  degenscore = "degenscore",
   webacy = "webacy",
   gitcoin = "gitcoin",
   guild = "guild",
@@ -14,7 +14,14 @@ export enum WidgetTypes {
   talent = "talent",
 }
 
-const WidgetsInfoData = {
+interface WidgetInfo {
+  key: WidgetTypes;
+  icon: string;
+  title: string;
+  description: string;
+}
+
+const WidgetsInfoData: Readonly<Record<WidgetTypes, WidgetInfo>> = {
   [WidgetTypes.nft]: {
     key: WidgetTypes.nft,
     icon: "🖼",
@@ -59,8 +66,8 @@ const WidgetsInfoData = {
     description:
       "Phi is a new Web3 world created from ENS domains & On-Chain Activity, enabling the easy visualization of On-Chain Identities, currently built on Polygon. Virtually interact with crypto protocols from around the Ethereum ecosystem.",
   },
-  [WidgetTypes.degen]: {
-    key: WidgetTypes.degen,
+  [WidgetTypes.degenscore]: {
+    key: WidgetTypes.degenscore,
     icon: "👾",
     title: "DegenScore",
     description:
@@ -96,10 +103,10 @@ const WidgetsInfoData = {
   [WidgetTypes.talent]: {
     key: WidgetTypes.talent,
     icon: "🛠️",
-    title: "Talent Protocol",
+    title: "Talent Passport",
     description: "A new type of resume, for the onchain era of the internet.",
   },
-};
-export const WidgetInfoMapping = (widgetType: WidgetTypes) => {
-  return WidgetsInfoData[widgetType];
-};
+} as const;
+export const WidgetInfoMapping = (
+  widgetType: WidgetTypes
+): Readonly<WidgetInfo> => WidgetsInfoData[widgetType];

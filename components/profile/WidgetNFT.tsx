@@ -3,18 +3,20 @@ import { useEffect, useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { ExpandController } from "./ExpandController";
 import { NFTCollections } from "./NFTCollections";
-import { SimplehashFetcher } from "../apis/simplehash";
-import {
-  SIMPLEHASH_URL,
-  SIMPLEHASH_CHAINS,
-  SIMPLEHASH_PAGE_SIZE,
-} from "../apis/simplehash";
+
 import NFTFilter from "./NFTFilter";
 import { useDispatch } from "react-redux";
 import { PlatformType } from "../utils/platform";
-import { NetworkData } from "../utils/network";
+
 import { WidgetTypes } from "../utils/widgets";
 import { updateNFTWidget } from "../state/widgets/reducer";
+import {
+  SIMPLEHASH_CHAINS,
+  SIMPLEHASH_PAGE_SIZE,
+  SIMPLEHASH_URL,
+  SimplehashFetcher,
+} from "../apis";
+import { Network, NetworkMapping } from "../utils/network";
 
 const CURSOR_PARAM = "&cursor=";
 
@@ -69,7 +71,7 @@ const getURL = (index, address, previous, filter, network) => {
     `/api/v0/nfts/owners_v2?chains=${
       filter || SIMPLEHASH_CHAINS
     }&wallet_addresses=${address}&filters=spam_score__lte%3D${
-      network === NetworkData.solana.key ? "99" : "1"
+      network === Network.solana ? "99" : "1"
     }${cursor ? CURSOR_PARAM + cursor : ""}&limit=${SIMPLEHASH_PAGE_SIZE}`
   );
 };
@@ -95,7 +97,7 @@ function useNFTs({ address, filter, network }) {
   };
 }
 
-export default function WidgetNFT({ profile, onShowDetail }) {
+export default function WidgetNFT({ profile, openModal }) {
   const [expand, setExpand] = useState(
     !!(profile?.platform === PlatformType.solana)
   );
@@ -193,7 +195,7 @@ export default function WidgetNFT({ profile, onShowDetail }) {
           expand={expand}
           setExpand={setExpand}
           data={data}
-          onShowDetail={onShowDetail}
+          onShowDetail={(e, v) => openModal(v)}
           isLoadingMore={isValidating}
           hasNextPage={hasNextPage}
           isError={isError}

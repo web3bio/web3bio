@@ -1,4 +1,4 @@
-import { SIMPLEHASH_CHAINS } from "../apis/simplehash";
+import { SIMPLEHASH_CHAINS } from "../apis";
 
 export enum Network {
   ethereum = "ethereum",
@@ -38,9 +38,10 @@ export interface NetworkMetaData {
   bgColor: string;
   scanPrefix: string;
   scanLabel?: string;
+  short?: string;
 }
 
-export const NetworkData: { [key in Network]: NetworkMetaData } = {
+export const NETWORK_DATA: { [key in Network]: NetworkMetaData } = {
   [Network.ethereum]: {
     key: Network.ethereum,
     chainId: 1,
@@ -50,6 +51,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
     bgColor: "#ebecf8",
     scanPrefix: "https://etherscan.io/address/",
     scanLabel: "Etherscan.io",
+    short: "eth",
   },
   [Network.polygon]: {
     key: Network.polygon,
@@ -59,6 +61,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
     primaryColor: "#7a4add",
     bgColor: "#ece5fa",
     scanPrefix: "https://polygonscan.com/",
+    short: "matic",
   },
   [Network.avalanche]: {
     key: Network.avalanche,
@@ -85,6 +88,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
     primaryColor: "#2949d4",
     bgColor: "#eaedfb",
     scanPrefix: "https://arbiscan.io/",
+    short: "arb",
   },
   [Network.arbitrum_one]: {
     key: Network.arbitrum_one,
@@ -94,6 +98,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
     primaryColor: "#2949d4",
     bgColor: "#eaedfb",
     scanPrefix: "https://arbiscan.io/",
+    short: "arb",
   },
   [Network.arbitrum_nova]: {
     key: Network.arbitrum_nova,
@@ -103,6 +108,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
     primaryColor: "#ee7c31",
     bgColor: "#fdf2ea",
     scanPrefix: "https://nova.arbiscan.io/",
+    short: "arb",
   },
   [Network.arweave]: {
     key: Network.arweave,
@@ -120,12 +126,14 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
     primaryColor: "#f0b90b",
     bgColor: "#fdf3d4",
     scanPrefix: "https://bscscan.com/",
+    short: "bsc",
   },
   [Network.base]: {
     key: Network.base,
     chainId: 8453,
     icon: "icons/icon-base.svg",
     label: "Base",
+    short: "base",
     primaryColor: "#2151f5",
     bgColor: "#e9eefe",
     scanPrefix: "https://basescan.org/",
@@ -175,6 +183,7 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
   },
   [Network.optimism]: {
     key: Network.optimism,
+    short: "op",
     chainId: 10,
     icon: "icons/icon-optimism.svg",
     label: "Optimism",
@@ -221,9 +230,10 @@ export const NetworkData: { [key in Network]: NetworkMetaData } = {
   },
   [Network.zora]: {
     key: Network.zora,
+    chainId: 7777777,
     icon: "icons/icon-zora.svg",
     label: "Zora",
-
+    short: "zora",
     primaryColor: "#141414",
     bgColor: "#efefef",
     scanPrefix: "https://explorer.zora.energy/",
@@ -314,9 +324,22 @@ export const NFTFilterMapping = {
   },
 };
 
+export const NetworksMap = new Map(
+  Object.values(NETWORK_DATA).map((x) => [x.key, x])
+);
+
+export const networkByIdOrName = (id: number, name?: string) => {
+  for (const [key, value] of NetworksMap) {
+    if (value.chainId === id || [key, value.short].includes(name)) {
+      return value;
+    }
+  }
+  return null;
+};
+
 export const NetworkMapping = (network: Network) => {
   return (
-    NetworkData[network] ?? {
+    NetworksMap.get(network) ?? {
       key: network,
       icon: "",
       label: network,
@@ -327,11 +350,12 @@ export const NetworkMapping = (network: Network) => {
   );
 };
 
-export const chainIdToNetwork = (chainId?: number | string) => {
+export const chainIdToNetwork = (
+  chainId?: number | string,
+  useShort?: boolean
+) => {
   if (!chainId) return null;
   return (
-    Object.values(NetworkData).find(
-      (x) => x.chainId && x.chainId === Number(chainId)
-    )?.key || null
+    networkByIdOrName(Number(chainId))?.[useShort ? "short" : "key"] || null
   );
 };

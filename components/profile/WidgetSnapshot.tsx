@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
 import { updateSnapshotWidget } from "../state/widgets/reducer";
 import { useQuery } from "@apollo/client";
-import { QUERY_SPACES_FOLLOWED_BY_USR } from "../apis/snapshot";
+import { QUERY_SPACES_FOLLOWED_BY_USR } from "../apis";
 
 export default function WidgetSnapshot({ profile, onShowDetail }) {
   const { data, loading, error } = useQuery(QUERY_SPACES_FOLLOWED_BY_USR, {
@@ -67,31 +67,31 @@ export default function WidgetSnapshot({ profile, onShowDetail }) {
 
         <div className="widget-guild-list noscrollbar">
           {getBoundaryRender() ||
-            data?.follows?.map((x, idx) => {
-              const imageUrl = `https://cdn.stamp.fyi/space/${x.space.id}?s=160`;
+            data?.follows?.map(({space}) => {
+              const imageUrl = `https://cdn.stamp.fyi/space/${space.id}?s=160`;
               return (
                 <div
                   onClick={() => {
                     onShowDetail({
                       space: {
-                        ...x.space,
+                        ...space,
                         avatar: imageUrl,
                       },
                       profile,
                     });
                   }}
-                  key={idx}
+                  key={space.id}
                   className="space-item guild-item c-hand"
                 >
                   <NFTAssetPlayer
                     className={"img-container"}
                     src={imageUrl}
-                    alt={x.space.name}
+                    alt={space.name}
                     height={64}
                     width={64}
                     placeholder={true}
                   />
-                  <div className="text-assistive">{x.name}</div>
+                  <div className="text-assistive">{space.name}</div>
                 </div>
               );
             })}

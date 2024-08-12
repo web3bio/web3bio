@@ -5,7 +5,7 @@ import { ModalType } from "../hooks/useModal";
 import { resolveMediaURL } from "../utils/utils";
 import { domainRegexp } from "../feed/ActionExternalMenu";
 import Link from "next/link";
-import RenderProfileBadge from "../profile/RenderProfileBadge";
+import RenderProfileBadge from "./RenderProfileBadge";
 import RenderObjects from "./RenderObjects";
 
 function RenderFeedActionCard(props) {
@@ -21,7 +21,6 @@ function RenderFeedActionCard(props) {
   const renderData = useMemo(() => {
     return actions.map((x) => ({ ...ActionStructMapping(x, owner) }));
   }, [actions, owner]);
-
   const ActionContent = (props) => {
     const {
       verb,
@@ -33,6 +32,52 @@ function RenderFeedActionCard(props) {
       checkEmojis,
       attachments,
     } = props;
+    const MediasRender = useMemo(() => {
+      if (attachments?.medias?.filter((x) => x)?.length > 0) {
+        return (
+          <div
+            className={`feed-content${
+              attachments.medias.filter((x) => x?.mime_type).length == 1
+                ? ""
+                : " media-gallery"
+            }`}
+          >
+            {attachments.medias?.map((x, cIdx) => {
+              return isImage(x.mime_type) ||
+                isVideo(x.mime_type) ||
+                x.standard ? (
+                <NFTAssetPlayer
+                  key={`${cIdx}_media_image`}
+                  onClick={(e) => {
+                    x.mime_type
+                      ? openModal(ModalType.media, {
+                          type: x.mime_type || "image/png",
+                          url: resolveMediaURL(x.address),
+                        })
+                      : openModal(ModalType.nft, {
+                          remoteFetch: true,
+                          network,
+                          standard: x.standard,
+                          contractAddress: x.contract_address,
+                          tokenId: x.id,
+                        });
+                    e.stopPropagation();
+                    e.preventDefault();
+                  }}
+                  className="feed-content-img"
+                  src={resolveMediaURL(x.standard ? x.image_url : x.address)}
+                  type={x.mime_type || "image/png"}
+                  width="auto"
+                  height="auto"
+                  placeholder={true}
+                  alt={"Feed Image"}
+                />
+              ) : null;
+            })}
+          </div>
+        );
+      }
+    }, [attachments?.medias]);
     const TargetsRender = useMemo(() => {
       if (attachments?.targets?.filter((x) => x)?.length > 0) {
         return attachments.targets.map((target, targetIdx) => (
@@ -136,58 +181,12 @@ function RenderFeedActionCard(props) {
         ));
       }
     }, []);
-    const MediasRender = useMemo(() => {
-      if (attachments?.medias?.filter((x) => x)?.length > 0) {
-        return (
-          <div
-            className={`feed-content${
-              attachments.medias.filter((x) => x?.mime_type).length == 1
-                ? ""
-                : " media-gallery"
-            }`}
-          >
-            {attachments.medias?.map((x, cIdx) => {
-              return isImage(x.mime_type) ||
-                isVideo(x.mime_type) ||
-                x.standard ? (
-                <NFTAssetPlayer
-                  key={`${cIdx}_media_image`}
-                  onClick={(e) => {
-                    x.mime_type
-                      ? openModal(ModalType.media, {
-                          type: x.mime_type || "image/png",
-                          url: resolveMediaURL(x.address),
-                        })
-                      : openModal(ModalType.nft, {
-                          remoteFetch: true,
-                          network: network,
-                          standard: x.standard,
-                          contractAddress: x.contract_address,
-                          tokenId: x.id,
-                        });
-                    e.stopPropagation();
-                    e.preventDefault();
-                  }}
-                  className="feed-content-img"
-                  src={resolveMediaURL(x.standard ? x.image_url : x.address)}
-                  type={x.mime_type || "image/png"}
-                  width="auto"
-                  height="auto"
-                  placeholder={true}
-                  alt={"Feed Image"}
-                />
-              ) : null;
-            })}
-          </div>
-        );
-      }
-    }, [attachments?.medias]);
     const ObjectsRender = useMemo(() => {
       return objects
         ?.filter((i) => !!i)
         .map((i, idx) => (
           <RenderObjects
-            key={`text_object_${idx}`}
+            key={`object_${idx}`}
             openModal={openModal}
             data={i}
             network={network}
@@ -231,8 +230,8 @@ function RenderFeedActionCard(props) {
         </div>
         {attachments && (
           <div key={`attachments_${id}_${idx}`} className="feed-content">
-            {TargetsRender}
             {MediasRender}
+            {TargetsRender}
             {ProfilesRender}
           </div>
         )}

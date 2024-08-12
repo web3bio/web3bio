@@ -9,7 +9,7 @@ import { updateScoresWidget } from "../state/widgets/reducer";
 import { WidgetTalent } from "./WidgetTalent";
 
 const RenderWidgetScores = ({
-  address,
+  profile,
   states,
   farcasterHandle,
   openModal,
@@ -19,25 +19,27 @@ const RenderWidgetScores = ({
     return [
       {
         key: WidgetTypes.gitcoin,
-        render: () => <WidgetGitcoin address={address} />,
+        render: () => <WidgetGitcoin openModal={openModal} profile={profile} />,
       },
       {
-        key: WidgetTypes.degen,
-        render: () => <WidgetDegenScore address={address} />,
+        key: WidgetTypes.degenscore,
+        render: () => (
+          <WidgetDegenScore openModal={openModal} profile={profile} />
+        ),
       },
       {
         key: WidgetTypes.talent,
-        render: () => <WidgetTalent address={address} />,
+        render: () => <WidgetTalent address={profile.address} />,
       },
       {
         key: WidgetTypes.webacy,
-        render: () => <WidgetWebacy address={address} />,
+        render: () => <WidgetWebacy address={profile.address} />,
       },
     ];
-  }, [address, farcasterHandle]);
+  }, [profile.address, farcasterHandle]);
   const childWidgets = useMemo(
     () => [
-      states[WidgetTypes.degen],
+      states[WidgetTypes.degenscore],
       states[WidgetTypes.gitcoin],
       states[WidgetTypes.talent],
       states[WidgetTypes.webacy],
@@ -56,20 +58,15 @@ const RenderWidgetScores = ({
       }
     });
   }, [childWidgets, dispatch, states]);
-  const loading = useMemo(() => {
-    return states[WidgetTypes.scores].initLoading;
-  }, [states]);
 
-  const empty = useMemo(() => {
-    return childWidgets.every((x) => x.loaded && x.isEmpty);
-  }, [childWidgets]);
+  const empty = childWidgets.every((x) => x.loaded && x.isEmpty);
 
   return (
     !empty && (
       <div className="profile-widget-full" id={WidgetTypes.scores}>
         <div
           className={`profile-widget profile-widget-scores ${
-            loading && "profile-widget-loading"
+            states[WidgetTypes.scores].initLoading && "profile-widget-loading"
           }`}
         >
           <div className="profile-widget-header">
@@ -91,4 +88,4 @@ const RenderWidgetScores = ({
   );
 };
 
-export const WidgetScores = memo(RenderWidgetScores);
+export default memo(RenderWidgetScores);

@@ -419,9 +419,9 @@ export default function D3IdentityGraph(props) {
               Back
             </div>
           )}
-          <div className="btn btn-close" onClick={onClose}>
+          <button className="btn btn-close" onClick={onClose}>
             <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
-          </div>
+          </button>
         </div>
       </div>
       {currentNode && !hideTooltip && (

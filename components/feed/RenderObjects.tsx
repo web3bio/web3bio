@@ -1,19 +1,25 @@
 import { memo } from "react";
-import RenderProfileBadge from "../profile/RenderProfileBadge";
+import RenderProfileBadge from "./RenderProfileBadge";
 import { RenderToken } from "./RenderToken";
 import { PlatformType } from "../utils/platform";
 
 const RenderObjects = ({ data, network, openModal }) => {
-  return data.text ? (
-    <span className={data.isToken ? "feed-token" : ""}> {data.text}</span>
-  ) : data.identity ? (
-    <RenderProfileBadge
-      key={`${data.name || data.symbol}_${data.value}`}
-      identity={data.identity}
-      platform={data.platform || PlatformType.ens}
-      remoteFetch
-    />
-  ) : (
+  if (data.text) {
+    return <span className={data.isToken ? "feed-token" : ""}>{data.text}</span>;
+  }
+
+  if (data.identity) {
+    return (
+      <RenderProfileBadge
+        key={`${data.name || data.symbol}_${data.value}`}
+        identity={data.identity}
+        platform={data.platform || PlatformType.ens}
+        remoteFetch
+      />
+    );
+  }
+
+  return (
     <RenderToken
       key={`${data.name || data.symbol}_${data.value}`}
       name={data.name}

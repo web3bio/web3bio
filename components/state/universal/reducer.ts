@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { ProfileInterface } from "../../utils/profile";
+import { ProfileInterface } from "../../utils/types";
 import { updateUniversalBatchedProfile } from "./actions";
 
 interface UserState {

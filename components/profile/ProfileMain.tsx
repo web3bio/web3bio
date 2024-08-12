@@ -1,5 +1,11 @@
 "use client";
-import React, { Suspense, useCallback, useEffect, useState } from "react";
+import React, {
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import Link from "next/link";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
@@ -12,34 +18,35 @@ import { formatText, isValidEthereumAddress, colorMod } from "../utils/utils";
 import { Error } from "../shared/Error";
 import { Empty } from "../shared/Empty";
 import { RenderWidgetItem } from "./WidgetLinkItem";
-import WidgetNFT from "./WidgetNFT";
-import WidgetPOAP from "./WidgetPoap";
-import WidgetFeed from "./WidgetFeed";
-import AddressMenu from "./AddressMenu";
 import { Avatar } from "../shared/Avatar";
 import useModal, { ModalType } from "../hooks/useModal";
 import Modal from "../modal/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../state";
 import { WidgetState } from "../state/widgets/reducer";
-// import { WidgetPhiland } from "./WidgetPhiland";
-import { WidgetTally } from "./WidgetTally";
 import LoadingSkeleton from "./LoadingSkeleton";
 import ProfileFooter from "./ProfileFooter";
 import WidgetIndicator from "./WidgetIndicator";
 import { WidgetTypes } from "../utils/widgets";
 import { DocumentNode, useLazyQuery } from "@apollo/client";
-import { WidgetScores } from "./WidgetScores";
 import { updateUniversalBatchedProfile } from "../state/universal/actions";
 import { getProfileQuery } from "../utils/queries";
-import { WidgetArticle } from "./WidgetArticle";
+import { useTipEmoji } from "../hooks/useTipEmoji";
+import WidgetArticle from "./WidgetArticle";
+import AddressMenu from "./AddressMenu";
+import WidgetNFT from "./WidgetNFT";
+import WidgetFeed from "./WidgetFeed";
+import WidgetScores from "./WidgetScores";
+import WidgetPOAP from "./WidgetPoap";
 import WidgetGuild from "./WidgetGuild";
 import WidgetSnapshot from "./WidgetSnapshot";
+import WidgetTally from "./WidgetTally";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
     props;
   const [isCopied, setIsCopied] = useState(false);
+  const { tipObject, tipEmoji } = useTipEmoji();
   const [links, setLinks] = useState(data?.links);
   const [getQuery, { loading, error, data: identityGraph }] = useLazyQuery(
     getProfileQuery() as DocumentNode,
@@ -116,24 +123,24 @@ export default function ProfileMain(props) {
       );
     }
   }, [domain, platform, identityGraph, getQuery, mounted, data?.links]);
-  const onCopySuccess = () => {
+  const onCopySuccess = useCallback(() => {
     setIsCopied(true);
-    setTimeout(() => {
-      setIsCopied(false);
-    }, 1500);
-  };
-  const isEmptyProfile = useCallback(() => {
-    const source = Object.values(profileWidgetStates).filter((x) => x.loaded);
-    // 6 is all widgets num - basic widgets num (nft, poaps, feeds)
-    return source.length > 6 && source.every((x) => x.isEmpty && !x.parent);
-  }, [profileWidgetStates])();
-
-  const isBasicLoadingFinished = useCallback(() => {
-    return (
-      !profileWidgetStates.nft.initLoading &&
-      !profileWidgetStates.feeds?.initLoading
+    setTimeout(() => setIsCopied(false), 1500);
+  }, []);
+  const isEmptyProfile = useMemo(() => {
+    const loadedWidgets = Object.values(profileWidgetStates).filter(
+      (x) => x.loaded
     );
-  }, [profileWidgetStates])();
+    // 6 is all widgets num - basic widgets num (nft, poaps, feeds)
+    return (
+      loadedWidgets.length > 6 &&
+      loadedWidgets.every((x) => x.isEmpty && !x.parent)
+    );
+  }, [profileWidgetStates]);
+
+  const isBasicLoadingFinished = useMemo(() => {
+    return profileWidgetStates.nft.loaded && profileWidgetStates.feeds.loaded;
+  }, [profileWidgetStates]);
 
   if (!data || data.error) {
     return (
@@ -316,25 +323,6 @@ export default function ProfileMain(props) {
               })}
             </div>
 
-            {/* <div className="profile-actions">
-              <div className="btn-group">
-                <button
-                  className={`profile-share btn btn-lg active`}
-                  title="Donate"
-                >
-                  <span className="btn-emoji">💸</span>
-                  Donate
-                </button>
-                <button
-                  className={`profile-share btn btn-lg`}
-                  title="Message"
-                >
-                  <span className="btn-emoji">💬</span>
-                  Message
-                </button>
-              </div>
-            </div> */}
-
             {data.description && (
               <h2 className="profile-description" itemProp="description">
                 {data.description}
@@ -352,6 +340,28 @@ export default function ProfileMain(props) {
                 <a href={`mailto:${data.email}`}>{data.email}</a>
               </div>
             )}
+
+            <div className="profile-actions" style={{display: "none"}}>
+              <div className="btn-group">
+                <button
+                  className={`profile-share btn btn-lg active`}
+                  title="Donate"
+                  onClick={() => {
+                    openModal(ModalType.tip, {
+                      profile: {
+                        ...data,
+                        avatar: fallbackAvatar?.avatar,
+                      },
+                      tipEmoji: tipEmoji,
+                      tipObject: tipObject,
+                    });
+                  }}
+                >
+                  <span className="btn-emoji mr-1">{tipEmoji || "💸"}</span>
+                  {tipObject ? `Buy Me a ${tipObject}` : "Tip"}
+                </button>
+              </div>
+            </div>
           </div>
         </div>
         <div className="column col-7 col-lg-12">
@@ -363,7 +373,9 @@ export default function ProfileMain(props) {
                     <RenderWidgetItem
                       openModal={(v) => {
                         openModal(ModalType.profile, {
-                          ...v,
+                          identity: {
+                            ...v,
+                          },
                         });
                       }}
                       displayName={pageTitle}
@@ -391,8 +403,10 @@ export default function ProfileMain(props) {
                 <Suspense fallback={<LoadingSkeleton type={WidgetTypes.nft} />}>
                   <WidgetNFT
                     profile={data}
-                    onShowDetail={(e, v) => {
-                      openModal(ModalType.nft, v);
+                    openModal={(v) => {
+                      openModal(ModalType.nft, {
+                        asset: v,
+                      });
                     }}
                   />
                 </Suspense>
@@ -415,7 +429,7 @@ export default function ProfileMain(props) {
                         )?.identity
                       }
                       states={profileWidgetStates}
-                      address={data.address}
+                      profile={data}
                     />
                   </div>
 
@@ -435,7 +449,7 @@ export default function ProfileMain(props) {
                       fallback={<LoadingSkeleton type={WidgetTypes.poaps} />}
                     >
                       <WidgetPOAP
-                        onShowDetail={(v) => {
+                        openModal={(v) => {
                           openModal(ModalType.poaps, v);
                         }}
                         address={data.address}

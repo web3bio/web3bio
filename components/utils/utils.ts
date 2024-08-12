@@ -27,19 +27,18 @@ import {
 } from "./regexp";
 import _ from "lodash";
 import {
-  ArweaveAssetPrefix,
   DefaultSearchSuffix,
   fuzzyDomainSuffix,
 } from "./constants";
 import { SearchListItemType } from "../search/SearchInput";
 import GraphemeSplitter from "grapheme-splitter";
 import { NextResponse } from "next/server";
-import { errorHandleProps } from "./types";
+import { ErrorHandleProps } from "./types";
 import * as contentHash from "@ensdomains/content-hash";
 import { chainIdToNetwork } from "./network";
-import { SIMPLEHASH_URL, SimplehashFetcher } from "../apis/simplehash";
+import { SIMPLEHASH_URL, SimplehashFetcher } from "../apis";
 
-export const errorHandle = (props: errorHandleProps) => {
+export const errorHandle = (props: ErrorHandleProps) => {
   const isValidAddress = isValidEthereumAddress(props.identity || "");
   return NextResponse.json(
     {
@@ -152,52 +151,41 @@ export function isSameAddress(
   return address.toLowerCase() === otherAddress.toLowerCase();
 }
 
+const web3AddressRegexes = [
+  regexEth,
+  regexCrossbell,
+  regexBtc,
+  regexSolana,
+  regexAvatar,
+];
 export function isWeb3Address(address: string): boolean {
-  switch (!!address) {
-    case regexEth.test(address):
-    case regexCrossbell.test(address):
-    case regexBtc.test(address):
-    case regexSolana.test(address):
-    case regexAvatar.test(address):
-      return true;
-    default:
-      return false;
-  }
+  return web3AddressRegexes.some((regex) => regex.test(address));
 }
 
+const platformMap = new Map([
+  [regexEns, PlatformType.ens],
+  [regexEth, PlatformType.ethereum],
+  [regexLens, PlatformType.lens],
+  [regexUnstoppableDomains, PlatformType.unstoppableDomains],
+  [regexSpaceid, PlatformType.space_id],
+  [regexCrossbell, PlatformType.crossbell],
+  [regexDotbit, PlatformType.dotbit],
+  [regexSns, PlatformType.sns],
+  [regexGenome, PlatformType.genome],
+  [regexBtc, PlatformType.bitcoin],
+  [regexSolana, PlatformType.solana],
+  [regexCluster, PlatformType.clusters],
+  [regexTwitter, PlatformType.twitter],
+  [regexFarcaster, PlatformType.farcaster],
+]);
+
 export const handleSearchPlatform = (term: string) => {
-  switch (!!term) {
-    case regexEns.test(term):
-      return PlatformType.ens;
-    case regexEth.test(term):
-      return PlatformType.ethereum;
-    case regexLens.test(term):
-      return PlatformType.lens;
-    case regexUnstoppableDomains.test(term):
-      return PlatformType.unstoppableDomains;
-    case regexSpaceid.test(term):
-      return PlatformType.space_id;
-    case regexCrossbell.test(term):
-      return PlatformType.crossbell;
-    case regexDotbit.test(term):
-      return PlatformType.dotbit;
-    case regexSns.test(term):
-      return PlatformType.sns;
-    case regexGenome.test(term):
-      return PlatformType.genome;
-    case regexBtc.test(term):
-      return PlatformType.bitcoin;
-    case regexSolana.test(term):
-      return PlatformType.solana;
-    case regexCluster.test(term):
-      return PlatformType.clusters;
-    case regexTwitter.test(term):
-      return PlatformType.twitter;
-    case regexFarcaster.test(term):
-      return PlatformType.farcaster;
-    default:
-      return PlatformType.nextid;
+  for (const [regex, platformType] of platformMap) {
+    if (regex.test(term)) {
+      return platformType;
+    }
   }
+  return PlatformType.nextid;
 };
 
 export const isValidEthereumAddress = (address: string) => {
@@ -227,19 +215,26 @@ export function debounce(func, timeout = 300) {
   };
 }
 
-export const resolveMediaURL = (url) => {
-  if (!url) return null;
+const urlPrefixMap = new Map([
+  ["data:", (url: string) => url],
+  ["https:", (url: string) => url],
+  ["ar://", (url: string) => url.replace("ar://", "https://arweave.net/")],
+]);
 
-  switch (!!url) {
-    case url.startsWith("data:") || url.startsWith("https:"):
-      return url;
-    case url.startsWith("ar://"):
-      return url.replaceAll("ar://", ArweaveAssetPrefix);
-    case isIPFS_Resource(url) || url.includes("ipfs:"):
-      return resolveIPFS_URL(url);
-    default:
-      return url;
+export const resolveMediaURL = (url: string): string => {
+  if (!url) return "";
+
+  for (const [prefix, resolver] of urlPrefixMap) {
+    if (url.startsWith(prefix)) {
+      return resolver(url);
+    }
   }
+
+  if (isIPFS_Resource(url) || url.includes("ipfs:")) {
+    return resolveIPFS_URL(url) || "";
+  }
+
+  return url;
 };
 
 const resolveSocialMediaLink = (name: string, type: PlatformType) => {
@@ -498,6 +493,7 @@ export const resolveHandle = (handle: string, platform?: PlatformType) => {
 
   return handleToResolve.replaceAll("@", "");
 };
+
 export const resolveEipAssetURL = async (source: string) => {
   if (!source) return null;
   try {

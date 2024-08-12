@@ -20,10 +20,17 @@
     }
   }
 
+  &.dropdown-top {
+    .menu {
+      bottom: 120%;
+      top: auto;
+    }
+  }
+
   &.active .menu,
   .dropdown-toggle:focus+.menu,
   .menu:hover {
-    display: block;
+    display: flex;
   }
 
   // Fix dropdown-toggle border radius in button groups

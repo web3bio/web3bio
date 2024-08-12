@@ -11,7 +11,7 @@ export type LinksItem = {
   handle: string | null;
 };
 
-export interface errorHandleProps {
+export interface ErrorHandleProps {
   identity: string | null;
   code: number;
   message: ErrorMessages | string;
@@ -42,17 +42,18 @@ export interface NeighborDetail {
   displayName: string;
 }
 
-export interface ProfileAPIResponse {
+export interface ProfileInterface {
+  uuid: string;
   address: string;
+  addresses: Record<string, string>;
   avatar: string | null;
   description: string | null;
-  platform: string;
+  platform: PlatformType;
   displayName: string | null;
   email: string | null;
   header: string | null;
   identity: string;
   location: string | null;
-  error?: string;
   links: Record<
     PlatformType,
     {
@@ -62,16 +63,13 @@ export interface ProfileAPIResponse {
   >;
 }
 
+export type ProfileAPIResponse = ProfileInterface & {
+  error?: string;
+};
+
 export interface RelationServiceQueryResponse {
   data: {
-    identity: {
-      identity: string;
-      platform: PlatformType;
-      displayName: string;
-      reverse: boolean;
-      uid: string;
-      uuid: string;
-      expiredAt: string;
+    identity: IdentityRecord & {
       identityGraph: {
         vertices: IdentityRecord[];
       };
@@ -86,4 +84,25 @@ export interface IdentityRecord {
   displayName: string;
   reverse: boolean;
   expiredAt: string;
+}
+
+export interface Token {
+  id: `0x${string}`;
+  chain: string;
+  name: string;
+  symbol: string;
+  display_symbol: string | null;
+  optimized_symbol: string;
+  decimals: number;
+  logo_url: string | null;
+  protocol_id: number;
+  price: number;
+  price_24h_change: string | null;
+  is_verified: boolean;
+  is_core: boolean;
+  is_wallet: boolean;
+  time_at: number;
+  amount: number;
+  raw_amount: number;
+  raw_amount_hex_str: string;
 }

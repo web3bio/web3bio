@@ -80,9 +80,10 @@ export enum PlatformType {
   ton = "ton",
   snapshot = "snapshot",
   coingecko = "coingecko",
+  gitcoin = "gitcoin",
 }
 
-export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
+export const PLATFORM_DATA: { [key in PlatformType]: SocialPlatform } = {
   [PlatformType.twitter]: {
     key: PlatformType.twitter,
     color: "#000000",
@@ -621,23 +622,38 @@ export const PlatformData: { [key in PlatformType]: SocialPlatform } = {
     system: PlatformSystem.web3,
   },
   [PlatformType.coingecko]: {
-    key: PlatformType.snapshot,
+    key: PlatformType.coingecko,
     color: "#4BCC00",
     icon: "icons/icon-coingecko.svg",
     label: "CoinGecko",
     urlPrefix: "https://www.coingecko.com/en/coins/",
     system: PlatformSystem.web2,
   },
+  [PlatformType.gitcoin]: {
+    key: PlatformType.gitcoin,
+    color: "#19423B",
+    icon: "icons/icon-gitcoin.svg",
+    label: "Gitcoin",
+    urlPrefix: "https://passport.gitcoin.co/",
+    system: PlatformSystem.web3,
+  },
 };
+
+const PlatformsMap = new Map(
+  Object.values(PLATFORM_DATA).map((x) => [x.key, x])
+);
 
 export const SocialPlatformMapping = (platform: PlatformType) => {
   return (
-    PlatformData[platform] ?? {
+    PlatformsMap.get(platform) ?? {
       key: platform,
       color: "#000000",
       icon: "",
       label: platform,
+      urlPrefix: "",
       ensText: [],
+      dotbitText: [],
+      system: PlatformSystem.web3,
     }
   );
 };

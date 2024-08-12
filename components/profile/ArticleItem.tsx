@@ -3,14 +3,14 @@ import Link from "next/link";
 import Image from "next/image";
 import SVG from "react-inlinesvg";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
-import { useMemo } from "react";
 
 export default function ArticleItem(props) {
   const { data } = props;
-  const platformName = useMemo(()=>{
-    return data.platform.replace('contenthash', PlatformType.website)
-  }, [data.platform])
-  
+  const platformName = data.platform.replace(
+    "contenthash",
+    PlatformType.website
+  );
+
   return (
     <Link href={data.link} className="rss-item" target={"_blank"}>
       {data.thumbnail && (

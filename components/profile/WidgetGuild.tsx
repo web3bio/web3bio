@@ -5,11 +5,11 @@ import { Loading } from "../shared/Loading";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { useDispatch } from "react-redux";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
-import { GUILD_XYZ_ENDPOINT, GuildFetcher } from "../apis/guild";
 import { updateGuildWidget } from "../state/widgets/reducer";
+import { GUILD_XYZ_ENDPOINT, GuildFetcher } from "../apis";
 
 function useGuildMemberships(address: string) {
-  const { data, error, isValidating } = useSWR(
+  const { data, error, isLoading } = useSWR(
     `${GUILD_XYZ_ENDPOINT}/users/${address}/memberships`,
     GuildFetcher,
     {
@@ -20,14 +20,13 @@ function useGuildMemberships(address: string) {
   );
   return {
     data: data || [],
-    isLoading: isValidating,
+    isLoading: isLoading,
     isError: error,
   };
 }
 
 export default function WidgetGuild({ profile, onShowDetail }) {
   const { data, isLoading } = useGuildMemberships(profile?.address);
-  const [render, setRender] = useState(false);
   const [infoLoading, setInfoLoading] = useState(false);
   const [guilds, setGuilds] = useState(new Array());
   const dispatch = useDispatch();
@@ -41,7 +40,6 @@ export default function WidgetGuild({ profile, onShowDetail }) {
     return null;
   }, [isLoading, infoLoading]);
   useEffect(() => {
-    setRender(true);
     if (!isLoading) {
       dispatch(
         updateGuildWidget({ isEmpty: !data?.length, initLoading: false })
@@ -71,7 +69,7 @@ export default function WidgetGuild({ profile, onShowDetail }) {
     }
   }, [data, isLoading, dispatch, infoLoading]);
 
-  if (!data || !data.length || !render) {
+  if (!data || !data.length) {
     return null;
   }
 
@@ -80,63 +78,61 @@ export default function WidgetGuild({ profile, onShowDetail }) {
   // }
 
   return (
-    render && (
-      <div className="profile-widget-full" id={WidgetTypes.guild}>
-        <div className="profile-widget profile-widget-guild">
-          <div className="profile-widget-header">
-            <h2
-              className="profile-widget-title"
-              title="Build communities onchain - Guild.xyz"
-            >
-              <span className="emoji-large mr-2">
-                {WidgetInfoMapping(WidgetTypes.guild).icon}{" "}
-              </span>
-              {WidgetInfoMapping(WidgetTypes.guild).title}
-            </h2>
-            <h3 className="text-assistive">
-              {WidgetInfoMapping(WidgetTypes.guild).description}
-            </h3>
-          </div>
+    <div className="profile-widget-full" id={WidgetTypes.guild}>
+      <div className="profile-widget profile-widget-guild">
+        <div className="profile-widget-header">
+          <h2
+            className="profile-widget-title"
+            title="Build communities onchain - Guild.xyz"
+          >
+            <span className="emoji-large mr-2">
+              {WidgetInfoMapping(WidgetTypes.guild).icon}{" "}
+            </span>
+            {WidgetInfoMapping(WidgetTypes.guild).title}
+          </h2>
+          <h3 className="text-assistive">
+            {WidgetInfoMapping(WidgetTypes.guild).description}
+          </h3>
+        </div>
 
-          <div className="widget-guild-list noscrollbar">
-            {getBoundaryRender() ||
-              guilds.map((x, idx) => {
-                const imageURL = x?.imageUrl.includes("/guildLogos/")
-                  ? "https://guild.xyz" + x.imageUrl
-                  : x.imageUrl;
-                return (
-                  <div
-                    onClick={() => {
-                      onShowDetail({
-                        guild: {
-                          ...x,
-                          imageUrl: imageURL,
-                        },
-                        profile,
-                      });
-                    }}
-                    key={idx}
-                    className="guild-item c-hand"
-                  >
-                    <NFTAssetPlayer
-                      className={
-                        x?.imageUrl?.includes("/guildLogos/")
-                          ? "img-container dark-img"
-                          : "img-container"
-                      }
-                      src={imageURL}
-                      alt={x.name}
-                      height={64}
-                      width={64}
-                      placeholder={true}
-                    />
-                    <div className="text-assistive">{x.name}</div>
-                  </div>
-                );
-              })}
-          </div>
+        <div className="widget-guild-list noscrollbar">
+          {getBoundaryRender() ||
+            guilds.map((x) => {
+              const imageURL = x?.imageUrl.includes("/guildLogos/")
+                ? "https://guild.xyz" + x.imageUrl
+                : x.imageUrl;
+              return (
+                <div
+                  onClick={() => {
+                    onShowDetail({
+                      guild: {
+                        ...x,
+                        imageUrl: imageURL,
+                      },
+                      profile,
+                    });
+                  }}
+                  key={x.guildId}
+                  className="guild-item c-hand"
+                >
+                  <NFTAssetPlayer
+                    className={
+                      x?.imageUrl?.includes("/guildLogos/")
+                        ? "img-container dark-img"
+                        : "img-container"
+                    }
+                    src={imageURL}
+                    alt={x.name}
+                    height={64}
+                    width={64}
+                    placeholder={true}
+                  />
+                  <div className="text-assistive">{x.name}</div>
+                </div>
+              );
+            })}
         </div>
       </div>
-    )
+    </div>
   );
 }
