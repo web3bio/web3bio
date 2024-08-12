@@ -8,6 +8,18 @@ export const platformsToExclude = [
   PlatformType.solana,
 ];
 
+export const GET_AVAILABLE_DOMAINS = gql`
+  query GET_AVAILABLE_DOMAINS($name: String) {
+    domainAvailableSearch(name: $name) {
+      platform
+      name
+      expiredAt
+      availability
+      status
+    }
+  }
+`;
+
 const GET_PROFILES = gql`
   query GET_PROFILES($platform: String, $identity: String) {
     identity(platform: $platform, identity: $identity) {
@@ -153,8 +165,7 @@ export const primaryDomainResolvedRequestArray = (
   ];
 };
 
-export const baseURL =
-  process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
+export const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
 export const profileAPIBaseURL =
   process.env.NEXT_PUBLIC_PROFILE_END_POINT || "https://api.web3.bio";
 

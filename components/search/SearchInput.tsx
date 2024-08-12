@@ -169,53 +169,70 @@ export default function SearchInput(props) {
                 </div>
               );
             })}
-          {![".", "。", "/"].some((x) => query.includes(x)) &&
-            query.length < 25 && (
-              <>
-                <li className="divider" />
+          {
+            <>
+              <li className="divider" />
+              <div
+                ref={web2ScrollContainer}
+                className={"search-web2-list noscrollbar"}
+                style={{
+                  padding: 0,
+                }}
+              >
+                {![".", "。", "/"].some((x) => query.includes(x)) &&
+                  query.length < 25 && (
+                    <>
+                      {searchList
+                        .filter((x) => x.system === PlatformSystem.web2)
+                        .map((x) => {
+                          const activeIdx = searchList.findIndex(
+                            (i) => i.key === x.key
+                          );
+                          return (
+                            <div
+                              id={x.key}
+                              onClick={() =>
+                                emitSubmit(null, {
+                                  label: query,
+                                  key: x.key,
+                                  system: PlatformSystem.web2,
+                                })
+                              }
+                              key={x.key}
+                              className={
+                                activeIndex === activeIdx
+                                  ? "search-list-item search-list-item-active"
+                                  : "search-list-item"
+                              }
+                            >
+                              <SVG
+                                fill="#121212"
+                                src={SocialPlatformMapping(x.key).icon || ""}
+                                width={20}
+                                height={20}
+                              />
+                              {/* {query} */}
+                            </div>
+                          );
+                        })}
+                    </>
+                  )}
+
                 <div
-                  ref={web2ScrollContainer}
-                  className={"search-web2-list noscrollbar"}
-                  style={{
-                    padding: 0,
+                  className="btn btn-primary suggest-btn"
+                  onClick={(e) => {
+                    emitSubmit(e, {
+                      label: query,
+                      key: "suggest",
+                      system: PlatformSystem.web2,
+                    });
                   }}
                 >
-                  {searchList
-                    .filter((x) => x.system === PlatformSystem.web2)
-                    .map((x) => {
-                      const activeIdx = searchList.findIndex(
-                        (i) => i.key === x.key
-                      );
-                      return (
-                        <div
-                          id={x.key}
-                          onClick={() =>
-                            emitSubmit(null, {
-                              label: query,
-                              key: x.key,
-                              system: PlatformSystem.web2,
-                            })
-                          }
-                          key={x.key}
-                          className={
-                            activeIndex === activeIdx
-                              ? "search-list-item search-list-item-active"
-                              : "search-list-item"
-                          }
-                        >
-                          <SVG
-                            fill="#121212"
-                            src={SocialPlatformMapping(x.key).icon || ""}
-                            width={20}
-                            height={20}
-                          />
-                          {/* {query} */}
-                        </div>
-                      );
-                    })}
+                  Search available domains
                 </div>
-              </>
-            )}
+              </div>
+            </>
+          }
         </div>
       )}
     </>

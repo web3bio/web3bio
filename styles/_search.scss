@@ -92,6 +92,9 @@
         display: flex;
         gap: .25rem;
         width: 100%;
+        .suggest-btn {
+          margin-left: auto;
+        }
 
         .search-list-item {
           flex: 0 0 2rem;
@@ -189,7 +192,7 @@
       padding: .05rem;
       width: .9rem;
     }
-  
+
     .platform-badge-name {
       flex: 1 1 auto;
       line-height: .9rem;
@@ -343,6 +346,29 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+      }
+
+      .domain-status {
+        border-radius: .25rem;
+        padding: .1rem .5rem;
+        font-weight: 500;
+        margin-left: .5rem;
+
+        &.taken {
+          color: rgb(240, 85, 93);
+          background-color: rgb(240, 85, 93, .1);
+        }
+
+        &.available {
+          color: rgb(113, 235, 170);
+          background-color: rgb(113, 235, 170, .1);
+        }
+
+        &.protected {
+          color: rgb(65, 98, 226);
+          background-color: rgb(65, 98, 226, .1);
+        }
+
       }
     }
 
