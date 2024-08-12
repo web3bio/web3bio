@@ -14,11 +14,13 @@ export const RenderToken = (props) => {
           e.preventDefault();
           e.stopPropagation();
           openModal(ModalType.nft, {
-            remoteFetch: true,
-            network: network,
-            standard: standard,
-            contractAddress: asset.contract_address,
-            tokenId: asset.id,
+            asset: {
+              remoteFetch: true,
+              network: network,
+              standard: standard,
+              contractAddress: asset.contract_address,
+              tokenId: asset.id,
+            },
           });
         }}
       >

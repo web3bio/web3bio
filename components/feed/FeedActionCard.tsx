@@ -55,11 +55,13 @@ function RenderFeedActionCard(props) {
                           url: resolveMediaURL(x.address),
                         })
                       : openModal(ModalType.nft, {
-                          remoteFetch: true,
-                          network,
-                          standard: x.standard,
-                          contractAddress: x.contract_address,
-                          tokenId: x.id,
+                          asset: {
+                            remoteFetch: true,
+                            network,
+                            standard: x.standard,
+                            contractAddress: x.contract_address,
+                            tokenId: x.id,
+                          },
                         });
                     e.stopPropagation();
                     e.preventDefault();
