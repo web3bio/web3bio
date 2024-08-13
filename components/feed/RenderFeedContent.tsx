@@ -59,9 +59,7 @@ export const RenderFeedContent = (props) => {
           owner,
           actions: _.sortBy(
             resolveDuplicatedActions(actions, id, [ActivityType.transfer]),
-            (x) =>
-              x.type !== ActivityType.multisig ||
-              x.metadata.action !== "execution"
+            (x) => x.metadata.action !== "execution"
           ),
         };
       case "collectible":

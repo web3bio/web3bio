@@ -6,11 +6,7 @@ import SVG from "react-inlinesvg";
 import FeedFilter from "../feed/FeedFilter";
 import { useDispatch } from "react-redux";
 import { ActivityFeeds } from "./ActivityFeeds";
-import {
-  ActivityTag,
-  ActivityType,
-  TagsFilterMapping,
-} from "../utils/activity";
+import { ActivityTag, TagsFilterMapping } from "../utils/activity";
 import { PlatformType } from "../utils/platform";
 import { isSameAddress } from "../utils/utils";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
@@ -85,7 +81,7 @@ function useFeeds({ address, filter }) {
     }
   );
 
-  console.log('feed data:', data)
+  console.log("feed data:", data);
 
   const processedData = useMemo(() => {
     const processed = processFeedsData(data);

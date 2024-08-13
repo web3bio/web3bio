@@ -4,10 +4,7 @@ import { resolveIPFS_URL } from "../utils/ipfs";
 import SVG from "react-inlinesvg";
 import { formatText, isSameAddress, shouldPlatformFetch } from "../utils/utils";
 import ActionExternalMenu from "./ActionExternalMenu";
-import {
-  ActivityTag,
-  ActivityTypeMapping,
-} from "../utils/activity";
+import { ActivityTag, ActivityTypeMapping } from "../utils/activity";
 import RenderProfileBadge from "./RenderProfileBadge";
 import { formatDistanceToNow } from "date-fns";
 import { PlatformType } from "../utils/platform";
@@ -46,15 +43,14 @@ const RenderFeedItem = (props) => {
     [feed, identity, isOwner]
   );
   if (!actions?.length) return null;
+
   return (
     <>
       <div className="feed-item-icon">
         <div className="feed-icon-emoji">
           {ActivityTypeMapping(feed.type).emoji}
           {renderFeedBadge(
-            feed.tag === ActivityTag.social
-              ? networkName.replace(Network.polygon, Network.lens)
-              : networkName
+            feed.tag === ActivityTag.social ? platformName : networkName
           )}
         </div>
       </div>
