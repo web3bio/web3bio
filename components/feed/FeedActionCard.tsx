@@ -59,7 +59,7 @@ function RenderFeedActionCard(props) {
                             remoteFetch: true,
                             network,
                             standard: x.standard,
-                            contractAddress: x.contract_address,
+                            contractAddress: x.address,
                             tokenId: x.id,
                           },
                         });
