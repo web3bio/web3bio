@@ -20,7 +20,7 @@ function useTalentCredentials(id: string) {
       if (!pre.some((x) => x.category === cur.category)) {
         pre.push({
           ...cur,
-          items: [],
+          items: [cur],
         });
       } else {
         const item = pre.find((x) => x.category === cur.category);
@@ -84,12 +84,8 @@ export default function TalentModalContent({ onClose, data }) {
           <div className="mt-4 mb-2">
             <div className="feed-token">
               <span className="text-large">🛠️</span>
-              <span className="feed-token-value">
-                Builder Score
-              </span>
-              <span className="feed-token-value text-bold">
-                {data.score}
-              </span>
+              <span className="feed-token-value">Builder Score</span>
+              <span className="feed-token-value text-bold">{data.score}</span>
             </div>
           </div>
 
