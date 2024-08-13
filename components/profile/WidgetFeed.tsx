@@ -60,34 +60,16 @@ const processFeedsData = (data) => {
 const getURL = (index, address, previous, filter) => {
   const cursor = previous?.meta?.cursor;
   if (index !== 0 && !(previous?.result?.length || cursor)) return null;
-  const url = RSS3_ENDPOINT + `/data/accounts/activities`;
+  const url = RSS3_ENDPOINT + `/decentralized/accounts`;
   const data = {
-    account: [address],
+    accounts: [address],
     limit: 20,
     action_limit: 20,
-    status: "successful",
+    success: true,
     direction: "out",
     cursor,
     tag: TagsFilterMapping[filter].filters,
-    type: [
-      ActivityType.auction,
-      ActivityType.bridge,
-      ActivityType.claim,
-      ActivityType.comment,
-      ActivityType.donate,
-      ActivityType.liquidity,
-      ActivityType.loan,
-      ActivityType.mint,
-      ActivityType.multisig,
-      ActivityType.post,
-      ActivityType.profile,
-      ActivityType.propose,
-      ActivityType.share,
-      ActivityType.swap,
-      ActivityType.trade,
-      ActivityType.transfer,
-      ActivityType.vote,
-    ],
+    type: TagsFilterMapping[filter].types,
   };
   return [url, data];
 };
@@ -102,6 +84,8 @@ function useFeeds({ address, filter }) {
       revalidateOnReconnect: false,
     }
   );
+
+  console.log('feed data:', data)
 
   const processedData = useMemo(() => {
     const processed = processFeedsData(data);
@@ -229,11 +213,7 @@ export default function WidgetFeed({ profile, openModal }) {
             }}
           >
             <button className="btn btn-sm">
-              <SVG
-                src="../icons/icon-expand.svg"
-                width={18}
-                height={18}
-              />
+              <SVG src="../icons/icon-expand.svg" width={18} height={18} />
               View More
             </button>
           </div>

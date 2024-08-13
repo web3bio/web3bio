@@ -7,10 +7,9 @@ import {
 
 export enum ActivityTag {
   collectible = "collectible",
-  donation = "donation",
   exchange = "exchange",
-  governance = "governance",
   social = "social",
+  rss = "rss",
   metaverse = "metaverse",
   transaction = "transaction",
   unknown = "unknown",
@@ -18,21 +17,14 @@ export enum ActivityTag {
 
 export enum ActivityType {
   approval = "approval",
-  auction = "auction",
   bridge = "bridge",
   burn = "burn",
-  claim = "claim",
   comment = "comment",
   delete = "delete",
-  deploy = "deploy",
-  donate = "donate",
   liquidity = "liquidity",
-  loan = "loan",
   mint = "mint",
-  multisig = "multisig",
   post = "post",
   profile = "profile",
-  propose = "propose",
   proxy = "proxy",
   revise = "revise",
   reward = "reward",
@@ -41,8 +33,20 @@ export enum ActivityType {
   swap = "swap",
   trade = "trade",
   transfer = "transfer",
+  // new
+  feed = "feed",
+
+  // deleted
+  // auction = "auction",
+  // claim = "claim",
+  // deploy = "deploy",
+  // donate = "donate",
+  // loan = "loan",
+  // multisig = "multisig",
+  // propose = "propose",
+  // vote = "vote",
+
   unknown = "unknown",
-  vote = "vote",
 }
 
 export const ActivityTypeData: { [key in ActivityType]: any } = {
@@ -57,18 +61,18 @@ export const ActivityTypeData: { [key in ActivityType]: any } = {
     },
     prep: "on",
   },
-  [ActivityType.auction]: {
-    key: ActivityType.auction,
-    emoji: "👨‍⚖",
-    label: "Auction",
-    action: {
-      default: "Auctioned",
-      buy: "Bought",
-      bid: "Placed a bid for",
-      finalize: "Finalized a bid for",
-    },
-    prep: "",
-  },
+  // [ActivityType.auction]: {
+  //   key: ActivityType.auction,
+  //   emoji: "👨‍⚖",
+  //   label: "Auction",
+  //   action: {
+  //     default: "Auctioned",
+  //     buy: "Bought",
+  //     bid: "Placed a bid for",
+  //     finalize: "Finalized a bid for",
+  //   },
+  //   prep: "",
+  // },
   [ActivityType.bridge]: {
     key: ActivityType.bridge,
     emoji: "🌉",
@@ -89,15 +93,7 @@ export const ActivityTypeData: { [key in ActivityType]: any } = {
     },
     prep: "",
   },
-  [ActivityType.claim]: {
-    key: ActivityType.claim,
-    emoji: "📢",
-    label: "Claim",
-    action: {
-      default: "Claimed",
-    },
-    prep: "",
-  },
+
   [ActivityType.comment]: {
     key: ActivityType.comment,
     emoji: "💬",
@@ -116,24 +112,7 @@ export const ActivityTypeData: { [key in ActivityType]: any } = {
     },
     prep: "",
   },
-  [ActivityType.deploy]: {
-    key: ActivityType.deploy,
-    emoji: "🚀",
-    label: "Deploy",
-    action: {
-      default: "Deployed the contract",
-    },
-    prep: "",
-  },
-  [ActivityType.donate]: {
-    key: ActivityType.donate,
-    emoji: "💌",
-    label: "Donate",
-    action: {
-      default: "Donated",
-    },
-    prep: "to",
-  },
+
   [ActivityType.liquidity]: {
     key: ActivityType.liquidity,
     emoji: "🏦",
@@ -150,16 +129,7 @@ export const ActivityTypeData: { [key in ActivityType]: any } = {
     },
     prep: "",
   },
-  [ActivityType.loan]: {
-    key: ActivityType.loan,
-    emoji: "💸",
-    label: "Loan",
-    action: {
-      default: "Loaned",
-      create: "Loaned",
-    },
-    prep: "for",
-  },
+
   [ActivityType.mint]: {
     key: ActivityType.mint,
     emoji: "🖼️",
@@ -170,19 +140,7 @@ export const ActivityTypeData: { [key in ActivityType]: any } = {
     },
     prep: "",
   },
-  [ActivityType.multisig]: {
-    key: ActivityType.multisig,
-    emoji: "✍🏻",
-    label: "Multisig",
-    action: {
-      default: "Signed a multisig transaction",
-      execution: "Executed a multisig transaction",
-      add_owner: "Added an owner",
-      remove_owner: "Removed an owner",
-      create: "Created a multisig",
-    },
-    prep: "",
-  },
+
   [ActivityType.post]: {
     key: ActivityType.post,
     emoji: "📄",
@@ -203,15 +161,6 @@ export const ActivityTypeData: { [key in ActivityType]: any } = {
       create: "Created the profile",
       renew: "Renewed the domain",
       wrap: "Wrapped the domain",
-    },
-    prep: "",
-  },
-  [ActivityType.propose]: {
-    key: ActivityType.propose,
-    emoji: "📝",
-    label: "Propose",
-    action: {
-      default: "",
     },
     prep: "",
   },
@@ -294,21 +243,23 @@ export const ActivityTypeData: { [key in ActivityType]: any } = {
     },
     prep: "to",
   },
+  // todo: fulfill feed
+  [ActivityType.feed]: {
+    key: ActivityType.feed,
+    emoji: "🌲",
+    label: "Feed",
+    action: {
+      default: "temp",
+      receive: "temp",
+    },
+    prep: "",
+  },
   [ActivityType.unknown]: {
     key: ActivityType.unknown,
     emoji: "👽",
     label: "Unknown",
     action: {
       default: "Did something unknown",
-    },
-    prep: "",
-  },
-  [ActivityType.vote]: {
-    key: ActivityType.vote,
-    emoji: "🗳️",
-    label: "Vote",
-    action: {
-      default: "Voted",
     },
     prep: "",
   },
@@ -326,8 +277,8 @@ export const ActionStructMapping = (action, owner) => {
   switch (action.type) {
     // finance
     case ActivityType.approval:
-    case ActivityType.deploy:
-      break;
+    // case ActivityType.deploy:
+    //   break;
     case ActivityType.transfer:
       verb = isOwner
         ? ActivityTypeData[ActivityType.transfer].action.receive
@@ -362,20 +313,20 @@ export const ActionStructMapping = (action, owner) => {
       ];
       platform = action.platform;
       break;
-    case ActivityType.multisig:
-      verb =
-        ActivityTypeData[ActivityType.multisig].action[
-          metadata.action || "default"
-        ];
-      objects = metadata.owner ? [{ identity: metadata.owner }] : [];
-      if (metadata.vault?.address) {
-        objects = objects.concat([
-          { text: "on" },
-          { identity: metadata.vault.address },
-        ]);
-      }
-      platform = action.platform;
-      break;
+    // case ActivityType.multisig:
+    //   verb =
+    //     ActivityTypeData[ActivityType.multisig].action[
+    //       metadata.action || "default"
+    //     ];
+    //   objects = metadata.owner ? [{ identity: metadata.owner }] : [];
+    //   if (metadata.vault?.address) {
+    //     objects = objects.concat([
+    //       { text: "on" },
+    //       { identity: metadata.vault.address },
+    //     ]);
+    //   }
+    //   platform = action.platform;
+    //   break;
     case ActivityType.bridge:
       verb =
         ActivityTypeData[ActivityType.bridge].action[
@@ -400,7 +351,9 @@ export const ActionStructMapping = (action, owner) => {
       objects =
         metadata.action === "renew"
           ? action.duplicatedObjects.map((x) => ({ identity: x.handle }))
-          : metadata.handle ? [{ identity: metadata.handle }] : [];
+          : metadata.handle
+          ? [{ identity: metadata.handle }]
+          : [];
       platform = action.platform;
       attachments = {
         profiles: action.duplicatedObjects
@@ -443,7 +396,7 @@ export const ActionStructMapping = (action, owner) => {
       }
       break;
     // collectible
-    case ActivityType.auction:
+    // case ActivityType.auction:
     case ActivityType.trade:
     case ActivityType.mint:
       if (action.tag === ActivityTag.social) {
@@ -470,69 +423,68 @@ export const ActionStructMapping = (action, owner) => {
         ),
       };
       break;
-    case ActivityType.loan:
-      verb = ActivityTypeData[action.type].action[metadata.action || "default"];
-      objects = [
-        metadata.collateral,
-        { text: ActivityTypeData[ActivityType.loan].prep },
-        metadata.amount,
-      ];
-      platform = action.platform;
-      break;
-    // others
-    case ActivityType.donate:
-      verb = ActivityTypeData[action.type].action[metadata.action || "default"];
-      objects = [
-        metadata.token,
-        { text: ActivityTypeData[action.type].prep },
-        {
-          isToken: true,
-          text: metadata.title,
-        },
-      ];
-      platform = action.platform;
-      attachments = {
-        targets: [
-          {
-            url: action.related_urls[action.related_urls.length - 1],
-            name: metadata.title,
-            image: resolveMediaURL(metadata.logo),
-            content: metadata.description,
-          },
-        ],
-      };
-      break;
-    case ActivityType.vote:
-      const _choices = JSON.parse(metadata?.choice || "[]");
-      prep =
-        ActivityTypeData[action.type].action[metadata?.action || "default"];
+    // case ActivityType.loan:
+    //   verb = ActivityTypeData[action.type].action[metadata.action || "default"];
+    //   objects = [
+    //     metadata.collateral,
+    //     { text: ActivityTypeData[ActivityType.loan].prep },
+    //     metadata.amount,
+    //   ];
+    //   platform = action.platform;
+    //   break;
+    // case ActivityType.donate:
+    //   verb = ActivityTypeData[action.type].action[metadata.action || "default"];
+    //   objects = [
+    //     metadata.token,
+    //     { text: ActivityTypeData[action.type].prep },
+    //     {
+    //       isToken: true,
+    //       text: metadata.title,
+    //     },
+    //   ];
+    //   platform = action.platform;
+    //   attachments = {
+    //     targets: [
+    //       {
+    //         url: action.related_urls[action.related_urls.length - 1],
+    //         name: metadata.title,
+    //         image: resolveMediaURL(metadata.logo),
+    //         content: metadata.description,
+    //       },
+    //     ],
+    //   };
+    //   break;
+    // case ActivityType.vote:
+    // const _choices = JSON.parse(metadata?.choice || "[]");
+    // prep =
+    //   ActivityTypeData[action.type].action[metadata?.action || "default"];
 
-      platform = action.platform;
-      objects =
-        _choices.length > 0
-          ? [
-              ..._choices.map((x) => ({
-                isToken: true,
-                text: metadata.proposal?.options[x - 1],
-              })),
-            ]
-          : [
-              {
-                isToken: true,
-                text: metadata.proposal?.options[_choices - 1],
-              },
-            ];
-      attachments = {
-        targets: [
-          {
-            url: metadata.proposal?.link,
-            title: metadata.proposal?.title,
-            body: metadata.proposal?.organization.name,
-            subTitle: `(${metadata.proposal?.organization.id})`,
-          },
-        ],
-      };
-      break;
+    // platform = action.platform;
+    // objects =
+    //   _choices.length > 0
+    //     ? [
+    //         ..._choices.map((x) => ({
+    //           isToken: true,
+    //           text: metadata.proposal?.options[x - 1],
+    //         })),
+    //       ]
+    //     : [
+    //         {
+    //           isToken: true,
+    //           text: metadata.proposal?.options[_choices - 1],
+    //         },
+    //       ];
+    // attachments = {
+    //   targets: [
+    //     {
+    //       url: metadata.proposal?.link,
+    //       title: metadata.proposal?.title,
+    //       body: metadata.proposal?.organization.name,
+    //       subTitle: `(${metadata.proposal?.organization.id})`,
+    //     },
+    //   ],
+    // };
+    // break;
     default:
       verb = ActivityTypeData[action.type].action[metadata.action || "default"];
       platform = action.platform;
@@ -561,23 +513,45 @@ export const TagsFilterMapping = {
   ["all"]: {
     label: "All Feeds",
     filters: [],
+    types: [
+      ActivityType.bridge,
+      ActivityType.comment,
+      ActivityType.liquidity,
+      ActivityType.mint,
+      ActivityType.post,
+      ActivityType.profile,
+      ActivityType.share,
+      ActivityType.swap,
+      ActivityType.trade,
+      ActivityType.transfer,
+    ],
   },
   ["social"]: {
     label: "Social",
     filters: [ActivityTag.social],
+    types: [
+      ActivityType.comment,
+      ActivityType.mint,
+      ActivityType.post,
+      ActivityType.profile,
+      ActivityType.share,
+    ],
   },
   ["finance"]: {
     label: "Finance",
-    filters: [
-      ActivityTag.transaction,
-      ActivityTag.exchange,
-      ActivityTag.governance,
-      ActivityTag.donation,
+    filters: [ActivityTag.transaction, ActivityTag.exchange],
+    types: [
+      ActivityType.bridge,
+      ActivityType.liquidity,
+      ActivityType.mint,
+      ActivityType.swap,
+      ActivityType.transfer,
     ],
   },
   ["collectibles"]: {
     label: "Collectibles",
     filters: [ActivityTag.collectible, ActivityTag.metaverse],
+    types: [ActivityType.mint, ActivityType.trade, ActivityType.transfer],
   },
 };
 
