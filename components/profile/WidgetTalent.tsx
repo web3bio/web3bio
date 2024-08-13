@@ -61,10 +61,7 @@ const RenderWidgetTalent = ({ profile, openModal }) => {
     <div
       className="profile-widget profile-widget-talent"
       onClick={(e) => {
-        openModal(ModalType.talent, {
-          profile,
-          data,
-        });
+        openModal(ModalType.talent, { data });
       }}
     >
       <div className="profile-widget-header">

@@ -6,18 +6,6 @@ import Link from "next/link";
 import { TALENT_API_ENDPOINT, talentFetcher } from "../apis";
 import useSWR from "swr";
 
-type Stamp = {
-  category: string;
-  weight: number;
-  label: string;
-  icon: string;
-  type: string;
-};
-
-type GroupedStamps = {
-  [category: string]: Stamp[];
-};
-
 function useTalentCredentials(id: string) {
   const { data, error } = useSWR(
     TALENT_API_ENDPOINT + `passport_credentials?passport_id=${id}`,
@@ -44,8 +32,10 @@ function useTalentCredentials(id: string) {
     isError: error,
   };
 }
-export default function TalentModalContent({ onClose, data, profile }) {
-  console.log(data, profile);
+
+export default function TalentModalContent({ onClose, data }) {
+  console.log(data);
+  const profile = data.passport_profile;
   const { data: credentials } = useTalentCredentials(data.passport_id);
   return (
     <>
@@ -78,19 +68,29 @@ export default function TalentModalContent({ onClose, data, profile }) {
             width={80}
             height={80}
             className="avatar avatar-xl"
-            alt={profile.identity}
-            src={profile?.avatar}
+            alt={profile.name}
+            src={profile.image_url}
           />
           <div
-            className="d-flex mt-2 mb-2"
+            className="d-flex mt-2"
             style={{ alignItems: "center", lineHeight: 1.25 }}
           >
-            <strong className="h4 text-bold">{profile.displayName}</strong>
+            <strong className="h4 text-bold">{profile.display_name}</strong>
           </div>
-          <div className="text-gray mt-2 mb-2">{profile.identity}</div>
-          <div className="mt-2 mb-2">{profile?.description}</div>
-          <div className="mt-2 mb-2">
-            Builder Score <strong className="text-large">{data.score}</strong>
+          <div className="text-gray mb-2">
+            Talent Passport ID #{data.passport_id}
+          </div>
+          <div className="mt-2 mb-2">{profile?.bio}</div>
+          <div className="mt-4 mb-2">
+            <div className="feed-token">
+              <span className="text-large">🛠️</span>
+              <span className="feed-token-value">
+                Builder Score
+              </span>
+              <span className="feed-token-value text-bold">
+                {data.score}
+              </span>
+            </div>
           </div>
 
           {credentials?.length > 0 && (
@@ -112,15 +112,15 @@ export default function TalentModalContent({ onClose, data, profile }) {
                             .filter((x) => x.score > 0)
                             .map((item) => (
                               <div
-                                key={item.name}
+                                key={item.id}
                                 className="stamp-label-item feed-token"
                                 title={item.name}
                               >
                                 <span className="feed-token-value">
-                                  {item.name} : {item.value}
+                                  {item.name}
                                 </span>
                                 <span className="feed-token-meta">
-                                  {item.score} scores
+                                  {item.value}
                                 </span>
                               </div>
                             ))}
@@ -145,7 +145,7 @@ export default function TalentModalContent({ onClose, data, profile }) {
               className="btn"
             >
               <SVG src={"icons/icon-open.svg"} width={20} height={20} />
-              Open in TalentProtocol
+              Open in Talent Protocol
             </Link>
           </div>
         </div>

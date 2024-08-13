@@ -66,7 +66,6 @@ export default function Modal(props) {
       <ModalContent
         containerRef={wrapper}
         {...params}
-        isFullScreen
         onClose={onDismiss}
       />
     ) : (
