@@ -372,7 +372,7 @@ export const ActionStructMapping = (action, owner) => {
         ? metadata.body
         : ActivityTypeData[action.type].action[metadata.action || "default"];
 
-      platform = metadata.type === ActivityType.share && action.platform;
+      platform = action.type === ActivityType.share && action.platform;
       const article =
         ["Mirror"].includes(platform) || metadata.summary ? metadata : null;
 
