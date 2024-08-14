@@ -2,7 +2,6 @@ import { resolveIPFS_URL } from "./ipfs";
 import {
   isSameAddress,
   isValidEthereumAddress,
-  resolveMediaURL,
 } from "./utils";
 
 export enum ActivityTag {
@@ -280,6 +279,7 @@ export const ActionStructMapping = (action, owner) => {
     // case ActivityType.deploy:
     //   break;
     case ActivityType.transfer:
+      if (![action.from, action.to].some((x) => isSameAddress(x, owner))) break;
       verb = isOwner
         ? ActivityTypeData[ActivityType.transfer].action.receive
         : ActivityTypeData[ActivityType.transfer].action.default;

@@ -57,10 +57,9 @@ export const RenderFeedContent = (props) => {
           network,
           openModal,
           owner,
-          actions: _.sortBy(
-            resolveDuplicatedActions(actions, id, [ActivityType.transfer]),
-            (x) => x.metadata.action !== "execution"
-          ),
+          actions: resolveDuplicatedActions(actions, id, [
+            ActivityType.transfer,
+          ]),
         };
       case "collectible":
         return {
