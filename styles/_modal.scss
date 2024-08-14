@@ -519,7 +519,6 @@
         width: 100%;
       }
 
-
       .disabled {
         user-select: none;
         pointer-events: none;
@@ -664,7 +663,7 @@
 
       .img-responsive {
         border-radius: 50%;
-        box-shadow: 0 0 0 .25rem #E4E2FD;
+        box-shadow: 0 0 0 .25rem $light-color, 0 0 0 .3rem #2f2a47, 0 0 0 .5rem #E4E2FD;
         height: 10rem;
         width: 10rem;
       }

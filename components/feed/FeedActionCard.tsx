@@ -215,12 +215,12 @@ function RenderFeedActionCard(props) {
     return (
       <>
         <div
-          className={`feed-content ${checkEmojis ? " text-emoji" : ""}`}
+          className={`feed-content${checkEmojis ? " text-emoji" : ""}`}
           key={"content_" + id + idx}
         >
           {verb}
           {ObjectsRender}
-          {prep && prep}
+          {prep}
           {target && (
             <RenderProfileBadge
               key={"target_" + id + idx}
@@ -240,6 +240,7 @@ function RenderFeedActionCard(props) {
       </>
     );
   };
+  
   return (
     <div className="feed-item-body">
       {renderData

@@ -176,19 +176,23 @@ export const customFetcher = async (config) => {
   }
 };
 
-// Example usage for different APIs
+// API Fetchers
 export const ArticlesFetcher = (url) =>
   customFetcher({ url, logName: "Articles" });
+
 export const DegenFetcher = (url) =>
   customFetcher({ url, logName: "DegenScore" });
+
 export const FireflyFetcher = ([url, body]) =>
   customFetcher({ url, method: "POST", body, logName: "Firefly" });
+
 export const GuildFetcher = (url) =>
   customFetcher({
     url,
     headers: { accept: "application/json" },
     logName: "Guild",
   });
+
 export const POAPFetcher = (url) =>
   customFetcher({
     url,
@@ -197,8 +201,14 @@ export const POAPFetcher = (url) =>
     apiKeyValue: process.env.NEXT_PUBLIC_POAP_API_KEY,
     logName: "POAP",
   });
+
 export const ProfileFetcher = (url, options?) =>
-  customFetcher({ url, ...options, logName: "Profile" });
+  customFetcher({ 
+    url, 
+    ...options, 
+    logName: "Profile" 
+  });
+
 export const RSS3Fetcher = ([url, data]) =>
   customFetcher({
     url,
@@ -209,8 +219,14 @@ export const RSS3Fetcher = ([url, data]) =>
     body: data,
     logName: "RSS3",
   });
+
 export const SimplehashFetcher = (url, options?) =>
-  customFetcher({ url, ...options, logName: "SimpleHash" });
+  customFetcher({ 
+    url, 
+    ...options, 
+    logName: "SimpleHash" 
+  });
+
 export const talentFetcher = (url) =>
   customFetcher({
     url,

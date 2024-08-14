@@ -81,8 +81,6 @@ function useFeeds({ address, filter }) {
     }
   );
 
-  console.log("feed data:", data);
-
   const processedData = useMemo(() => {
     const processed = processFeedsData(data);
     return processed.filter(

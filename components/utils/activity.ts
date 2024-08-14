@@ -72,7 +72,7 @@ export const ActivityTypeData: { [key in ActivityType]: any } = {
     emoji: "💬",
     label: "Comment",
     action: {
-      default: " ",
+      default: "Commented",
     },
     prep: "",
   },
@@ -119,7 +119,7 @@ export const ActivityTypeData: { [key in ActivityType]: any } = {
     emoji: "📄",
     label: "Post",
     action: {
-      default: " ",
+      default: "Published a post",
     },
     prep: "to",
   },
@@ -330,7 +330,6 @@ export const ActionStructMapping = (action, owner) => {
       verb = metadata.body
         ? metadata.body
         : ActivityTypeData[action.type].action[metadata.action || "default"];
-
       platform = action.type === ActivityType.share && action.platform;
       const article =
         ["Mirror"].includes(platform) || metadata.summary ? metadata : null;
@@ -443,7 +442,6 @@ export const TagsFilterMapping = {
       ActivityType.mint,
       ActivityType.swap,
       ActivityType.transfer,
-      ActivityType.burn,
     ],
   },
   ["collectibles"]: {
@@ -453,7 +451,6 @@ export const TagsFilterMapping = {
       ActivityType.mint,
       ActivityType.trade,
       ActivityType.transfer,
-      ActivityType.burn,
     ],
   },
 };
