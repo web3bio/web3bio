@@ -27,7 +27,7 @@ export default function SearchResult({ searchTerm }) {
   const sortedData = useMemo(() => {
     return _.sortBy(
       domains?.domainAvailableSearch,
-      (x) => x.name !== searchTerm
+      (x) => !x.name.includes(searchTerm)
     );
   }, [domains?.domainAvailableSearch]);
   if (loading)
