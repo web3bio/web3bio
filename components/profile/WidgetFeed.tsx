@@ -189,6 +189,7 @@ export default function WidgetFeed({ profile, openModal }) {
         </div>
 
         <ActivityFeeds
+          validTypes={TagsFilterMapping[filter].types}
           openModal={openModal}
           expand={expand}
           parentScrollRef={scrollContainer}

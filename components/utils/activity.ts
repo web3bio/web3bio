@@ -1,8 +1,5 @@
 import { resolveIPFS_URL } from "./ipfs";
-import {
-  isSameAddress,
-  isValidEthereumAddress,
-} from "./utils";
+import { isSameAddress, isValidEthereumAddress } from "./utils";
 
 export enum ActivityTag {
   collectible = "collectible",
@@ -34,17 +31,6 @@ export enum ActivityType {
   transfer = "transfer",
   // new
   feed = "feed",
-
-  // deleted
-  // auction = "auction",
-  // claim = "claim",
-  // deploy = "deploy",
-  // donate = "donate",
-  // loan = "loan",
-  // multisig = "multisig",
-  // propose = "propose",
-  // vote = "vote",
-
   unknown = "unknown",
 }
 
@@ -60,18 +46,6 @@ export const ActivityTypeData: { [key in ActivityType]: any } = {
     },
     prep: "on",
   },
-  // [ActivityType.auction]: {
-  //   key: ActivityType.auction,
-  //   emoji: "👨‍⚖",
-  //   label: "Auction",
-  //   action: {
-  //     default: "Auctioned",
-  //     buy: "Bought",
-  //     bid: "Placed a bid for",
-  //     finalize: "Finalized a bid for",
-  //   },
-  //   prep: "",
-  // },
   [ActivityType.bridge]: {
     key: ActivityType.bridge,
     emoji: "🌉",
@@ -273,13 +247,12 @@ export const ActionStructMapping = (action, owner) => {
     attachments = null as any;
   const isOwner = isSameAddress(action.to, owner);
   const metadata = action.metadata;
+
   switch (action.type) {
     // finance
     case ActivityType.approval:
-    // case ActivityType.deploy:
-    //   break;
+      break;
     case ActivityType.transfer:
-      if (![action.from, action.to].some((x) => isSameAddress(x, owner))) break;
       verb = isOwner
         ? ActivityTypeData[ActivityType.transfer].action.receive
         : ActivityTypeData[ActivityType.transfer].action.default;
@@ -313,20 +286,6 @@ export const ActionStructMapping = (action, owner) => {
       ];
       platform = action.platform;
       break;
-    // case ActivityType.multisig:
-    //   verb =
-    //     ActivityTypeData[ActivityType.multisig].action[
-    //       metadata.action || "default"
-    //     ];
-    //   objects = metadata.owner ? [{ identity: metadata.owner }] : [];
-    //   if (metadata.vault?.address) {
-    //     objects = objects.concat([
-    //       { text: "on" },
-    //       { identity: metadata.vault.address },
-    //     ]);
-    //   }
-    //   platform = action.platform;
-    //   break;
     case ActivityType.bridge:
       verb =
         ActivityTypeData[ActivityType.bridge].action[
@@ -397,7 +356,6 @@ export const ActionStructMapping = (action, owner) => {
       }
       break;
     // collectible
-    // case ActivityType.auction:
     case ActivityType.trade:
     case ActivityType.mint:
       if (action.tag === ActivityTag.social) {
@@ -424,68 +382,6 @@ export const ActionStructMapping = (action, owner) => {
         ),
       };
       break;
-    // case ActivityType.loan:
-    //   verb = ActivityTypeData[action.type].action[metadata.action || "default"];
-    //   objects = [
-    //     metadata.collateral,
-    //     { text: ActivityTypeData[ActivityType.loan].prep },
-    //     metadata.amount,
-    //   ];
-    //   platform = action.platform;
-    //   break;
-    // case ActivityType.donate:
-    //   verb = ActivityTypeData[action.type].action[metadata.action || "default"];
-    //   objects = [
-    //     metadata.token,
-    //     { text: ActivityTypeData[action.type].prep },
-    //     {
-    //       isToken: true,
-    //       text: metadata.title,
-    //     },
-    //   ];
-    //   platform = action.platform;
-    //   attachments = {
-    //     targets: [
-    //       {
-    //         url: action.related_urls[action.related_urls.length - 1],
-    //         name: metadata.title,
-    //         image: resolveMediaURL(metadata.logo),
-    //         content: metadata.description,
-    //       },
-    //     ],
-    //   };
-    //   break;
-    // case ActivityType.vote:
-    // const _choices = JSON.parse(metadata?.choice || "[]");
-    // prep =
-    //   ActivityTypeData[action.type].action[metadata?.action || "default"];
-
-    // platform = action.platform;
-    // objects =
-    //   _choices.length > 0
-    //     ? [
-    //         ..._choices.map((x) => ({
-    //           isToken: true,
-    //           text: metadata.proposal?.options[x - 1],
-    //         })),
-    //       ]
-    //     : [
-    //         {
-    //           isToken: true,
-    //           text: metadata.proposal?.options[_choices - 1],
-    //         },
-    //       ];
-    // attachments = {
-    //   targets: [
-    //     {
-    //       url: metadata.proposal?.link,
-    //       title: metadata.proposal?.title,
-    //       body: metadata.proposal?.organization.name,
-    //       subTitle: `(${metadata.proposal?.organization.id})`,
-    //     },
-    //   ],
-    // };
-    // break;
     default:
       verb = ActivityTypeData[action.type].action[metadata.action || "default"];
       platform = action.platform;
@@ -547,12 +443,18 @@ export const TagsFilterMapping = {
       ActivityType.mint,
       ActivityType.swap,
       ActivityType.transfer,
+      ActivityType.burn,
     ],
   },
   ["collectibles"]: {
     label: "Collectibles",
     filters: [ActivityTag.collectible, ActivityTag.metaverse],
-    types: [ActivityType.mint, ActivityType.trade, ActivityType.transfer],
+    types: [
+      ActivityType.mint,
+      ActivityType.trade,
+      ActivityType.transfer,
+      ActivityType.burn,
+    ],
   },
 };
 
