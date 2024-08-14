@@ -8,7 +8,7 @@ interface FeedFilterProps {
 
 const FeedFilter: FC<FeedFilterProps> = ({ value, onChange }) => {
   const options = Object.entries(TagsFilterMapping).map(([key, { label }]) => (
-    <option key={key} value={key}>
+    <option key={key} value={key} title={label}>
       {label}
     </option>
   ));
@@ -18,6 +18,7 @@ const FeedFilter: FC<FeedFilterProps> = ({ value, onChange }) => {
       onChange={(e) => onChange(e.target.value)}
       value={value}
       className="form-select select-sm mr-2"
+      title="Change Feed Filter"
     >
       {options}
     </select>

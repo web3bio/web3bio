@@ -124,6 +124,10 @@
       width: 100%;
       word-break: break-word;
 
+      &:empty {
+        display: none;
+      }
+
       &.text-large {
         font-size: .8rem;
       }
@@ -237,13 +241,13 @@
         }
 
         .feed-target-description {
-          display: -webkit-box;
+          // display: -webkit-box;
           margin-top: .25rem;
-          text-overflow: ellipsis;
-          overflow: hidden;
+          // text-overflow: ellipsis;
+          // overflow: hidden;
           padding-right: 1rem;
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 3;
+          // -webkit-box-orient: vertical;
+          // -webkit-line-clamp: 3;
         }
 
         .feed-target-content {

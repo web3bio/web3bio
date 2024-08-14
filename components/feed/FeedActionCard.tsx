@@ -55,11 +55,13 @@ function RenderFeedActionCard(props) {
                           url: resolveMediaURL(x.address),
                         })
                       : openModal(ModalType.nft, {
-                          remoteFetch: true,
-                          network,
-                          standard: x.standard,
-                          contractAddress: x.contract_address,
-                          tokenId: x.id,
+                          asset: {
+                            remoteFetch: true,
+                            network,
+                            standard: x.standard,
+                            contractAddress: x.address,
+                            tokenId: x.id,
+                          },
                         });
                     e.stopPropagation();
                     e.preventDefault();
@@ -213,12 +215,12 @@ function RenderFeedActionCard(props) {
     return (
       <>
         <div
-          className={`feed-content ${checkEmojis ? " text-emoji" : ""}`}
+          className={`feed-content${checkEmojis ? " text-emoji" : ""}`}
           key={"content_" + id + idx}
         >
           {verb}
           {ObjectsRender}
-          {prep && prep}
+          {prep}
           {target && (
             <RenderProfileBadge
               key={"target_" + id + idx}
@@ -238,6 +240,7 @@ function RenderFeedActionCard(props) {
       </>
     );
   };
+  
   return (
     <div className="feed-item-body">
       {renderData

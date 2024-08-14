@@ -23,7 +23,7 @@ const RenderObjects = ({ data, network, openModal }) => {
     <RenderToken
       key={`${data.name || data.symbol}_${data.value}`}
       name={data.name}
-      symbol={data.symbol}
+      symbol={data.symbol || data.name}
       image={data.image}
       network={network}
       openModal={openModal}

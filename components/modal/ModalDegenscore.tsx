@@ -38,16 +38,24 @@ export default function DegenscoreModalContent({ onClose, degenscore, profile })
           alt={profile.identity}
           src={profile?.avatar}
         />
-        <div className="d-flex mt-2 mb-2" style={{ alignItems: "center", lineHeight: 1.25 }}>
+        <div className="d-flex mt-2" style={{ alignItems: "center", lineHeight: 1.25 }}>
           <strong className="h4 text-bold">{profile.displayName}</strong>
         </div>
-        <div className="text-gray mt-2 mb-2">
+        <div className="text-gray mb-2">
           {profile.identity}
         </div>
-
         <div className="mt-2 mb-2">{profile?.description}</div>
-        <div className="mt-2 mb-2">
-          DegenScore <strong className="text-large">{degenscore.properties?.DegenScore}</strong>
+
+        <div className="mt-4 mb-2">
+          <div className="feed-token">
+            <span className="text-large">👾</span>
+            <span className="feed-token-value">
+              DegenScore
+            </span>
+            <span className="feed-token-value text-bold">
+              {degenscore.properties?.DegenScore}
+            </span>
+          </div>
         </div>
         
         {degenscore.traits.actions?.metadata.actions.actions && (

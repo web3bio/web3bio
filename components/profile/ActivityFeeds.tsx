@@ -3,6 +3,8 @@ import useInfiniteScroll from "react-infinite-scroll-hook";
 import { FeedItem } from "../feed/FeedItem";
 import { Empty } from "../shared/Empty";
 import { Loading } from "../shared/Loading";
+import { ActivityTag } from "../utils/activity";
+import { isSameAddress } from "../utils/utils";
 
 const RenderActivityFeeds = (props) => {
   const {
@@ -15,6 +17,7 @@ const RenderActivityFeeds = (props) => {
     isError,
     expand,
     openModal,
+    validTypes,
   } = props;
   const [albumRef] = useInfiniteScroll({
     loading: isLoadingMore,
@@ -26,11 +29,25 @@ const RenderActivityFeeds = (props) => {
   const memoizedData = useMemo(
     () =>
       data
-        ?.filter((x) => x?.actions?.some((action) => action))
+        ?.filter((x) => x?.actions?.some((x) => !!x))
         .map((x) => ({
           ...x,
-          actions: x.actions.filter((action) => !!action),
-        })),
+          actions: x.actions.filter((action) => {
+            if (action && validTypes.includes(action.type)) {
+              if (action.tag !== ActivityTag.social) {
+                if (
+                  [action.from, action.to].some((i) =>
+                    isSameAddress(i, x.owner)
+                  )
+                )
+                  return action;
+              } else {
+                return action;
+              }
+            }
+          }),
+        }))
+        .filter((x) => x.actions?.length > 0),
     [data]
   );
 
@@ -62,7 +79,7 @@ const RenderActivityFeeds = (props) => {
   return (
     <div className="widget-feeds-container">
       <div className="feeds-list">
-        {memoizedData.map((x) => {
+        {memoizedData.map((x, idx) => {
           return (
             <div key={x.id} className="feed-item">
               <FeedItem
