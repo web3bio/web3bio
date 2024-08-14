@@ -6,11 +6,7 @@ import SVG from "react-inlinesvg";
 import FeedFilter from "../feed/FeedFilter";
 import { useDispatch } from "react-redux";
 import { ActivityFeeds } from "./ActivityFeeds";
-import {
-  ActivityTag,
-  ActivityType,
-  TagsFilterMapping,
-} from "../utils/activity";
+import { ActivityTag, TagsFilterMapping } from "../utils/activity";
 import { PlatformType } from "../utils/platform";
 import { isSameAddress } from "../utils/utils";
 import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
@@ -60,34 +56,16 @@ const processFeedsData = (data) => {
 const getURL = (index, address, previous, filter) => {
   const cursor = previous?.meta?.cursor;
   if (index !== 0 && !(previous?.result?.length || cursor)) return null;
-  const url = RSS3_ENDPOINT + `/data/accounts/activities`;
+  const url = RSS3_ENDPOINT + `/decentralized/accounts`;
   const data = {
-    account: [address],
+    accounts: [address],
     limit: 20,
     action_limit: 20,
-    status: "successful",
+    success: true,
     direction: "out",
     cursor,
     tag: TagsFilterMapping[filter].filters,
-    type: [
-      ActivityType.auction,
-      ActivityType.bridge,
-      ActivityType.claim,
-      ActivityType.comment,
-      ActivityType.donate,
-      ActivityType.liquidity,
-      ActivityType.loan,
-      ActivityType.mint,
-      ActivityType.multisig,
-      ActivityType.post,
-      ActivityType.profile,
-      ActivityType.propose,
-      ActivityType.share,
-      ActivityType.swap,
-      ActivityType.trade,
-      ActivityType.transfer,
-      ActivityType.vote,
-    ],
+    type: TagsFilterMapping[filter].types,
   };
   return [url, data];
 };
@@ -209,6 +187,7 @@ export default function WidgetFeed({ profile, openModal }) {
         </div>
 
         <ActivityFeeds
+          validTypes={TagsFilterMapping[filter].types}
           openModal={openModal}
           expand={expand}
           parentScrollRef={scrollContainer}
@@ -229,11 +208,7 @@ export default function WidgetFeed({ profile, openModal }) {
             }}
           >
             <button className="btn btn-sm">
-              <SVG
-                src="../icons/icon-expand.svg"
-                width={18}
-                height={18}
-              />
+              <SVG src="../icons/icon-expand.svg" width={18} height={18} />
               View More
             </button>
           </div>

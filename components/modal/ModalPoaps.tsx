@@ -44,10 +44,10 @@ export default function PoapsModalContent({ onClose, asset }) {
             placeholder={true}
           />
         </div>
-        <div className="d-flex mt-2 mb-2" style={{ alignItems: "center", lineHeight: 1.25 }}>
+        <div className="d-flex mt-2" style={{ alignItems: "center", lineHeight: 1.25 }}>
           <strong className="h4 text-bold">{event.name}</strong>
         </div>
-        <div className="text-gray mt-2 mb-2">
+        <div className="text-gray mb-2">
           <span>#{tokenId}</span>
           {event.supply && (
             <>

@@ -29,7 +29,7 @@ const RenderWidgetScores = ({
       },
       {
         key: WidgetTypes.talent,
-        render: () => <WidgetTalent address={profile.address} />,
+        render: () => <WidgetTalent openModal={openModal} profile={profile} />,
       },
       {
         key: WidgetTypes.webacy,

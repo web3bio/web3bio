@@ -50,14 +50,13 @@ const renderSocialMediaLinks = (_collection) => {
 
 export default function NFTModalContentRender(props) {
   const { onClose, asset } = props;
-
   const resolvedNetwork = (() => {
     if (asset.network?.includes("arbitrum")) {
       return Network.arbitrum;
     }
     return asset.network;
   })();
-  
+
   const { data: fetchedAsset } = useSWR(
     asset?.remoteFetch
       ? SIMPLEHASH_URL +
