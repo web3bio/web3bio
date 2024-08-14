@@ -5,6 +5,12 @@ import SVG from "react-inlinesvg";
 import { SocialPlatformMapping } from "../utils/platform";
 import _ from "lodash";
 
+enum DomainStatus {
+  taken = "taken",
+  available = "available",
+  protected = "protected",
+}
+
 const RenderDomainAvailableItem = (props) => {
   const onCopySuccess = () => {
     setIsCopied(true);
@@ -14,25 +20,27 @@ const RenderDomainAvailableItem = (props) => {
   };
   const { data } = props;
   const [isCopied, setIsCopied] = useState(false);
-  console.log(data, "domain",data.status);
+
   return (
     <div className="social-item">
       <div className="social-main">
         <Link href={""} target="_blank" className="social">
           <div className="icon">
             <SVG
-              fill={"#000"}
+              fill={SocialPlatformMapping(data.platform)?.color}
               src={SocialPlatformMapping(data.platform)?.icon || ""}
               width={20}
               height={20}
             />
           </div>
           <div className="title">{data.name}</div>
-          <div className={`domain-status ${data.status}`} >
-            {data.status}
-          </div>
+          <div className={`domain-status ${data.status}`}>{data.status}</div>
         </Link>
-        <div className={`actions`}>
+        <div
+          className={`actions ${
+            data.status === DomainStatus.taken ? "active" : ""
+          }`}
+        >
           <Clipboard
             component="button"
             className="btn btn-sm btn-link action"
@@ -50,20 +58,26 @@ const RenderDomainAvailableItem = (props) => {
           </Clipboard>
           <Link
             target={"_blank"}
-            className="btn btn-sm btn-link action"
-            href={`${SocialPlatformMapping(data.platform)?.urlPrefix}${
-              data.name
-            }`}
+            className="btn btn-sm btn-link action "
+            href={
+              data.status === DomainStatus.taken
+                ? `/${data.name}`
+                : `${SocialPlatformMapping(data.platform)?.urlPrefix}${
+                    data.name
+                  }`
+            }
             prefetch={false}
             title={
-              data.status === "taken"
+              data.status === DomainStatus.taken
                 ? `Open ${data.name} Profile Page`
                 : `Obtain ${data.name}`
             }
             rel="noopener noreferrer"
           >
             <SVG src="icons/icon-open.svg" width={20} height={20} />
-            <span className="hide-xs">{"Obtain"}</span>
+            <span className="hide-xs">
+              {data.status === DomainStatus.available ? "Obtain" : "Open"}
+            </span>
           </Link>
         </div>
       </div>
