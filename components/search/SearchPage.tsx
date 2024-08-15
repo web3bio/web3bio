@@ -111,7 +111,7 @@ export default function SearchPage() {
           </div>
           {searchParams?.get("a") ? (
             <DomainsSuggest searchTerm={searchTerm} />
-          ) : (
+          ) : searchTerm ? (
             <SearchResult
               searchTerm={
                 searchTerm.endsWith(".farcaster")
@@ -120,7 +120,7 @@ export default function SearchPage() {
               }
               searchPlatform={searchPlatform}
             />
-          )}
+          ) : null}
         </div>
         <SearchPageListener inputRef={inputRef} />
       </div>
