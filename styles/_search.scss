@@ -91,7 +91,9 @@
         align-items: center;
         display: flex;
         gap: .25rem;
+        padding: 0;
         width: 100%;
+
         .suggest-btn {
           margin-left: auto;
         }
@@ -350,9 +352,10 @@
 
       .domain-status {
         border-radius: .25rem;
-        padding: .1rem .5rem;
+        padding: .1rem .25rem;
         font-weight: 500;
         margin-left: .5rem;
+        text-transform: uppercase;
 
         &.taken {
           color: rgb(240, 85, 93);

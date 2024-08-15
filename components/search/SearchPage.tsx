@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import SVG from "react-inlinesvg";
 import SearchInput from "./SearchInput";
 import { handleSearchPlatform, formatText } from "../utils/utils";
@@ -38,41 +38,37 @@ export default function SearchPage() {
   const searchParams = useSearchParams();
   const inputRef = useRef(null);
   const router = useRouter();
-  const handleSubmit = (value, platform?) => {
+  
+  const handleSubmit = useCallback((value, platform?) => {
     setSearchTerm(value);
-    router.push(
-      `/?s=${value}${
-        platform === "suggest"
-          ? "&a=true"
-          : platform
-          ? "&platform=" + platform
-          : ""
-      }`
-    );
-
+    const queryParams = new URLSearchParams();
+    queryParams.set('s', value);
+    if (platform === "suggest") {
+      queryParams.set('availability', 'true');
+    } else if (platform) {
+      queryParams.set('platform', platform);
+    }
+    router.push(`/?${queryParams.toString()}`);
     setSearchPlatform(platform || handleSearchPlatform(value));
     setSearchFocus(true);
-  };
+  }, [router]);
+
   useEffect(() => {
-    if (searchParams?.get("s")) {
-      const query = searchParams.get("s") || "";
-      const _paramPlatform = searchParams.get("platform");
+    const query = searchParams?.get("s");
+    if (query) {
+      const _paramPlatform = searchParams?.get("platform");
       setSearchFocus(true);
-      const searchkeyword = [regexSolana, regexBtc].some((x) => x.test(query))
+      const searchKeyword = [regexSolana, regexBtc].some((x) => x.test(query))
         ? query
         : query.toLowerCase();
-      setSearchTerm(searchkeyword);
-      if (!_paramPlatform) {
-        setSearchPlatform(handleSearchPlatform(searchkeyword));
-      } else {
-        setSearchPlatform(_paramPlatform.toLowerCase());
-      }
+      setSearchTerm(searchKeyword);
+      setSearchPlatform(_paramPlatform?.toLowerCase() || handleSearchPlatform(searchKeyword));
     } else {
       setSearchFocus(false);
       setSearchTerm("");
       setSearchPlatform("");
     }
-  }, [router, searchParams]);
+  }, [searchParams]);
 
   return (
     <>
@@ -109,7 +105,7 @@ export default function SearchPage() {
               </div>
             )}
           </div>
-          {searchParams?.get("a") ? (
+          {searchParams?.get("availability") ? (
             <DomainsSuggest searchTerm={searchTerm} />
           ) : searchTerm ? (
             <SearchResult

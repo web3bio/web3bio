@@ -45,18 +45,17 @@ export default function SearchResult({ searchTerm }) {
       <div className="search-result">
         <div className="search-result-header">
           <div className="search-result-text text-gray">
-            Available Domains results:
+            Check domain availability:
           </div>
-          <div
+          {/* <div
             className="btn btn-primary"
             onClick={() => {
               router.push("/?s=" + searchTerm);
             }}
           >
             Back to Search
-          </div>
+          </div> */}
         </div>
-
         <div className="search-result-body">
           {sortedData.map((item, idx) => (
             <DomainAvailableItem data={item} key={item.name + idx} />

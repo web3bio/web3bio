@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import SVG from "react-inlinesvg";
 import { useSearchParams } from "next/navigation";
 import {
@@ -15,6 +15,7 @@ export type SearchListItemType = {
   system?: PlatformSystem;
   icon?: string;
 };
+
 export default function SearchInput(props) {
   const { defaultValue, handleSubmit, inputRef } = props;
   const [query, setQuery] = useState(defaultValue);
@@ -22,101 +23,68 @@ export default function SearchInput(props) {
   const [activeIndex, setActiveIndex] = useState(-1);
   const searchParams = useSearchParams();
   const web2ScrollContainer = useRef<HTMLDivElement>(null);
-  const emitSubmit = (e, value?) => {
-    if (searchParams?.get("a")) {
+  
+  const emitSubmit = useCallback((e, value?) => {
+    if (searchParams?.get("availability")) {
       handleSubmit(query, "suggest");
       return;
     }
-    const platfrom = (() => {
-      if (!value) return "";
-      if (typeof value === "string") return "";
-      if (
-        [PlatformType.farcaster, PlatformType.bitcoin].includes(value?.key) ||
-        value.system === PlatformSystem.web2
-      )
-        return value.key;
-    })();
 
-    const _value = (() => {
-      if (!value) return "";
-      if (typeof value === "string") return value;
-      return value.label;
-    })();
+    const platform = value?.key && [PlatformType.farcaster, PlatformType.bitcoin].includes(value.key) || value?.system === PlatformSystem.web2
+      ? value.key
+      : "";
+
+    const _value = typeof value === "string" ? value : value?.label || "";
+
     if (_value && _value === searchParams?.get("s")) {
       setQuery(_value);
     }
-    handleSubmit(_value, platfrom);
-  };
+    handleSubmit(_value, platform);
+  }, [query, searchParams, handleSubmit]);
 
-  const onKeyDown = (e) => {
-    if (e.keyCode === 13) {
-      const _value = searchList[activeIndex]
-        ? searchList[activeIndex]
-        : query.replaceAll("。", ".");
+  const onKeyDown = useCallback((e) => {
+    if (e.key === "Enter") {
+      const _value = searchList[activeIndex] || query.replaceAll("。", ".");
       emitSubmit(e, _value);
+    } else if (e.key === "Escape") {
+      setActiveIndex(-1);
+      if (activeIndex === -1) setSearchList([]);
+    } else if (e.key === "ArrowUp" || (e.shiftKey && e.key === "Tab")) {
+      e.preventDefault();
+      setActiveIndex((prevIndex) => 
+        prevIndex <= 0 ? searchList.length - 1 : prevIndex - 1
+      );
+    } else if (e.key === "ArrowDown" || (!e.shiftKey && e.key === "Tab")) {
+      e.preventDefault();
+      setActiveIndex((prevIndex) => 
+        prevIndex >= searchList.length - 1 ? 0 : prevIndex + 1
+      );
     }
-    if (e.keyCode === 27) {
-      if (activeIndex === -1) {
-        setSearchList([]);
-      } else {
-        setActiveIndex(-1);
-      }
-    }
+  }, [searchList, activeIndex, query, emitSubmit]);
 
-    if (e.keyCode === 38 || (e.shiftKey && e.keyCode === 9)) {
-      if (searchList?.length) e.preventDefault();
-      if (searchList && searchList.length === 1) {
-        setActiveIndex(0);
-        return;
-      }
-      if (!activeIndex) {
-        setActiveIndex(searchList.length - 1);
-      } else {
-        setActiveIndex(activeIndex - 1);
-      }
-    }
-    if (e.keyCode === 40 || (!e.shiftKey && e.keyCode === 9)) {
-      if (searchList?.length) e.preventDefault();
-      if (searchList && searchList.length === 1) return setActiveIndex(0);
-      if (activeIndex === null || activeIndex >= searchList.length - 1) {
-        setActiveIndex(0);
-      } else {
-        setActiveIndex(activeIndex + 1);
-      }
-    }
-  };
-  useEffect(() => {
-    if (!query || query === defaultValue) {
+  const filteredWeb3List = useMemo(() => 
+    searchList.filter(x => x.system === PlatformSystem.web3),
+  [searchList]);
+
+  const filteredWeb2List = useMemo(() => 
+    searchList.filter(x => x.system === PlatformSystem.web2),
+  [searchList]);
+
+  const handleQueryChange = useCallback((e) => {
+    const newQuery = e.target.value;
+    setQuery(newQuery);
+    if (!newQuery || newQuery === defaultValue) {
       setSearchList([]);
     } else {
-      setSearchList(getSearchSuggestions(query.replaceAll("。", ".")));
+      setSearchList(getSearchSuggestions(newQuery.replaceAll("。", ".")));
     }
+    setActiveIndex(-1);
+  }, [defaultValue]);
 
-    if (
-      searchList.some((x) => x.system === PlatformSystem.web2) &&
-      activeIndex >
-        searchList.filter((x) => x.system === PlatformSystem.web3)?.length -
-          1 &&
-      web2ScrollContainer.current
-    ) {
-      const activeItemId = searchList.find(
-        (x) => x.key === searchList[activeIndex].key
-      )?.key;
-      if (activeItemId) {
-        const activeItem = document.getElementById(activeItemId);
-        if (!activeItem) return;
-        const left = activeItem.getBoundingClientRect().width;
-        web2ScrollContainer.current.scrollTo({
-          left:
-            left *
-            (activeIndex -
-              searchList.filter((x) => x.system === PlatformSystem.web3)
-                ?.length),
-          behavior: "smooth",
-        });
-      }
-    }
-  }, [query, activeIndex]);
+  const shouldShowWeb2List = useMemo(() => 
+    ![".", "。", "/"].some(x => query.includes(x)) && query.length < 25,
+  [query]);
+
   return (
     <>
       <input
@@ -124,9 +92,7 @@ export default function SearchInput(props) {
         type="text"
         placeholder="Ethereum (ENS), Farcaster, Lens, UD, or Web3 domains..."
         value={query}
-        onChange={(e) => {
-          setQuery(e.target.value);
-        }}
+        onChange={handleQueryChange}
         onKeyDown={onKeyDown}
         className="form-input input-lg"
         autoCorrect="off"
@@ -137,9 +103,7 @@ export default function SearchInput(props) {
       />
       <button
         className="form-button btn"
-        onClick={(e) => {
-          emitSubmit(e, query.replaceAll("。", "."));
-        }}
+        onClick={(e) => emitSubmit(e, query.replaceAll("。", "."))}
       >
         <SVG
           src="icons/icon-search.svg"
@@ -150,80 +114,53 @@ export default function SearchInput(props) {
       </button>
       {searchList.length > 0 && (
         <div className="search-list">
-          {searchList
-            .filter((x) => x.system === PlatformSystem.web3)
-            .map((x: { label: string; icon?: string }, idx) => {
-              return (
-                <div
-                  className={
-                    activeIndex === idx
-                      ? "search-list-item search-list-item-active"
-                      : "search-list-item"
-                  }
-                  key={x.label + idx}
-                  onClick={(e) => emitSubmit(e, x)}
-                >
-                  <SVG
-                    fill="#121212"
-                    src={x.icon || "icons/icon-search.svg"}
-                    width={20}
-                    height={20}
-                  />
-                  <div className="search-list-item-label">{x.label}</div>
-                </div>
-              );
-            })}
+          {filteredWeb3List.map((x, idx) => (
+            <div
+              className={`search-list-item${activeIndex === idx ? " search-list-item-active" : ""}`}
+              key={x.label + idx}
+              onClick={(e) => emitSubmit(e, x)}
+            >
+              <SVG
+                fill="#121212"
+                src={x.icon || "icons/icon-search.svg"}
+                width={20}
+                height={20}
+              />
+              <div className="search-list-item-label">{x.label}</div>
+            </div>
+          ))}
           {
             <>
               <li className="divider" />
               <div
                 ref={web2ScrollContainer}
                 className={"search-web2-list noscrollbar"}
-                style={{
-                  padding: 0,
-                }}
               >
-                {![".", "。", "/"].some((x) => query.includes(x)) &&
-                  query.length < 25 && (
-                    <>
-                      {searchList
-                        .filter((x) => x.system === PlatformSystem.web2)
-                        .map((x) => {
-                          const activeIdx = searchList.findIndex(
-                            (i) => i.key === x.key
-                          );
-                          return (
-                            <div
-                              id={x.key}
-                              onClick={() =>
-                                emitSubmit(null, {
-                                  label: query,
-                                  key: x.key,
-                                  system: PlatformSystem.web2,
-                                })
-                              }
-                              key={x.key}
-                              className={
-                                activeIndex === activeIdx
-                                  ? "search-list-item search-list-item-active"
-                                  : "search-list-item"
-                              }
-                            >
-                              <SVG
-                                fill="#121212"
-                                src={SocialPlatformMapping(x.key).icon || ""}
-                                width={20}
-                                height={20}
-                              />
-                              {/* {query} */}
-                            </div>
-                          );
-                        })}
-                    </>
-                  )}
+                {shouldShowWeb2List && (
+                  <>
+                    {filteredWeb2List.map((x) => {
+                      const activeIdx = searchList.findIndex(i => i.key === x.key);
+                      return (
+                        <div
+                          id={x.key}
+                          onClick={() => emitSubmit(null, { ...x, label: query, system: PlatformSystem.web2 })}
+                          key={x.key}
+                          className={`search-list-item${activeIndex === activeIdx ? " search-list-item-active" : ""}`}
+                        >
+                          <SVG
+                            fill="#121212"
+                            src={SocialPlatformMapping(x.key).icon || ""}
+                            width={20}
+                            height={20}
+                          />
+                        </div>
+                      );
+                    })}
+                  </>
+                )}
 
                 <div
-                  className="btn btn-primary suggest-btn"
+                  className="btn suggest-btn"
                   onClick={(e) => {
                     emitSubmit(e, {
                       label: query,
@@ -232,7 +169,7 @@ export default function SearchInput(props) {
                     });
                   }}
                 >
-                  Search available domains
+                  Check Availability
                 </div>
               </div>
             </>

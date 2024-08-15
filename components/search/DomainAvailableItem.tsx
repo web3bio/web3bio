@@ -22,14 +22,7 @@ const PROFILE_PLATFORMS_SUPPORTED = [
 ];
 
 const RenderDomainAvailableItem = (props) => {
-  const onCopySuccess = () => {
-    setIsCopied(true);
-    setTimeout(() => {
-      setIsCopied(false);
-    }, 1500);
-  };
   const { data } = props;
-  const [isCopied, setIsCopied] = useState(false);
   const shouldOpenProfile =
     data.status === DomainStatus.taken &&
     PROFILE_PLATFORMS_SUPPORTED.includes(data.platform);
@@ -37,10 +30,17 @@ const RenderDomainAvailableItem = (props) => {
     <div className="social-item">
       <div className="social-main">
         <Link href={""} target="_blank" className="social">
-          <div className="icon">
+          <div
+            className="icon"
+            style={{
+              background: SocialPlatformMapping(data.platform)
+                .color,
+              color: "#fff",
+            }}
+          >
             <SVG
-              fill={SocialPlatformMapping(data.platform)?.color}
               src={SocialPlatformMapping(data.platform)?.icon || ""}
+              fill={"#fff"}
               width={20}
               height={20}
             />
@@ -49,21 +49,6 @@ const RenderDomainAvailableItem = (props) => {
           <div className={`domain-status ${data.status}`}>{data.status}</div>
         </Link>
         <div className={`actions ${shouldOpenProfile ? "active" : ""}`}>
-          <Clipboard
-            component="button"
-            className="btn btn-sm btn-link action"
-            data-clipboard-text={data.name}
-            onSuccess={onCopySuccess}
-          >
-            <SVG
-              src={
-                isCopied ? "../icons/icon-check.svg" : "../icons/icon-copy.svg"
-              }
-              width={20}
-              height={20}
-            />
-            <span className="hide-xs">Copy</span>
-          </Clipboard>
           <Link
             target={"_blank"}
             className="btn btn-sm btn-link action "
@@ -78,13 +63,13 @@ const RenderDomainAvailableItem = (props) => {
             title={
               shouldOpenProfile
                 ? `Open ${data.name} Profile Page`
-                : `Obtain ${data.name}`
+                : `Buy ${data.name}`
             }
             rel="noopener noreferrer"
           >
             <SVG src="icons/icon-open.svg" width={20} height={20} />
             <span className="hide-xs">
-              {shouldOpenProfile ? "Profile" : "Obtain"}
+              {shouldOpenProfile ? "Profile" : "Buy"}
             </span>
           </Link>
         </div>
