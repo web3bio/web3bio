@@ -35,7 +35,17 @@ const resolveDuplicatedActions = (
 };
 
 export const RenderFeedContent = (props) => {
-  const { actions, tag, openModal, network, id, platform, owner, feed } = props;
+  const {
+    actions,
+    tag,
+    openModal,
+    network,
+    id,
+    platform,
+    owner,
+    feed,
+    nftInfos,
+  } = props;
   const comProps = useMemo(() => {
     switch (tag) {
       case "social":
@@ -66,6 +76,7 @@ export const RenderFeedContent = (props) => {
           id,
           network,
           openModal,
+          nftInfos,
           actions: resolveDuplicatedActions(actions, id, [
             ActivityType.mint,
             ActivityType.trade,

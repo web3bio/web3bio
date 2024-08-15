@@ -3,9 +3,11 @@ import RenderProfileBadge from "./RenderProfileBadge";
 import { RenderToken } from "./RenderToken";
 import { PlatformType } from "../utils/platform";
 
-const RenderObjects = ({ data, network, openModal }) => {
+const RenderObjects = ({ data, network, openModal, nftInfo }) => {
   if (data.text) {
-    return <span className={data.isToken ? "feed-token" : ""}>{data.text}</span>;
+    return (
+      <span className={data.isToken ? "feed-token" : ""}>{data.text}</span>
+    );
   }
 
   if (data.identity) {
@@ -18,13 +20,12 @@ const RenderObjects = ({ data, network, openModal }) => {
       />
     );
   }
-
   return (
     <RenderToken
       key={`${data.name || data.symbol}_${data.value}`}
       name={data.name}
       symbol={data.symbol || data.name}
-      image={data.image}
+      image={data.image || nftInfo?.previews?.image_medium_url}
       network={network}
       openModal={openModal}
       standard={data.standard}
@@ -32,7 +33,10 @@ const RenderObjects = ({ data, network, openModal }) => {
         value: data.value,
         decimals: data.decimals,
       }}
-      asset={data}
+      asset={{
+        ...data,
+        ...nftInfo,
+      }}
     />
   );
 };

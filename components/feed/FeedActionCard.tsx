@@ -16,6 +16,7 @@ function RenderFeedActionCard(props) {
     overridePlatform,
     openModal,
     network,
+    nftInfos,
     platform: feedPlatform,
   } = props;
   const renderData = useMemo(() => {
@@ -186,14 +187,22 @@ function RenderFeedActionCard(props) {
     const ObjectsRender = useMemo(() => {
       return objects
         ?.filter((i) => !!i)
-        .map((i, idx) => (
-          <RenderObjects
-            key={`object_${idx}`}
-            openModal={openModal}
-            data={i}
-            network={network}
-          />
-        ));
+        .map((i, idx) => {
+          let infoItem = null;
+          if (nftInfos?.length > 0) {
+            const idIndex = `${network}.${i.address}.${i.id}`;
+            infoItem = nftInfos.find((x) => x.nft_id === idIndex.toLowerCase());
+          }
+          return (
+            <RenderObjects
+              nftInfo={infoItem}
+              key={`object_${idx}`}
+              openModal={openModal}
+              data={i}
+              network={network}
+            />
+          );
+        });
     }, [objects]);
     const ProfilesRender = useMemo(() => {
       if (attachments?.profiles?.length > 0) {
@@ -240,7 +249,6 @@ function RenderFeedActionCard(props) {
       </>
     );
   };
-  
   return (
     <div className="feed-item-body">
       {renderData

@@ -1,10 +1,11 @@
-import { memo, useMemo } from "react";
+import { memo, use, useEffect, useMemo, useState } from "react";
 import useInfiniteScroll from "react-infinite-scroll-hook";
 import { FeedItem } from "../feed/FeedItem";
 import { Empty } from "../shared/Empty";
 import { Loading } from "../shared/Loading";
-import { ActivityTag } from "../utils/activity";
+import { ActivityTag, TagsFilterMapping } from "../utils/activity";
 import { isSameAddress } from "../utils/utils";
+import { SIMPLEHASH_URL, SimplehashFetcher } from "../apis";
 
 const RenderActivityFeeds = (props) => {
   const {
@@ -19,6 +20,8 @@ const RenderActivityFeeds = (props) => {
     openModal,
     validTypes,
   } = props;
+
+  const [nftInfos, setNftInfos] = useState(new Array());
   const [albumRef] = useInfiniteScroll({
     loading: isLoadingMore,
     disabled: !!isError || !expand,
@@ -48,8 +51,38 @@ const RenderActivityFeeds = (props) => {
           }),
         }))
         .filter((x) => x.actions?.length > 0),
-    [data]
+    [data, validTypes]
   );
+  const nftIds = useMemo(() => {
+    if (validTypes === TagsFilterMapping.collectibles.types) {
+      const res = [] as any;
+      memoizedData.forEach((feed) => {
+        const network = feed.network;
+        feed.actions.forEach((action) => {
+          const metadata = action.metadata;
+          if (metadata) {
+            const id = `${network}.${metadata.address}.${metadata.id}`;
+            if (!res.includes(id)) {
+              res.push(id);
+            }
+          }
+        });
+      });
+
+      return res.filter((x) => !!x);
+    }
+  }, [memoizedData, validTypes]);
+  useEffect(() => {
+    const batchFetchNFTs = async () => {
+      const res = await SimplehashFetcher(
+        `${SIMPLEHASH_URL}/api/v0/nfts/assets?nft_ids=${nftIds.join(",")}`
+      );
+      setNftInfos(res?.nfts);
+    };
+    if (nftIds?.length > 0) {
+      batchFetchNFTs();
+    }
+  }, [nftIds]);
 
   if (!data?.length && isLoadingMore)
     return (
@@ -72,10 +105,8 @@ const RenderActivityFeeds = (props) => {
         }
       />
     );
-
   if (!isLoadingMore && !data?.length)
     return <Empty title="No Activities" text="Please try different filter" />;
-
   return (
     <div className="widget-feeds-container">
       <div className="feeds-list">
@@ -83,6 +114,7 @@ const RenderActivityFeeds = (props) => {
           return (
             <div key={x.id} className="feed-item">
               <FeedItem
+                nftInfos={nftInfos}
                 openModal={openModal}
                 network={network}
                 identity={identity}

@@ -27,7 +27,7 @@ const renderFeedBadge = (key) => {
 };
 
 const RenderFeedItem = (props) => {
-  const { feed, identity, openModal, actions } = props;
+  const { feed, identity, openModal, actions, nftInfos } = props;
   const isOwner = useMemo(
     () => isSameAddress(feed.owner, identity.address),
     [feed, identity]
@@ -96,6 +96,7 @@ const RenderFeedItem = (props) => {
           </div>
         </div>
         <RenderFeedContent
+          nftInfos={nftInfos}
           feed={feed}
           platform={platformName}
           network={networkName}
