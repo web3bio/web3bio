@@ -38,28 +38,31 @@ export default function SearchResult({ searchTerm }) {
       />
     );
   if (error) return <Error retry={getQuery} text={error} />;
-  if (searchTerm && !sortedData?.length) return <Empty />;
+  if (searchTerm && domains?.domainAvailableSearch?.length === 0)
+    return <Empty />;
   return (
-    <div className="search-result">
-      <div className="search-result-header">
-        <div className="search-result-text text-gray">
-          Available Domains results:
+    domains?.domainAvailableSearch?.length > 0 && (
+      <div className="search-result">
+        <div className="search-result-header">
+          <div className="search-result-text text-gray">
+            Available Domains results:
+          </div>
+          <div
+            className="btn btn-primary"
+            onClick={() => {
+              router.push("/?s=" + searchTerm);
+            }}
+          >
+            Back to Search
+          </div>
         </div>
-        <div
-          className="btn btn-primary"
-          onClick={() => {
-            router.push("/?s=" + searchTerm);
-          }}
-        >
-          Back to Search
-        </div>
-      </div>
 
-      <div className="search-result-body">
-        {sortedData.map((item, idx) => (
-          <DomainAvailableItem data={item} key={item.name + idx} />
-        ))}
+        <div className="search-result-body">
+          {sortedData.map((item, idx) => (
+            <DomainAvailableItem data={item} key={item.name + idx} />
+          ))}
+        </div>
       </div>
-    </div>
+    )
   );
 }

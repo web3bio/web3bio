@@ -23,6 +23,10 @@ export default function SearchInput(props) {
   const searchParams = useSearchParams();
   const web2ScrollContainer = useRef<HTMLDivElement>(null);
   const emitSubmit = (e, value?) => {
+    if (searchParams?.get("a")) {
+      handleSubmit(query, "suggest");
+      return;
+    }
     const platfrom = (() => {
       if (!value) return "";
       if (typeof value === "string") return "";

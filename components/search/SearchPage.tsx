@@ -40,7 +40,6 @@ export default function SearchPage() {
   const router = useRouter();
   const handleSubmit = (value, platform?) => {
     setSearchTerm(value);
-    console.log(value, platform, "kkk");
     router.push(
       `/?s=${value}${
         platform === "suggest"

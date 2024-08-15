@@ -2,7 +2,7 @@ import Link from "next/link";
 import { memo, useState } from "react";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
-import { SocialPlatformMapping } from "../utils/platform";
+import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import _ from "lodash";
 
 enum DomainStatus {
@@ -10,6 +10,16 @@ enum DomainStatus {
   available = "available",
   protected = "protected",
 }
+
+const PROFILE_PLATFORMS_SUPPORTED = [
+  PlatformType.ens,
+  PlatformType.farcaster,
+  PlatformType.lens,
+  PlatformType.unstoppableDomains,
+  PlatformType.ethereum,
+  PlatformType.sns,
+  PlatformType.dotbit,
+];
 
 const RenderDomainAvailableItem = (props) => {
   const onCopySuccess = () => {
@@ -20,7 +30,9 @@ const RenderDomainAvailableItem = (props) => {
   };
   const { data } = props;
   const [isCopied, setIsCopied] = useState(false);
-
+  const shouldOpenProfile =
+    data.status === DomainStatus.taken &&
+    PROFILE_PLATFORMS_SUPPORTED.includes(data.platform);
   return (
     <div className="social-item">
       <div className="social-main">
@@ -36,11 +48,7 @@ const RenderDomainAvailableItem = (props) => {
           <div className="title">{data.name}</div>
           <div className={`domain-status ${data.status}`}>{data.status}</div>
         </Link>
-        <div
-          className={`actions ${
-            data.status === DomainStatus.taken ? "active" : ""
-          }`}
-        >
+        <div className={`actions ${shouldOpenProfile ? "active" : ""}`}>
           <Clipboard
             component="button"
             className="btn btn-sm btn-link action"
@@ -60,7 +68,7 @@ const RenderDomainAvailableItem = (props) => {
             target={"_blank"}
             className="btn btn-sm btn-link action "
             href={
-              data.status === DomainStatus.taken
+              shouldOpenProfile
                 ? `/${data.name}`
                 : `${SocialPlatformMapping(data.platform)?.urlPrefix}${
                     data.name
@@ -68,7 +76,7 @@ const RenderDomainAvailableItem = (props) => {
             }
             prefetch={false}
             title={
-              data.status === DomainStatus.taken
+              shouldOpenProfile
                 ? `Open ${data.name} Profile Page`
                 : `Obtain ${data.name}`
             }
@@ -76,7 +84,7 @@ const RenderDomainAvailableItem = (props) => {
           >
             <SVG src="icons/icon-open.svg" width={20} height={20} />
             <span className="hide-xs">
-              {data.status === DomainStatus.available ? "Obtain" : "Open"}
+              {shouldOpenProfile ? "Profile" : "Obtain"}
             </span>
           </Link>
         </div>
