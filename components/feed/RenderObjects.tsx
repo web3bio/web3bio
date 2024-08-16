@@ -25,7 +25,7 @@ const RenderObjects = ({ data, network, openModal, nftInfo }) => {
       key={`${data.name || data.symbol}_${data.value}`}
       name={data.name}
       symbol={data.symbol || data.name}
-      image={data.image || nftInfo?.previews?.image_medium_url}
+      image={data.image || nftInfo?.previews?.image_small_url}
       network={network}
       openModal={openModal}
       standard={data.standard}

@@ -33,6 +33,7 @@ function RenderFeedActionCard(props) {
       checkEmojis,
       attachments,
     } = props;
+
     const MediasRender = useMemo(() => {
       if (attachments?.medias?.filter((x) => x)?.length > 0) {
         return (
@@ -44,9 +45,17 @@ function RenderFeedActionCard(props) {
             }`}
           >
             {attachments.medias?.map((x, cIdx) => {
+              let infoItem = null as any;
+              if (nftInfos?.length > 0) {
+                const idIndex = `${network}.${x.address}.${x.id}`;
+                infoItem = nftInfos.find(
+                  (x) => x.nft_id === idIndex.toLowerCase()
+                );
+              }
+              const nftImageUrl = infoItem?.previews?.image_medium_url;
               return isImage(x.mime_type) ||
                 isVideo(x.mime_type) ||
-                x.standard ? (
+                nftImageUrl ? (
                 <NFTAssetPlayer
                   key={`${cIdx}_media_image`}
                   onClick={(e) => {
@@ -68,7 +77,7 @@ function RenderFeedActionCard(props) {
                     e.preventDefault();
                   }}
                   className="feed-content-img"
-                  src={resolveMediaURL(x.standard ? x.image_url : x.address)}
+                  src={resolveMediaURL(x.standard ? nftImageUrl : x.address)}
                   type={x.mime_type || "image/png"}
                   width="auto"
                   height="auto"

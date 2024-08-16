@@ -34,7 +34,7 @@ export const RenderToken = (props) => {
             alt={asset.title || asset.name}
           />
         )}
-        <span className="feed-token-value">{asset.title || asset.name}</span>
+        <span className="feed-token-value">{asset.title || asset.name || asset?.contract?.name}</span>
         {asset.id && !asset.title && (
           <small className="feed-token-meta">{`#${formatText(
             asset.id
