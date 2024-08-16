@@ -6,7 +6,7 @@ import Image from "next/image";
 export const RenderToken = (props) => {
   const { name, symbol, image, value, standard, openModal, network, asset } =
     props;
-  if (['ERC-721', 'ERC-1155'].includes(standard) && asset.address) {
+  if (["ERC-721", "ERC-1155"].includes(standard) && asset.address) {
     return (
       <div
         className="feed-token c-hand"
@@ -15,11 +15,13 @@ export const RenderToken = (props) => {
           e.stopPropagation();
           openModal(ModalType.nft, {
             asset: {
-              remoteFetch: true,
               network: network,
               standard: standard,
               contractAddress: asset.address,
               tokenId: asset.id,
+              asset: {
+                ...asset,
+              },
             },
           });
         }}
@@ -34,7 +36,9 @@ export const RenderToken = (props) => {
             alt={asset.title || asset.name}
           />
         )}
-        <span className="feed-token-value">{asset.title || asset.name || asset?.contract?.name}</span>
+        <span className="feed-token-value">
+          {asset.title || asset.name || asset?.contract?.name}
+        </span>
         {asset.id && !asset.title && (
           <small className="feed-token-meta">{`#${formatText(
             asset.id

@@ -66,11 +66,13 @@ function RenderFeedActionCard(props) {
                         })
                       : openModal(ModalType.nft, {
                           asset: {
-                            remoteFetch: true,
                             network,
                             standard: x.standard,
                             contractAddress: x.address,
                             tokenId: x.id,
+                            asset: {
+                              ...infoItem,
+                            },
                           },
                         });
                     e.stopPropagation();
