@@ -74,10 +74,16 @@ const RenderActivityFeeds = (props) => {
   }, [memoizedData, validTypes]);
   useEffect(() => {
     const batchFetchNFTs = async () => {
+      const diffIds =
+        nftInfos?.length > 0
+          ? nftIds.filter(
+              (x) => !nftInfos.some((i) => i.nft_id === x.toLowerCase())
+            )
+          : nftIds;
       const res = await SimplehashFetcher(
-        `${SIMPLEHASH_URL}/api/v0/nfts/assets?nft_ids=${nftIds.join(",")}`
+        `${SIMPLEHASH_URL}/api/v0/nfts/assets?nft_ids=${diffIds.join(",")}`
       );
-      setNftInfos(res?.nfts);
+      setNftInfos([...nftInfos, ...res?.nfts]);
     };
     if (nftIds?.length > 0) {
       batchFetchNFTs();
@@ -107,6 +113,7 @@ const RenderActivityFeeds = (props) => {
     );
   if (!isLoadingMore && !data?.length)
     return <Empty title="No Activities" text="Please try different filter" />;
+
   return (
     <div className="widget-feeds-container">
       <div className="feeds-list">

@@ -34,7 +34,6 @@ function useTalentCredentials(id: string) {
 }
 
 export default function TalentModalContent({ onClose, data }) {
-  console.log(data);
   const profile = data.passport_profile;
   const { data: credentials } = useTalentCredentials(data.passport_id);
   return (
