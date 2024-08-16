@@ -36,54 +36,51 @@ const RenderActivityFeeds = (props) => {
         .map((x) => ({
           ...x,
           actions: x.actions.filter((action) => {
-            if (action && validTypes.includes(action.type)) {
-              if (action.tag !== ActivityTag.social) {
-                if (
-                  [action.from, action.to].some((i) =>
-                    isSameAddress(i, x.owner)
-                  )
-                )
-                  return action;
-              } else {
-                return action;
-              }
-            }
+            if (!action || !validTypes.includes(action.type)) return false;
+            if (action.tag === ActivityTag.social) return true;
+            return [action.from, action.to].some((i) =>
+              isSameAddress(i, x.owner)
+            );
           }),
         }))
         .filter((x) => x.actions?.length > 0),
     [data, validTypes]
   );
   const nftIds = useMemo(() => {
-    if (validTypes === TagsFilterMapping.collectibles.types) {
-      const res = [] as any;
-      memoizedData.forEach((feed) => {
-        const network = feed.network;
-        feed.actions.forEach((action) => {
-          const metadata = action.metadata;
-          if (metadata) {
-            const id = `${network}.${metadata.address}.${metadata.id}`;
-            if (!res.includes(id)) {
-              res.push(id);
-            }
-          }
-        });
+    if (validTypes !== TagsFilterMapping.collectibles.types) return [];
+    const uniqueIds = new Set();
+    memoizedData.forEach((feed) => {
+      feed.actions.forEach((action) => {
+        const metadata = action.metadata;
+        if (metadata) {
+          const id = `${feed.network}.${metadata.address}.${metadata.id}`;
+          uniqueIds.add(id);
+        }
       });
+    });
 
-      return res.filter((x) => !!x);
-    }
+    return Array.from(uniqueIds) || [];
   }, [memoizedData, validTypes]);
   useEffect(() => {
     const batchFetchNFTs = async () => {
-      const diffIds =
-        nftInfos?.length > 0
-          ? nftIds.filter(
-              (x) => !nftInfos.some((i) => i.nft_id === x.toLowerCase())
-            )
-          : nftIds;
-      const res = await SimplehashFetcher(
-        `${SIMPLEHASH_URL}/api/v0/nfts/assets?nft_ids=${diffIds.join(",")}`
+      const existingIds = new Set(
+        nftInfos.map((info) => info.nft_id.toLowerCase())
       );
-      setNftInfos([...nftInfos, ...res?.nfts]);
+      const newIds = nftIds.filter(
+        (id: string) => !existingIds.has(id.toLowerCase())
+      );
+
+      if (newIds.length === 0) return;
+      try {
+        const res = await SimplehashFetcher(
+          `${SIMPLEHASH_URL}/api/v0/nfts/assets?nft_ids=${newIds.join(",")}`
+        );
+        if (res?.nfts) {
+          setNftInfos((prevInfos) => [...prevInfos, ...res.nfts]);
+        }
+      } catch (error) {
+        setNftInfos([]);
+      }
     };
     if (nftIds?.length > 0) {
       batchFetchNFTs();
