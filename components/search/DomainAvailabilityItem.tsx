@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { memo, useState } from "react";
-import Clipboard from "react-clipboard.js";
+import { memo } from "react";
 import SVG from "react-inlinesvg";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import _ from "lodash";
@@ -21,7 +20,7 @@ const PROFILE_PLATFORMS_SUPPORTED = [
   PlatformType.dotbit,
 ];
 
-const RenderDomainAvailableItem = (props) => {
+const RenderDomainAvailabilityItem = (props) => {
   const { data } = props;
   const shouldOpenProfile =
     data.status === DomainStatus.taken &&
@@ -29,7 +28,7 @@ const RenderDomainAvailableItem = (props) => {
   return (
     <div className="social-item">
       <div className="social-main">
-        <Link href={""} target="_blank" className="social">
+        <div className="social">
           <div
             className="icon"
             style={{
@@ -46,9 +45,9 @@ const RenderDomainAvailableItem = (props) => {
             />
           </div>
           <div className="title">{data.name}</div>
-          <div className={`domain-status ${data.status}`}>{data.status}</div>
-        </Link>
-        <div className={`actions ${shouldOpenProfile ? "active" : ""}`}>
+          <small className={`domain-status ${data.status}`}>{data.status}</small>
+        </div>
+        <div className={`actions${shouldOpenProfile ? " active" : ""}`}>
           <Link
             target={"_blank"}
             className="btn btn-sm btn-link action "
@@ -63,13 +62,13 @@ const RenderDomainAvailableItem = (props) => {
             title={
               shouldOpenProfile
                 ? `Open ${data.name} Profile Page`
-                : `Buy ${data.name}`
+                : `Register ${data.name}`
             }
             rel="noopener noreferrer"
           >
             <SVG src="icons/icon-open.svg" width={20} height={20} />
             <span className="hide-xs">
-              {shouldOpenProfile ? "Profile" : "Buy"}
+              {shouldOpenProfile ? "Profile" : "Register"}
             </span>
           </Link>
         </div>
@@ -78,4 +77,4 @@ const RenderDomainAvailableItem = (props) => {
   );
 };
 
-export const DomainAvailableItem = memo(RenderDomainAvailableItem);
+export const DomainAvailableItem = memo(RenderDomainAvailabilityItem);

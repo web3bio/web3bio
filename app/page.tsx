@@ -6,29 +6,34 @@ import { HomeFeatures } from "@/components/shared/HomeFeatures";
 import { Header } from "@/components/shared/Header";
 
 export async function generateMetadata({ searchParams }) {
-  const { s: searchTerm, platform } = searchParams;
+  const { s: searchTerm, platform, availability } = searchParams;
   const params = new URLSearchParams(searchParams);
   const path = searchTerm ? `/?${params.toString()}` : `/`;
+  console.log(searchParams);
 
   const defaultTitle =
     "Web3.bio - Web3 Identity Graph Search and Link in Bio Profile";
   const defaultDescription =
     "Web3.bio is a platform for Web3 and Web 2.0 Identity Graph search and link in bio profiles. It provides a list of relevant identities when searching for a Twitter handle, Ethereum address, ENS domain, Lens profile, Farcaster account, Unstoppable Domains, and other Web3 identities.";
 
-  const title = searchTerm
-    ? `${searchTerm} on ${
-        platform
-          ? SocialPlatformMapping(platform.toLowerCase()).label
-          : SocialPlatformMapping(handleSearchPlatform(searchTerm)).label
-      } - Web3.bio Identity Search`
-    : defaultTitle;
-  const description = searchTerm
-    ? `Search ${searchTerm} on ${
-        platform
-          ? SocialPlatformMapping(platform.toLowerCase()).label
-          : SocialPlatformMapping(handleSearchPlatform(searchTerm)).label
-      } to discover the Web3 decentralized profiles and identities associated with ${searchTerm}. Check out and explore the ${searchTerm} Web3 profile.`
-    : defaultDescription;
+  let title, description;
+
+  if (searchTerm) {
+    const platformLabel = platform
+      ? SocialPlatformMapping(platform.toLowerCase()).label
+      : SocialPlatformMapping(handleSearchPlatform(searchTerm)).label;
+
+    if (availability) {
+      title = `Check availability of ${searchTerm} - Web3.bio Identity Search`;
+      description = `Check availability of ${searchTerm} across multiple Web3 domains and social platforms like ENS, Farcaster, Lens, and other Web3 domain services.`;
+    } else {
+      title = `${searchTerm} on ${platformLabel} - Web3.bio Identity Search`;
+      description = `Search ${searchTerm} on ${platformLabel} to discover the Web3 decentralized profiles and identities associated with ${searchTerm}. Check out and explore the ${searchTerm} Web3 profile.`;
+    }
+  } else {
+    title = defaultTitle;
+    description = defaultDescription;
+  }
 
   return {
     title,
@@ -53,16 +58,14 @@ export async function generateMetadata({ searchParams }) {
   };
 }
 
-export default function HomePage({}) {
+export default function HomePage() {
   return (
-    <>
-      <div className="web3bio-container home-container">
-        <div className="web3bio-cover ui2"></div>
-        <Header />
-        <SearchPage />
-        <HomeFeatures />
-        <Footer />
-      </div>
-    </>
+    <div className="web3bio-container home-container">
+      <div className="web3bio-cover ui2"></div>
+      <Header />
+      <SearchPage />
+      <HomeFeatures />
+      <Footer />
+    </div>
   );
 }

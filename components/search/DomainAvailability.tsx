@@ -4,9 +4,8 @@ import { Empty } from "../shared/Empty";
 import { Error } from "../shared/Error";
 import { Loading } from "../shared/Loading";
 import { GET_AVAILABLE_DOMAINS } from "../utils/queries";
-import { DomainAvailableItem } from "./DomainAvailableItem";
+import { DomainAvailableItem } from "./DomainAvailabilityItem";
 import _ from "lodash";
-import { useRouter } from "next/navigation";
 
 export default function SearchResult({ searchTerm }) {
   const [getQuery, { loading, error, data: domains }] = useLazyQuery(
@@ -17,19 +16,20 @@ export default function SearchResult({ searchTerm }) {
       },
     }
   );
-  const router = useRouter();
 
   useEffect(() => {
     if (searchTerm) {
       getQuery();
     }
   }, [searchTerm, getQuery]);
+
   const sortedData = useMemo(() => {
     return _.sortBy(
       domains?.domainAvailableSearch,
       (x) => !x.name.includes(searchTerm)
     );
-  }, [domains?.domainAvailableSearch]);
+  }, [domains?.domainAvailableSearch, searchTerm]);
+
   if (loading)
     return (
       <Loading
@@ -40,6 +40,7 @@ export default function SearchResult({ searchTerm }) {
   if (error) return <Error retry={getQuery} text={error} />;
   if (searchTerm && domains?.domainAvailableSearch?.length === 0)
     return <Empty />;
+
   return (
     domains?.domainAvailableSearch?.length > 0 && (
       <div className="search-result">
@@ -47,18 +48,10 @@ export default function SearchResult({ searchTerm }) {
           <div className="search-result-text text-gray">
             Check domain availability:
           </div>
-          {/* <div
-            className="btn btn-primary"
-            onClick={() => {
-              router.push("/?s=" + searchTerm);
-            }}
-          >
-            Back to Search
-          </div> */}
         </div>
         <div className="search-result-body">
-          {sortedData.map((item, idx) => (
-            <DomainAvailableItem data={item} key={item.name + idx} />
+          {sortedData.map((item) => (
+            <DomainAvailableItem data={item} key={item.name + item.platform} />
           ))}
         </div>
       </div>

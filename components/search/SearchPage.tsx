@@ -9,7 +9,7 @@ import { regexBtc, regexSolana } from "../utils/regexp";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import SearchPageListener from "./SearchPageListener";
 import SearchResult from "./SearchResult";
-import DomainsSuggest from "./DomainsSuggest";
+import DomainAvailability from "./DomainAvailability";
 
 export const renderBadge = (platform, identity) => {
   return (
@@ -106,7 +106,7 @@ export default function SearchPage() {
             )}
           </div>
           {searchParams?.get("availability") ? (
-            <DomainsSuggest searchTerm={searchTerm} />
+            <DomainAvailability searchTerm={searchTerm} />
           ) : searchTerm ? (
             <SearchResult
               searchTerm={
