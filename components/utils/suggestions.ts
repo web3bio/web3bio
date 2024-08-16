@@ -19,7 +19,7 @@ import {
   regexUnstoppableDomains,
 } from "./regexp";
 
-// empty for twitter and farcaster
+// Empty for Twitter and Farcaster
 export const DefaultSearchSuffix = [
   {
     key: PlatformType.ens,
@@ -181,4 +181,3 @@ export const fuzzyDomainSuffix = [
     suffixes: null,
   },
 ];
-export const ArweaveAssetPrefix = "https://arweave.net/";

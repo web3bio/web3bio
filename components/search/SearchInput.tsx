@@ -75,7 +75,7 @@ export default function SearchInput(props) {
   const handleQueryChange = useCallback((e) => {
     const newQuery = e.target.value;
     setQuery(newQuery);
-    if (!newQuery || newQuery === defaultValue) {
+    if (!newQuery) {
       setSearchList([]);
     } else {
       setSearchList(getSearchSuggestions(newQuery.replaceAll("。", ".")));
@@ -133,12 +133,14 @@ export default function SearchInput(props) {
               key={x.label + idx}
               onClick={(e) => emitSubmit(e, x)}
             >
-              <SVG
-                fill="#121212"
-                src={x.icon || "icons/icon-search.svg"}
-                width={20}
-                height={20}
-              />
+              <div className="icon">
+                <SVG
+                  fill="#121212"
+                  src={x.icon || "icons/icon-search.svg"}
+                  width={20}
+                  height={20}
+                />
+              </div>
               <div className="search-list-item-label">{x.label}</div>
             </div>
           ))}

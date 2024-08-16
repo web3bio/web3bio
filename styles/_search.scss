@@ -127,6 +127,14 @@
         gap: .5rem;
         transition: all .2s ease;
 
+        .icon {
+          display: flex;
+          flex: 0 0 1rem;
+          height: 1rem;
+          justify-content: center;
+          width: 1rem;
+        }
+
         .search-list-item-label {
           max-width: 90%;
           text-overflow: ellipsis;
@@ -377,11 +385,17 @@
       }
 
       .domain-status {
+        align-items: center;
+        background: rgba($bg-color, .95);
         border: .05rem solid rgba($bg-color, .95);
         border-radius: .25rem;
-        padding: 0 .25rem;
+        display: inline-flex;
+        flex-wrap: nowrap;
+        gap: .1rem;
+        padding: 0 .15rem;
         font-size: .55rem;
         font-weight: 500;
+        line-height: .8rem;
         text-transform: uppercase;
 
         &.taken {

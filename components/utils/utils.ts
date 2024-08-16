@@ -29,7 +29,7 @@ import _ from "lodash";
 import {
   DefaultSearchSuffix,
   fuzzyDomainSuffix,
-} from "./constants";
+} from "./suggestions";
 import { SearchListItemType } from "../search/SearchInput";
 import GraphemeSplitter from "grapheme-splitter";
 import { NextResponse } from "next/server";
