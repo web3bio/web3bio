@@ -60,6 +60,10 @@
       &:focus {
         box-shadow: 0 .8rem 4rem rgba($dark-color, .25), 0 .05rem .2rem rgba($dark-color, .1);
       }
+
+      &.form-input-back {
+        padding-left: 2.8rem;
+      }
     }
 
     .form-button {
@@ -67,6 +71,15 @@
       padding: 0;
       position: absolute;
       right: .2rem;
+      top: .2rem;
+      width: 2rem;
+    }
+
+    .back-button {
+      height: 2rem;
+      left: .2rem;
+      padding: 0;
+      position: absolute;
       top: .2rem;
       width: 2rem;
     }
@@ -214,6 +227,20 @@
   box-shadow: 0 .05rem .2rem rgba($dark-color, .1);
   position: relative;
 
+  &.search-availability-result {
+    .social-main {
+      .social {
+        padding: 0;
+
+        .icon {
+          border: .05rem solid rgba($dark-color, .05);
+          height: 1.5rem;
+          width: 1.5rem;
+        }
+      }
+    }
+  }
+
   .search-result-header {
     display: flex;
     align-items: center;
@@ -239,7 +266,7 @@
   .search-result-body {
     display: flex;
     flex-direction: column;
-    gap: .4rem;
+    gap: .2rem;
     padding: 0 .4rem .4rem .4rem;
   }
 
@@ -344,34 +371,36 @@
       }
 
       .title {
-        margin-left: .5rem;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
       }
 
       .domain-status {
+        border: .05rem solid rgba($bg-color, .95);
         border-radius: .25rem;
         padding: 0 .25rem;
+        font-size: .55rem;
         font-weight: 500;
-        margin-left: .5rem;
         text-transform: uppercase;
 
         &.taken {
-          color: rgb(240, 85, 93);
           background-color: rgb(240, 85, 93, .1);
+          border-color: rgb(240, 85, 93, .1);
+          color: #f0555d;
         }
 
         &.available {
-          color: #007a39;
           background-color: rgb(113, 235, 170, .1);
+          border-color: rgb(113, 235, 170, .1);
+          color: #007a39;
         }
 
         &.protected {
-          color: rgb(65, 98, 226);
           background-color: rgb(65, 98, 226, .1);
+          border-color: rgb(65, 98, 226, .1);
+          color: #4162e2;
         }
-
       }
     }
 
@@ -478,14 +507,11 @@
   display: flex;
   flex: 1 1 auto;
   font-size: .6rem;
+  gap: .4rem;
   line-height: 1rem;
-  padding: .2rem .4rem;
+  padding: .2rem;
   text-decoration: none;
   transition: all .25s ease-in-out;
-
-  @media screen and (max-width: $size-sm) {
-    padding: .2rem 0;
-  }
 
   .icon {
     align-items: center;
@@ -504,7 +530,6 @@
     display: flex;
     flex: 1 1;
     flex-direction: column;
-    margin-left: .5rem;
     width: 12rem;
   }
 

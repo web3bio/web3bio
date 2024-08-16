@@ -25,8 +25,10 @@ const RenderDomainAvailabilityItem = (props) => {
   const shouldOpenProfile =
     data.status === DomainStatus.taken &&
     PROFILE_PLATFORMS_SUPPORTED.includes(data.platform);
+  const formattedExpiredAt = data.expiredAt ? new Date(parseInt(data.expiredAt) * 1000).toLocaleString() : '';
+
   return (
-    <div className="social-item">
+    <div className={`social-item ${data.status}`}>
       <div className="social-main">
         <div className="social">
           <div
@@ -45,7 +47,8 @@ const RenderDomainAvailabilityItem = (props) => {
             />
           </div>
           <div className="title">{data.name}</div>
-          <small className={`domain-status ${data.status}`}>{data.status}</small>
+          <div className={`domain-status ${data.status}`}>{data.status}</div>
+          <div className={`${data.expiredAt}`}>{formattedExpiredAt}</div>
         </div>
         <div className={`actions${shouldOpenProfile ? " active" : ""}`}>
           <Link

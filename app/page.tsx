@@ -9,7 +9,6 @@ export async function generateMetadata({ searchParams }) {
   const { s: searchTerm, platform, availability } = searchParams;
   const params = new URLSearchParams(searchParams);
   const path = searchTerm ? `/?${params.toString()}` : `/`;
-  console.log(searchParams);
 
   const defaultTitle =
     "Web3.bio - Web3 Identity Graph Search and Link in Bio Profile";

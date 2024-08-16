@@ -2,6 +2,7 @@
 import { useCallback, useMemo, useRef, useState } from "react";
 import SVG from "react-inlinesvg";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import {
   PlatformSystem,
   PlatformType,
@@ -23,9 +24,10 @@ export default function SearchInput(props) {
   const [activeIndex, setActiveIndex] = useState(-1);
   const searchParams = useSearchParams();
   const web2ScrollContainer = useRef<HTMLDivElement>(null);
-  
+  const availability = searchParams?.get("availability");
+
   const emitSubmit = useCallback((e, value?) => {
-    if (searchParams?.get("availability")) {
+    if (availability) {
       handleSubmit(query, "suggest");
       return;
     }
@@ -94,7 +96,7 @@ export default function SearchInput(props) {
         value={query}
         onChange={handleQueryChange}
         onKeyDown={onKeyDown}
-        className="form-input input-lg"
+        className={`form-input input-lg${availability ? " form-input-back" : ""}`}
         autoCorrect="off"
         autoComplete="off"
         autoFocus
@@ -112,6 +114,17 @@ export default function SearchInput(props) {
           className="icon"
         />
       </button>
+      {availability && <Link
+        className="back-button btn"
+        href={"/"}
+      >
+        <SVG
+          src="icons/icon-back.svg"
+          width={24}
+          height={24}
+          className="icon"
+        />
+      </Link>}
       {searchList.length > 0 && (
         <div className="search-list">
           {filteredWeb3List.map((x, idx) => (

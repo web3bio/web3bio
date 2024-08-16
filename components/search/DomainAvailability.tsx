@@ -43,7 +43,7 @@ export default function SearchResult({ searchTerm }) {
 
   return (
     domains?.domainAvailableSearch?.length > 0 && (
-      <div className="search-result">
+      <div className="search-result search-availability-result">
         <div className="search-result-header">
           <div className="search-result-text text-gray">
             Check domain availability:
