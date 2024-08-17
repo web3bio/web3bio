@@ -181,105 +181,69 @@ export const fuzzyDomainSuffix = [
 ];
 
 // Search suggestions for the search input
-const matchQuery = (query, index = 0) => {
+const matchQuery = (query: string, index = 0): string => {
   if (!query) return "";
-  return query.includes(".")
-    ? query.split(".")[index]
-    : query.includes("。")
-    ? query.split("。")[index]
-    : query;
+  const splitChar = query.includes(".") ? "." : "。";
+  return query.includes(splitChar) ? query.split(splitChar)[index] : query;
 };
 
-const isQuerySplit = (query: string) => {
-  return query.includes(".") || query.includes("。");
-};
+const isQuerySplit = (query: string): boolean => 
+  query.includes(".") || query.includes("。");
 
-export const getSearchSuggestions = (query) => {
+export const getSearchSuggestions = (query: string): SearchListItemType[] => {
   if (query.includes("/")) {
     const platformClusters = SocialPlatformMapping(PlatformType.clusters);
-    return [
-      {
-        key: PlatformType.clusters,
-        icon: platformClusters.icon,
-        label: query,
-        system: PlatformSystem.web3,
-      },
-    ];
+    return [{
+      key: PlatformType.clusters,
+      icon: platformClusters.icon,
+      label: query,
+      system: PlatformSystem.web3,
+    }];
   }
+
   const isLastDot = query[query.length - 1] === ".";
-  // address or query.x
-  if (
-    fuzzyDomainSuffix
-      .filter((x) => !x.suffixes)
-      .some((x) => x.match.test(query)) ||
-    (isQuerySplit(query) && !isLastDot)
-  ) {
+  const isAddress = fuzzyDomainSuffix.some(x => !x.suffixes && x.match.test(query));
+  
+  if (isAddress || (isQuerySplit(query) && !isLastDot)) {
     if (isLastDot) return [];
+
     const suffix = matchQuery(query, query.split(".").length - 1);
-    const backupDomains = fuzzyDomainSuffix
-      .filter(
-        (x) =>
-          x.match.test(query) || x.suffixes?.some((i) => i.startsWith(suffix))
-      )
-      .map((x) => {
-        if (
-          x.suffixes &&
-          !fuzzyDomainSuffix
-            .filter((x) => !x.suffixes)
-            .some((x) => x.match.test(query))
-        ) {
-          return {
-            key: x.key,
-            text:
-              query.replace(`.${suffix}`, "") +
-              "." +
-              x.suffixes?.find((i) => i.startsWith(suffix)),
-            icon: x.icon,
-            system: PlatformSystem.web3,
-          };
-        } else {
-          if (x.key !== PlatformType.farcaster)
-            return {
+    return fuzzyDomainSuffix
+      .filter(x => x.match.test(query) || (x.suffixes && x.suffixes.some(s => s.startsWith(suffix))))
+      .flatMap(x => {
+        if (x.suffixes && !isAddress) {
+          const matchedSuffix = x.suffixes.find(i => i.startsWith(suffix));
+          if (matchedSuffix) {
+            return [{
               key: x.key,
-              text: query,
               icon: x.icon,
+              label: query.replace(`.${suffix}`, "") + "." + matchedSuffix,
               system: PlatformSystem.web3,
-            };
-        }
-      });
-    return backupDomains.reduce((pre, cur) => {
-      if (cur?.key) {
-        pre.push({
-          key: cur.key,
-          icon: cur?.icon,
-          label: cur.text,
-          system: PlatformSystem.web3,
-        });
-      }
-      return pre;
-    }, new Array<SearchListItemType>());
-  } else {
-    return DefaultSearchSuffix.reduce((pre, cur) => {
-      const label = query + (cur.label ? `.${cur.label}` : "");
-
-      if (!isLastDot) {
-        pre.push({
-          key: cur.key,
-          icon: SocialPlatformMapping(cur.key).icon,
-          label: label,
-          system: cur.system,
-        });
-      } else {
-        if (cur.system === PlatformSystem.web3)
-          pre.push({
-            key: cur.key,
-            icon: SocialPlatformMapping(cur.key).icon,
-            label: `${query}${cur.label || cur.optional}`,
+            }];
+          }
+        } else if (x.key !== PlatformType.farcaster) {
+          return [{
+            key: x.key,
+            icon: x.icon,
+            label: query,
             system: PlatformSystem.web3,
-          });
-      }
-
-      return pre;
-    }, new Array<SearchListItemType>());
+          }];
+        }
+        return [];
+      });
+  } else {
+    return DefaultSearchSuffix
+      .flatMap(value => {
+        const label = query + (value.label ? `.${value.label}` : "");
+        if (!isLastDot || (isLastDot && value.system === PlatformSystem.web3)) {
+          return [{
+            key: value.key,
+            icon: SocialPlatformMapping(value.key).icon,
+            label: isLastDot ? `${query}${value.label || value.optional || ''}` : label,
+            system: value.system,
+          }];
+        }
+        return [];
+      });
   }
 };
