@@ -42,19 +42,23 @@ export default function SearchPage() {
   const handleSubmit = useCallback((value, platform?) => {
     setSearchTerm(value);
     const queryParams = new URLSearchParams();
-    queryParams.set('s', value);
-    if (platform === "suggest") {
-      queryParams.set('availability', 'true');
-    } else if (platform) {
-      queryParams.set('platform', platform);
+    if (platform === "domain") {
+      queryParams.set("domain", value);
+    } else if (value) {
+      queryParams.set("s", value);
+      if (platform) {
+        queryParams.set("platform", platform);
+      }
     }
     router.push(`/?${queryParams.toString()}`);
+    
     setSearchPlatform(platform || handleSearchPlatform(value));
     setSearchFocus(true);
   }, [router]);
 
   useEffect(() => {
     const query = searchParams?.get("s");
+    const domain = searchParams?.get("domain");
     if (query) {
       const _paramPlatform = searchParams?.get("platform");
       setSearchFocus(true);
@@ -63,6 +67,10 @@ export default function SearchPage() {
         : query.toLowerCase();
       setSearchTerm(searchKeyword);
       setSearchPlatform(_paramPlatform?.toLowerCase() || handleSearchPlatform(searchKeyword));
+    } else if (domain) {
+      setSearchFocus(true);
+      setSearchTerm(domain);
+      setSearchPlatform("domain");
     } else {
       setSearchFocus(false);
       setSearchTerm("");
@@ -105,7 +113,7 @@ export default function SearchPage() {
               </div>
             )}
           </div>
-          {searchParams?.get("availability") ? (
+          {searchParams?.get("domain") ? (
             <DomainAvailability searchTerm={searchTerm} />
           ) : searchTerm ? (
             <SearchResult

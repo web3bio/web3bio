@@ -149,7 +149,7 @@
       }
 
       .search-list-item-active {
-        background: rgba($dark-color, .05);
+        background: rgba($dark-color, .1);
       }
     }
   }
@@ -386,7 +386,7 @@
 
       .domain-status {
         align-items: center;
-        background: rgba($bg-color, .95);
+        background: rgba($bg-color-light, .5);
         border: .05rem solid rgba($bg-color, .95);
         border-radius: .25rem;
         display: inline-flex;

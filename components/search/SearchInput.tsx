@@ -24,25 +24,17 @@ export default function SearchInput(props) {
   const [activeIndex, setActiveIndex] = useState(-1);
   const searchParams = useSearchParams();
   const web2ScrollContainer = useRef<HTMLDivElement>(null);
-  const availability = searchParams?.get("availability");
+  const domain = searchParams?.get("domain");
 
   const emitSubmit = useCallback((e, value?) => {
-    if (availability) {
-      handleSubmit(query, "suggest");
-      return;
-    }
-
     const platform = value?.key && [PlatformType.farcaster, PlatformType.bitcoin].includes(value.key) || value?.system === PlatformSystem.web2
       ? value.key
       : "";
-
     const _value = typeof value === "string" ? value : value?.label || "";
-
-    if (_value && _value === searchParams?.get("s")) {
-      setQuery(_value);
-    }
     handleSubmit(_value, platform);
-  }, [query, searchParams, handleSubmit]);
+    setQuery(_value);
+    setSearchList([]);
+  }, [searchParams, handleSubmit]);
 
   const onKeyDown = useCallback((e) => {
     if (e.key === "Enter") {
@@ -96,7 +88,7 @@ export default function SearchInput(props) {
         value={query}
         onChange={handleQueryChange}
         onKeyDown={onKeyDown}
-        className={`form-input input-lg${availability ? " form-input-back" : ""}`}
+        className={`form-input input-lg${domain ? " form-input-back" : ""}`}
         autoCorrect="off"
         autoComplete="off"
         autoFocus
@@ -114,7 +106,7 @@ export default function SearchInput(props) {
           className="icon"
         />
       </button>
-      {availability && <Link
+      {domain && <Link
         className="back-button btn"
         href={"/"}
       >
@@ -179,7 +171,7 @@ export default function SearchInput(props) {
                   onClick={(e) => {
                     emitSubmit(e, {
                       label: query,
-                      key: "suggest",
+                      key: "domain",
                       system: PlatformSystem.web2,
                     });
                   }}
