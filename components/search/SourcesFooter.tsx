@@ -1,14 +1,14 @@
 import { memo } from "react";
-import { SocialPlatformMapping } from "../utils/platform";
+import { getSourceInfo } from "../utils/sources";
 
 export const RenderSourceFooter = ({ sources }) => {
   return (
     (sources?.length > 0 && (
       <div className="social-footer">
-        Data source:
+        Data sources:
         {sources.map((source) => (
-          <span key={source} className="ml-1">
-            {SocialPlatformMapping(source).label}
+          <span key={source} className="ml-1" title={getSourceInfo(source).description}>
+            {getSourceInfo(source).name}
           </span>
         ))}
       </div>

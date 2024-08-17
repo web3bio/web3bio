@@ -130,7 +130,7 @@ const RenderAccount = (props) => {
   const resolveSources = (id: string) => {
     return identityGraph.edges.reduce((pre, x) => {
       if (x.target === id) {
-        const label = SocialPlatformMapping(x.dataSource)?.label;
+        const label = x.dataSource;
         if (label && !pre.includes(label)) {
           pre.push(label);
         }

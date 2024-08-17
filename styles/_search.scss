@@ -329,7 +329,11 @@
     }
 
     &.first {
-      order: -2
+      order: -2;
+
+      .social-footer {
+        display: none;
+      }
     }
 
     &.ethereum,
@@ -445,7 +449,7 @@
       align-items: center;
       background: linear-gradient(-135deg, rgba($dark-color, .05), transparent);
       border-radius: .1rem;
-      color: $gray-color;
+      color: $gray-color-dark;
       display: none;
       font-size: .6rem;
       height: .6rem;
@@ -455,6 +459,7 @@
       right: 0;
       top: -.2rem;
     }
+
   }
 
   .nfts {
