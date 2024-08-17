@@ -8,29 +8,28 @@ import {
   PlatformType,
   SocialPlatformMapping,
 } from "../utils/platform";
-import { getSearchSuggestions } from "../utils/suggestions";
+import { getSearchSuggestions, SearchListItemType } from "../utils/suggestions";
 
-export type SearchListItemType = {
-  key: PlatformType;
-  label: string;
-  system?: PlatformSystem;
-  icon?: string;
-};
-
+// Search input component
 export default function SearchInput(props) {
   const { defaultValue, handleSubmit, inputRef } = props;
   const [query, setQuery] = useState(defaultValue);
   const [searchList, setSearchList] = useState<Array<SearchListItemType>>([]);
   const [activeIndex, setActiveIndex] = useState(-1);
   const searchParams = useSearchParams();
-  const web2ScrollContainer = useRef<HTMLDivElement>(null);
   const domain = searchParams?.get("domain");
 
   const emitSubmit = useCallback((e, value?) => {
+    const _value = typeof value === "string" ? value : value?.label || "";
+    if (domain) {
+      handleSubmit(_value, "domain");
+      setQuery(_value);
+      setSearchList([]);
+      return;
+    }
     const platform = value?.key && [PlatformType.farcaster, PlatformType.bitcoin].includes(value.key) || value?.system === PlatformSystem.web2
       ? value.key
       : "";
-    const _value = typeof value === "string" ? value : value?.label || "";
     handleSubmit(_value, platform);
     setQuery(_value);
     setSearchList([]);
@@ -139,10 +138,7 @@ export default function SearchInput(props) {
           {
             <>
               <li className="divider" />
-              <div
-                ref={web2ScrollContainer}
-                className={"search-web2-list noscrollbar"}
-              >
+              <div className={"search-web2-list noscrollbar"}>
                 {shouldShowWeb2List && (
                   <>
                     {filteredWeb2List.map((x) => {
@@ -167,7 +163,7 @@ export default function SearchInput(props) {
                 )}
 
                 <div
-                  className="btn suggest-btn"
+                  className="btn btn-sm suggest-btn"
                   onClick={(e) => {
                     emitSubmit(e, {
                       label: query,
@@ -176,6 +172,11 @@ export default function SearchInput(props) {
                     });
                   }}
                 >
+                  <SVG
+                    src={"icons/icon-suggestion.svg"}
+                    width={20}
+                    height={20}
+                  />
                   Check Availability
                 </div>
               </div>

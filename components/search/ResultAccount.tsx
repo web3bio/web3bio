@@ -149,7 +149,7 @@ const RenderAccount = (props) => {
             Identity Graph results:
           </div>
           {identityGraph?.nodes.length > 0 && (
-            <div
+            <button
               className="btn btn-link btn-sm"
               onClick={() => {
                 openModal(ModalType.graph, {
@@ -168,7 +168,7 @@ const RenderAccount = (props) => {
             >
               <SVG src={"/icons/icon-view.svg"} width={20} height={20} />{" "}
               Visualize
-            </div>
+            </button>
           )}
         </div>
         <div className="search-result-body">

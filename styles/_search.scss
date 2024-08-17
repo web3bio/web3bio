@@ -103,7 +103,9 @@
       .search-web2-list {
         align-items: center;
         display: flex;
+        flex-wrap: nowrap;
         gap: .25rem;
+        height: 2rem;
         padding: 0;
         width: 100%;
 

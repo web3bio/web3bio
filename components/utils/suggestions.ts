@@ -18,7 +18,13 @@ import {
   regexSpaceid,
   regexUnstoppableDomains,
 } from "./regexp";
-import { SearchListItemType } from "../search/SearchInput";
+
+export type SearchListItemType = {
+  key: PlatformType;
+  label: string;
+  system?: PlatformSystem;
+  icon?: string;
+};
 
 // Empty for Twitter and Farcaster
 export const DefaultSearchSuffix = [
@@ -113,7 +119,7 @@ export const fuzzyDomainSuffix = [
       "anime",
       "go",
       "manga",
-      "eth",
+      // "eth", // already in ens
       "altimist",
       "pudgy",
       "austin",
@@ -127,7 +133,6 @@ export const fuzzyDomainSuffix = [
       "com",
     ],
   },
-
   {
     key: PlatformType.space_id,
     icon: SocialPlatformMapping(PlatformType.space_id).icon,
@@ -191,6 +196,9 @@ const isQuerySplit = (query: string): boolean =>
   query.includes(".") || query.includes("。");
 
 export const getSearchSuggestions = (query: string): SearchListItemType[] => {
+  if (query.startsWith("/") || query.startsWith(".")) {
+    return [];
+  }
   if (query.includes("/")) {
     const platformClusters = SocialPlatformMapping(PlatformType.clusters);
     return [{
@@ -202,16 +210,17 @@ export const getSearchSuggestions = (query: string): SearchListItemType[] => {
   }
 
   const isLastDot = query[query.length - 1] === ".";
-  const isAddress = fuzzyDomainSuffix.some(x => !x.suffixes && x.match.test(query));
   
-  if (isAddress || (isQuerySplit(query) && !isLastDot)) {
+  if (fuzzyDomainSuffix
+    .filter((x) => !x.suffixes)
+    .some((x) => x.match.test(query)) || (isQuerySplit(query) && !isLastDot)) {
     if (isLastDot) return [];
 
     const suffix = matchQuery(query, query.split(".").length - 1);
     return fuzzyDomainSuffix
       .filter(x => x.match.test(query) || (x.suffixes && x.suffixes.some(s => s.startsWith(suffix))))
       .flatMap(x => {
-        if (x.suffixes && !isAddress) {
+        if (x.suffixes) {
           const matchedSuffix = x.suffixes.find(i => i.startsWith(suffix));
           if (matchedSuffix) {
             return [{
