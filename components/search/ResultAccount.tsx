@@ -64,7 +64,7 @@ const RenderAccount = (props) => {
     let _resolved = _identityGraph.nodes.filter((x) => {
       return !domainSkipMap.some((i) => i.ns === x.platform);
     });
-    //clusters resolution
+    // Clusters resolution
     if (
       _resolved.filter((x) => x.platform === PlatformType.clusters).length > 1
     ) {

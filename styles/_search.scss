@@ -144,12 +144,13 @@
 
         &:focus,
         &:hover {
-          background: rgba($dark-color, .05);
+          background: rgba($dark-color, .03);
         }
-      }
 
-      .search-list-item-active {
-        background: rgba($dark-color, .1);
+        &:active,
+        &.active {
+          background: rgba($dark-color, .075);
+        }
       }
     }
   }
@@ -187,7 +188,7 @@
     cursor: pointer;
     color: rgba($dark-color, .9);
     align-items: center;
-    background-color: rgba($light-color, .75);
+    background-color: rgba($light-color, .8);
     border: .05rem solid rgba($gray-color-light, .15);
     border-radius: .35rem;
     box-shadow: 0 .05rem .1rem rgba($dark-color, .05);

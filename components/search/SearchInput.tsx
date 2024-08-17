@@ -8,7 +8,7 @@ import {
   PlatformType,
   SocialPlatformMapping,
 } from "../utils/platform";
-import { getSearchSuggestions } from "../utils/utils";
+import { getSearchSuggestions } from "../utils/suggestions";
 
 export type SearchListItemType = {
   key: PlatformType;
@@ -73,7 +73,7 @@ export default function SearchInput(props) {
       setSearchList(getSearchSuggestions(newQuery.replaceAll("。", ".")));
     }
     setActiveIndex(-1);
-  }, [defaultValue]);
+  }, []);
 
   const shouldShowWeb2List = useMemo(() => 
     ![".", "。", "/"].some(x => query.includes(x)) && query.length < 25,
@@ -121,7 +121,7 @@ export default function SearchInput(props) {
         <div className="search-list">
           {filteredWeb3List.map((x, idx) => (
             <div
-              className={`search-list-item${activeIndex === idx ? " search-list-item-active" : ""}`}
+              className={`search-list-item${activeIndex === idx ? " active" : ""}`}
               key={x.label + idx}
               onClick={(e) => emitSubmit(e, x)}
             >
@@ -152,7 +152,7 @@ export default function SearchInput(props) {
                           id={x.key}
                           onClick={() => emitSubmit(null, { ...x, label: query, system: PlatformSystem.web2 })}
                           key={x.key}
-                          className={`search-list-item${activeIndex === activeIdx ? " search-list-item-active" : ""}`}
+                          className={`search-list-item${activeIndex === activeIdx ? " active" : ""}`}
                         >
                           <SVG
                             fill="#121212"
