@@ -59,7 +59,7 @@ export default function ProfileMain(props) {
     }
   );
   const dispatch = useDispatch();
-  const { isOpen, modalType, closeModal, openModal, params } = useModal();
+  const { isOpen, type, closeModal, openModal, params } = useModal();
   const [mounted, setMounted] = useState(false);
   const profileWidgetStates = useSelector<AppState, WidgetState>(
     (state) => state.widgets
@@ -351,7 +351,7 @@ export default function ProfileMain(props) {
               </div>
             )}
 
-            <div className="profile-actions" style={{display: "none"}}>
+            <div className="profile-actions">
               <div className="btn-group">
                 <button
                   className={`profile-share btn btn-lg active`}
@@ -362,13 +362,13 @@ export default function ProfileMain(props) {
                         ...data,
                         avatar: fallbackAvatar?.avatar,
                       },
-                      tipEmoji: tipEmoji,
-                      tipObject: tipObject,
+                      tipEmoji,
+                      tipObject,
                     });
                   }}
                 >
-                  <span className="btn-emoji mr-1">{tipEmoji || "💸"}</span>
-                  {tipObject ? `Buy Me a ${tipObject}` : "Tip"}
+                  <span className="btn-emoji mr-1">{"💸"}</span>
+                  {"Tip"}
                 </button>
               </div>
             </div>
@@ -539,7 +539,7 @@ export default function ProfileMain(props) {
       </div>
       <ProfileFooter />
       {isOpen && (
-        <Modal params={params} onDismiss={closeModal} modalType={modalType} />
+        <Modal params={params} onDismiss={closeModal} modalType={type} />
       )}
     </>
   );

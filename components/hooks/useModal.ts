@@ -19,26 +19,29 @@ export enum ModalType {
   talent = 'talent'
 }
 
-const useModal = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [modalType, setModalType] = useState<ModalType>(ModalType.common);
-  const [params, setParams] = useState<any>(null);
+interface ModalState {
+  isOpen: boolean;
+  type: ModalType;
+  params: any | null;
+}
 
-  const openModal = (modalType, params) => {
-    setIsOpen(true);
-    setModalType(modalType);
-    setParams(params);
+const useModal = () => {
+  const [modalState, setModalState] = useState<ModalState>({
+    isOpen: false,
+    type: ModalType.common,
+    params: null
+  });
+
+  const openModal = (type: ModalType, params: any) => {
+    setModalState({ isOpen: true, type, params });
   };
 
   const closeModal = () => {
-    setIsOpen(false);
-    setModalType(ModalType.common);
+    setModalState({ isOpen: false, type: ModalType.common, params: null });
   };
 
   return {
-    params,
-    isOpen,
-    modalType,
+    ...modalState,
     openModal,
     closeModal,
   };

@@ -1,7 +1,7 @@
 "use client";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import SVG from "react-inlinesvg";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   PlatformSystem,
@@ -16,6 +16,7 @@ export default function SearchInput(props) {
   const [query, setQuery] = useState(defaultValue);
   const [searchList, setSearchList] = useState<Array<SearchListItemType>>([]);
   const [activeIndex, setActiveIndex] = useState(-1);
+  const router = useRouter();
   const searchParams = useSearchParams();
   const domain = searchParams?.get("domain");
 
@@ -105,9 +106,10 @@ export default function SearchInput(props) {
           className="icon"
         />
       </button>
-      {domain && <Link
+      {domain && <button
         className="back-button btn"
-        href={"/"}
+        onClick={() => {router.push(`/`);}}
+        aria-label="Go back to home"
       >
         <SVG
           src="icons/icon-back.svg"
@@ -115,7 +117,7 @@ export default function SearchInput(props) {
           height={24}
           className="icon"
         />
-      </Link>}
+      </button>}
       {searchList.length > 0 && (
         <div className="search-list">
           {filteredWeb3List.map((x, idx) => (

@@ -17,7 +17,7 @@ export default function WalletProfileMain(props) {
   const { data, domain } = props;
   const [isCopied, setIsCopied] = useState(false);
   const [curProfile, setCurProfile] = useState(data?.[0] || data);
-  const { isOpen, modalType, closeModal, openModal, params } = useModal();
+  const { isOpen, type, closeModal, openModal, params } = useModal();
   const router = useRouter();
 
   const onCopySuccess = () => {
@@ -209,7 +209,7 @@ export default function WalletProfileMain(props) {
         </Link>
       </div>
       {isOpen && (
-        <Modal params={params} onDismiss={closeModal} modalType={modalType} />
+        <Modal params={params} onDismiss={closeModal} type={type} />
       )}
       {isCopied && (
         <div className="web3bio-toast">

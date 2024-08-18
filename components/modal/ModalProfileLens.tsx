@@ -157,6 +157,7 @@ export default function LensProfile(props) {
             >
               <SVG
                 src={"icons/icon-firefly.svg"}
+                fill="#fff"
                 width={20}
                 height={20}
                 className="mr-1"

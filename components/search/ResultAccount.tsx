@@ -22,7 +22,7 @@ const getNSAddress = (item) => {
 
 const RenderAccount = (props) => {
   const { identityGraph, graphTitle, platform } = props;
-  const { isOpen, modalType, closeModal, openModal, params } = useModal();
+  const { isOpen, type, closeModal, openModal, params } = useModal();
   const profiles = useProfiles();
 
   const resolvedListData = useMemo(() => {
@@ -180,7 +180,7 @@ const RenderAccount = (props) => {
         </div>
       </div>
       {isOpen && (
-        <Modal params={params} onDismiss={closeModal} modalType={modalType} />
+        <Modal params={params} onDismiss={closeModal} modalType={type} />
       )}
     </>
   );
