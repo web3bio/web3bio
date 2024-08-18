@@ -26,6 +26,7 @@ export default function PoapsModalContent({ onClose, asset }) {
         <div className="platform-icon">
           <SVG
             src={`../${SocialPlatformMapping(PlatformType.poap)?.icon}`}
+            fill="#fff"
             width={14}
             height={14}
           />

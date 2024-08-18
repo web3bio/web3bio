@@ -24,6 +24,7 @@ export default function DegenscoreModalContent({ onClose, degenscore, profile })
         <div className="platform-icon">
           <SVG
             src={`../${SocialPlatformMapping(PlatformType.degenscore)?.icon}`}
+            fill="#fff"
             width={14}
             height={14}
           />

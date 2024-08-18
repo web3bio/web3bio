@@ -38,6 +38,7 @@ export default function LensProfile(props) {
           <div className="platform-icon">
             <SVG
               src={`../${SocialPlatformMapping(PlatformType.lens)?.icon}`}
+              fill="#fff"
               width={14}
               height={14}
             />

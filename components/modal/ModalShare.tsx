@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
 import Image from "next/image";
 import SVG from "react-inlinesvg";
 import Clipboard from "react-clipboard.js";
@@ -46,13 +46,6 @@ export default function ShareModalContent(props) {
   const url = `${
     process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio"
   }/${path}`;
-  const [isCopied, setIsCopied] = useState(false);
-  const onCopySuccess = () => {
-    setIsCopied(true);
-    setTimeout(() => {
-      setIsCopied(false);
-    }, 1500);
-  };
 
   const params = new URLSearchParams();
   if (path) params.append("path", path);
@@ -134,9 +127,7 @@ export default function ShareModalContent(props) {
             onSuccess={handleCopySuccess}
           >
             <SVG
-              src={
-                isCopied ? "../icons/icon-check.svg" : "../icons/icon-copy.svg"
-              }
+              src={"../icons/icon-copy.svg"}
               width={20}
               height={20}
               className="action"

@@ -85,6 +85,7 @@ export default function GuildModalContent({ onClose, guild, profile }) {
           <div className="platform-icon">
             <SVG
               src={`../${SocialPlatformMapping(PlatformType.guild)?.icon}`}
+              fill="#fff"
               width={14}
               height={14}
             />

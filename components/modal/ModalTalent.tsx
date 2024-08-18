@@ -56,6 +56,7 @@ export default function TalentModalContent({ onClose, data }) {
           <div className="platform-icon">
             <SVG
               src={`../${SocialPlatformMapping(PlatformType.talent)?.icon}`}
+              fill="#fff"
               width={14}
               height={14}
             />

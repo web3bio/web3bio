@@ -67,6 +67,7 @@ export default function SnapshotModalContent({ onClose, space, profile }) {
           <div className="platform-icon">
             <SVG
               src={`../${SocialPlatformMapping(PlatformType.snapshot)?.icon}`}
+              fill="#fff"
               width={14}
               height={14}
             />

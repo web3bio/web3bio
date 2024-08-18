@@ -66,6 +66,7 @@ export default function FarcasterProfile(props) {
           <div className="platform-icon">
             <SVG
               src={`../${SocialPlatformMapping(PlatformType.farcaster)?.icon}`}
+              fill="#fff"
               width={14}
               height={14}
             />

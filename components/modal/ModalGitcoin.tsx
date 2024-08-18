@@ -46,6 +46,7 @@ export default function GitcoinModalContent({ onClose, passport, profile }) {
         <div className="platform-icon">
           <SVG
             src={`../${SocialPlatformMapping(PlatformType.gitcoin)?.icon}`}
+            fill="#fff"
             width={14}
             height={14}
           />
