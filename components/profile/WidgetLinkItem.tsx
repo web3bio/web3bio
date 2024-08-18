@@ -1,25 +1,34 @@
 import Link from "next/link";
-import { memo, useState } from "react";
+import { memo, useCallback } from "react";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
 import { SocialPlatformMapping } from "../utils/platform";
 import { colorMod } from "../utils/utils";
+import toast from "react-hot-toast";
 
 const WidgetItem = (props) => {
-  const onCopySuccess = () => {
-    setIsCopied(true);
-    setTimeout(() => {
-      setIsCopied(false);
-    }, 1500);
-  };
   const { item, displayName, openModal } = props;
-  const [isCopied, setIsCopied] = useState(false);
+  const handleCopySuccess = useCallback(() => {
+    toast.custom(
+      <div className="toast">
+        <SVG
+          src="../icons/icon-copy.svg"
+          width={24}
+          height={24}
+          className="action mr-2"
+        />
+        Copied to clipboard
+      </div>
+    );
+  }, []);
+
   const WidgetContent = (() => {
     return (
       <>
         <div className="platform-icon">
           <SVG
             src={`../${SocialPlatformMapping(item.platform)?.icon}`}
+            fill={"#fff"}
             width={20}
             height={20}
             title={"Social Icon"}
@@ -60,16 +69,13 @@ const WidgetItem = (props) => {
                 src={
                   item.link
                     ? "icons/icon-open.svg"
-                    : !isCopied
-                    ? "icons/icon-copy.svg"
-                    : "icons/icon-check.svg"
+                    : "icons/icon-copy.svg"
                 }
                 width={20}
                 height={20}
               />
             }
           </div>
-          {isCopied && <div className="tooltip-copy">COPIED</div>}
         </div>
       </>
     );
@@ -106,7 +112,7 @@ const WidgetItem = (props) => {
     <Clipboard
       component="div"
       data-clipboard-text={item.handle}
-      onSuccess={onCopySuccess}
+      onSuccess={handleCopySuccess}
       className={`profile-widget profile-widget-link ${item.platform}`}
       style={{
         ["--widget-primary-color" as string]: SocialPlatformMapping(
