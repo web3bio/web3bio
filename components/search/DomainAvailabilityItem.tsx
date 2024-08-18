@@ -30,7 +30,6 @@ const RenderDomainAvailabilityItem = (props) => {
     data.status === DomainStatus.available &&
     data.expiredAt
   
-
   return (
     <div className={`social-item ${data.status}`}>
       <div className="social-main">
