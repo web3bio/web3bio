@@ -78,9 +78,9 @@ export default function NFTModalContentRender(props) {
 
   const attributes = _asset.extra_metadata?.attributes || [];
   const mediaURL =
-    fetchedAsset?.video_url ||
-    fetchedAsset?.previews?.image_large_url ||
-    fetchedAsset?.image_url ||
+    _asset?.video_url ||
+    _asset?.previews?.image_large_url ||
+    _asset?.image_url ||
     asset.mediaURL;
   return (
     <>

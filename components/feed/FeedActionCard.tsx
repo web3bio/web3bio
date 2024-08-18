@@ -16,6 +16,7 @@ function RenderFeedActionCard(props) {
     overridePlatform,
     openModal,
     network,
+    nftInfos,
     platform: feedPlatform,
   } = props;
   const renderData = useMemo(() => {
@@ -32,6 +33,7 @@ function RenderFeedActionCard(props) {
       checkEmojis,
       attachments,
     } = props;
+
     const MediasRender = useMemo(() => {
       if (attachments?.medias?.filter((x) => x)?.length > 0) {
         return (
@@ -43,9 +45,17 @@ function RenderFeedActionCard(props) {
             }`}
           >
             {attachments.medias?.map((x, cIdx) => {
+              let infoItem = null as any;
+              if (nftInfos?.length > 0) {
+                const idIndex = `${network}.${x.address}.${x.id}`;
+                infoItem = nftInfos.find(
+                  (x) => x.nft_id === idIndex.toLowerCase()
+                );
+              }
+              const nftImageUrl = infoItem?.previews?.image_medium_url;
               return isImage(x.mime_type) ||
                 isVideo(x.mime_type) ||
-                x.standard ? (
+                nftImageUrl ? (
                 <NFTAssetPlayer
                   key={`${cIdx}_media_image`}
                   onClick={(e) => {
@@ -56,18 +66,20 @@ function RenderFeedActionCard(props) {
                         })
                       : openModal(ModalType.nft, {
                           asset: {
-                            remoteFetch: true,
                             network,
                             standard: x.standard,
                             contractAddress: x.address,
                             tokenId: x.id,
+                            asset: {
+                              ...infoItem,
+                            },
                           },
                         });
                     e.stopPropagation();
                     e.preventDefault();
                   }}
                   className="feed-content-img"
-                  src={resolveMediaURL(x.standard ? x.image_url : x.address)}
+                  src={resolveMediaURL(x.standard ? nftImageUrl : x.address)}
                   type={x.mime_type || "image/png"}
                   width="auto"
                   height="auto"
@@ -186,14 +198,22 @@ function RenderFeedActionCard(props) {
     const ObjectsRender = useMemo(() => {
       return objects
         ?.filter((i) => !!i)
-        .map((i, idx) => (
-          <RenderObjects
-            key={`object_${idx}`}
-            openModal={openModal}
-            data={i}
-            network={network}
-          />
-        ));
+        .map((i, idx) => {
+          let infoItem = null;
+          if (nftInfos?.length > 0) {
+            const idIndex = `${network}.${i.address}.${i.id}`;
+            infoItem = nftInfos.find((x) => x.nft_id === idIndex.toLowerCase());
+          }
+          return (
+            <RenderObjects
+              nftInfo={infoItem}
+              key={`object_${idx}`}
+              openModal={openModal}
+              data={i}
+              network={network}
+            />
+          );
+        });
     }, [objects]);
     const ProfilesRender = useMemo(() => {
       if (attachments?.profiles?.length > 0) {
@@ -240,7 +260,6 @@ function RenderFeedActionCard(props) {
       </>
     );
   };
-  
   return (
     <div className="feed-item-body">
       {renderData

@@ -372,12 +372,13 @@ export const ActionStructMapping = (action, owner) => {
         };
         break;
       }
+
       verb = ActivityTypeData[action.type].action[metadata.action || "default"];
       objects = action.duplicatedObjects || [metadata];
       platform = action.platform;
       attachments = {
-        medias: (action.duplicatedObjects || [metadata]).filter(
-          (x) => [1155, 721].includes(x.standard) && x.image_url
+        medias: (action.duplicatedObjects || [metadata]).filter((x) =>
+          ["ERC-1155", "ERC-721"].includes(x.standard)
         ),
       };
       break;
@@ -447,11 +448,7 @@ export const TagsFilterMapping = {
   ["collectibles"]: {
     label: "Collectibles",
     filters: [ActivityTag.collectible, ActivityTag.metaverse],
-    types: [
-      ActivityType.mint,
-      ActivityType.trade,
-      ActivityType.transfer,
-    ],
+    types: [ActivityType.mint, ActivityType.trade, ActivityType.transfer],
   },
 };
 
