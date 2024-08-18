@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Image from "next/image";
 import SVG from "react-inlinesvg";
 import Clipboard from "react-clipboard.js";
 import { downloadVCard } from "../utils/vcard";
+import toast from "react-hot-toast";
 
 const shareMap = [
   {
@@ -63,6 +64,20 @@ export default function ShareModalContent(props) {
     ? `/api/og?${params.toString()}`
     : "/api/og";
 
+  const handleCopySuccess = useCallback(() => {
+    toast.custom(
+      <div className="toast">
+        <SVG
+          src="../icons/icon-copy.svg"
+          width={24}
+          height={24}
+          className="action mr-2"
+        />
+        Copied to clipboard
+      </div>
+    );
+  }, []);
+
   return (
     <>
       <div className="modal-actions">
@@ -116,7 +131,7 @@ export default function ShareModalContent(props) {
             className="btn input-group-btn"
             key="share_copy"
             data-clipboard-text={url}
-            onSuccess={onCopySuccess}
+            onSuccess={handleCopySuccess}
           >
             <SVG
               src={
@@ -146,20 +161,6 @@ export default function ShareModalContent(props) {
           Download Profile vCard
         </div>
       </div>
-
-      {isCopied && (
-        <div className="web3bio-toast">
-          <div className="toast">
-            <SVG
-              src="../icons/icon-copy.svg"
-              width={24}
-              height={24}
-              className="action mr-2"
-            />
-            Copied to clipboard
-          </div>
-        </div>
-      )}
     </>
   );
 }
