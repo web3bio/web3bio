@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import SVG from "react-inlinesvg";
 import SearchInput from "./SearchInput";
 import { handleSearchPlatform, formatText } from "../utils/utils";
@@ -9,6 +9,7 @@ import { regexBtc, regexSolana } from "../utils/regexp";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import SearchPageListener from "./SearchPageListener";
 import SearchResult from "./SearchResult";
+import DomainAvailability from "./DomainAvailability";
 
 export const renderBadge = (platform, identity) => {
   return (
@@ -25,9 +26,7 @@ export const renderBadge = (platform, identity) => {
           src={SocialPlatformMapping(platform).icon || ""}
         />
       </div>
-      <span className="platform-badge-name">
-        {formatText(identity)}
-      </span>
+      <span className="platform-badge-name">{formatText(identity)}</span>
     </Link>
   );
 };
@@ -39,32 +38,45 @@ export default function SearchPage() {
   const searchParams = useSearchParams();
   const inputRef = useRef(null);
   const router = useRouter();
-  const handleSubmit = (value, platform?) => {
+  
+  const handleSubmit = useCallback((value, platform?) => {
     setSearchTerm(value);
-    router.push(`/?s=${value}${platform ? "&platform=" + platform : ""}`);
+    const queryParams = new URLSearchParams();
+    if (platform === "domain") {
+      queryParams.set("domain", value);
+    } else if (value) {
+      queryParams.set("s", value);
+      if (platform) {
+        queryParams.set("platform", platform);
+      }
+    }
+    router.push(`/?${queryParams.toString()}`);
+    
     setSearchPlatform(platform || handleSearchPlatform(value));
     setSearchFocus(true);
-  };
+  }, [router]);
+
   useEffect(() => {
-    if (searchParams?.get("s")) {
-      const query = searchParams.get("s") || "";
-      const _paramPlatform = searchParams.get("platform");
+    const query = searchParams?.get("s");
+    const domain = searchParams?.get("domain");
+    if (query) {
+      const _paramPlatform = searchParams?.get("platform");
       setSearchFocus(true);
-      const searchkeyword = [regexSolana, regexBtc].some((x) => x.test(query))
+      const searchKeyword = [regexSolana, regexBtc].some((x) => x.test(query))
         ? query
         : query.toLowerCase();
-      setSearchTerm(searchkeyword);
-      if (!_paramPlatform) {
-        setSearchPlatform(handleSearchPlatform(searchkeyword));
-      } else {
-        setSearchPlatform(_paramPlatform.toLowerCase());
-      }
+      setSearchTerm(searchKeyword);
+      setSearchPlatform(_paramPlatform?.toLowerCase() || handleSearchPlatform(searchKeyword));
+    } else if (domain) {
+      setSearchFocus(true);
+      setSearchTerm(domain);
+      setSearchPlatform("domain");
     } else {
       setSearchFocus(false);
       setSearchTerm("");
       setSearchPlatform("");
     }
-  }, [router, searchParams]);
+  }, [searchParams]);
 
   return (
     <>
@@ -76,9 +88,7 @@ export default function SearchPage() {
             <div className="form-label">
               Web3 Identity Search
               <br />
-              <small>
-                Dive into the Web3 Identity Graph and Profiles
-              </small>
+              <small>Dive into the Web3 Identity Graph and Profiles</small>
             </div>
             <div className="form-input-group">
               <SearchInput
@@ -91,16 +101,21 @@ export default function SearchPage() {
             </div>
             {!searchTerm && (
               <div className="search-badges">
-                <div className="search-badges-title mr-2">Trending: {" "}</div>
+                <div className="search-badges-title mr-2">Trending: </div>
                 {renderBadge(PlatformType.ens, "vitalik.eth")}
-                {renderBadge(PlatformType.ethereum, "0xd8da6bf26964af9d7eed9e03e53415d37aa96045")}
+                {renderBadge(
+                  PlatformType.ethereum,
+                  "0xd8da6bf26964af9d7eed9e03e53415d37aa96045"
+                )}
                 {renderBadge(PlatformType.farcaster, "dwr.eth")}
                 {renderBadge(PlatformType.lens, "stani.lens")}
                 {renderBadge(PlatformType.twitter, "suji_yan")}
               </div>
             )}
           </div>
-          {searchPlatform && (
+          {searchParams?.get("domain") ? (
+            <DomainAvailability searchTerm={searchTerm} />
+          ) : searchTerm ? (
             <SearchResult
               searchTerm={
                 searchTerm.endsWith(".farcaster")
@@ -109,7 +124,7 @@ export default function SearchPage() {
               }
               searchPlatform={searchPlatform}
             />
-          )}
+          ) : null}
         </div>
         <SearchPageListener inputRef={inputRef} />
       </div>

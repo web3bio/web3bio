@@ -41,11 +41,10 @@ import WidgetPOAP from "./WidgetPoap";
 import WidgetGuild from "./WidgetGuild";
 import WidgetSnapshot from "./WidgetSnapshot";
 import WidgetTally from "./WidgetTally";
+import toast from "react-hot-toast";
 
 export default function ProfileMain(props) {
-  const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
-    props;
-  const [isCopied, setIsCopied] = useState(false);
+  const { data, pageTitle, platform, relations, domain, fallbackAvatar } = props;
   const { tipObject, tipEmoji } = useTipEmoji();
   const [links, setLinks] = useState(data?.links);
   const [getQuery, { loading, error, data: identityGraph }] = useLazyQuery(
@@ -123,10 +122,7 @@ export default function ProfileMain(props) {
       );
     }
   }, [domain, platform, identityGraph, getQuery, mounted, data?.links]);
-  const onCopySuccess = useCallback(() => {
-    setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 1500);
-  }, []);
+
   const isEmptyProfile = useMemo(() => {
     const loadedWidgets = Object.values(profileWidgetStates).filter(
       (x) => x.loaded
@@ -141,6 +137,20 @@ export default function ProfileMain(props) {
   const isBasicLoadingFinished = useMemo(() => {
     return profileWidgetStates.nft.loaded && profileWidgetStates.feeds.loaded;
   }, [profileWidgetStates]);
+
+  const handleCopySuccess = useCallback(() => {
+    toast.custom(
+      <div className="toast">
+        <SVG
+          src="../icons/icon-copy.svg"
+          width={24}
+          height={24}
+          className="action mr-2"
+        />
+        Copied to clipboard
+      </div>
+    );
+  }, []);
 
   if (!data || data.error) {
     return (
@@ -216,7 +226,7 @@ export default function ProfileMain(props) {
                     component="div"
                     className="btn btn-sm"
                     data-clipboard-text={data.address}
-                    onSuccess={onCopySuccess}
+                    onSuccess={handleCopySuccess}
                     title="Copy this wallet address"
                   >
                     <SVG
@@ -254,7 +264,7 @@ export default function ProfileMain(props) {
                   component="div"
                   className={`platform-badge nextid active c-hand`}
                   data-clipboard-text={domain}
-                  onSuccess={onCopySuccess}
+                  onSuccess={handleCopySuccess}
                   title="Copy the Next.ID address"
                   style={{
                     ["--badge-primary-color" as string]:
@@ -530,19 +540,6 @@ export default function ProfileMain(props) {
       <ProfileFooter />
       {isOpen && (
         <Modal params={params} onDismiss={closeModal} modalType={modalType} />
-      )}
-      {isCopied && (
-        <div className="web3bio-toast">
-          <div className="toast">
-            <SVG
-              src="../icons/icon-copy.svg"
-              width={24}
-              height={24}
-              className="action mr-2"
-            />
-            Copied to clipboard
-          </div>
-        </div>
       )}
     </>
   );

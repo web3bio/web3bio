@@ -60,6 +60,10 @@
       &:focus {
         box-shadow: 0 .8rem 4rem rgba($dark-color, .25), 0 .05rem .2rem rgba($dark-color, .1);
       }
+
+      &.form-input-back {
+        padding-left: 2.8rem;
+      }
     }
 
     .form-button {
@@ -67,6 +71,15 @@
       padding: 0;
       position: absolute;
       right: .2rem;
+      top: .2rem;
+      width: 2rem;
+    }
+
+    .back-button {
+      height: 2rem;
+      left: .2rem;
+      padding: 0;
+      position: absolute;
       top: .2rem;
       width: 2rem;
     }
@@ -90,8 +103,15 @@
       .search-web2-list {
         align-items: center;
         display: flex;
+        flex-wrap: nowrap;
         gap: .25rem;
+        height: 2rem;
+        padding: 0;
         width: 100%;
+
+        .suggest-btn {
+          margin-left: auto;
+        }
 
         .search-list-item {
           flex: 0 0 2rem;
@@ -109,6 +129,14 @@
         gap: .5rem;
         transition: all .2s ease;
 
+        .icon {
+          display: flex;
+          flex: 0 0 1rem;
+          height: 1rem;
+          justify-content: center;
+          width: 1rem;
+        }
+
         .search-list-item-label {
           max-width: 90%;
           text-overflow: ellipsis;
@@ -118,12 +146,13 @@
 
         &:focus,
         &:hover {
-          background: rgba($dark-color, .05);
+          background: rgba($dark-color, .03);
         }
-      }
 
-      .search-list-item-active {
-        background: rgba($dark-color, .05);
+        &:active,
+        &.active {
+          background: rgba($dark-color, .075);
+        }
       }
     }
   }
@@ -161,7 +190,7 @@
     cursor: pointer;
     color: rgba($dark-color, .9);
     align-items: center;
-    background-color: rgba($light-color, .75);
+    background-color: rgba($light-color, .8);
     border: .05rem solid rgba($gray-color-light, .15);
     border-radius: .35rem;
     box-shadow: 0 .05rem .1rem rgba($dark-color, .05);
@@ -189,7 +218,7 @@
       padding: .05rem;
       width: .9rem;
     }
-  
+
     .platform-badge-name {
       flex: 1 1 auto;
       line-height: .9rem;
@@ -208,6 +237,20 @@
   border-radius: $border-radius;
   box-shadow: 0 .05rem .2rem rgba($dark-color, .1);
   position: relative;
+
+  &.search-availability-result {
+    .social-main {
+      .social {
+        padding: 0;
+
+        .icon {
+          border: .05rem solid rgba($dark-color, .05);
+          height: 1.5rem;
+          width: 1.5rem;
+        }
+      }
+    }
+  }
 
   .search-result-header {
     display: flex;
@@ -234,7 +277,7 @@
   .search-result-body {
     display: flex;
     flex-direction: column;
-    gap: .4rem;
+    gap: .2rem;
     padding: 0 .4rem .4rem .4rem;
   }
 
@@ -286,7 +329,11 @@
     }
 
     &.first {
-      order: -2
+      order: -2;
+
+      .social-footer {
+        display: none;
+      }
     }
 
     &.ethereum,
@@ -339,10 +386,42 @@
       }
 
       .title {
-        margin-left: .5rem;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+      }
+
+      .domain-status {
+        align-items: center;
+        background: rgba($bg-color-light, .5);
+        border: .05rem solid rgba($bg-color, .95);
+        border-radius: .25rem;
+        display: inline-flex;
+        flex-wrap: nowrap;
+        gap: .1rem;
+        padding: 0 .15rem;
+        font-size: .55rem;
+        font-weight: 500;
+        line-height: .8rem;
+        text-transform: uppercase;
+
+        &.taken {
+          background-color: rgb(240, 85, 93, .1);
+          border-color: rgb(240, 85, 93, .1);
+          color: #f0555d;
+        }
+
+        &.available {
+          background-color: rgb(113, 235, 170, .1);
+          border-color: rgb(113, 235, 170, .1);
+          color: #007a39;
+        }
+
+        &.protected {
+          background-color: rgb(65, 98, 226, .1);
+          border-color: rgb(65, 98, 226, .1);
+          color: #4162e2;
+        }
       }
     }
 
@@ -370,7 +449,7 @@
       align-items: center;
       background: linear-gradient(-135deg, rgba($dark-color, .05), transparent);
       border-radius: .1rem;
-      color: $gray-color;
+      color: $gray-color-dark;
       display: none;
       font-size: .6rem;
       height: .6rem;
@@ -380,6 +459,7 @@
       right: 0;
       top: -.2rem;
     }
+
   }
 
   .nfts {
@@ -449,14 +529,11 @@
   display: flex;
   flex: 1 1 auto;
   font-size: .6rem;
+  gap: .4rem;
   line-height: 1rem;
-  padding: .2rem .4rem;
+  padding: .2rem;
   text-decoration: none;
   transition: all .25s ease-in-out;
-
-  @media screen and (max-width: $size-sm) {
-    padding: .2rem 0;
-  }
 
   .icon {
     align-items: center;
@@ -475,7 +552,6 @@
     display: flex;
     flex: 1 1;
     flex-direction: column;
-    margin-left: .5rem;
     width: 12rem;
   }
 

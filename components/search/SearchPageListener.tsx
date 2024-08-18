@@ -1,22 +1,20 @@
-import { useEffect } from "react";
-import _ from "lodash";
+import { useEffect, useCallback } from "react";
 
 export default function SearchPageListener({ inputRef }) {
-  useEffect(() => {
-    const onKeyDown = (e) => {
-      if ((e.ctrlKey && e.keyCode === 75) || (e.metaKey && e.keyCode === 75)) {
-        window.scrollTo(0, 0);
-        inputRef.current.focus();
-      }
-    };
-
-    const debounced = _.debounce(onKeyDown, 500, { maxWait: 500 });
-
-    if (inputRef?.current) {
-      document.body.addEventListener("keydown", debounced);
+  const onKeyDown = useCallback((e: KeyboardEvent) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      e.preventDefault();
+      window.scrollTo(0, 0);
+      inputRef.current?.focus();
     }
-
-    return () => document.body.removeEventListener("keydown", debounced);
   }, [inputRef]);
+
+  useEffect(() => {
+    if (inputRef?.current) {
+      document.body.addEventListener("keydown", onKeyDown);
+      return () => document.body.removeEventListener("keydown", onKeyDown);
+    }
+  }, [inputRef, onKeyDown]);
+
   return null;
 }
