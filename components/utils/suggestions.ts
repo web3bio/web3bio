@@ -19,13 +19,6 @@ import {
   regexUnstoppableDomains,
 } from "./regexp";
 
-export type SearchListItemType = {
-  key: PlatformType;
-  label: string;
-  system?: PlatformSystem;
-  icon?: string;
-};
-
 // Empty for Twitter and Farcaster
 export const DefaultSearchSuffix = [
   {
@@ -192,67 +185,83 @@ const matchQuery = (query: string, index = 0): string => {
   return query.includes(splitChar) ? query.split(splitChar)[index] : query;
 };
 
-const isQuerySplit = (query: string): boolean => 
+const isQuerySplit = (query: string): boolean =>
   query.includes(".") || query.includes("。");
 
-export const getSearchSuggestions = (query: string): SearchListItemType[] => {
+export const getSearchSuggestions = (query: string) => {
   if (query.startsWith("/") || query.startsWith(".")) {
     return [];
   }
   if (query.includes("/")) {
     const platformClusters = SocialPlatformMapping(PlatformType.clusters);
-    return [{
-      key: PlatformType.clusters,
-      icon: platformClusters.icon,
-      label: query,
-      system: PlatformSystem.web3,
-    }];
+    return [
+      {
+        key: PlatformType.clusters,
+        icon: platformClusters.icon,
+        label: query,
+        system: PlatformSystem.web3,
+      },
+    ];
   }
 
   const isLastDot = query[query.length - 1] === ".";
-  
-  if (fuzzyDomainSuffix
-    .filter((x) => !x.suffixes)
-    .some((x) => x.match.test(query)) || (isQuerySplit(query) && !isLastDot)) {
+
+  if (
+    fuzzyDomainSuffix
+      .filter((x) => !x.suffixes)
+      .some((x) => x.match.test(query)) ||
+    (isQuerySplit(query) && !isLastDot)
+  ) {
     if (isLastDot) return [];
 
     const suffix = matchQuery(query, query.split(".").length - 1);
     return fuzzyDomainSuffix
-      .filter(x => x.match.test(query) || (x.suffixes && x.suffixes.some(s => s.startsWith(suffix))))
-      .flatMap(x => {
+      .filter(
+        (x) =>
+          x.match.test(query) ||
+          (x.suffixes && x.suffixes.some((s) => s.startsWith(suffix)))
+      )
+      .flatMap((x) => {
         if (x.suffixes) {
-          const matchedSuffix = x.suffixes.find(i => i.startsWith(suffix));
+          const matchedSuffix = x.suffixes.find((i) => i.startsWith(suffix));
           if (matchedSuffix) {
-            return [{
-              key: x.key,
-              icon: x.icon,
-              label: query.replace(`.${suffix}`, "") + "." + matchedSuffix,
-              system: PlatformSystem.web3,
-            }];
+            return [
+              {
+                key: x.key,
+                icon: x.icon,
+                label: query.replace(`.${suffix}`, "") + "." + matchedSuffix,
+                system: PlatformSystem.web3,
+              },
+            ];
           }
         } else if (x.key !== PlatformType.farcaster) {
-          return [{
-            key: x.key,
-            icon: x.icon,
-            label: query,
-            system: PlatformSystem.web3,
-          }];
+          return [
+            {
+              key: x.key,
+              icon: x.icon,
+              label: query,
+              system: PlatformSystem.web3,
+            },
+          ];
         }
         return [];
       });
   } else {
-    return DefaultSearchSuffix
-      .flatMap(value => {
-        const label = query + (value.label ? `.${value.label}` : "");
-        if (!isLastDot || (isLastDot && value.system === PlatformSystem.web3)) {
-          return [{
+    return DefaultSearchSuffix.flatMap((value) => {
+      const label = query + (value.label ? `.${value.label}` : "");
+      if (!isLastDot || (isLastDot && value.system === PlatformSystem.web3)) {
+        return [
+          {
             key: value.key,
             icon: SocialPlatformMapping(value.key).icon,
-            label: isLastDot ? `${query}${value.label || value.optional || ''}` : label,
+            label: isLastDot
+              ? `${query}${value.label || value.optional || ""}`
+              : label,
             system: value.system,
-          }];
-        }
-        return [];
-      });
+          },
+        ];
+      }
+      return [];
+    });
   }
 };

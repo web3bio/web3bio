@@ -110,6 +110,10 @@
         width: 100%;
 
         .suggest-btn {
+          &.active-suggest{
+            background: $dark-color;
+            color: $light-color
+          }
           margin-left: auto;
         }
 

@@ -235,7 +235,7 @@ function RenderFeedActionCard(props) {
           </Link>
         ));
       }
-    }, []);
+    }, [attachments?.targets]);
     const ObjectsRender = useMemo(() => {
       return objects
         ?.filter((i) => !!i)
