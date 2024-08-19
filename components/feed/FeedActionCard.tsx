@@ -27,38 +27,37 @@ function RenderFeedActionCard(props) {
   } = props;
   const renderData = useMemo(() => {
     const res = actions.map((x) => ({ ...ActionStructMapping(x, owner) }));
-    if (tag === ActivityTag.collectible) {
-      const uniqAttachments = [] as string[];
-      res.forEach((x) => {
-        if (x.type === ActivityType.transfer) {
-          x.attachments.medias.forEach((i) => {
-            const uniqId = `${i.address}-${i.id}`;
-            if (!uniqAttachments.includes(uniqId)) {
-              uniqAttachments.push(uniqId);
-            }
-          });
-        }
-      });
-      return res.map((x, idx) => {
-        return x.verb === "Transferred"
-          ? {
-              ...x,
-              attachments:
-                idx === res.length - 1
-                  ? {
-                      medias: _.uniqBy(
-                        x.attachments.medias,
-                        (i) => `${i.address}-${i.id}`
-                      ),
-                    }
-                  : {
-                      medias: [],
-                    },
-            }
-          : x;
-      });
-    }
-    return res;
+    if (tag !== ActivityTag.collectible) return res;
+
+    const uniqAttachments = new Set();
+    res.forEach((x) => {
+      if (x.type === ActivityType.transfer) {
+        x.attachments.medias.forEach((i) => {
+          const uniqId = `${i.address}-${i.id}`;
+          if (!uniqAttachments.has(uniqId)) {
+            uniqAttachments.add(uniqId);
+          }
+        });
+      }
+    });
+    return res.map((x, idx) => {
+      return x.verb === "Transferred"
+        ? {
+            ...x,
+            attachments:
+              idx === res.length - 1
+                ? {
+                    medias: _.uniqBy(
+                      x.attachments.medias,
+                      (i) => `${i.address}-${i.id}`
+                    ),
+                  }
+                : {
+                    medias: [],
+                  },
+          }
+        : x;
+    });
   }, [actions, owner, tag]);
 
   const ActionContent = (props) => {
