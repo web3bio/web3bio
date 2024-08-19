@@ -22,13 +22,14 @@ const PROFILE_PLATFORMS_SUPPORTED = [
 
 const RenderDomainAvailabilityItem = (props) => {
   const { data } = props;
+  
+  const formattedExpiredAt = data.status === DomainStatus.taken && (data.expiredAt ? new Date(parseInt(data.expiredAt) * 1000).toLocaleDateString() : false);
   const shouldOpenProfile =
     data.status === DomainStatus.taken &&
     PROFILE_PLATFORMS_SUPPORTED.includes(data.platform);
-  const formattedExpiredAt = data.status === DomainStatus.taken && (data.expiredAt ? new Date(parseInt(data.expiredAt) * 1000).toLocaleDateString() : false);
   const shouldDisplayRegister =
     data.status === DomainStatus.available &&
-    data.expiredAt
+    Boolean(SocialPlatformMapping(data.platform).registerlink);
   
   return (
     <div className={`social-item ${data.status}`}>
@@ -61,29 +62,32 @@ const RenderDomainAvailabilityItem = (props) => {
           </div>}
         </div>
         <div className={`actions active`}>
-          <Link
-            target={"_blank"}
-            className="btn btn-sm btn-link action "
-            href={
-              shouldOpenProfile
-                ? `/${data.name}`
-                : `${SocialPlatformMapping(data.platform)?.urlPrefix}${
-                    data.name
-                  }`
-            }
-            prefetch={false}
-            title={
-              shouldOpenProfile
-                ? `Open ${data.name} Profile Page`
-                : `Register ${data.name}`
-            }
-            rel="noopener noreferrer"
-          >
-            <SVG src="icons/icon-open.svg" width={20} height={20} />
-            <span className="hide-xs">
-              {shouldOpenProfile ? "Profile" : "Register"}
-            </span>
-          </Link>
+          {shouldDisplayRegister && (
+            <Link
+              className="btn btn-sm btn-link action "
+              href={`${SocialPlatformMapping(data.platform).registerlink}${data.name}`}
+              prefetch={false}
+              title={`Register ${data.name}`}
+              target={"_blank"}
+              rel="noopener noreferrer"
+            >
+              <SVG src="icons/icon-wallet.svg" width={20} height={20} />
+              <span className="hide-xs">Register</span>
+            </Link>
+          )}
+          {shouldOpenProfile && (
+            <Link
+              className="btn btn-sm btn-link action "
+              href={`/${data.name}`}
+              prefetch={false}
+              title={`Open ${data.name} Profile Page`}
+              target={"_blank"}
+              rel="noopener noreferrer"
+            >
+              <SVG src="icons/icon-open.svg" width={20} height={20} />
+              <span className="hide-xs">Profile</span>
+            </Link>
+          )}
         </div>
       </div>
     </div>

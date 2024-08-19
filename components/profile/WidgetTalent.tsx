@@ -1,7 +1,7 @@
 "use client";
 import { memo, useEffect, useMemo } from "react";
 import useSWR from "swr";
-import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
+import { WidgetInfoMapping, WidgetType } from "../utils/widgets";
 import { useDispatch } from "react-redux";
 import { updateTalentWidget } from "../state/widgets/reducer";
 import { TALENT_API_ENDPOINT, talentFetcher } from "../apis";
@@ -67,9 +67,9 @@ const RenderWidgetTalent = ({ profile, openModal }) => {
       <div className="profile-widget-header">
         <h2 className="profile-widget-title">
           <span className="emoji-large mr-2">
-            {WidgetInfoMapping(WidgetTypes.talent).icon}{" "}
+            {WidgetInfoMapping(WidgetType.talent).icon}{" "}
           </span>
-          {WidgetInfoMapping(WidgetTypes.talent).title}{" "}
+          {WidgetInfoMapping(WidgetType.talent).title}{" "}
         </h2>
       </div>
       <div className="profile-widget-body"></div>

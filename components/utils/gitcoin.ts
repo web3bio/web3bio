@@ -51,7 +51,6 @@ export enum GitcoinPassport {
 export const gitcoinPassportMapping = (key: GitcoinPassport) => {
   return {
     [GitcoinPassport.beginnerCommunityStaker]: {
-      key: GitcoinPassport.beginnerCommunityStaker,
       weight: 1.513,
       label: "Beginner Community Staker",
       icon: "gtcStakingLogoIcon.svg",
@@ -59,7 +58,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.brightId]: {
-      key: GitcoinPassport.brightId,
       weight: 0.802,
       label: "Verified BrightID",
       icon: "brightidStampIcon.svg",
@@ -67,7 +65,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.civicCaptcha]: {
-      key: GitcoinPassport.civicCaptcha,
       weight: 1.014,
       label: "Civic CAPTCHA Pass",
       icon: "civicStampIcon.svg",
@@ -75,7 +72,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Biometric Verification",
     },
     [GitcoinPassport.civicLiveness]: {
-      key: GitcoinPassport.civicLiveness,
       weight: 3.004,
       label: "Civic Liveness Pass",
       icon: "civicStampIcon.svg",
@@ -83,7 +79,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Biometric Verification",
     },
     [GitcoinPassport.civicUniqueness]: {
-      key: GitcoinPassport.civicUniqueness,
       weight: 6.005,
       label: "Civic Uniqueness Pass",
       icon: "civicStampIcon.svg",
@@ -91,7 +86,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Biometric Verification",
     },
     [GitcoinPassport.coinbaseDual]: {
-      key: GitcoinPassport.coinbaseDual,
       weight: 16.042,
       label: "Coinbase Verified ID",
       icon: "coinbaseStampIcon.svg",
@@ -99,7 +93,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Government ID",
     },
     [GitcoinPassport.discord]: {
-      key: GitcoinPassport.discord,
       weight: 0.516,
       label: "Verified Discord Account",
       icon: "discordStampIcon.svg",
@@ -107,7 +100,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Social & Professional",
     },
     [GitcoinPassport.ens]: {
-      key: GitcoinPassport.ens,
       weight: 0.408,
       label: "Verified Primary ENS",
       icon: "ensStampIcon.svg",
@@ -115,7 +107,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.ethEnthusiast]: {
-      key: GitcoinPassport.ethEnthusiast,
       weight: 10.012,
       label: "ETH Enthusiast",
       icon: "ethereumStampIcon.svg",
@@ -123,7 +114,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.ethAdvocate]: {
-      key: GitcoinPassport.ethAdvocate,
       weight: 2.001,
       label: "ETH Advocate",
       icon: "ethereumStampIcon.svg",
@@ -131,7 +121,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.ethMaxi]: {
-      key: GitcoinPassport.ethMaxi,
       weight: 2.009,
       label: "ETH Maxi",
       icon: "ethereumStampIcon.svg",
@@ -139,7 +128,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.ethActive50Days]: {
-      key: GitcoinPassport.ethActive50Days,
       weight: 0.507,
       label: "50+ days ETH activity",
       icon: "ethereumStampIcon.svg",
@@ -147,7 +135,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.ethTransactionsOver100]: {
-      key: GitcoinPassport.ethTransactionsOver100,
       weight: 0.51,
       label: "100+ ETH transactions",
       icon: "ethereumStampIcon.svg",
@@ -155,7 +142,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.ethGasMoreThan025]: {
-      key: GitcoinPassport.ethGasMoreThan025,
       weight: 1.003,
       label: "ETH gas > 0.25",
       icon: "ethereumStampIcon.svg",
@@ -163,7 +149,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.gitcoinGrants10]: {
-      key: GitcoinPassport.gitcoinGrants10,
       weight: 0.523,
       label: "Contributed $10+",
       icon: "gtcGrantsLightIcon.svg",
@@ -171,7 +156,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.gitcoinGrants100]: {
-      key: GitcoinPassport.gitcoinGrants100,
       weight: 2.017,
       label: "Contributed $100+",
       icon: "gtcGrantsLightIcon.svg",
@@ -179,7 +163,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.gitcoinGrants1000]: {
-      key: GitcoinPassport.gitcoinGrants1000,
       weight: 5.018,
       label: "Contributed $1000+",
       icon: "gtcGrantsLightIcon.svg",
@@ -187,7 +170,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.githubActivity30]: {
-      key: GitcoinPassport.githubActivity30,
       weight: 2.02,
       label: "30+ days GitHub activity",
       icon: "githubWhiteStampIcon.svg",
@@ -195,7 +177,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Social & Professional",
     },
     [GitcoinPassport.githubActivity60]: {
-      key: GitcoinPassport.githubActivity60,
       weight: 2.021,
       label: "60+ days GitHub activity",
       icon: "githubWhiteStampIcon.svg",
@@ -203,7 +184,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Social & Professional",
     },
     [GitcoinPassport.githubActivity120]: {
-      key: GitcoinPassport.githubActivity120,
       weight: 3.019,
       label: "120+ days GitHub activity",
       icon: "githubWhiteStampIcon.svg",
@@ -211,7 +191,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Social & Professional",
     },
     [GitcoinPassport.gnosisSafe]: {
-      key: GitcoinPassport.gnosisSafe,
       weight: 0.822,
       label: "Gnosis Safe Signer/Owner",
       icon: "gnosisSafeStampIcon.svg",
@@ -219,7 +198,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.google]: {
-      key: GitcoinPassport.google,
       weight: 0.525,
       label: "Verified Google Account",
       icon: "googleStampIcon.svg",
@@ -227,7 +205,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Social & Professional",
     },
     [GitcoinPassport.experiencedCommunityStaker]: {
-      key: GitcoinPassport.experiencedCommunityStaker,
       weight: 2.515,
       label: "Experienced Community Staker",
       icon: "gtcStakingLogoIcon.svg",
@@ -235,7 +212,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.trustedCitizen]: {
-      key: GitcoinPassport.trustedCitizen,
       weight: 4.041,
       label: "Trusted Citizen",
       icon: "gtcStakingLogoIcon.svg",
@@ -243,7 +219,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.trustaLabs]: {
-      key: GitcoinPassport.trustaLabs,
       weight: 0.511,
       label: "TrustScan Non-Sybil Account",
       icon: "trustaLabsStampIcon.svg",
@@ -251,7 +226,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.selfStakingBronze]: {
-      key: GitcoinPassport.selfStakingBronze,
       weight: 1.036,
       label: "Self Staking Bronze",
       icon: "gtcStakingLogoIcon.svg",
@@ -259,7 +233,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.selfStakingSilver]: {
-      key: GitcoinPassport.selfStakingSilver,
       weight: 2.038,
       label: "Self Staking Silver",
       icon: "gtcStakingLogoIcon.svg",
@@ -267,7 +240,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.selfStakingGold]: {
-      key: GitcoinPassport.selfStakingGold,
       weight: 3.037,
       label: "Self Staking Gold",
       icon: "gtcStakingLogoIcon.svg",
@@ -275,7 +247,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.guildAdmin]: {
-      key: GitcoinPassport.guildAdmin,
       weight: 0.724,
       label: "Guild Admin",
       icon: "guildXYZStampIcon.svg",
@@ -283,7 +254,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.guildMember]: {
-      key: GitcoinPassport.guildMember,
       weight: 0.54,
       label: "Gitcoin Passport Guild Member",
       icon: "guildXYZStampIcon.svg",
@@ -291,7 +261,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.holonymGovIdProvider]: {
-      key: GitcoinPassport.holonymGovIdProvider,
       weight: 16.026,
       label: "Holonym Government ID",
       icon: "holonymStampIcon.svg",
@@ -299,7 +268,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Government ID",
     },
     [GitcoinPassport.idenaStateHuman]: {
-      key: GitcoinPassport.idenaStateHuman,
       weight: 2.027,
       label: "Idena Identity State - Human",
       icon: "idenaStampIcon.svg",
@@ -307,7 +275,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.idenaStateNewbie]: {
-      key: GitcoinPassport.idenaStateHuman,
       weight: 6.028,
       label: "Idena Identity State - Newbie",
       icon: "idenaStampIcon.svg",
@@ -315,7 +282,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.idenaStateVerified]: {
-      key: GitcoinPassport.idenaStateHuman,
       weight: 2.029,
       label: "Idena Identity State - Verified",
       icon: "idenaStampIcon.svg",
@@ -323,7 +289,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.lens]: {
-      key: GitcoinPassport.lens,
       weight: 0.93,
       label: "Verified Lens Handle",
       icon: "lensWhiteStampIcon.svg",
@@ -331,7 +296,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.linkdein]: {
-      key: GitcoinPassport.linkdein,
       weight: 1.531,
       label: "Verified LinkedIn Account",
       icon: "linkedinStampIcon.svg",
@@ -339,7 +303,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Social & Professional",
     },
     [GitcoinPassport.nft]: {
-      key: GitcoinPassport.nft,
       weight: 1.032,
       label: "NFT Holder",
       icon: "nftStampIcon.svg",
@@ -347,7 +310,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.nftScore50]: {
-      key: GitcoinPassport.nftScore50,
       weight: 10.033,
       label: "Digital Collector",
       icon: "nftStampIcon.svg",
@@ -355,7 +317,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.nftScore75]: {
-      key: GitcoinPassport.nftScore75,
       weight: 2.034,
       label: "Art Aficionado",
       icon: "nftStampIcon.svg",
@@ -363,7 +324,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.nftScore90]: {
-      key: GitcoinPassport.nftScore90,
       weight: 2.035,
       label: "NFT Visionary",
       icon: "nftStampIcon.svg",
@@ -371,7 +331,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.snapshotProposalsProvider]: {
-      key: GitcoinPassport.snapshotProposalsProvider,
       weight: 0.839,
       label: "Snapshot Proposal Creator",
       icon: "snapshotStampIcon.svg",
@@ -379,7 +338,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.zkSyncEra]: {
-      key: GitcoinPassport.zkSyncEra,
       weight: 0.606,
       label: "Verified Transactor",
       icon: "zksyncStampIcon.svg",
@@ -387,7 +345,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.zkSyncScore20]: {
-      key: GitcoinPassport.zkSyncScore20,
       weight: 1.67,
       label: "Engagement Explorer",
       icon: "zksyncStampIcon.svg",
@@ -395,7 +352,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.zkSyncScore50]: {
-      key: GitcoinPassport.zkSyncScore50,
       weight: 1.67,
       label: "Blockchain Believer",
       icon: "zksyncStampIcon.svg",
@@ -403,7 +359,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.zkSyncScore5]: {
-      key: GitcoinPassport.zkSyncScore5,
       weight: 1.67,
       label: "zkSync Champion",
       icon: "zksyncStampIcon.svg",
@@ -411,7 +366,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Blockchain & Crypto",
     },
     [GitcoinPassport.outdid]: {
-      key: GitcoinPassport.outdid,
       weight: 10,
       label: "Outdid Verified ZK ID",
       icon: "outdidStampIcon.svg",
@@ -419,7 +373,6 @@ export const gitcoinPassportMapping = (key: GitcoinPassport) => {
       type: "Government ID",
     },
     [GitcoinPassport.binanceBABT]: {
-      key: GitcoinPassport.binanceBABT,
       weight: 16.021,
       label: "Verified Binance Account",
       icon: "binanceStamp.svg",

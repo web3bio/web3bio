@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { getSourceInfo } from "../utils/sources";
+import { getSourceInfo } from "../utils/source";
 
 export const RenderSourceFooter = ({ sources }) => {
   return (

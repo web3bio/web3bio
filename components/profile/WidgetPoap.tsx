@@ -7,7 +7,7 @@ import SVG from "react-inlinesvg";
 import { resolveIPFS_URL } from "../utils/ipfs";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { useDispatch } from "react-redux";
-import { WidgetTypes } from "../utils/widgets";
+import { WidgetType } from "../utils/widgets";
 import { updatePoapsWidget } from "../state/widgets/reducer";
 import { POAP_ENDPOINT, POAPFetcher } from "../apis";
 
@@ -87,7 +87,7 @@ export default function WidgetPOAP({ address, openModal }) {
   // }
 
   return (
-    <div className="profile-widget-full" id={WidgetTypes.poaps}>
+    <div className="profile-widget-full" id={WidgetType.poaps}>
       <div className="profile-widget profile-widget-poap">
         <div className="profile-widget-header">
           <h2

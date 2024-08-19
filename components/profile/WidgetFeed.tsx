@@ -9,7 +9,7 @@ import { ActivityFeeds } from "./ActivityFeeds";
 import { ActivityTag, TagsFilterMapping } from "../utils/activity";
 import { PlatformType } from "../utils/platform";
 import { isSameAddress } from "../utils/utils";
-import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
+import { WidgetInfoMapping, WidgetType } from "../utils/widgets";
 import { updateFeedsWidget } from "../state/widgets/reducer";
 import { RSS3_ENDPOINT, RSS3Fetcher } from "../apis";
 
@@ -113,7 +113,7 @@ export default function WidgetFeed({ profile, openModal }) {
   useEffect(() => {
     if (
       window.location.hash &&
-      window.location.hash === `#${WidgetTypes.feeds}` &&
+      window.location.hash === `#${WidgetType.feeds}` &&
       !expand
     ) {
       setExpand(true);
@@ -121,7 +121,7 @@ export default function WidgetFeed({ profile, openModal }) {
   }, []);
   useEffect(() => {
     if (expand) {
-      const anchorElement = document.getElementById(WidgetTypes.feeds);
+      const anchorElement = document.getElementById(WidgetType.feeds);
       anchorElement?.scrollIntoView({
         block: "start",
         behavior: "smooth",
@@ -156,7 +156,7 @@ export default function WidgetFeed({ profile, openModal }) {
     <div
       ref={scrollContainer}
       className="profile-widget-full"
-      id={WidgetTypes.feeds}
+      id={WidgetType.feeds}
     >
       <div
         className={`profile-widget profile-widget-feeds${
@@ -166,9 +166,9 @@ export default function WidgetFeed({ profile, openModal }) {
         <div className="profile-widget-header">
           <h2 className="profile-widget-title">
             <span className="emoji-large mr-2">
-              {WidgetInfoMapping(WidgetTypes.feeds).icon}{" "}
+              {WidgetInfoMapping(WidgetType.feeds).icon}{" "}
             </span>
-            {WidgetInfoMapping(WidgetTypes.feeds).title}
+            {WidgetInfoMapping(WidgetType.feeds).title}
           </h2>
           <div className="widget-action">
             <FeedFilter

@@ -27,7 +27,7 @@ import { WidgetState } from "../state/widgets/reducer";
 import LoadingSkeleton from "./LoadingSkeleton";
 import ProfileFooter from "./ProfileFooter";
 import WidgetIndicator from "./WidgetIndicator";
-import { WidgetTypes } from "../utils/widgets";
+import { WidgetType } from "../utils/widgets";
 import { DocumentNode, useLazyQuery } from "@apollo/client";
 import { updateUniversalBatchedProfile } from "../state/universal/actions";
 import { getProfileQuery } from "../utils/queries";
@@ -410,7 +410,7 @@ export default function ProfileMain(props) {
           {(data.address && mounted && (
             <>
               <div className="web3-section-widgets">
-                <Suspense fallback={<LoadingSkeleton type={WidgetTypes.nft} />}>
+                <Suspense fallback={<LoadingSkeleton type={WidgetType.nft} />}>
                   <WidgetNFT
                     profile={data}
                     openModal={(v) => {
@@ -423,7 +423,7 @@ export default function ProfileMain(props) {
               </div>
               <div className="web3-section-widgets">
                 <Suspense
-                  fallback={<LoadingSkeleton type={WidgetTypes.feeds} />}
+                  fallback={<LoadingSkeleton type={WidgetType.feeds} />}
                 >
                   <WidgetFeed openModal={openModal} profile={data} />
                 </Suspense>
@@ -445,7 +445,7 @@ export default function ProfileMain(props) {
 
                   <div className="web3-section-widgets">
                     <Suspense
-                      fallback={<LoadingSkeleton type={WidgetTypes.article} />}
+                      fallback={<LoadingSkeleton type={WidgetType.article} />}
                     >
                       <WidgetArticle
                         address={data.address}
@@ -456,7 +456,7 @@ export default function ProfileMain(props) {
 
                   <div className="web3-section-widgets">
                     <Suspense
-                      fallback={<LoadingSkeleton type={WidgetTypes.poaps} />}
+                      fallback={<LoadingSkeleton type={WidgetType.poaps} />}
                     >
                       <WidgetPOAP
                         openModal={(v) => {
@@ -470,7 +470,7 @@ export default function ProfileMain(props) {
                   {isValidEthereumAddress(data.address) && (
                     <div className="web3-section-widgets">
                       <Suspense
-                        fallback={<LoadingSkeleton type={WidgetTypes.guild} />}
+                        fallback={<LoadingSkeleton type={WidgetType.guild} />}
                       >
                         <WidgetGuild
                           onShowDetail={(v) => {
@@ -488,7 +488,7 @@ export default function ProfileMain(props) {
                     <div className="web3-section-widgets">
                       <Suspense
                         fallback={
-                          <LoadingSkeleton type={WidgetTypes.snapshot} />
+                          <LoadingSkeleton type={WidgetType.snapshot} />
                         }
                       >
                         <WidgetSnapshot
@@ -506,7 +506,7 @@ export default function ProfileMain(props) {
                   {isValidEthereumAddress(data.address) && (
                     <div className="web3-section-widgets">
                       <Suspense
-                        fallback={<LoadingSkeleton type={WidgetTypes.tally} />}
+                        fallback={<LoadingSkeleton type={WidgetType.tally} />}
                       >
                         <WidgetTally address={data.address} />
                       </Suspense>

@@ -3,7 +3,7 @@ import { useEffect, memo } from "react";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
 import { useQuery } from "@apollo/client";
-import { WidgetTypes } from "../utils/widgets";
+import { WidgetType } from "../utils/widgets";
 import { updatePhilandWidget } from "../state/widgets/reducer";
 import { QUERY_PHILAND_INFO } from "../apis";
 
@@ -13,7 +13,7 @@ const RenderWidgetPhiland = ({ domain, onShowDetail }) => {
       name: domain,
     },
     context: {
-      clientName: WidgetTypes.philand,
+      clientName: WidgetType.philand,
     },
   });
   const dispatch = useDispatch();
@@ -35,7 +35,7 @@ const RenderWidgetPhiland = ({ domain, onShowDetail }) => {
   // }
 
   return (
-    <div className="profile-widget-half" id={WidgetTypes.philand}>
+    <div className="profile-widget-half" id={WidgetType.philand}>
       <div
         className="profile-widget profile-widget-philand"
         onClick={() =>

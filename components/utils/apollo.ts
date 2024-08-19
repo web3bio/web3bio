@@ -5,7 +5,7 @@ import {
   InMemoryCache,
 } from "@apollo/client";
 // import { PHI_AUTH, PHI_GRAPHQL_END_POINT } from "../apis/philand";
-import { WidgetTypes } from "./widgets";
+import { WidgetType } from "./widgets";
 import { PlatformType } from "./platform";
 import { LensGraphQLEndpoint } from "./lens";
 import {
@@ -55,12 +55,12 @@ const lensLink = new HttpLink({
 });
 
 const linkMapping = {
-  [WidgetTypes.tally]: tallyLink,
+  [WidgetType.tally]: tallyLink,
   [PlatformType.lens]: lensLink,
   ["airstack"]: airstackLink,
-  [WidgetTypes.snapshot]: snapshotLink,
+  [WidgetType.snapshot]: snapshotLink,
   // currently hide ⬇️
-  // [WidgetTypes.philand]: philandLink,
+  // [WidgetType.philand]: philandLink,
 };
 
 const getLink = (clientName) => linkMapping[clientName] || defaultLink;

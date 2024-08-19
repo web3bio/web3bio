@@ -1,10 +1,10 @@
-import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
+import { WidgetInfoMapping, WidgetType } from "../utils/widgets";
 
 export default function LoadingSkeleton(props) {
   const { type } = props;
   const renderContent = (() => {
     switch (type) {
-      case WidgetTypes.nft:
+      case WidgetType.nft:
         return (
           <div className={`profile-widget profile-widget-loading ${type}`}>
             <div className="profile-widget-header">
@@ -29,7 +29,7 @@ export default function LoadingSkeleton(props) {
             </div>
           </div>
         );
-      case WidgetTypes.poaps:
+      case WidgetType.poaps:
         return (
           <div className={`profile-widget profile-widget-loading ${type}`}>
             <div className="profile-widget-header">
@@ -54,7 +54,7 @@ export default function LoadingSkeleton(props) {
             </div>
           </div>
         );
-      case WidgetTypes.feeds:
+      case WidgetType.feeds:
         return (
           <div className={`profile-widget profile-widget-loading ${type}`}>
             <div className="profile-widget-header">

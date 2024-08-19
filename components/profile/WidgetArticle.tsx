@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import useSWR from "swr";
 import SVG from "react-inlinesvg";
 import Link from "next/link";
-import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
+import { WidgetInfoMapping, WidgetType } from "../utils/widgets";
 import { profileAPIBaseURL } from "../utils/queries";
 import ArticleItem from "./ArticleItem";
 import { updateArticleWidget } from "../state/widgets/reducer";
@@ -52,15 +52,15 @@ export default function WidgetArticle({ address, domain }) {
   // }
 
   return (
-    <div className="profile-widget-full" id={WidgetTypes.article}>
+    <div className="profile-widget-full" id={WidgetType.article}>
       <div className="profile-widget profile-widget-rss">
         {
           <div className="profile-widget-header">
             <h2 className="profile-widget-title">
               <span className="emoji-large mr-2">
-                {WidgetInfoMapping(WidgetTypes.article).icon}
+                {WidgetInfoMapping(WidgetType.article).icon}
               </span>
-              {WidgetInfoMapping(WidgetTypes.article).title}
+              {WidgetInfoMapping(WidgetType.article).title}
             </h2>
           </div>
         }

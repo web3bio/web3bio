@@ -1,4 +1,4 @@
-export enum WidgetTypes {
+export enum WidgetType {
   nft = "nft",
   poaps = "poaps",
   feeds = "feeds",
@@ -15,98 +15,85 @@ export enum WidgetTypes {
 }
 
 interface WidgetInfo {
-  key: WidgetTypes;
   icon: string;
   title: string;
   description: string;
 }
 
-const WidgetsInfoData: Readonly<Record<WidgetTypes, WidgetInfo>> = {
-  [WidgetTypes.nft]: {
-    key: WidgetTypes.nft,
+const WidgetsInfoData: Readonly<Record<WidgetType, WidgetInfo>> = {
+  [WidgetType.nft]: {
     icon: "🖼",
     title: "NFT Collections",
     description: "",
   },
-  [WidgetTypes.feeds]: {
-    key: WidgetTypes.feeds,
+  [WidgetType.feeds]: {
     icon: "🌈",
     title: "Activity Feeds",
     description: "",
   },
-  [WidgetTypes.poaps]: {
-    key: WidgetTypes.poaps,
+  [WidgetType.poaps]: {
     icon: "🔮",
     title: "POAPs",
     description:
       "POAP is a curated ecosystem for the preservation of memories. By checking-in at different events, POAP collectors build a digital scrapbook where each POAP is an anchor to a place and space in time.",
   },
-  [WidgetTypes.scores]: {
-    key: WidgetTypes.scores,
+  [WidgetType.scores]: {
     icon: "🏆",
     title: "Badges and Scores",
     description: "",
   },
-  [WidgetTypes.article]: {
-    key: WidgetTypes.article,
+  [WidgetType.article]: {
     icon: "📰",
     title: "Articles",
     description: "",
   },
-  [WidgetTypes.tally]: {
-    key: WidgetTypes.tally,
+  [WidgetType.tally]: {
     icon: "🏛️",
     title: "DAO Memberships",
     description: "",
   },
-  [WidgetTypes.philand]: {
-    key: WidgetTypes.philand,
+  [WidgetType.philand]: {
     icon: "🏝️",
     title: "Phi Land",
     description:
       "Phi is a new Web3 world created from ENS domains & On-Chain Activity, enabling the easy visualization of On-Chain Identities, currently built on Polygon. Virtually interact with crypto protocols from around the Ethereum ecosystem.",
   },
-  [WidgetTypes.degenscore]: {
-    key: WidgetTypes.degenscore,
+  [WidgetType.degenscore]: {
     icon: "👾",
     title: "DegenScore",
     description:
       "The DegenScore Beacon is an Ethereum soulbound token that highlights your on-chain skills & traits across one or more wallets.",
   },
-  [WidgetTypes.webacy]: {
-    key: WidgetTypes.webacy,
+  [WidgetType.webacy]: {
     icon: "🛡️",
     title: "Webacy",
     description:
       "Powered by Webacy's proprietary algorithm, the Safety Score gives you a real-time understanding of your wallet risk and vulnerabilities to attack vectors. ",
   },
-  [WidgetTypes.gitcoin]: {
-    key: WidgetTypes.gitcoin,
+  [WidgetType.gitcoin]: {
     icon: "🌀",
     title: "Gitcoin Passport",
     description:
       "Gitcoin Passport helps you collect “stamps” that prove your humanity and reputation. You decide what stamps are shown. And your privacy is protected at each step of the way.",
   },
-  [WidgetTypes.guild]: {
-    key: WidgetTypes.guild,
+  [WidgetType.guild]: {
     icon: "🏰",
     title: "Guilds",
     description:
       "Automated membership management for the platforms your community already uses.",
   },
-  [WidgetTypes.snapshot]: {
-    key: WidgetTypes.snapshot,
+  [WidgetType.snapshot]: {
     icon: "⚡️",
     title: "Snapshot",
     description: "Snapshot - Where decisions get made.",
   },
-  [WidgetTypes.talent]: {
-    key: WidgetTypes.talent,
+  [WidgetType.talent]: {
     icon: "🛠️",
     title: "Talent Passport",
     description: "A new type of resume, for the onchain era of the internet.",
   },
 } as const;
+
 export const WidgetInfoMapping = (
-  widgetType: WidgetTypes
+  widgetType: WidgetType
 ): Readonly<WidgetInfo> => WidgetsInfoData[widgetType];

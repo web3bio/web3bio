@@ -4,7 +4,7 @@ import useSWR from "swr";
 import { Loading } from "../shared/Loading";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { useDispatch } from "react-redux";
-import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
+import { WidgetInfoMapping, WidgetType } from "../utils/widgets";
 import { updateGuildWidget } from "../state/widgets/reducer";
 import { GUILD_XYZ_ENDPOINT, GuildFetcher } from "../apis";
 
@@ -78,7 +78,7 @@ export default function WidgetGuild({ profile, onShowDetail }) {
   // }
 
   return (
-    <div className="profile-widget-full" id={WidgetTypes.guild}>
+    <div className="profile-widget-full" id={WidgetType.guild}>
       <div className="profile-widget profile-widget-guild">
         <div className="profile-widget-header">
           <h2
@@ -86,12 +86,12 @@ export default function WidgetGuild({ profile, onShowDetail }) {
             title="Build communities onchain - Guild.xyz"
           >
             <span className="emoji-large mr-2">
-              {WidgetInfoMapping(WidgetTypes.guild).icon}{" "}
+              {WidgetInfoMapping(WidgetType.guild).icon}{" "}
             </span>
-            {WidgetInfoMapping(WidgetTypes.guild).title}
+            {WidgetInfoMapping(WidgetType.guild).title}
           </h2>
           <h3 className="text-assistive">
-            {WidgetInfoMapping(WidgetTypes.guild).description}
+            {WidgetInfoMapping(WidgetType.guild).description}
           </h3>
         </div>
 

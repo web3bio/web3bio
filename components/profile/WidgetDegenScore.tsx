@@ -2,7 +2,7 @@
 import { memo, useEffect } from "react";
 import useSWR from "swr";
 import { formatDistanceToNow } from "date-fns";
-import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
+import { WidgetInfoMapping, WidgetType } from "../utils/widgets";
 import { useDispatch } from "react-redux";
 import { DegenFetcher, DEGENSCORE_ENDPOINT } from "../apis";
 import { updateDegenscoreWidget } from "../state/widgets/reducer";
@@ -60,9 +60,9 @@ const RenderWidgetDegenScore = ({ profile, openModal }) => {
       <div className="profile-widget-header">
         <h2 className="profile-widget-title">
           <span className="emoji-large mr-2">
-            {WidgetInfoMapping(WidgetTypes.degenscore).icon}{" "}
+            {WidgetInfoMapping(WidgetType.degenscore).icon}{" "}
           </span>
-          {WidgetInfoMapping(WidgetTypes.degenscore).title}{" "}
+          {WidgetInfoMapping(WidgetType.degenscore).title}{" "}
         </h2>
       </div>
       <div className="profile-widget-body"></div>
