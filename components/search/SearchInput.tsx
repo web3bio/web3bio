@@ -186,7 +186,7 @@ export default function SearchInput(props) {
                         })
                       }
                       key={x.key}
-                      className={`search-list-item${
+                      className={`search-list-item search-list-item-sm ${
                         activeIndex === activeIdx ? " active" : ""
                       }`}
                     >
@@ -203,8 +203,8 @@ export default function SearchInput(props) {
             )}
 
             <div
-              className={`btn btn-sm suggest-btn ${
-                activeIndex === searchList.length - 1 ? "active-suggest" : ""
+              className={`btn btn-sm suggest-btn${
+                activeIndex === searchList.length - 1 ? " active" : ""
               }`}
               onClick={(e) => {
                 emitSubmit(e, {
@@ -215,7 +215,7 @@ export default function SearchInput(props) {
               }}
             >
               <SVG src={"icons/icon-suggestion.svg"} width={20} height={20} />
-              Check Availability
+              <span className="hide-sm">Check Availability</span>
             </div>
           </div>
         </div>
