@@ -1,7 +1,7 @@
 "use client";
 import { memo, useEffect } from "react";
 import useSWR from "swr";
-import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
+import { WidgetInfoMapping, WidgetType } from "../utils/widgets";
 import { useDispatch } from "react-redux";
 import { updateGitcoinWidget } from "../state/widgets/reducer";
 import { ProfileFetcher } from "../apis";
@@ -57,9 +57,9 @@ const RenderWidgetGitcoin = ({ profile, openModal }) => {
       <div className="profile-widget-header">
         <h2 className="profile-widget-title">
           <span className="emoji-large mr-2">
-            {WidgetInfoMapping(WidgetTypes.gitcoin).icon}{" "}
+            {WidgetInfoMapping(WidgetType.gitcoin).icon}{" "}
           </span>
-          {WidgetInfoMapping(WidgetTypes.gitcoin).title}{" "}
+          {WidgetInfoMapping(WidgetType.gitcoin).title}{" "}
         </h2>
       </div>
       <div className="profile-widget-body"></div>

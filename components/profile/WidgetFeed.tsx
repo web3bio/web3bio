@@ -6,14 +6,10 @@ import SVG from "react-inlinesvg";
 import FeedFilter from "../feed/FeedFilter";
 import { useDispatch } from "react-redux";
 import { ActivityFeeds } from "./ActivityFeeds";
-import {
-  ActivityTag,
-  ActivityType,
-  TagsFilterMapping,
-} from "../utils/activity";
+import { ActivityTag, TagsFilterMapping } from "../utils/activity";
 import { PlatformType } from "../utils/platform";
 import { isSameAddress } from "../utils/utils";
-import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
+import { WidgetInfoMapping, WidgetType } from "../utils/widgets";
 import { updateFeedsWidget } from "../state/widgets/reducer";
 import { RSS3_ENDPOINT, RSS3Fetcher } from "../apis";
 
@@ -60,34 +56,16 @@ const processFeedsData = (data) => {
 const getURL = (index, address, previous, filter) => {
   const cursor = previous?.meta?.cursor;
   if (index !== 0 && !(previous?.result?.length || cursor)) return null;
-  const url = RSS3_ENDPOINT + `/data/accounts/activities`;
+  const url = RSS3_ENDPOINT + `/decentralized/accounts`;
   const data = {
-    account: [address],
+    accounts: [address],
     limit: 20,
     action_limit: 20,
-    status: "successful",
+    success: true,
     direction: "out",
     cursor,
     tag: TagsFilterMapping[filter].filters,
-    type: [
-      ActivityType.auction,
-      ActivityType.bridge,
-      ActivityType.claim,
-      ActivityType.comment,
-      ActivityType.donate,
-      ActivityType.liquidity,
-      ActivityType.loan,
-      ActivityType.mint,
-      ActivityType.multisig,
-      ActivityType.post,
-      ActivityType.profile,
-      ActivityType.propose,
-      ActivityType.share,
-      ActivityType.swap,
-      ActivityType.trade,
-      ActivityType.transfer,
-      ActivityType.vote,
-    ],
+    type: TagsFilterMapping[filter].types,
   };
   return [url, data];
 };
@@ -135,7 +113,7 @@ export default function WidgetFeed({ profile, openModal }) {
   useEffect(() => {
     if (
       window.location.hash &&
-      window.location.hash === `#${WidgetTypes.feeds}` &&
+      window.location.hash === `#${WidgetType.feeds}` &&
       !expand
     ) {
       setExpand(true);
@@ -143,7 +121,7 @@ export default function WidgetFeed({ profile, openModal }) {
   }, []);
   useEffect(() => {
     if (expand) {
-      const anchorElement = document.getElementById(WidgetTypes.feeds);
+      const anchorElement = document.getElementById(WidgetType.feeds);
       anchorElement?.scrollIntoView({
         block: "start",
         behavior: "smooth",
@@ -178,7 +156,7 @@ export default function WidgetFeed({ profile, openModal }) {
     <div
       ref={scrollContainer}
       className="profile-widget-full"
-      id={WidgetTypes.feeds}
+      id={WidgetType.feeds}
     >
       <div
         className={`profile-widget profile-widget-feeds${
@@ -188,9 +166,9 @@ export default function WidgetFeed({ profile, openModal }) {
         <div className="profile-widget-header">
           <h2 className="profile-widget-title">
             <span className="emoji-large mr-2">
-              {WidgetInfoMapping(WidgetTypes.feeds).icon}{" "}
+              {WidgetInfoMapping(WidgetType.feeds).icon}{" "}
             </span>
-            {WidgetInfoMapping(WidgetTypes.feeds).title}
+            {WidgetInfoMapping(WidgetType.feeds).title}
           </h2>
           <div className="widget-action">
             <FeedFilter
@@ -209,6 +187,7 @@ export default function WidgetFeed({ profile, openModal }) {
         </div>
 
         <ActivityFeeds
+          validTypes={TagsFilterMapping[filter].types}
           openModal={openModal}
           expand={expand}
           parentScrollRef={scrollContainer}
@@ -229,11 +208,7 @@ export default function WidgetFeed({ profile, openModal }) {
             }}
           >
             <button className="btn btn-sm">
-              <SVG
-                src="../icons/icon-expand.svg"
-                width={18}
-                height={18}
-              />
+              <SVG src="../icons/icon-expand.svg" width={18} height={18} />
               View More
             </button>
           </div>

@@ -67,6 +67,7 @@ export default function SnapshotModalContent({ onClose, space, profile }) {
           <div className="platform-icon">
             <SVG
               src={`../${SocialPlatformMapping(PlatformType.snapshot)?.icon}`}
+              fill="#fff"
               width={14}
               height={14}
             />
@@ -82,7 +83,7 @@ export default function SnapshotModalContent({ onClose, space, profile }) {
             src={space?.avatar}
             priority
           />
-          <div className="d-flex mt-2 mb-2" style={{ alignItems: "center", lineHeight: 1.25 }}>
+          <div className="d-flex mt-2" style={{ alignItems: "center", lineHeight: 1.25 }}>
             <strong className="h4 text-bold mr-1">{space.name}</strong>
             {space.verified && (
               <SVG
@@ -94,7 +95,7 @@ export default function SnapshotModalContent({ onClose, space, profile }) {
               />
             )}
           </div>
-          <div className="text-gray mt-2 mb-2">#{space.id}</div>
+          <div className="text-gray mb-2">#{space.id}</div>
 
           <div className="mt-2 mb-2">
             <strong className="text-large">

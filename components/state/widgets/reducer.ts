@@ -1,5 +1,5 @@
 import { createReducer, createAction } from "@reduxjs/toolkit";
-import { WidgetTypes } from "../../utils/widgets";
+import { WidgetType } from "../../utils/widgets";
 
 interface UpdateWidgetState {
   isEmpty: boolean;
@@ -11,103 +11,103 @@ interface WidgetStateDetail {
   initLoading?: boolean;
   position?: string;
   loaded?: boolean | null;
-  parent?: WidgetTypes | null;
-  children?: WidgetTypes[] | null;
+  parent?: WidgetType | null;
+  children?: WidgetType[] | null;
 }
 
 export type WidgetState = {
-  [index in WidgetTypes]: WidgetStateDetail;
+  [index in WidgetType]: WidgetStateDetail;
 };
 
 export const initialState: WidgetState = {
-  [WidgetTypes.nft]: { isEmpty: null, initLoading: true, loaded: false },
-  [WidgetTypes.feeds]: { isEmpty: null, initLoading: true, loaded: false },
-  [WidgetTypes.scores]: {
+  [WidgetType.nft]: { isEmpty: null, initLoading: true, loaded: false },
+  [WidgetType.feeds]: { isEmpty: null, initLoading: true, loaded: false },
+  [WidgetType.scores]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
     children: [
-      WidgetTypes.degenscore,
-      WidgetTypes.gitcoin,
-      WidgetTypes.talent,
-      WidgetTypes.webacy,
+      WidgetType.degenscore,
+      WidgetType.gitcoin,
+      WidgetType.talent,
+      WidgetType.webacy,
     ],
   },
-  [WidgetTypes.article]: { isEmpty: null, initLoading: true, loaded: false },
-  [WidgetTypes.poaps]: { isEmpty: null, initLoading: true, loaded: false },
-  [WidgetTypes.guild]: { isEmpty: null, initLoading: true, loaded: false },
-  [WidgetTypes.snapshot]: { isEmpty: null, initLoading: true, loaded: false },
-  [WidgetTypes.tally]: { isEmpty: null, initLoading: true, loaded: false },
-  [WidgetTypes.philand]: { isEmpty: null, initLoading: true, loaded: false },
-  [WidgetTypes.degenscore]: {
+  [WidgetType.article]: { isEmpty: null, initLoading: true, loaded: false },
+  [WidgetType.poaps]: { isEmpty: null, initLoading: true, loaded: false },
+  [WidgetType.guild]: { isEmpty: null, initLoading: true, loaded: false },
+  [WidgetType.snapshot]: { isEmpty: null, initLoading: true, loaded: false },
+  [WidgetType.tally]: { isEmpty: null, initLoading: true, loaded: false },
+  [WidgetType.philand]: { isEmpty: null, initLoading: true, loaded: false },
+  [WidgetType.degenscore]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
-    parent: WidgetTypes.scores,
+    parent: WidgetType.scores,
   },
-  [WidgetTypes.gitcoin]: {
+  [WidgetType.gitcoin]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
-    parent: WidgetTypes.scores,
+    parent: WidgetType.scores,
   },
-  [WidgetTypes.talent]: {
+  [WidgetType.talent]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
-    parent: WidgetTypes.scores,
+    parent: WidgetType.scores,
   },
-  [WidgetTypes.webacy]: {
+  [WidgetType.webacy]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,
-    parent: WidgetTypes.scores,
+    parent: WidgetType.scores,
   },
 };
 
 const updateWidget = createAction<{
-  widgetType: WidgetTypes;
+  widgetType: WidgetType;
   isEmpty: boolean | null;
   initLoading: boolean;
 }>("updateWidget");
 
-export const updateNFTWidget = createAction<UpdateWidgetState>(WidgetTypes.nft);
+export const updateNFTWidget = createAction<UpdateWidgetState>(WidgetType.nft);
 export const updatePoapsWidget = createAction<UpdateWidgetState>(
-  WidgetTypes.poaps
+  WidgetType.poaps
 );
 export const updateFeedsWidget = createAction<UpdateWidgetState>(
-  WidgetTypes.feeds
+  WidgetType.feeds
 );
 export const updateScoresWidget = createAction<UpdateWidgetState>(
-  WidgetTypes.scores
+  WidgetType.scores
 );
 export const updateArticleWidget = createAction<UpdateWidgetState>(
-  WidgetTypes.article
+  WidgetType.article
 );
 export const updateGuildWidget = createAction<UpdateWidgetState>(
-  WidgetTypes.guild
+  WidgetType.guild
 );
 export const updateTallyDAOWidget = createAction<UpdateWidgetState>(
-  WidgetTypes.tally
+  WidgetType.tally
 );
 export const updatePhilandWidget = createAction<UpdateWidgetState>(
-  WidgetTypes.philand
+  WidgetType.philand
 );
 export const updateWebacyWidget = createAction<UpdateWidgetState>(
-  WidgetTypes.webacy
+  WidgetType.webacy
 );
 export const updateDegenscoreWidget = createAction<UpdateWidgetState>(
-  WidgetTypes.degenscore
+  WidgetType.degenscore
 );
 export const updateGitcoinWidget = createAction<UpdateWidgetState>(
-  WidgetTypes.gitcoin
+  WidgetType.gitcoin
 );
 export const updateSnapshotWidget = createAction<UpdateWidgetState>(
-  WidgetTypes.snapshot
+  WidgetType.snapshot
 );
 
 export const updateTalentWidget = createAction<UpdateWidgetState>(
-  WidgetTypes.talent
+  WidgetType.talent
 );
 
 const widgetActions = [

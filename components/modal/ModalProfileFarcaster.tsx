@@ -66,6 +66,7 @@ export default function FarcasterProfile(props) {
           <div className="platform-icon">
             <SVG
               src={`../${SocialPlatformMapping(PlatformType.farcaster)?.icon}`}
+              fill="#fff"
               width={14}
               height={14}
             />
@@ -114,25 +115,29 @@ export default function FarcasterProfile(props) {
             📍 {_profile.location}
           </div>}
           {socialCapital?.socialCapital && (
-            <>
-              <div className="divider mt-4 mb-4"></div>
-              <div className="panel-widget">
-                <div className="panel-widget-content">
-                  <div className="content">
-                    Social Capital Score{" "}
-                    <strong className="text-large">
-                      {Number(
-                        socialCapital?.socialCapital.socialCapitalScore
-                      ).toFixed(2)}
-                    </strong>{" "}
-                    · Rank{" "}
-                    <strong className="text-large">
-                      {socialCapital?.socialCapital.socialCapitalRank}
-                    </strong>
-                  </div>
-                </div>
+            <div className="mt-4 mb-2">
+              <div className="feed-token">
+                <span className="text-large">🪪</span>
+                <span className="feed-token-value">
+                  Social Capital Score
+                </span>
+                <span className="feed-token-value text-bold">
+                  {Number(
+                    socialCapital?.socialCapital.socialCapitalScore
+                  ).toFixed(2)}
+                </span>
               </div>
-            </>
+              {" "}
+              <div className="feed-token">
+                <span className="text-large">🏅</span>
+                <span className="feed-token-value">
+                  Social Rank
+                </span>
+                <span className="feed-token-value text-bold">
+                  {socialCapital?.socialCapital.socialCapitalRank}
+                </span>
+              </div>
+            </div>
           )}
 
           {channelsData?.data?.length > 0 && (
@@ -193,6 +198,7 @@ export default function FarcasterProfile(props) {
             >
               <SVG
                 src={"icons/icon-firefly.svg"}
+                fill="#fff"
                 width={20}
                 height={20}
                 className="mr-1"

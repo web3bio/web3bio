@@ -2,16 +2,20 @@
 .empty {
   border-radius: $border-radius;
   color: $dark-color;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  justify-content: center;
   text-align: center;
   padding: $unit-16 $unit-8;
 
   .empty-icon {
-    margin-bottom: $layout-spacing-lg;
+    margin-bottom: $layout-spacing;
   }
 
   .empty-title,
   .empty-subtitle {
-    margin: $layout-spacing auto;
+    margin: 0 auto;
   }
 
   .empty-title {
@@ -19,6 +23,10 @@
   }
 
   .empty-action {
+    align-items: center;
+    display: flex;
+    gap: .5rem;
+    justify-content: center;
     margin-top: $layout-spacing-lg;
   }
 }

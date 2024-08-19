@@ -1,5 +1,9 @@
 import { memo, useMemo } from "react";
-import { ActionStructMapping } from "../utils/activity";
+import {
+  ActionStructMapping,
+  ActivityTag,
+  ActivityType,
+} from "../utils/activity";
 import { NFTAssetPlayer, isImage, isVideo } from "../shared/NFTAssetPlayer";
 import { ModalType } from "../hooks/useModal";
 import { resolveMediaURL } from "../utils/utils";
@@ -7,6 +11,7 @@ import { domainRegexp } from "../feed/ActionExternalMenu";
 import Link from "next/link";
 import RenderProfileBadge from "./RenderProfileBadge";
 import RenderObjects from "./RenderObjects";
+import _ from "lodash";
 
 function RenderFeedActionCard(props) {
   const {
@@ -16,11 +21,45 @@ function RenderFeedActionCard(props) {
     overridePlatform,
     openModal,
     network,
+    tag,
+    nftInfos,
     platform: feedPlatform,
   } = props;
   const renderData = useMemo(() => {
-    return actions.map((x) => ({ ...ActionStructMapping(x, owner) }));
-  }, [actions, owner]);
+    const res = actions.map((x) => ({ ...ActionStructMapping(x, owner) }));
+    if (tag !== ActivityTag.collectible) return res;
+
+    const uniqAttachments = new Set();
+    res.forEach((x) => {
+      if (x.type === ActivityType.transfer) {
+        x.attachments.medias.forEach((i) => {
+          const uniqId = `${i.address}-${i.id}`;
+          if (!uniqAttachments.has(uniqId)) {
+            uniqAttachments.add(uniqId);
+          }
+        });
+      }
+    });
+    return res.map((x, idx) => {
+      return x.verb === "Transferred"
+        ? {
+            ...x,
+            attachments:
+              idx === res.length - 1
+                ? {
+                    medias: _.uniqBy(
+                      x.attachments.medias,
+                      (i) => `${i.address}-${i.id}`
+                    ),
+                  }
+                : {
+                    medias: [],
+                  },
+          }
+        : x;
+    });
+  }, [actions, owner, tag]);
+
   const ActionContent = (props) => {
     const {
       verb,
@@ -32,6 +71,7 @@ function RenderFeedActionCard(props) {
       checkEmojis,
       attachments,
     } = props;
+
     const MediasRender = useMemo(() => {
       if (attachments?.medias?.filter((x) => x)?.length > 0) {
         return (
@@ -43,9 +83,19 @@ function RenderFeedActionCard(props) {
             }`}
           >
             {attachments.medias?.map((x, cIdx) => {
+              let infoItem = null as any;
+              if (nftInfos?.length > 0) {
+                const idIndex = `${network}.${x.address}.${x.id}`;
+                infoItem = nftInfos.find(
+                  (x) => x.nft_id === idIndex.toLowerCase()
+                );
+              }
+              const nftImageUrl = infoItem?.previews?.image_medium_url;
+              // if(x.address && rendered.includes(x.address)) return null
+              // rendered.push(x.address)
               return isImage(x.mime_type) ||
                 isVideo(x.mime_type) ||
-                x.standard ? (
+                nftImageUrl ? (
                 <NFTAssetPlayer
                   key={`${cIdx}_media_image`}
                   onClick={(e) => {
@@ -55,17 +105,21 @@ function RenderFeedActionCard(props) {
                           url: resolveMediaURL(x.address),
                         })
                       : openModal(ModalType.nft, {
-                          remoteFetch: true,
-                          network,
-                          standard: x.standard,
-                          contractAddress: x.contract_address,
-                          tokenId: x.id,
+                          asset: {
+                            network,
+                            standard: x.standard,
+                            contractAddress: x.address,
+                            tokenId: x.id,
+                            asset: {
+                              ...infoItem,
+                            },
+                          },
                         });
                     e.stopPropagation();
                     e.preventDefault();
                   }}
                   className="feed-content-img"
-                  src={resolveMediaURL(x.standard ? x.image_url : x.address)}
+                  src={resolveMediaURL(x.standard ? nftImageUrl : x.address)}
                   type={x.mime_type || "image/png"}
                   width="auto"
                   height="auto"
@@ -180,18 +234,26 @@ function RenderFeedActionCard(props) {
           </Link>
         ));
       }
-    }, []);
+    }, [attachments?.targets]);
     const ObjectsRender = useMemo(() => {
       return objects
         ?.filter((i) => !!i)
-        .map((i, idx) => (
-          <RenderObjects
-            key={`object_${idx}`}
-            openModal={openModal}
-            data={i}
-            network={network}
-          />
-        ));
+        .map((i, idx) => {
+          let infoItem = null;
+          if (nftInfos?.length > 0) {
+            const idIndex = `${network}.${i.address}.${i.id}`;
+            infoItem = nftInfos.find((x) => x.nft_id === idIndex.toLowerCase());
+          }
+          return (
+            <RenderObjects
+              nftInfo={infoItem}
+              key={`object_${idx}`}
+              openModal={openModal}
+              data={i}
+              network={network}
+            />
+          );
+        });
     }, [objects]);
     const ProfilesRender = useMemo(() => {
       if (attachments?.profiles?.length > 0) {
@@ -213,12 +275,12 @@ function RenderFeedActionCard(props) {
     return (
       <>
         <div
-          className={`feed-content ${checkEmojis ? " text-emoji" : ""}`}
+          className={`feed-content${checkEmojis ? " text-emoji" : ""}`}
           key={"content_" + id + idx}
         >
           {verb}
           {ObjectsRender}
-          {prep && prep}
+          {prep}
           {target && (
             <RenderProfileBadge
               key={"target_" + id + idx}

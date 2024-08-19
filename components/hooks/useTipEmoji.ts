@@ -1,16 +1,19 @@
-import { useEffect, useState } from "react";
-const texts = ["Coffee", "Beer", "Gift", "Flower", "Rocket"];
-const emojis = ["☕️", "🍺", "🎁", "🌹", "🚀"];
+import { useMemo } from "react";
+
+const TIPS = [
+  { text: "Coffee", emoji: "☕️" },
+  { text: "Beer", emoji: "🍺" },
+  { text: "Gift", emoji: "🎁" },
+  { text: "Flower", emoji: "🌹" },
+  { text: "Rocket", emoji: "🚀" },
+] as const;
+
 export const useTipEmoji = () => {
-  const [text, setText] = useState("");
-  const [emoji, setEmoji] = useState("");
-  const randomIndex = Math.floor(Math.random() * texts.length);
-  
-  useEffect(() => {
-    const randomIndex = Math.floor(Math.random() * texts.length);
-    setText(texts[randomIndex]);
-    setEmoji(emojis[randomIndex]);
+  const { text, emoji } = useMemo(() => {
+    const randomIndex = Math.floor(Math.random() * TIPS.length);
+    return TIPS[randomIndex];
   }, []);
+
   return {
     tipObject: text,
     tipEmoji: emoji,

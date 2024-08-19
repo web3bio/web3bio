@@ -35,7 +35,17 @@ const resolveDuplicatedActions = (
 };
 
 export const RenderFeedContent = (props) => {
-  const { actions, tag, openModal, network, id, platform, owner, feed } = props;
+  const {
+    actions,
+    tag,
+    openModal,
+    network,
+    id,
+    platform,
+    owner,
+    feed,
+    nftInfos,
+  } = props;
   const comProps = useMemo(() => {
     switch (tag) {
       case "social":
@@ -57,18 +67,16 @@ export const RenderFeedContent = (props) => {
           network,
           openModal,
           owner,
-          actions: _.sortBy(
-            resolveDuplicatedActions(actions, id, [ActivityType.transfer]),
-            (x) =>
-              x.type !== ActivityType.multisig ||
-              x.metadata.action !== "execution"
-          ),
+          actions: resolveDuplicatedActions(actions, id, [
+            ActivityType.transfer,
+          ]),
         };
       case "collectible":
         return {
           id,
           network,
           openModal,
+          nftInfos,
           actions: resolveDuplicatedActions(actions, id, [
             ActivityType.mint,
             ActivityType.trade,
@@ -82,7 +90,7 @@ export const RenderFeedContent = (props) => {
           actions,
         };
     }
-  }, [tag]);
+  }, [tag, nftInfos]);
 
-  return <FeedActionCard key={actions.id} {...comProps} />;
+  return <FeedActionCard tag={tag} key={actions.id} {...comProps} />;
 };

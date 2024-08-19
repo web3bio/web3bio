@@ -31,15 +31,15 @@
 
 // Text style utilities
 .text-normal {
-  font-weight: normal;
+  font-weight: normal !important;
 }
 
 .text-bold {
-  font-weight: 700;
+  font-weight: 700 !important;
 }
 
 .text-italic {
-  font-style: italic;
+  font-style: italic !important;
 }
 
 .text-large {
@@ -47,7 +47,7 @@
 }
 
 .text-underline {
-  text-decoration: underline;
+  text-decoration: underline !important;
 }
 
 .text-opacity {

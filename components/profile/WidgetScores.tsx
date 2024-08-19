@@ -1,6 +1,6 @@
 "use client";
 import { memo, useEffect, useMemo } from "react";
-import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
+import { WidgetInfoMapping, WidgetType } from "../utils/widgets";
 import { WidgetDegenScore } from "./WidgetDegenScore";
 import { WidgetWebacy } from "./WidgetWebacy";
 import { useDispatch } from "react-redux";
@@ -18,37 +18,37 @@ const RenderWidgetScores = ({
   const scoresArr = useMemo(() => {
     return [
       {
-        key: WidgetTypes.gitcoin,
+        key: WidgetType.gitcoin,
         render: () => <WidgetGitcoin openModal={openModal} profile={profile} />,
       },
       {
-        key: WidgetTypes.degenscore,
+        key: WidgetType.degenscore,
         render: () => (
           <WidgetDegenScore openModal={openModal} profile={profile} />
         ),
       },
       {
-        key: WidgetTypes.talent,
-        render: () => <WidgetTalent address={profile.address} />,
+        key: WidgetType.talent,
+        render: () => <WidgetTalent openModal={openModal} profile={profile} />,
       },
       {
-        key: WidgetTypes.webacy,
+        key: WidgetType.webacy,
         render: () => <WidgetWebacy address={profile.address} />,
       },
     ];
   }, [profile.address, farcasterHandle]);
   const childWidgets = useMemo(
     () => [
-      states[WidgetTypes.degenscore],
-      states[WidgetTypes.gitcoin],
-      states[WidgetTypes.talent],
-      states[WidgetTypes.webacy],
+      states[WidgetType.degenscore],
+      states[WidgetType.gitcoin],
+      states[WidgetType.talent],
+      states[WidgetType.webacy],
     ],
     [states]
   );
   useEffect(() => {
     childWidgets.forEach((x) => {
-      if (x.isEmpty === false && !states[WidgetTypes.scores].loaded) {
+      if (x.isEmpty === false && !states[WidgetType.scores].loaded) {
         dispatch(
           updateScoresWidget({
             initLoading: false,
@@ -63,18 +63,18 @@ const RenderWidgetScores = ({
 
   return (
     !empty && (
-      <div className="profile-widget-full" id={WidgetTypes.scores}>
+      <div className="profile-widget-full" id={WidgetType.scores}>
         <div
           className={`profile-widget profile-widget-scores ${
-            states[WidgetTypes.scores].initLoading && "profile-widget-loading"
+            states[WidgetType.scores].initLoading && "profile-widget-loading"
           }`}
         >
           <div className="profile-widget-header">
             <h2 className="profile-widget-title">
               <span className="emoji-large mr-2">
-                {WidgetInfoMapping(WidgetTypes.scores).icon}{" "}
+                {WidgetInfoMapping(WidgetType.scores).icon}{" "}
               </span>
-              {WidgetInfoMapping(WidgetTypes.scores).title}
+              {WidgetInfoMapping(WidgetType.scores).title}
             </h2>
           </div>
           <div className={`widget-scores-list noscrollbar`}>

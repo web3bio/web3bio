@@ -27,7 +27,7 @@ import { WidgetState } from "../state/widgets/reducer";
 import LoadingSkeleton from "./LoadingSkeleton";
 import ProfileFooter from "./ProfileFooter";
 import WidgetIndicator from "./WidgetIndicator";
-import { WidgetTypes } from "../utils/widgets";
+import { WidgetType } from "../utils/widgets";
 import { DocumentNode, useLazyQuery } from "@apollo/client";
 import { updateUniversalBatchedProfile } from "../state/universal/actions";
 import { getProfileQuery } from "../utils/queries";
@@ -41,11 +41,11 @@ import WidgetPOAP from "./WidgetPoap";
 import WidgetGuild from "./WidgetGuild";
 import WidgetSnapshot from "./WidgetSnapshot";
 import WidgetTally from "./WidgetTally";
+import toast from "react-hot-toast";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
     props;
-  const [isCopied, setIsCopied] = useState(false);
   const { tipObject, tipEmoji } = useTipEmoji();
   const [links, setLinks] = useState(data?.links);
   const [getQuery, { loading, error, data: identityGraph }] = useLazyQuery(
@@ -60,7 +60,7 @@ export default function ProfileMain(props) {
     }
   );
   const dispatch = useDispatch();
-  const { isOpen, modalType, closeModal, openModal, params } = useModal();
+  const { isOpen, type, closeModal, openModal, params } = useModal();
   const [mounted, setMounted] = useState(false);
   const profileWidgetStates = useSelector<AppState, WidgetState>(
     (state) => state.widgets
@@ -123,10 +123,7 @@ export default function ProfileMain(props) {
       );
     }
   }, [domain, platform, identityGraph, getQuery, mounted, data?.links]);
-  const onCopySuccess = useCallback(() => {
-    setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 1500);
-  }, []);
+
   const isEmptyProfile = useMemo(() => {
     const loadedWidgets = Object.values(profileWidgetStates).filter(
       (x) => x.loaded
@@ -141,6 +138,20 @@ export default function ProfileMain(props) {
   const isBasicLoadingFinished = useMemo(() => {
     return profileWidgetStates.nft.loaded && profileWidgetStates.feeds.loaded;
   }, [profileWidgetStates]);
+
+  const handleCopySuccess = useCallback(() => {
+    toast.custom(
+      <div className="toast">
+        <SVG
+          src="../icons/icon-copy.svg"
+          width={24}
+          height={24}
+          className="action mr-2"
+        />
+        Copied to clipboard
+      </div>
+    );
+  }, []);
 
   if (!data || data.error) {
     return (
@@ -216,7 +227,7 @@ export default function ProfileMain(props) {
                     component="div"
                     className="btn btn-sm"
                     data-clipboard-text={data.address}
-                    onSuccess={onCopySuccess}
+                    onSuccess={handleCopySuccess}
                     title="Copy this wallet address"
                   >
                     <SVG
@@ -254,7 +265,7 @@ export default function ProfileMain(props) {
                   component="div"
                   className={`platform-badge nextid active c-hand`}
                   data-clipboard-text={domain}
-                  onSuccess={onCopySuccess}
+                  onSuccess={handleCopySuccess}
                   title="Copy the Next.ID address"
                   style={{
                     ["--badge-primary-color" as string]:
@@ -341,27 +352,29 @@ export default function ProfileMain(props) {
               </div>
             )}
 
-            <div className="profile-actions" style={{display: "none"}}>
-              <div className="btn-group">
-                <button
-                  className={`profile-share btn btn-lg active`}
-                  title="Donate"
-                  onClick={() => {
-                    openModal(ModalType.tip, {
-                      profile: {
-                        ...data,
-                        avatar: fallbackAvatar?.avatar,
-                      },
-                      tipEmoji: tipEmoji,
-                      tipObject: tipObject,
-                    });
-                  }}
-                >
-                  <span className="btn-emoji mr-1">{tipEmoji || "💸"}</span>
-                  {tipObject ? `Buy Me a ${tipObject}` : "Tip"}
-                </button>
+            {isValidEthereumAddress(data.address) && (
+              <div className="profile-actions" style={{display: "none"}}>
+                <div className="btn-group">
+                  <button
+                    className={`profile-share btn btn-lg active`}
+                    title="Donate"
+                    onClick={() => {
+                      openModal(ModalType.tip, {
+                        profile: {
+                          ...data,
+                          avatar: fallbackAvatar?.avatar,
+                        },
+                        tipEmoji,
+                        tipObject,
+                      });
+                    }}
+                  >
+                    <span className="btn-emoji mr-1">{"💸"}</span>
+                    {"Tip"}
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
         <div className="column col-7 col-lg-12">
@@ -400,7 +413,7 @@ export default function ProfileMain(props) {
           {(data.address && mounted && (
             <>
               <div className="web3-section-widgets">
-                <Suspense fallback={<LoadingSkeleton type={WidgetTypes.nft} />}>
+                <Suspense fallback={<LoadingSkeleton type={WidgetType.nft} />}>
                   <WidgetNFT
                     profile={data}
                     openModal={(v) => {
@@ -413,7 +426,7 @@ export default function ProfileMain(props) {
               </div>
               <div className="web3-section-widgets">
                 <Suspense
-                  fallback={<LoadingSkeleton type={WidgetTypes.feeds} />}
+                  fallback={<LoadingSkeleton type={WidgetType.feeds} />}
                 >
                   <WidgetFeed openModal={openModal} profile={data} />
                 </Suspense>
@@ -435,7 +448,7 @@ export default function ProfileMain(props) {
 
                   <div className="web3-section-widgets">
                     <Suspense
-                      fallback={<LoadingSkeleton type={WidgetTypes.article} />}
+                      fallback={<LoadingSkeleton type={WidgetType.article} />}
                     >
                       <WidgetArticle
                         address={data.address}
@@ -446,7 +459,7 @@ export default function ProfileMain(props) {
 
                   <div className="web3-section-widgets">
                     <Suspense
-                      fallback={<LoadingSkeleton type={WidgetTypes.poaps} />}
+                      fallback={<LoadingSkeleton type={WidgetType.poaps} />}
                     >
                       <WidgetPOAP
                         openModal={(v) => {
@@ -460,7 +473,7 @@ export default function ProfileMain(props) {
                   {isValidEthereumAddress(data.address) && (
                     <div className="web3-section-widgets">
                       <Suspense
-                        fallback={<LoadingSkeleton type={WidgetTypes.guild} />}
+                        fallback={<LoadingSkeleton type={WidgetType.guild} />}
                       >
                         <WidgetGuild
                           onShowDetail={(v) => {
@@ -478,7 +491,7 @@ export default function ProfileMain(props) {
                     <div className="web3-section-widgets">
                       <Suspense
                         fallback={
-                          <LoadingSkeleton type={WidgetTypes.snapshot} />
+                          <LoadingSkeleton type={WidgetType.snapshot} />
                         }
                       >
                         <WidgetSnapshot
@@ -496,7 +509,7 @@ export default function ProfileMain(props) {
                   {isValidEthereumAddress(data.address) && (
                     <div className="web3-section-widgets">
                       <Suspense
-                        fallback={<LoadingSkeleton type={WidgetTypes.tally} />}
+                        fallback={<LoadingSkeleton type={WidgetType.tally} />}
                       >
                         <WidgetTally address={data.address} />
                       </Suspense>
@@ -529,20 +542,7 @@ export default function ProfileMain(props) {
       </div>
       <ProfileFooter />
       {isOpen && (
-        <Modal params={params} onDismiss={closeModal} modalType={modalType} />
-      )}
-      {isCopied && (
-        <div className="web3bio-toast">
-          <div className="toast">
-            <SVG
-              src="../icons/icon-copy.svg"
-              width={24}
-              height={24}
-              className="action mr-2"
-            />
-            Copied to clipboard
-          </div>
-        </div>
+        <Modal params={params} onDismiss={closeModal} modalType={type} />
       )}
     </>
   );

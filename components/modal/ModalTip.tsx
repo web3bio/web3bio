@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import SVG from "react-inlinesvg";
-
 import {
   useAccount,
   useChainId,
@@ -15,8 +14,6 @@ import { erc20Abi, formatEther, parseEther } from "viem";
 import {
   chainIdToNetwork,
   networkByIdOrName,
-  NetworkMapping,
-  NetworksMap,
 } from "../utils/network";
 import { Loading } from "../shared/Loading";
 import { Avatar } from "../shared/Avatar";

@@ -5,6 +5,8 @@ import { Error } from "../shared/Error";
 import { Loading } from "../shared/Loading";
 import { ResultAccount } from "./ResultAccount";
 import { getProfileQuery } from "../utils/queries";
+import Link from "next/link";
+import SVG from "react-inlinesvg";
 
 export default function SearchResult({ searchTerm, searchPlatform }) {
   const [getQuery, { loading, error, data }] = useLazyQuery(getProfileQuery() as DocumentNode, {
@@ -31,7 +33,14 @@ export default function SearchResult({ searchTerm, searchPlatform }) {
       />
     );
   if (error) return <Error retry={getQuery} text={error} />;
-  if (searchTerm && !data?.identity) return <Empty />;
+  if (searchTerm && !data?.identity) 
+    return (
+      <Empty>
+        <button className="btn" onClick={() => window.history.back()}>Go back</button>
+        <Link href={`/?domain=${searchTerm}`} className="btn btn-primary"><SVG src={"icons/icon-suggestion.svg"} width={20} height={20} /> Check availability</Link>
+      </Empty>
+    );
+    
   return (
     data?.identity && (
       <ResultAccount

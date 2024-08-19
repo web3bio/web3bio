@@ -1,8 +1,7 @@
-import { memo, useMemo } from "react";
+import { memo, useMemo, useCallback } from "react";
 import SVG from "react-inlinesvg";
 import { ResultAccountItem } from "./ResultAccountItem";
-import _ from "lodash";
-import { PlatformType, SocialPlatformMapping } from "../utils/platform";
+import { PlatformType } from "../utils/platform";
 import Modal from "../modal/Modal";
 import useModal, { ModalType } from "../hooks/useModal";
 import { useProfiles } from "../hooks/useReduxProfiles";
@@ -23,8 +22,9 @@ const getNSAddress = (item) => {
 
 const RenderAccount = (props) => {
   const { identityGraph, graphTitle, platform } = props;
-  const { isOpen, modalType, closeModal, openModal, params } = useModal();
+  const { isOpen, type, closeModal, openModal, params } = useModal();
   const profiles = useProfiles();
+
   const resolvedListData = useMemo(() => {
     if (!identityGraph?.nodes) return [];
     const domainSkipMap = [
@@ -64,7 +64,7 @@ const RenderAccount = (props) => {
     let _resolved = _identityGraph.nodes.filter((x) => {
       return !domainSkipMap.some((i) => i.ns === x.platform);
     });
-    //clusters resolution
+    // Clusters resolution
     if (
       _resolved.filter((x) => x.platform === PlatformType.clusters).length > 1
     ) {
@@ -127,48 +127,45 @@ const RenderAccount = (props) => {
     return _resolved;
   }, [identityGraph, platform, graphTitle]);
 
-  const resolveSources = (id: string) => {
+  const resolveSources = useCallback((id) => {
     return identityGraph.edges.reduce((pre, x) => {
-      if (x.target === id) {
-        const label = SocialPlatformMapping(x.dataSource)?.label;
-        if (label && !pre.includes(label)) {
-          pre.push(label);
-        }
+      if (x.target === id && x.dataSource && !pre.includes(x.dataSource)) {
+        pre.push(x.dataSource);
       }
-      return pre
+      return pre;
     }, []);
-  };
+  }, [identityGraph.edges]);
+
+  const handleVisualize = useCallback(() => {
+    openModal(ModalType.graph, {
+      disableBack: true,
+      data: {
+        nodes: identityGraph.nodes?.map(x => ({
+          ...x,
+          profile: profiles.find(i => i?.uuid === x.uuid),
+        })),
+        edges: identityGraph.edges,
+      },
+      root: resolvedListData[0],
+      title: graphTitle,
+    });
+  }, [identityGraph, resolvedListData, graphTitle, profiles, openModal]);
+  
   return (
     <>
-      {isOpen && (
-        <Modal params={params} onDismiss={closeModal} modalType={modalType} />
-      )}
       <div className="search-result">
         <div className="search-result-header">
           <div className="search-result-text text-gray">
             Identity Graph results:
           </div>
           {identityGraph?.nodes.length > 0 && (
-            <div
+            <button
               className="btn btn-link btn-sm"
-              onClick={() => {
-                openModal(ModalType.graph, {
-                  disableBack: true,
-                  data: {
-                    nodes: identityGraph.nodes?.map((x) => ({
-                      ...x,
-                      profile: profiles.find((i) => i?.uuid === x.uuid),
-                    })),
-                    edges: identityGraph.edges,
-                  },
-                  root: resolvedListData?.[0],
-                  title: graphTitle,
-                });
-              }}
+              onClick={handleVisualize}
             >
               <SVG src={"/icons/icon-view.svg"} width={20} height={20} />{" "}
               Visualize
-            </div>
+            </button>
           )}
         </div>
         <div className="search-result-body">
@@ -177,11 +174,14 @@ const RenderAccount = (props) => {
               idx={idx}
               identity={avatar}
               sources={resolveSources(`${avatar.platform},${avatar.identity}`)}
-              key={avatar.uuid + idx}
+              key={`${avatar.uuid}-${idx}`}
             />
           ))}
         </div>
       </div>
+      {isOpen && (
+        <Modal params={params} onDismiss={closeModal} modalType={type} />
+      )}
     </>
   );
 };

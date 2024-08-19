@@ -285,24 +285,6 @@ body {
   }
 }
 
-//- Web3.bio Toast
-.web3bio-toast {
-  display: flex;
-  justify-content: center;
-  left: 50%;
-  position: fixed;
-  transform: translateX(-50%);
-  text-align: center;
-  top: 1rem;
-  width: $size-xs;
-  z-index: 9999;
-
-  .toast {
-    animation: slide-down .25s ease 1;
-    max-width: $size-xs;
-  }
-}
-
 // Web3.bio Widgets Indicator
 .widget-indicator {
   align-items: center;

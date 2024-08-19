@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useCallback } from "react";
 import Image from "next/image";
 import SVG from "react-inlinesvg";
 import Clipboard from "react-clipboard.js";
 import { downloadVCard } from "../utils/vcard";
+import toast from "react-hot-toast";
 
 const shareMap = [
   {
@@ -45,13 +46,6 @@ export default function ShareModalContent(props) {
   const url = `${
     process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio"
   }/${path}`;
-  const [isCopied, setIsCopied] = useState(false);
-  const onCopySuccess = () => {
-    setIsCopied(true);
-    setTimeout(() => {
-      setIsCopied(false);
-    }, 1500);
-  };
 
   const params = new URLSearchParams();
   if (path) params.append("path", path);
@@ -62,6 +56,20 @@ export default function ShareModalContent(props) {
   const relativeOGURL = params.toString()
     ? `/api/og?${params.toString()}`
     : "/api/og";
+
+  const handleCopySuccess = useCallback(() => {
+    toast.custom(
+      <div className="toast">
+        <SVG
+          src="../icons/icon-copy.svg"
+          width={24}
+          height={24}
+          className="action mr-2"
+        />
+        Copied to clipboard
+      </div>
+    );
+  }, []);
 
   return (
     <>
@@ -116,12 +124,10 @@ export default function ShareModalContent(props) {
             className="btn input-group-btn"
             key="share_copy"
             data-clipboard-text={url}
-            onSuccess={onCopySuccess}
+            onSuccess={handleCopySuccess}
           >
             <SVG
-              src={
-                isCopied ? "../icons/icon-check.svg" : "../icons/icon-copy.svg"
-              }
+              src={"../icons/icon-copy.svg"}
               width={20}
               height={20}
               className="action"
@@ -146,20 +152,6 @@ export default function ShareModalContent(props) {
           Download Profile vCard
         </div>
       </div>
-
-      {isCopied && (
-        <div className="web3bio-toast">
-          <div className="toast">
-            <SVG
-              src="../icons/icon-copy.svg"
-              width={24}
-              height={24}
-              className="action mr-2"
-            />
-            Copied to clipboard
-          </div>
-        </div>
-      )}
     </>
   );
 }

@@ -8,7 +8,7 @@ import NFTFilter from "./NFTFilter";
 import { useDispatch } from "react-redux";
 import { PlatformType } from "../utils/platform";
 
-import { WidgetTypes } from "../utils/widgets";
+import { WidgetType } from "../utils/widgets";
 import { updateNFTWidget } from "../state/widgets/reducer";
 import {
   SIMPLEHASH_CHAINS,
@@ -117,7 +117,7 @@ export default function WidgetNFT({ profile, openModal }) {
   useEffect(() => {
     if (
       window.location.hash &&
-      window.location.hash === `#${WidgetTypes.nft}` &&
+      window.location.hash === `#${WidgetType.nft}` &&
       !expand
     ) {
       setExpand(true);
@@ -158,7 +158,7 @@ export default function WidgetNFT({ profile, openModal }) {
     <div
       ref={scrollContainer}
       className="profile-widget-full"
-      id={WidgetTypes.nft}
+      id={WidgetType.nft}
     >
       <div
         className={`profile-widget profile-widget-nft${

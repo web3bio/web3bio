@@ -9,7 +9,7 @@ import SVG from "react-inlinesvg";
 import { Error } from "../shared/Error";
 import { Empty } from "../shared/Empty";
 import { formatText, formatBalance } from "../utils/utils";
-import { WidgetTypes } from "../utils/widgets";
+import { WidgetType } from "../utils/widgets";
 import { updateTallyDAOWidget } from "../state/widgets/reducer";
 import { QUERY_DAO_DELEGATORS } from "../apis";
 
@@ -72,7 +72,7 @@ const RenderWidgetTally = ({ address }) => {
     return null;
 
   return (
-    <div className="profile-widget-full" id={WidgetTypes.tally}>
+    <div className="profile-widget-full" id={WidgetType.tally}>
       <div
         className={`profile-widget profile-widget-tally${
           expand ? " active" : ""

@@ -5,7 +5,7 @@ import useModal, { ModalType } from "../hooks/useModal";
 import Modal from "../modal/Modal";
 
 export default function ProfileFooter() {
-  const { isOpen, modalType, openModal, params, closeModal } = useModal();
+  const { isOpen, type, openModal, params, closeModal } = useModal();
 
   useEffect(() => {
     const onKeyDown = (e) => {
@@ -24,7 +24,7 @@ export default function ProfileFooter() {
   return (
     <>
       {isOpen && (
-        <Modal params={params} onDismiss={closeModal} modalType={modalType} />
+        <Modal params={params} onDismiss={closeModal} modalType={type} />
       )}
       <div className="web3bio-badge">
         <Link

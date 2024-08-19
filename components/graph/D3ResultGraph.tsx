@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as d3 from "d3";
 import {
   formatText,
@@ -6,7 +6,6 @@ import {
   isValidEthereumAddress,
 } from "../utils/utils";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
-import _ from "lodash";
 import SVG from "react-inlinesvg";
 import { Empty } from "../shared/Empty";
 import { resolveIdentityGraphData } from "./utils";
@@ -16,7 +15,7 @@ let CurrentId = null;
 const IdentityNodeSize = 48;
 const NFTNodeSize = 14;
 
-const getNodeRadius = (isIdentity) =>
+const getNodeRadius = (isIdentity: boolean) =>
   isIdentity ? IdentityNodeSize : NFTNodeSize;
 const getMarkerRefX = (d) => {
   return d.target.isIdentity ? IdentityNodeSize + 30 : NFTNodeSize + 16;
@@ -37,13 +36,15 @@ const updateNodes = (nodeContainer) => {
       "xlink:href",
       (d) => SocialPlatformMapping(d.platform.toLowerCase()).icon
     )
-    .attr("style", (d) => `display:${d.isIdentity ? "normal" : "none"}`);
+    .attr("style", (d) => `display:${d.isIdentity ? "normal" : "none"}`)
+    .attr("filter", "url(#whiteFilter)");
 
   const badge = nodeContainer
     .append("svg:image")
     .attr("class", "badge-icon")
     .attr("xlink:href", (d) => SocialPlatformMapping(d.platform).icon)
-    .attr("style", (d) => `display:${d.isIdentity ? "none" : "normal"}`);
+    .attr("style", (d) => `display:${d.isIdentity ? "none" : "normal"}`)
+    .attr("filter", "url(#whiteFilter)");
 
   const displayName = nodeContainer
     .append("text")
@@ -140,6 +141,14 @@ export default function D3IdentityGraph(props) {
             })
         )
         .append("svg:g");
+      
+      // Add white filter definition
+      const defs = svg.append("defs");
+      defs.append("filter")
+        .attr("id", "whiteFilter")
+        .append("feColorMatrix")
+        .attr("type", "matrix")
+        .attr("values", "1 0 0 0 1  0 1 0 0 1  0 0 1 0 1  0 0 0 1 0");
 
       const generateSimulation = () => {
         const simulation = d3
@@ -398,6 +407,8 @@ export default function D3IdentityGraph(props) {
       svg.selectAll("*").remove();
     };
   }, [data]);
+
+  
   return (
     <>
       {(data && <svg className="svg-canvas" />) || (

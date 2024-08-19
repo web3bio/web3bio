@@ -1,5 +1,5 @@
 import { WidgetState } from "../state/widgets/reducer";
-import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
+import { WidgetInfoMapping, WidgetType } from "../utils/widgets";
 interface WidgetIndicatorInterface {
   states: WidgetState;
 }
@@ -12,7 +12,7 @@ export default function WidgetIndicator(props: WidgetIndicatorInterface) {
     arr.length > 0 && (
       <div className="widget-indicator">
         {arr.map((x) => {
-          const type = x[0] as WidgetTypes;
+          const type = x[0] as WidgetType;
           return (
             <a
               key={WidgetInfoMapping(type).icon + x[0]}

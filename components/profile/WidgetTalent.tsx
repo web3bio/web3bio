@@ -1,11 +1,11 @@
 "use client";
 import { memo, useEffect, useMemo } from "react";
 import useSWR from "swr";
-import Link from "next/link";
-import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
+import { WidgetInfoMapping, WidgetType } from "../utils/widgets";
 import { useDispatch } from "react-redux";
 import { updateTalentWidget } from "../state/widgets/reducer";
 import { TALENT_API_ENDPOINT, talentFetcher } from "../apis";
+import { ModalType } from "../hooks/useModal";
 
 function useTalentPassportInfo(address: string) {
   const { data, error } = useSWR(
@@ -31,10 +31,13 @@ const getBuilderLevel = (score: number) => {
   return "Newbie";
 };
 
-const RenderWidgetTalent = ({ address }) => {
-  const { data, isLoading } = useTalentPassportInfo(address);
+const RenderWidgetTalent = ({ profile, openModal }) => {
+  const { data, isLoading } = useTalentPassportInfo(profile.address);
   const dispatch = useDispatch();
-  const builderLevel = useMemo(() => getBuilderLevel(data?.score || 0), [data?.score]);
+  const builderLevel = useMemo(
+    () => getBuilderLevel(data?.score || 0),
+    [data?.score]
+  );
   useEffect(() => {
     if (!isLoading) {
       dispatch(
@@ -55,17 +58,18 @@ const RenderWidgetTalent = ({ address }) => {
   return isLoading ? (
     <></>
   ) : (
-    <Link
-      href={"https://passport.talentprotocol.com/profile/" + data.passport_id}
+    <div
       className="profile-widget profile-widget-talent"
-      target="_blank"
+      onClick={(e) => {
+        openModal(ModalType.talent, { data });
+      }}
     >
       <div className="profile-widget-header">
         <h2 className="profile-widget-title">
           <span className="emoji-large mr-2">
-            {WidgetInfoMapping(WidgetTypes.talent).icon}{" "}
+            {WidgetInfoMapping(WidgetType.talent).icon}{" "}
           </span>
-          {WidgetInfoMapping(WidgetTypes.talent).title}{" "}
+          {WidgetInfoMapping(WidgetType.talent).title}{" "}
         </h2>
       </div>
       <div className="profile-widget-body"></div>
@@ -84,7 +88,7 @@ const RenderWidgetTalent = ({ address }) => {
           Builder Score
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 

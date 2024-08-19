@@ -3,7 +3,7 @@ import { useCallback, useEffect } from "react";
 import { Loading } from "../shared/Loading";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { useDispatch } from "react-redux";
-import { WidgetInfoMapping, WidgetTypes } from "../utils/widgets";
+import { WidgetInfoMapping, WidgetType } from "../utils/widgets";
 import { updateSnapshotWidget } from "../state/widgets/reducer";
 import { useQuery } from "@apollo/client";
 import { QUERY_SPACES_FOLLOWED_BY_USR } from "../apis";
@@ -14,7 +14,7 @@ export default function WidgetSnapshot({ profile, onShowDetail }) {
       address: profile.address,
     },
     context: {
-      clientName: WidgetTypes.snapshot,
+      clientName: WidgetType.snapshot,
     },
   });
 
@@ -48,7 +48,7 @@ export default function WidgetSnapshot({ profile, onShowDetail }) {
   // }
 
   return (
-    <div className="profile-widget-full" id={WidgetTypes.snapshot}>
+    <div className="profile-widget-full" id={WidgetType.snapshot}>
       <div className="profile-widget profile-widget-guild">
         <div className="profile-widget-header">
           <h2
@@ -56,12 +56,12 @@ export default function WidgetSnapshot({ profile, onShowDetail }) {
             title="Snapshot - Where decisions get made."
           >
             <span className="emoji-large mr-2">
-              {WidgetInfoMapping(WidgetTypes.snapshot).icon}{" "}
+              {WidgetInfoMapping(WidgetType.snapshot).icon}{" "}
             </span>
-            {WidgetInfoMapping(WidgetTypes.snapshot).title}
+            {WidgetInfoMapping(WidgetType.snapshot).title}
           </h2>
           <h3 className="text-assistive">
-            {WidgetInfoMapping(WidgetTypes.snapshot).description}
+            {WidgetInfoMapping(WidgetType.snapshot).description}
           </h3>
         </div>
 

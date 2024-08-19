@@ -38,6 +38,7 @@ export default function LensProfile(props) {
           <div className="platform-icon">
             <SVG
               src={`../${SocialPlatformMapping(PlatformType.lens)?.icon}`}
+              fill="#fff"
               width={14}
               height={14}
             />
@@ -53,7 +54,7 @@ export default function LensProfile(props) {
             src={_profile.avatar}
             identity={handle}
           />
-          <div className="d-flex mt-2 mb-2" style={{ alignItems: "center", lineHeight: 1.25 }}>
+          <div className="d-flex mt-2" style={{ alignItems: "center", lineHeight: 1.25 }}>
             <strong className="h4 text-bold">{_profile.displayName}</strong>
             {data?.profile?.onchainIdentity?.proofOfHumanity && (
               <div className="profile-badge" title="Proof of Humanity">
@@ -66,7 +67,7 @@ export default function LensProfile(props) {
               </div>
             )}
           </div>
-          <div className="text-gray mt-2 mb-2">
+          <div className="text-gray mb-2">
             @{_profile.identity.replace(".lens", "")}
             <span> · </span>
             <span title="Lens UID">#{_profile.social.uid}</span>
@@ -156,6 +157,7 @@ export default function LensProfile(props) {
             >
               <SVG
                 src={"icons/icon-firefly.svg"}
+                fill="#fff"
                 width={20}
                 height={20}
                 className="mr-1"

@@ -17,7 +17,6 @@ export const resolveIdentityGraphData = (source) => {
   const edges = new Array<any>();
 
   const generateVerticesStruct = (x) => {
-    const resolvedPlatform = SocialPlatformMapping(x.platform);
     const ownerAddress = x.ownerAddress?.[0].address;
     const resolvedAddress =
       x.platform === PlatformType.ethereum
@@ -28,7 +27,7 @@ export const resolveIdentityGraphData = (source) => {
       label: [PlatformType.ens, PlatformType.sns].includes(x.platform)
         ? formatText(x.id)
         : formatText(x.displayName || x.identity),
-      platform: resolvedPlatform.key || x.platform,
+      platform: x.platform,
       displayName: x.profile?.displayName || x.displayName || x.identity,
       identity: x.profile?.identity || x.identity,
       uid: x.uid,
