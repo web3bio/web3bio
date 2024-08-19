@@ -163,7 +163,7 @@ export const PLATFORM_DATA: ReadonlyMap<PlatformType, Readonly<SocialPlatform>> 
     icon: "icons/icon-lens.svg",
     label: "Lens",
     urlPrefix: "https://www.lensfrens.xyz/",
-    registerlink: "https://www.lens.xyz/mint",
+    registerlink: "https://www.lens.xyz/mint?name=",
     system: PlatformSystem.web2,
   }],
   [PlatformType.nextid, {

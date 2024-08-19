@@ -92,5 +92,5 @@ export const RenderFeedContent = (props) => {
     }
   }, [tag, nftInfos]);
 
-  return <FeedActionCard key={actions.id} {...comProps} />;
+  return <FeedActionCard tag={tag} key={actions.id} {...comProps} />;
 };

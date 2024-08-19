@@ -114,13 +114,14 @@
         }
 
         .search-list-item {
-          flex: 0 0 2rem;
-          width: 2rem;
+          &.search-list-item-sm {
+            flex: 0 0 2rem;
+            width: 2rem;
+          }
         }
       }
 
       .search-list-item {
-        width: 100%;
         align-items: center;
         border-radius: .4rem;
         cursor: pointer;
