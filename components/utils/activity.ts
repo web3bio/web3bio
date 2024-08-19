@@ -268,6 +268,14 @@ export const ActionStructMapping = (action, owner) => {
         ? action.to
         : null;
       platform = action.platform;
+      attachments =
+        action.tag === ActivityTag.collectible
+          ? {
+              medias: action.duplicatedObjects.filter((x) =>
+                ["ERC-1155", "ERC-721"].includes(x.standard)
+              ),
+            }
+          : [];
       break;
     case ActivityType.liquidity:
       verb =

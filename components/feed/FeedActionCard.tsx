@@ -1,5 +1,9 @@
 import { memo, useMemo } from "react";
-import { ActionStructMapping } from "../utils/activity";
+import {
+  ActionStructMapping,
+  ActivityTag,
+  ActivityType,
+} from "../utils/activity";
 import { NFTAssetPlayer, isImage, isVideo } from "../shared/NFTAssetPlayer";
 import { ModalType } from "../hooks/useModal";
 import { resolveMediaURL } from "../utils/utils";
@@ -7,6 +11,7 @@ import { domainRegexp } from "../feed/ActionExternalMenu";
 import Link from "next/link";
 import RenderProfileBadge from "./RenderProfileBadge";
 import RenderObjects from "./RenderObjects";
+import _ from "lodash";
 
 function RenderFeedActionCard(props) {
   const {
@@ -16,12 +21,46 @@ function RenderFeedActionCard(props) {
     overridePlatform,
     openModal,
     network,
+    tag,
     nftInfos,
     platform: feedPlatform,
   } = props;
   const renderData = useMemo(() => {
-    return actions.map((x) => ({ ...ActionStructMapping(x, owner) }));
-  }, [actions, owner]);
+    const res = actions.map((x) => ({ ...ActionStructMapping(x, owner) }));
+    if (tag === ActivityTag.collectible) {
+      const uniqAttachments = [] as string[];
+      res.forEach((x) => {
+        if (x.type === ActivityType.transfer) {
+          x.attachments.medias.forEach((i) => {
+            const uniqId = `${i.address}-${i.id}`;
+            if (!uniqAttachments.includes(uniqId)) {
+              uniqAttachments.push(uniqId);
+            }
+          });
+        }
+      });
+      return res.map((x, idx) => {
+        return x.verb === "Transferred"
+          ? {
+              ...x,
+              attachments:
+                idx === res.length - 1
+                  ? {
+                      medias: _.uniqBy(
+                        x.attachments.medias,
+                        (i) => `${i.address}-${i.id}`
+                      ),
+                    }
+                  : {
+                      medias: [],
+                    },
+            }
+          : x;
+      });
+    }
+    return res;
+  }, [actions, owner, tag]);
+
   const ActionContent = (props) => {
     const {
       verb,
@@ -53,6 +92,8 @@ function RenderFeedActionCard(props) {
                 );
               }
               const nftImageUrl = infoItem?.previews?.image_medium_url;
+              // if(x.address && rendered.includes(x.address)) return null
+              // rendered.push(x.address)
               return isImage(x.mime_type) ||
                 isVideo(x.mime_type) ||
                 nftImageUrl ? (
