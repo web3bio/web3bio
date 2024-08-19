@@ -44,7 +44,7 @@ export default function SearchInput(props) {
     (e) => {
       if (e.key === "Enter") {
         const _value = searchList[activeIndex] || query.replaceAll("。", ".");
-        if (_value?.key === "domain") {
+        if (_value?.key === "domain" || e.shiftKey) {
           emitSubmit(e, {
             label: query,
             key: "domain",
