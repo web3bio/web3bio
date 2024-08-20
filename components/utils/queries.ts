@@ -102,6 +102,7 @@ export const getProfileQuery = (minify?: Boolean) => {
 export const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
 export const profileAPIBaseURL =
   process.env.NEXT_PUBLIC_PROFILE_END_POINT || "https://api.web3.bio";
+export const articleAPIBaseURL = "https://article-api.web3.bio";
 
 export const queryClient = async (path: string) => {
   return await fetch(baseURL + "/api" + path);

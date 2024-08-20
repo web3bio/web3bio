@@ -5,14 +5,14 @@ import useSWR from "swr";
 import SVG from "react-inlinesvg";
 import Link from "next/link";
 import { WidgetInfoMapping, WidgetType } from "../utils/widgets";
-import { profileAPIBaseURL } from "../utils/queries";
 import ArticleItem from "./ArticleItem";
 import { updateArticleWidget } from "../state/widgets/reducer";
 import { ArticlesFetcher } from "../apis";
+import { articleAPIBaseURL } from "../utils/queries";
 
 function useArticles(address: string, domain?: string | null) {
   const fetchUrl = (() => {
-    return `${profileAPIBaseURL}/articles/${address}?limit=10${
+    return `${articleAPIBaseURL}/${address}?limit=10${
       domain ? "&domian=" + domain : ""
     }${domain ? "&contenthash=true" : ""}`;
   })();
