@@ -47,7 +47,13 @@ const RenderActivityFeeds = (props) => {
     [data, validTypes]
   );
   const nftIds = useMemo(() => {
-    if (validTypes !== TagsFilterMapping.collectibles.types) return [];
+    if (
+      ![
+        TagsFilterMapping.collectibles.types,
+        TagsFilterMapping.all.types,
+      ].includes(validTypes)
+    )
+      return [];
     const uniqueIds = new Set();
     memoizedData.forEach((feed) => {
       feed.actions.forEach((action) => {
