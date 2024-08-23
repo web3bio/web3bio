@@ -160,9 +160,9 @@ export default function GuildModalContent({ onClose, guild, profile }) {
           {guildRoles?.length > 0 && (
             <>
               <div className="divider mt-4 mb-4"></div>
-              <div className="panel-widget">
-                <div className="panel-widget-title">Guild Roles</div>
-                <div className="panel-widget-content">
+              <div className="panel-section">
+                <div className="panel-section-title">Guild Roles</div>
+                <div className="panel-section-content">
                   {guildRoles.map((role) => (
                     <RoleItem key={role.id} role={role} showMemberCount={true} />
                   ))}
@@ -174,11 +174,11 @@ export default function GuildModalContent({ onClose, guild, profile }) {
           {rolesAcquired?.length > 0 && (
             <>
               <div className="divider mt-4 mb-4"></div>
-              <div className="panel-widget">
-                <div className="panel-widget-title">
+              <div className="panel-section">
+                <div className="panel-section-title">
                   Roles acquired by {profile.displayName}
                 </div>
-                <div className="panel-widget-content">
+                <div className="panel-section-content">
                   {rolesAcquired.map((role) => (
                     <RoleItem key={role.id} role={role} showMemberCount={false} />
                   ))}

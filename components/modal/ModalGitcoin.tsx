@@ -83,9 +83,9 @@ export default function GitcoinModalContent({ onClose, passport, profile }) {
           {Object.keys(groupedStamps).length > 0 && (
             <>
               <div className="divider mt-4 mb-4"></div>
-              <div className="panel-widget">
-                <div className="panel-widget-title">Gitcoin Passport Stamps</div>
-                <div className="panel-widget-content">
+              <div className="panel-section">
+                <div className="panel-section-title">Gitcoin Passport Stamps</div>
+                <div className="panel-section-content">
                   {Object.entries(groupedStamps).map(([category, stamps]) => (
                     <div key={category} className="stamp-item">
                       <div className="stamp-item-body">

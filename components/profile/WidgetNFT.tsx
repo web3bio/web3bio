@@ -16,7 +16,7 @@ import {
   SIMPLEHASH_URL,
   SimplehashFetcher,
 } from "../apis";
-import { Network, NetworkMapping } from "../utils/network";
+import { Network } from "../utils/network";
 
 const CURSOR_PARAM = "&cursor=";
 

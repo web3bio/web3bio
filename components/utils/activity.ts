@@ -134,6 +134,7 @@ export const ActivityTypeData: { [key in ActivityType]: any } = {
       create: "Created the profile",
       renew: "Renewed the domain",
       wrap: "Wrapped the domain",
+      unwrap: "Unwrapped the domain",
     },
     prep: "",
   },
@@ -180,6 +181,7 @@ export const ActivityTypeData: { [key in ActivityType]: any } = {
     label: "Staking",
     action: {
       default: "Staked",
+      stake: "Staked",
       claim: "Claimed",
       unstake: "Unstaked",
     },
@@ -196,12 +198,13 @@ export const ActivityTypeData: { [key in ActivityType]: any } = {
   },
   [ActivityType.trade]: {
     key: ActivityType.trade,
-    emoji: "⚖️",
+    emoji: "🛒",
     label: "Trade",
     action: {
       default: "Traded",
       buy: "Bought",
       sell: "Sold",
+      list: "Listed",
       offer: "Made an offer for",
     },
     prep: "",
@@ -216,14 +219,12 @@ export const ActivityTypeData: { [key in ActivityType]: any } = {
     },
     prep: "to",
   },
-  // todo: fulfill feed
   [ActivityType.feed]: {
     key: ActivityType.feed,
-    emoji: "🌲",
+    emoji: "📰",
     label: "Feed",
     action: {
-      default: "temp",
-      receive: "temp",
+      default: "",
     },
     prep: "",
   },

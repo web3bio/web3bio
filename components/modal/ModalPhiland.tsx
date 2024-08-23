@@ -29,8 +29,8 @@ export default function PhilandModalContent({ data, onClose, profile }) {
           </div>
           <div className="preview-main">
             <div className="preview-content">
-              <div className="panel-widget">
-                <div className="panel-widget-content">
+              <div className="panel-section">
+                <div className="panel-section-content">
                   <div
                     className="nft-header-collection collection-title mb-4"
                     style={{
@@ -63,10 +63,10 @@ export default function PhilandModalContent({ data, onClose, profile }) {
               </div>
 
               {!!data?.links.length && (
-                <div className="panel-widget">
-                  <div className="panel-widget-title">Phi links</div>
-                  <div className="panel-widget-content">
-                    <div className="panel-widget-list">
+                <div className="panel-section">
+                  <div className="panel-section-title">Phi links</div>
+                  <div className="panel-section-content">
+                    <div className="panel-section-list">
                       {data?.links?.map((x) => {
                         return (
                           <div key={x.url} className="widget-list-item">

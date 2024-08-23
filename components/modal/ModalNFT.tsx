@@ -22,11 +22,9 @@ const renderSocialMediaLinks = (_collection) => {
     [PlatformType.instagram]: _collection?.instagram_username,
   };
 
-  const links = new Array();
-  for (let key in renderArr) {
-    if (renderArr[key]) {
-      const item = renderArr[key];
-      links.push(
+  return Object.entries(renderArr).map(([key, item]) => {
+    if (item) {
+      return (
         <Link
           onClick={(e) => e.stopPropagation()}
           href={getSocialMediaLink(item, key as PlatformType) || ""}
@@ -44,12 +42,12 @@ const renderSocialMediaLinks = (_collection) => {
         </Link>
       );
     }
-  }
-  return links;
+  });
 };
 
 export default function NFTModalContentRender(props) {
   const { onClose, asset } = props;
+
   const resolvedNetwork = (() => {
     if (asset.network?.includes("arbitrum")) {
       return Network.arbitrum;
@@ -71,7 +69,7 @@ export default function NFTModalContentRender(props) {
 
   if (!asset || (asset.remoteFetch && !fetchedAsset)) return null;
 
-  const _asset = fetchedAsset ? fetchedAsset : asset.asset;
+  const _asset = fetchedAsset || asset.asset;
   const _collection = fetchedAsset
     ? fetchedAsset.collection
     : _asset.collection;
@@ -82,6 +80,7 @@ export default function NFTModalContentRender(props) {
     _asset?.previews?.image_large_url ||
     _asset?.image_url ||
     asset.mediaURL;
+
   return (
     <>
       <div className="modal-actions">
@@ -136,9 +135,9 @@ export default function NFTModalContentRender(props) {
           </div>
           <div className="preview-main">
             <div className="preview-content">
-              <div className="panel-widget">
-                <div className="panel-widget-content">
-                  <div className="nft-header-collection collection-title mb-4">
+              <div className="panel-section">
+                <div className="panel-section-content">
+                  <div className="nft-collection">
                     <NFTAssetPlayer
                       type={"image/png"}
                       className="collection-logo"
@@ -151,27 +150,27 @@ export default function NFTModalContentRender(props) {
                       {_collection?.name}
                     </div>
                   </div>
-                  <div className="nft-header-name h4">
+                  <div className="nft-name h4">
                     {_asset.name || `${_collection?.name} #${_asset.token_id}`}
                   </div>
-                  <div className="nft-header-description mt-2 mb-2">
+                  <div className="nft-description">
                     <Markdown>
                       {_asset.description || _collection?.description}
                     </Markdown>
                   </div>
 
-                  <div className="btn-group mt-2 mb-2">
+                  <div className="btn-group">
                     {renderSocialMediaLinks(_collection)}
                   </div>
                 </div>
               </div>
 
               {attributes.length > 0 && (
-                <div className="panel-widget">
-                  <div className="panel-widget-title collection-title">
+                <div className="panel-section">
+                  <div className="panel-section-title collection-title">
                     Attributes
                   </div>
-                  <div className="panel-widget-content">
+                  <div className="panel-section-content">
                     <div className="traits-cards">
                       {attributes.map((x, idx) => {
                         return (
@@ -193,7 +192,8 @@ export default function NFTModalContentRender(props) {
                 </div>
               )}
 
-              <div className="divider"></div>
+              <div className="divider mt-4 mb-4"></div>
+              
               <CollectionAbout collection={_collection} />
             </div>
           </div>

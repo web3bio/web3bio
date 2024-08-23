@@ -62,9 +62,9 @@ export default function DegenscoreModalContent({ onClose, degenscore, profile })
         {degenscore.traits.actions?.metadata.actions.actions && (
           <>
             <div className="divider mt-4 mb-4"></div>
-            <div className="panel-widget">
-              <div className="panel-widget-title">DegenScore Onchain Actions</div>
-              <div className="panel-widget-content">
+            <div className="panel-section">
+              <div className="panel-section-title">DegenScore Onchain Actions</div>
+              <div className="panel-section-content">
                 <div className="widget-trait-list">
                   {(degenscore.traits.actions?.metadata.actions.actions).map(
                     (item, idx) => {

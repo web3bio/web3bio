@@ -143,9 +143,9 @@ export default function FarcasterProfile(props) {
           {channelsData?.data?.length > 0 && (
             <>
               <div className="divider mt-4 mb-4"></div>
-              <div className="panel-widget">
-                <div className="panel-widget-title">Active Channels</div>
-                <div className="panel-widget-content">
+              <div className="panel-section">
+                <div className="panel-section-title">Active Channels</div>
+                <div className="panel-section-content">
                   {channelsData.data.map((x) => {
                     return (
                       <Link

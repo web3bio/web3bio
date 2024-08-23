@@ -21,32 +21,32 @@ const CollectionAboutRender = (props) => {
   )[0];
 
   return (
-    <div className="panel-widget">
-      <div className="panel-widget-content">
-        <div className="nft-header-logo mt-4 mb-4">
+    <div className="panel-section">
+      <div className="panel-section-content">
+        <div className="nft-logo mb-4">
           <NFTAssetPlayer
             type={"image/png"}
             className="collection-logo"
             src={collection.image_url}
             alt={collection.name}
-            width={80}
-            height={80}
+            width={48}
+            height={48}
             placeholder
           />
         </div>
-        <div className="nft-header-name h5">
+        <div className="nft-name h5">
           {collection.name}
         </div>
         {collection.description && (
-          <div className="nft-header-description mt-2 mb-4">
+          <div className="nft-description">
             <Markdown>
               {collection.description}
             </Markdown>
           </div>
         )}
       </div>
-      <div className="panel-widget-content">
-        <div className="panel-widget-list">
+      <div className="panel-section-content">
+        <div className="panel-section-list">
           {floorPriceItem && (
             <div className="widget-list-item" key="floorPriceItem">
               <div className="list-item-left">Floor Price</div>
