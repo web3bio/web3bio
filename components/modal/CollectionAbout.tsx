@@ -56,10 +56,8 @@ const renderSocialMediaLinks = (_collection) => {
 
 const CollectionAboutRender = (props) => {
   const { collection } = props;
-  if (!collection) return null;
-
-  const descriptionRef = useRef<HTMLDivElement>(null);
   const [expand, setExpand] = useState(false);
+  const descriptionRef = useRef<HTMLDivElement>(null);
 
   const floorPriceItem = collection.floor_prices?.sort(
     (a, b) => a.value - b.value
@@ -70,6 +68,8 @@ const CollectionAboutRender = (props) => {
       setExpand(true);
     }
   }, [descriptionRef]);
+
+  if (!collection) return null;
 
   return (
     <div className="panel-section">
@@ -88,7 +88,7 @@ const CollectionAboutRender = (props) => {
         <div className="nft-title h5">
           {collection.name}
         </div>
-        <div className="nft-actions">
+        <div className="nft-actions btn-group">
           {renderSocialMediaLinks(collection)}
         </div>
         {collection.description && (

@@ -94,12 +94,12 @@
 
         &:focus,
         &:hover {
-          background: rgba($bg-color, .45);
+          background: rgba($bg-color, .85);
         }
 
         &:active,
         &.active {
-          background: rgba($bg-color, .65);
+          background: rgba($bg-color, .95);
         }
       }
     }
@@ -800,7 +800,7 @@
     display: flex;
     height: 80vh;
     gap: 2rem;
-    max-width: $size-2x;
+    max-width: $size-xl;
     padding: 1rem;
     width: 100%;
 
@@ -996,7 +996,6 @@
     .nft-actions {
       display: flex;
       flex-wrap: wrap;
-      gap: .1rem;
       margin-bottom: 1rem;
     }
 

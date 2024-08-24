@@ -116,7 +116,7 @@ export default function NFTModalContentRender(props) {
                     <div
                       className={`nft-network ${_asset.chain}`}
                       title={NetworkMapping(_asset.chain).label}
-                      style={{ backgroundColor: NetworkMapping(_asset.chain).bgColor }}
+                      // style={{ backgroundColor: NetworkMapping(_asset.chain).bgColor }}
                     >
                       <SVG
                         fill={NetworkMapping(_asset.chain).primaryColor}
@@ -160,7 +160,6 @@ export default function NFTModalContentRender(props) {
 
               {attributes.length > 0 && (
                 <>
-                  <div className="divider mt-4 mb-4"></div>
                   <div className="panel-section">
                     <div className="panel-section-title collection-title">
                       Attributes
