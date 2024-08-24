@@ -52,7 +52,7 @@ export async function generateMetadata({ params: { domain }, }: { params: { doma
   const profileDescription = profile?.description ||
     `Explore ${pageTitle} ${
       SocialPlatformMapping(platform!).label
-    } profile, connected identities, social links, NFT collections, Web3 activities, dWebsites, POAPs etc on the Web3.bio profile page.`;
+    } profile, onchain identities, social links, NFT collections, Web3 activities, dWebsites, POAPs etc on the Web3.bio profile page.`;
 
   const params = new URLSearchParams({
     path: domain,

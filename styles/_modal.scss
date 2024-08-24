@@ -90,7 +90,7 @@
       position: fixed;
 
       .btn {
-        background: rgba($bg-color, .25);
+        background: rgba($bg-color, .75);
 
         &:focus,
         &:hover {
@@ -878,46 +878,10 @@
       height: 12rem;
       width: 12rem;
     }
-
-    .preview-network {
-      align-items: center;
-      background: $light-color;
-      border: .05rem solid rgba($dark-color, .05);
-      border-radius: .5rem;
-      bottom: .5rem;
-      display: flex;
-      height: 1.5rem;
-      left: .5rem;
-      min-width: 1.5rem;
-      opacity: .85;
-      padding: .2rem;
-      position: absolute;
-      transition: all .25s ease-in-out;
-
-      &:focus,
-      &:hover {
-        opacity: .95;
-
-        .preview-network-name {
-          display: inline-flex;
-        }
-      }
-
-      .preview-network-icon {
-        height: 1rem;
-        width: 1rem;
-      }
-
-      .preview-network-name {
-        color: $dark-color;
-        display: none;
-        padding: 0 .15rem;
-      }
-    }
   }
 
   .preview-content {
-    background: lighten($bg-color, 5%);
+    background: $light-color;
     border-radius: .8rem;
     padding: 2rem;
     position: relative;
@@ -929,29 +893,30 @@
       display: flex;
       gap: .4rem;
       margin-bottom: 1rem;
+      width: 100%;
 
       .collection-logo {
-        flex: 0 0 1.2rem;
+        flex: 0 0 1.6rem;
 
         .img-responsive {
           border-radius: .4rem;
           box-shadow: 0 .2rem .8rem rgba($dark-color, .2);
           font-size: 1rem;
-          height: 1.2rem;
+          height: 1.6rem;
           object-fit: cover;
-          width: 1.2rem;
+          width: 1.6rem;
         }
       }
 
       .collection-name {
-        font-size: .8rem;
-        font-weight: 500;
+        font-size: .75rem;
+        font-weight: 700;
         letter-spacing: -.025em;
-        line-height: 1.2rem;
+        line-height: 1.6rem;
       }
     }
 
-    .nft-name {
+    .nft-title {
       font-weight: 700;
       letter-spacing: -.025em;
       line-height: 1.15;
@@ -959,10 +924,53 @@
       width: 100%;
     }
 
-    .nft-description {
+    .nft-subtitle {
+      align-items: center;
+      display: flex;
       font-size: .75rem;
+      font-weight: 400;
+      gap: .25rem;
+      letter-spacing: -.025em;
+      line-height: 1.15;
       margin-bottom: 1rem;
       width: 100%;
+
+      .nft-network {
+        align-items: center;
+        border-radius: .3rem;
+        display: flex;
+        gap: .2rem;
+        height: 1.2rem;
+        justify-content: center;
+        padding: .1rem .3rem .1rem .1rem;
+
+        .nft-network-icon {
+          height: 1rem;
+          width: 1rem;
+        }
+      }
+    }
+
+    .nft-description {
+      font-size: .75rem;
+      line-height: 1.1rem;
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+
+      .btn-list-more {
+        align-items: flex-end;
+        background: linear-gradient(to bottom, rgba($light-color, 0) 20%, rgba($light-color, 1) 80%);
+        bottom: 0;
+        display: flex;
+        height: 6rem;
+        justify-content: center;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: .8rem;
+        position: absolute;
+        width: 100%;
+      }
 
       h1,
       h2,
@@ -973,7 +981,7 @@
       }
 
       p {
-        margin-bottom: .25rem;
+        margin-bottom: 1rem;
       }
 
       hr {
@@ -986,21 +994,24 @@
     }
 
     .nft-actions {
-      margin-top: .5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: .1rem;
+      margin-bottom: 1rem;
     }
 
     .nft-logo {
       border-radius: .6rem;
       box-shadow: 0 .2rem .8rem rgba($dark-color, .2);
       font-size: 1.8rem;
-      height: 2.4rem;
-      width: 2.4rem;
+      height: 3.2rem;
+      width: 3.2rem;
 
       .img-responsive {
         border-radius: .6rem;
-        height: 2.4rem;
+        height: 3.2rem;
         object-fit: cover;
-        width: 2.4rem;
+        width: 3.2rem;
       }
     }
   }
@@ -1023,22 +1034,23 @@
     font-weight: 700;
     line-height: 1.2rem;
     margin-bottom: .5rem;
-    text-transform: uppercase;
   }
 
   .panel-section-list {
-    background: $bg-color-light;
-    border: .05rem solid rgba($dark-color, 0.01);
+    background: rgba($color: $bg-color, $alpha: .25);
+    border: .05rem solid rgba($dark-color, .05);
     border-radius: .4rem;
-    box-shadow: 0 .2rem .8rem -.2rem rgba($dark-color, 0.1);
+    box-shadow: 0 .1rem .4rem rgba($dark-color, .05);
     color: $dark-color;
-    margin: 1rem 0;
+    margin: .5rem 0;
     width: 100%;
 
     .widget-list-item {
       display: flex;
+      font-size: .65rem;
       justify-content: space-between;
       padding: .6rem;
+      width: 100%;
 
       .profile-badge {
         background: transparent;
@@ -1050,7 +1062,8 @@
       .list-item-right {
         align-items: center;
         display: flex;
-        font-size: .8rem;
+        max-width: 70%;
+        text-align: right;
 
         .icon-platform {
           display: flex;
@@ -1115,14 +1128,13 @@
       gap: .5rem;
 
       .traits-card {
-        background: $bg-color;
-        border: .05rem solid rgba($dark-color, 0.01);
+        background: rgba($color: $bg-color, $alpha: .25);
+        border: .05rem solid rgba($dark-color, 0.05);
         border-radius: .4rem;
         box-shadow: 0 .2rem .8rem -.2rem rgba($dark-color, 0.1);
         color: $dark-color;
         flex: 1 1 auto;
         min-width: 5rem;
-        text-transform: uppercase;
         padding: .4rem .6rem;
 
         .trait-type {

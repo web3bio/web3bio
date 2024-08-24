@@ -290,29 +290,29 @@ export const NFTFilterMapping = {
     label: "Ethereum",
     filters: "ethereum",
   },
-  ["polygon"]: {
-    label: "Polygon",
-    filters: "polygon",
+  ["base"]: {
+    label: "Base",
+    filters: "base",
   },
   ["optimism"]: {
     label: "Optimism",
     filters: "optimism",
   },
-  ["base"]: {
-    label: "Base",
-    filters: "base",
-  },
-  ["bsc"]: {
-    label: "BNB Smart Chain",
-    filters: "bsc",
-  },
   ["zora"]: {
     label: "Zora",
     filters: "zora",
   },
+  ["polygon"]: {
+    label: "Polygon",
+    filters: "polygon",
+  },
   ["arbitrum"]: {
     label: "Arbitrum",
     filters: "arbitrum",
+  },
+  ["bsc"]: {
+    label: "BNB Smart Chain",
+    filters: "bsc",
   },
   ["scroll"]: {
     label: "Scroll",

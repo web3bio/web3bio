@@ -46,7 +46,7 @@ const RenderAccountItem = (props) => {
     identity.identity === rawDisplayName ? rawIdentity : identity.identity;
 
   useEffect(() => {
-    if (nftContainer.current?.offsetHeight! <= 110) {
+    if (nftContainer.current?.offsetHeight! > 110) {
       setExpand(true);
     }
   }, [nftContainer]);
@@ -203,16 +203,15 @@ const RenderAccountItem = (props) => {
                 className="nfts"
                 ref={nftContainer}
                 style={{
-                  maxHeight: expand ? "unset" : "7.6rem",
+                  maxHeight: expand ? "7.6rem" : "unset",
                 }}
               >
-                <div className={`nfts-list-container `}>
+                <div className={`nfts-list-container`}>
                   {identity.nft.map((nft) => {
                     const nftPlatform =
                       nft.chain === PlatformType.ethereum
                         ? PlatformType.ens
                         : PlatformType.sns;
-
                     return (
                       <Link
                         key={`${nft.uuid}`}
@@ -236,14 +235,14 @@ const RenderAccountItem = (props) => {
                     );
                   })}
                 </div>
-                {!expand && (
+                {expand && (
                   <div
                     className="btn-list-more"
                     onClick={() => {
-                      setExpand(true);
+                      setExpand(false);
                     }}
                   >
-                    <button className="btn btn-sm btn-block">View More</button>
+                    <button className="btn btn-sm">View More</button>
                   </div>
                 )}
               </div>

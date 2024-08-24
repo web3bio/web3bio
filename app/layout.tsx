@@ -34,9 +34,9 @@ export function generateMetadata() {
       canonical: `/`,
     },
     keywords: [
-      "Web3", "Web3.bio", "Web3 DID", "Web3 Identity", "Web3 Identity Search",
+      "Web3", "Web3.bio", "Web3 DID", "Web3 Onchain Identity", "Web3 Identity Search",
       "Web3 Identity Resolver", "Web3 Identity Graph", "Web3 Social Graph",
-      "Web3 Identity Explorer", "Web3 Profile", "Web3 Profile Explorer", "DID",
+      "Web3 Identity Explorer", "Web3 Onchain Profile", "Web3 Profile Explorer", "DID",
       "DID Search Engine", "DID Explorer", "Web3 Domain Search",
       "Web3 Domain Explorer", "Web3 Domain WHOIS",
     ],

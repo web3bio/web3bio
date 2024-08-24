@@ -464,12 +464,11 @@
   }
 
   .nfts {
-    position: relative;
     display: flex;
     flex-direction: column;
     gap: .1rem;
     padding: 0 .8rem .4rem .8rem;
-
+    position: relative;
 
     .nfts-list-container {
       display: flex;
@@ -479,17 +478,18 @@
     }
 
     .btn-list-more {
-      display: flex;
       align-items: flex-end;
-      position: absolute;
-      left: 50%;
+      background: linear-gradient(to bottom, rgba($bg-color, 0) 20%, rgba($bg-color, .95) 75%);
+      border-radius: .5rem;
       bottom: 0;
+      display: flex;
+      height: 6rem;
+      justify-content: center;
+      left: 50%;
       transform: translateX(-50%);
       padding: .8rem;
+      position: absolute;
       width: 100%;
-      height: 6rem;
-      border-radius: .5rem;
-      background: linear-gradient(to bottom, rgba($bg-color, 0) 20%, rgba($bg-color, .95) 75%)
     }
   }
 

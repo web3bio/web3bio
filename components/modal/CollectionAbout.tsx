@@ -1,6 +1,9 @@
-import { memo } from "react";
+import React, { useRef, useEffect, useState, memo } from 'react';
+import Link from "next/link";
+import SVG from "react-inlinesvg";
 import Markdown from "react-markdown";
-import { formatText } from "../utils/utils";
+import { formatText, getSocialMediaLink } from "../utils/utils";
+import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { formatEther } from "viem";
 
@@ -12,40 +15,113 @@ const INFO_CONFIG = [
   { key: "chains", label: "Chain" },
 ];
 
+const renderSocialMediaLinks = (_collection) => {
+  const renderArr = {
+    [PlatformType.website]: _collection?.external_url,
+    [PlatformType.twitter]: _collection?.twitter_username,
+    [PlatformType.medium]: _collection?.medium_username,
+    [PlatformType.telegram]: _collection?.telegram_url,
+    [PlatformType.opensea]: _collection?.marketplace_pages?.find(
+      (x) => x.marketplace_id === PlatformType.opensea
+    )?.collection_url,
+    [PlatformType.discord]: _collection?.discord_url,
+    [PlatformType.instagram]: _collection?.instagram_username,
+  };
+  const collectionLinks = Object.entries(renderArr);
+
+  return collectionLinks.map(([key, item]) => {
+    if (item) {
+      return (
+        <Link
+          onClick={(e) => e.stopPropagation()}
+          href={getSocialMediaLink(item, key as PlatformType) || ""}
+          className="btn btn-sm"
+          key={key}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={SocialPlatformMapping(key as PlatformType).label}
+        >
+          <SVG
+            src={`../${SocialPlatformMapping(key as PlatformType).icon}`}
+            fill="#121212"
+            width={18}
+            height={18}
+          />
+          {SocialPlatformMapping(key as PlatformType).label}
+        </Link>
+      );
+    }
+  });
+};
+
 const CollectionAboutRender = (props) => {
   const { collection } = props;
   if (!collection) return null;
+
+  const descriptionRef = useRef<HTMLDivElement>(null);
+  const [expand, setExpand] = useState(false);
 
   const floorPriceItem = collection.floor_prices?.sort(
     (a, b) => a.value - b.value
   )[0];
 
+  useEffect(() => {
+    if (descriptionRef.current?.offsetHeight! > 120) {
+      setExpand(true);
+    }
+  }, [descriptionRef]);
+
   return (
     <div className="panel-section">
       <div className="panel-section-content">
-        <div className="nft-logo mb-4">
+        <div className="nft-logo mt-4 mb-4">
           <NFTAssetPlayer
             type={"image/png"}
             className="collection-logo"
             src={collection.image_url}
             alt={collection.name}
-            width={48}
-            height={48}
+            width={64}
+            height={64}
             placeholder
           />
         </div>
-        <div className="nft-name h5">
+        <div className="nft-title h5">
           {collection.name}
         </div>
+        <div className="nft-actions">
+          {renderSocialMediaLinks(collection)}
+        </div>
         {collection.description && (
-          <div className="nft-description">
-            <Markdown>
-              {collection.description}
-            </Markdown>
+          <div
+            ref={descriptionRef}
+            className="nft-description"
+            style={{
+              maxHeight: expand ? "6rem" : "unset",
+            }}
+          >
+            <div className="content">
+              <Markdown>
+                {collection.description}
+              </Markdown>
+            </div>
+
+            {expand && (
+              <div
+                className="btn-list-more"
+                onClick={() => {
+                  setExpand(false);
+                }}
+              >
+                <button className="btn btn-sm">View More</button>
+              </div>
+            )}
           </div>
         )}
       </div>
       <div className="panel-section-content">
+        <div className="panel-section-title collection-title">
+          Details
+        </div>
         <div className="panel-section-list">
           {floorPriceItem && (
             <div className="widget-list-item" key="floorPriceItem">
