@@ -44,6 +44,9 @@ export default function NFTModalContentRender(props) {
   const _collection = fetchedAsset
     ? fetchedAsset.collection
     : _asset.collection;
+  const _contract = fetchedAsset
+    ? fetchedAsset.contract
+    : _asset.contract;
 
   const nft_name = _asset.name || `${_collection?.name} #${_asset.token_id}`;
   const nft_description = _asset.description || _collection?.description;
@@ -52,6 +55,7 @@ export default function NFTModalContentRender(props) {
     _asset?.video_url ||
     _asset?.previews?.image_large_url ||
     _asset?.image_url ||
+    _collection?.image_url ||
     asset.mediaURL;
 
   return (
@@ -165,7 +169,7 @@ export default function NFTModalContentRender(props) {
                       Attributes
                     </div>
                     <div className="panel-section-content">
-                      <div className="traits-cards mb-4">
+                      <div className="traits-cards">
                         {attributes.map((x, idx) => {
                           return (
                             <div
@@ -189,7 +193,7 @@ export default function NFTModalContentRender(props) {
 
               <div className="divider mt-4 mb-4"></div>
               
-              <CollectionAbout collection={_collection} />
+              <CollectionAbout collection={_collection} contract={_contract} contractAddress={_asset.contract_address} />
             </div>
           </div>
         </div>

@@ -160,7 +160,8 @@ const RenderNFTCollections = (props) => {
                       const mediaURL = resolveMediaURL(
                         y.previews.image_medium_url ||
                           y.video_url ||
-                          y.image_url
+                          y.image_url ||
+                          y.collection?.image_url
                       );
 
                       const type =

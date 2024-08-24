@@ -920,7 +920,6 @@
       font-weight: 700;
       letter-spacing: -.025em;
       line-height: 1.15;
-      margin-bottom: 1rem;
       width: 100%;
     }
 
@@ -932,7 +931,7 @@
       gap: .25rem;
       letter-spacing: -.025em;
       line-height: 1.15;
-      margin-bottom: 1rem;
+      margin-top: .25rem;
       width: 100%;
 
       .nft-network {
@@ -954,6 +953,7 @@
     .nft-description {
       font-size: .75rem;
       line-height: 1.1rem;
+      margin-top: 1rem;
       overflow: hidden;
       position: relative;
       width: 100%;
@@ -982,6 +982,10 @@
 
       p {
         margin-bottom: 1rem;
+        
+        &:last-child {
+          margin-bottom: 0;
+        }
       }
 
       hr {
@@ -996,7 +1000,7 @@
     .nft-actions {
       display: flex;
       flex-wrap: wrap;
-      margin-bottom: 1rem;
+      margin-top: 1rem;
     }
 
     .nft-logo {
@@ -1018,7 +1022,7 @@
 
 // Panel Section
 .panel-section {
-  margin: .8rem 0;
+  margin: 1rem 0;
 
   &:first-child {
     margin-top: 0;
@@ -1125,6 +1129,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: .5rem;
+      margin: .5rem 0;
 
       .traits-card {
         background: rgba($color: $bg-color, $alpha: .25);

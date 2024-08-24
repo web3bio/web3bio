@@ -10,7 +10,7 @@ import { formatEther } from "viem";
 const INFO_CONFIG = [
   { key: "distinct_nft_count", label: "Total Minted" },
   { key: "total_quantity", label: "Max Supply" },
-  { key: "distinct_owner_count", label: "Unique Minters" },
+  { key: "distinct_owner_count", label: "Unique Owners" },
   { key: "category", label: "Category" },
   { key: "chains", label: "Chain" },
 ];
@@ -55,7 +55,7 @@ const renderSocialMediaLinks = (_collection) => {
 };
 
 const CollectionAboutRender = (props) => {
-  const { collection } = props;
+  const { collection, contract, contractAddress } = props;
   const [expand, setExpand] = useState(false);
   const descriptionRef = useRef<HTMLDivElement>(null);
 
@@ -72,91 +72,103 @@ const CollectionAboutRender = (props) => {
   if (!collection) return null;
 
   return (
-    <div className="panel-section">
-      <div className="panel-section-content">
-        <div className="nft-logo mt-4 mb-4">
-          <NFTAssetPlayer
-            type={"image/png"}
-            className="collection-logo"
-            src={collection.image_url}
-            alt={collection.name}
-            width={64}
-            height={64}
-            placeholder
-          />
-        </div>
-        <div className="nft-title h5">
-          {collection.name}
-        </div>
-        <div className="nft-actions btn-group">
-          {renderSocialMediaLinks(collection)}
-        </div>
-        {collection.description && (
-          <div
-            ref={descriptionRef}
-            className="nft-description"
-            style={{
-              maxHeight: expand ? "6rem" : "unset",
-            }}
-          >
-            <div className="content">
-              <Markdown>
-                {collection.description}
-              </Markdown>
-            </div>
+    <>
+      <div className="panel-section">
+        <div className="panel-section-content">
+          <div className="nft-logo mt-4 mb-4">
+            <NFTAssetPlayer
+              type={"image/png"}
+              className="collection-logo"
+              src={collection.image_url}
+              alt={collection.name}
+              width={64}
+              height={64}
+              placeholder
+            />
+          </div>
+          <div className="nft-title h5">
+            {collection.name}
+          </div>
+          <div className="nft-actions btn-group">
+            {renderSocialMediaLinks(collection)}
+          </div>
+          {collection.description && (
+            <div
+              ref={descriptionRef}
+              className="nft-description"
+              style={{
+                maxHeight: expand ? "6rem" : "unset",
+              }}
+            >
+              <div className="content">
+                <Markdown>
+                  {collection.description}
+                </Markdown>
+              </div>
 
-            {expand && (
-              <div
-                className="btn-list-more"
-                onClick={() => {
-                  setExpand(false);
-                }}
-              >
-                <button className="btn btn-sm">View More</button>
+              {expand && (
+                <div
+                  className="btn-list-more"
+                  onClick={() => {
+                    setExpand(false);
+                  }}
+                >
+                  <button className="btn btn-sm">View More</button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="panel-section">
+        <div className="panel-section-content">
+          <div className="panel-section-title collection-title">
+            Details
+          </div>
+          <div className="panel-section-list">
+            {floorPriceItem && (
+              <div className="widget-list-item" key="floorPriceItem">
+                <div className="list-item-left">Floor Price</div>
+                <div className="list-item-right text-bold">
+                  {formatEther(BigInt(floorPriceItem?.value))}{" "}
+                  {floorPriceItem.payment_token.symbol}
+                </div>
+              </div>
+            )}
+            {INFO_CONFIG.map(({key, label}) => {
+              if (collection[key]) {
+                return (
+                  <div className="widget-list-item" key={key}>
+                    <div className="list-item-left">{label}</div>
+                    <div className="list-item-right text-bold text-uppercase">
+                      {collection[key]?.toString()}
+                    </div>
+                  </div>
+                );
+              }
+            })}
+            {contractAddress && (
+              <div className="widget-list-item" key="contractAddress">
+                <div className="list-item-left">Contract Address</div>
+                <div className="list-item-right text-bold">
+                  <a href={`https://etherscan.io/address/${contractAddress}`} target="_blank">
+                    {formatText(contractAddress)} ↗️
+                  </a>
+                </div>
+              </div>
+            )}
+            {contract.type && (
+              <div className="widget-list-item" key="contractType">
+                <div className="list-item-left">NFT Standard</div>
+                <div className="list-item-right text-bold">
+                  {contract.type}
+                </div>
               </div>
             )}
           </div>
-        )}
-      </div>
-      <div className="panel-section-content">
-        <div className="panel-section-title collection-title">
-          Details
-        </div>
-        <div className="panel-section-list">
-          {floorPriceItem && (
-            <div className="widget-list-item" key="floorPriceItem">
-              <div className="list-item-left">Floor Price</div>
-              <div className="list-item-right text-bold">
-                {formatEther(BigInt(floorPriceItem?.value))}{" "}
-                {floorPriceItem.payment_token.symbol}
-              </div>
-            </div>
-          )}
-          {INFO_CONFIG.map(({key, label}) => {
-            if (collection[key]) {
-              return (
-                <div className="widget-list-item" key={key}>
-                  <div className="list-item-left">{label}</div>
-                  <div className="list-item-right text-bold text-uppercase">
-                    {collection[key]?.toString()}
-                  </div>
-                </div>
-              );
-            }
-          })}
-          {collection.address && (
-            <div className="widget-list-item" key="contractAddress">
-              <div className="list-item-left">Contract Address</div>
-              <div className="list-item-right text-bold">
-                <a href={`https://etherscan.io/address/${collection.address}`} target="_blank">
-                  {formatText(collection.address)} ↗️
-                </a>
-              </div>
-            </div>
-          )}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
