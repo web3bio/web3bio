@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { regexSolana } from "@/components/utils/regexp";
 import { respondWithCache } from "@/components/utils/utils";
-import { WEBACY_API_ENDPOINT } from "@/components/apis";
+import { WEBACY_API_ENDPOINT } from "@/components/utils/api";
 interface WebacyResponse {
   score: number;
   updatedAt: Date;

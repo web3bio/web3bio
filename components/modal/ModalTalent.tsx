@@ -3,13 +3,13 @@ import SVG from "react-inlinesvg";
 import Image from "next/image";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import Link from "next/link";
-import { TALENT_API_ENDPOINT, talentFetcher } from "../apis";
+import { TALENT_API_ENDPOINT, TalentFetcher } from "../utils/api";
 import useSWR from "swr";
 
 function useTalentCredentials(id: string) {
   const { data, error } = useSWR(
     TALENT_API_ENDPOINT + `passport_credentials?passport_id=${id}`,
-    talentFetcher,
+    TalentFetcher,
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,

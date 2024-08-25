@@ -7,11 +7,8 @@ import { Avatar } from "../shared/Avatar";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { useProfiles } from "../hooks/useReduxProfiles";
 import { useQuery } from "@apollo/client";
-import {
-  FIREFLY_ENDPOINT,
-  ProfileFetcher,
-  QUERY_FARCASTER_STATS,
-} from "../apis";
+import { QUERY_FARCASTER_STATS } from "../utils/queries";
+import { FIREFLY_ENDPOINT, ProfileFetcher } from "../utils/api";
 
 export default function FarcasterProfile(props) {
   const { handle } = props;

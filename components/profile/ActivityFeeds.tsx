@@ -5,7 +5,7 @@ import { Empty } from "../shared/Empty";
 import { Loading } from "../shared/Loading";
 import { ActivityTag, TagsFilterMapping } from "../utils/activity";
 import { isSameAddress } from "../utils/utils";
-import { SIMPLEHASH_URL, SimplehashFetcher } from "../apis";
+import { SIMPLEHASH_URL, SimplehashFetcher } from "../utils/api";
 
 const RenderActivityFeeds = (props) => {
   const {

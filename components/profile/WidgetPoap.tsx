@@ -9,7 +9,7 @@ import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { useDispatch } from "react-redux";
 import { WidgetType } from "../utils/widgets";
 import { updatePoapsWidget } from "../state/widgets/reducer";
-import { POAP_ENDPOINT, POAPFetcher } from "../apis";
+import { POAP_ENDPOINT, POAPFetcher } from "../utils/api";
 
 function usePoaps(address: string) {
   const { data, error, isValidating } = useSWR(

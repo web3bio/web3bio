@@ -1,6 +1,9 @@
-import { gql } from "@apollo/client";
-
 // Constants
+export const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
+export const profileAPIBaseURL =
+  process.env.NEXT_PUBLIC_PROFILE_END_POINT || "https://api.web3.bio";
+export const articleAPIBaseURL = "https://article-api.web3.bio";
+
 export const AIRSTACK_GRAPHQL_ENDPOINT = "https://api.airstack.xyz/gql";
 export const DEGENSCORE_ENDPOINT = "https://beacon.degenscore.com/v2/beacon/";
 export const FIREFLY_ENDPOINT = "https://api.firefly.land";
@@ -21,114 +24,6 @@ export const TALENT_API_ENDPOINT = "https://api.talentprotocol.com/api/v2/";
 export const TALLY_GRAPHQL_ENDPOINT = "https://api.tally.xyz/query";
 export const WEBACY_API_ENDPOINT = "https://api.webacy.com";
 
-// GraphQL Queries
-export const QUERY_FARCASTER_STATS = gql`
-  query QUERY_FARCASTER_STATS($name: String!) {
-    Socials(
-      input: {
-        filter: { profileName: { _in: [$name] }, dappName: { _eq: farcaster } }
-        blockchain: ethereum
-      }
-    ) {
-      Social {
-        isFarcasterPowerUser
-        socialCapital {
-          socialCapitalScore
-          socialCapitalRank
-        }
-      }
-    }
-  }
-`;
-
-export const QUERY_PHILAND_INFO = gql`
-  query QUERY_PHILAND_LIST($name: String!) {
-    philandImage(input: { name: $name, transparent: true }) {
-      imageurl
-    }
-    philandLink(input: { name: $name }) {
-      data {
-        title
-        url
-      }
-    }
-  }
-`;
-
-export const QUERY_SPACES_FOLLOWED_BY_USR = gql`
-  query userFollowedSpaces($address: String!) {
-    follows(where: { follower: $address }) {
-      space {
-        id
-        name
-        about
-        network
-        members
-        admins
-        github
-        twitter
-        website
-        coingecko
-        followersCount
-        proposalsCount
-        verified
-      }
-      created
-    }
-  }
-`;
-
-export const QUERY_DAO_DELEGATORS = gql`
-  query TallyDAO($delegate: DelegatesInput!, $delegatee: DelegationsInput!) {
-    delegates(input: $delegate) {
-      nodes {
-        ... on Delegate {
-          id
-          delegatorsCount
-          votesCount
-          organization {
-            id
-            name
-            tokenOwnersCount
-            delegatesVotesCount
-            slug
-            metadata {
-              icon
-            }
-          }
-        }
-      }
-    }
-    delegatees(input: $delegatee) {
-      nodes {
-        ... on Delegation {
-          delegate {
-            id
-          }
-          delegator {
-            name
-            address
-            ens
-          }
-          votes
-          token {
-            decimals
-            name
-            symbol
-          }
-          organization {
-            name
-            slug
-            metadata {
-              icon
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
 // Unified fetcher function
 export const customFetcher = async (config) => {
   const {
@@ -142,7 +37,7 @@ export const customFetcher = async (config) => {
     logName,
   } = config;
 
-  console.time(`${logName} API call`);
+  console.time(`${logName} ${url} API call`);
 
   try {
     const options = {
@@ -178,13 +73,24 @@ export const customFetcher = async (config) => {
 
 // API Fetchers
 export const ArticlesFetcher = (url) =>
-  customFetcher({ url, logName: "Articles" });
+  customFetcher({ 
+    url,
+    logName: "Articles"
+  });
 
-export const DegenFetcher = (url) =>
-  customFetcher({ url, logName: "DegenScore" });
+export const DegenscoreFetcher = (url) =>
+  customFetcher({ 
+    url, 
+    logName: "DegenScore" 
+  });
 
 export const FireflyFetcher = ([url, body]) =>
-  customFetcher({ url, method: "POST", body, logName: "Firefly" });
+  customFetcher({ 
+    url, 
+    method: "POST", 
+    body, 
+    logName: "Firefly" 
+  });
 
 export const GuildFetcher = (url) =>
   customFetcher({
@@ -206,7 +112,7 @@ export const ProfileFetcher = (url, options?) =>
   customFetcher({ 
     url, 
     ...options, 
-    logName: "Profile" 
+    logName: "Profile API" 
   });
 
 export const RSS3Fetcher = ([url, data]) =>
@@ -227,7 +133,7 @@ export const SimplehashFetcher = (url, options?) =>
     logName: "SimpleHash" 
   });
 
-export const talentFetcher = (url) =>
+export const TalentFetcher = (url) =>
   customFetcher({
     url,
     apiKeyHeader: "x-api-key",

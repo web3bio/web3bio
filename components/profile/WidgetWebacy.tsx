@@ -5,7 +5,7 @@ import { WidgetInfoMapping, WidgetType } from "../utils/widgets";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { updateWebacyWidget } from "../state/widgets/reducer";
-import { ProfileFetcher } from "../apis";
+import { ProfileFetcher } from "../utils/api";
 
 export function WidgetWebacy({ address }) {
   const { data, isLoading } = useSWR(

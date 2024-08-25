@@ -15,7 +15,7 @@ import {
   SIMPLEHASH_PAGE_SIZE,
   SIMPLEHASH_URL,
   SimplehashFetcher,
-} from "../apis";
+} from "../utils/api";
 import { Network } from "../utils/network";
 
 const CURSOR_PARAM = "&cursor=";

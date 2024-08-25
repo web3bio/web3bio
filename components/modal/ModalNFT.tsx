@@ -5,7 +5,7 @@ import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { CollectionAbout } from "./CollectionAbout";
 import useSWR from "swr";
 import { Network, NetworkMapping } from "../utils/network";
-import { SIMPLEHASH_URL, SimplehashFetcher } from "../apis";
+import { SIMPLEHASH_URL, SimplehashFetcher } from "../utils/api";
 
 export default function NFTModalContentRender(props) {
   const { onClose, asset } = props;

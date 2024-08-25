@@ -4,13 +4,13 @@ import useSWR from "swr";
 import { WidgetInfoMapping, WidgetType } from "../utils/widgets";
 import { useDispatch } from "react-redux";
 import { updateTalentWidget } from "../state/widgets/reducer";
-import { TALENT_API_ENDPOINT, talentFetcher } from "../apis";
+import { TALENT_API_ENDPOINT, TalentFetcher } from "../utils/api";
 import { ModalType } from "../hooks/useModal";
 
 function useTalentPassportInfo(address: string) {
   const { data, error } = useSWR(
     TALENT_API_ENDPOINT + `passports/${address}`,
-    talentFetcher,
+    TalentFetcher,
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,

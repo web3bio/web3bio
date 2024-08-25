@@ -7,8 +7,8 @@ import {
   mapLinks,
 } from "@/components/utils/utils";
 import ProfileMain from "@/components/profile/ProfileMain";
-import { regexAvatar } from "@/components/utils/regexp";
-import { baseURL, profileAPIBaseURL } from "@/components/utils/queries";
+import { regexNext } from "@/components/utils/regexp";
+import { baseURL, profileAPIBaseURL } from "@/components/utils/api";
 
 async function fetchDataFromServer(domain: string) {
   if (!domain) return null;
@@ -36,7 +36,7 @@ async function fetchDataFromServer(domain: string) {
 export async function generateMetadata({ params: { domain }, }: { params: { domain: string }; }): Promise<Metadata> {
   const res = await fetchDataFromServer(domain);
   if (!res) {
-    if (regexAvatar.test(domain)) {
+    if (regexNext.test(domain)) {
       redirect(`/?s=${domain}`);
     } else {
       notFound();

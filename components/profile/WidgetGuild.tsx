@@ -6,7 +6,7 @@ import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { useDispatch } from "react-redux";
 import { WidgetInfoMapping, WidgetType } from "../utils/widgets";
 import { updateGuildWidget } from "../state/widgets/reducer";
-import { GUILD_XYZ_ENDPOINT, GuildFetcher } from "../apis";
+import { GUILD_XYZ_ENDPOINT, GuildFetcher } from "../utils/api";
 
 function useGuildMemberships(address: string) {
   const { data, error, isLoading } = useSWR(

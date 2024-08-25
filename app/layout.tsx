@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import { Toaster } from "react-hot-toast";
 import ApolloProvider from "@/components/shared/ApolloProvider";
 import ReduxProvider from "@/components/shared/ReduxProvider";
-import { baseURL } from "@/components/utils/queries";
+import { baseURL } from "@/components/utils/api";
 import "../styles/web3bio.scss";
 import "@rainbow-me/rainbowkit/styles.css";
 

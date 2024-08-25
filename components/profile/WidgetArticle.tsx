@@ -7,8 +7,8 @@ import Link from "next/link";
 import { WidgetInfoMapping, WidgetType } from "../utils/widgets";
 import ArticleItem from "./ArticleItem";
 import { updateArticleWidget } from "../state/widgets/reducer";
-import { ArticlesFetcher } from "../apis";
-import { articleAPIBaseURL } from "../utils/queries";
+import { ArticlesFetcher } from "../utils/api";
+import { articleAPIBaseURL } from "../utils/api";
 
 function useArticles(address: string, domain?: string | null) {
   const fetchUrl = (() => {

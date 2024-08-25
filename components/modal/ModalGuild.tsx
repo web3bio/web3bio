@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { NetworkMapping } from "../utils/network";
-import { GUILD_XYZ_ENDPOINT, GuildFetcher } from "../apis";
+import { GUILD_XYZ_ENDPOINT, GuildFetcher } from "../utils/api";
 
 const RoleItem = ({ role, showMemberCount }) => (
   <div className="role-item feed-token" title={role.description}>

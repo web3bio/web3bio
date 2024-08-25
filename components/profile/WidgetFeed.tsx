@@ -11,7 +11,7 @@ import { PlatformType } from "../utils/platform";
 import { isSameAddress } from "../utils/utils";
 import { WidgetInfoMapping, WidgetType } from "../utils/widgets";
 import { updateFeedsWidget } from "../state/widgets/reducer";
-import { RSS3_ENDPOINT, RSS3Fetcher } from "../apis";
+import { RSS3_ENDPOINT, RSS3Fetcher } from "../utils/api";
 
 const processFeedsData = (data) => {
   if (!data?.[0]?.data?.length) return [];
