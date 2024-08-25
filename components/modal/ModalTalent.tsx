@@ -49,13 +49,13 @@ export default function TalentModalContent({ onClose, data }) {
           style={{
             ["--widget-primary-color" as string]: SocialPlatformMapping(
               PlatformType.talent
-            )?.color,
+            ).color,
           }}
         >
           <div className="modal-cover talent"></div>
           <div className="platform-icon">
             <SVG
-              src={`../${SocialPlatformMapping(PlatformType.talent)?.icon}`}
+              src={`../${SocialPlatformMapping(PlatformType.talent).icon}`}
               fill="#fff"
               width={14}
               height={14}

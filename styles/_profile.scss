@@ -836,7 +836,7 @@
 
               .preview-network {
                 align-items: center;
-                background: $light-color;
+                background: rgba($light-color, .75);
                 border: .05rem solid rgba($dark-color, .05);
                 border-radius: .4rem;
                 bottom: .25rem;
@@ -844,14 +844,13 @@
                 height: 1.25rem;
                 left: .25rem;
                 min-width: 1.25rem;
-                opacity: .85;
                 padding: .2rem;
                 position: absolute;
                 transition: all .25s ease-in-out;
 
                 &:focus,
                 &:hover {
-                  opacity: .95;
+                  background: rgba($light-color, .895);
 
                   .preview-network-name {
                     display: inline-flex;
@@ -1072,7 +1071,7 @@
         .rss-item-date {
           color: $gray-color;
           font-size: .6rem;
-          margin-top: .25rem;
+          margin-top: .5rem;
         }
 
         .rss-item-tag {
@@ -1093,7 +1092,7 @@
           object-fit: cover;
           width: 100%;
 
-          &+.rss-item-title {
+          & + .rss-item-title {
             font-size: .7rem;
           }
         }
