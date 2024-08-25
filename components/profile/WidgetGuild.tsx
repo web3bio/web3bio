@@ -25,7 +25,7 @@ function useGuildMemberships(address: string) {
   };
 }
 
-export default function WidgetGuild({ profile, onShowDetail }) {
+export default function WidgetGuild({ profile, openModal }) {
   const { data, isLoading } = useGuildMemberships(profile?.address);
   const [infoLoading, setInfoLoading] = useState(false);
   const [guilds, setGuilds] = useState(new Array());
@@ -104,7 +104,7 @@ export default function WidgetGuild({ profile, onShowDetail }) {
               return (
                 <div
                   onClick={() => {
-                    onShowDetail({
+                    openModal({
                       guild: {
                         ...x,
                         imageUrl: imageURL,

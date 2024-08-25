@@ -456,7 +456,7 @@ export default function ProfileMain(props) {
                       <WidgetArticle
                         address={data.address}
                         domain={relations?.find((x) => x.contenthash)?.identity}
-                        onShowDetail={(v) => {
+                        openModal={(v) => {
                           openModal(ModalType.article, {
                             ...v,
                           });
@@ -483,7 +483,7 @@ export default function ProfileMain(props) {
                       fallback={<LoadingSkeleton type={WidgetType.guild} />}
                     >
                       <WidgetGuild
-                        onShowDetail={(v) => {
+                        openModal={(v) => {
                           openModal(ModalType.guild, {
                             ...v,
                           });
@@ -501,7 +501,7 @@ export default function ProfileMain(props) {
                     >
                       <WidgetSnapshot
                         profile={data}
-                        onShowDetail={(v) => {
+                        openModal={(v) => {
                           openModal(ModalType.snapshot, {
                             ...v,
                           });
@@ -524,7 +524,7 @@ export default function ProfileMain(props) {
                       regexEns.test(data.identity)) && (
                       <Suspense fallback={<p>Loading Phi Land...</p>}>
                         <WidgetPhiland
-                          onShowDetail={(v) => {
+                          openModal={(v) => {
                             openModal(ModalType.philand, {
                               profile: data,
                               data: v,
@@ -542,7 +542,7 @@ export default function ProfileMain(props) {
             null}
         </div>
       </div>
-      <ProfileFooter />
+      <ProfileFooter openModal={openModal} />
       {isOpen && (
         <Modal params={params} onDismiss={closeModal} modalType={type} />
       )}

@@ -4,9 +4,9 @@ import SVG from "react-inlinesvg";
 import { SocialPlatformMapping } from "../utils/platform";
 
 export default function ArticleItem(props) {
-  const { data, onShowDetail } = props;
+  const { data, openModal } = props;
   const handleClick = () => {
-    onShowDetail({
+    openModal({
       title: data.title,
       link: data.link,
       content: data.body,

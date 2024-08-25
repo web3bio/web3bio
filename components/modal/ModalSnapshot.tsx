@@ -94,7 +94,7 @@ export default function SnapshotModalContent({ onClose, space, profile }) {
             />
           )}
         </div>
-        <div className="text-gray mb-2">#{space.id}</div>
+        <div className="text-gray mt-1 mb-2">#{space.id}</div>
 
         <div className="mt-2 mb-2">
           <strong className="text-large">

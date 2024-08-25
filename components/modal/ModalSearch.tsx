@@ -7,6 +7,21 @@ import SearchInput from "../search/SearchInput";
 export default function SearchModalContent(props) {
   const { domain, onClose } = props;
   const router = useRouter();
+
+  const handleSubmit = (value, platform?) => {
+    const queryParams = new URLSearchParams();
+    if (platform === "domain") {
+      queryParams.set("domain", value);
+    } else if (value) {
+      queryParams.set("s", value);
+      if (platform) {
+        queryParams.set("platform", platform);
+      }
+    }
+    router.push(`/?${queryParams.toString()}`);
+    onClose();
+  };
+
   return (
     <>
       <div className="modal-actions">
@@ -33,12 +48,7 @@ export default function SearchModalContent(props) {
           <SearchInput
             key={domain}
             defaultValue={""}
-            handleSubmit={(value, platform) => {
-              router.push(
-                `/?s=${value}${platform ? `&platform=${platform}` : ""}`
-              );
-              onClose();
-            }}
+            handleSubmit={handleSubmit}
           />
         </div>
       </div>

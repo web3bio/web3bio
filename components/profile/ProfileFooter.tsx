@@ -1,31 +1,26 @@
 import Link from "next/link";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import SVG from "react-inlinesvg";
 import useModal, { ModalType } from "../hooks/useModal";
 import Modal from "../modal/Modal";
 
-export default function ProfileFooter() {
-  const { isOpen, type, openModal, params, closeModal } = useModal();
+export default function ProfileFooter({openModal}) {
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      e.preventDefault();
+      openModal(ModalType.search, {});
+    }
+  }, [openModal]);
 
   useEffect(() => {
-    const onKeyDown = (e) => {
-      if ((e.ctrlKey && e.keyCode === 75) || (e.metaKey && e.keyCode === 75)) {
-        if (isOpen) {
-          closeModal();
-        } else {
-          openModal(ModalType.search, {});
-        }
-      }
-    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [handleKeyDown]);
 
-    document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
-  }, [isOpen]);
+  const handleSearchClick = useCallback(() => openModal(ModalType.search, {}), [openModal]);
+
   return (
     <>
-      {isOpen && (
-        <Modal params={params} onDismiss={closeModal} modalType={type} />
-      )}
       <div className="web3bio-badge">
         <Link
           href="/?utm_source=profile"

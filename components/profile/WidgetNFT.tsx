@@ -195,7 +195,7 @@ export default function WidgetNFT({ profile, openModal }) {
           expand={expand}
           setExpand={setExpand}
           data={data}
-          onShowDetail={(e, v) => openModal(v)}
+          openModal={(e, v) => openModal(v)}
           isLoadingMore={isValidating}
           hasNextPage={hasNextPage}
           isError={isError}

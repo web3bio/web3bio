@@ -67,7 +67,7 @@ export default function LensProfile(props) {
               </div>
             )}
           </div>
-          <div className="text-gray mb-2">
+          <div className="text-gray mt-1 mb-2">
             @{_profile.identity.replace(".lens", "")}
             <span> · </span>
             <span title="Lens UID">#{_profile.social.uid}</span>

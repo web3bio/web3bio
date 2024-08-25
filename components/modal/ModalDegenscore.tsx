@@ -42,7 +42,7 @@ export default function DegenscoreModalContent({ onClose, degenscore, profile })
         <div className="d-flex mt-2" style={{ alignItems: "center", lineHeight: 1.25 }}>
           <strong className="h4 text-bold">{profile.displayName}</strong>
         </div>
-        <div className="text-gray mb-2">
+        <div className="text-gray mt-1 mb-2">
           {profile.identity}
         </div>
         <div className="mt-2 mb-2">{profile?.description}</div>

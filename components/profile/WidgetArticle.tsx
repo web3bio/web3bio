@@ -28,7 +28,7 @@ function useArticles(address: string, domain?: string | null) {
   };
 }
 
-export default function WidgetArticle({ address, domain, onShowDetail }) {
+export default function WidgetArticle({ address, domain, openModal }) {
   const { data, isLoading } = useArticles(address, domain);
   const dispatch = useDispatch();
 
@@ -108,7 +108,7 @@ export default function WidgetArticle({ address, domain, onShowDetail }) {
             </div>
           </div>
           {data?.items.map((x, idx) => {
-            return <ArticleItem data={x} key={idx} onShowDetail={onShowDetail} />;
+            return <ArticleItem data={x} key={idx} openModal={openModal} />;
           })}
         </div>
       </div>

@@ -7,7 +7,7 @@ import { WidgetType } from "../utils/widgets";
 import { updatePhilandWidget } from "../state/widgets/reducer";
 import { QUERY_PHILAND_INFO } from "../utils/queries";
 
-const RenderWidgetPhiland = ({ domain, onShowDetail }) => {
+const RenderWidgetPhiland = ({ domain, openModal }) => {
   const { data, loading, error } = useQuery(QUERY_PHILAND_INFO, {
     variables: {
       name: domain,
@@ -39,7 +39,7 @@ const RenderWidgetPhiland = ({ domain, onShowDetail }) => {
       <div
         className="profile-widget profile-widget-philand"
         onClick={() =>
-          onShowDetail({
+          openModal({
             imageurl: data?.philandImage?.imageurl,
             links: data?.philandLink?.data?.filter((x) => x.title && x.url),
           })

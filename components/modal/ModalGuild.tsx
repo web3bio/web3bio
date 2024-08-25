@@ -103,7 +103,7 @@ export default function GuildModalContent({ onClose, guild, profile }) {
           <div className="d-flex mt-2" style={{ alignItems: "center", lineHeight: 1.25 }}>
             <strong className="h4 text-bold">{guild.name}</strong>
           </div>
-          <div className="text-gray mb-2">
+          <div className="text-gray mt-1 mb-2">
             {guild.urlName}
             <span> · </span>
             <span title="Guild ID">#{guild.id}</span>

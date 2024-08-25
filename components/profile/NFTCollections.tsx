@@ -10,7 +10,7 @@ import { NetworkMapping } from "../utils/network";
 
 const RenderNFTCollections = (props) => {
   const {
-    onShowDetail,
+    openModal,
     data,
     expand,
     parentScrollRef,
@@ -174,7 +174,7 @@ const RenderNFTCollections = (props) => {
                           key={ydx}
                           className="nft-container c-hand"
                           onClick={(e) =>
-                            onShowDetail(e, {
+                            openModal(e, {
                               collection: {
                                 url: x.image_url,
                                 description: y.collection.description,

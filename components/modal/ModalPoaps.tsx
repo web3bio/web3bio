@@ -19,19 +19,19 @@ export default function PoapsModalContent({ onClose, asset }) {
         style={{
           ["--widget-primary-color" as string]: SocialPlatformMapping(
             PlatformType.poap
-          )?.color,
+          ).color,
         }}
       >
         <div className="modal-cover poaps"></div>
         <div className="platform-icon">
           <SVG
-            src={`../${SocialPlatformMapping(PlatformType.poap)?.icon}`}
+            src={`../${SocialPlatformMapping(PlatformType.poap).icon}`}
             fill="#fff"
             width={14}
             height={14}
           />
         </div>
-        <span className="modal-header-title">POAP</span>
+        <span className="modal-header-title">{SocialPlatformMapping(PlatformType.poap).label}</span>
       </div>
       <div className="modal-body">
         <div className="mt-2 mb-2">
@@ -48,7 +48,7 @@ export default function PoapsModalContent({ onClose, asset }) {
         <div className="d-flex mt-2" style={{ alignItems: "center", lineHeight: 1.25 }}>
           <strong className="h4 text-bold">{event.name}</strong>
         </div>
-        <div className="text-gray mb-2">
+        <div className="text-gray mt-1 mb-2">
           <span>#{tokenId}</span>
           {event.supply && (
             <>

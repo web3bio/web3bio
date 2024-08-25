@@ -92,7 +92,7 @@ export default function FarcasterProfile(props) {
               ""
             )}
           </div>
-          <div className="text-gray">
+          <div className="text-gray mt-1 mb-2">
             @{_profile.identity}
             <span> · </span>
             <span title="Farcaster FID">#{fid || "…"}</span>

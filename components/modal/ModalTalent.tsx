@@ -77,7 +77,7 @@ export default function TalentModalContent({ onClose, data }) {
           >
             <strong className="h4 text-bold">{profile.display_name}</strong>
           </div>
-          <div className="text-gray mb-2">
+          <div className="text-gray mt-1 mb-2">
             Talent Passport ID #{data.passport_id}
           </div>
           <div className="mt-2 mb-2">{profile?.bio}</div>
