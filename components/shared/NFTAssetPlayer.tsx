@@ -69,7 +69,10 @@ function VideoRender(props: AssetPlayerProps) {
   const videoType = type?.replaceAll(VideoType.QUICKTIME, VideoType.MP4);
   const [isError, setIsError] = useState(false);
   return isError ? (
-    <div>❌ This video is currently not available {src}</div>
+    <div className="video-responsive empty">
+      <div>This video is currently not available</div>
+      <small>{src}</small>
+    </div>
   ) : (
     <video
       className="video-responsive"

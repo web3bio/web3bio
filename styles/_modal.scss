@@ -931,7 +931,7 @@
       gap: .25rem;
       letter-spacing: -.025em;
       line-height: 1.15;
-      margin-top: .25rem;
+      margin-top: .5rem;
       width: 100%;
 
       .nft-network {
@@ -960,14 +960,14 @@
 
       .btn-list-more {
         align-items: flex-end;
-        background: linear-gradient(to bottom, rgba($light-color, 0) 20%, rgba($light-color, 1) 80%);
+        background: linear-gradient(to bottom, rgba($light-color, 0) 0%, rgba($light-color, 1) 90%);
         bottom: 0;
         display: flex;
         height: 6rem;
         justify-content: center;
         left: 50%;
         transform: translateX(-50%);
-        padding: .8rem;
+        padding-bottom: .5rem;
         position: absolute;
         width: 100%;
       }
@@ -977,7 +977,6 @@
       h3 {
         font-size: .8rem;
         font-weight: 700;
-        margin-top: 1rem;
       }
 
       p {
@@ -1137,7 +1136,7 @@
         border-radius: .4rem;
         box-shadow: 0 .2rem .8rem -.2rem rgba($dark-color, 0.1);
         color: $dark-color;
-        flex: 1 1 auto;
+        flex: 0 1 auto;
         min-width: 5rem;
         padding: .4rem .6rem;
 

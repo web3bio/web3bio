@@ -115,12 +115,11 @@ export default function NFTModalContentRender(props) {
                   <div className="nft-title h4">
                     {nft_name}
                   </div>
-                  <div className="nft-subtitle h4">
+                  <div className="nft-subtitle">
                     On 
                     <div
                       className={`nft-network ${_asset.chain}`}
                       title={NetworkMapping(_asset.chain).label}
-                      // style={{ backgroundColor: NetworkMapping(_asset.chain).bgColor }}
                     >
                       <SVG
                         fill={NetworkMapping(_asset.chain).primaryColor}

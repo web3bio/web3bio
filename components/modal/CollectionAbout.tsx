@@ -27,30 +27,28 @@ const renderSocialMediaLinks = (_collection) => {
     [PlatformType.discord]: _collection?.discord_url,
     [PlatformType.instagram]: _collection?.instagram_username,
   };
-  const collectionLinks = Object.entries(renderArr);
+  const collectionLinks = Object.entries(renderArr).filter(([key, item]) => item);
 
   return collectionLinks.map(([key, item]) => {
-    if (item) {
-      return (
-        <Link
-          onClick={(e) => e.stopPropagation()}
-          href={getSocialMediaLink(item, key as PlatformType) || ""}
-          className="btn btn-sm"
-          key={key}
-          target="_blank"
-          rel="noopener noreferrer"
-          title={SocialPlatformMapping(key as PlatformType).label}
-        >
-          <SVG
-            src={`../${SocialPlatformMapping(key as PlatformType).icon}`}
-            fill="#121212"
-            width={18}
-            height={18}
-          />
-          {SocialPlatformMapping(key as PlatformType).label}
-        </Link>
-      );
-    }
+    return (
+      <Link
+        onClick={(e) => e.stopPropagation()}
+        href={getSocialMediaLink(item, key as PlatformType) || ""}
+        className="btn btn-sm"
+        key={key}
+        target="_blank"
+        rel="noopener noreferrer"
+        title={SocialPlatformMapping(key as PlatformType).label}
+      >
+        <SVG
+          src={`../${SocialPlatformMapping(key as PlatformType).icon}`}
+          fill="#121212"
+          width={18}
+          height={18}
+        />
+        {collectionLinks.length < 4 && SocialPlatformMapping(key as PlatformType).label}
+      </Link>
+    );
   });
 };
 
@@ -89,9 +87,6 @@ const CollectionAboutRender = (props) => {
           <div className="nft-title h5">
             {collection.name}
           </div>
-          <div className="nft-actions btn-group">
-            {renderSocialMediaLinks(collection)}
-          </div>
           {collection.description && (
             <div
               ref={descriptionRef}
@@ -118,6 +113,9 @@ const CollectionAboutRender = (props) => {
               )}
             </div>
           )}
+          <div className="nft-actions btn-group">
+            {renderSocialMediaLinks(collection)}
+          </div>
         </div>
       </div>
       <div className="panel-section">
