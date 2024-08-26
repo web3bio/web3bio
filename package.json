@@ -22,6 +22,7 @@
     "react-hot-toast": "^2.4.1",
     "react-infinite-scroll-hook": "^4.1.1",
     "react-markdown": "^9.0.0",
+    "rehype-raw": "^7.0.0",
     "sharp": "^0.32.6",
     "viem": "^2.13.1",
     "wagmi": "^2.9.7",
