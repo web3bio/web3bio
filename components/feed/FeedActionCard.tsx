@@ -40,18 +40,24 @@ function RenderFeedActionCard(props) {
         });
       }
     });
-    return res.map((x, idx) => ({
-      ...x,
-      attachments:
-        x.verb === "Transferred" && idx === res.length - 1
-          ? {
-              media: _.uniqBy(
-                x.attachments.media,
-                (i) => `${i.address}-${i.id}`,
-              ),
-            }
-          : { media: [] },
-    }));
+    return res.map((x, idx) => {
+      return x.verb === "Transferred"
+        ? {
+            ...x,
+            attachments:
+              idx === res.length - 1
+                ? {
+                    medias: _.uniqBy(
+                      x.attachments.medias,
+                      (i) => `${i.address}-${i.id}`
+                    ),
+                  }
+                : {
+                    medias: [],
+                  },
+          }
+        : x;
+    });
   }, [actions, owner, tag]);
 
   const ActionContent = (props) => {
@@ -71,9 +77,7 @@ function RenderFeedActionCard(props) {
 
       return (
         <div
-          className={`feed-content${
-            attachments.media?.length > 1 ? " media-gallery" : ""
-          }`}
+          className={`feed-content media-gallery`}
         >
           {attachments.media?.map((x, cIdx) => {
             const idIndex = `${network}.${x.address}.${x.id}`;
@@ -180,7 +184,7 @@ function RenderFeedActionCard(props) {
           )}
           {target.media?.length > 0 && (
             <div
-              className={`feed-target-content${target.media.length > 1 ? " media-gallery" : ""}`}
+              className={`feed-target-content media-gallery`}
             >
               {target.media.map((x) =>
                 isImage(x.mime_type) || isVideo(x.mime_type) ? (
