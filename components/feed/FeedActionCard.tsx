@@ -76,7 +76,7 @@ function RenderFeedActionCard(props) {
       if (attachments?.medias?.filter((x) => x)?.length > 0) {
         return (
           <div
-            className={`feed-content${
+            className={`feed-medias ${
               attachments.medias.filter((x) => x?.mime_type).length == 1
                 ? ""
                 : " media-gallery"

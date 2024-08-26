@@ -179,6 +179,11 @@
         }
       }
 
+      .feed-medias {
+        width: 100%;
+        margin-top: .25rem;
+      }
+
       .feed-profiles-list {
         background: rgba($color: $bg-color, $alpha: .25);
         border: .05rem solid rgba($dark-color, 0.05);
