@@ -272,7 +272,7 @@ export const ActionStructMapping = (action, owner) => {
       attachments =
         action.tag === ActivityTag.collectible
           ? {
-              medias: action.duplicatedObjects.filter((x) =>
+              media: action.duplicatedObjects.filter((x) =>
                 ["ERC-1155", "ERC-721"].includes(x?.standard)
               ),
             }
@@ -345,7 +345,7 @@ export const ActionStructMapping = (action, owner) => {
 
       attachments = {
         targets: [],
-        medias: metadata.media.filter((x) => !!x),
+        media: metadata.media?.filter((x) => !!x),
       };
       if (metadata.target) {
         attachments.targets.push({
@@ -386,7 +386,7 @@ export const ActionStructMapping = (action, owner) => {
       objects = action.duplicatedObjects || [metadata];
       platform = action.platform;
       attachments = {
-        medias: (action.duplicatedObjects || [metadata]).filter((x) =>
+        media: (action.duplicatedObjects || [metadata]).filter((x) =>
           ["ERC-1155", "ERC-721"].includes(x?.standard)
         ),
       };
