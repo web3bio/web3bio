@@ -4,7 +4,7 @@ import Link from "next/link";
 import _ from "lodash";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 
-export default function PoapsModalContent({ onClose, asset }) {
+export default function PoapModalContent({ onClose, asset }) {
   const { event, tokenId, chain } = asset;
 
   return (

@@ -91,10 +91,10 @@ export default function TalentModalContent({ onClose, data }) {
 
           {credentials?.length > 0 && (
             <>
-              <div className="divider mt-4 mb-4"></div>
               <div className="panel-section">
                 <div className="panel-section-title">
-                  Talent Passport Credentials
+                  Passport Credentials
+                  <div className="divider"></div>
                 </div>
                 <div className="panel-section-content">
                   {credentials.map((x) => (

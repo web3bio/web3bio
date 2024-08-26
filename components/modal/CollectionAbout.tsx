@@ -46,7 +46,7 @@ const renderSocialMediaLinks = (_collection) => {
           width={18}
           height={18}
         />
-        {collectionLinks.length < 4 && SocialPlatformMapping(key as PlatformType).label}
+        {collectionLinks.length <= 4 && SocialPlatformMapping(key as PlatformType).label}
       </Link>
     );
   });
@@ -120,8 +120,9 @@ const CollectionAboutRender = (props) => {
       </div>
       <div className="panel-section">
         <div className="panel-section-content">
-          <div className="panel-section-title collection-title">
+          <div className="panel-section-title">
             Details
+            <div className="divider"></div>
           </div>
           <div className="panel-section-list">
             {floorPriceItem && (

@@ -64,7 +64,10 @@ export default function PhilandModalContent({ data, onClose, profile }) {
 
               {!!data?.links.length && (
                 <div className="panel-section">
-                  <div className="panel-section-title">Phi links</div>
+                  <div className="panel-section-title">
+                    Phi links
+                    <div className="divider"></div>
+                  </div>
                   <div className="panel-section-content">
                     <div className="panel-section-list">
                       {data?.links?.map((x) => {

@@ -120,17 +120,17 @@ export default function NFTModalContentRender(props) {
                     <div
                       className={`nft-network ${_asset.chain}`}
                       title={NetworkMapping(_asset.chain).label}
+                      style={{ backgroundColor: NetworkMapping(_asset.chain).bgColor }}
                     >
                       <SVG
                         fill={NetworkMapping(_asset.chain).primaryColor}
                         src={NetworkMapping(_asset.chain).icon || ""}
                         className="nft-network-icon"
                       />
-                      <span className="nft-network-name">
-                        {NetworkMapping(_asset.chain).label}
-                      </span>
                     </div>
-                    
+                    <span className="nft-network-name">
+                      {NetworkMapping(_asset.chain).label}
+                    </span>
                   </div>
                   {nft_description && (
                     <div 
@@ -164,8 +164,9 @@ export default function NFTModalContentRender(props) {
               {attributes.length > 0 && (
                 <>
                   <div className="panel-section">
-                    <div className="panel-section-title collection-title">
+                    <div className="panel-section-title">
                       Attributes
+                      <div className="divider"></div>
                     </div>
                     <div className="panel-section-content">
                       <div className="traits-cards">

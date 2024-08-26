@@ -771,16 +771,16 @@
           padding: 1rem 0 .5rem 0;
 
           .collection-logo {
-            flex: 0 0 1.2rem;
-            margin-right: .25rem;
+            flex: 0 0 1.6rem;
+            margin-right: .4rem;
 
             .img-responsive {
               border-radius: .4rem;
               box-shadow: 0 .2rem .8rem rgba($dark-color, .2);
               font-size: 1rem;
-              height: 1.2rem;
+              height: 1.6rem;
               object-fit: cover;
-              width: 1.2rem;
+              width: 1.6rem;
             }
           }
 
@@ -788,6 +788,7 @@
             font-size: .8rem;
             font-weight: 700;
             letter-spacing: -.025em;
+            line-height: 1.6rem;
           }
         }
 

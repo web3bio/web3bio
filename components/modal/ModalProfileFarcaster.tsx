@@ -71,14 +71,14 @@ export default function FarcasterProfile(props) {
           <span className="modal-header-title">Farcaster Profile</span>
         </div>
         <div className="modal-body">
-          <Avatar
+          {_profile.avatar && <Avatar
             width={80}
             height={80}
             className="avatar"
             alt={handle}
-            src={_profile?.avatar}
+            src={_profile.avatar}
             identity={handle}
-          />
+          />}
           <div className="d-flex mt-2" style={{ alignItems: "center", lineHeight: 1.25 }}>
             <strong className="h4 text-bold">{_profile.displayName}</strong>
             {socialCapital?.isFarcasterPowerUser ? (
@@ -139,9 +139,11 @@ export default function FarcasterProfile(props) {
 
           {channelsData?.data?.length > 0 && (
             <>
-              <div className="divider mt-4 mb-4"></div>
               <div className="panel-section">
-                <div className="panel-section-title">Active Channels</div>
+                <div className="panel-section-title">
+                  Active Channels
+                  <div className="divider"></div>
+                </div>
                 <div className="panel-section-content">
                   {channelsData.data.map((x) => {
                     return (

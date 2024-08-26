@@ -3,7 +3,7 @@ import { ModalType } from "../hooks/useModal";
 import ArticleModalContent from "./ModalArticle";
 import MediaModalContent from "./ModalMedia";
 import NFTModalContentRender from "./ModalNFT";
-import PoapsModalContent from "./ModalPoaps";
+import PoapModalContent from "./ModalPoap";
 import SearchModalContent from "./ModalSearch";
 import ShareModalContent from "./ModalShare";
 import IdentityGraphModalContent from "./ModalIdentityGraph";
@@ -18,7 +18,7 @@ import TalentModalContent from "./ModalTalent";
 const createModalContentMap = () => ({
   [ModalType.share]: ShareModalContent,
   [ModalType.nft]: NFTModalContentRender,
-  [ModalType.poaps]: PoapsModalContent,
+  [ModalType.poaps]: PoapModalContent,
   [ModalType.media]: MediaModalContent,
   [ModalType.search]: SearchModalContent,
   [ModalType.graph]: IdentityGraphModalContent,

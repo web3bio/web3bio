@@ -54,13 +54,13 @@ export default function GitcoinModalContent({ onClose, passport, profile }) {
         <span className="modal-header-title">Gitcoin Passport</span>
       </div>
         <div className="modal-body">
-          <Image
+          {profile?.avatar && <Image
             width={80}
             height={80}
             className="avatar avatar-xl"
             alt={profile.identity}
             src={profile?.avatar}
-          />
+          />}
           <div className="d-flex mt-2" style={{ alignItems: "center", lineHeight: 1.25 }}>
             <strong className="h4 text-bold">{profile.displayName}</strong>
           </div>
@@ -82,9 +82,11 @@ export default function GitcoinModalContent({ onClose, passport, profile }) {
 
           {Object.keys(groupedStamps).length > 0 && (
             <>
-              <div className="divider mt-4 mb-4"></div>
               <div className="panel-section">
-                <div className="panel-section-title">Gitcoin Passport Stamps</div>
+                <div className="panel-section-title">
+                  Gitcoin Passport Stamps
+                  <div className="divider"></div>
+                </div>
                 <div className="panel-section-content">
                   {Object.entries(groupedStamps).map(([category, stamps]) => (
                     <div key={category} className="stamp-item">
