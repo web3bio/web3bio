@@ -1,18 +1,24 @@
 "use client";
-import Link from "next/link";
 import Image from "next/image";
 import SVG from "react-inlinesvg";
-import { PlatformType, SocialPlatformMapping } from "../utils/platform";
+import { SocialPlatformMapping } from "../utils/platform";
 
 export default function ArticleItem(props) {
-  const { data } = props;
-  const platformName = data.platform.replace(
-    "contenthash",
-    PlatformType.website
-  );
+  const { data, openModal } = props;
+  const handleClick = () => {
+    openModal({
+      title: data.title,
+      link: data.link,
+      content: data.body,
+      description: data.description,
+      platform: data.platform,
+      baseURL: data.baseURL,
+      published: data.published
+    });
+  };
 
   return (
-    <Link href={data.link} className="rss-item" target={"_blank"}>
+    <div className="rss-item" onClick={handleClick}>
       {data.thumbnail && (
         <Image
           src={data.thumbnail}
@@ -26,28 +32,28 @@ export default function ArticleItem(props) {
         <span className="label text-dark">
           <SVG
             fill={"#121212"}
-            src={SocialPlatformMapping(platformName).icon || ""}
+            src={SocialPlatformMapping(data.platform)?.icon || ""}
             height={18}
             width={18}
             className="mr-1"
           />
-          {SocialPlatformMapping(platformName)?.label}
+          {SocialPlatformMapping(data.platform)?.label}
         </span>
       </div>
       <div className="rss-item-title">
-        {data.title ? data.title : "Untitled"}
+        {data.title || "Untitled"}
       </div>
       <time
         dateTime={data.published}
         suppressHydrationWarning
         className="rss-item-date"
       >
-        {new Date(data.published).toDateString()}
+        {new Date(data.published).toLocaleDateString()}
       </time>
 
       <div className="rss-item-content text-assistive">
         {typeof data.description === "string" ? data.description : ""}
       </div>
-    </Link>
+    </div>
   );
 }

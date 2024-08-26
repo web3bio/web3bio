@@ -4,17 +4,17 @@ import { useDispatch } from "react-redux";
 import useSWR from "swr";
 import SVG from "react-inlinesvg";
 import Link from "next/link";
+import { SocialPlatformMapping } from "../utils/platform";
 import { WidgetInfoMapping, WidgetType } from "../utils/widgets";
-import { profileAPIBaseURL } from "../utils/queries";
-import ArticleItem from "./ArticleItem";
+import { ArticlesFetcher, articleAPIBaseURL } from "../utils/api";
 import { updateArticleWidget } from "../state/widgets/reducer";
-import { ArticlesFetcher } from "../apis";
+import ArticleItem from "./ArticleItem";
 
 function useArticles(address: string, domain?: string | null) {
   const fetchUrl = (() => {
-    return `${profileAPIBaseURL}/articles/${address}?limit=10${
-      domain ? "&domian=" + domain : ""
-    }${domain ? "&contenthash=true" : ""}`;
+    return `${articleAPIBaseURL}/${address}?limit=10${
+      domain ? "&domian=" + domain + "&contenthash=true" : ""
+    }`;
   })();
   const { data, error, isValidating } = useSWR(fetchUrl, ArticlesFetcher, {
     suspense: true,
@@ -28,7 +28,7 @@ function useArticles(address: string, domain?: string | null) {
   };
 }
 
-export default function WidgetArticle({ address, domain }) {
+export default function WidgetArticle({ address, domain, openModal, profile }) {
   const { data, isLoading } = useArticles(address, domain);
   const dispatch = useDispatch();
 
@@ -45,6 +45,7 @@ export default function WidgetArticle({ address, domain }) {
   const siteInfo = useMemo(() => {
     return data?.sites?.[0];
   }, [data?.sites]);
+
   if (!siteInfo || !data?.items?.length) return null;
 
   // if (process.env.NODE_ENV !== "production") {
@@ -54,36 +55,56 @@ export default function WidgetArticle({ address, domain }) {
   return (
     <div className="profile-widget-full" id={WidgetType.article}>
       <div className="profile-widget profile-widget-rss">
-        {
-          <div className="profile-widget-header">
-            <h2 className="profile-widget-title">
-              <span className="emoji-large mr-2">
-                {WidgetInfoMapping(WidgetType.article).icon}
-              </span>
-              {WidgetInfoMapping(WidgetType.article).title}
-            </h2>
-          </div>
-        }
+        <div className="profile-widget-header">
+          <h2 className="profile-widget-title">
+            <span className="emoji-large mr-2">
+              {WidgetInfoMapping(WidgetType.article).icon}
+            </span>
+            {WidgetInfoMapping(WidgetType.article).title}
+          </h2>
+        </div>
 
         <div className="widget-rss-list noscrollbar">
           <div className="widget-hero">
-            <div className="widget-hero-title mb-1">{siteInfo.name}</div>
-            <div className="widget-hero-description mb-4">
-              {siteInfo.description}
+            <div className="widget-hero-description mb-2">
+              {
+                data?.sites?.map((site, idx) => {
+                  return (
+                    <>
+                      <Link 
+                        key={idx}
+                        className="feed-token c-hand" 
+                        title={site.description}
+                        href={site.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <SVG
+                          fill={"#fff"}
+                          src={SocialPlatformMapping(site.platform).icon || ""}
+                          height={24}
+                          width={24}
+                          className="feed-token-icon"
+                          style={{
+                            backgroundColor: SocialPlatformMapping(site.platform).color,
+                            padding: ".1rem",
+                          }}
+                        />
+                        <span className="feed-token-value">
+                          {site.name}
+                        </span>
+                      </Link>
+                    </>
+                  );
+                })
+              }
             </div>
-            <div className="widget-hero-action">
-              <Link
-                className="btn btn-sm"
-                title="More Articles"
-                href={siteInfo.link}
-                target={"_blank"}
-              >
-                <SVG src="icons/icon-open.svg" width={20} height={20} /> More
-              </Link>
+            <div className="widget-hero-description">
+              {siteInfo.description || ` ${SocialPlatformMapping(siteInfo.platform).label} by ${profile.identity}`}
             </div>
           </div>
           {data?.items.map((x, idx) => {
-            return <ArticleItem data={x} key={idx} />;
+            return <ArticleItem data={x} key={idx} openModal={openModal} />;
           })}
         </div>
       </div>

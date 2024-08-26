@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { NetworkMapping } from "../utils/network";
-import { GUILD_XYZ_ENDPOINT, GuildFetcher } from "../apis";
+import { GUILD_XYZ_ENDPOINT, GuildFetcher } from "../utils/api";
 
 const RoleItem = ({ role, showMemberCount }) => (
   <div className="role-item feed-token" title={role.description}>
@@ -103,7 +103,7 @@ export default function GuildModalContent({ onClose, guild, profile }) {
           <div className="d-flex mt-2" style={{ alignItems: "center", lineHeight: 1.25 }}>
             <strong className="h4 text-bold">{guild.name}</strong>
           </div>
-          <div className="text-gray mb-2">
+          <div className="text-gray mt-1 mb-2">
             {guild.urlName}
             <span> · </span>
             <span title="Guild ID">#{guild.id}</span>
@@ -160,9 +160,9 @@ export default function GuildModalContent({ onClose, guild, profile }) {
           {guildRoles?.length > 0 && (
             <>
               <div className="divider mt-4 mb-4"></div>
-              <div className="panel-widget">
-                <div className="panel-widget-title">Guild Roles</div>
-                <div className="panel-widget-content">
+              <div className="panel-section">
+                <div className="panel-section-title">Guild Roles</div>
+                <div className="panel-section-content">
                   {guildRoles.map((role) => (
                     <RoleItem key={role.id} role={role} showMemberCount={true} />
                   ))}
@@ -174,11 +174,11 @@ export default function GuildModalContent({ onClose, guild, profile }) {
           {rolesAcquired?.length > 0 && (
             <>
               <div className="divider mt-4 mb-4"></div>
-              <div className="panel-widget">
-                <div className="panel-widget-title">
+              <div className="panel-section">
+                <div className="panel-section-title">
                   Roles acquired by {profile.displayName}
                 </div>
-                <div className="panel-widget-content">
+                <div className="panel-section-content">
                   {rolesAcquired.map((role) => (
                     <RoleItem key={role.id} role={role} showMemberCount={false} />
                   ))}

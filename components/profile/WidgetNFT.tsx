@@ -15,8 +15,8 @@ import {
   SIMPLEHASH_PAGE_SIZE,
   SIMPLEHASH_URL,
   SimplehashFetcher,
-} from "../apis";
-import { Network, NetworkMapping } from "../utils/network";
+} from "../utils/api";
+import { Network } from "../utils/network";
 
 const CURSOR_PARAM = "&cursor=";
 
@@ -195,7 +195,7 @@ export default function WidgetNFT({ profile, openModal }) {
           expand={expand}
           setExpand={setExpand}
           data={data}
-          onShowDetail={(e, v) => openModal(v)}
+          openModal={(e, v) => openModal(v)}
           isLoadingMore={isValidating}
           hasNextPage={hasNextPage}
           isError={isError}

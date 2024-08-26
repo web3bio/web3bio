@@ -22,7 +22,7 @@ import TokenSelector from "./TokenSelector";
 import { Token } from "../utils/types";
 import useSWR from "swr";
 import { formatText } from "../utils/utils";
-import { FIREFLY_PROXY_DEBANK_ENDPOINT, ProfileFetcher } from "../apis";
+import { FIREFLY_PROXY_DEBANK_ENDPOINT, ProfileFetcher } from "../utils/api";
 
 enum TipStatus {
   success = 1,

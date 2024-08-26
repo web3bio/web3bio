@@ -6,9 +6,9 @@ import { useDispatch } from "react-redux";
 import { WidgetInfoMapping, WidgetType } from "../utils/widgets";
 import { updateSnapshotWidget } from "../state/widgets/reducer";
 import { useQuery } from "@apollo/client";
-import { QUERY_SPACES_FOLLOWED_BY_USR } from "../apis";
+import { QUERY_SPACES_FOLLOWED_BY_USR } from "../utils/queries";
 
-export default function WidgetSnapshot({ profile, onShowDetail }) {
+export default function WidgetSnapshot({ profile, openModal }) {
   const { data, loading, error } = useQuery(QUERY_SPACES_FOLLOWED_BY_USR, {
     variables: {
       address: profile.address,
@@ -72,7 +72,7 @@ export default function WidgetSnapshot({ profile, onShowDetail }) {
               return (
                 <div
                   onClick={() => {
-                    onShowDetail({
+                    openModal({
                       space: {
                         ...space,
                         avatar: imageUrl,

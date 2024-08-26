@@ -5,7 +5,7 @@ import { Empty } from "../shared/Empty";
 import { Loading } from "../shared/Loading";
 import { ActivityTag, TagsFilterMapping } from "../utils/activity";
 import { isSameAddress } from "../utils/utils";
-import { SIMPLEHASH_URL, SimplehashFetcher } from "../apis";
+import { SIMPLEHASH_URL, SimplehashFetcher } from "../utils/api";
 
 const RenderActivityFeeds = (props) => {
   const {
@@ -47,7 +47,13 @@ const RenderActivityFeeds = (props) => {
     [data, validTypes]
   );
   const nftIds = useMemo(() => {
-    if (validTypes !== TagsFilterMapping.collectibles.types) return [];
+    if (
+      ![
+        TagsFilterMapping.collectibles.types,
+        TagsFilterMapping.all.types,
+      ].includes(validTypes)
+    )
+      return [];
     const uniqueIds = new Set();
     memoizedData.forEach((feed) => {
       feed.actions.forEach((action) => {

@@ -67,7 +67,7 @@ export default function LensProfile(props) {
               </div>
             )}
           </div>
-          <div className="text-gray mb-2">
+          <div className="text-gray mt-1 mb-2">
             @{_profile.identity.replace(".lens", "")}
             <span> · </span>
             <span title="Lens UID">#{_profile.social.uid}</span>
@@ -88,9 +88,9 @@ export default function LensProfile(props) {
           </div>
           
           <div className="divider mt-4 mb-4"></div>
-          <div className="panel-widget">
-            <div className="panel-widget-title">Stats</div>
-            <div className="panel-widget-content">
+          <div className="panel-section">
+            <div className="panel-section-title">Stats</div>
+            <div className="panel-section-content">
               <div className="content">
                 <strong className="text-large">
                   {data?.profile?.stats?.posts.toLocaleString() || "…"}
@@ -118,9 +118,9 @@ export default function LensProfile(props) {
 
           <div className="divider"></div>
           {data?.profile?.interests?.length > 0 && (
-            <div className="panel-widget">
-              <div className="panel-widget-title">Interests</div>
-              <div className="panel-widget-content">
+            <div className="panel-section">
+              <div className="panel-section-title">Interests</div>
+              <div className="panel-section-content">
                 <div className="profile-interests">
                   {data?.profile?.interests?.map((x) => {
                     const interestItem = LensInterestsMapping(x);

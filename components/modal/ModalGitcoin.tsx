@@ -64,7 +64,7 @@ export default function GitcoinModalContent({ onClose, passport, profile }) {
           <div className="d-flex mt-2" style={{ alignItems: "center", lineHeight: 1.25 }}>
             <strong className="h4 text-bold">{profile.displayName}</strong>
           </div>
-          <div className="text-gray mb-2">
+          <div className="text-gray mt-1 mb-2">
             {profile.identity}
           </div>
           <div className="mt-2 mb-2">{profile?.description}</div>
@@ -83,9 +83,9 @@ export default function GitcoinModalContent({ onClose, passport, profile }) {
           {Object.keys(groupedStamps).length > 0 && (
             <>
               <div className="divider mt-4 mb-4"></div>
-              <div className="panel-widget">
-                <div className="panel-widget-title">Gitcoin Passport Stamps</div>
-                <div className="panel-widget-content">
+              <div className="panel-section">
+                <div className="panel-section-title">Gitcoin Passport Stamps</div>
+                <div className="panel-section-content">
                   {Object.entries(groupedStamps).map(([category, stamps]) => (
                     <div key={category} className="stamp-item">
                       <div className="stamp-item-body">

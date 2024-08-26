@@ -4,7 +4,7 @@ import useSWR from "swr";
 import { WidgetInfoMapping, WidgetType } from "../utils/widgets";
 import { useDispatch } from "react-redux";
 import { updateGitcoinWidget } from "../state/widgets/reducer";
-import { ProfileFetcher } from "../apis";
+import { ProfileFetcher } from "../utils/api";
 import { ModalType } from "../hooks/useModal";
 
 function useGitcoinInfo(address: string) {

@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { ActivityType } from "../utils/activity";
+import { ActivityTag, ActivityType } from "../utils/activity";
 import _ from "lodash";
 import FeedActionCard from "./FeedActionCard";
 
@@ -12,14 +12,23 @@ const resolveDuplicatedActions = (
   const _data = JSON.parse(JSON.stringify(actions));
   const duplicatedObjects = new Array();
   _data.forEach((x, idx) => {
-    const dupIndex = duplicatedObjects.findIndex(
-      (i) =>
+    const shouldReturnDup = (i, x) => {
+      if (x.tag === ActivityTag.collectible && x.type === ActivityType.trade) {
+        return (
+          i.platform === x.platform &&
+          i.metadata?.address === x.metadata.address &&
+          i.metadata?.action === x.metadata.action
+        );
+      }
+      return (
         i.tag === x.tag &&
         i.type === x.type &&
         i.from === x.from &&
         i.to === x.to &&
         specificTypes.includes(isMetadataAction ? i.metadata.action : i.type)
-    );
+      );
+    };
+    const dupIndex = duplicatedObjects.findIndex((i) => shouldReturnDup(i, x));
     if (dupIndex === -1) {
       duplicatedObjects.push({
         ...x,

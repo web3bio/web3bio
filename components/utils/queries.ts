@@ -1,24 +1,6 @@
 import { gql } from "@apollo/client";
-import { PlatformType } from "./platform";
 
-export const platformsToExclude = [
-  PlatformType.dotbit,
-  PlatformType.sns,
-  PlatformType.solana,
-];
-
-export const GET_AVAILABLE_DOMAINS = gql`
-  query GET_AVAILABLE_DOMAINS($name: String) {
-    domainAvailableSearch(name: $name) {
-      platform
-      name
-      expiredAt
-      availability
-      status
-    }
-  }
-`;
-
+// Relation Service Query
 const GET_PROFILES = gql`
   query GET_PROFILES($platform: String, $identity: String) {
     identity(platform: $platform, identity: $identity) {
@@ -72,6 +54,7 @@ const GET_PROFILES = gql`
   }
 `;
 
+// Relation Service Minified Query
 const GET_PROFILES_MINIFY = `
 query GET_PROFILES($platform: String, $identity: String) {
   identity(platform: $platform, identity: $identity) {
@@ -95,14 +78,130 @@ query GET_PROFILES($platform: String, $identity: String) {
   }
 }`;
 
+// Relation Service Availability Query
+export const GET_AVAILABLE_DOMAINS = gql`
+  query GET_AVAILABLE_DOMAINS($name: String) {
+    domainAvailableSearch(name: $name) {
+      platform
+      name
+      expiredAt
+      availability
+      status
+    }
+  }
+`;
+
+// Farcaster Modal Stats
+export const QUERY_FARCASTER_STATS = gql`
+  query QUERY_FARCASTER_STATS($name: String!) {
+    Socials(
+      input: {
+        filter: { profileName: { _in: [$name] }, dappName: { _eq: farcaster } }
+        blockchain: ethereum
+      }
+    ) {
+      Social {
+        isFarcasterPowerUser
+        socialCapital {
+          socialCapitalScore
+          socialCapitalRank
+        }
+      }
+    }
+  }
+`;
+
+// Philand Widget
+export const QUERY_PHILAND_INFO = gql`
+  query QUERY_PHILAND_LIST($name: String!) {
+    philandImage(input: { name: $name, transparent: true }) {
+      imageurl
+    }
+    philandLink(input: { name: $name }) {
+      data {
+        title
+        url
+      }
+    }
+  }
+`;
+
+// Snapshot Widget
+export const QUERY_SPACES_FOLLOWED_BY_USR = gql`
+  query userFollowedSpaces($address: String!) {
+    follows(where: { follower: $address }) {
+      space {
+        id
+        name
+        about
+        network
+        members
+        admins
+        github
+        twitter
+        website
+        coingecko
+        followersCount
+        proposalsCount
+        verified
+      }
+      created
+    }
+  }
+`;
+
+// Tally Widget
+export const QUERY_TALLY_DAOS = gql`
+  query TallyDAO($delegate: DelegatesInput!, $delegatee: DelegationsInput!) {
+    delegates(input: $delegate) {
+      nodes {
+        ... on Delegate {
+          id
+          delegatorsCount
+          votesCount
+          organization {
+            id
+            name
+            tokenOwnersCount
+            delegatesVotesCount
+            slug
+            metadata {
+              icon
+            }
+          }
+        }
+      }
+    }
+    delegatees(input: $delegatee) {
+      nodes {
+        ... on Delegation {
+          delegate {
+            id
+          }
+          delegator {
+            name
+            address
+            ens
+          }
+          votes
+          token {
+            decimals
+            name
+            symbol
+          }
+          organization {
+            name
+            slug
+            metadata {
+              icon
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const getProfileQuery = (minify?: Boolean) => {
   return minify ? GET_PROFILES_MINIFY : GET_PROFILES;
-};
-
-export const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "https://web3.bio";
-export const profileAPIBaseURL =
-  process.env.NEXT_PUBLIC_PROFILE_END_POINT || "https://api.web3.bio";
-
-export const queryClient = async (path: string) => {
-  return await fetch(baseURL + "/api" + path);
 };

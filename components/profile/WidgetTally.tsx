@@ -11,7 +11,7 @@ import { Empty } from "../shared/Empty";
 import { formatText, formatBalance } from "../utils/utils";
 import { WidgetType } from "../utils/widgets";
 import { updateTallyDAOWidget } from "../state/widgets/reducer";
-import { QUERY_DAO_DELEGATORS } from "../apis";
+import { QUERY_TALLY_DAOS } from "../utils/queries";
 
 const RenderWidgetTally = ({ address }) => {
   // 0:delegators  1:delegating to
@@ -29,7 +29,7 @@ const RenderWidgetTally = ({ address }) => {
       sortBy: "votes",
     },
   };
-  const { data, loading, error } = useQuery(QUERY_DAO_DELEGATORS, {
+  const { data, loading, error } = useQuery(QUERY_TALLY_DAOS, {
     variables: {
       delegate: queryVar,
       delegatee: queryVar,

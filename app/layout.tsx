@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import { Toaster } from "react-hot-toast";
 import ApolloProvider from "@/components/shared/ApolloProvider";
 import ReduxProvider from "@/components/shared/ReduxProvider";
-import { baseURL } from "@/components/utils/queries";
+import { baseURL } from "@/components/utils/api";
 import "../styles/web3bio.scss";
 import "@rainbow-me/rainbowkit/styles.css";
 
@@ -34,9 +34,9 @@ export function generateMetadata() {
       canonical: `/`,
     },
     keywords: [
-      "Web3", "Web3.bio", "Web3 DID", "Web3 Identity", "Web3 Identity Search",
+      "Web3", "Web3.bio", "Web3 DID", "Web3 Onchain Identity", "Web3 Identity Search",
       "Web3 Identity Resolver", "Web3 Identity Graph", "Web3 Social Graph",
-      "Web3 Identity Explorer", "Web3 Profile", "Web3 Profile Explorer", "DID",
+      "Web3 Identity Explorer", "Web3 Onchain Profile", "Web3 Profile Explorer", "DID",
       "DID Search Engine", "DID Explorer", "Web3 Domain Search",
       "Web3 Domain Explorer", "Web3 Domain WHOIS",
     ],

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { AssetPlayerProps } from "./NFTAssetPlayer";
-import { profileAPIBaseURL } from "../utils/queries";
+import { profileAPIBaseURL } from "../utils/api";
 interface Avatar extends AssetPlayerProps {
   identity?: string;
   itemProp?: string;
