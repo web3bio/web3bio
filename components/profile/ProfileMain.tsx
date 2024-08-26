@@ -62,6 +62,9 @@ export default function ProfileMain(props) {
   const dispatch = useDispatch();
   const { isOpen, type, closeModal, openModal, params } = useModal();
   const [mounted, setMounted] = useState(false);
+  const isEthereum = useMemo(() => {
+    return isValidEthereumAddress(data.address);
+  }, [data.address]);
   const profileWidgetStates = useSelector<AppState, WidgetState>(
     (state) => state.widgets
   );
@@ -352,7 +355,7 @@ export default function ProfileMain(props) {
               </div>
             )}
 
-            {isValidEthereumAddress(data.address) && (
+            {isEthereum && (
               <div className="profile-actions" style={{display: "none"}}>
                 <div className="btn-group">
                   <button
@@ -431,7 +434,7 @@ export default function ProfileMain(props) {
                   <WidgetFeed openModal={openModal} profile={data} />
                 </Suspense>
               </div>
-              {isBasicLoadingFinished && (
+              {isEthereum && isBasicLoadingFinished && (
                 <>
                   <div className="web3-section-widgets">
                     <WidgetScores
@@ -453,6 +456,12 @@ export default function ProfileMain(props) {
                       <WidgetArticle
                         address={data.address}
                         domain={relations?.find((x) => x.contenthash)?.identity}
+                        profile={data}
+                        openModal={(v) => {
+                          openModal(ModalType.article, {
+                            ...v,
+                          });
+                        }}
                       />
                     </Suspense>
                   </div>
@@ -470,51 +479,45 @@ export default function ProfileMain(props) {
                     </Suspense>
                   </div>
 
-                  {isValidEthereumAddress(data.address) && (
-                    <div className="web3-section-widgets">
-                      <Suspense
-                        fallback={<LoadingSkeleton type={WidgetType.guild} />}
-                      >
-                        <WidgetGuild
-                          onShowDetail={(v) => {
-                            openModal(ModalType.guild, {
-                              ...v,
-                            });
-                          }}
-                          profile={data}
-                        />
-                      </Suspense>
-                    </div>
-                  )}
+                  <div className="web3-section-widgets">
+                    <Suspense
+                      fallback={<LoadingSkeleton type={WidgetType.guild} />}
+                    >
+                      <WidgetGuild
+                        openModal={(v) => {
+                          openModal(ModalType.guild, {
+                            ...v,
+                          });
+                        }}
+                        profile={data}
+                      />
+                    </Suspense>
+                  </div>
 
-                  {isValidEthereumAddress(data.address) && (
-                    <div className="web3-section-widgets">
-                      <Suspense
-                        fallback={
-                          <LoadingSkeleton type={WidgetType.snapshot} />
-                        }
-                      >
-                        <WidgetSnapshot
-                          profile={data}
-                          onShowDetail={(v) => {
-                            openModal(ModalType.snapshot, {
-                              ...v,
-                            });
-                          }}
-                        />
-                      </Suspense>
-                    </div>
-                  )}
+                  <div className="web3-section-widgets">
+                    <Suspense
+                      fallback={
+                        <LoadingSkeleton type={WidgetType.snapshot} />
+                      }
+                    >
+                      <WidgetSnapshot
+                        profile={data}
+                        openModal={(v) => {
+                          openModal(ModalType.snapshot, {
+                            ...v,
+                          });
+                        }}
+                      />
+                    </Suspense>
+                  </div>
 
-                  {isValidEthereumAddress(data.address) && (
-                    <div className="web3-section-widgets">
-                      <Suspense
-                        fallback={<LoadingSkeleton type={WidgetType.tally} />}
-                      >
-                        <WidgetTally address={data.address} />
-                      </Suspense>
-                    </div>
-                  )}
+                  <div className="web3-section-widgets">
+                    <Suspense
+                      fallback={<LoadingSkeleton type={WidgetType.tally} />}
+                    >
+                      <WidgetTally address={data.address} />
+                    </Suspense>
+                  </div>
 
                   {/* TODO: Due to Philand error background color, hide Phi widget for now */}
                   {/* <div className="web3-section-widgets">
@@ -522,7 +525,7 @@ export default function ProfileMain(props) {
                       regexEns.test(data.identity)) && (
                       <Suspense fallback={<p>Loading Phi Land...</p>}>
                         <WidgetPhiland
-                          onShowDetail={(v) => {
+                          openModal={(v) => {
                             openModal(ModalType.philand, {
                               profile: data,
                               data: v,
@@ -540,7 +543,7 @@ export default function ProfileMain(props) {
             null}
         </div>
       </div>
-      <ProfileFooter />
+      <ProfileFooter openModal={openModal} />
       {isOpen && (
         <Modal params={params} onDismiss={closeModal} modalType={type} />
       )}

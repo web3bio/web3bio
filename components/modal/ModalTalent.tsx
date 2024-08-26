@@ -3,13 +3,13 @@ import SVG from "react-inlinesvg";
 import Image from "next/image";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import Link from "next/link";
-import { TALENT_API_ENDPOINT, talentFetcher } from "../apis";
+import { TALENT_API_ENDPOINT, TalentFetcher } from "../utils/api";
 import useSWR from "swr";
 
 function useTalentCredentials(id: string) {
   const { data, error } = useSWR(
     TALENT_API_ENDPOINT + `passport_credentials?passport_id=${id}`,
-    talentFetcher,
+    TalentFetcher,
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
@@ -49,13 +49,13 @@ export default function TalentModalContent({ onClose, data }) {
           style={{
             ["--widget-primary-color" as string]: SocialPlatformMapping(
               PlatformType.talent
-            )?.color,
+            ).color,
           }}
         >
           <div className="modal-cover talent"></div>
           <div className="platform-icon">
             <SVG
-              src={`../${SocialPlatformMapping(PlatformType.talent)?.icon}`}
+              src={`../${SocialPlatformMapping(PlatformType.talent).icon}`}
               fill="#fff"
               width={14}
               height={14}
@@ -77,7 +77,7 @@ export default function TalentModalContent({ onClose, data }) {
           >
             <strong className="h4 text-bold">{profile.display_name}</strong>
           </div>
-          <div className="text-gray mb-2">
+          <div className="text-gray mt-1 mb-2">
             Talent Passport ID #{data.passport_id}
           </div>
           <div className="mt-2 mb-2">{profile?.bio}</div>
@@ -92,11 +92,11 @@ export default function TalentModalContent({ onClose, data }) {
           {credentials?.length > 0 && (
             <>
               <div className="divider mt-4 mb-4"></div>
-              <div className="panel-widget">
-                <div className="panel-widget-title">
+              <div className="panel-section">
+                <div className="panel-section-title">
                   Talent Passport Credentials
                 </div>
-                <div className="panel-widget-content">
+                <div className="panel-section-content">
                   {credentials.map((x) => (
                     <div key={x.id} className="stamp-item">
                       <div className="stamp-item-body">

@@ -10,7 +10,7 @@ import { NetworkMapping } from "../utils/network";
 
 const RenderNFTCollections = (props) => {
   const {
-    onShowDetail,
+    openModal,
     data,
     expand,
     parentScrollRef,
@@ -160,7 +160,8 @@ const RenderNFTCollections = (props) => {
                       const mediaURL = resolveMediaURL(
                         y.previews.image_medium_url ||
                           y.video_url ||
-                          y.image_url
+                          y.image_url ||
+                          y.collection?.image_url
                       );
 
                       const type =
@@ -173,7 +174,7 @@ const RenderNFTCollections = (props) => {
                           key={ydx}
                           className="nft-container c-hand"
                           onClick={(e) =>
-                            onShowDetail(e, {
+                            openModal(e, {
                               collection: {
                                 url: x.image_url,
                                 description: y.collection.description,
@@ -205,10 +206,6 @@ const RenderNFTCollections = (props) => {
                               <div
                                 className={`preview-network ${y.chain}`}
                                 title={NetworkMapping(y.chain).label}
-                                style={{
-                                  backgroundColor: NetworkMapping(y.chain)
-                                    .bgColor,
-                                }}
                               >
                                 <SVG
                                   fill={NetworkMapping(y.chain).primaryColor}

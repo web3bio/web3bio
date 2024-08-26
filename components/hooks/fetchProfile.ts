@@ -2,8 +2,8 @@ import {
   SIMPLEHASH_CHAINS,
   SIMPLEHASH_PAGE_SIZE,
   SIMPLEHASH_URL,
-} from "../apis";
-import { profileAPIBaseURL } from "../utils/queries";
+  profileAPIBaseURL
+} from "../utils/api";
 import { shouldPlatformFetch } from "../utils/utils";
 
 export const fetchProfile = async (identity) => {

@@ -5,14 +5,12 @@ import {
   InMemoryCache,
 } from "@apollo/client";
 // import { PHI_AUTH, PHI_GRAPHQL_END_POINT } from "../apis/philand";
-import { WidgetType } from "./widgets";
-import { PlatformType } from "./platform";
 import { LensGraphQLEndpoint } from "./lens";
 import {
   AIRSTACK_GRAPHQL_ENDPOINT,
   SNAPSHOT_GRAPHQL_ENDPOINT,
   TALLY_GRAPHQL_ENDPOINT,
-} from "../apis";
+} from "./api";
 
 const defaultLink = new HttpLink({
   uri: process.env.NEXT_PUBLIC_GRAPHQL_SERVER,
@@ -20,14 +18,6 @@ const defaultLink = new HttpLink({
     "x-api-key": process.env.NEXT_PUBLIC_RELATION_API_KEY || "",
   },
 });
-
-// const philandLink = new HttpLink({
-//   uri: PHI_GRAPHQL_END_POINT,
-//   headers: {
-//     "Content-Type": "application/json",
-//     "x-api-key": PHI_AUTH,
-//   },
-// });
 
 const tallyLink = new HttpLink({
   uri: TALLY_GRAPHQL_ENDPOINT,
@@ -55,12 +45,10 @@ const lensLink = new HttpLink({
 });
 
 const linkMapping = {
-  [WidgetType.tally]: tallyLink,
-  [PlatformType.lens]: lensLink,
+  ["tally"]: tallyLink,
+  ["lens"]: lensLink,
   ["airstack"]: airstackLink,
-  [WidgetType.snapshot]: snapshotLink,
-  // currently hide ⬇️
-  // [WidgetType.philand]: philandLink,
+  ["snapshot"]: snapshotLink,
 };
 
 const getLink = (clientName) => linkMapping[clientName] || defaultLink;

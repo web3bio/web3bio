@@ -2,7 +2,6 @@ import { BigNumber } from "bignumber.js";
 import { isIPFS_Resource, resolveIPFS_URL } from "./ipfs";
 import { pow10 } from "./number";
 import {
-  PlatformSystem,
   PlatformType,
   SocialPlatformMapping,
 } from "./platform";
@@ -20,7 +19,7 @@ import {
   regexSns,
   regexBtc,
   regexGenome,
-  regexAvatar,
+  regexNext,
   regexEIP,
   regexDomain,
   regexCluster,
@@ -31,7 +30,7 @@ import { NextResponse } from "next/server";
 import { ErrorHandleProps } from "./types";
 import * as contentHash from "@ensdomains/content-hash";
 import { chainIdToNetwork } from "./network";
-import { SIMPLEHASH_URL, SimplehashFetcher } from "../apis";
+import { SIMPLEHASH_URL, SimplehashFetcher } from "./api";
 
 export const errorHandle = (props: ErrorHandleProps) => {
   const isValidAddress = isValidEthereumAddress(props.identity || "");
@@ -51,6 +50,7 @@ export const errorHandle = (props: ErrorHandleProps) => {
     }
   );
 };
+
 export const respondWithCache = (
   json: string,
   headers?: { [index: string]: string }
@@ -151,8 +151,9 @@ const web3AddressRegexes = [
   regexCrossbell,
   regexBtc,
   regexSolana,
-  regexAvatar,
+  regexNext,
 ];
+
 export function isWeb3Address(address: string): boolean {
   return web3AddressRegexes.some((regex) => regex.test(address));
 }

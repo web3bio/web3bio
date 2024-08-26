@@ -6,7 +6,7 @@ import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import { useDispatch } from "react-redux";
 import { WidgetInfoMapping, WidgetType } from "../utils/widgets";
 import { updateGuildWidget } from "../state/widgets/reducer";
-import { GUILD_XYZ_ENDPOINT, GuildFetcher } from "../apis";
+import { GUILD_XYZ_ENDPOINT, GuildFetcher } from "../utils/api";
 
 function useGuildMemberships(address: string) {
   const { data, error, isLoading } = useSWR(
@@ -25,7 +25,7 @@ function useGuildMemberships(address: string) {
   };
 }
 
-export default function WidgetGuild({ profile, onShowDetail }) {
+export default function WidgetGuild({ profile, openModal }) {
   const { data, isLoading } = useGuildMemberships(profile?.address);
   const [infoLoading, setInfoLoading] = useState(false);
   const [guilds, setGuilds] = useState(new Array());
@@ -104,7 +104,7 @@ export default function WidgetGuild({ profile, onShowDetail }) {
               return (
                 <div
                   onClick={() => {
-                    onShowDetail({
+                    openModal({
                       guild: {
                         ...x,
                         imageUrl: imageURL,

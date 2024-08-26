@@ -4,14 +4,14 @@ import useSWR from "swr";
 import { formatDistanceToNow } from "date-fns";
 import { WidgetInfoMapping, WidgetType } from "../utils/widgets";
 import { useDispatch } from "react-redux";
-import { DegenFetcher, DEGENSCORE_ENDPOINT } from "../apis";
+import { DegenscoreFetcher, DEGENSCORE_ENDPOINT } from "../utils/api";
 import { updateDegenscoreWidget } from "../state/widgets/reducer";
 import { ModalType } from "../hooks/useModal";
 
 function useDegenInfo(address: string) {
   const { data, error } = useSWR(
     `${DEGENSCORE_ENDPOINT}${address}`,
-    DegenFetcher,
+    DegenscoreFetcher,
     {
       suspense: true,
       fallbackData: [],

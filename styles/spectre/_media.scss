@@ -24,6 +24,34 @@
   padding: 0;
   position: relative;
   width: 100%;
+
+  &.empty {
+    align-items: center;
+    background: $bg-color-light;
+    display: flex;
+    font-size: .7rem;
+    min-height: 4rem;
+    padding: 1.25rem;
+    text-align: center;
+    width: 100%;
+
+    small {
+      display: -webkit-box;
+      font-size: .55rem;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      word-break: break-all;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+    }
+
+    &::before {
+      content: "";
+      display: none;
+      padding-bottom:0;
+    }
+  }
+  
   &::before {
     content: "";
     display: block;

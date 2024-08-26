@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
 import { formatText } from "@/components/utils/utils";
 import qrcode from "yaqrcode";
-import { profileAPIBaseURL } from "@/components/utils/queries";
+import { profileAPIBaseURL } from "@/components/utils/api";
 
 export const runtime = "edge";
 

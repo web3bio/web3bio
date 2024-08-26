@@ -4,7 +4,7 @@ import {
   SocialPlatformMapping,
 } from "./platform";
 import {
-  regexAvatar,
+  regexNext,
   regexBtc,
   regexCrossbell,
   regexDotbit,
@@ -173,7 +173,7 @@ export const fuzzyDomainSuffix = [
   {
     key: PlatformType.nextid,
     icon: SocialPlatformMapping(PlatformType.nextid).icon,
-    match: regexAvatar,
+    match: regexNext,
     suffixes: null,
   },
 ];

@@ -7,11 +7,8 @@ import { Avatar } from "../shared/Avatar";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { useProfiles } from "../hooks/useReduxProfiles";
 import { useQuery } from "@apollo/client";
-import {
-  FIREFLY_ENDPOINT,
-  ProfileFetcher,
-  QUERY_FARCASTER_STATS,
-} from "../apis";
+import { QUERY_FARCASTER_STATS } from "../utils/queries";
+import { FIREFLY_ENDPOINT, ProfileFetcher } from "../utils/api";
 
 export default function FarcasterProfile(props) {
   const { handle } = props;
@@ -95,7 +92,7 @@ export default function FarcasterProfile(props) {
               ""
             )}
           </div>
-          <div className="text-gray">
+          <div className="text-gray mt-1 mb-2">
             @{_profile.identity}
             <span> · </span>
             <span title="Farcaster FID">#{fid || "…"}</span>
@@ -143,9 +140,9 @@ export default function FarcasterProfile(props) {
           {channelsData?.data?.length > 0 && (
             <>
               <div className="divider mt-4 mb-4"></div>
-              <div className="panel-widget">
-                <div className="panel-widget-title">Active Channels</div>
-                <div className="panel-widget-content">
+              <div className="panel-section">
+                <div className="panel-section-title">Active Channels</div>
+                <div className="panel-section-content">
                   {channelsData.data.map((x) => {
                     return (
                       <Link

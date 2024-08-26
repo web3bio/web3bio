@@ -1,8 +1,8 @@
-import { SIMPLEHASH_CHAINS } from "../apis";
+import { SIMPLEHASH_CHAINS } from "./api";
 
 export enum Network {
   ethereum = "ethereum",
-  binance_smart_chain = "binance_smart_chain",
+  bsc = "bsc",
   base = "base",
   arbitrum = "arbitrum",
   arbitrum_one = "arbitrum_one",
@@ -118,8 +118,8 @@ export const NETWORK_DATA: { [key in Network]: NetworkMetaData } = {
     bgColor: "#e1e1e1",
     scanPrefix: "https://viewblock.io/arweave/",
   },
-  [Network.binance_smart_chain]: {
-    key: Network.binance_smart_chain,
+  [Network.bsc]: {
+    key: Network.bsc,
     chainId: 56,
     icon: "icons/icon-bsc.svg",
     label: "BNB Chain",
@@ -290,29 +290,29 @@ export const NFTFilterMapping = {
     label: "Ethereum",
     filters: "ethereum",
   },
-  ["polygon"]: {
-    label: "Polygon",
-    filters: "polygon",
+  ["base"]: {
+    label: "Base",
+    filters: "base",
   },
   ["optimism"]: {
     label: "Optimism",
     filters: "optimism",
   },
-  ["base"]: {
-    label: "Base",
-    filters: "base",
-  },
-  ["bsc"]: {
-    label: "BNB Smart Chain",
-    filters: "bsc",
-  },
   ["zora"]: {
     label: "Zora",
     filters: "zora",
   },
+  ["polygon"]: {
+    label: "Polygon",
+    filters: "polygon",
+  },
   ["arbitrum"]: {
     label: "Arbitrum",
     filters: "arbitrum",
+  },
+  ["bsc"]: {
+    label: "BSC",
+    filters: "bsc",
   },
   ["scroll"]: {
     label: "Scroll",
