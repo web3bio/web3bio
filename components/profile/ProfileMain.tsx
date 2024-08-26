@@ -456,6 +456,7 @@ export default function ProfileMain(props) {
                       <WidgetArticle
                         address={data.address}
                         domain={relations?.find((x) => x.contenthash)?.identity}
+                        profile={data}
                         openModal={(v) => {
                           openModal(ModalType.article, {
                             ...v,

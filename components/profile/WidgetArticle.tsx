@@ -13,8 +13,8 @@ import ArticleItem from "./ArticleItem";
 function useArticles(address: string, domain?: string | null) {
   const fetchUrl = (() => {
     return `${articleAPIBaseURL}/${address}?limit=10${
-      domain ? "&domian=" + domain : ""
-    }${domain ? "&contenthash=true" : ""}`;
+      domain ? "&domian=" + domain + "&contenthash=true" : ""
+    }`;
   })();
   const { data, error, isValidating } = useSWR(fetchUrl, ArticlesFetcher, {
     suspense: true,
@@ -28,7 +28,7 @@ function useArticles(address: string, domain?: string | null) {
   };
 }
 
-export default function WidgetArticle({ address, domain, openModal }) {
+export default function WidgetArticle({ address, domain, openModal, profile }) {
   const { data, isLoading } = useArticles(address, domain);
   const dispatch = useDispatch();
 
@@ -64,16 +64,9 @@ export default function WidgetArticle({ address, domain, openModal }) {
           </h2>
         </div>
 
-        <div className="profile-widget-body">
-          
-        </div>
-
         <div className="widget-rss-list noscrollbar">
           <div className="widget-hero">
-            <div className="widget-hero-description mb-4">
-              {siteInfo.description}
-            </div>
-            <div className="widget-hero-action">
+            <div className="widget-hero-description mb-2">
               {
                 data?.sites?.map((site, idx) => {
                   return (
@@ -105,6 +98,9 @@ export default function WidgetArticle({ address, domain, openModal }) {
                   );
                 })
               }
+            </div>
+            <div className="widget-hero-description">
+              {siteInfo.description || ` ${SocialPlatformMapping(siteInfo.platform).label} by ${profile.identity}`}
             </div>
           </div>
           {data?.items.map((x, idx) => {

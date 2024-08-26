@@ -16,7 +16,6 @@ export default function ArticleItem(props) {
       published: data.published
     });
   };
-  console.log(data);
 
   return (
     <div className="rss-item" onClick={handleClick}>

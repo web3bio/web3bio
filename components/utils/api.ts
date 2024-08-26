@@ -112,7 +112,7 @@ export const ProfileFetcher = (url, options?) =>
   customFetcher({ 
     url, 
     ...options, 
-    logName: "Profile API" 
+    logName: "Profile" 
   });
 
 export const RSS3Fetcher = ([url, data]) =>

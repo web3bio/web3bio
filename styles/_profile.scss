@@ -384,7 +384,7 @@
       flex-direction: column;
       height: 100%;
       justify-content: center;
-      padding: 0;
+      padding: 0 .5rem 0 0;
       text-decoration: none;
       width: 14rem;
 
@@ -395,7 +395,10 @@
       }
 
       .widget-hero-description {
+        display: flex;
+        flex-wrap: wrap;
         font-size: .65rem;
+        gap: .1rem;
       }
     }
 
@@ -1036,6 +1039,10 @@
       margin: -1rem;
       overflow-x: auto;
       padding: 1rem;
+
+      .feed-token {
+        margin: 0;
+      }
 
       .rss-item {
         background: lighten($bg-color, 5%);
