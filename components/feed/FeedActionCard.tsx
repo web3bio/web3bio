@@ -73,64 +73,62 @@ function RenderFeedActionCard(props) {
     } = props;
 
     const MediasRender = useMemo(() => {
-      if (attachments?.medias?.filter((x) => x)?.length > 0) {
-        return (
-          <div
-            className={`feed-medias ${
-              attachments.medias.filter((x) => x?.mime_type).length == 1
-                ? ""
-                : " media-gallery"
-            }`}
-          >
-            {attachments.medias?.map((x, cIdx) => {
-              let infoItem = null as any;
-              if (nftInfos?.length > 0) {
-                const idIndex = `${network}.${x.address}.${x.id}`;
-                infoItem = nftInfos.find(
-                  (x) => x.nft_id === idIndex.toLowerCase()
-                );
-              }
-              const nftImageUrl = infoItem?.previews?.image_medium_url;
-              // if(x.address && rendered.includes(x.address)) return null
-              // rendered.push(x.address)
-              return isImage(x.mime_type) ||
-                isVideo(x.mime_type) ||
-                nftImageUrl ? (
-                <NFTAssetPlayer
-                  key={`${cIdx}_media_image`}
-                  onClick={(e) => {
-                    x.mime_type
-                      ? openModal(ModalType.media, {
-                          type: x.mime_type || "image/png",
-                          url: resolveMediaURL(x.address),
-                        })
-                      : openModal(ModalType.nft, {
+      return (
+        <div
+          className={`feed-medias ${
+            attachments.medias.filter((x) => x?.mime_type).length == 1
+              ? ""
+              : " media-gallery"
+          }`}
+        >
+          {attachments.medias?.map((x, cIdx) => {
+            let infoItem = null as any;
+            if (nftInfos?.length > 0) {
+              const idIndex = `${network}.${x.address}.${x.id}`;
+              infoItem = nftInfos.find(
+                (x) => x.nft_id === idIndex.toLowerCase()
+              );
+            }
+            const nftImageUrl = infoItem?.previews?.image_medium_url;
+            // if(x.address && rendered.includes(x.address)) return null
+            // rendered.push(x.address)
+            return isImage(x.mime_type) ||
+              isVideo(x.mime_type) ||
+              nftImageUrl ? (
+              <NFTAssetPlayer
+                key={`${cIdx}_media_image`}
+                onClick={(e) => {
+                  x.mime_type
+                    ? openModal(ModalType.media, {
+                        type: x.mime_type || "image/png",
+                        url: resolveMediaURL(x.address),
+                      })
+                    : openModal(ModalType.nft, {
+                        asset: {
+                          network,
+                          standard: x.standard,
+                          contractAddress: x.address,
+                          tokenId: x.id,
                           asset: {
-                            network,
-                            standard: x.standard,
-                            contractAddress: x.address,
-                            tokenId: x.id,
-                            asset: {
-                              ...infoItem,
-                            },
+                            ...infoItem,
                           },
-                        });
-                    e.stopPropagation();
-                    e.preventDefault();
-                  }}
-                  className="feed-content-img"
-                  src={resolveMediaURL(x.standard ? nftImageUrl : x.address)}
-                  type={x.mime_type || "image/png"}
-                  width="auto"
-                  height="auto"
-                  placeholder={true}
-                  alt={"Feed Image"}
-                />
-              ) : null;
-            })}
-          </div>
-        );
-      }
+                        },
+                      });
+                  e.stopPropagation();
+                  e.preventDefault();
+                }}
+                className="feed-content-img"
+                src={resolveMediaURL(x.standard ? nftImageUrl : x.address)}
+                type={x.mime_type || "image/png"}
+                width="auto"
+                height="auto"
+                placeholder={true}
+                alt={"Feed Image"}
+              />
+            ) : null;
+          })}
+        </div>
+      );
     }, [attachments?.medias]);
     const TargetsRender = useMemo(() => {
       if (attachments?.targets?.filter((x) => x)?.length > 0) {
