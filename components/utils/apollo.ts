@@ -4,7 +4,6 @@ import {
   HttpLink,
   InMemoryCache,
 } from "@apollo/client";
-// import { PHI_AUTH, PHI_GRAPHQL_END_POINT } from "../apis/philand";
 import { LensGraphQLEndpoint } from "./lens";
 import {
   AIRSTACK_GRAPHQL_ENDPOINT,
@@ -12,46 +11,34 @@ import {
   TALLY_GRAPHQL_ENDPOINT,
 } from "./api";
 
-const defaultLink = new HttpLink({
-  uri: process.env.NEXT_PUBLIC_GRAPHQL_SERVER,
-  headers: {
-    "x-api-key": process.env.NEXT_PUBLIC_RELATION_API_KEY || "",
-  },
-});
-
-const tallyLink = new HttpLink({
-  uri: TALLY_GRAPHQL_ENDPOINT,
-  headers: {
-    "Content-Type": "application/json",
-    "Api-Key": process.env.NEXT_PUBLIC_TALLY_API_KEY || "",
-  },
-});
-const airstackLink = new HttpLink({
-  uri: AIRSTACK_GRAPHQL_ENDPOINT,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-
-const snapshotLink = new HttpLink({
-  uri: SNAPSHOT_GRAPHQL_ENDPOINT,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-
-const lensLink = new HttpLink({
-  uri: LensGraphQLEndpoint,
-});
-
-const linkMapping = {
-  ["tally"]: tallyLink,
-  ["lens"]: lensLink,
-  ["airstack"]: airstackLink,
-  ["snapshot"]: snapshotLink,
+const createHttpLink = (uri: string, headers: Record<string, string> = {}) => {
+  return new HttpLink({
+    uri,
+    headers: {
+      "Content-Type": "application/json",
+      ...headers,
+    },
+  });
 };
 
-const getLink = (clientName) => linkMapping[clientName] || defaultLink;
+const defaultLink = createHttpLink(
+  process.env.NEXT_PUBLIC_GRAPHQL_SERVER || "",
+  {
+    "x-api-key": process.env.NEXT_PUBLIC_RELATION_API_KEY || "",
+  },
+);
+
+const linkMapping: Record<string, HttpLink> = {
+  tally: createHttpLink(TALLY_GRAPHQL_ENDPOINT, {
+    "Api-Key": process.env.NEXT_PUBLIC_TALLY_API_KEY || "",
+  }),
+  lens: createHttpLink(LensGraphQLEndpoint),
+  airstack: createHttpLink(AIRSTACK_GRAPHQL_ENDPOINT),
+  snapshot: createHttpLink(SNAPSHOT_GRAPHQL_ENDPOINT),
+};
+
+const getLink = (clientName?: string): HttpLink =>
+  linkMapping[clientName || ""] || defaultLink;
 
 const client = new ApolloClient({
   link: new ApolloLink((operation, forward) => {

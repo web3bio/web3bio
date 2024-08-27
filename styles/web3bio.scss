@@ -648,8 +648,12 @@ body {
   text-overflow: ellipsis;
   white-space: nowrap;
 
-  &.label-tier-rare {
-    background-image: linear-gradient(124.2deg, #d6fdff 8%, #bad1ff 34%, #7cd4f0 74%, #b4fffa 95%);
+  &.feed-token-lg {
+    background: linear-gradient(70deg, $light-color -10%, $bg-color 150%);
+    box-shadow: inset 0 0 0 .05rem $light-color;
+    font-size: .75rem;
+    height: 1.6rem;
+    padding: .2rem .3rem;
   }
 
   &.c-hand {
@@ -670,6 +674,10 @@ body {
 
   .avatar {
     margin-left: -.1rem;
+  }
+
+  .feed-token-emoji {
+    font-size: 1.25em;
   }
 
   .feed-token-icon {
