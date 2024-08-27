@@ -13,7 +13,7 @@ import {
 import SVG from "react-inlinesvg";
 import { ModalType } from "../hooks/useModal";
 import { resolveMediaURL } from "../utils/utils";
-import { domainRegexp } from "../feed/ActionExternalMenu";
+import { regexDomain } from "../utils/regexp";
 import Link from "next/link";
 import RenderProfileBadge from "./RenderProfileBadge";
 import RenderObjects from "./RenderObjects";
@@ -142,7 +142,7 @@ function RenderFeedActionCard(props) {
                 title: target.article.title,
                 content: target.article.body,
                 baseURL: `https://${
-                  domainRegexp.exec(
+                  regexDomain.exec(
                     actions[idx].content_uri || actions[idx].related_urls[0]
                   )?.[1]
                 }`,
@@ -240,7 +240,7 @@ function RenderFeedActionCard(props) {
                     <span className="feed-token-value">
                       {x.address}
                     </span>
-                    <div className="feed-token-action ml-4">
+                    <div className="feed-token-action">
                     <SVG
                       src={"icons/icon-open.svg"}
                       width={20}

@@ -29,7 +29,7 @@ const RenderAccountItem = (props) => {
   const profiles = useProfiles();
   const getProfile = useCallback(
     (uuid) => profiles.find((x) => x.uuid === uuid),
-    [profiles]
+    [profiles],
   );
 
   const profile = getProfile(identity.uuid);
@@ -74,14 +74,14 @@ const RenderAccountItem = (props) => {
         dispatch(
           updateUniversalBatchedProfile({
             profiles: [response],
-          })
+          }),
         );
       }
     };
     if (
       (identity?.reverse ||
         [PlatformType.farcaster, PlatformType.lens].includes(
-          identity.platform
+          identity.platform,
         )) &&
       !profile &&
       visible
@@ -100,6 +100,7 @@ const RenderAccountItem = (props) => {
     case PlatformType.ens:
     case PlatformType.ethereum:
     case PlatformType.unstoppableDomains:
+    case PlatformType.basenames:
     case PlatformType.dotbit:
     case PlatformType.space_id:
     case PlatformType.solana:
@@ -187,7 +188,7 @@ const RenderAccountItem = (props) => {
                 href={
                   profile?.identity
                     ? `/${encodeURIComponent(
-                        profile?.identity || resolvedIdentity
+                        profile?.identity || resolvedIdentity,
                       )}`
                     : SocialPlatformMapping(identity.platform).urlPrefix +
                       identity.identity.split("/")[0]
@@ -316,7 +317,7 @@ const RenderAccountItem = (props) => {
                             : "UID"
                         }`}
                       >
-                        #{identity.uid}
+                        #{parseInt(identity.uid)}
                       </div>
                       <div className="ml-1 mr-1"> · </div>
                     </>
