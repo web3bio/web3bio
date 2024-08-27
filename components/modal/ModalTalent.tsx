@@ -82,8 +82,8 @@ export default function TalentModalContent({ onClose, data }) {
           </div>
           <div className="mt-2 mb-2">{profile?.bio}</div>
           <div className="mt-4 mb-2">
-            <div className="feed-token">
-              <span className="text-large">🛠️</span>
+            <div className="feed-token feed-token-lg">
+              <span className="feed-token-emoji">🛠️</span>
               <span className="feed-token-value">Builder Score</span>
               <span className="feed-token-value text-bold">{data.score}</span>
             </div>

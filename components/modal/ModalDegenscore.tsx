@@ -48,8 +48,8 @@ export default function DegenscoreModalContent({ onClose, degenscore, profile })
         <div className="mt-2 mb-2">{profile?.description}</div>
 
         <div className="mt-4 mb-2">
-          <div className="feed-token">
-            <span className="text-large">👾</span>
+          <div className="feed-token feed-token-lg">
+            <span className="feed-token-emoji">👾</span>
             <span className="feed-token-value">
               DegenScore
             </span>
