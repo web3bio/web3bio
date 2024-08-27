@@ -352,7 +352,7 @@ export const ActionStructMapping = (action, owner) => {
           url: resolveIPFS_URL(action.metadata.target_url),
           content: metadata.target?.body,
           media: metadata.target?.media,
-          timestamp: metadata.target?.timestamp,
+          timestamp: metadata.target?.timestamp || metadata.timestamp,
         });
       }
       if (article) {
@@ -376,6 +376,7 @@ export const ActionStructMapping = (action, owner) => {
               url: action.related_urls[0],
               content: metadata.body,
               media: metadata.media,
+              timestamp: metadata.timestamp,
             },
           ],
         };
