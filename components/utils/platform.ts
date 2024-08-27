@@ -247,7 +247,7 @@ export const PLATFORM_DATA: ReadonlyMap<
   [
     PlatformType.basenames,
     {
-      color: "#2E65F5",
+      color: "#0052ff",
       icon: "icons/icon-base.svg",
       label: "Basenames",
       registerlink: "https://www.base.org/name/",
