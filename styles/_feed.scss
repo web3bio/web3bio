@@ -162,6 +162,10 @@
             object-fit: cover;
           }
         }
+
+        .feed-token {
+          margin-top: 1rem;
+        }
       }
 
       .feed-content-img {
@@ -178,11 +182,6 @@
           max-height: 16rem;
           width: auto;
         }
-      }
-
-      .feed-media {
-        width: 100%;
-        margin-top: .25rem;
       }
 
       .feed-profiles-list {
@@ -236,21 +235,26 @@
           align-items: center;
           display: flex;
           justify-content: space-between;
-
-        }
-
-        .feed-token {
-          background: transparent;
-          box-shadow: none;
-          border: none;
-          height: 1rem;
-          padding: 0 .1rem;
-        }
-
-        .feed-target-name {
-          font-weight: 700;
-          height: 1rem;
           margin-bottom: .5rem;
+
+          .feed-token {
+            background: transparent;
+            box-shadow: none;
+            border: none;
+            height: 1rem;
+            padding: 0 .1rem;
+          }
+  
+          .feed-target-name {
+            font-weight: 700;
+            height: 1rem;
+          }
+  
+          .feed-target-timestamp {
+            color: $gray-color;
+            font-size: .65rem;
+            text-decoration: none;
+          }
         }
 
         .feed-target-description {
@@ -275,6 +279,16 @@
             margin-bottom: -.25rem;
             overflow: auto hidden;
             padding-bottom: .25rem;
+
+            .feed-token {
+              margin: .5rem 0 0 0;
+              width: 100%;
+
+              .feed-token-value {
+                flex: 1 1 auto;
+                font-size: .7rem;
+              }
+            }
           }
 
           .feed-content-img {

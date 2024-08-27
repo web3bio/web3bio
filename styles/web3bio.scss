@@ -665,13 +665,6 @@ body {
     text-decoration: none;
   }
 
-  .feed-token-value {
-    font-weight: 500;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
   .avatar {
     margin-left: -.1rem;
   }
@@ -695,6 +688,13 @@ body {
     }
   }
 
+  .feed-token-value {
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .feed-token-meta {
     align-items: center;
     color: $gray-color;
@@ -702,6 +702,10 @@ body {
     font-size: .6rem;
     font-weight: 400;
     line-height: 1.2rem;
+  }
+
+  .feed-token-action {
+    flex: 0 0 auto;
   }
 }
 

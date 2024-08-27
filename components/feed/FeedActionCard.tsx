@@ -10,6 +10,7 @@ import {
   isImage,
   isVideo,
 } from "../shared/NFTAssetPlayer";
+import SVG from "react-inlinesvg";
 import { ModalType } from "../hooks/useModal";
 import { resolveMediaURL } from "../utils/utils";
 import { domainRegexp } from "../feed/ActionExternalMenu";
@@ -154,7 +155,7 @@ function RenderFeedActionCard(props) {
           target="_blank"
         >
           {(target.identity || target.name) && (
-            <div className="feed-item-header">
+            <div className="feed-target-header">
               <div className="feed-target-name">
                 <RenderProfileBadge
                   platform={feedPlatform}
@@ -164,7 +165,7 @@ function RenderFeedActionCard(props) {
                 />
               </div>
               {target.timestamp && (
-                <div className="feed-timestamp">
+                <div className="feed-target-timestamp">
                   {formatDistanceToNow(new Date(target.timestamp * 1000), {
                     addSuffix: false,
                   })}
@@ -225,9 +226,27 @@ function RenderFeedActionCard(props) {
                   <Link
                     href={x.address}
                     target={"_blank"}
-                    className="feed-token feed-token-lg"
+                    className="feed-token c-hand feed-token-lg"
                   >
-                    {x.address}
+                    <div className="feed-token-icon">
+                      <SVG
+                        fill={"#121212"}
+                        src={"icons/icon-web.svg"}
+                        height={20}
+                        width={20}
+                        className="icon"
+                      />
+                    </div>
+                    <span className="feed-token-value">
+                      {x.address}
+                    </span>
+                    <div className="feed-token-action ml-4">
+                    <SVG
+                      src={"icons/icon-open.svg"}
+                      width={20}
+                      height={20}
+                    />
+                    </div>
                   </Link>
                 ) : target.content ? (
                   ""

@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import SVG from "react-inlinesvg";
 import Image from "next/image";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
