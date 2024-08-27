@@ -48,8 +48,8 @@ export default function DegenscoreModalContent({ onClose, degenscore, profile })
         <div className="mt-2 mb-2">{profile?.description}</div>
 
         <div className="mt-4 mb-2">
-          <div className="feed-token">
-            <span className="text-large">👾</span>
+          <div className="feed-token feed-token-lg">
+            <span className="feed-token-emoji">👾</span>
             <span className="feed-token-value">
               DegenScore
             </span>
@@ -61,9 +61,11 @@ export default function DegenscoreModalContent({ onClose, degenscore, profile })
         
         {degenscore.traits.actions?.metadata.actions.actions && (
           <>
-            <div className="divider mt-4 mb-4"></div>
             <div className="panel-section">
-              <div className="panel-section-title">DegenScore Onchain Actions</div>
+              <div className="panel-section-title">
+                DegenScore Onchain Actions
+                <div className="divider"></div>
+              </div>
               <div className="panel-section-content">
                 <div className="widget-trait-list">
                   {(degenscore.traits.actions?.metadata.actions.actions).map(

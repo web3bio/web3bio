@@ -140,3 +140,11 @@ export const TalentFetcher = (url) =>
     apiKeyValue: process.env.NEXT_PUBLIC_TALENT_API_KEY,
     logName: "Talent Protocol",
   });
+
+export const WebacyFetcher = (url) =>
+  customFetcher({
+    url,
+    apiKeyHeader: "x-api-key",
+    apiKeyValue: process.env.NEXT_PUBLIC_WEBACY_API_KEY,
+    logName: "Webacy",
+  });

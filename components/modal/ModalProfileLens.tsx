@@ -46,14 +46,14 @@ export default function LensProfile(props) {
           <span className="modal-header-title">Lens Profile</span>
         </div>
         <div className="modal-body">
-          <Avatar
+          {_profile.avatar && <Avatar
             width={80}
             height={80}
             className="avatar"
             alt={handle}
             src={_profile.avatar}
             identity={handle}
-          />
+          />}
           <div className="d-flex mt-2" style={{ alignItems: "center", lineHeight: 1.25 }}>
             <strong className="h4 text-bold">{_profile.displayName}</strong>
             {data?.profile?.onchainIdentity?.proofOfHumanity && (
@@ -87,9 +87,11 @@ export default function LensProfile(props) {
             {_profile.location ? `📍 ${_profile.location}` : ""}
           </div>
           
-          <div className="divider mt-4 mb-4"></div>
           <div className="panel-section">
-            <div className="panel-section-title">Stats</div>
+            <div className="panel-section-title">
+              Stats
+              <div className="divider"></div>
+            </div>
             <div className="panel-section-content">
               <div className="content">
                 <strong className="text-large">
@@ -116,10 +118,12 @@ export default function LensProfile(props) {
             </div>
           </div>
 
-          <div className="divider"></div>
           {data?.profile?.interests?.length > 0 && (
             <div className="panel-section">
-              <div className="panel-section-title">Interests</div>
+              <div className="panel-section-title">
+                Interests
+                <div className="divider"></div>
+              </div>
               <div className="panel-section-content">
                 <div className="profile-interests">
                   {data?.profile?.interests?.map((x) => {

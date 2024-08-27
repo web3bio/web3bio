@@ -96,19 +96,19 @@
       align-items: center;
       gap: .5rem;
 
-      .feed-timestamp {
-        color: $gray-color;
-        font-size: .65rem;
-        text-decoration: none;
-
-        &:focus,
-        &:hover {
-          color: $gray-color-dark;
-        }
-      }
-
       .menu {
         width: 12rem;
+      }
+    }
+
+    .feed-timestamp {
+      color: $gray-color;
+      font-size: .65rem;
+      text-decoration: none;
+
+      &:focus,
+      &:hover {
+        color: $gray-color-dark;
       }
     }
 
@@ -146,7 +146,7 @@
         display: flex;
         flex-wrap: nowrap;
         gap: .25rem;
-        margin-bottom: .25rem;
+        margin-bottom: -.25rem;
         overflow: auto hidden;
         padding-bottom: .25rem;
 
@@ -162,10 +162,15 @@
             object-fit: cover;
           }
         }
+
+        .feed-token {
+          margin-top: 1rem;
+        }
       }
 
       .feed-content-img {
         cursor: pointer;
+        margin-top: .25rem;
         max-width: 16rem;
 
         .img-responsive,
@@ -226,18 +231,30 @@
         transition: all .25s ease-in-out;
         width: 100%;
 
-        .feed-token {
-          background: transparent;
-          box-shadow: none;
-          border: none;
-          height: 1rem;
-          padding: 0 .1rem;
-        }
-
-        .feed-target-name {
-          font-weight: 700;
-          height: 1rem;
+        .feed-target-header {
+          align-items: center;
+          display: flex;
+          justify-content: space-between;
           margin-bottom: .5rem;
+
+          .feed-token {
+            background: transparent;
+            box-shadow: none;
+            border: none;
+            height: 1rem;
+            padding: 0 .1rem;
+          }
+  
+          .feed-target-name {
+            font-weight: 700;
+            height: 1rem;
+          }
+  
+          .feed-target-timestamp {
+            color: $gray-color;
+            font-size: .65rem;
+            text-decoration: none;
+          }
         }
 
         .feed-target-description {
@@ -259,9 +276,19 @@
             display: flex;
             flex-wrap: nowrap;
             gap: .25rem;
-            margin-bottom: .25rem;
+            margin-bottom: -.25rem;
             overflow: auto hidden;
             padding-bottom: .25rem;
+
+            .feed-token {
+              margin: .5rem 0 0 0;
+              width: 100%;
+
+              .feed-token-value {
+                flex: 1 1 auto;
+                font-size: .7rem;
+              }
+            }
           }
 
           .feed-content-img {
@@ -284,7 +311,6 @@
       }
 
       a.feed-target {
-
         &:focus,
         &:hover {
           border-color: darken($border-color, 2%);

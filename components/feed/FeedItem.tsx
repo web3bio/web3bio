@@ -8,7 +8,7 @@ import { ActivityTag, ActivityTypeMapping } from "../utils/activity";
 import RenderProfileBadge from "./RenderProfileBadge";
 import { formatDistanceToNow } from "date-fns";
 import { PlatformType } from "../utils/platform";
-import { Network, NetworkMapping } from "../utils/network";
+import { NetworkMapping } from "../utils/network";
 import { RenderFeedContent } from "./RenderFeedContent";
 
 const renderFeedBadge = (key) => {

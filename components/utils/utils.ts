@@ -1,10 +1,7 @@
 import { BigNumber } from "bignumber.js";
 import { isIPFS_Resource, resolveIPFS_URL } from "./ipfs";
 import { pow10 } from "./number";
-import {
-  PlatformType,
-  SocialPlatformMapping,
-} from "./platform";
+import { PlatformType, SocialPlatformMapping } from "./platform";
 import {
   regexDotbit,
   regexEns,
@@ -47,13 +44,13 @@ export const errorHandle = (props: ErrorHandleProps) => {
         "Cache-Control": "no-store",
         ...props.headers,
       },
-    }
+    },
   );
 };
 
 export const respondWithCache = (
   json: string,
-  headers?: { [index: string]: string }
+  headers?: { [index: string]: string },
 ) => {
   return NextResponse.json(JSON.parse(json), {
     status: 200,
@@ -66,29 +63,20 @@ export const respondWithCache = (
   });
 };
 
-export const formatText = (string, length?) => {
+export const formatText = (string, length = 12) => {
   if (!string) return "";
   const splitter = new GraphemeSplitter();
   const stringSplitArr = splitter.splitGraphemes(string);
-  const maxLength = length ?? 12;
-  const chars = maxLength / 2 - 2;
+  const chars = Math.floor(length / 2) - 2;
 
-  if (stringSplitArr.length <= maxLength) {
+  if (stringSplitArr.length <= length) {
     return string;
   }
 
-  if (string.startsWith("0x")) {
-    return `${stringSplitArr.slice(0, chars + 2).join("")}...${stringSplitArr
-      .slice(stringSplitArr.length - chars)
-      .join("")}`;
-  } else {
-    if (stringSplitArr.length > maxLength) {
-      return `${stringSplitArr.slice(0, chars + 1).join("")}...${stringSplitArr
-        .slice(stringSplitArr.length - (chars + 1))
-        .join("")}`;
-    }
-  }
-  return string;
+  const prefix = string.startsWith("0x") ? chars + 2 : chars + 1;
+  return `${stringSplitArr.slice(0, prefix).join("")}...${stringSplitArr
+    .slice(-chars)
+    .join("")}`;
 };
 
 export const formatValue = (value?: {
@@ -103,7 +91,7 @@ export function formatBalance(
   rawValue: BigNumber.Value = "0",
   decimals = 0,
   significant = decimals,
-  isPrecise = false
+  isPrecise = false,
 ) {
   let balance = new BigNumber(rawValue);
   if (balance.isNaN()) return "0";
@@ -122,7 +110,7 @@ export function formatBalance(
 
   // match significant digits
   const matchSignificantDigits = new RegExp(
-    `^0*[1-9]\\d{0,${significant > 0 ? significant - 1 : 0}}`
+    `^0*[1-9]\\d{0,${significant > 0 ? significant - 1 : 0}}`,
   );
   fraction = fraction.match(matchSignificantDigits)?.[0] ?? "";
   // trim tailing zeros
@@ -140,7 +128,7 @@ export function formatBalance(
 
 export function isSameAddress(
   address?: string | undefined,
-  otherAddress?: string | undefined
+  otherAddress?: string | undefined,
 ): boolean {
   if (!address || !otherAddress) return false;
   return address.toLowerCase() === otherAddress.toLowerCase();
@@ -315,8 +303,8 @@ export const getUniqueUniversalProfileLinks = (array) => {
     (obj, index, self) =>
       index ===
       self.findIndex(
-        (t) => t.handle === obj.handle && t.platform === obj.platform
-      )
+        (t) => t.handle === obj.handle && t.platform === obj.platform,
+      ),
   );
 };
 
@@ -333,7 +321,7 @@ export const mapLinks = (data) => {
         });
       }
       return pre;
-    }, [])
+    }, []),
   );
   return _.uniqBy(arr, (x) => x.handle?.toLowerCase() && x.platform);
 };
@@ -406,7 +394,7 @@ export const resolveEipAssetURL = async (source: string) => {
 
         if (res || res.nft_id) {
           return resolveMediaURL(
-            res.image_url || res.previews?.image_large_url
+            res.image_url || res.previews?.image_large_url,
           );
         }
       }

@@ -67,40 +67,38 @@ export default function WidgetArticle({ address, domain, openModal, profile }) {
         <div className="widget-rss-list noscrollbar">
           <div className="widget-hero">
             <div className="widget-hero-description mb-2">
-              {
-                data?.sites?.map((site, idx) => {
-                  return (
-                    <>
-                      <Link 
-                        key={idx}
-                        className="feed-token c-hand" 
-                        title={site.description}
-                        href={site.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <SVG
-                          fill={"#fff"}
-                          src={SocialPlatformMapping(site.platform).icon || ""}
-                          height={24}
-                          width={24}
-                          className="feed-token-icon"
-                          style={{
-                            backgroundColor: SocialPlatformMapping(site.platform).color,
-                            padding: ".1rem",
-                          }}
-                        />
-                        <span className="feed-token-value">
-                          {site.name}
-                        </span>
-                      </Link>
-                    </>
-                  );
-                })
-              }
+              {data?.sites?.map((site, idx) => {
+                return (
+                  <Link
+                    key={idx}
+                    className="feed-token c-hand"
+                    title={site.description}
+                    href={site.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <SVG
+                      fill={"#fff"}
+                      src={SocialPlatformMapping(site.platform).icon || ""}
+                      height={24}
+                      width={24}
+                      className="feed-token-icon"
+                      style={{
+                        backgroundColor: SocialPlatformMapping(site.platform)
+                          .color,
+                        padding: ".1rem",
+                      }}
+                    />
+                    <span className="feed-token-value">{site.name}</span>
+                  </Link>
+                );
+              })}
             </div>
             <div className="widget-hero-description">
-              {siteInfo.description || ` ${SocialPlatformMapping(siteInfo.platform).label} by ${profile.identity}`}
+              {siteInfo.description ||
+                ` ${SocialPlatformMapping(siteInfo.platform).label} by ${
+                  profile.identity
+                }`}
             </div>
           </div>
           {data?.items.map((x, idx) => {

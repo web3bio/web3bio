@@ -4,7 +4,7 @@ import Link from "next/link";
 import _ from "lodash";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 
-export default function PoapsModalContent({ onClose, asset }) {
+export default function PoapModalContent({ onClose, asset }) {
   const { event, tokenId, chain } = asset;
 
   return (
@@ -45,36 +45,40 @@ export default function PoapsModalContent({ onClose, asset }) {
             placeholder={true}
           />
         </div>
-        <div className="d-flex mt-2" style={{ alignItems: "center", lineHeight: 1.25 }}>
-          <strong className="h4 text-bold">{event.name}</strong>
-        </div>
-        <div className="text-gray mt-1 mb-2">
-          <span>#{tokenId}</span>
-          {event.supply && (
-            <>
-              <span> · </span>
-              <span>{event.supply} Supply</span>
-            </>
-          )}
-          {chain && (
-            <>
-              <span> · </span>
-              <span>{chain === "xdai" ? "Gnosis Chain" : `${chain} Chain`}</span>
-            </>
-          )}
-        </div>
-        <div className="mt-2 mb-2">{event.description}</div>
-        {event.city || event.country ? (
-          <div className="mt-2 mb-2">
-            📍 {event.city} {event.country}
+        <div className="panel-section">
+          <div className="panel-section-content">
+            <div className="d-flex mt-2" style={{ alignItems: "center", lineHeight: 1.25 }}>
+              <strong className="h4 text-bold">{event.name}</strong>
+            </div>
+            <div className="text-gray mt-1 mb-2">
+              <span>#{tokenId}</span>
+              {event.supply && (
+                <>
+                  <span> · </span>
+                  <span>{event.supply} Supply</span>
+                </>
+              )}
+              {chain && (
+                <>
+                  <span> · </span>
+                  <span>{chain === "xdai" ? "Gnosis Chain" : `${chain} Chain`}</span>
+                </>
+              )}
+            </div>
+            <div className="mt-2 mb-2">{event.description}</div>
+            {event.city || event.country ? (
+              <div className="mt-2 mb-2">
+                📍 {event.city} {event.country}
+              </div>
+            ) : null}
+            {event.start_date || event.end_date ? (
+              <div className="mt-2 mb-2">
+                📅 {event.start_date}{" "}
+                {event.end_date && event.start_date !== event.end_date && `- ${event.end_date}`}
+              </div>
+            ) : null}
           </div>
-        ) : null}
-        {event.start_date || event.end_date ? (
-          <div className="mt-2 mb-2">
-            📅 {event.start_date}{" "}
-            {event.end_date && event.start_date !== event.end_date && `- ${event.end_date}`}
-          </div>
-        ) : null}
+        </div>
       </div>
       <div className="modal-footer">
         <div className="btn-group btn-group-block">

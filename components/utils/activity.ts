@@ -248,7 +248,6 @@ export const ActionStructMapping = (action, owner) => {
     attachments = null as any;
   const isOwner = isSameAddress(action.to, owner);
   const metadata = action.metadata;
-
   switch (action.type) {
     // finance
     case ActivityType.approval:
@@ -272,8 +271,8 @@ export const ActionStructMapping = (action, owner) => {
       attachments =
         action.tag === ActivityTag.collectible
           ? {
-              medias: action.duplicatedObjects.filter((x) =>
-                ["ERC-1155", "ERC-721"].includes(x.standard)
+              medias: action.duplicatedObjects?.filter((x) =>
+                ["ERC-1155", "ERC-721"].includes(x?.standard)
               ),
             }
           : [];
@@ -345,7 +344,7 @@ export const ActionStructMapping = (action, owner) => {
 
       attachments = {
         targets: [],
-        medias: metadata.media,
+        medias: metadata.media?.filter((x) => !!x),
       };
       if (metadata.target) {
         attachments.targets.push({
@@ -353,6 +352,7 @@ export const ActionStructMapping = (action, owner) => {
           url: resolveIPFS_URL(action.metadata.target_url),
           content: metadata.target?.body,
           media: metadata.target?.media,
+          timestamp: metadata.target?.timestamp || metadata.timestamp,
         });
       }
       if (article) {
@@ -376,6 +376,7 @@ export const ActionStructMapping = (action, owner) => {
               url: action.related_urls[0],
               content: metadata.body,
               media: metadata.media,
+              timestamp: metadata.timestamp,
             },
           ],
         };
@@ -386,8 +387,8 @@ export const ActionStructMapping = (action, owner) => {
       objects = action.duplicatedObjects || [metadata];
       platform = action.platform;
       attachments = {
-        medias: (action.duplicatedObjects || [metadata]).filter((x) =>
-          ["ERC-1155", "ERC-721"].includes(x.standard)
+        medias: (action.duplicatedObjects || [metadata])?.filter((x) =>
+          ["ERC-1155", "ERC-721"].includes(x?.standard)
         ),
       };
       break;

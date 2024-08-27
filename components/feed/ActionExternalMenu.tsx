@@ -2,13 +2,12 @@ import Link from "next/link";
 import SVG from "react-inlinesvg";
 import { PlatformType } from "../utils/platform";
 import { ActivityType } from "../utils/activity";
-export const domainRegexp =
-  /^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)/;
+import { regexDomain } from "../utils/regexp";
 
 const ExternalLink = ({ url }) => {
   if (!url) return null;
   
-  const domain = domainRegexp.exec(url)?.[1] || "External Link";
+  const domain = regexDomain.exec(url)?.[1] || "External Link";
   
   return (
     <li className="menu-item dropdown-menu-item">
