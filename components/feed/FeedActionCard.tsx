@@ -4,14 +4,21 @@ import {
   ActivityTag,
   ActivityType,
 } from "../utils/activity";
-import { NFTAssetPlayer, isImage, isVideo } from "../shared/NFTAssetPlayer";
+import {
+  MediaType,
+  NFTAssetPlayer,
+  isImage,
+  isVideo,
+} from "../shared/NFTAssetPlayer";
+import SVG from "react-inlinesvg";
 import { ModalType } from "../hooks/useModal";
 import { resolveMediaURL } from "../utils/utils";
-import { domainRegexp } from "../feed/ActionExternalMenu";
+import { regexDomain } from "../utils/regexp";
 import Link from "next/link";
 import RenderProfileBadge from "./RenderProfileBadge";
 import RenderObjects from "./RenderObjects";
 import _ from "lodash";
+import { formatDistanceToNow } from "date-fns";
 
 function RenderFeedActionCard(props) {
   const {
@@ -32,7 +39,7 @@ function RenderFeedActionCard(props) {
     const uniqAttachments = new Set();
     res.forEach((x) => {
       if (x.type === ActivityType.transfer) {
-        x.attachments.medias.forEach((i) => {
+        x.attachments.media.forEach((i) => {
           const uniqId = `${i.address}-${i.id}`;
           if (!uniqAttachments.has(uniqId)) {
             uniqAttachments.add(uniqId);
@@ -72,93 +79,83 @@ function RenderFeedActionCard(props) {
       attachments,
     } = props;
 
-    const MediasRender = useMemo(() => {
-      if (attachments?.medias?.filter((x) => x)?.length > 0) {
-        return (
-          <div
-            className={`feed-content${
-              attachments.medias.filter((x) => x?.mime_type).length == 1
-                ? ""
-                : " media-gallery"
-            }`}
-          >
-            {attachments.medias?.map((x, cIdx) => {
-              let infoItem = null as any;
-              if (nftInfos?.length > 0) {
-                const idIndex = `${network}.${x.address}.${x.id}`;
-                infoItem = nftInfos.find(
-                  (x) => x.nft_id === idIndex.toLowerCase()
-                );
-              }
-              const nftImageUrl = infoItem?.previews?.image_medium_url;
-              // if(x.address && rendered.includes(x.address)) return null
-              // rendered.push(x.address)
-              return isImage(x.mime_type) ||
-                isVideo(x.mime_type) ||
-                nftImageUrl ? (
-                <NFTAssetPlayer
-                  key={`${cIdx}_media_image`}
-                  onClick={(e) => {
-                    x.mime_type
-                      ? openModal(ModalType.media, {
-                          type: x.mime_type || "image/png",
-                          url: resolveMediaURL(x.address),
-                        })
-                      : openModal(ModalType.nft, {
-                          asset: {
-                            network,
-                            standard: x.standard,
-                            contractAddress: x.address,
-                            tokenId: x.id,
-                            asset: {
-                              ...infoItem,
-                            },
-                          },
-                        });
-                    e.stopPropagation();
-                    e.preventDefault();
-                  }}
-                  className="feed-content-img"
-                  src={resolveMediaURL(x.standard ? nftImageUrl : x.address)}
-                  type={x.mime_type || "image/png"}
-                  width="auto"
-                  height="auto"
-                  placeholder={true}
-                  alt={"Feed Image"}
-                />
-              ) : null;
-            })}
-          </div>
-        );
-      }
-    }, [attachments?.medias]);
+    const mediaRender = useMemo(() => {
+      if (!attachments?.media?.length) return null;
+
+      return (
+        <div className={`feed-content media-gallery`}>
+          {attachments.media?.map((x, cIdx) => {
+            const idIndex = `${network}.${x.address}.${x.id}`;
+            const infoItem = nftInfos?.find(
+              (info) => info.nft_id === idIndex.toLowerCase()
+            );
+            const nftImageUrl = infoItem?.previews?.image_medium_url;
+
+            if (!isImage(x.mime_type) && !isVideo(x.mime_type) && !nftImageUrl)
+              return null;
+
+            return (
+              <NFTAssetPlayer
+                key={`${cIdx}_media_image`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  openModal(x.mime_type ? ModalType.media : ModalType.nft, {
+                    type: x.mime_type || "image/png",
+                    url: resolveMediaURL(x.address),
+                    asset: x.mime_type
+                      ? undefined
+                      : {
+                          network,
+                          standard: x.standard,
+                          contractAddress: x.address,
+                          tokenId: x.id,
+                          asset: infoItem,
+                        },
+                  });
+                }}
+                className="feed-content-img"
+                src={resolveMediaURL(x.standard ? nftImageUrl : x.address)}
+                type={x.mime_type || "image/png"}
+                width="auto"
+                height="auto"
+                placeholder
+                alt="Feed Image"
+              />
+            );
+          })}
+        </div>
+      );
+    }, [attachments?.media]);
+
     const TargetsRender = useMemo(() => {
-      if (attachments?.targets?.filter((x) => x)?.length > 0) {
-        return attachments.targets.map((target, targetIdx) => (
-          <Link
-            key={`profile_target_${targetIdx}_${target.address}`}
-            onClick={(e) => {
-              if (target.article) {
-                e.preventDefault();
-                e.stopPropagation();
-                const article = target.article;
-                openModal(ModalType.article, {
-                  title: article.title,
-                  content: article.body,
-                  baseURL: `https://${
-                    domainRegexp.exec(
-                      actions[idx].content_uri || actions[idx].related_urls[0]
-                    )?.[1]
-                  }`,
-                  link: actions[idx].content_uri,
-                });
-              }
-            }}
-            className="feed-target"
-            href={target.url || ""}
-            target="_blank"
-          >
-            {(target.identity || target.name) && (
+      if (!attachments?.targets?.length) return null;
+
+      return attachments.targets.map((target, targetIdx) => (
+        <Link
+          key={`profile_target_${targetIdx}_${target.address}`}
+          onClick={(e) => {
+            if (target.article) {
+              e.preventDefault();
+              e.stopPropagation();
+              openModal(ModalType.article, {
+                title: target.article.title,
+                content: target.article.body,
+                baseURL: `https://${
+                  regexDomain.exec(
+                    actions[idx].content_uri || actions[idx].related_urls[0]
+                  )?.[1]
+                }`,
+                link: actions[idx].content_uri,
+              });
+            }
+          }}
+          className="feed-target"
+          href={target.url || ""}
+          target="_blank"
+        >
+          {(target.identity || target.name) && (
+            <div className="feed-target-header">
               <div className="feed-target-name">
                 <RenderProfileBadge
                   platform={feedPlatform}
@@ -167,99 +164,128 @@ function RenderFeedActionCard(props) {
                   fullProfile
                 />
               </div>
-            )}
-            <div className="feed-target-content">
-              {target.image && (
-                <NFTAssetPlayer
-                  className="feed-content-img float-right"
-                  src={target.image}
-                  height={40}
-                  width={40}
-                  placeholder={true}
-                  type={"image/png"}
-                  alt={target.title}
-                />
-              )}
-              {target.content && (
-                <div className="feed-target-description">{target.content}</div>
-              )}
-              {target.description && (
-                <div className="feed-target-description">
-                  {target.description}
-                  {target.subTitle && (
-                    <small className="text-gray-dark">
-                      ({target.subTitle})
-                    </small>
-                  )}
+              {target.timestamp && (
+                <div className="feed-target-timestamp">
+                  {formatDistanceToNow(new Date(target.timestamp * 1000), {
+                    addSuffix: false,
+                  })}
                 </div>
               )}
             </div>
-            {target.address && (
-              <div className="feed-target-address">{target.address}</div>
+          )}
+          <div className="feed-target-content">
+            {target.image && (
+              <NFTAssetPlayer
+                className="feed-content-img float-right"
+                src={target.image}
+                height={40}
+                width={40}
+                placeholder
+                type="image/png"
+                alt={target.title}
+              />
             )}
-            {target?.media?.length > 0 && (
-              <div
-                className={`feed-target-content${
-                  target?.media?.length > 1 ? " media-gallery" : ""
-                }`}
-              >
-                {target.media.map((x) =>
-                  isImage(x.mime_type) || isVideo(x.mime_type) ? (
-                    <NFTAssetPlayer
-                      onClick={(e) => {
-                        openModal(ModalType.media, {
-                          type: x.mime_type || "image/png",
-                          url: resolveMediaURL(x.address),
-                        });
-                        e.stopPropagation();
-                        e.preventDefault();
-                      }}
-                      className="feed-content-img"
-                      src={resolveMediaURL(x.address)}
-                      type={x.mime_type}
-                      key={x.address}
-                      width="auto"
-                      height="auto"
-                      placeholder={true}
-                      alt={"Feed Image"}
-                    />
-                  ) : target?.content ? (
-                    ""
-                  ) : (
-                    x.address
-                  )
+            {target.content && (
+              <div className="feed-target-description">{target.content}</div>
+            )}
+            {target.description && (
+              <div className="feed-target-description">
+                {target.description}
+                {target.subTitle && (
+                  <small className="text-gray-dark">({target.subTitle})</small>
                 )}
               </div>
             )}
-          </Link>
-        ));
-      }
+          </div>
+          {target.address && (
+            <div className="feed-target-address">{target.address}</div>
+          )}
+          {target.media?.length > 0 && (
+            <div className={`feed-target-content media-gallery`}>
+              {target.media.map((x) => {
+                return isImage(x.mime_type) || isVideo(x.mime_type) ? (
+                  <NFTAssetPlayer
+                    key={x.address}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      openModal(ModalType.media, {
+                        type: x.mime_type || "image/png",
+                        url: resolveMediaURL(x.address),
+                      });
+                    }}
+                    className="feed-content-img"
+                    src={resolveMediaURL(x.address)}
+                    type={x.mime_type}
+                    width="auto"
+                    height="auto"
+                    placeholder
+                    alt="Feed Image"
+                  />
+                ) : x.mime_type.includes(MediaType.HTML) ? (
+                  <Link
+                    href={x.address}
+                    target={"_blank"}
+                    className="feed-token c-hand feed-token-lg"
+                  >
+                    <div className="feed-token-icon">
+                      <SVG
+                        fill={"#121212"}
+                        src={"icons/icon-web.svg"}
+                        height={20}
+                        width={20}
+                        className="icon"
+                      />
+                    </div>
+                    <span className="feed-token-value">
+                      {x.address}
+                    </span>
+                    <div className="feed-token-action">
+                    <SVG
+                      src={"icons/icon-open.svg"}
+                      width={20}
+                      height={20}
+                    />
+                    </div>
+                  </Link>
+                ) : target.content ? (
+                  ""
+                ) : (
+                  x.address
+                );
+              })}
+            </div>
+          )}
+        </Link>
+      ));
     }, [attachments?.targets]);
-    const ObjectsRender = useMemo(() => {
-      return objects
-        ?.filter((i) => !!i)
-        .map((i, idx) => {
-          let infoItem = null;
-          if (nftInfos?.length > 0) {
-            const idIndex = `${network}.${i.address}.${i.id}`;
-            infoItem = nftInfos.find((x) => x.nft_id === idIndex.toLowerCase());
-          }
+
+    const ObjectsRender = useMemo(
+      () =>
+        objects?.filter(Boolean).map((i, idx) => {
+          const idIndex = `${network}.${i.address}.${i.id}`;
+          const infoItem = nftInfos?.find(
+            (x) => x.nft_id === idIndex.toLowerCase()
+          );
+
           return (
             <RenderObjects
-              nftInfo={infoItem}
               key={`object_${idx}`}
+              nftInfo={infoItem}
               openModal={openModal}
               data={i}
               network={network}
             />
           );
-        });
-    }, [objects]);
-    const ProfilesRender = useMemo(() => {
-      if (attachments?.profiles?.length > 0) {
-        return (
+        }),
+      [objects]
+    );
+
+    const ProfilesRender = useMemo(
+      () =>
+        attachments?.profiles?.length > 0 && (
           <div className="feed-profiles-list">
-            {attachments.profiles?.map((x, idx) => (
+            {attachments.profiles.map((x, idx) => (
               <div
                 key={`profile_${x.key}_${idx}`}
                 className="profile-list-item"
@@ -269,21 +295,22 @@ function RenderFeedActionCard(props) {
               </div>
             ))}
           </div>
-        );
-      }
-    }, [attachments?.profiles]);
+        ),
+      [attachments?.profiles]
+    );
+
     return (
       <>
         <div
           className={`feed-content${checkEmojis ? " text-emoji" : ""}`}
-          key={"content_" + id + idx}
+          key={`content_${id}_${idx}`}
         >
           {verb}
           {ObjectsRender}
           {prep}
           {target && (
             <RenderProfileBadge
-              key={"target_" + id + idx}
+              key={`target_${id}_${idx}`}
               identity={target}
               remoteFetch
             />
@@ -291,11 +318,13 @@ function RenderFeedActionCard(props) {
           {platform && <> on {overridePlatform || platform}</>}
         </div>
         {attachments && (
-          <div key={`attachments_${id}_${idx}`} className="feed-content">
-            {MediasRender}
-            {TargetsRender}
-            {ProfilesRender}
-          </div>
+          <>
+            {mediaRender}
+            <div key={`attachments_${id}_${idx}`} className="feed-content">
+              {TargetsRender}
+              {ProfilesRender}
+            </div>
+          </>
         )}
       </>
     );
@@ -305,9 +334,8 @@ function RenderFeedActionCard(props) {
       {renderData
         .filter((x) => x.verb)
         .map((x, idx) => {
-          const { verb } = x;
           const checkEmojis =
-            /^(\p{Emoji}\uFE0F|\p{Emoji_Presentation})+$/gu.test(verb);
+            /^(\p{Emoji}\uFE0F|\p{Emoji_Presentation})+$/gu.test(x.verb);
           return (
             <ActionContent
               key={`action_content_${idx}`}

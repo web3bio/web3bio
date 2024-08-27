@@ -148,8 +148,8 @@ const RenderNFTCollections = (props) => {
                       className="collection-logo"
                       src={x.image_url}
                       alt={x.name}
-                      width={24}
-                      height={24}
+                      width={32}
+                      height={32}
                     />
                     <div className="collection-name text-ellipsis">
                       {x.name}

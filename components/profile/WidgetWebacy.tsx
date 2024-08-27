@@ -5,12 +5,12 @@ import { WidgetInfoMapping, WidgetType } from "../utils/widgets";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { updateWebacyWidget } from "../state/widgets/reducer";
-import { ProfileFetcher } from "../utils/api";
+import { WEBACY_API_ENDPOINT, WebacyFetcher } from "../utils/api";
 
 export function WidgetWebacy({ address }) {
   const { data, isLoading } = useSWR(
-    `/api/metadata/webacy/${address}`,
-    ProfileFetcher,
+    `${WEBACY_API_ENDPOINT}/addresses/${address}`,
+    WebacyFetcher,
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,

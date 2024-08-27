@@ -9,6 +9,7 @@ export const regexEns = /^.+\.(eth|xyz|app|luxe|kred|art|ceo|club)$/i,
   regexFarcaster = /^[A-Za-z0-9_-]{1,61}(?:|\.eth)(?:|\.farcaster)$/i,
   regexUnstoppableDomains =
     /^.+\.(crypto|888|nft|blockchain|bitcoin|dao|x|klever|hi|zil|kresus|polygon|wallet|binanceus|anime|go|manga|eth)$/i,
+  regexBasenames = /^.+\.base(\.eth)?$/i,
   regexSpaceid = /^.+\.(bnb|arb)$/i,
   regexCrossbell = /^.+\.csb$/i,
   regexGenome = /^.+\.gno$/i,

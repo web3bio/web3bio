@@ -1,10 +1,19 @@
 import { useMemo } from "react";
 import Link from "next/link";
 import Markdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 import SVG from "react-inlinesvg";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 
-export default function ArticleModalContent({ title, content, baseURL, platform, link, published, onClose }) {
+export default function ArticleModalContent({
+  title,
+  content,
+  baseURL,
+  platform,
+  link,
+  published,
+  onClose,
+}) {
   const resolvedContent = useMemo(() => {
     if (!baseURL) return content;
     const imageInMarkdownRegex = /!\[[^\]]*\]\((.*?)\s*("(?:.*[^"])")?\s*\)/g;
@@ -37,17 +46,16 @@ export default function ArticleModalContent({ title, content, baseURL, platform,
             height={14}
           />
         </div>
-        <span className="modal-header-title">{SocialPlatformMapping(platform as PlatformType)?.label}</span>
+        <span className="modal-header-title">
+          {SocialPlatformMapping(platform as PlatformType)?.label}
+        </span>
       </div>
       <div className="modal-body">
         <h1 className="article-title">{title}</h1>
         <div className="article-meta text-gray">
           Published on {new Date(published).toLocaleDateString()}
         </div>
-        <Markdown>
-          {resolvedContent}
-        </Markdown>
-        
+        <Markdown rehypePlugins={[rehypeRaw]}>{resolvedContent}</Markdown>
       </div>
       <div className="modal-footer">
         <div className="btn-group btn-group-block">

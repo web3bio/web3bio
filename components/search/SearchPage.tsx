@@ -11,7 +11,7 @@ import SearchPageListener from "./SearchPageListener";
 import SearchResult from "./SearchResult";
 import DomainAvailability from "./DomainAvailability";
 
-export const renderBadge = (platform, identity) => {
+export const renderBadge = (platform: PlatformType, identity) => {
   return (
     <Link
       href={`/?s=${identity}&platform=${platform}`}
@@ -38,23 +38,26 @@ export default function SearchPage() {
   const searchParams = useSearchParams();
   const inputRef = useRef(null);
   const router = useRouter();
-  
-  const handleSubmit = useCallback((value, platform?) => {
-    setSearchTerm(value);
-    const queryParams = new URLSearchParams();
-    if (platform === "domain") {
-      queryParams.set("domain", value);
-    } else if (value) {
-      queryParams.set("s", value);
-      if (platform) {
-        queryParams.set("platform", platform);
+
+  const handleSubmit = useCallback(
+    (value, platform?) => {
+      setSearchTerm(value);
+      const queryParams = new URLSearchParams();
+      if (platform === "domain") {
+        queryParams.set("domain", value);
+      } else if (value) {
+        queryParams.set("s", value);
+        if (platform) {
+          queryParams.set("platform", platform);
+        }
       }
-    }
-    router.push(`/?${queryParams.toString()}`);
-    
-    setSearchPlatform(platform || handleSearchPlatform(value));
-    setSearchFocus(true);
-  }, [router]);
+      router.push(`/?${queryParams.toString()}`);
+
+      setSearchPlatform(platform || handleSearchPlatform(value));
+      setSearchFocus(true);
+    },
+    [router],
+  );
 
   useEffect(() => {
     const query = searchParams?.get("s");
@@ -66,7 +69,9 @@ export default function SearchPage() {
         ? query
         : query.toLowerCase();
       setSearchTerm(searchKeyword);
-      setSearchPlatform(_paramPlatform?.toLowerCase() || handleSearchPlatform(searchKeyword));
+      setSearchPlatform(
+        _paramPlatform?.toLowerCase() || handleSearchPlatform(searchKeyword),
+      );
     } else if (domain) {
       setSearchFocus(true);
       setSearchTerm(domain);
@@ -105,7 +110,7 @@ export default function SearchPage() {
                 {renderBadge(PlatformType.ens, "vitalik.eth")}
                 {renderBadge(
                   PlatformType.ethereum,
-                  "0xd8da6bf26964af9d7eed9e03e53415d37aa96045"
+                  "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
                 )}
                 {renderBadge(PlatformType.farcaster, "dwr.eth")}
                 {renderBadge(PlatformType.lens, "stani.lens")}
