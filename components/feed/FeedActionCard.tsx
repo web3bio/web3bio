@@ -163,11 +163,13 @@ function RenderFeedActionCard(props) {
                   fullProfile
                 />
               </div>
-              <div className="feed-timestamp">
+              {
+                target.timestamp && <div className="feed-timestamp">
                 {formatDistanceToNow(new Date(target.timestamp * 1000), {
                   addSuffix: false,
                 })}
               </div>
+              }
             </div>
           )}
           <div className="feed-target-content">
