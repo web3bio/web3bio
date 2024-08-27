@@ -248,7 +248,6 @@ export const ActionStructMapping = (action, owner) => {
     attachments = null as any;
   const isOwner = isSameAddress(action.to, owner);
   const metadata = action.metadata;
-
   switch (action.type) {
     // finance
     case ActivityType.approval:
@@ -353,6 +352,7 @@ export const ActionStructMapping = (action, owner) => {
           url: resolveIPFS_URL(action.metadata.target_url),
           content: metadata.target?.body,
           media: metadata.target?.media,
+          timestamp: metadata.target?.timestamp,
         });
       }
       if (article) {

@@ -96,19 +96,19 @@
       align-items: center;
       gap: .5rem;
 
-      .feed-timestamp {
-        color: $gray-color;
-        font-size: .65rem;
-        text-decoration: none;
-
-        &:focus,
-        &:hover {
-          color: $gray-color-dark;
-        }
-      }
-
       .menu {
         width: 12rem;
+      }
+    }
+
+    .feed-timestamp {
+      color: $gray-color;
+      font-size: .65rem;
+      text-decoration: none;
+
+      &:focus,
+      &:hover {
+        color: $gray-color-dark;
       }
     }
 
@@ -231,6 +231,13 @@
         padding: .75rem;
         transition: all .25s ease-in-out;
         width: 100%;
+
+        .feed-target-header {
+          align-items: center;
+          display: flex;
+          justify-content: space-between;
+
+        }
 
         .feed-token {
           background: transparent;

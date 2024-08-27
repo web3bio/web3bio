@@ -4,7 +4,12 @@ import {
   ActivityTag,
   ActivityType,
 } from "../utils/activity";
-import { NFTAssetPlayer, isImage, isVideo } from "../shared/NFTAssetPlayer";
+import {
+  MediaType,
+  NFTAssetPlayer,
+  isImage,
+  isVideo,
+} from "../shared/NFTAssetPlayer";
 import { ModalType } from "../hooks/useModal";
 import { resolveMediaURL } from "../utils/utils";
 import { domainRegexp } from "../feed/ActionExternalMenu";
@@ -12,6 +17,7 @@ import Link from "next/link";
 import RenderProfileBadge from "./RenderProfileBadge";
 import RenderObjects from "./RenderObjects";
 import _ from "lodash";
+import { formatDistanceToNow } from "date-fns";
 
 function RenderFeedActionCard(props) {
   const {
@@ -76,13 +82,11 @@ function RenderFeedActionCard(props) {
       if (!attachments?.media?.length) return null;
 
       return (
-        <div
-          className={`feed-content media-gallery`}
-        >
+        <div className={`feed-content media-gallery`}>
           {attachments.media?.map((x, cIdx) => {
             const idIndex = `${network}.${x.address}.${x.id}`;
             const infoItem = nftInfos?.find(
-              (info) => info.nft_id === idIndex.toLowerCase(),
+              (info) => info.nft_id === idIndex.toLowerCase()
             );
             const nftImageUrl = infoItem?.previews?.image_medium_url;
 
@@ -136,7 +140,11 @@ function RenderFeedActionCard(props) {
               openModal(ModalType.article, {
                 title: target.article.title,
                 content: target.article.body,
-                baseURL: `https://${domainRegexp.exec(actions[idx].content_uri || actions[idx].related_urls[0])?.[1]}`,
+                baseURL: `https://${
+                  domainRegexp.exec(
+                    actions[idx].content_uri || actions[idx].related_urls[0]
+                  )?.[1]
+                }`,
                 link: actions[idx].content_uri,
               });
             }
@@ -146,13 +154,20 @@ function RenderFeedActionCard(props) {
           target="_blank"
         >
           {(target.identity || target.name) && (
-            <div className="feed-target-name">
-              <RenderProfileBadge
-                platform={feedPlatform}
-                identity={target.identity || target.name}
-                remoteFetch
-                fullProfile
-              />
+            <div className="feed-item-header">
+              <div className="feed-target-name">
+                <RenderProfileBadge
+                  platform={feedPlatform}
+                  identity={target.identity || target.name}
+                  remoteFetch
+                  fullProfile
+                />
+              </div>
+              <div className="feed-timestamp">
+                {formatDistanceToNow(new Date(target.timestamp * 1000), {
+                  addSuffix: false,
+                })}
+              </div>
             </div>
           )}
           <div className="feed-target-content">
@@ -183,11 +198,9 @@ function RenderFeedActionCard(props) {
             <div className="feed-target-address">{target.address}</div>
           )}
           {target.media?.length > 0 && (
-            <div
-              className={`feed-target-content media-gallery`}
-            >
-              {target.media.map((x) =>
-                isImage(x.mime_type) || isVideo(x.mime_type) ? (
+            <div className={`feed-target-content media-gallery`}>
+              {target.media.map((x) => {
+                return isImage(x.mime_type) || isVideo(x.mime_type) ? (
                   <NFTAssetPlayer
                     key={x.address}
                     onClick={(e) => {
@@ -206,12 +219,20 @@ function RenderFeedActionCard(props) {
                     placeholder
                     alt="Feed Image"
                   />
+                ) : x.mime_type.includes(MediaType.HTML) ? (
+                  <Link
+                    href={x.address}
+                    target={"_blank"}
+                    className="feed-token feed-token-lg"
+                  >
+                    {x.address}
+                  </Link>
                 ) : target.content ? (
                   ""
                 ) : (
                   x.address
-                ),
-              )}
+                );
+              })}
             </div>
           )}
         </Link>
@@ -223,7 +244,7 @@ function RenderFeedActionCard(props) {
         objects?.filter(Boolean).map((i, idx) => {
           const idIndex = `${network}.${i.address}.${i.id}`;
           const infoItem = nftInfos?.find(
-            (x) => x.nft_id === idIndex.toLowerCase(),
+            (x) => x.nft_id === idIndex.toLowerCase()
           );
 
           return (
@@ -236,7 +257,7 @@ function RenderFeedActionCard(props) {
             />
           );
         }),
-      [objects],
+      [objects]
     );
 
     const ProfilesRender = useMemo(
@@ -254,7 +275,7 @@ function RenderFeedActionCard(props) {
             ))}
           </div>
         ),
-      [attachments?.profiles],
+      [attachments?.profiles]
     );
 
     return (
