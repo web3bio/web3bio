@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import SVG from "react-inlinesvg";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
@@ -12,9 +12,11 @@ import { getSearchSuggestions } from "../utils/suggestions";
 // Search input component
 export default function SearchInput(props) {
   const { defaultValue, handleSubmit, inputRef } = props;
+  const searchListRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState(defaultValue);
   const [searchList, setSearchList] = useState<Array<any>>([]);
   const [activeIndex, setActiveIndex] = useState(-1);
+  const searchParams = useSearchParams();
   const router = useRouter();
   const domain = useSearchParams()?.get("domain");
   const emitSubmit = useCallback(
@@ -75,13 +77,14 @@ export default function SearchInput(props) {
     [searchList, activeIndex, query, emitSubmit]
   );
 
-  const setHistory = () => {
+  const setHistory = useCallback(() => {
+    if (searchParams?.get("domain")) return;
     const history =
       JSON.parse(localStorage.getItem("history")!)?.slice(-5).reverse() || [];
     if (history?.length > 0) {
       setSearchList([...history, { key: "clear" }]);
     }
-  };
+  }, [searchParams]);
 
   const clearHistory = () => {
     setSearchList([]);
@@ -98,26 +101,45 @@ export default function SearchInput(props) {
     [searchList]
   );
 
-  const handleQueryChange = useCallback((e) => {
-    const newQuery = e.target.value;
-    setQuery(newQuery);
-    if (!newQuery) {
-      setSearchList([]);
-      setHistory();
-    } else {
-      setSearchList([
-        ...getSearchSuggestions(newQuery.replaceAll("。", ".")),
-        {
-          key: "domain",
-        },
-      ]);
-    }
-    setActiveIndex(-1);
-  }, []);
+  const handleQueryChange = useCallback(
+    (e) => {
+      const newQuery = e.target.value;
+      setQuery(newQuery);
+      if (!newQuery) {
+        setSearchList([]);
+        setHistory();
+      } else {
+        setSearchList([
+          ...getSearchSuggestions(newQuery.replaceAll("。", ".")),
+          {
+            key: "domain",
+          },
+        ]);
+      }
+      setActiveIndex(-1);
+    },
+    [setHistory]
+  );
   const shouldShowWeb2List = useMemo(
     () => ![".", "。", "/"].some((x) => query.includes(x)) && query.length < 25,
     [query]
   );
+
+  useEffect(() => {
+    const handleInputBlur = (e) => {
+      const inputDiv = inputRef?.current;
+      const listDiv = searchListRef?.current;
+      if (inputDiv && listDiv) {
+        if (inputDiv.contains(e.target) || listDiv?.contains(e.target)) return;
+        if (searchList.length > 0 && searchList.some((x) => x.history)) {
+          setSearchList([]);
+        }
+      }
+    };
+    document.addEventListener("click", handleInputBlur);
+
+    return () => document.removeEventListener("click", handleInputBlur);
+  }, [inputRef, searchListRef, searchList]);
 
   return (
     <>
@@ -132,11 +154,6 @@ export default function SearchInput(props) {
             setHistory();
           }
         }}
-        // onBlur={() => {
-        //   if (searchList.length > 0 && searchList.some((x) => x.history)) {
-        //     setSearchList([]);
-        //   }
-        // }}
         onKeyDown={onKeyDown}
         className={`form-input input-lg${domain ? " form-input-back" : ""}`}
         autoCorrect="off"
@@ -173,7 +190,7 @@ export default function SearchInput(props) {
       )}
 
       {searchList.length > 0 && (
-        <div className="search-list">
+        <div className="search-list" ref={searchListRef}>
           {filteredWeb3List.map((x, idx) => (
             <div
               className={`search-list-item${
@@ -234,6 +251,8 @@ export default function SearchInput(props) {
                 activeIndex === searchList.length - 1 ? " active" : ""
               }`}
               onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 if (isHistoryMode) {
                   clearHistory();
                 } else {

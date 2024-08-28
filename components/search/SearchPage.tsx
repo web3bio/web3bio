@@ -76,20 +76,21 @@ export default function SearchPage() {
       setSearchPlatform(
         _paramPlatform?.toLowerCase() || handleSearchPlatform(searchKeyword)
       );
+
       // search history
-      if (searchPlatform) {
+      if (searchKeyword) {
+        const platform =
+          _paramPlatform?.toLowerCase() || handleSearchPlatform(searchKeyword);
         const prevHistory = localStorage.getItem("history")
           ? JSON.parse(localStorage.getItem("history")!)
           : [];
 
         if (
-          !prevHistory?.some(
-            (x) => x.label === query && x.key === searchPlatform
-          )
+          !prevHistory?.some((x) => x.label === query && x.key === platform)
         ) {
           prevHistory.push({
-            key: searchPlatform,
-            icon: SocialPlatformMapping(searchPlatform as PlatformType).icon,
+            key: platform,
+            icon: SocialPlatformMapping(platform as PlatformType).icon,
             label: query,
             system: PlatformSystem.web3,
             history: true,
@@ -111,7 +112,11 @@ export default function SearchPage() {
   return (
     <>
       <div
-        className={searchFocus ? "web3bio-search focused" : "web3bio-search"}
+        className={
+          searchFocus && searchTerm
+            ? "web3bio-search focused"
+            : "web3bio-search"
+        }
       >
         <div className="container grid-sm">
           <div className="search-form">
