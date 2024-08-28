@@ -106,7 +106,7 @@ export default function SearchPage() {
       setSearchTerm("");
       setSearchPlatform("");
     }
-  }, [searchParams, searchPlatform]);
+  }, [searchParams]);
 
   return (
     <>

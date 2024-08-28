@@ -46,6 +46,9 @@ export default function SearchInput(props) {
     (e) => {
       if (e.key === "Enter") {
         const _value = searchList[activeIndex] || query.replaceAll("。", ".");
+        if (_value?.key === "clear") {
+          clearHistory();
+        }
         if (_value?.key === "domain" || e.shiftKey) {
           emitSubmit(e, {
             label: query,
@@ -57,7 +60,6 @@ export default function SearchInput(props) {
         }
       } else if (e.key === "Escape") {
         setActiveIndex(-1);
-        if (activeIndex === -1) setSearchList([]);
       } else if (e.key === "ArrowUp" || (e.shiftKey && e.key === "Tab")) {
         e.preventDefault();
         setActiveIndex((prevIndex) =>
@@ -73,6 +75,19 @@ export default function SearchInput(props) {
     [searchList, activeIndex, query, emitSubmit]
   );
 
+  const setHistory = () => {
+    const history =
+      JSON.parse(localStorage.getItem("history")!)?.slice(-5).reverse() || [];
+    if (history?.length > 0) {
+      setSearchList([...history, { key: "clear" }]);
+    }
+  };
+
+  const clearHistory = () => {
+    setSearchList([]);
+    localStorage.setItem("history", "[]");
+  };
+
   const filteredWeb3List = useMemo(
     () => searchList.filter((x) => x.system === PlatformSystem.web3),
     [searchList]
@@ -87,10 +102,8 @@ export default function SearchInput(props) {
     const newQuery = e.target.value;
     setQuery(newQuery);
     if (!newQuery) {
-      const history =
-        JSON.parse(localStorage.getItem("history")!)?.slice(-5) || [];
-      console.log(history, "history");
-      setSearchList(history);
+      setSearchList([]);
+      setHistory();
     } else {
       setSearchList([
         ...getSearchSuggestions(newQuery.replaceAll("。", ".")),
@@ -114,6 +127,16 @@ export default function SearchInput(props) {
         placeholder="Ethereum (ENS), Farcaster, Lens, UD, or Web3 domains..."
         value={query}
         onChange={handleQueryChange}
+        onFocus={() => {
+          if (!query && !searchList.length) {
+            setHistory();
+          }
+        }}
+        // onBlur={() => {
+        //   if (searchList.length > 0 && searchList.some((x) => x.history)) {
+        //     setSearchList([]);
+        //   }
+        // }}
         onKeyDown={onKeyDown}
         className={`form-input input-lg${domain ? " form-input-back" : ""}`}
         autoCorrect="off"
@@ -212,8 +235,7 @@ export default function SearchInput(props) {
               }`}
               onClick={(e) => {
                 if (isHistoryMode) {
-                  setSearchList([]);
-                  localStorage.removeItem("history");
+                  clearHistory();
                 } else {
                   emitSubmit(e, {
                     label: query,
@@ -233,7 +255,7 @@ export default function SearchInput(props) {
                 height={20}
               />
               <span className="hide-sm">
-                {isHistoryMode ? "Clear All" : "Check Availability"}
+                {isHistoryMode ? "Clear all history" : "Check Availability"}
               </span>
             </div>
           </div>
