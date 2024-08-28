@@ -16,8 +16,7 @@ export default function SearchInput(props) {
   const [searchList, setSearchList] = useState<Array<any>>([]);
   const [activeIndex, setActiveIndex] = useState(-1);
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const domain = searchParams?.get("domain");
+  const domain = useSearchParams()?.get("domain");
   const emitSubmit = useCallback(
     (e, value?) => {
       const _value = typeof value === "string" ? value : value?.label || "";
@@ -37,9 +36,12 @@ export default function SearchInput(props) {
       setQuery(_value);
       setSearchList([]);
     },
-    [searchParams, handleSubmit]
+    [handleSubmit, domain]
   );
 
+  const isHistoryMode = useMemo(() => {
+    return searchList.some((x) => x.history);
+  }, [searchList]);
   const onKeyDown = useCallback(
     (e) => {
       if (e.key === "Enter") {
@@ -85,7 +87,10 @@ export default function SearchInput(props) {
     const newQuery = e.target.value;
     setQuery(newQuery);
     if (!newQuery) {
-      setSearchList([]);
+      const history =
+        JSON.parse(localStorage.getItem("history")!)?.slice(-5) || [];
+      console.log(history, "history");
+      setSearchList(history);
     } else {
       setSearchList([
         ...getSearchSuggestions(newQuery.replaceAll("。", ".")),
@@ -113,7 +118,6 @@ export default function SearchInput(props) {
         className={`form-input input-lg${domain ? " form-input-back" : ""}`}
         autoCorrect="off"
         autoComplete="off"
-        autoFocus
         spellCheck="false"
         id="searchbox"
       />
@@ -207,15 +211,30 @@ export default function SearchInput(props) {
                 activeIndex === searchList.length - 1 ? " active" : ""
               }`}
               onClick={(e) => {
-                emitSubmit(e, {
-                  label: query,
-                  key: "domain",
-                  system: PlatformSystem.web2,
-                });
+                if (isHistoryMode) {
+                  setSearchList([]);
+                  localStorage.removeItem("history");
+                } else {
+                  emitSubmit(e, {
+                    label: query,
+                    key: "domain",
+                    system: PlatformSystem.web2,
+                  });
+                }
               }}
             >
-              <SVG src={"icons/icon-suggestion.svg"} width={20} height={20} />
-              <span className="hide-sm">Check Availability</span>
+              <SVG
+                src={
+                  isHistoryMode
+                    ? "icons/icon-close.svg"
+                    : "icons/icon-suggestion.svg"
+                }
+                width={20}
+                height={20}
+              />
+              <span className="hide-sm">
+                {isHistoryMode ? "Clear All" : "Check Availability"}
+              </span>
             </div>
           </div>
         </div>

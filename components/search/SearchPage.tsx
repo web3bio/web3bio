@@ -6,7 +6,11 @@ import SVG from "react-inlinesvg";
 import SearchInput from "./SearchInput";
 import { handleSearchPlatform, formatText } from "../utils/utils";
 import { regexBtc, regexSolana } from "../utils/regexp";
-import { PlatformType, SocialPlatformMapping } from "../utils/platform";
+import {
+  PlatformSystem,
+  PlatformType,
+  SocialPlatformMapping,
+} from "../utils/platform";
 import SearchPageListener from "./SearchPageListener";
 import SearchResult from "./SearchResult";
 import DomainAvailability from "./DomainAvailability";
@@ -56,7 +60,7 @@ export default function SearchPage() {
       setSearchPlatform(platform || handleSearchPlatform(value));
       setSearchFocus(true);
     },
-    [router],
+    [router]
   );
 
   useEffect(() => {
@@ -70,8 +74,29 @@ export default function SearchPage() {
         : query.toLowerCase();
       setSearchTerm(searchKeyword);
       setSearchPlatform(
-        _paramPlatform?.toLowerCase() || handleSearchPlatform(searchKeyword),
+        _paramPlatform?.toLowerCase() || handleSearchPlatform(searchKeyword)
       );
+      // search history
+      if (searchPlatform) {
+        const prevHistory = localStorage.getItem("history")
+          ? JSON.parse(localStorage.getItem("history")!)
+          : [];
+
+        if (
+          !prevHistory?.some(
+            (x) => x.label === query && x.key === searchPlatform
+          )
+        ) {
+          prevHistory.push({
+            key: searchPlatform,
+            icon: SocialPlatformMapping(searchPlatform as PlatformType).icon,
+            label: query,
+            system: PlatformSystem.web3,
+            history: true,
+          });
+          localStorage.setItem("history", JSON.stringify(prevHistory));
+        }
+      }
     } else if (domain) {
       setSearchFocus(true);
       setSearchTerm(domain);
@@ -81,7 +106,7 @@ export default function SearchPage() {
       setSearchTerm("");
       setSearchPlatform("");
     }
-  }, [searchParams]);
+  }, [searchParams, searchPlatform]);
 
   return (
     <>
@@ -110,7 +135,7 @@ export default function SearchPage() {
                 {renderBadge(PlatformType.ens, "vitalik.eth")}
                 {renderBadge(
                   PlatformType.ethereum,
-                  "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+                  "0xd8da6bf26964af9d7eed9e03e53415d37aa96045"
                 )}
                 {renderBadge(PlatformType.farcaster, "dwr.eth")}
                 {renderBadge(PlatformType.lens, "stani.lens")}
