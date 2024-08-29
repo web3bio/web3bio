@@ -44,6 +44,30 @@ export default function SearchInput(props) {
   const isHistoryMode = useMemo(() => {
     return searchList.some((x) => x.history);
   }, [searchList]);
+  const filteredWeb3List = useMemo(
+    () => searchList.filter((x) => x.system === PlatformSystem.web3),
+    [searchList]
+  );
+
+  const filteredWeb2List = useMemo(
+    () => searchList.filter((x) => x.system === PlatformSystem.web2),
+    [searchList]
+  );
+  const setHistory = useCallback(() => {
+    if (searchParams?.get("domain")) return;
+    const history =
+      JSON.parse(localStorage.getItem("history") || "[]")
+        ?.slice(-5)
+        .reverse() || [];
+    if (history?.length > 0) {
+      setSearchList([...history, { key: "clear" }]);
+    }
+  }, [searchParams]);
+
+  const clearHistory = useCallback(() => {
+    setSearchList([]);
+    localStorage.setItem("history", "[]");
+  }, []);
   const onKeyDown = useCallback(
     (e) => {
       if (e.key === "Enter") {
@@ -74,31 +98,7 @@ export default function SearchInput(props) {
         );
       }
     },
-    [searchList, activeIndex, query, emitSubmit]
-  );
-
-  const setHistory = useCallback(() => {
-    if (searchParams?.get("domain")) return;
-    const history =
-      JSON.parse(localStorage.getItem("history")!)?.slice(-5).reverse() || [];
-    if (history?.length > 0) {
-      setSearchList([...history, { key: "clear" }]);
-    }
-  }, [searchParams]);
-
-  const clearHistory = () => {
-    setSearchList([]);
-    localStorage.setItem("history", "[]");
-  };
-
-  const filteredWeb3List = useMemo(
-    () => searchList.filter((x) => x.system === PlatformSystem.web3),
-    [searchList]
-  );
-
-  const filteredWeb2List = useMemo(
-    () => searchList.filter((x) => x.system === PlatformSystem.web2),
-    [searchList]
+    [searchList, activeIndex, query, emitSubmit, clearHistory]
   );
 
   const handleQueryChange = useCallback(
@@ -127,10 +127,10 @@ export default function SearchInput(props) {
 
   useEffect(() => {
     const handleInputBlur = (e) => {
-      const inputDiv = inputRef?.current;
-      const listDiv = searchListRef?.current;
-      if (inputDiv && listDiv) {
-        if (inputDiv.contains(e.target) || listDiv?.contains(e.target)) return;
+      if (
+        !inputRef.current?.contains(e.target) &&
+        !searchListRef.current?.contains(e.target)
+      ) {
         if (searchList.length > 0 && searchList.some((x) => x.history)) {
           setSearchList([]);
         }
