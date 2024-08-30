@@ -694,6 +694,7 @@
   &.modal-article-container {
     .article-title {
       font-size: 1.2rem;
+      font-weight: 700;
       margin-bottom: 1rem;
     }
 
@@ -701,29 +702,44 @@
       margin-bottom: 1rem;
     }
 
-    img {
-      height: auto;
-      max-width: 100%;
-    }
-
-    h1 {
-      font-size: 1rem;
-      font-weight: 700;
-    }
-
-    h2 {
-      font-size: .8rem;
-      font-weight: 700;
-    }
-
-    h3 {
-      font-size: .6rem;
-      font-weight: 700;
-    }
-
-    li {
+    .content {
+      img {
+        height: auto;
+        max-width: 100%;
+      }
+  
+      h1 {
+        font-size: 1rem;
+        font-weight: 700;
+      }
+  
+      h2 {
+        font-size: .8rem;
+        font-weight: 700;
+      }
+  
+      h3 {
+        font-size: .6rem;
+        font-weight: 700;
+      }
+  
+      ul,
+      ol {
+        margin-bottom: 1.2rem;
+      }
+  
       p {
-        display: inline;
+        margin-bottom: .8rem;
+      }
+  
+      li {
+        p {
+          display: inline;
+        }
+      }
+  
+      a {
+        text-decoration: underline;
       }
     }
   }

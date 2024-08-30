@@ -126,7 +126,7 @@ textarea.form-input {
   outline: none;
   padding: $control-padding-y $control-padding-x;
   vertical-align: middle;
-  width: 100%;
+  width: auto;
   background: $bg-color-light; 
   
   &:focus {
