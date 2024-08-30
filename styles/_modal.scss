@@ -741,6 +741,25 @@
       a {
         text-decoration: underline;
       }
+
+      pre {
+        background: $bg-color-light;
+        overflow-x: auto;
+        padding: .4rem;
+      }
+
+      code {
+        background: $bg-color-light;
+        font-size: .65rem;
+        padding: .1rem;
+      }
+
+      hr {
+        border-top: 0;
+        border-color: $border-color;
+        height: .05rem;
+        margin: .8rem 0;
+      }
     }
   }
 
