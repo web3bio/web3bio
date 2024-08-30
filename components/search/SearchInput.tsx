@@ -38,20 +38,21 @@ export default function SearchInput(props) {
       setQuery(_value);
       setSearchList([]);
     },
-    [handleSubmit, domain]
+    [handleSubmit, domain],
   );
 
   const isHistoryMode = useMemo(() => {
     return searchList.some((x) => x.history);
   }, [searchList]);
+
   const filteredWeb3List = useMemo(
     () => searchList.filter((x) => x.system === PlatformSystem.web3),
-    [searchList]
+    [searchList],
   );
 
   const filteredWeb2List = useMemo(
     () => searchList.filter((x) => x.system === PlatformSystem.web2),
-    [searchList]
+    [searchList],
   );
   const setHistory = useCallback(() => {
     if (searchParams?.get("domain")) return;
@@ -89,16 +90,16 @@ export default function SearchInput(props) {
       } else if (e.key === "ArrowUp" || (e.shiftKey && e.key === "Tab")) {
         e.preventDefault();
         setActiveIndex((prevIndex) =>
-          prevIndex <= 0 ? searchList.length - 1 : prevIndex - 1
+          prevIndex <= 0 ? searchList.length - 1 : prevIndex - 1,
         );
       } else if (e.key === "ArrowDown" || (!e.shiftKey && e.key === "Tab")) {
         e.preventDefault();
         setActiveIndex((prevIndex) =>
-          prevIndex >= searchList.length - 1 ? 0 : prevIndex + 1
+          prevIndex >= searchList.length - 1 ? 0 : prevIndex + 1,
         );
       }
     },
-    [searchList, activeIndex, query, emitSubmit, clearHistory]
+    [searchList, activeIndex, query, emitSubmit, clearHistory],
   );
 
   const handleQueryChange = useCallback(
@@ -118,11 +119,11 @@ export default function SearchInput(props) {
       }
       setActiveIndex(-1);
     },
-    [setHistory]
+    [setHistory],
   );
   const shouldShowWeb2List = useMemo(
     () => ![".", "。", "/"].some((x) => query.includes(x)) && query.length < 25,
-    [query]
+    [query],
   );
 
   useEffect(() => {
@@ -191,6 +192,15 @@ export default function SearchInput(props) {
 
       {searchList.length > 0 && (
         <div className="search-list" ref={searchListRef}>
+          {isHistoryMode && (
+            <div className="search-list-header">
+              <span className="search-list-text text-gray">Search History</span>
+              <button className="btn btn-link btn-sm" onClick={clearHistory}>
+                <SVG src="/icons/icon-close.svg" width={20} height={20} />
+                Clear History
+              </button>
+            </div>
+          )}
           {filteredWeb3List.map((x, idx) => (
             <div
               className={`search-list-item${
@@ -210,74 +220,63 @@ export default function SearchInput(props) {
               <div className="search-list-item-label">{x.label}</div>
             </div>
           ))}
-          {filteredWeb3List.length > 0 && <li className="divider" />}
+          {filteredWeb3List.length > 0 && !isHistoryMode && (
+            <div className="divider"></div>
+          )}
 
-          <div className={"search-web2-list noscrollbar"}>
-            {shouldShowWeb2List && (
-              <>
-                {filteredWeb2List.map((x) => {
-                  const activeIdx = searchList.findIndex(
-                    (i) => i.key === x.key
-                  );
-                  return (
-                    <div
-                      id={x.key}
-                      onClick={() =>
-                        emitSubmit(null, {
-                          ...x,
-                          label: query,
-                          system: PlatformSystem.web2,
-                        })
-                      }
-                      key={x.key}
-                      className={`search-list-item search-list-item-sm ${
-                        activeIndex === activeIdx ? " active" : ""
-                      }`}
-                    >
-                      <SVG
-                        fill="#121212"
-                        src={SocialPlatformMapping(x.key).icon || ""}
-                        width={20}
-                        height={20}
-                      />
-                    </div>
-                  );
-                })}
-              </>
-            )}
-
-            <div
-              className={`btn btn-sm suggest-btn${
-                activeIndex === searchList.length - 1 ? " active" : ""
-              }`}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                if (isHistoryMode) {
-                  clearHistory();
-                } else {
+          {!isHistoryMode && (
+            <div className={"search-web2-list noscrollbar"}>
+              {shouldShowWeb2List && (
+                <>
+                  {filteredWeb2List.map((x) => {
+                    const activeIdx = searchList.findIndex(
+                      (i) => i.key === x.key,
+                    );
+                    return (
+                      <div
+                        id={x.key}
+                        onClick={() =>
+                          emitSubmit(null, {
+                            ...x,
+                            label: query,
+                            system: PlatformSystem.web2,
+                          })
+                        }
+                        key={x.key}
+                        className={`search-list-item search-list-item-sm ${
+                          activeIndex === activeIdx ? " active" : ""
+                        }`}
+                      >
+                        <SVG
+                          fill="#121212"
+                          src={SocialPlatformMapping(x.key).icon || ""}
+                          width={20}
+                          height={20}
+                        />
+                      </div>
+                    );
+                  })}
+                </>
+              )}
+              <div
+                className={`btn btn-sm suggest-btn${
+                  activeIndex === searchList.length - 1 ? " active" : ""
+                }`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
                   emitSubmit(e, {
                     label: query,
                     key: "domain",
                     system: PlatformSystem.web2,
                   });
-                }
-              }}
-            >
-              <SVG
-                src={
-                  isHistoryMode
-                    ? "icons/icon-close.svg"
-                    : "icons/icon-suggestion.svg"
-                }
-                width={20}
-                height={20}
-              />
-              <span className="hide-sm">
-                {isHistoryMode ? "Clear all history" : "Check Availability"}
-              </span>
+                }}
+              >
+                <SVG src={"icons/icon-suggestion.svg"} width={20} height={20} />
+                <span className="hide-sm">Check Availability</span>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       )}
     </>
