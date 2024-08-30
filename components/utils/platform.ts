@@ -152,7 +152,7 @@ export const PLATFORM_DATA: ReadonlyMap<
       icon: "icons/icon-farcaster.svg",
       label: "Farcaster",
       urlPrefix: "https://warpcast.com/",
-      ensText: ["farcaster"],
+      ensText: ["farcaster", "xyz.farcaster"],
       registerlink: "https://warpcast.com/~/invite-page/1000?id=8ebad588&name=",
       system: PlatformSystem.web2,
     },

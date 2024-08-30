@@ -17,7 +17,7 @@ import {
   SimplehashFetcher,
 } from "../utils/api";
 import { Network } from "../utils/network";
-import NFTOrder from "./NFTOrder";
+import NFTSort from "./NFTSort";
 
 const CURSOR_PARAM = "&cursor=";
 
@@ -102,13 +102,13 @@ function useNFTs({ address, filter, network, order }) {
 }
 
 const WidgetNFTOrders = {
-  floorPriceDesc: {
-    key: "floor_price__desc",
-    label: "Order by price",
-  },
   transferTimeDesc: {
     key: "transfer_time__desc",
-    label: "Order by time",
+    label: "Sort by New",
+  },
+  floorPriceDesc: {
+    key: "floor_price__desc",
+    label: "Sort by Price",
   },
 };
 
@@ -188,7 +188,7 @@ export default function WidgetNFT({ profile, openModal }) {
             NFT Collections
           </h2>
           <div className="widget-action">
-            <NFTOrder
+            <NFTSort
               orders={Object.values(WidgetNFTOrders)}
               value={order}
               onChange={(v) => {

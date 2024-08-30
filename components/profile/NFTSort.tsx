@@ -1,10 +1,10 @@
-export default function NFTOrder({ value, onChange, orders }) {
+export default function NFTSort({ value, onChange, orders }) {
   return (
     <select
       onChange={(e) => onChange(e.target.value)}
       value={value}
       className="form-select select-sm mr-2"
-      title="Change NFT order"
+      title="Sort NFT Collections"
     >
       {orders.map((x) => {
         return (
