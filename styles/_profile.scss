@@ -31,7 +31,24 @@
     }
   }
 }
-
+.dashboard-menu{
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  box-shadow: none;
+  background: transparent;
+  padding: 0;
+  .menu-item{
+    width: 100%;
+    padding: 0;
+    font-size: 1rem;
+    font-weight: 500;
+    margin: .25rem 0;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+}
 .web3-profile-base {
   padding: .5rem .5rem 1rem .5rem;
   position: sticky;

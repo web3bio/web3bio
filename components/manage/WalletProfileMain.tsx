@@ -12,6 +12,7 @@ import Modal from "../modal/Modal";
 import { useRouter } from "next/navigation";
 import WalletButton from "../shared/WalletButton";
 import WidgetDomainManagement from "./WidgetDomainManagement";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 export default function WalletProfileMain(props) {
   const { data, domain } = props;
@@ -152,11 +153,10 @@ export default function WalletProfileMain(props) {
                     ["--badge-primary-color" as string]:
                       SocialPlatformMapping(curProfile.platform).color ||
                       "#000",
-                    ["--badge-bg-color" as string]:
-                      colorMod(
-                        SocialPlatformMapping(curProfile.platform).color,
-                        5
-                      ),
+                    ["--badge-bg-color" as string]: colorMod(
+                      SocialPlatformMapping(curProfile.platform).color,
+                      5
+                    ),
                   }}
                 >
                   <div className="platform-badge-icon">
@@ -191,6 +191,24 @@ export default function WalletProfileMain(props) {
               </div>
             )}
           </div>
+          <div className="dashboard-menu menu">
+            <Link target="_blank" href="/" className="menu-item">
+              <SVG src="/icons/icon-search.svg" width={28} height={28} />
+              Search
+            </Link>
+            <Link href={`/${curProfile.identity}`} className="menu-item">
+              <SVG src="/icons/icon-view.svg" width={28} height={28} />
+              Profile
+            </Link>
+            <Link href={""} className="menu-item">
+              <SVG src="/icons/icon-wallet.svg" width={28} height={28} />
+              Wallet
+            </Link>
+            <Link href="https://api.web3.bio" className="menu-item">
+              <SVG src="/icons/icon-open.svg" width={28} height={28} />
+              API
+            </Link>
+          </div>
         </div>
         <div className="column col-8 col-md-12">
           <WidgetDomainManagement setCurProfile={setCurProfile} data={data} />
@@ -208,9 +226,7 @@ export default function WalletProfileMain(props) {
           <strong className="text-pride animated-pride ml-1">Web3.bio</strong>
         </Link>
       </div>
-      {isOpen && (
-        <Modal params={params} onDismiss={closeModal} type={type} />
-      )}
+      {isOpen && <Modal params={params} onDismiss={closeModal} type={type} />}
       {isCopied && (
         <div className="web3bio-toast">
           <div className="toast">
