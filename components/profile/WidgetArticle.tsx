@@ -13,7 +13,7 @@ import ArticleItem from "./ArticleItem";
 function useArticles(address: string, domain?: string | null) {
   const fetchUrl = (() => {
     return `${articleAPIBaseURL}/${address}?limit=10${
-      domain ? "&domian=" + domain + "&contenthash=true" : ""
+      domain ? "&domain=" + domain + "&contenthash=true" : ""
     }`;
   })();
   const { data, error, isValidating } = useSWR(fetchUrl, ArticlesFetcher, {
