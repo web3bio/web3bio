@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import Link from "next/link";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
@@ -11,8 +11,7 @@ import useModal, { ModalType } from "../hooks/useModal";
 import Modal from "../modal/Modal";
 import { useRouter } from "next/navigation";
 import WalletButton from "../shared/WalletButton";
-import WidgetDomainManagement from "./WidgetDomainManagement";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { DomainAvailableItem } from "../search/DomainAvailabilityItem";
 
 export default function WalletProfileMain(props) {
   const { data, domain } = props;
@@ -27,6 +26,9 @@ export default function WalletProfileMain(props) {
       setIsCopied(false);
     }, 1500);
   };
+  const avatarProfile = useMemo(() => {
+    return curProfile?.avatar ? curProfile : data?.find((x) => x.avatar);
+  }, [curProfile, data]);
 
   if (!curProfile || curProfile.error) {
     return (
@@ -40,13 +42,6 @@ export default function WalletProfileMain(props) {
     );
   }
 
-  const avatarProfile = curProfile?.avatar
-    ? curProfile
-    : data?.find((x) => x.avatar);
-  const pageTitle =
-    curProfile.identity == curProfile.displayName
-      ? `${curProfile.displayName}`
-      : `${curProfile.displayName} (${curProfile.identity})`;
   return (
     <>
       <div
@@ -67,7 +62,7 @@ export default function WalletProfileMain(props) {
                 src={curProfile?.avatar}
                 identity={domain}
                 className="avatar"
-                alt={`${pageTitle} Profile Photo`}
+                alt={`${curProfile?.identity} Profile Photo`}
               />
               {avatarProfile && (
                 <div
@@ -85,12 +80,7 @@ export default function WalletProfileMain(props) {
                 </div>
               )}
             </div>
-            <h1 className="text-assistive">{`${pageTitle} ${
-              SocialPlatformMapping(curProfile.platform).label
-            } Web3 Profile`}</h1>
-            <h2 className="text-assistive">{`Explore ${pageTitle} Web3 identity profiles, social links, NFT collections, Web3 activities, dWebsites, POAPs etc on the Web3.bio profile page.`}</h2>
             <div className="profile-name">{curProfile.displayName}</div>
-            <h3 className="text-assistive">{`${pageTitle}‘s wallet address is ${curProfile.address}`}</h3>
             <div className="profile-identity">
               <div className="btn-group dropdown">
                 <Clipboard
@@ -215,7 +205,24 @@ export default function WalletProfileMain(props) {
           </div>
         </div>
         <div className="column col-8 col-md-12">
-          <WidgetDomainManagement setCurProfile={setCurProfile} data={data} />
+          <div className="domain-list search-result">
+            {data?.map((x) => {
+              const item = {
+                name: x.identity,
+                status: "taken",
+                platform: x.platform,
+                expiredAt: x.expiredAt,
+              };
+              return (
+                <DomainAvailableItem
+                  onClick={() => setCurProfile(x)}
+                  hideStatus
+                  data={item}
+                  key={item.name + item.platform}
+                />
+              );
+            })}
+          </div>
         </div>
       </div>
       <div className="web3bio-badge">
