@@ -204,7 +204,11 @@ export default function WalletProfileMain(props) {
               <SVG src="/icons/icon-wallet.svg" width={28} height={28} />
               Wallet
             </Link>
-            <Link href="https://api.web3.bio" className="menu-item">
+            <Link
+              target={"_blank"}
+              href="https://api.web3.bio"
+              className="menu-item"
+            >
               <SVG src="/icons/icon-open.svg" width={28} height={28} />
               API
             </Link>

@@ -17,6 +17,7 @@ import {
   SimplehashFetcher,
 } from "../utils/api";
 import { Network } from "../utils/network";
+import NFTOrder from "./NFTOrder";
 
 const CURSOR_PARAM = "&cursor=";
 
@@ -57,7 +58,7 @@ const processNFTsData = (data) => {
   return collections;
 };
 
-const getURL = (index, address, previous, filter, network) => {
+const getURL = (index, address, previous, filter, network, order) => {
   if (
     index !== 0 &&
     previous &&
@@ -72,13 +73,16 @@ const getURL = (index, address, previous, filter, network) => {
       filter || SIMPLEHASH_CHAINS
     }&wallet_addresses=${address}&filters=spam_score__lte%3D${
       network === Network.solana ? "99" : "1"
-    }${cursor ? CURSOR_PARAM + cursor : ""}&limit=${SIMPLEHASH_PAGE_SIZE}`
+    }${
+      cursor ? CURSOR_PARAM + cursor : ""
+    }&limit=${SIMPLEHASH_PAGE_SIZE}&order_by=${order}`
   );
 };
 
-function useNFTs({ address, filter, network }) {
+function useNFTs({ address, filter, network, order }) {
   const { data, error, size, isValidating, setSize } = useSWRInfinite(
-    (index, previous) => getURL(index, address, previous, filter, network),
+    (index, previous) =>
+      getURL(index, address, previous, filter, network, order),
     SimplehashFetcher,
     {
       suspense: true,
@@ -97,15 +101,28 @@ function useNFTs({ address, filter, network }) {
   };
 }
 
+const WidgetNFTOrders = {
+  floorPriceDesc: {
+    key: "floor_price__desc",
+    label: "Order by price",
+  },
+  transferTimeDesc: {
+    key: "transfer_time__desc",
+    label: "Order by time",
+  },
+};
+
 export default function WidgetNFT({ profile, openModal }) {
   const [expand, setExpand] = useState(
     !!(profile?.platform === PlatformType.solana)
   );
+  const [order, setOrder] = useState(WidgetNFTOrders.transferTimeDesc);
   const [filter, setFilter] = useState("");
   const { data, size, setSize, isValidating, isError, hasNextPage } = useNFTs({
     address: profile?.address,
     filter,
     network: profile.platform,
+    order,
   });
   const dispatch = useDispatch();
   const [[ref, assetId], setScrollRefAndAssetId] = useState<
@@ -171,6 +188,14 @@ export default function WidgetNFT({ profile, openModal }) {
             NFT Collections
           </h2>
           <div className="widget-action">
+            <NFTOrder
+              orders={Object.values(WidgetNFTOrders)}
+              value={order}
+              onChange={(v) => {
+                setOrder(v);
+                setExpand(true);
+              }}
+            />
             <NFTFilter
               value={filter}
               onChange={(v) => {
