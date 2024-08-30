@@ -121,6 +121,29 @@
         }
       }
 
+      .search-list-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: .25rem;
+    
+        .search-list-text {
+          padding: 0 .2rem;
+          word-break: break-all;
+          word-wrap: break-word;
+        }
+    
+        .btn {
+          align-items: center;
+          display: inline-flex;
+          flex-shrink: 0;
+    
+          svg {
+            margin-right: .2rem;
+          }
+        }
+      }
+
       .search-list-item {
         align-items: center;
         border-radius: .4rem;
