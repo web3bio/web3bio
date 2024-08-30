@@ -91,6 +91,24 @@ export const HomeFeatures = () => {
               className="home-title-icon" 
               style={{
                 ["--widget-bg-color" as string]: colorMod(
+                  SocialPlatformMapping(PlatformType.basenames)?.color,
+                  75
+                ),
+              }}
+            >
+              <SVG
+                fill={SocialPlatformMapping(PlatformType.basenames).color}
+                src={SocialPlatformMapping(PlatformType.basenames).icon || ""}
+                width={24}
+                height={24}
+                className="icon"
+                title={SocialPlatformMapping(PlatformType.basenames).label || ""}
+              />
+            </div>
+            <div 
+              className="home-title-icon" 
+              style={{
+                ["--widget-bg-color" as string]: colorMod(
                   SocialPlatformMapping(PlatformType.unstoppableDomains)?.color,
                   65
                 ),

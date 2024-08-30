@@ -71,7 +71,7 @@ export default function WidgetArticle({ address, domain, openModal, profile }) {
                 return (
                   <Link
                     key={idx}
-                    className="feed-token c-hand"
+                    className="feed-token feed-token-lg c-hand"
                     title={site.description}
                     href={site.link}
                     target="_blank"

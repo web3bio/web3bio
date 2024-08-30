@@ -55,7 +55,9 @@ export default function ArticleModalContent({
         <div className="article-meta text-gray">
           Published on {new Date(published).toLocaleDateString()}
         </div>
-        <Markdown rehypePlugins={[rehypeRaw]}>{resolvedContent}</Markdown>
+        <div className="content">
+          <Markdown rehypePlugins={[rehypeRaw]}>{resolvedContent}</Markdown>
+        </div>
       </div>
       <div className="modal-footer">
         <div className="btn-group btn-group-block">
