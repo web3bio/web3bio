@@ -96,7 +96,7 @@ function RenderFeedActionCard(props) {
 
             return (
               <NFTAssetPlayer
-                key={`${cIdx}_media_image`}
+                key={idIndex}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
@@ -130,10 +130,9 @@ function RenderFeedActionCard(props) {
 
     const TargetsRender = useMemo(() => {
       if (!attachments?.targets?.length) return null;
-
-      return attachments.targets.map((target, targetIdx) => (
+      return attachments.targets.map((target) => (
         <Link
-          key={`profile_target_${targetIdx}_${target.address}`}
+          key={`profile_target_${target.identity}_${target.url}`}
           onClick={(e) => {
             if (target.article) {
               e.preventDefault();
@@ -223,9 +222,12 @@ function RenderFeedActionCard(props) {
                     alt="Feed Image"
                   />
                 ) : x.mime_type.includes(MediaType.HTML) ? (
-                  <Link
-                    href={x.address}
-                    target={"_blank"}
+                  <div
+                    key={x.address}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.open(x.address, "_blank");
+                    }}
                     className="feed-token c-hand feed-token-lg"
                   >
                     <div className="feed-token-icon">
@@ -237,17 +239,11 @@ function RenderFeedActionCard(props) {
                         className="icon"
                       />
                     </div>
-                    <span className="feed-token-value">
-                      {x.address}
-                    </span>
+                    <span className="feed-token-value">{x.address}</span>
                     <div className="feed-token-action">
-                    <SVG
-                      src={"icons/icon-open.svg"}
-                      width={20}
-                      height={20}
-                    />
+                      <SVG src={"icons/icon-open.svg"} width={20} height={20} />
                     </div>
-                  </Link>
+                  </div>
                 ) : target.content ? (
                   ""
                 ) : (
@@ -270,7 +266,7 @@ function RenderFeedActionCard(props) {
 
           return (
             <RenderObjects
-              key={`object_${idx}`}
+              key={idIndex}
               nftInfo={infoItem}
               openModal={openModal}
               data={i}
@@ -301,10 +297,7 @@ function RenderFeedActionCard(props) {
 
     return (
       <>
-        <div
-          className={`feed-content${checkEmojis ? " text-emoji" : ""}`}
-          key={`content_${id}_${idx}`}
-        >
+        <div className={`feed-content${checkEmojis ? " text-emoji" : ""}`}>
           {verb}
           {ObjectsRender}
           {prep}
@@ -338,7 +331,7 @@ function RenderFeedActionCard(props) {
             /^(\p{Emoji}\uFE0F|\p{Emoji_Presentation})+$/gu.test(x.verb);
           return (
             <ActionContent
-              key={`action_content_${idx}`}
+              key={`${x.verb?.slice(0, 10)}_${idx}`}
               checkEmojis={checkEmojis}
               {...x}
               idx={idx}
