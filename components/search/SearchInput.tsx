@@ -38,7 +38,7 @@ export default function SearchInput(props) {
       setQuery(_value);
       setSearchList([]);
     },
-    [handleSubmit, domain],
+    [handleSubmit, domain]
   );
 
   const isHistoryMode = useMemo(() => {
@@ -47,12 +47,12 @@ export default function SearchInput(props) {
 
   const filteredWeb3List = useMemo(
     () => searchList.filter((x) => x.system === PlatformSystem.web3),
-    [searchList],
+    [searchList]
   );
 
   const filteredWeb2List = useMemo(
     () => searchList.filter((x) => x.system === PlatformSystem.web2),
-    [searchList],
+    [searchList]
   );
   const setHistory = useCallback(() => {
     if (searchParams?.get("domain")) return;
@@ -87,19 +87,22 @@ export default function SearchInput(props) {
         }
       } else if (e.key === "Escape") {
         setActiveIndex(-1);
+        if (searchList.some((x) => x.history)) {
+          setSearchList([]);
+        }
       } else if (e.key === "ArrowUp" || (e.shiftKey && e.key === "Tab")) {
         e.preventDefault();
         setActiveIndex((prevIndex) =>
-          prevIndex <= 0 ? searchList.length - 1 : prevIndex - 1,
+          prevIndex <= 0 ? searchList.length - 1 : prevIndex - 1
         );
       } else if (e.key === "ArrowDown" || (!e.shiftKey && e.key === "Tab")) {
         e.preventDefault();
         setActiveIndex((prevIndex) =>
-          prevIndex >= searchList.length - 1 ? 0 : prevIndex + 1,
+          prevIndex >= searchList.length - 1 ? 0 : prevIndex + 1
         );
       }
     },
-    [searchList, activeIndex, query, emitSubmit, clearHistory],
+    [searchList, activeIndex, query, emitSubmit, clearHistory]
   );
 
   const handleQueryChange = useCallback(
@@ -119,18 +122,18 @@ export default function SearchInput(props) {
       }
       setActiveIndex(-1);
     },
-    [setHistory],
+    [setHistory]
   );
   const shouldShowWeb2List = useMemo(
     () => ![".", "。", "/"].some((x) => query.includes(x)) && query.length < 25,
-    [query],
+    [query]
   );
 
   useEffect(() => {
     const handleInputBlur = (e) => {
       if (
-        !inputRef.current?.contains(e.target) &&
-        !searchListRef.current?.contains(e.target)
+        !inputRef?.current?.contains(e.target) &&
+        !searchListRef?.current?.contains(e.target)
       ) {
         if (searchList.length > 0 && searchList.some((x) => x.history)) {
           setSearchList([]);
@@ -230,7 +233,7 @@ export default function SearchInput(props) {
                 <>
                   {filteredWeb2List.map((x) => {
                     const activeIdx = searchList.findIndex(
-                      (i) => i.key === x.key,
+                      (i) => i.key === x.key
                     );
                     return (
                       <div
