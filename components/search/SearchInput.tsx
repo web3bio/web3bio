@@ -198,7 +198,12 @@ export default function SearchInput(props) {
           {isHistoryMode && (
             <div className="search-list-header">
               <span className="search-list-text text-gray">Search History</span>
-              <button className="btn btn-link btn-sm" onClick={clearHistory}>
+              <button
+                className={`btn btn-link btn-sm ${
+                  activeIndex === searchList.length - 1 ? "active" : ""
+                }`}
+                onClick={clearHistory}
+              >
                 <SVG src="/icons/icon-close.svg" width={20} height={20} />
                 Clear History
               </button>
