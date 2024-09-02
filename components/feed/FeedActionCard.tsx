@@ -54,13 +54,13 @@ function RenderFeedActionCard(props) {
             attachments:
               idx === res.length - 1
                 ? {
-                    medias: _.uniqBy(
-                      x.attachments.medias,
+                    media: _.uniqBy(
+                      x.attachments.media,
                       (i) => `${i.address}-${i.id}`
                     ),
                   }
                 : {
-                    medias: [],
+                    media: [],
                   },
           }
         : x;
