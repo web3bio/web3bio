@@ -85,7 +85,7 @@ function RenderFeedActionCard(props) {
       return (
         <div className={`feed-content media-gallery`}>
           {attachments.media?.map((x, cIdx) => {
-            const idIndex = `${network}.${x.address}.${x.id}`;
+            const idIndex = `${network}.${x.address}.${x.id}.${cIdx}`;
             const infoItem = nftInfos?.find(
               (info) => info.nft_id === idIndex.toLowerCase()
             );
@@ -259,7 +259,7 @@ function RenderFeedActionCard(props) {
     const ObjectsRender = useMemo(
       () =>
         objects?.filter(Boolean).map((i, idx) => {
-          const idIndex = `${network}.${i.address}.${i.id}`;
+          const idIndex = `${network}.${i.address}.${i.id}.${idx}`;
           const infoItem = nftInfos?.find(
             (x) => x.nft_id === idIndex.toLowerCase()
           );
