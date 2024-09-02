@@ -57,7 +57,7 @@ const CollectionAboutRender = (props) => {
   const [expand, setExpand] = useState(false);
   const descriptionRef = useRef<HTMLDivElement>(null);
 
-  const floorPriceItem = collection.floor_prices?.sort(
+  const floorPriceItem = collection?.floor_prices?.sort(
     (a, b) => a.value - b.value
   )[0];
 
