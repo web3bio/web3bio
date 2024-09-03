@@ -16,7 +16,7 @@ export enum ModalType {
   snapshot = "snapshot",
   gitcoin = "gitcoin",
   degenscore = "degenscore",
-  talent = 'talent'
+  talent = "talent",
 }
 
 interface ModalState {
@@ -29,14 +29,16 @@ const useModal = () => {
   const [modalState, setModalState] = useState<ModalState>({
     isOpen: false,
     type: ModalType.common,
-    params: null
+    params: null,
   });
 
   const openModal = (type: ModalType, params: any) => {
+    document.body.style.overflow = "hidden";
     setModalState({ isOpen: true, type, params });
   };
 
   const closeModal = () => {
+    document.body.style.overflow = "";
     setModalState({ isOpen: false, type: ModalType.common, params: null });
   };
 
