@@ -156,7 +156,7 @@ const RenderAccount = (props) => {
       <div className="search-result">
         <div className="search-result-header">
           <div className="search-result-text text-gray">
-            Identity Graph results:
+            Identity Graph Results
           </div>
           {identityGraph?.nodes.length > 0 && (
             <button

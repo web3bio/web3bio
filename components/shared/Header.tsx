@@ -14,6 +14,7 @@ export const Header = () => {
             }}
             className="web3bio-logo"
             title="Web3.bio"
+            aria-label="Go back to home"
           >
             <h1 className="text-conic-pride">
               WEB3

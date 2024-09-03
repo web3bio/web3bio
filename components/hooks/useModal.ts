@@ -33,12 +33,12 @@ const useModal = () => {
   });
 
   const openModal = (type: ModalType, params: any) => {
-    document.body.style.overflow = "hidden";
+    document.body.style.overflowY = "hidden";
     setModalState({ isOpen: true, type, params });
   };
 
   const closeModal = () => {
-    document.body.style.overflow = "";
+    document.body.style.overflowY = "auto";
     setModalState({ isOpen: false, type: ModalType.common, params: null });
   };
 
