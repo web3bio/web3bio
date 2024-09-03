@@ -356,7 +356,7 @@ export default function ProfileMain(props) {
             )}
 
             {isEthereum && (
-              <div className="profile-actions" style={{display: "none"}}>
+              <div className="profile-actions" >
                 <div className="btn-group">
                   <button
                     className={`profile-share btn btn-lg active`}
@@ -518,24 +518,6 @@ export default function ProfileMain(props) {
                       <WidgetTally address={data.address} />
                     </Suspense>
                   </div>
-
-                  {/* TODO: Due to Philand error background color, hide Phi widget for now */}
-                  {/* <div className="web3-section-widgets">
-                    {(data.platform === PlatformType.ens ||
-                      regexEns.test(data.identity)) && (
-                      <Suspense fallback={<p>Loading Phi Land...</p>}>
-                        <WidgetPhiland
-                          openModal={(v) => {
-                            openModal(ModalType.philand, {
-                              profile: data,
-                              data: v,
-                            });
-                          }}
-                          domain={data.identity}
-                        />
-                      </Suspense>
-                    )}
-                  </div> */}
                 </>
               )}
             </>

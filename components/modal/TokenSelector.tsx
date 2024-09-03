@@ -50,10 +50,28 @@ export default function TokenSelector(props) {
         }`}
       >
         {isLoading ? (
-          <div className="btn btn-primary">Loading...</div>
+          <div className="chip chip-full chip-button">
+            <div className="chip-icon">
+              <div className="avatar">
+                <SVG
+                  title={"Change Token"}
+                  height={20}
+                  width={20}
+                  color={"#121212"}
+                  src={"/icons/icon-wallet.svg"}
+                />
+              </div>
+            </div>
+            <div className="chip-content">
+              <div className="chip-title">Loading...</div>
+              <div className="chip-subtitle text-gray">
+                Please connect wallet
+              </div>
+            </div>
+          </div>
         ) : !list?.length ? null : (
           <div
-            className="chip chip-full"
+            className="chip chip-full chip-button"
             onClick={(e) => {
               setMenuDisplay(true);
             }}
@@ -100,6 +118,9 @@ export default function TokenSelector(props) {
           </div>
         )}
         <ul className="menu" ref={menu}>
+          <li className="menu-item-header">
+            Select a Token
+          </li>
           {resolvedList.map((x) => (
             <TokenListItem
               key={`${x.chain}_${x.symbol}`}

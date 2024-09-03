@@ -15,6 +15,10 @@
 .modal-container {
   background: $light-color;
   border-radius: 1rem;
+  box-shadow:
+      0 .05rem .2rem hsl(0deg 0% 0% / 0.05),
+      0 .1rem .8rem hsl(0deg 0% 0% / 0.05),
+      0 .2rem 1.6rem hsl(0deg 0% 0% / 0.05);
   display: flex;
   flex-direction: column;
   height: calc(100vh - 4rem);
@@ -375,6 +379,10 @@
       position: absolute;
     }
 
+    .modal-body {
+      overflow-y: unset;
+    }
+
     .network-badge {
       position: absolute;
       right: .8rem;
@@ -401,6 +409,31 @@
         margin: 1rem auto;
       }
 
+      .chip {
+        cursor: default;
+
+        .chip-content {
+          margin-left: .4rem;
+        }
+
+        &.chip-button {
+          background: lighten($bg-color, 3%);
+          border: .05rem solid rgba($gray-color, .05);
+        }
+
+        &:focus,
+        &:hover {
+          background: rgba($color: $dark-color, $alpha: 0.05);
+          color: $primary-color;
+        }
+
+        &:active,
+        &.active {
+          background: rgba($color: $dark-color, $alpha: 0.075);
+          color: $primary-color;
+        }
+      }
+
       .amount-selector {
         width: 100%;
         display: flex;
@@ -409,9 +442,11 @@
         gap: .5rem;
         margin-top: 1rem;
 
-        .btn-price::before {
-          content: '$';
-          margin-right: .2rem;
+        .btn-price {
+          &::before {
+            content: '$';
+            margin-right: .05rem;
+          }
         }
 
         .form-input {
@@ -424,42 +459,24 @@
           width: 100%;
         }
 
-        .menu-cover {
-          background: transparent;
-          bottom: 0;
-          display: none;
-          left: 0;
-          position: absolute;
-          right: 0;
-          top: 0;
-          z-index: 99990;
-
-          &.active {
-            display: block;
-          }
-        }
-
         .menu {
-          max-height: 17rem;
+          bottom: 0;
+          height: 15rem;
+          left: -.4rem;
           min-width: 20rem;
-          z-index: 99999;
+          padding: .5rem;
+          right: -.4rem;
+          z-index: 9999;
 
-          .chip {
-            .chip-content {
-              margin-left: .5rem;
-            }
-
-            &:focus,
-            &:hover {
-              background: rgba($color: $dark-color, $alpha: 0.05);
-              color: $primary-color;
-            }
-
-            &:active,
-            &.active {
-              background: rgba($color: $dark-color, $alpha: 0.075);
-              color: $primary-color;
-            }
+          .menu-item-header {
+            background: $bg-color-light;
+            box-shadow: 0 -.4rem 0 .4rem $bg-color-light;
+            font-weight: 500;
+            margin-top: 0;
+            padding: .25rem;
+            position: sticky;
+            top: 0;
+            z-index: 99;
           }
         }
       }
