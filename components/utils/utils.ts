@@ -44,13 +44,13 @@ export const errorHandle = (props: ErrorHandleProps) => {
         "Cache-Control": "no-store",
         ...props.headers,
       },
-    },
+    }
   );
 };
 
 export const respondWithCache = (
   json: string,
-  headers?: { [index: string]: string },
+  headers?: { [index: string]: string }
 ) => {
   return NextResponse.json(JSON.parse(json), {
     status: 200,
@@ -91,7 +91,7 @@ export function formatBalance(
   rawValue: BigNumber.Value = "0",
   decimals = 0,
   significant = decimals,
-  isPrecise = false,
+  isPrecise = false
 ) {
   let balance = new BigNumber(rawValue);
   if (balance.isNaN()) return "0";
@@ -110,7 +110,7 @@ export function formatBalance(
 
   // match significant digits
   const matchSignificantDigits = new RegExp(
-    `^0*[1-9]\\d{0,${significant > 0 ? significant - 1 : 0}}`,
+    `^0*[1-9]\\d{0,${significant > 0 ? significant - 1 : 0}}`
   );
   fraction = fraction.match(matchSignificantDigits)?.[0] ?? "";
   // trim tailing zeros
@@ -128,7 +128,7 @@ export function formatBalance(
 
 export function isSameAddress(
   address?: string | undefined,
-  otherAddress?: string | undefined,
+  otherAddress?: string | undefined
 ): boolean {
   if (!address || !otherAddress) return false;
   return address.toLowerCase() === otherAddress.toLowerCase();
@@ -303,8 +303,8 @@ export const getUniqueUniversalProfileLinks = (array) => {
     (obj, index, self) =>
       index ===
       self.findIndex(
-        (t) => t.handle === obj.handle && t.platform === obj.platform,
-      ),
+        (t) => t.handle === obj.handle && t.platform === obj.platform
+      )
   );
 };
 
@@ -321,7 +321,7 @@ export const mapLinks = (data) => {
         });
       }
       return pre;
-    }, []),
+    }, [])
   );
   return _.uniqBy(arr, (x) => x.handle?.toLowerCase() && x.platform);
 };
@@ -394,7 +394,7 @@ export const resolveEipAssetURL = async (source: string) => {
 
         if (res || res.nft_id) {
           return resolveMediaURL(
-            res.image_url || res.previews?.image_large_url,
+            res.image_url || res.previews?.image_large_url
           );
         }
       }
@@ -421,4 +421,27 @@ export const decodeContenthash = (encoded: string) => {
     decoded = null;
   }
   return decoded;
+};
+
+export const prettify = (input: string) => {
+  switch (!!input) {
+    case input.endsWith(".farcaster") || input.endsWith(".fcast.id"):
+      return input.replace(".farcaster", "").replace(".fcast.id", "");
+    case input.endsWith(".base.eth"):
+      return input.replace(".eth", "");
+    default:
+      return input;
+  }
+};
+
+export const uglify = (input: string, platform) => {
+  // checkout fcast.id
+  switch (platform) {
+    case PlatformType.basenames:
+      return input.endsWith(".base") ? `${input}.eth` : `${input}.base.eth`;
+    case PlatformType.farcaster:
+      return `${input}.farcaster`;
+    default:
+      return input
+  }
 };

@@ -4,7 +4,7 @@ import { updateUniversalBatchedProfile } from "../state/universal/actions";
 import { useDispatch } from "react-redux";
 import ProfileCard from "../profile/ProfileCard";
 import SVG from "react-inlinesvg";
-import { formatText } from "../utils/utils";
+import { formatText, uglify } from "../utils/utils";
 import { PlatformType } from "../utils/platform";
 import Link from "next/link";
 
@@ -14,11 +14,10 @@ export default function PoapNFTOwner({ address, profile }) {
   const [fetched, setFetched] = useState(false);
 
   const dispatch = useDispatch();
-  const relatedPath = `${profile?.identity}${
-    profile?.platform?.toLowerCase() === PlatformType.farcaster
-      ? ".farcaster"
-      : ""
-  }`;
+  const relatedPath = uglify(
+    profile?.identity,
+    profile?.platform?.toLowerCase()
+  );
 
   useEffect(() => {
     const element = ref?.current;

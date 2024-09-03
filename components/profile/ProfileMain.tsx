@@ -14,7 +14,13 @@ import {
   PlatformType,
   SocialPlatformMapping,
 } from "../utils/platform";
-import { formatText, isValidEthereumAddress, colorMod } from "../utils/utils";
+import {
+  formatText,
+  isValidEthereumAddress,
+  colorMod,
+  prettify,
+  uglify,
+} from "../utils/utils";
 import { Error } from "../shared/Error";
 import { Empty } from "../shared/Empty";
 import { RenderWidgetItem } from "./WidgetLinkItem";
@@ -53,9 +59,7 @@ export default function ProfileMain(props) {
     {
       variables: {
         platform: platform,
-        identity: domain.endsWith(".farcaster")
-          ? domain.replace(".farcaster", "")
-          : domain,
+        identity: prettify(domain),
       },
     }
   );
@@ -292,9 +296,7 @@ export default function ProfileMain(props) {
                 </Clipboard>
               )}
               {relations?.map((x, idx) => {
-                const relatedPath = `${x.identity}${
-                  x.platform === PlatformType.farcaster ? ".farcaster" : ""
-                }`;
+                const relatedPath = uglify(x.identity, x.platform);
                 return (
                   <Link
                     key={x.platform + idx}
@@ -356,7 +358,7 @@ export default function ProfileMain(props) {
             )}
 
             {isEthereum && (
-              <div className="profile-actions" style={{display: "none"}}>
+              <div className="profile-actions" style={{ display: "none" }}>
                 <div className="btn-group">
                   <button
                     className={`profile-share btn btn-lg active`}
@@ -496,9 +498,7 @@ export default function ProfileMain(props) {
 
                   <div className="web3-section-widgets">
                     <Suspense
-                      fallback={
-                        <LoadingSkeleton type={WidgetType.snapshot} />
-                      }
+                      fallback={<LoadingSkeleton type={WidgetType.snapshot} />}
                     >
                       <WidgetSnapshot
                         profile={data}

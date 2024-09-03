@@ -1,10 +1,14 @@
 import { notFound, redirect } from "next/navigation";
 import { Metadata } from "next";
-import { PlatformType, SocialPlatformMapping } from "@/components/utils/platform";
+import {
+  PlatformType,
+  SocialPlatformMapping,
+} from "@/components/utils/platform";
 import {
   shouldPlatformFetch,
   handleSearchPlatform,
   mapLinks,
+  uglify,
 } from "@/components/utils/utils";
 import ProfileMain from "@/components/profile/ProfileMain";
 import { regexNext } from "@/components/utils/regexp";
@@ -33,7 +37,11 @@ async function fetchDataFromServer(domain: string) {
   }
 }
 
-export async function generateMetadata({ params: { domain }, }: { params: { domain: string }; }): Promise<Metadata> {
+export async function generateMetadata({
+  params: { domain },
+}: {
+  params: { domain: string };
+}): Promise<Metadata> {
   const res = await fetchDataFromServer(domain);
   if (!res) {
     if (regexNext.test(domain)) {
@@ -49,7 +57,8 @@ export async function generateMetadata({ params: { domain }, }: { params: { doma
       ? profile?.displayName
       : `${profile?.displayName} (${profile?.identity})`;
 
-  const profileDescription = profile?.description ||
+  const profileDescription =
+    profile?.description ||
     `Explore ${pageTitle} ${
       SocialPlatformMapping(platform!).label
     } profile, onchain identities, social links, NFT collections, Web3 activities, dWebsites, POAPs etc on the Web3.bio profile page.`;
@@ -61,10 +70,12 @@ export async function generateMetadata({ params: { domain }, }: { params: { doma
     ...(profile?.description && { description: profile.description }),
   });
 
-  const avatarProfile = data?.find(x => x.avatar);
+  const avatarProfile = data?.find((x) => x.avatar);
   if (avatarProfile) params.append("avatar", avatarProfile.avatar);
 
-  const relativeOGURL = `/api/og${params.toString() ? `?${params.toString()}` : ''}`;
+  const relativeOGURL = `/api/og${
+    params.toString() ? `?${params.toString()}` : ""
+  }`;
 
   const fcMetadata: Record<string, string> = {
     "fc:frame": "vNext",
@@ -74,9 +85,10 @@ export async function generateMetadata({ params: { domain }, }: { params: { doma
     .splice(0, 3)
     .filter((o) => o.identity !== "")
     .map((x, index) => {
-      const resolvedIdentity = `${x.identity}${
-        x.platform === PlatformType.farcaster ? ".farcaster" : ""
-      }`;
+      const resolvedIdentity =
+        x.platform === PlatformType.farcaster
+          ? uglify(x.identity, PlatformType.farcaster)
+          : x.identity;
       fcMetadata[`fc:frame:button:${index + 1}`] = SocialPlatformMapping(
         x.platform
       ).label;
