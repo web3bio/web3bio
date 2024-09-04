@@ -3,10 +3,12 @@ import Link from "next/link";
 import SVG from "react-inlinesvg";
 import { useRouter } from "next/navigation";
 import SearchInput from "../search/SearchInput";
+import { useRef } from "react";
 
 export default function SearchModalContent(props) {
   const { domain, onClose } = props;
   const router = useRouter();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (value, platform?) => {
     const queryParams = new URLSearchParams();
@@ -46,6 +48,7 @@ export default function SearchModalContent(props) {
         </Link>
         <div className="form-input-group">
           <SearchInput
+            inputRef={inputRef}
             key={domain}
             defaultValue={""}
             handleSubmit={handleSubmit}

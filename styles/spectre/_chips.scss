@@ -1,7 +1,7 @@
 // Chips
 .chip {
   align-items: center;
-  background: $bg-color-light;
+  border: .05rem solid transparent;
   border-radius: .4rem;
   display: inline-flex;
   font-size: 90%;
@@ -33,14 +33,20 @@
       background: $bg-color;
       border-radius: 50%;
       bottom: -.2rem;
-      box-shadow: 0 .1rem .4rem -.4rem rgba($dark-color, .25), 0 .1rem .2rem rgba($dark-color, .05);
+      box-shadow: 0 .1rem .4rem -.4rem rgba($dark-color, .25), 0 .1rem .2rem rgba($dark-color, .05), 0 0 0 .1rem $bg-color;
       display: flex;
       flex: 0 0;
       height: .9rem;
       padding: .15rem;
       position: absolute;
-      right: -.2rem;
+      right: -.4rem;
       width: .9rem;
+    }
+
+    .avatar {
+      align-items: center;
+      display: flex;
+      justify-content: center;
     }
   }
 

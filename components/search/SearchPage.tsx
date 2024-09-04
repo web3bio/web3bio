@@ -82,7 +82,7 @@ export default function SearchPage() {
         const platform =
           _paramPlatform?.toLowerCase() || handleSearchPlatform(searchKeyword);
         const prevHistory = localStorage.getItem("history")
-          ? JSON.parse(localStorage.getItem("history")!)
+          ? JSON.parse(localStorage.getItem("history")!)?.slice(-4)
           : [];
 
         if (
