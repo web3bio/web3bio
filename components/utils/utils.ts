@@ -20,6 +20,7 @@ import {
   regexEIP,
   regexDomain,
   regexCluster,
+  regexBasenames,
 } from "./regexp";
 import _ from "lodash";
 import GraphemeSplitter from "grapheme-splitter";
@@ -147,6 +148,7 @@ export function isWeb3Address(address: string): boolean {
 }
 
 const platformMap = new Map([
+  [regexBasenames, PlatformType.basenames],
   [regexEns, PlatformType.ens],
   [regexEth, PlatformType.ethereum],
   [regexLens, PlatformType.lens],
@@ -427,8 +429,8 @@ export const prettify = (input: string) => {
   switch (!!input) {
     case input.endsWith(".farcaster") || input.endsWith(".fcast.id"):
       return input.replace(".farcaster", "").replace(".fcast.id", "");
-    case input.endsWith(".base.eth"):
-      return input.replace(".eth", "");
+    // case input.endsWith(".base.eth"):
+    //   return input.replace(".eth", "");
     default:
       return input;
   }

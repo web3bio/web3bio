@@ -36,7 +36,7 @@ const GET_PROFILES = gql`
             chain
             address
           }
-          nft(category: ["ens", "sns"]) {
+          nft(category: ["ens", "sns", "basenames"]) {
             id
             uuid
             chain
