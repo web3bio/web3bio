@@ -435,13 +435,12 @@ export const prettify = (input: string) => {
 };
 
 export const uglify = (input: string, platform) => {
-  // checkout fcast.id
   switch (platform) {
     case PlatformType.basenames:
       return input.endsWith(".base") ? `${input}.eth` : `${input}.base.eth`;
     case PlatformType.farcaster:
       return `${input}.farcaster`;
     default:
-      return input
+      return input;
   }
 };
