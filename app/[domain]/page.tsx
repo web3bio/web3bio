@@ -9,6 +9,7 @@ import {
   handleSearchPlatform,
   mapLinks,
   uglify,
+  prettify,
 } from "@/components/utils/utils";
 import ProfileMain from "@/components/profile/ProfileMain";
 import { regexNext } from "@/components/utils/regexp";
@@ -51,7 +52,10 @@ export async function generateMetadata({
     }
   }
   const { data, platform } = res;
-  const profile = data[0];
+  const profile =
+    data?.find(
+      (x) => x.platform === platform && x.identity === prettify(domain)
+    ) || data[0];
   const pageTitle =
     profile?.identity === profile?.displayName ?? false
       ? profile?.displayName
@@ -141,7 +145,11 @@ export default async function ProfilePage({
   if (!serverData) notFound();
 
   const { data, platform } = serverData;
-  const profile = data[0];
+  const profile =
+    data.find(
+      (x) => x.platform === platform && x.identity === prettify(domain)
+    ) || data[0];
+
   const pageTitle =
     profile?.identity === profile?.displayName ?? false
       ? profile.displayName
