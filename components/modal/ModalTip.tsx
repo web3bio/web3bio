@@ -11,10 +11,7 @@ import {
 import { useCurrencyAllowance } from "../hooks/useCurrency";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { erc20Abi, formatEther, parseEther } from "viem";
-import {
-  chainIdToNetwork,
-  networkByIdOrName,
-} from "../utils/network";
+import { chainIdToNetwork, networkByIdOrName } from "../utils/network";
 import { Loading } from "../shared/Loading";
 import { Avatar } from "../shared/Avatar";
 import toast from "react-hot-toast";
@@ -54,13 +51,13 @@ const useTokenList = (address) => {
     address
       ? `${FIREFLY_PROXY_DEBANK_ENDPOINT}/v1/user/all_token_list?id=${address}&chain_ids=eth,matic,op,arb,base,zora&is_all=false`
       : null,
-    ProfileFetcher
+    ProfileFetcher,
   );
   return {
     data:
       data
         ?.sort(
-          (a, b) => Number(isNativeToken(b.id)) - Number(isNativeToken(a.id))
+          (a, b) => Number(isNativeToken(b.id)) - Number(isNativeToken(a.id)),
         )
         .filter((x) => x.is_verified) || [],
     isLoading: isLoading,
@@ -117,7 +114,7 @@ export default function TipModalContent(props) {
     }
     if (txStatus === "success") {
       toast.success(
-        `Successfully tipped ${profile.displayName} for ${amount} ${token.symbol}`
+        `Successfully tipped ${profile.displayName} for ${amount} ${token.symbol}`,
       );
       setStatus(TipStatus.success);
     }
@@ -297,6 +294,7 @@ export default function TipModalContent(props) {
                   className="form-input"
                   value={customPrice}
                   placeholder="Custom"
+                  pattern="^\d*$"
                   onChange={(e) => {
                     let value = e.target.value;
                     if (!/^[0-9]*\.?[0-9]*$/.test(value)) {
@@ -305,18 +303,19 @@ export default function TipModalContent(props) {
                     if (!disablePriceBtn) {
                       setDisablePriceBtn(true);
                     }
-                    setCustomPrice(value);
+                    setCustomPrice(e.target.value);
                   }}
                   onFocus={(e) => e.target.select()}
                 />
               </div>
             </div>
+
             <div className="form-group">
               <div className="col-12 col-sm-12">
                 <label className="form-label">To</label>
               </div>
               <div className="col-12 col-sm-12">
-                <div className="chip chip-full">
+                <div className="chip chip-full chip-button">
                   <div className="chip-icon">
                     <Avatar
                       src={profile?.avatar}

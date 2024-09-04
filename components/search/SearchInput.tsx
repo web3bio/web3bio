@@ -87,6 +87,9 @@ export default function SearchInput(props) {
         }
       } else if (e.key === "Escape") {
         setActiveIndex(-1);
+        if (searchList.some((x) => x.history)) {
+          setSearchList([]);
+        }
       } else if (e.key === "ArrowUp" || (e.shiftKey && e.key === "Tab")) {
         e.preventDefault();
         setActiveIndex((prevIndex) =>
@@ -129,8 +132,8 @@ export default function SearchInput(props) {
   useEffect(() => {
     const handleInputBlur = (e) => {
       if (
-        !inputRef.current?.contains(e.target) &&
-        !searchListRef.current?.contains(e.target)
+        !inputRef?.current?.contains(e.target) &&
+        !searchListRef?.current?.contains(e.target)
       ) {
         if (searchList.length > 0 && searchList.some((x) => x.history)) {
           setSearchList([]);
@@ -160,6 +163,7 @@ export default function SearchInput(props) {
         autoCorrect="off"
         autoComplete="off"
         spellCheck="false"
+        autoFocus
         id="searchbox"
       />
       <button
@@ -194,89 +198,103 @@ export default function SearchInput(props) {
         <div className="search-list" ref={searchListRef}>
           {isHistoryMode && (
             <div className="search-list-header">
-              <span className="search-list-text text-gray">Search History</span>
-              <button className="btn btn-link btn-sm" onClick={clearHistory}>
-                <SVG src="/icons/icon-close.svg" width={20} height={20} />
+              <span className="search-list-text text-gray">Recent Searches</span>
+              <button
+                className={`btn btn-link btn-sm ${
+                  activeIndex === searchList.length - 1 ? "active" : ""
+                }`}
+                onClick={clearHistory}
+              >
                 Clear History
               </button>
             </div>
           )}
-          {filteredWeb3List.map((x, idx) => (
-            <div
-              className={`search-list-item${
-                activeIndex === idx ? " active" : ""
-              }`}
-              key={x.label + idx}
-              onClick={(e) => emitSubmit(e, x)}
-            >
-              <div className="icon">
-                <SVG
-                  fill="#121212"
-                  src={x.icon || "icons/icon-search.svg"}
-                  width={20}
-                  height={20}
-                />
-              </div>
-              <div className="search-list-item-label">{x.label}</div>
-            </div>
-          ))}
-          {filteredWeb3List.length > 0 && !isHistoryMode && (
-            <div className="divider"></div>
-          )}
-
-          {!isHistoryMode && (
-            <div className={"search-web2-list noscrollbar"}>
-              {shouldShowWeb2List && (
-                <>
-                  {filteredWeb2List.map((x) => {
-                    const activeIdx = searchList.findIndex(
-                      (i) => i.key === x.key,
-                    );
-                    return (
-                      <div
-                        id={x.key}
-                        onClick={() =>
-                          emitSubmit(null, {
-                            ...x,
-                            label: query,
-                            system: PlatformSystem.web2,
-                          })
-                        }
-                        key={x.key}
-                        className={`search-list-item search-list-item-sm ${
-                          activeIndex === activeIdx ? " active" : ""
-                        }`}
-                      >
-                        <SVG
-                          fill="#121212"
-                          src={SocialPlatformMapping(x.key).icon || ""}
-                          width={20}
-                          height={20}
-                        />
-                      </div>
-                    );
-                  })}
-                </>
-              )}
+          <div className="search-list-body">
+            {filteredWeb3List.map((x, idx) => (
               <div
-                className={`btn btn-sm suggest-btn${
-                  activeIndex === searchList.length - 1 ? " active" : ""
+                className={`search-list-item${
+                  activeIndex === idx ? " active" : ""
                 }`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  emitSubmit(e, {
-                    label: query,
-                    key: "domain",
-                    system: PlatformSystem.web2,
-                  });
-                }}
+                key={x.label + idx}
+                onClick={(e) => emitSubmit(e, x)}
               >
-                <SVG src={"icons/icon-suggestion.svg"} width={20} height={20} />
-                <span className="hide-sm">Check Availability</span>
+                <div className="icon">
+                  <SVG
+                    fill="#121212"
+                    src={x.icon || "icons/icon-search.svg"}
+                    width={20}
+                    height={20}
+                  />
+                </div>
+                <div className="search-list-item-label">{x.label}</div>
               </div>
+            ))}
+            {filteredWeb3List.length > 0 && !isHistoryMode && (
+              <div className="divider"></div>
+            )}
+            {!isHistoryMode && (
+              <div className={"search-web2-list noscrollbar"}>
+                {shouldShowWeb2List && (
+                  <>
+                    {filteredWeb2List.map((x) => {
+                      const activeIdx = searchList.findIndex(
+                        (i) => i.key === x.key,
+                      );
+                      return (
+                        <div
+                          id={x.key}
+                          onClick={() =>
+                            emitSubmit(null, {
+                              ...x,
+                              label: query,
+                              system: PlatformSystem.web2,
+                            })
+                          }
+                          key={x.key}
+                          className={`search-list-item search-list-item-sm ${
+                            activeIndex === activeIdx ? " active" : ""
+                          }`}
+                        >
+                          <SVG
+                            fill="#121212"
+                            src={SocialPlatformMapping(x.key).icon || ""}
+                            width={20}
+                            height={20}
+                          />
+                        </div>
+                      );
+                    })}
+                  </>
+                )}
+                <div
+                  className={`btn btn-link btn-suggest${
+                    activeIndex === searchList.length - 1 ? " active" : ""
+                  }`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    emitSubmit(e, {
+                      label: query,
+                      key: "domain",
+                      system: PlatformSystem.web2,
+                    });
+                  }}
+                >
+                  <SVG src={"icons/icon-suggestion.svg"} width={20} height={20} />
+                  <span className="hide-sm">Check Availability</span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="search-list-footer hide-sm">
+            <div className="search-list-text">
+              <span className="label-kbd">&uarr;&darr;</span>
+              <span className="label-kbd">TAB</span> to navigate
+              <span className="label-kbd ml-2">ESC</span> to cancel
+              <span className="label-kbd ml-2">&crarr;</span> to select
             </div>
-          )}
+          </div>
         </div>
       )}
     </>

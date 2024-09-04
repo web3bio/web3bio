@@ -82,22 +82,16 @@
     min-width: $control-size-sm;
     &:focus,
     &:hover {
-      background: rgba($dark-color, .05);
+      background: rgba($gray-color-light, .5);
       border-color: transparent;
       box-shadow: none;
       color: $dark-color;
     }
     &:active,
     &.active {
-      background: rgba($dark-color, .1);
+      background: rgba($gray-color-light, .65);
       border-color: transparent;
       color: $dark-color;
-    }
-    &.loading {
-      &::after {
-        border-bottom-color: $light-color;
-        border-left-color: $light-color;
-      }
     }
   }
 
