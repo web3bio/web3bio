@@ -11,6 +11,13 @@ import { fetchProfile } from "../hooks/fetchProfile";
 import { updateUniversalBatchedProfile } from "../state/universal/actions";
 import ResultAccountItemAction from "./ResultAccountAction";
 import { useProfiles } from "../hooks/useReduxProfiles";
+import { Network } from "../utils/network";
+
+const identityNFTPlatforms = {
+  [Network.ethereum]: PlatformType.ens,
+  [Network.solana]: PlatformType.sns,
+  [Network.base]: PlatformType.basenames,
+};
 
 const RenderAccountItem = (props) => {
   const onCopySuccess = () => {
@@ -210,9 +217,8 @@ const RenderAccountItem = (props) => {
                 <div className={`nfts-list-container`}>
                   {identity.nft.map((nft) => {
                     const nftPlatform =
-                      nft.chain === PlatformType.ethereum
-                        ? PlatformType.ens
-                        : PlatformType.sns;
+                      identityNFTPlatforms[nft.chain] ||
+                      identityNFTPlatforms[Network.ethereum];
                     return (
                       <Link
                         key={`${nft.uuid}`}

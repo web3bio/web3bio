@@ -429,8 +429,8 @@ export const prettify = (input: string) => {
   switch (!!input) {
     case input.endsWith(".farcaster") || input.endsWith(".fcast.id"):
       return input.replace(".farcaster", "").replace(".fcast.id", "");
-    // case input.endsWith(".base.eth"):
-    //   return input.replace(".eth", "");
+    case input.endsWith(".base.eth") || input.endsWith(".base"):
+      return input.split(".")[0] + ".base.eth";
     default:
       return input;
   }
