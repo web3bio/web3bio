@@ -102,7 +102,6 @@ const RenderAccountItem = (props) => {
       }
     };
   }, [visible, profile, dispatch]);
-
   switch (identity.platform) {
     case PlatformType.ens:
     case PlatformType.ethereum:
