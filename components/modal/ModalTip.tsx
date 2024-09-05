@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import SVG from "react-inlinesvg";
 import {
   useAccount,
@@ -51,13 +51,13 @@ const useTokenList = (address) => {
     address
       ? `${FIREFLY_PROXY_DEBANK_ENDPOINT}/v1/user/all_token_list?id=${address}&chain_ids=eth,matic,op,arb,base,zora&is_all=false`
       : null,
-    ProfileFetcher,
+    ProfileFetcher
   );
   return {
     data:
       data
         ?.sort(
-          (a, b) => Number(isNativeToken(b.id)) - Number(isNativeToken(a.id)),
+          (a, b) => Number(isNativeToken(b.id)) - Number(isNativeToken(a.id))
         )
         .filter((x) => x.is_verified) || [],
     isLoading: isLoading,
@@ -80,6 +80,7 @@ export default function TipModalContent(props) {
     if (!token?.price) return 0;
     return Number((Number(donatePrice) / Number(token.price)).toFixed(5));
   }, [token, customPrice, selectPrice]);
+  const customInput = useRef<HTMLInputElement>(null);
   const {
     sendTransaction,
     data: txData,
@@ -114,7 +115,7 @@ export default function TipModalContent(props) {
     }
     if (txStatus === "success") {
       toast.success(
-        `Successfully tipped ${profile.displayName} for ${amount} ${token.symbol}`,
+        `Successfully tipped ${profile.displayName} for ${amount} ${token.symbol}`
       );
       setStatus(TipStatus.success);
     }
@@ -290,6 +291,7 @@ export default function TipModalContent(props) {
                 ))}
 
                 <input
+                  ref={customInput}
                   type="text"
                   className="form-input"
                   value={customPrice}

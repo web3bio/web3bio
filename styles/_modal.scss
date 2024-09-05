@@ -16,9 +16,9 @@
   background: $light-color;
   border-radius: 1rem;
   box-shadow:
-      0 .05rem .2rem hsl(0deg 0% 0% / 0.05),
-      0 .1rem .8rem hsl(0deg 0% 0% / 0.05),
-      0 .2rem 1.6rem hsl(0deg 0% 0% / 0.05);
+    0 .05rem .2rem hsl(0deg 0% 0% / 0.05),
+    0 .1rem .8rem hsl(0deg 0% 0% / 0.05),
+    0 .2rem 1.6rem hsl(0deg 0% 0% / 0.05);
   display: flex;
   flex-direction: column;
   height: calc(100vh - 4rem);
@@ -450,7 +450,28 @@
         }
 
         .form-input {
+          &:not(:placeholder-shown) {
+            @include control-shadow();
+            border-color: $primary-color;
+
+            &:invalid {
+              border-color: $error-color;
+              box-shadow: none;
+
+              &:focus {
+                @include control-shadow($error-color);
+                background: lighten($error-color, 53%);
+              }
+
+              &+.form-input-hint {
+                color: $error-color;
+              }
+            }
+          }
+
           width: 4rem;
+
+
         }
       }
 
@@ -724,37 +745,37 @@
         height: auto;
         max-width: 100%;
       }
-  
+
       h1 {
         font-size: 1rem;
         font-weight: 700;
       }
-  
+
       h2 {
         font-size: .8rem;
         font-weight: 700;
       }
-  
+
       h3 {
         font-size: .6rem;
         font-weight: 700;
       }
-  
+
       ul,
       ol {
         margin-bottom: 1.2rem;
       }
-  
+
       p {
         margin-bottom: .8rem;
       }
-  
+
       li {
         p {
           display: inline;
         }
       }
-  
+
       a {
         text-decoration: underline;
       }
@@ -857,6 +878,7 @@
       }
 
       .preview-image {
+
         .img-responsive,
         .video-responsive {
           max-width: 100vw;
@@ -1016,7 +1038,7 @@
 
       p {
         margin-bottom: 1rem;
-        
+
         &:last-child {
           margin-bottom: 0;
         }

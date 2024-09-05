@@ -426,6 +426,7 @@ export const decodeContenthash = (encoded: string) => {
 };
 
 export const prettify = (input: string) => {
+  if (!input) return "";
   switch (!!input) {
     case input.endsWith(".farcaster") || input.endsWith(".fcast.id"):
       return input.replace(".farcaster", "").replace(".fcast.id", "");
@@ -437,6 +438,7 @@ export const prettify = (input: string) => {
 };
 
 export const uglify = (input: string, platform) => {
+  if (!input) return "";
   switch (platform) {
     case PlatformType.basenames:
       return input.endsWith(".base") ? `${input}.eth` : `${input}.base.eth`;
