@@ -20,7 +20,10 @@ export default function ProfileCard({
   simple,
   classNames,
 }: ProfileCardProps) {
-  const relatedPath = uglify(data.identity, data.platform?.toLocaleLowerCase());
+  const relatedPath = uglify(
+    data?.identity,
+    data.platform?.toLocaleLowerCase()
+  );
   const [isCopied, setIsCopied] = useState(false);
   const onCopySuccess = () => {
     setIsCopied(true);
