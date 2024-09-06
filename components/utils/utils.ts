@@ -443,7 +443,7 @@ export const uglify = (input: string, platform) => {
     case PlatformType.basenames:
       return input.endsWith(".base") ? `${input}.eth` : `${input}.base.eth`;
     case PlatformType.farcaster:
-      return `${input}.farcaster`;
+      return input.endsWith(".farcaster") ? input : `${input}.farcaster`;
     default:
       return input;
   }

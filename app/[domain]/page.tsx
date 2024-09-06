@@ -21,7 +21,7 @@ async function fetchDataFromServer(domain: string) {
     const platform = handleSearchPlatform(domain);
     if (!shouldPlatformFetch(platform)) return null;
 
-    const url = `${profileAPIBaseURL}/profile/${domain}`;
+    const url = `${profileAPIBaseURL}/profile/${uglify(domain, platform)}`;
     const response = await fetch(url, {
       next: { revalidate: 86400 },
     });
