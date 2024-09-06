@@ -475,6 +475,30 @@
         }
       }
 
+      .wallet-container {
+        display: flex;
+        align-items: center;
+
+        .dropdown-toggle {
+          display: flex;
+          align-items: center;
+          gap: .25rem;
+          padding: .15rem;
+          margin-left: .25rem;
+          .action-arrow{
+            transform: rotate(180deg);
+          }
+        }
+
+        .menu {
+          top: 90%;
+          left: -50%;
+          font-size: .65rem;
+          padding: 0;
+        }
+
+      }
+
       .token-selector-container {
         .token-selector {
           width: 100%;

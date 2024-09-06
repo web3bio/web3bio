@@ -20,7 +20,7 @@ import { Token } from "../utils/types";
 import useSWR from "swr";
 import { formatText } from "../utils/utils";
 import { FIREFLY_PROXY_DEBANK_ENDPOINT, ProfileFetcher } from "../utils/api";
-import WalletButton from "../shared/WalletButton";
+import WalletChip from "./WalletChip";
 
 enum TipStatus {
   success = 1,
@@ -348,8 +348,7 @@ export default function TipModalContent(props) {
             <div className="form-group">
               <div className="col-12 col-sm-12 justify-between">
                 <label className="form-label">Pay with</label>
-                {/* checkout styles */}
-                <WalletButton />
+                <WalletChip />
               </div>
               <div className="col-12 col-sm-12">
                 <TokenSelector
