@@ -98,21 +98,59 @@ export default function TipModalContent(props) {
   // status ---------- start
   useEffect(() => {
     if (donatePrepareError || ApprovePrepareError) {
-      toast.error("Transaction Rejected");
+      toast.custom(
+        <div className="toast">
+          <SVG
+            src="../icons/icon-wallet.svg"
+            width={24}
+            height={24}
+            className="action mr-2"
+          />
+          Transaction rejected
+        </div>
+      );
     }
   }, [donatePrepareError, ApprovePrepareError]);
 
   useEffect(() => {
     if (status !== TipStatus.common) return;
     if (approveData?.status === "success") {
-      toast.success(`Successfully approved ${amount} ${token.symbol}`);
+      toast.custom(
+        <div className="toast">
+          <SVG
+            src="../icons/icon-wallet.svg"
+            width={24}
+            height={24}
+            className="action mr-2"
+          />
+          Successfully approved {amount} {token.symbol}
+        </div>
+      );
     }
     if (approveData?.status === "reverted") {
-      toast.error(`Approve ${amount} ${token.symbol} failed`);
+      toast.custom(
+        <div className="toast">
+          <SVG
+            src="../icons/icon-wallet.svg"
+            width={24}
+            height={24}
+            className="action mr-2"
+          />
+          Approve {amount} {token.symbol} failed
+        </div>
+      );
     }
     if (donateData?.status === "success") {
-      toast.success(
-        `Successfully tipped ${profile.displayName} with ${amount} ${token.symbol}`
+      toast.custom(
+        <div className="toast">
+          <SVG
+            src="../icons/icon-wallet.svg"
+            width={24}
+            height={24}
+            className="action mr-2"
+          />
+          Successfully tipped {profile.displayName} with {amount} {token.symbol}
+        </div>
       );
       setStatus(TipStatus.success);
 
@@ -133,8 +171,16 @@ export default function TipModalContent(props) {
       });
     }
     if (donateData?.status === "reverted") {
-      toast.error(
-        `Tip ${profile.displayName} for ${amount} ${token.symbol} failed`
+      toast.custom(
+        <div className="toast">
+          <SVG
+            src="../icons/icon-wallet.svg"
+            width={24}
+            height={24}
+            className="action mr-2"
+          />
+          Tip to {profile.displayName} for {amount} {token.symbol} failed
+        </div>
       );
       setStatus(TipStatus.failed);
     }

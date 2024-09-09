@@ -13,6 +13,7 @@
 }
 
 .modal-container {
+  animation: slide-down .2s ease 1;
   background: $light-color;
   border-radius: 1rem;
   box-shadow:

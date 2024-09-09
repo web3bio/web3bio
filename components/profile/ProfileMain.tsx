@@ -52,8 +52,8 @@ import toast from "react-hot-toast";
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
     props;
-  const { tipObject, tipEmoji } = useTipEmoji();
   const [links, setLinks] = useState(data?.links);
+  const { tipObject, tipEmoji } = useTipEmoji();
   const [getQuery, { loading, error, data: identityGraph }] = useLazyQuery(
     getProfileQuery() as DocumentNode,
     {
@@ -357,12 +357,12 @@ export default function ProfileMain(props) {
               </div>
             )}
 
-            {isEthereum && (
+            {isEthereum && tipEmoji && (
               <div className="profile-actions">
                 <div className="btn-group">
                   <button
                     className={`profile-share btn btn-lg active`}
-                    title="Donate"
+                    title="Tip this profile"
                     onClick={() => {
                       openModal(ModalType.tip, {
                         profile: {
@@ -374,8 +374,8 @@ export default function ProfileMain(props) {
                       });
                     }}
                   >
-                    <span className="btn-emoji mr-1">{"💸"}</span>
-                    {"Tip"}
+                    <span className="btn-emoji mr-1">{tipEmoji}</span>
+                    Tip
                   </button>
                 </div>
               </div>
