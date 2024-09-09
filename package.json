@@ -19,7 +19,7 @@
     "d3": "^7.8.5",
     "emoji-blast": "^0.10.1",
     "grapheme-splitter": "^1.0.4",
-    "next": "^14.2.7",
+    "next": "^14.2.8",
     "react-hot-toast": "^2.4.1",
     "react-infinite-scroll-hook": "^4.1.1",
     "react-markdown": "^9.0.0",

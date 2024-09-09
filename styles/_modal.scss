@@ -453,27 +453,52 @@
           }
         }
 
-        .form-input {
-          &:not(:placeholder-shown) {
-            @include control-shadow();
-            border-color: $primary-color;
+        .input-price {
+          position: relative;
 
-            &:invalid {
-              border-color: $error-color;
-              box-shadow: none;
+          .input-price-label {
+            color: $gray-color;
+            left: 0;
+            line-height: .8rem;
+            padding: .5rem;
+            position: absolute;
+            top: 0;
+            z-index: 9;
+          }
 
-              &:focus {
-                @include control-shadow($error-color);
-                background: lighten($error-color, 53%);
+          .form-input {
+            padding-left: 1rem;
+            width: 4.5rem;
+
+            &:focus {
+              & + .input-price-label {
+                color: $primary-color;
               }
+            }
+  
+            &:not(:placeholder-shown) {
+              @include control-shadow();
+              border-color: $primary-color;
 
-              &+.form-input-hint {
-                color: $error-color;
+              & + .input-price-label {
+                color: $primary-color;
+              }
+  
+              &:invalid {
+                border-color: $error-color;
+                box-shadow: none;
+  
+                &:focus {
+                  @include control-shadow($error-color);
+                  background: lighten($error-color, 53%);
+                }
+  
+                & + .form-input-hint {
+                  color: $error-color;
+                }
               }
             }
           }
-
-          width: 4rem;
         }
       }
 

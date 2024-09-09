@@ -15,7 +15,7 @@
   margin: 0;
   min-width: $control-width-xs;
   padding: $unit-2;
-  transform: translateY($layout-spacing-sm);
+  transform: translateY(0);
   z-index: $zindex-3;
 
   &.menu-nav {

@@ -112,7 +112,7 @@ export default function TipModalContent(props) {
     }
     if (donateData?.status === "success") {
       toast.success(
-        `Successfully tipped ${profile.displayName} for ${amount} ${token.symbol}`
+        `Successfully tipped ${profile.displayName} with ${amount} ${token.symbol}`
       );
       setStatus(TipStatus.success);
 
@@ -192,9 +192,9 @@ export default function TipModalContent(props) {
       if (shouldChangeNetwork) return `Change Network`;
       if (!amount || amount <= 0) return "Invalid Amount";
       if (isBalanceLow) return "Insufficient Balance";
-      if (donateLoading || approveLoading) return "Waiting For Transaction...";
+      if (donateLoading || approveLoading) return "Waiting for Transaction...";
       if (donatePrepareLoading || approvePrepareLoading)
-        return "Confirm In Your Wallet...";
+        return "Confirm in Your Wallet...";
       if (!tokenList?.length) return "No Tokens Detected";
       if (!isNativeToken(token?.id) && isAllowanceLow)
         return `Approve ${amount} ${token?.symbol}`;
@@ -309,25 +309,29 @@ export default function TipModalContent(props) {
                   </div>
                 ))}
 
-                <input
-                  ref={customInput}
-                  type="text"
-                  className="form-input"
-                  value={customPrice}
-                  placeholder="Custom"
-                  pattern="^\d*\.?\d*$"
-                  onChange={(e) => {
-                    let value = e.target.value;
-                    if (!/^[0-9]*\.?[0-9]*$/.test(value)) {
-                      value = value.slice(0, -1);
-                    }
-                    if (!disablePriceBtn) {
-                      setDisablePriceBtn(true);
-                    }
-                    setCustomPrice(e.target.value);
-                  }}
-                  onFocus={(e) => e.target.select()}
-                />
+                <div className="input-price">
+                  <input
+                    ref={customInput}
+                    type="text"
+                    id="input-price-custom"
+                    className="form-input"
+                    value={customPrice}
+                    placeholder="Custom"
+                    pattern="^\d*\.?\d*$"
+                    onChange={(e) => {
+                      let value = e.target.value;
+                      if (!/^[0-9]*\.?[0-9]*$/.test(value)) {
+                        value = value.slice(0, -1);
+                      }
+                      if (!disablePriceBtn) {
+                        setDisablePriceBtn(true);
+                      }
+                      setCustomPrice(e.target.value);
+                    }}
+                    onFocus={(e) => e.target.select()}
+                  />
+                  <label className="input-price-label" htmlFor="input-price-custom">$</label>
+                </div>
               </div>
             </div>
 
@@ -410,9 +414,22 @@ export default function TipModalContent(props) {
       ) : (
         // Tips status
         <div className="modal-body">
-          {status === TipStatus.success
-            ? `Tipped ${profile.displayName} with ${amount} ${token?.symbol} Successfully!`
-            : `Error Occurs`}
+          <div className="empty">
+            <div className="empty-icon h1" style={{ fontSize: "64px", lineHeight: "64px" }}>
+              {tipEmoji}
+            </div>
+            <p className="empty-title h4">
+              {status === TipStatus.success
+              ? `Apperiate your ${tipObject}`
+              : `Something Went Wrong! `}
+            </p>
+            <p className="empty-subtitle">
+              {status === TipStatus.success
+              ? `Successfully tipped ${profile.displayName} with ${amount} ${token?.symbol}!`
+              : `Please try again.`}
+            </p>
+          </div>
+          
         </div>
       )}
       {status === TipStatus.common && (
