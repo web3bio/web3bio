@@ -13,7 +13,7 @@
   "dependencies": {
     "@bonfida/spl-name-service": "^2.5.2",
     "@ensdomains/content-hash": "^3.0.0",
-    "@rainbow-me/rainbowkit": "^2.1.1",
+    "@rainbow-me/rainbowkit": "^2.1.5",
     "@rc-component/trigger": "^1.18.2",
     "@reduxjs/toolkit": "^1.9.5",
     "d3": "^7.8.5",

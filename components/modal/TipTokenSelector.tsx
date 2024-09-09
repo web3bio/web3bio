@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import Image from "next/image";
 import SVG from "react-inlinesvg";
 import TokenListItem from "./TipTokenListItem";
 import { networkByIdOrName } from "../utils/network";
@@ -44,11 +43,7 @@ export default function TokenSelector(props) {
   }, [selected]);
   return (
     <div className="token-selector-container">
-      <div
-        className={`token-selector${
-          menuDisplay ? " active" : ""
-        }`}
-      >
+      <div className={`token-selector${menuDisplay ? " active" : ""}`}>
         {isLoading && !list?.length ? (
           <div className="chip chip-full chip-button">
             <div className="chip-icon">
@@ -78,11 +73,11 @@ export default function TokenSelector(props) {
             tabIndex={0}
           >
             <div className="chip-icon">
-              <Image
+              <img
                 width={32}
                 height={32}
                 className="avatar"
-                src={selected?.logo_url}
+                src={selected?.logo_url || ""}
                 alt={selected?.symbol}
               />
               <div
@@ -118,9 +113,7 @@ export default function TokenSelector(props) {
           </div>
         )}
         <ul className="menu" ref={menu}>
-          <li className="menu-item-header">
-            Select a Token
-          </li>
+          <li className="menu-item-header">Select a Token</li>
           {resolvedList.map((x) => (
             <TokenListItem
               key={`${x.chain}_${x.symbol}`}

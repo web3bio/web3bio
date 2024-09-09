@@ -29,7 +29,7 @@ export enum Network {
   solana = "solana",
 }
 
-export interface NetworkMetaData {
+interface NetworkMetaData {
   key: string;
   chainId?: number;
   icon: string;
@@ -41,7 +41,7 @@ export interface NetworkMetaData {
   short?: string;
 }
 
-export const NETWORK_DATA: { [key in Network]: NetworkMetaData } = {
+const NETWORK_DATA: { [key in Network]: NetworkMetaData } = {
   [Network.ethereum]: {
     key: Network.ethereum,
     chainId: 1,
@@ -133,10 +133,10 @@ export const NETWORK_DATA: { [key in Network]: NetworkMetaData } = {
     chainId: 8453,
     icon: "icons/icon-base.svg",
     label: "Base",
-    short: "base",
     primaryColor: "#2151f5",
     bgColor: "#e9eefe",
     scanPrefix: "https://basescan.org/",
+    short: "base",
   },
   [Network.flow]: {
     key: Network.flow,
@@ -324,22 +324,16 @@ export const NFTFilterMapping = {
   },
 };
 
-export const NetworksMap = new Map(
-  Object.values(NETWORK_DATA).map((x) => [x.key, x])
-);
-
 export const networkByIdOrName = (id: number, name?: string) => {
-  for (const [key, value] of NetworksMap) {
-    if (value.chainId === id || [key, value.short].includes(name)) {
-      return value;
-    }
-  }
-  return null;
+  return Object.values(NETWORK_DATA).find((x) => {
+    if (x.chainId === id) return x;
+    if (name && [x.key, x.short].includes(name)) return x;
+  });
 };
 
 export const NetworkMapping = (network: Network) => {
   return (
-    NetworksMap.get(network) ?? {
+    NETWORK_DATA[network] ?? {
       key: network,
       icon: "",
       label: network,
@@ -350,12 +344,7 @@ export const NetworkMapping = (network: Network) => {
   );
 };
 
-export const chainIdToNetwork = (
-  chainId?: number | string,
-  useShort?: boolean
-) => {
+export const chainIdToNetwork = (chainId?: number, useShort?: boolean) => {
   if (!chainId) return null;
-  return (
-    networkByIdOrName(Number(chainId))?.[useShort ? "short" : "key"] || null
-  );
+  return networkByIdOrName(Number(chainId))?.[useShort ? "short" : "key"] || null;
 };

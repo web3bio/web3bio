@@ -10,7 +10,7 @@ import {
 } from "wagmi";
 import { useCurrencyAllowance } from "../hooks/useCurrency";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { erc20Abi, formatEther, parseEther } from "viem";
+import { erc20Abi, formatUnits, parseEther, parseUnits } from "viem";
 import { chainIdToNetwork, networkByIdOrName } from "../utils/network";
 import { Loading } from "../shared/Loading";
 import { Avatar } from "../shared/Avatar";
@@ -27,21 +27,6 @@ enum TipStatus {
   common = 0,
   failed = 2,
 }
-
-const donateSuggest = [
-  {
-    key: 1,
-    text: "1",
-  },
-  {
-    key: 3,
-    text: "3",
-  },
-  {
-    key: 5,
-    text: "5",
-  },
-];
 
 const isNativeToken = (id: string) => {
   return !id.startsWith("0x");
@@ -82,6 +67,8 @@ export default function TipModalContent(props) {
     return Number((Number(donatePrice) / Number(token.price)).toFixed(5));
   }, [token, customPrice, selectPrice]);
   const customInput = useRef<HTMLInputElement>(null);
+
+  // config ---------- start
   const {
     sendTransaction,
     data: txData,
@@ -90,40 +77,30 @@ export default function TipModalContent(props) {
   } = useSendTransaction();
 
   const {
-    writeContract: onCallContract,
-    data: contractTx,
-    isPending: contractPrepareLoading,
-    error: contractPrepareError,
+    writeContract: onCallApprove,
+    data: approveTx,
+    isPending: approvePrepareLoading,
+    error: ApprovePrepareError,
   } = useWriteContract();
 
   const { isLoading: approveLoading, status: approveStatus } =
     useWaitForTransactionReceipt({
-      hash: contractTx,
+      hash: approveTx,
     });
 
   const { isLoading: txLoading, status: txStatus } =
     useWaitForTransactionReceipt({
       hash: txData,
     });
+  // config ---------- end
+
+  // status ---------- start
   useEffect(() => {
-    if (txPrepareError || contractPrepareError) {
+    if (txPrepareError || ApprovePrepareError) {
       toast.error("Transaction Rejected");
     }
-  }, [txPrepareError, contractPrepareError]);
+  }, [txPrepareError, ApprovePrepareError]);
   useEffect(() => {
-    if (approveStatus === "success") {
-      toast.success(`Successfully approved ${amount} ${token.symbol}`);
-    }
-    if (txStatus === "success") {
-      toast.success(
-        `Successfully tipped ${profile.displayName} for ${amount} ${token.symbol}`
-      );
-      setStatus(TipStatus.success);
-    }
-    if (txStatus === "error") {
-      setStatus(TipStatus.failed);
-    }
-
     if (status !== TipStatus.common) {
       setTimeout(() => {
         setStatus(TipStatus.common);
@@ -133,22 +110,43 @@ export default function TipModalContent(props) {
     if (!tokenList?.length) {
       setToken(null);
     }
-  }, [txStatus, approveStatus, status, tokenList]);
-  const { data: allowance } = useCurrencyAllowance(token?.id!);
+  }, [status, tokenList]);
 
+  useEffect(() => {
+    if (approveStatus === "success") {
+      toast.success(`Successfully approved ${amount} ${token.symbol}`);
+    } else if (approveStatus === "error") {
+      toast.error(`Approve ${amount} ${token.symbol} failed`);
+    }
+    if (txStatus === "success") {
+      toast.success(
+        `Successfully tipped ${profile.displayName} for ${amount} ${token.symbol}`
+      );
+      setStatus(TipStatus.success);
+    } else if (txStatus === "error") {
+      toast.success(
+        `Tip ${profile.displayName} for ${amount} ${token.symbol} failed`
+      );
+      setStatus(TipStatus.failed);
+    }
+  }, [txStatus, approveStatus]);
+
+  // status ---------- end
+  const { data: allowance } = useCurrencyAllowance(token?.id!);
   const RenderButton = useMemo(() => {
     const isBalanceLow = amount >= Number(token?.amount);
-    const isAllowanceLow = Number(formatEther(allowance || 0n)) < amount;
+    const isAllowanceLow =
+      Number(formatUnits(allowance || 0n, token?.decimals || 18)) < amount;
     const isButtonLoading =
       txLoading ||
       txPrepareLoading ||
       approveLoading ||
-      contractPrepareLoading ||
+      approvePrepareLoading ||
       isPending;
-    contractPrepareLoading;
 
     const shouldChangeNetwork =
       chainIdToNetwork(chainId, true) !== token?.chain;
+
     const buttonHandle = () => {
       if (chainIdToNetwork(chainId, true) !== token?.chain) {
         return switchChainAsync({
@@ -162,25 +160,32 @@ export default function TipModalContent(props) {
           value: parseEther(amount.toString()),
         });
       if (isAllowanceLow)
-        return onCallContract({
+        return onCallApprove({
+          chainId: chainId,
           abi: erc20Abi,
           address: token?.id!,
           functionName: "approve",
           args: [token?.id!, parseEther(amount.toString())],
         });
 
-      return onCallContract({
+      return onCallApprove({
+        chainId: chainId,
         abi: erc20Abi,
         address: token?.id!,
         functionName: "transfer",
-        args: [profile.address, parseEther(amount.toString())],
+        args: [
+          profile.address,
+          parseUnits(amount.toString(), token?.decimals || 18),
+        ],
       });
     };
     const ButtonText = (() => {
       if (shouldChangeNetwork) return `Change Network`;
       if (!amount || amount <= 0) return "Invalid Amount";
       if (isBalanceLow) return "Insufficient Balance";
-      if (isButtonLoading) return "Loading...";
+      if (txLoading || approveLoading) return "Waiting For Transaction...";
+      if (txPrepareLoading || approvePrepareLoading)
+        return "Confirm In Your Wallet...";
       if (!tokenList?.length) return "No Tokens Detected";
       if (!isNativeToken(token?.id) && isAllowanceLow)
         return `Approve ${amount} ${token?.symbol}`;
@@ -250,7 +255,10 @@ export default function TipModalContent(props) {
     chainId,
     txLoading,
     txPrepareLoading,
-    contractPrepareLoading,
+    approvePrepareLoading,
+    onCallApprove,
+    sendTransaction,
+    switchChainAsync,
     approveLoading,
     isPending,
   ]);
@@ -273,21 +281,19 @@ export default function TipModalContent(props) {
                 {tipEmoji}
               </label>
               <div className="amount-selector">
-                {donateSuggest.map((x) => (
+                {[1, 3, 5].map((x) => (
                   <div
-                    key={x?.text}
+                    key={x}
                     className={`btn btn-text btn-price ${
-                      x?.key === selectPrice && !disablePriceBtn
-                        ? "btn-primary"
-                        : ""
+                      x === selectPrice && !disablePriceBtn ? "btn-primary" : ""
                     }`}
                     onClick={() => {
                       setDisablePriceBtn(false);
-                      setSelectPrice(x.key);
+                      setSelectPrice(x);
                       setCustomPrice("");
                     }}
                   >
-                    {x.text}
+                    {x}
                   </div>
                 ))}
 
@@ -297,7 +303,7 @@ export default function TipModalContent(props) {
                   className="form-input"
                   value={customPrice}
                   placeholder="Custom"
-                  pattern="^\d*$"
+                  pattern="^\d*\.?\d*$"
                   onChange={(e) => {
                     let value = e.target.value;
                     if (!/^[0-9]*\.?[0-9]*$/.test(value)) {
@@ -351,16 +357,18 @@ export default function TipModalContent(props) {
                 <WalletChip />
               </div>
               <div className="col-12 col-sm-12">
-                {address ? 
+                {address ? (
                   <TokenSelector
                     isLoading={isLoading}
                     selected={token}
                     list={tokenList}
                     value={amount}
-                    disabled={txLoading || txPrepareLoading || !tokenList?.length}
+                    disabled={
+                      txLoading || txPrepareLoading || !tokenList?.length
+                    }
                     onSelect={(v) => setToken(v)}
                   />
-                  : 
+                ) : (
                   <div className="chip chip-full chip-button">
                     <div className="chip-icon">
                       <div className="avatar">
@@ -380,7 +388,7 @@ export default function TipModalContent(props) {
                       </div>
                     </div>
                   </div>
-                }
+                )}
               </div>
             </div>
           </div>
@@ -393,9 +401,11 @@ export default function TipModalContent(props) {
             : `Error Occurs`}
         </div>
       )}
-      <div className="modal-footer">
-        <div className="btn-group btn-group-block">{RenderButton}</div>
-      </div>
+      {status === TipStatus.common && (
+        <div className="modal-footer">
+          <div className="btn-group btn-group-block">{RenderButton}</div>
+        </div>
+      )}
     </>
   );
 }

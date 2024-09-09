@@ -386,7 +386,7 @@ export const resolveEipAssetURL = async (source: string) => {
       const chainId = match?.[1];
       const contractAddress = match?.[3];
       const tokenId = match?.[4];
-      const network = chainIdToNetwork(chainId);
+      const network = chainIdToNetwork(Number(chainId));
 
       if (contractAddress && tokenId && network) {
         const fetchURL =
