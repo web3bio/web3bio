@@ -17,6 +17,7 @@
     "@rc-component/trigger": "^1.18.2",
     "@reduxjs/toolkit": "^1.9.5",
     "d3": "^7.8.5",
+    "emoji-blast": "^0.10.1",
     "grapheme-splitter": "^1.0.4",
     "next": "^14.2.7",
     "react-hot-toast": "^2.4.1",

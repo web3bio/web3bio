@@ -381,10 +381,6 @@
       position: absolute;
     }
 
-    .modal-body {
-      overflow-y: unset;
-    }
-
     .network-badge {
       position: absolute;
       right: .8rem;
@@ -404,6 +400,8 @@
     }
 
     .modal-body {
+      overflow-y: unset;
+
       .form-hero {
         align-items: center;
         display: flex;
@@ -431,7 +429,7 @@
             background: rgba($color: $dark-color, $alpha: 0.05);
             color: $primary-color;
           }
-  
+
           &:active,
           &.active {
             background: rgba($color: $dark-color, $alpha: 0.075);
@@ -566,16 +564,34 @@
         min-height: 3rem;
       }
 
-      .connect-btn {
-        width: 100%;
-      }
-
       .wrong-network {
         background: #F0415E;
         border-color: #F0415E;
 
         &:hover {
           box-shadow: 0 0.1rem 1.2rem rgba(#F0415E, .25);
+        }
+      }
+    }
+
+    .modal-footer {
+      .connect-btn {
+        display: flex;
+        align-items: center;
+        gap: .25rem;
+        width: 100%;
+
+        .loading-container {
+          .loading {
+            width: 1rem;
+            height: 1rem;
+            &::after {
+              border-color: #fff;
+              border-right-color: transparent;
+              border-top-color: transparent;
+            }
+          }
+
         }
       }
     }
