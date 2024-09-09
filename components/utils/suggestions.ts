@@ -67,6 +67,12 @@ export const DefaultSearchSuffix = [
 
 export const fuzzyDomainSuffix = [
   {
+    key: PlatformType.basenames,
+    icon: SocialPlatformMapping(PlatformType.basenames).icon,
+    match: regexBasenames,
+    suffixes: ["base"],
+  },
+  {
     key: PlatformType.ens,
     icon: SocialPlatformMapping(PlatformType.ens).icon,
     match: regexEns,
@@ -177,12 +183,6 @@ export const fuzzyDomainSuffix = [
     match: regexNext,
     suffixes: null,
   },
-  {
-    key: PlatformType.basenames,
-    icon: SocialPlatformMapping(PlatformType.basenames).icon,
-    match: regexBasenames,
-    suffixes: ["base"],
-  },
 ];
 
 // Search suggestions for the search input
@@ -226,7 +226,7 @@ export const getSearchSuggestions = (query: string) => {
       .filter(
         (x) =>
           x.match.test(query) ||
-          (x.suffixes && x.suffixes.some((s) => s.startsWith(suffix)))
+          (x.suffixes && x.suffixes.some((s) => s.startsWith(suffix))),
       )
       .flatMap((x) => {
         if (x.suffixes) {

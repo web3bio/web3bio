@@ -4,7 +4,7 @@
   position: relative;
 
   .menu {
-    // animation: slide-down .15s ease 1;
+    animation: slide-down .2s ease 1;
     display: none;
     left: 0;
     max-height: 50vh;
@@ -28,7 +28,8 @@
   }
 
   &.active .menu,
-  .dropdown-toggle:focus+.menu {
+  .dropdown-toggle:focus+.menu,
+  .menu:hover {
     display: flex;
   }
 

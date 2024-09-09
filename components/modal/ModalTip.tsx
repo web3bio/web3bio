@@ -15,12 +15,12 @@ import { chainIdToNetwork, networkByIdOrName } from "../utils/network";
 import { Loading } from "../shared/Loading";
 import { Avatar } from "../shared/Avatar";
 import toast from "react-hot-toast";
-import TokenSelector from "./TokenSelector";
+import TokenSelector from "./TipTokenSelector";
 import { Token } from "../utils/types";
 import useSWR from "swr";
 import { formatText } from "../utils/utils";
 import { FIREFLY_PROXY_DEBANK_ENDPOINT, ProfileFetcher } from "../utils/api";
-import WalletChip from "./WalletChip";
+import WalletChip from "./TipWalletChip";
 
 enum TipStatus {
   success = 1,
@@ -181,7 +181,7 @@ export default function TipModalContent(props) {
       if (!amount || amount <= 0) return "Invalid Amount";
       if (isBalanceLow) return "Insufficient Balance";
       if (isButtonLoading) return "Loading...";
-      if (!tokenList?.length) return "No Token Detected";
+      if (!tokenList?.length) return "No Tokens Detected";
       if (!isNativeToken(token?.id) && isAllowanceLow)
         return `Approve ${amount} ${token?.symbol}`;
 
@@ -351,14 +351,36 @@ export default function TipModalContent(props) {
                 <WalletChip />
               </div>
               <div className="col-12 col-sm-12">
-                <TokenSelector
-                  isLoading={isLoading}
-                  selected={token}
-                  list={tokenList}
-                  value={amount}
-                  disabled={txLoading || txPrepareLoading || !tokenList?.length}
-                  onSelect={(v) => setToken(v)}
-                />
+                {address ? 
+                  <TokenSelector
+                    isLoading={isLoading}
+                    selected={token}
+                    list={tokenList}
+                    value={amount}
+                    disabled={txLoading || txPrepareLoading || !tokenList?.length}
+                    onSelect={(v) => setToken(v)}
+                  />
+                  : 
+                  <div className="chip chip-full chip-button">
+                    <div className="chip-icon">
+                      <div className="avatar">
+                        <SVG
+                          title={"Change Token"}
+                          height={20}
+                          width={20}
+                          color={"#121212"}
+                          src={"/icons/icon-wallet.svg"}
+                        />
+                      </div>
+                    </div>
+                    <div className="chip-content">
+                      <div className="chip-title">...</div>
+                      <div className="chip-subtitle text-gray">
+                        Connect wallet to select token
+                      </div>
+                    </div>
+                  </div>
+                }
               </div>
             </div>
           </div>

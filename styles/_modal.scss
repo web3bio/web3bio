@@ -73,9 +73,11 @@
   &.modal-media-container,
   &.modal-search-container {
     background: transparent;
+    box-shadow: none;
     height: 100%;
     max-height: 100vh;
     max-width: $size-xl;
+    overflow: initial;
     padding: 2rem;
     position: relative;
     width: 100%;
@@ -421,16 +423,20 @@
           border: .05rem solid rgba($gray-color, .05);
         }
 
-        &:focus,
-        &:hover {
-          background: rgba($color: $dark-color, $alpha: 0.05);
-          color: $primary-color;
-        }
+        &.chip-hover {
+          cursor: pointer;
 
-        &:active,
-        &.active {
-          background: rgba($color: $dark-color, $alpha: 0.075);
-          color: $primary-color;
+          &:focus,
+          &:hover {
+            background: rgba($color: $dark-color, $alpha: 0.05);
+            color: $primary-color;
+          }
+  
+          &:active,
+          &.active {
+            background: rgba($color: $dark-color, $alpha: 0.075);
+            color: $primary-color;
+          }
         }
       }
 
@@ -470,8 +476,6 @@
           }
 
           width: 4rem;
-
-
         }
       }
 
@@ -483,34 +487,44 @@
           display: flex;
           align-items: center;
           gap: .25rem;
-          padding: .15rem;
           margin-left: .25rem;
-          .action-arrow{
-            transform: rotate(180deg);
-          }
         }
 
         .menu {
           top: 90%;
-          left: -50%;
           font-size: .65rem;
-          padding: 0;
         }
 
       }
 
       .token-selector-container {
         .token-selector {
+          display: inline-flex;
+          position: relative;
           width: 100%;
+
+          &.active .menu {
+            display: flex;
+          }
+
+          .menu {
+            animation: slide-up .2s ease 1;
+            bottom: 120%;
+            display: none;
+            max-height: 50vh;
+            overflow-y: auto;
+            position: absolute;
+            top: auto;
+          }
         }
 
         .menu {
           bottom: 0;
           height: 15rem;
-          left: -.4rem;
-          min-width: 20rem;
+          left: -.5rem;
+          min-width: 100%;
           padding: .5rem;
-          right: -.4rem;
+          right: -.5rem;
           z-index: 9999;
 
           .menu-item-header {
@@ -522,35 +536,6 @@
             position: sticky;
             top: 0;
             z-index: 99;
-          }
-        }
-      }
-
-      .currency-input-container {
-        width: 100%;
-        position: relative;
-
-        .token-selector {
-          position: absolute;
-          top: 50%;
-          width: 5rem;
-          transform: translateY(-50%);
-          right: 0rem;
-          border-radius: .5rem;
-
-          .btn {
-            width: 100%;
-            line-height: 1;
-            height: unset;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-          }
-
-          .btn-primary {
-            font-size: .65rem;
-            padding: .3rem .5rem;
-            border-radius: .5rem;
           }
         }
       }
@@ -583,12 +568,6 @@
 
       .connect-btn {
         width: 100%;
-      }
-
-      .disabled {
-        user-select: none;
-        pointer-events: none;
-        filter: grayscale(1);
       }
 
       .wrong-network {

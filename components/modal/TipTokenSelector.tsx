@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import SVG from "react-inlinesvg";
-import TokenListItem from "./TokenListItem";
+import TokenListItem from "./TipTokenListItem";
 import { networkByIdOrName } from "../utils/network";
 
 const getUSDPrice = (amount, price) => {
@@ -45,11 +45,11 @@ export default function TokenSelector(props) {
   return (
     <div className="token-selector-container">
       <div
-        className={`token-selector dropdown dropdown-top${
+        className={`token-selector${
           menuDisplay ? " active" : ""
         }`}
       >
-        {isLoading ? (
+        {isLoading && !list?.length ? (
           <div className="chip chip-full chip-button">
             <div className="chip-icon">
               <div className="avatar">
@@ -65,13 +65,13 @@ export default function TokenSelector(props) {
             <div className="chip-content">
               <div className="chip-title">Loading...</div>
               <div className="chip-subtitle text-gray">
-                Please connect wallet
+                Please wait while loading tokens
               </div>
             </div>
           </div>
-        ) : !list?.length ? null : (
+        ) : (
           <div
-            className="chip chip-full chip-button"
+            className="chip chip-full chip-button chip-hover"
             onClick={(e) => {
               setMenuDisplay(true);
             }}
