@@ -446,7 +446,7 @@ export default function TipModalContent(props) {
                       </div>
                     </div>
                     <div className="chip-content">
-                      <div className="chip-title">...</div>
+                      <div className="chip-title text-gray">Token</div>
                       <div className="chip-subtitle text-gray">
                         Connect wallet to select token
                       </div>
