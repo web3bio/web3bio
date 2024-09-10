@@ -31,13 +31,12 @@ const defaultLink = createHttpLink(
 
 const linkMapping: Record<string, HttpLink> = {
   tally: createHttpLink(TALLY_GRAPHQL_ENDPOINT, {
-    "Api-Key": process.env.NEXT_PUBLIC_TALLY_API_KEY || "",
+    "api-key": process.env.NEXT_PUBLIC_TALLY_API_KEY || "",
   }),
   lens: createHttpLink(LensGraphQLEndpoint),
   airstack: createHttpLink(AIRSTACK_GRAPHQL_ENDPOINT),
   snapshot: createHttpLink(SNAPSHOT_GRAPHQL_ENDPOINT),
   philand: createHttpLink(PHI_API_ENDPOINT, {
-    "Content-type": "application/json",
     "x-api-key": process.env.NEXT_PUBLIC_PHI_API_KEY || "",
   }),
 };
