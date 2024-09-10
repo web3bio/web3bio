@@ -9,11 +9,7 @@ import { updateScoresWidget } from "../state/widgets/reducer";
 import { WidgetTalent } from "./WidgetTalent";
 import WidgetPhiland from "./WidgetPhiland";
 
-const RenderWidgetScores = ({
-  profile,
-  states,
-  openModal,
-}) => {
+const RenderWidgetScores = ({ profile, states, openModal }) => {
   const dispatch = useDispatch();
   const scoresArr = useMemo(() => {
     return [
@@ -32,7 +28,7 @@ const RenderWidgetScores = ({
         render: () => <WidgetTalent openModal={openModal} profile={profile} />,
       },
       {
-        key: WidgetType.talent,
+        key: WidgetType.philand,
         render: () => <WidgetPhiland openModal={openModal} profile={profile} />,
       },
       {
@@ -46,6 +42,7 @@ const RenderWidgetScores = ({
       states[WidgetType.degenscore],
       states[WidgetType.gitcoin],
       states[WidgetType.talent],
+      states[WidgetType.philand],
       states[WidgetType.webacy],
     ],
     [states]
