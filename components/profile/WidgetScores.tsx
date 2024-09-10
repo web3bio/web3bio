@@ -7,7 +7,6 @@ import { useDispatch } from "react-redux";
 import { WidgetGitcoin } from "./WidgetGitcoin";
 import { updateScoresWidget } from "../state/widgets/reducer";
 import { WidgetTalent } from "./WidgetTalent";
-import WidgetPhiland from "./WidgetPhiland";
 
 const RenderWidgetScores = ({ profile, states, openModal }) => {
   const dispatch = useDispatch();
@@ -27,10 +26,10 @@ const RenderWidgetScores = ({ profile, states, openModal }) => {
         key: WidgetType.talent,
         render: () => <WidgetTalent openModal={openModal} profile={profile} />,
       },
-      {
-        key: WidgetType.philand,
-        render: () => <WidgetPhiland openModal={openModal} profile={profile} />,
-      },
+      // {
+      //   key: WidgetType.philand,
+      //   render: () => <WidgetPhiland openModal={openModal} profile={profile} />,
+      // },
       {
         key: WidgetType.webacy,
         render: () => <WidgetWebacy address={profile.address} />,
@@ -42,7 +41,7 @@ const RenderWidgetScores = ({ profile, states, openModal }) => {
       states[WidgetType.degenscore],
       states[WidgetType.gitcoin],
       states[WidgetType.talent],
-      states[WidgetType.philand],
+      // states[WidgetType.philand],
       states[WidgetType.webacy],
     ],
     [states]
