@@ -30,7 +30,7 @@ export const initialState: WidgetState = {
       WidgetType.degenscore,
       WidgetType.gitcoin,
       WidgetType.talent,
-      // WidgetType.philand,
+      WidgetType.philand,
       WidgetType.webacy,
     ],
   },
@@ -43,7 +43,7 @@ export const initialState: WidgetState = {
     isEmpty: null,
     initLoading: true,
     loaded: false,
-    // parent: WidgetType.scores,
+    parent: WidgetType.scores,
   },
   [WidgetType.degenscore]: {
     isEmpty: null,

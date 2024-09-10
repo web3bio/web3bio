@@ -7,6 +7,7 @@ import {
 import { LensGraphQLEndpoint } from "./lens";
 import {
   AIRSTACK_GRAPHQL_ENDPOINT,
+  PHI_API_ENDPOINT,
   SNAPSHOT_GRAPHQL_ENDPOINT,
   TALLY_GRAPHQL_ENDPOINT,
 } from "./api";
@@ -25,7 +26,7 @@ const defaultLink = createHttpLink(
   process.env.NEXT_PUBLIC_GRAPHQL_SERVER || "",
   {
     "x-api-key": process.env.NEXT_PUBLIC_RELATION_API_KEY || "",
-  },
+  }
 );
 
 const linkMapping: Record<string, HttpLink> = {
@@ -35,6 +36,10 @@ const linkMapping: Record<string, HttpLink> = {
   lens: createHttpLink(LensGraphQLEndpoint),
   airstack: createHttpLink(AIRSTACK_GRAPHQL_ENDPOINT),
   snapshot: createHttpLink(SNAPSHOT_GRAPHQL_ENDPOINT),
+  philand: createHttpLink(PHI_API_ENDPOINT, {
+    "Content-type": "application/json",
+    "x-api-key": process.env.NEXT_PUBLIC_PHI_API_KEY || "",
+  }),
 };
 
 const getLink = (clientName?: string): HttpLink =>

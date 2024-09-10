@@ -19,7 +19,7 @@ export default function WidgetPhiland({ profile, openModal }) {
     },
   });
   const dispatch = useDispatch();
-  console.log(data, "kkk", profile);
+  
   useEffect(() => {
     if (!loading) {
       dispatch(

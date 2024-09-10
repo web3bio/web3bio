@@ -23,6 +23,7 @@ export const SNAPSHOT_GRAPHQL_ENDPOINT = "https://hub.snapshot.org/graphql";
 export const TALENT_API_ENDPOINT = "https://api.talentprotocol.com/api/v2/";
 export const TALLY_GRAPHQL_ENDPOINT = "https://api.tally.xyz/query";
 export const WEBACY_API_ENDPOINT = "https://api.webacy.com";
+export const PHI_API_ENDPOINT = "https://graph-api.phi.blue/graphql"
 
 // Unified fetcher function
 export const customFetcher = async (config) => {
