@@ -113,7 +113,7 @@ export const QUERY_FARCASTER_STATS = gql`
 
 // Philand Widget
 export const QUERY_PHILAND_INFO = gql`
-  query QUERY_PHILAND_LIST($name: String!) {
+  query QUERY_PHILAND_LIST($name: String!, $address: String!) {
     philandImage(input: { name: $name, transparent: true }) {
       imageurl
     }
@@ -121,6 +121,12 @@ export const QUERY_PHILAND_INFO = gql`
       data {
         title
         url
+      }
+    }
+    phiRank(input: { address: $address }) {
+      data {
+        rank
+        tokenid
       }
     }
   }

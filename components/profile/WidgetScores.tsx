@@ -7,11 +7,11 @@ import { useDispatch } from "react-redux";
 import { WidgetGitcoin } from "./WidgetGitcoin";
 import { updateScoresWidget } from "../state/widgets/reducer";
 import { WidgetTalent } from "./WidgetTalent";
+import WidgetPhiland from "./WidgetPhiland";
 
 const RenderWidgetScores = ({
   profile,
   states,
-  farcasterHandle,
   openModal,
 }) => {
   const dispatch = useDispatch();
@@ -32,11 +32,15 @@ const RenderWidgetScores = ({
         render: () => <WidgetTalent openModal={openModal} profile={profile} />,
       },
       {
+        key: WidgetType.talent,
+        render: () => <WidgetPhiland openModal={openModal} profile={profile} />,
+      },
+      {
         key: WidgetType.webacy,
         render: () => <WidgetWebacy address={profile.address} />,
       },
     ];
-  }, [profile.address, farcasterHandle]);
+  }, [profile, openModal]);
   const childWidgets = useMemo(
     () => [
       states[WidgetType.degenscore],

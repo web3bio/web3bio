@@ -3,14 +3,16 @@ import { useEffect, memo } from "react";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
 import { useQuery } from "@apollo/client";
-import { WidgetType } from "../utils/widgets";
+import { WidgetInfoMapping, WidgetType } from "../utils/widgets";
 import { updatePhilandWidget } from "../state/widgets/reducer";
 import { QUERY_PHILAND_INFO } from "../utils/queries";
+import Link from "next/link";
 
-const RenderWidgetPhiland = ({ domain, openModal }) => {
+const RenderWidgetPhiland = ({ profile, openModal }) => {
   const { data, loading, error } = useQuery(QUERY_PHILAND_INFO, {
     variables: {
-      name: domain,
+      name: profile.identity,
+      address: profile.address,
     },
     context: {
       clientName: WidgetType.philand,
@@ -34,41 +36,47 @@ const RenderWidgetPhiland = ({ domain, openModal }) => {
   //   console.log("Phi:", data);
   // }
 
-  return (
-    <div className="profile-widget-half" id={WidgetType.philand}>
-      <div
-        className="profile-widget profile-widget-philand"
-        onClick={() =>
-          openModal({
-            imageurl: data?.philandImage?.imageurl,
-            links: data?.philandLink?.data?.filter((x) => x.title && x.url),
-          })
-        }
-      >
-        <div className="profile-widget-header">
-          <h2 className="profile-widget-title">
-            <span className="emoji-large mr-2">🏝️ </span>
-            Phi Land
-          </h2>
-          <h3 className="text-assistive">
-            Phi is a new Web3 world created from ENS domains & On-Chain
-            Activity, enabling the easy visualization of On-Chain Identities,
-            currently built on Polygon. Virtually interact with crypto protocols
-            from around the Ethereum ecosystem.
-          </h3>
-        </div>
-        <div className="profile-widget-body">
-          <Image
-            className="img-philand"
-            src={data?.philandImage?.imageurl}
-            width={0}
-            height={0}
-            alt={"Phi Land"}
-            style={{ height: "auto", width: "100%" }}
-          />
-        </div>
+  return loading ? (
+    <></>
+  ) : (
+    <Link
+      href={`https://land.philand.xyz/${profile.address}`}
+      className="profile-widget profile-widget-webacy"
+      target="_blank"
+    >
+      <div className="profile-widget-header">
+        <h2 className="profile-widget-title">
+          <span className="emoji-large mr-2">
+            {WidgetInfoMapping(WidgetType.philand).icon}{" "}
+          </span>
+          {WidgetInfoMapping(WidgetType.philand).title}{" "}
+        </h2>
       </div>
-    </div>
+
+      <div className="profile-widget-body"></div>
+
+      <div className="profile-widget-footer">
+        <div className="widget-score-title">
+          {Number(data?.overallRisk).toFixed(2)}
+          <div
+            className={`widget-score-label ${
+              data?.high > 0
+                ? "high-risk"
+                : data?.medium > 0
+                ? "medium-risk"
+                : "low-risk"
+            }`}
+          >
+            {data?.high > 0
+              ? "High Risk"
+              : data?.medium > 0
+              ? "Medium Risk"
+              : "Low Risk"}
+          </div>
+        </div>
+        <div className="widget-score-subtitle">Phi Rank </div>
+      </div>
+    </Link>
   );
 };
 
