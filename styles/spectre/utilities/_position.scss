@@ -40,6 +40,11 @@
   justify-content: center;
 }
 
+.justify-between {
+  display: flex;
+  justify-content: space-between;
+}
+
 // Spacing
 @include margin-variant(auto, auto);
 

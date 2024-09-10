@@ -17,6 +17,7 @@ import {
   regexSolana,
   regexSpaceid,
   regexUnstoppableDomains,
+  regexBasenames,
 } from "./regexp";
 
 // Empty for Twitter and Farcaster
@@ -65,6 +66,12 @@ export const DefaultSearchSuffix = [
 ];
 
 export const fuzzyDomainSuffix = [
+  {
+    key: PlatformType.basenames,
+    icon: SocialPlatformMapping(PlatformType.basenames).icon,
+    match: regexBasenames,
+    suffixes: ["base"],
+  },
   {
     key: PlatformType.ens,
     icon: SocialPlatformMapping(PlatformType.ens).icon,
@@ -213,13 +220,13 @@ export const getSearchSuggestions = (query: string) => {
     (isQuerySplit(query) && !isLastDot)
   ) {
     if (isLastDot) return [];
-
     const suffix = matchQuery(query, query.split(".").length - 1);
+
     return fuzzyDomainSuffix
       .filter(
         (x) =>
           x.match.test(query) ||
-          (x.suffixes && x.suffixes.some((s) => s.startsWith(suffix)))
+          (x.suffixes && x.suffixes.some((s) => s.startsWith(suffix))),
       )
       .flatMap((x) => {
         if (x.suffixes) {
@@ -230,6 +237,15 @@ export const getSearchSuggestions = (query: string) => {
                 key: x.key,
                 icon: x.icon,
                 label: query.replace(`.${suffix}`, "") + "." + matchedSuffix,
+                system: PlatformSystem.web3,
+              },
+            ];
+          } else if (x.key === PlatformType.basenames) {
+            return [
+              {
+                key: PlatformType.basenames,
+                icon: SocialPlatformMapping(PlatformType.basenames).icon,
+                label: query.split(".")[0] + ".base.eth",
                 system: PlatformSystem.web3,
               },
             ];

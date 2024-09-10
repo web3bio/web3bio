@@ -3,7 +3,7 @@ import Link from "next/link";
 import SVG from "react-inlinesvg";
 import Clipboard from "react-clipboard.js";
 import { ProfileInterface } from "../utils/types";
-import { formatText, colorMod } from "../utils/utils";
+import { formatText, colorMod, uglify } from "../utils/utils";
 import { Avatar } from "../shared/Avatar";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 
@@ -20,9 +20,10 @@ export default function ProfileCard({
   simple,
   classNames,
 }: ProfileCardProps) {
-  const relatedPath = `${data?.identity}${
-    data?.platform.toLowerCase() === PlatformType.farcaster ? ".farcaster" : ""
-  }`;
+  const relatedPath = uglify(
+    data?.identity,
+    data?.platform?.toLocaleLowerCase()
+  );
   const [isCopied, setIsCopied] = useState(false);
   const onCopySuccess = () => {
     setIsCopied(true);
@@ -51,11 +52,10 @@ export default function ProfileCard({
                 style={{
                   ["--badge-primary-color" as string]:
                     SocialPlatformMapping(data?.platform).color || "#000",
-                  ["--badge-bg-color" as string]:
-                    colorMod(
-                      SocialPlatformMapping(data?.platform)?.color,
-                      90
-                    ),
+                  ["--badge-bg-color" as string]: colorMod(
+                    SocialPlatformMapping(data?.platform)?.color,
+                    90
+                  ),
                 }}
                 title={SocialPlatformMapping(data?.platform).label}
               >
@@ -87,7 +87,11 @@ export default function ProfileCard({
             >
               {formatText(data?.address || data?.identity)}
               <SVG
-                src={isCopied ? "../icons/icon-check.svg" : "../icons/icon-copy.svg"}
+                src={
+                  isCopied
+                    ? "../icons/icon-check.svg"
+                    : "../icons/icon-copy.svg"
+                }
                 width={18}
                 height={18}
                 className="action"

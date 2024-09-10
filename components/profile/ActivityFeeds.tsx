@@ -58,7 +58,7 @@ const RenderActivityFeeds = (props) => {
     memoizedData.forEach((feed) => {
       feed.actions.forEach((action) => {
         const metadata = action.metadata;
-        if (metadata) {
+        if ([feed.network, metadata.address, metadata.id].every((x) => !!x)) {
           const id = `${feed.network}.${metadata.address}.${metadata.id}`;
           uniqueIds.add(id);
         }

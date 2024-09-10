@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 
 const TIPS = [
   { text: "Coffee", emoji: "☕️" },
@@ -9,13 +9,18 @@ const TIPS = [
 ] as const;
 
 export const useTipEmoji = () => {
-  const { text, emoji } = useMemo(() => {
+  const [tipObject, setTipObject] = useState("");
+  const [tipEmoji, setTipEmoji] = useState("");
+
+  useEffect(() => {
     const randomIndex = Math.floor(Math.random() * TIPS.length);
-    return TIPS[randomIndex];
+    const { text, emoji } = TIPS[randomIndex];
+    setTipObject(text);
+    setTipEmoji(emoji);
   }, []);
 
   return {
-    tipObject: text,
-    tipEmoji: emoji,
+    tipObject,
+    tipEmoji,
   };
 };

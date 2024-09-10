@@ -1,8 +1,12 @@
 // Menus
 .menu {
-  @include shadow-variant(.1rem);
   background: $bg-color-light;
   border-radius: $border-radius;
+  box-shadow:
+      0 .05rem .1rem hsl(0deg 0% 0% / 0.075),
+      0 .1rem .2rem hsl(0deg 0% 0% / 0.075),
+      0 .2rem .8rem hsl(0deg 0% 0% / 0.075),
+      0 .4rem 1.6rem hsl(0deg 0% 0% / 0.075);
   color: $dark-color;
   flex-direction: column;
   font-size: .7rem;
@@ -11,7 +15,7 @@
   margin: 0;
   min-width: $control-width-xs;
   padding: $unit-2;
-  transform: translateY($layout-spacing-sm);
+  transform: translateY(0);
   z-index: $zindex-3;
 
   &.menu-nav {

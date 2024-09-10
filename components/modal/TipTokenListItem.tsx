@@ -11,7 +11,7 @@ export default function TokenListItem(props) {
   return (
     <li className="menu-item dropdown-menu-item">
       <div
-        className="chip"
+        className="chip chip-hover"
         onClick={(e) => {
           onSelect(e, token);
         }}

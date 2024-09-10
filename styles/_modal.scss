@@ -13,8 +13,13 @@
 }
 
 .modal-container {
+  animation: slide-down .2s ease 1;
   background: $light-color;
   border-radius: 1rem;
+  box-shadow:
+    0 .05rem .2rem hsl(0deg 0% 0% / 0.05),
+    0 .1rem .8rem hsl(0deg 0% 0% / 0.05),
+    0 .2rem 1.6rem hsl(0deg 0% 0% / 0.05);
   display: flex;
   flex-direction: column;
   height: calc(100vh - 4rem);
@@ -69,9 +74,11 @@
   &.modal-media-container,
   &.modal-search-container {
     background: transparent;
+    box-shadow: none;
     height: 100%;
     max-height: 100vh;
     max-width: $size-xl;
+    overflow: initial;
     padding: 2rem;
     position: relative;
     width: 100%;
@@ -366,7 +373,6 @@
     display: flex;
     flex-direction: column;
     height: auto;
-    max-height: calc(100vh - 4rem);
     max-width: 24rem;
     padding: 1.5rem 2rem;
     width: calc(100vw - .5rem);
@@ -375,30 +381,43 @@
       position: absolute;
     }
 
-    .network-badge {
-      position: absolute;
-      right: .8rem;
-      bottom: .25rem;
-      display: flex;
-      align-items: center;
-      gap: .2rem;
-      font-size: .5rem;
-      color: #999;
-
-      .green-dot {
-        background: #73e175;
-        width: .25rem;
-        height: .25rem;
-        border-radius: 99%;
-      }
-    }
-
     .modal-body {
+      overflow-y: unset;
+
       .form-hero {
         align-items: center;
         display: flex;
         flex-direction: column;
         margin: 1rem auto;
+      }
+
+      .chip {
+        cursor: default;
+
+        .chip-content {
+          margin-left: .4rem;
+        }
+
+        &.chip-button {
+          background: lighten($bg-color, 3%);
+          border: .05rem solid rgba($gray-color, .05);
+        }
+
+        &.chip-hover {
+          cursor: pointer;
+
+          &:focus,
+          &:hover {
+            background: rgba($color: $dark-color, $alpha: 0.05);
+            color: $primary-color;
+          }
+
+          &:active,
+          &.active {
+            background: rgba($color: $dark-color, $alpha: 0.075);
+            color: $primary-color;
+          }
+        }
       }
 
       .amount-selector {
@@ -409,132 +428,142 @@
         gap: .5rem;
         margin-top: 1rem;
 
-        .btn-price::before {
-          content: '$';
-          margin-right: .2rem;
+        .btn-price {
+          &::before {
+            content: '$';
+            margin-right: .05rem;
+          }
         }
 
-        .form-input {
-          width: 4rem;
+        .input-price {
+          position: relative;
+
+          .input-price-label {
+            color: $gray-color;
+            left: 0;
+            line-height: .8rem;
+            padding: .5rem;
+            position: absolute;
+            top: 0;
+            z-index: 9;
+          }
+
+          .form-input {
+            padding-left: 1rem;
+            width: 4.5rem;
+
+            &:focus {
+              & + .input-price-label {
+                color: $primary-color;
+              }
+            }
+  
+            &:not(:placeholder-shown) {
+              @include control-shadow();
+              border-color: $primary-color;
+
+              & + .input-price-label {
+                color: $primary-color;
+              }
+  
+              &:invalid {
+                border-color: $error-color;
+                box-shadow: none;
+  
+                &:focus {
+                  @include control-shadow($error-color);
+                  background: lighten($error-color, 53%);
+                }
+  
+                & + .form-input-hint {
+                  color: $error-color;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .wallet-container {
+        align-items: center;
+        display: flex;
+
+        .dropdown-toggle {
+          align-items: center;
+          display: flex;
+          gap: .25rem;
+          margin-left: .25rem;
+        }
+
+        .menu {
+          font-size: .65rem;
+          top: 90%;
         }
       }
 
       .token-selector-container {
         .token-selector {
+          display: inline-flex;
+          position: relative;
           width: 100%;
-        }
 
-        .menu-cover {
-          background: transparent;
-          bottom: 0;
-          display: none;
-          left: 0;
-          position: absolute;
-          right: 0;
-          top: 0;
-          z-index: 99990;
+          &.active .menu {
+            display: flex;
+          }
 
-          &.active {
-            display: block;
+          .menu {
+            animation: slide-up .2s ease 1;
+            bottom: 120%;
+            display: none;
+            max-height: 50vh;
+            overflow-y: auto;
+            position: absolute;
+            top: auto;
           }
         }
 
         .menu {
-          max-height: 17rem;
-          min-width: 20rem;
-          z-index: 99999;
+          bottom: 0;
+          height: 15rem;
+          left: -.5rem;
+          min-width: 100%;
+          padding: .5rem;
+          right: -.5rem;
+          z-index: 9999;
 
-          .chip {
-            .chip-content {
-              margin-left: .5rem;
-            }
-
-            &:focus,
-            &:hover {
-              background: rgba($color: $dark-color, $alpha: 0.05);
-              color: $primary-color;
-            }
-
-            &:active,
-            &.active {
-              background: rgba($color: $dark-color, $alpha: 0.075);
-              color: $primary-color;
-            }
+          .menu-item-header {
+            background: $bg-color-light;
+            box-shadow: 0 -.4rem 0 .4rem $bg-color-light;
+            font-weight: 500;
+            margin-top: 0;
+            padding: .25rem;
+            position: sticky;
+            top: 0;
+            z-index: 99;
           }
         }
       }
+    }
 
-      .currency-input-container {
-        width: 100%;
-        position: relative;
-
-        .token-selector {
-          position: absolute;
-          top: 50%;
-          width: 5rem;
-          transform: translateY(-50%);
-          right: 0rem;
-          border-radius: .5rem;
-
-          .btn {
-            width: 100%;
-            line-height: 1;
-            height: unset;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-          }
-
-          .btn-primary {
-            font-size: .65rem;
-            padding: .3rem .5rem;
-            border-radius: .5rem;
-          }
-        }
-      }
-
-      .balance-text {
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
-        margin: -.5rem 0;
-        font-size: .5rem;
-        color: rgba($dark-color, .5)
-      }
-
-      .common-input {
-        width: 100%;
-        outline: none;
-        border: 1px solid #cecece;
-        padding: .25rem .5rem;
-        font-size: .65rem;
-        font-weight: 400;
-        border-radius: .5rem;
-      }
-
-      .message-input {
-        max-width: 100%;
-        min-width: 100%;
-        max-height: 6rem;
-        min-height: 3rem;
-      }
-
+    .modal-footer {
       .connect-btn {
+        align-items: center;
+        display: flex;
+        gap: .25rem;
         width: 100%;
-      }
 
-      .disabled {
-        user-select: none;
-        pointer-events: none;
-        filter: grayscale(1);
-      }
+        .loading-container {
+          .loading {
+            width: 1rem;
+            height: 1rem;
 
-      .wrong-network {
-        background: #F0415E;
-        border-color: #F0415E;
+            &::after {
+              border-color: #fff;
+              border-right-color: transparent;
+              border-top-color: transparent;
+            }
+          }
 
-        &:hover {
-          box-shadow: 0 0.1rem 1.2rem rgba(#F0415E, .25);
         }
       }
     }
@@ -707,37 +736,37 @@
         height: auto;
         max-width: 100%;
       }
-  
+
       h1 {
         font-size: 1rem;
         font-weight: 700;
       }
-  
+
       h2 {
         font-size: .8rem;
         font-weight: 700;
       }
-  
+
       h3 {
         font-size: .6rem;
         font-weight: 700;
       }
-  
+
       ul,
       ol {
         margin-bottom: 1.2rem;
       }
-  
+
       p {
         margin-bottom: .8rem;
       }
-  
+
       li {
         p {
           display: inline;
         }
       }
-  
+
       a {
         text-decoration: underline;
       }
@@ -818,7 +847,7 @@
     display: flex;
     height: 80vh;
     gap: 2rem;
-    max-width: $size-xl;
+    max-width: $size-2x;
     padding: 0 1rem;
     width: 100%;
 
@@ -840,6 +869,7 @@
       }
 
       .preview-image {
+
         .img-responsive,
         .video-responsive {
           max-width: 100vw;
@@ -999,7 +1029,7 @@
 
       p {
         margin-bottom: 1rem;
-        
+
         &:last-child {
           margin-bottom: 0;
         }

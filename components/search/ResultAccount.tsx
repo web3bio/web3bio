@@ -5,6 +5,7 @@ import { PlatformType } from "../utils/platform";
 import Modal from "../modal/Modal";
 import useModal, { ModalType } from "../hooks/useModal";
 import { useProfiles } from "../hooks/useReduxProfiles";
+import { Network } from "../utils/network";
 
 const getNSAddress = (item) => {
   const _chain =
@@ -35,6 +36,10 @@ const RenderAccount = (props) => {
       {
         network: PlatformType.solana,
         ns: PlatformType.sns,
+      },
+      {
+        network: Network.base,
+        ns: PlatformType.basenames,
       },
     ];
     const _identityGraph = JSON.parse(JSON.stringify(identityGraph));
@@ -127,22 +132,25 @@ const RenderAccount = (props) => {
     return _resolved;
   }, [identityGraph, platform, graphTitle]);
 
-  const resolveSources = useCallback((id) => {
-    return identityGraph.edges.reduce((pre, x) => {
-      if (x.target === id && x.dataSource && !pre.includes(x.dataSource)) {
-        pre.push(x.dataSource);
-      }
-      return pre;
-    }, []);
-  }, [identityGraph.edges]);
+  const resolveSources = useCallback(
+    (id) => {
+      return identityGraph.edges.reduce((pre, x) => {
+        if (x.target === id && x.dataSource && !pre.includes(x.dataSource)) {
+          pre.push(x.dataSource);
+        }
+        return pre;
+      }, []);
+    },
+    [identityGraph.edges]
+  );
 
   const handleVisualize = useCallback(() => {
     openModal(ModalType.graph, {
       disableBack: true,
       data: {
-        nodes: identityGraph.nodes?.map(x => ({
+        nodes: identityGraph.nodes?.map((x) => ({
           ...x,
-          profile: profiles.find(i => i?.uuid === x.uuid),
+          profile: profiles.find((i) => i?.uuid === x.uuid),
         })),
         edges: identityGraph.edges,
       },
@@ -150,19 +158,16 @@ const RenderAccount = (props) => {
       title: graphTitle,
     });
   }, [identityGraph, resolvedListData, graphTitle, profiles, openModal]);
-  
+
   return (
     <>
       <div className="search-result">
         <div className="search-result-header">
           <div className="search-result-text text-gray">
-            Identity Graph results:
+            Identity Graph Results
           </div>
           {identityGraph?.nodes.length > 0 && (
-            <button
-              className="btn btn-link btn-sm"
-              onClick={handleVisualize}
-            >
+            <button className="btn btn-link btn-sm" onClick={handleVisualize}>
               <SVG src={"/icons/icon-view.svg"} width={20} height={20} />{" "}
               Visualize
             </button>
