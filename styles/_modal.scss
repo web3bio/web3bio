@@ -373,31 +373,12 @@
     display: flex;
     flex-direction: column;
     height: auto;
-    max-height: calc(100vh - 4rem);
     max-width: 24rem;
     padding: 1.5rem 2rem;
     width: calc(100vw - .5rem);
 
     .modal-actions {
       position: absolute;
-    }
-
-    .network-badge {
-      position: absolute;
-      right: .8rem;
-      bottom: .25rem;
-      display: flex;
-      align-items: center;
-      gap: .2rem;
-      font-size: .5rem;
-      color: #999;
-
-      .green-dot {
-        background: #73e175;
-        width: .25rem;
-        height: .25rem;
-        border-radius: 99%;
-      }
     }
 
     .modal-body {
@@ -504,21 +485,20 @@
       }
 
       .wallet-container {
-        display: flex;
         align-items: center;
+        display: flex;
 
         .dropdown-toggle {
-          display: flex;
           align-items: center;
+          display: flex;
           gap: .25rem;
           margin-left: .25rem;
         }
 
         .menu {
-          top: 90%;
           font-size: .65rem;
+          top: 90%;
         }
-
       }
 
       .token-selector-container {
@@ -563,47 +543,12 @@
           }
         }
       }
-
-      .balance-text {
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
-        margin: -.5rem 0;
-        font-size: .5rem;
-        color: rgba($dark-color, .5)
-      }
-
-      .common-input {
-        width: 100%;
-        outline: none;
-        border: 1px solid #cecece;
-        padding: .25rem .5rem;
-        font-size: .65rem;
-        font-weight: 400;
-        border-radius: .5rem;
-      }
-
-      .message-input {
-        max-width: 100%;
-        min-width: 100%;
-        max-height: 6rem;
-        min-height: 3rem;
-      }
-
-      .wrong-network {
-        background: #F0415E;
-        border-color: #F0415E;
-
-        &:hover {
-          box-shadow: 0 0.1rem 1.2rem rgba(#F0415E, .25);
-        }
-      }
     }
 
     .modal-footer {
       .connect-btn {
-        display: flex;
         align-items: center;
+        display: flex;
         gap: .25rem;
         width: 100%;
 
@@ -611,6 +556,7 @@
           .loading {
             width: 1rem;
             height: 1rem;
+
             &::after {
               border-color: #fff;
               border-right-color: transparent;
