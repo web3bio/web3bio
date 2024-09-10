@@ -5,7 +5,6 @@ import { WagmiProvider, http } from "wagmi";
 import { mainnet, polygon, optimism, arbitrum, base, zora } from "wagmi/chains";
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 import {
-  injectedWallet,
   rainbowWallet,
   metaMaskWallet,
   coinbaseWallet,
@@ -14,6 +13,7 @@ import {
   okxWallet,
   imTokenWallet,
   binanceWallet,
+  trustWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 
 export const config = getDefaultConfig({
@@ -22,19 +22,17 @@ export const config = getDefaultConfig({
   chains: [mainnet, polygon, optimism, arbitrum, base, zora],
   wallets: [
     {
-      groupName: "Injected",
-      wallets: [injectedWallet, metaMaskWallet],
-    },
-    {
       groupName: "Recommend",
       wallets: [
         zerionWallet,
+        metaMaskWallet,
         okxWallet,
         coinbaseWallet,
         rainbowWallet,
         imTokenWallet,
         binanceWallet,
         walletConnectWallet,
+        trustWallet,
       ],
     },
   ],
