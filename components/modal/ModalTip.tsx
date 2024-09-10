@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import SVG from "react-inlinesvg";
 import {
   useAccount,
@@ -10,37 +10,24 @@ import {
 } from "wagmi";
 import { useCurrencyAllowance } from "../hooks/useCurrency";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { erc20Abi, formatEther, parseEther } from "viem";
+import { erc20Abi, formatUnits, parseEther, parseUnits } from "viem";
 import { chainIdToNetwork, networkByIdOrName } from "../utils/network";
 import { Loading } from "../shared/Loading";
 import { Avatar } from "../shared/Avatar";
 import toast from "react-hot-toast";
-import TokenSelector from "./TokenSelector";
+import TokenSelector from "./TipTokenSelector";
 import { Token } from "../utils/types";
 import useSWR from "swr";
 import { formatText } from "../utils/utils";
 import { FIREFLY_PROXY_DEBANK_ENDPOINT, ProfileFetcher } from "../utils/api";
+import WalletChip from "./TipWalletChip";
+import { emojiBlast } from "emoji-blast";
 
 enum TipStatus {
   success = 1,
   common = 0,
   failed = 2,
 }
-
-const donateSuggest = [
-  {
-    key: 1,
-    text: "1",
-  },
-  {
-    key: 3,
-    text: "3",
-  },
-  {
-    key: 5,
-    text: "5",
-  },
-];
 
 const isNativeToken = (id: string) => {
   return !id.startsWith("0x");
@@ -51,13 +38,13 @@ const useTokenList = (address) => {
     address
       ? `${FIREFLY_PROXY_DEBANK_ENDPOINT}/v1/user/all_token_list?id=${address}&chain_ids=eth,matic,op,arb,base,zora&is_all=false`
       : null,
-    ProfileFetcher,
+    ProfileFetcher
   );
   return {
     data:
       data
         ?.sort(
-          (a, b) => Number(isNativeToken(b.id)) - Number(isNativeToken(a.id)),
+          (a, b) => Number(isNativeToken(b.id)) - Number(isNativeToken(a.id))
         )
         .filter((x) => x.is_verified) || [],
     isLoading: isLoading,
@@ -70,83 +57,151 @@ export default function TipModalContent(props) {
   const [customPrice, setCustomPrice] = useState("");
   const [selectPrice, setSelectPrice] = useState(3);
   const chainId = useChainId();
-  const { switchChainAsync, isPending } = useSwitchChain();
+  const { switchChainAsync, isPending: isSwitchingChain } = useSwitchChain();
   const [status, setStatus] = useState(TipStatus.common);
   const { address } = useAccount();
   const { data: tokenList, isLoading } = useTokenList(address);
-  const [token, setToken] = useState<Token | any>();
+  const [token, setToken] = useState<Token | any>(null);
   const amount = useMemo(() => {
     const donatePrice = customPrice || selectPrice;
     if (!token?.price) return 0;
     return Number((Number(donatePrice) / Number(token.price)).toFixed(5));
   }, [token, customPrice, selectPrice]);
+  const customInput = useRef<HTMLInputElement>(null);
+
+  // config ---------- start
   const {
     sendTransaction,
-    data: txData,
-    isPending: txPrepareLoading,
-    error: txPrepareError,
+    data: donateTx,
+    isPending: donatePrepareLoading,
+    error: donatePrepareError,
   } = useSendTransaction();
 
   const {
-    writeContract: onCallContract,
-    data: contractTx,
-    isPending: contractPrepareLoading,
-    error: contractPrepareError,
+    writeContract: onCallApprove,
+    data: approveTx,
+    isPending: approvePrepareLoading,
+    error: ApprovePrepareError,
   } = useWriteContract();
 
-  const { isLoading: approveLoading, status: approveStatus } =
+  const { data: approveData, isLoading: approveLoading } =
     useWaitForTransactionReceipt({
-      hash: contractTx,
+      hash: approveTx,
     });
 
-  const { isLoading: txLoading, status: txStatus } =
+  const { data: donateData, isLoading: donateLoading } =
     useWaitForTransactionReceipt({
-      hash: txData,
+      hash: donateTx,
     });
+  // config ---------- end
+
+  // status ---------- start
   useEffect(() => {
-    if (txPrepareError || contractPrepareError) {
-      toast.error("Transaction Rejected");
+    if (donatePrepareError || ApprovePrepareError) {
+      toast.custom(
+        <div className="toast">
+          <SVG
+            src="../icons/icon-wallet.svg"
+            width={24}
+            height={24}
+            className="action mr-2"
+          />
+          Transaction rejected
+        </div>
+      );
     }
-  }, [txPrepareError, contractPrepareError]);
+  }, [donatePrepareError, ApprovePrepareError]);
+
   useEffect(() => {
-    if (approveStatus === "success") {
-      toast.success(`Successfully approved ${amount} ${token.symbol}`);
+    if (status !== TipStatus.common) return;
+    if (approveData?.status === "success") {
+      toast.custom(
+        <div className="toast">
+          <SVG
+            src="../icons/icon-wallet.svg"
+            width={24}
+            height={24}
+            className="action mr-2"
+          />
+          Successfully approved {amount} {token.symbol}
+        </div>
+      );
     }
-    if (txStatus === "success") {
-      toast.success(
-        `Successfully tipped ${profile.displayName} for ${amount} ${token.symbol}`,
+    if (approveData?.status === "reverted") {
+      toast.custom(
+        <div className="toast">
+          <SVG
+            src="../icons/icon-wallet.svg"
+            width={24}
+            height={24}
+            className="action mr-2"
+          />
+          Approve {amount} {token.symbol} failed
+        </div>
+      );
+    }
+    if (donateData?.status === "success") {
+      toast.custom(
+        <div className="toast">
+          <SVG
+            src="../icons/icon-wallet.svg"
+            width={24}
+            height={24}
+            className="action mr-2"
+          />
+          Successfully tipped {profile.displayName} with {amount} {token.symbol}
+        </div>
       );
       setStatus(TipStatus.success);
+
+      emojiBlast({
+        emojis: [tipEmoji],
+        physics: {
+          fontSize: { max: 36, min: 24 },
+          gravity: 0.3,
+          initialVelocities: {
+            rotation: { max: -14, min: -20 },
+          },
+          rotationDeceleration: 1.01,
+        },
+        position: {
+          x: innerWidth / 2,
+          y: innerHeight / 2,
+        },
+      });
     }
-    if (txStatus === "error") {
+    if (donateData?.status === "reverted") {
+      toast.custom(
+        <div className="toast">
+          <SVG
+            src="../icons/icon-wallet.svg"
+            width={24}
+            height={24}
+            className="action mr-2"
+          />
+          Tip to {profile.displayName} for {amount} {token.symbol} failed
+        </div>
+      );
       setStatus(TipStatus.failed);
     }
+  }, [status, donateData, approveData]);
+  // status ---------- end
 
-    if (status !== TipStatus.common) {
-      setTimeout(() => {
-        setStatus(TipStatus.common);
-      }, 3000);
-    }
-
-    if (!tokenList?.length) {
-      setToken(null);
-    }
-  }, [txStatus, approveStatus, status, tokenList]);
   const { data: allowance } = useCurrencyAllowance(token?.id!);
-
   const RenderButton = useMemo(() => {
     const isBalanceLow = amount >= Number(token?.amount);
-    const isAllowanceLow = Number(formatEther(allowance || 0n)) < amount;
+    const isAllowanceLow =
+      Number(formatUnits(allowance || 0n, token?.decimals || 18)) < amount;
     const isButtonLoading =
-      txLoading ||
-      txPrepareLoading ||
+      donateLoading ||
+      donatePrepareLoading ||
       approveLoading ||
-      contractPrepareLoading ||
-      isPending;
-    contractPrepareLoading;
+      approvePrepareLoading ||
+      isSwitchingChain;
 
     const shouldChangeNetwork =
       chainIdToNetwork(chainId, true) !== token?.chain;
+
     const buttonHandle = () => {
       if (chainIdToNetwork(chainId, true) !== token?.chain) {
         return switchChainAsync({
@@ -160,26 +215,33 @@ export default function TipModalContent(props) {
           value: parseEther(amount.toString()),
         });
       if (isAllowanceLow)
-        return onCallContract({
+        return onCallApprove({
+          chainId: chainId,
           abi: erc20Abi,
           address: token?.id!,
           functionName: "approve",
           args: [token?.id!, parseEther(amount.toString())],
         });
 
-      return onCallContract({
+      return onCallApprove({
+        chainId: chainId,
         abi: erc20Abi,
         address: token?.id!,
         functionName: "transfer",
-        args: [profile.address, parseEther(amount.toString())],
+        args: [
+          profile.address,
+          parseUnits(amount.toString(), token?.decimals || 18),
+        ],
       });
     };
     const ButtonText = (() => {
       if (shouldChangeNetwork) return `Change Network`;
       if (!amount || amount <= 0) return "Invalid Amount";
       if (isBalanceLow) return "Insufficient Balance";
-      if (isButtonLoading) return "Loading...";
-      if (!tokenList?.length) return "No Token Detected";
+      if (donateLoading || approveLoading) return "Waiting for Transaction...";
+      if (donatePrepareLoading || approvePrepareLoading)
+        return "Confirm in Your Wallet...";
+      if (!tokenList?.length) return "No Tokens Detected";
       if (!isNativeToken(token?.id) && isAllowanceLow)
         return `Approve ${amount} ${token?.symbol}`;
 
@@ -189,12 +251,19 @@ export default function TipModalContent(props) {
       <ConnectButton.Custom>
         {({ account, chain, openChainModal, openConnectModal, mounted }) => {
           const connected = mounted && account && chain;
-          const isButtonDisabled =
-            !shouldChangeNetwork &&
-            (isBalanceLow ||
-              isButtonLoading ||
-              !tokenList?.length ||
-              amount <= 0);
+          const isButtonDisabled = (() => {
+            if (shouldChangeNetwork) {
+              return isSwitchingChain;
+            } else {
+              return (
+                isBalanceLow ||
+                isButtonLoading ||
+                !tokenList?.length ||
+                amount <= 0
+              );
+            }
+          })();
+
           return (
             <>
               {(() => {
@@ -222,15 +291,11 @@ export default function TipModalContent(props) {
                 return (
                   <div
                     onClick={buttonHandle}
-                    className={`btn btn-primary donate-btn ${
+                    className={`btn btn-primary connect-btn ${
                       isButtonDisabled ? "disabled" : ""
                     }`}
                   >
-                    {isButtonLoading && (
-                      <div className="loading-btn">
-                        <Loading />
-                      </div>
-                    )}
+                    {isButtonLoading && <Loading />}
                     {ButtonText}
                   </div>
                 );
@@ -246,11 +311,14 @@ export default function TipModalContent(props) {
     token,
     allowance,
     chainId,
-    txLoading,
-    txPrepareLoading,
-    contractPrepareLoading,
+    donateLoading,
+    donatePrepareLoading,
+    approvePrepareLoading,
+    onCallApprove,
+    sendTransaction,
+    switchChainAsync,
     approveLoading,
-    isPending,
+    isSwitchingChain,
   ]);
 
   return (
@@ -271,42 +339,45 @@ export default function TipModalContent(props) {
                 {tipEmoji}
               </label>
               <div className="amount-selector">
-                {donateSuggest.map((x) => (
+                {[1, 3, 5].map((x) => (
                   <div
-                    key={x?.text}
+                    key={x}
                     className={`btn btn-text btn-price ${
-                      x?.key === selectPrice && !disablePriceBtn
-                        ? "btn-primary"
-                        : ""
+                      x === selectPrice && !disablePriceBtn ? "btn-primary" : ""
                     }`}
                     onClick={() => {
                       setDisablePriceBtn(false);
-                      setSelectPrice(x.key);
+                      setSelectPrice(x);
                       setCustomPrice("");
                     }}
                   >
-                    {x.text}
+                    {x}
                   </div>
                 ))}
 
-                <input
-                  type="text"
-                  className="form-input"
-                  value={customPrice}
-                  placeholder="Custom"
-                  pattern="^\d*$"
-                  onChange={(e) => {
-                    let value = e.target.value;
-                    if (!/^[0-9]*\.?[0-9]*$/.test(value)) {
-                      value = value.slice(0, -1);
-                    }
-                    if (!disablePriceBtn) {
-                      setDisablePriceBtn(true);
-                    }
-                    setCustomPrice(e.target.value);
-                  }}
-                  onFocus={(e) => e.target.select()}
-                />
+                <div className="input-price">
+                  <input
+                    ref={customInput}
+                    type="text"
+                    id="input-price-custom"
+                    className="form-input"
+                    value={customPrice}
+                    placeholder="Custom"
+                    pattern="^\d*\.?\d*$"
+                    onChange={(e) => {
+                      let value = e.target.value;
+                      if (!/^[0-9]*\.?[0-9]*$/.test(value)) {
+                        value = value.slice(0, -1);
+                      }
+                      if (!disablePriceBtn) {
+                        setDisablePriceBtn(true);
+                      }
+                      setCustomPrice(e.target.value);
+                    }}
+                    onFocus={(e) => e.target.select()}
+                  />
+                  <label className="input-price-label" htmlFor="input-price-custom">$</label>
+                </div>
               </div>
             </div>
 
@@ -343,18 +414,45 @@ export default function TipModalContent(props) {
             </div>
 
             <div className="form-group">
-              <div className="col-12 col-sm-12">
+              <div className="col-12 col-sm-12 justify-between">
                 <label className="form-label">Pay with</label>
+                <WalletChip />
               </div>
               <div className="col-12 col-sm-12">
-                <TokenSelector
-                  isLoading={isLoading}
-                  selected={token}
-                  list={tokenList}
-                  value={amount}
-                  disabled={txLoading || txPrepareLoading || !tokenList?.length}
-                  onSelect={(v) => setToken(v)}
-                />
+                {address ? (
+                  <TokenSelector
+                    isLoading={isLoading}
+                    selected={token}
+                    list={tokenList}
+                    value={amount}
+                    disabled={
+                      donateLoading ||
+                      donatePrepareLoading ||
+                      !tokenList?.length
+                    }
+                    onSelect={(v) => setToken(v)}
+                  />
+                ) : (
+                  <div className="chip chip-full chip-button">
+                    <div className="chip-icon">
+                      <div className="avatar">
+                        <SVG
+                          title={"Change Token"}
+                          height={20}
+                          width={20}
+                          color={"#121212"}
+                          src={"/icons/icon-wallet.svg"}
+                        />
+                      </div>
+                    </div>
+                    <div className="chip-content">
+                      <div className="chip-title">...</div>
+                      <div className="chip-subtitle text-gray">
+                        Connect wallet to select token
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -362,14 +460,29 @@ export default function TipModalContent(props) {
       ) : (
         // Tips status
         <div className="modal-body">
-          {status === TipStatus.success
-            ? `Tipped ${profile.displayName} with ${amount} ${token.symbol} Successfully!`
-            : `Error Occurs`}
+          <div className="empty">
+            <div className="empty-icon h1" style={{ fontSize: "64px", lineHeight: "64px" }}>
+              {tipEmoji}
+            </div>
+            <p className="empty-title h4">
+              {status === TipStatus.success
+              ? `Apperiate your ${tipObject}`
+              : `Something Went Wrong! `}
+            </p>
+            <p className="empty-subtitle">
+              {status === TipStatus.success
+              ? `Successfully tipped ${profile.displayName} with ${amount} ${token?.symbol}!`
+              : `Please try again.`}
+            </p>
+          </div>
+          
         </div>
       )}
-      <div className="modal-footer">
-        <div className="btn-group btn-group-block">{RenderButton}</div>
-      </div>
+      {status === TipStatus.common && (
+        <div className="modal-footer">
+          <div className="btn-group btn-group-block">{RenderButton}</div>
+        </div>
+      )}
     </>
   );
 }

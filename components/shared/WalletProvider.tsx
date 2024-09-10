@@ -11,7 +11,6 @@ export const config = getDefaultConfig({
   chains: [mainnet, polygon, optimism, arbitrum, base, zora],
   transports: {
     [mainnet.id]: http(),
-    [polygon.id]: http(),
   },
 });
 

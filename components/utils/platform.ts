@@ -252,6 +252,7 @@ export const PLATFORM_DATA: ReadonlyMap<
       label: "Basenames",
       registerlink: "https://www.base.org/name/",
       system: PlatformSystem.web3,
+      urlPrefix: "https://www.base.org/name/",
     },
   ],
   [
@@ -963,7 +964,7 @@ export const PLATFORM_DATA: ReadonlyMap<
 ]);
 
 export const SocialPlatformMapping = (
-  platform: PlatformType,
+  platform: PlatformType
 ): Readonly<SocialPlatform> => {
   return (
     PLATFORM_DATA.get(platform) || { ...DEFAULT_PLATFORM, label: platform }

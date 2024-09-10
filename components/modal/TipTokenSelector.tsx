@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import Image from "next/image";
 import SVG from "react-inlinesvg";
-import TokenListItem from "./TokenListItem";
+import TokenListItem from "./TipTokenListItem";
 import { networkByIdOrName } from "../utils/network";
 
 const getUSDPrice = (amount, price) => {
@@ -44,12 +43,8 @@ export default function TokenSelector(props) {
   }, [selected]);
   return (
     <div className="token-selector-container">
-      <div
-        className={`token-selector dropdown dropdown-top${
-          menuDisplay ? " active" : ""
-        }`}
-      >
-        {isLoading ? (
+      <div className={`token-selector${menuDisplay ? " active" : ""}`}>
+        {isLoading && !list?.length ? (
           <div className="chip chip-full chip-button">
             <div className="chip-icon">
               <div className="avatar">
@@ -65,24 +60,24 @@ export default function TokenSelector(props) {
             <div className="chip-content">
               <div className="chip-title">Loading...</div>
               <div className="chip-subtitle text-gray">
-                Please connect wallet
+                Please wait while loading tokens
               </div>
             </div>
           </div>
-        ) : !list?.length ? null : (
+        ) : (
           <div
-            className="chip chip-full chip-button"
+            className="chip chip-full chip-button chip-hover"
             onClick={(e) => {
               setMenuDisplay(true);
             }}
             tabIndex={0}
           >
             <div className="chip-icon">
-              <Image
+              <img
                 width={32}
                 height={32}
                 className="avatar"
-                src={selected?.logo_url}
+                src={selected?.logo_url || ""}
                 alt={selected?.symbol}
               />
               <div
@@ -118,9 +113,7 @@ export default function TokenSelector(props) {
           </div>
         )}
         <ul className="menu" ref={menu}>
-          <li className="menu-item-header">
-            Select a Token
-          </li>
+          <li className="menu-item-header">Select a Token</li>
           {resolvedList.map((x) => (
             <TokenListItem
               key={`${x.chain}_${x.symbol}`}

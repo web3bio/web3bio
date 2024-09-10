@@ -32,7 +32,13 @@ function RenderProfileBadge(props: RenderProfileBadgeProps) {
   const ref = useRef(null);
   const { data } = useSWR(
     !fetched && remoteFetch && visible && identity && platform
-      ? `${profileAPIBaseURL}/ns/${platform.toLowerCase()}/${identity}`
+      ? `${profileAPIBaseURL}/ns/${platform.toLowerCase()}/${
+          [PlatformType.solana, PlatformType.sns].includes(
+            platform.toLowerCase() as PlatformType
+          )
+            ? identity
+            : identity.toLowerCase()
+        }`
       : null,
     ProfileFetcher,
     { keepPreviousData: true }

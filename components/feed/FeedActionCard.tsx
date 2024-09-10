@@ -259,7 +259,8 @@ function RenderFeedActionCard(props) {
     const ObjectsRender = useMemo(
       () =>
         objects?.filter(Boolean).map((i, idx) => {
-          const idIndex = `${network}.${i.address}.${i.id}`;
+          const idIndex = `${network}.${i.address}.${i.name}`;
+  
           const infoItem = nftInfos?.find(
             (x) => x.nft_id === idIndex.toLowerCase()
           );

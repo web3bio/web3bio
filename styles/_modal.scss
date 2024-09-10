@@ -13,12 +13,13 @@
 }
 
 .modal-container {
+  animation: slide-down .2s ease 1;
   background: $light-color;
   border-radius: 1rem;
   box-shadow:
-      0 .05rem .2rem hsl(0deg 0% 0% / 0.05),
-      0 .1rem .8rem hsl(0deg 0% 0% / 0.05),
-      0 .2rem 1.6rem hsl(0deg 0% 0% / 0.05);
+    0 .05rem .2rem hsl(0deg 0% 0% / 0.05),
+    0 .1rem .8rem hsl(0deg 0% 0% / 0.05),
+    0 .2rem 1.6rem hsl(0deg 0% 0% / 0.05);
   display: flex;
   flex-direction: column;
   height: calc(100vh - 4rem);
@@ -73,9 +74,11 @@
   &.modal-media-container,
   &.modal-search-container {
     background: transparent;
+    box-shadow: none;
     height: 100%;
     max-height: 100vh;
     max-width: $size-xl;
+    overflow: initial;
     padding: 2rem;
     position: relative;
     width: 100%;
@@ -379,10 +382,6 @@
       position: absolute;
     }
 
-    .modal-body {
-      overflow-y: unset;
-    }
-
     .network-badge {
       position: absolute;
       right: .8rem;
@@ -402,6 +401,8 @@
     }
 
     .modal-body {
+      overflow-y: unset;
+
       .form-hero {
         align-items: center;
         display: flex;
@@ -421,16 +422,20 @@
           border: .05rem solid rgba($gray-color, .05);
         }
 
-        &:focus,
-        &:hover {
-          background: rgba($color: $dark-color, $alpha: 0.05);
-          color: $primary-color;
-        }
+        &.chip-hover {
+          cursor: pointer;
 
-        &:active,
-        &.active {
-          background: rgba($color: $dark-color, $alpha: 0.075);
-          color: $primary-color;
+          &:focus,
+          &:hover {
+            background: rgba($color: $dark-color, $alpha: 0.05);
+            color: $primary-color;
+          }
+
+          &:active,
+          &.active {
+            background: rgba($color: $dark-color, $alpha: 0.075);
+            color: $primary-color;
+          }
         }
       }
 
@@ -449,23 +454,101 @@
           }
         }
 
-        .form-input {
-          width: 4rem;
+        .input-price {
+          position: relative;
+
+          .input-price-label {
+            color: $gray-color;
+            left: 0;
+            line-height: .8rem;
+            padding: .5rem;
+            position: absolute;
+            top: 0;
+            z-index: 9;
+          }
+
+          .form-input {
+            padding-left: 1rem;
+            width: 4.5rem;
+
+            &:focus {
+              & + .input-price-label {
+                color: $primary-color;
+              }
+            }
+  
+            &:not(:placeholder-shown) {
+              @include control-shadow();
+              border-color: $primary-color;
+
+              & + .input-price-label {
+                color: $primary-color;
+              }
+  
+              &:invalid {
+                border-color: $error-color;
+                box-shadow: none;
+  
+                &:focus {
+                  @include control-shadow($error-color);
+                  background: lighten($error-color, 53%);
+                }
+  
+                & + .form-input-hint {
+                  color: $error-color;
+                }
+              }
+            }
+          }
         }
+      }
+
+      .wallet-container {
+        display: flex;
+        align-items: center;
+
+        .dropdown-toggle {
+          display: flex;
+          align-items: center;
+          gap: .25rem;
+          margin-left: .25rem;
+        }
+
+        .menu {
+          top: 90%;
+          font-size: .65rem;
+        }
+
       }
 
       .token-selector-container {
         .token-selector {
+          display: inline-flex;
+          position: relative;
           width: 100%;
+
+          &.active .menu {
+            display: flex;
+          }
+
+          .menu {
+            animation: slide-up .2s ease 1;
+            bottom: 120%;
+            display: none;
+            max-height: 50vh;
+            overflow-y: auto;
+            position: absolute;
+            top: auto;
+          }
         }
 
         .menu {
           bottom: 0;
           height: 15rem;
-          left: -.4rem;
-          min-width: 20rem;
+          left: -.5rem;
+          min-width: 100%;
           padding: .5rem;
-          right: -.4rem;
+          right: -.5rem;
           z-index: 9999;
 
           .menu-item-header {
@@ -477,35 +560,6 @@
             position: sticky;
             top: 0;
             z-index: 99;
-          }
-        }
-      }
-
-      .currency-input-container {
-        width: 100%;
-        position: relative;
-
-        .token-selector {
-          position: absolute;
-          top: 50%;
-          width: 5rem;
-          transform: translateY(-50%);
-          right: 0rem;
-          border-radius: .5rem;
-
-          .btn {
-            width: 100%;
-            line-height: 1;
-            height: unset;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-          }
-
-          .btn-primary {
-            font-size: .65rem;
-            padding: .3rem .5rem;
-            border-radius: .5rem;
           }
         }
       }
@@ -536,22 +590,34 @@
         min-height: 3rem;
       }
 
-      .connect-btn {
-        width: 100%;
-      }
-
-      .disabled {
-        user-select: none;
-        pointer-events: none;
-        filter: grayscale(1);
-      }
-
       .wrong-network {
         background: #F0415E;
         border-color: #F0415E;
 
         &:hover {
           box-shadow: 0 0.1rem 1.2rem rgba(#F0415E, .25);
+        }
+      }
+    }
+
+    .modal-footer {
+      .connect-btn {
+        display: flex;
+        align-items: center;
+        gap: .25rem;
+        width: 100%;
+
+        .loading-container {
+          .loading {
+            width: 1rem;
+            height: 1rem;
+            &::after {
+              border-color: #fff;
+              border-right-color: transparent;
+              border-top-color: transparent;
+            }
+          }
+
         }
       }
     }
@@ -724,37 +790,37 @@
         height: auto;
         max-width: 100%;
       }
-  
+
       h1 {
         font-size: 1rem;
         font-weight: 700;
       }
-  
+
       h2 {
         font-size: .8rem;
         font-weight: 700;
       }
-  
+
       h3 {
         font-size: .6rem;
         font-weight: 700;
       }
-  
+
       ul,
       ol {
         margin-bottom: 1.2rem;
       }
-  
+
       p {
         margin-bottom: .8rem;
       }
-  
+
       li {
         p {
           display: inline;
         }
       }
-  
+
       a {
         text-decoration: underline;
       }
@@ -857,6 +923,7 @@
       }
 
       .preview-image {
+
         .img-responsive,
         .video-responsive {
           max-width: 100vw;
@@ -1016,7 +1083,7 @@
 
       p {
         margin-bottom: 1rem;
-        
+
         &:last-child {
           margin-bottom: 0;
         }

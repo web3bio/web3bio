@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import SVG from "react-inlinesvg";
 import SearchInput from "./SearchInput";
-import { handleSearchPlatform, formatText } from "../utils/utils";
+import { handleSearchPlatform, formatText, prettify } from "../utils/utils";
 import { regexBtc, regexSolana } from "../utils/regexp";
 import {
   PlatformSystem,
@@ -152,11 +152,7 @@ export default function SearchPage() {
             <DomainAvailability searchTerm={searchTerm} />
           ) : searchTerm ? (
             <SearchResult
-              searchTerm={
-                searchTerm.endsWith(".farcaster")
-                  ? searchTerm.replace(".farcaster", "")
-                  : searchTerm
-              }
+              searchTerm={prettify(searchTerm)}
               searchPlatform={searchPlatform}
             />
           ) : null}

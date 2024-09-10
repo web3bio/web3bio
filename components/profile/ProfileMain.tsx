@@ -14,7 +14,13 @@ import {
   PlatformType,
   SocialPlatformMapping,
 } from "../utils/platform";
-import { formatText, isValidEthereumAddress, colorMod } from "../utils/utils";
+import {
+  formatText,
+  isValidEthereumAddress,
+  colorMod,
+  prettify,
+  uglify,
+} from "../utils/utils";
 import { Error } from "../shared/Error";
 import { Empty } from "../shared/Empty";
 import { RenderWidgetItem } from "./WidgetLinkItem";
@@ -46,16 +52,14 @@ import toast from "react-hot-toast";
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
     props;
-  const { tipObject, tipEmoji } = useTipEmoji();
   const [links, setLinks] = useState(data?.links);
+  const { tipObject, tipEmoji } = useTipEmoji();
   const [getQuery, { loading, error, data: identityGraph }] = useLazyQuery(
     getProfileQuery() as DocumentNode,
     {
       variables: {
         platform: platform,
-        identity: domain.endsWith(".farcaster")
-          ? domain.replace(".farcaster", "")
-          : domain,
+        identity: prettify(domain),
       },
     }
   );
@@ -292,9 +296,7 @@ export default function ProfileMain(props) {
                 </Clipboard>
               )}
               {relations?.map((x, idx) => {
-                const relatedPath = `${x.identity}${
-                  x.platform === PlatformType.farcaster ? ".farcaster" : ""
-                }`;
+                const relatedPath = uglify(x.identity, x.platform);
                 return (
                   <Link
                     key={x.platform + idx}
@@ -355,12 +357,12 @@ export default function ProfileMain(props) {
               </div>
             )}
 
-            {isEthereum && (
-              <div className="profile-actions" >
+            {isEthereum && tipEmoji && (
+              <div className="profile-actions">
                 <div className="btn-group">
                   <button
                     className={`profile-share btn btn-lg active`}
-                    title="Donate"
+                    title="Tip this profile"
                     onClick={() => {
                       openModal(ModalType.tip, {
                         profile: {
@@ -372,8 +374,8 @@ export default function ProfileMain(props) {
                       });
                     }}
                   >
-                    <span className="btn-emoji mr-1">{"💸"}</span>
-                    {"Tip"}
+                    <span className="btn-emoji mr-1">{tipEmoji}</span>
+                    Tip
                   </button>
                 </div>
               </div>
@@ -496,9 +498,7 @@ export default function ProfileMain(props) {
 
                   <div className="web3-section-widgets">
                     <Suspense
-                      fallback={
-                        <LoadingSkeleton type={WidgetType.snapshot} />
-                      }
+                      fallback={<LoadingSkeleton type={WidgetType.snapshot} />}
                     >
                       <WidgetSnapshot
                         profile={data}

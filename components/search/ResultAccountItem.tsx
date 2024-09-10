@@ -3,7 +3,7 @@ import Link from "next/link";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import Clipboard from "react-clipboard.js";
 import SVG from "react-inlinesvg";
-import { formatText, isWeb3Address } from "../utils/utils";
+import { formatText, isWeb3Address, uglify } from "../utils/utils";
 import { RenderSourceFooter } from "./SourcesFooter";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import { useDispatch } from "react-redux";
@@ -11,6 +11,13 @@ import { fetchProfile } from "../hooks/fetchProfile";
 import { updateUniversalBatchedProfile } from "../state/universal/actions";
 import ResultAccountItemAction from "./ResultAccountAction";
 import { useProfiles } from "../hooks/useReduxProfiles";
+import { Network } from "../utils/network";
+
+const identityNFTPlatforms = {
+  [Network.ethereum]: PlatformType.ens,
+  [Network.solana]: PlatformType.sns,
+  [Network.base]: PlatformType.basenames,
+};
 
 const RenderAccountItem = (props) => {
   const onCopySuccess = () => {
@@ -29,7 +36,7 @@ const RenderAccountItem = (props) => {
   const profiles = useProfiles();
   const getProfile = useCallback(
     (uuid) => profiles.find((x) => x.uuid === uuid),
-    [profiles],
+    [profiles]
   );
 
   const profile = getProfile(identity.uuid);
@@ -74,14 +81,14 @@ const RenderAccountItem = (props) => {
         dispatch(
           updateUniversalBatchedProfile({
             profiles: [response],
-          }),
+          })
         );
       }
     };
     if (
       (identity?.reverse ||
         [PlatformType.farcaster, PlatformType.lens].includes(
-          identity.platform,
+          identity.platform
         )) &&
       !profile &&
       visible
@@ -95,7 +102,6 @@ const RenderAccountItem = (props) => {
       }
     };
   }, [visible, profile, dispatch]);
-
   switch (identity.platform) {
     case PlatformType.ens:
     case PlatformType.ethereum:
@@ -188,7 +194,7 @@ const RenderAccountItem = (props) => {
                 href={
                   profile?.identity
                     ? `/${encodeURIComponent(
-                        profile?.identity || resolvedIdentity,
+                        profile?.identity || resolvedIdentity
                       )}`
                     : SocialPlatformMapping(identity.platform).urlPrefix +
                       identity.identity.split("/")[0]
@@ -210,9 +216,8 @@ const RenderAccountItem = (props) => {
                 <div className={`nfts-list-container`}>
                   {identity.nft.map((nft) => {
                     const nftPlatform =
-                      nft.chain === PlatformType.ethereum
-                        ? PlatformType.ens
-                        : PlatformType.sns;
+                      identityNFTPlatforms[nft.chain] ||
+                      identityNFTPlatforms[Network.ethereum];
                     return (
                       <Link
                         key={`${nft.uuid}`}
@@ -345,11 +350,7 @@ const RenderAccountItem = (props) => {
             </div>
             <ResultAccountItemAction
               isActive
-              href={`/${
-                identity.platform === PlatformType.farcaster
-                  ? identity.identity + ".farcaster"
-                  : identity.identity
-              }`}
+              href={`/${uglify(identity.identity, identity.platform)}`}
               platform={identity.platform}
               text={"Profile"}
             />
