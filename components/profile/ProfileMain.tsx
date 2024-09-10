@@ -362,7 +362,7 @@ export default function ProfileMain(props) {
                 <div className="btn-group">
                   <button
                     className={`profile-share btn btn-lg active`}
-                    title="Tip this profile"
+                    title={`Tip ${pageTitle}`}
                     onClick={() => {
                       openModal(ModalType.tip, {
                         profile: {

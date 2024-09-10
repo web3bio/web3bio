@@ -4,11 +4,38 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider, http } from "wagmi";
 import { mainnet, polygon, optimism, arbitrum, base, zora } from "wagmi/chains";
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
+import {
+  rainbowWallet,
+  metaMaskWallet,
+  coinbaseWallet,
+  walletConnectWallet,
+  zerionWallet,
+  okxWallet,
+  imTokenWallet,
+  binanceWallet,
+  trustWallet,
+} from "@rainbow-me/rainbowkit/wallets";
 
 export const config = getDefaultConfig({
   appName: "Web3.bio",
   projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_ID || "",
   chains: [mainnet, polygon, optimism, arbitrum, base, zora],
+  wallets: [
+    {
+      groupName: "Recommend",
+      wallets: [
+        zerionWallet,
+        metaMaskWallet,
+        okxWallet,
+        coinbaseWallet,
+        rainbowWallet,
+        imTokenWallet,
+        binanceWallet,
+        walletConnectWallet,
+        trustWallet,
+      ],
+    },
+  ],
   transports: {
     [mainnet.id]: http(),
   },
