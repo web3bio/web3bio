@@ -129,6 +129,22 @@ export const QUERY_PHILAND_INFO = gql`
         tokenid
       }
     }
+    claimedStatus(input: { address: $address }) {
+      data
+      status
+    }
+    listQuests(nextToken: "") {
+      nextToken
+      data {
+        Activities
+        Condition
+        MetadataUrl
+        QuestURL
+        Name
+        TokenId
+        Value
+      }
+    }
   }
 `;
 

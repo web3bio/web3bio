@@ -1,12 +1,11 @@
 "use client";
-import { useEffect, memo } from "react";
-import Image from "next/image";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useQuery } from "@apollo/client";
 import { WidgetInfoMapping, WidgetType } from "../utils/widgets";
 import { updatePhilandWidget } from "../state/widgets/reducer";
 import { QUERY_PHILAND_INFO } from "../utils/queries";
-import Link from "next/link";
+import { ModalType } from "../hooks/useModal";
 
 export default function WidgetPhiland({ profile, openModal }) {
   const { data, loading, error } = useQuery(QUERY_PHILAND_INFO, {
@@ -19,7 +18,7 @@ export default function WidgetPhiland({ profile, openModal }) {
     },
   });
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     if (!loading) {
       dispatch(
@@ -38,10 +37,14 @@ export default function WidgetPhiland({ profile, openModal }) {
 
   return (
     !loading && (
-      <Link
-        href={`https://land.philand.xyz/${profile.address}`}
-        className="profile-widget profile-widget-webacy"
-        target="_blank"
+      <div
+        className="profile-widget profile-widget-philand"
+        onClick={(e) => {
+          openModal(ModalType.philand, {
+            profile,
+            data,
+          });
+        }}
       >
         <div className="profile-widget-header">
           <h2 className="profile-widget-title">
@@ -56,26 +59,15 @@ export default function WidgetPhiland({ profile, openModal }) {
 
         <div className="profile-widget-footer">
           <div className="widget-score-title">
-            {Number(data?.overallRisk).toFixed(2)}
-            <div
-              className={`widget-score-label ${
-                data?.high > 0
-                  ? "high-risk"
-                  : data?.medium > 0
-                  ? "medium-risk"
-                  : "low-risk"
-              }`}
-            >
-              {data?.high > 0
-                ? "High Risk"
-                : data?.medium > 0
-                ? "Medium Risk"
-                : "Low Risk"}
+            {data.phiRank.data.rank}
+
+            <div className={`widget-score-label low-risk`}>
+              {data.phiRank.data.tokenid}
             </div>
           </div>
           <div className="widget-score-subtitle">Phi Rank </div>
         </div>
-      </Link>
+      </div>
     )
   );
 }

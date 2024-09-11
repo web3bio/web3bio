@@ -106,6 +106,7 @@ export enum PlatformType {
   edgeless = "edgeless",
   tomo = "tomo",
   ailayer = "ailayer",
+  philand = "philand",
 }
 
 export const PLATFORM_DATA: ReadonlyMap<
@@ -958,6 +959,17 @@ export const PLATFORM_DATA: ReadonlyMap<
       label: "AILayer Name Service",
       urlPrefix: "https://mainnet-explorer.ailayer.xyz/address/",
       registerlink: "https://space.id/tld/19/domains?query=",
+      system: PlatformSystem.web3,
+    },
+  ],
+  [
+    PlatformType.philand,
+    {
+      color: "#8283FF",
+      icon: "icons/icon-philand.svg",
+      label: "Phi Land",
+      urlPrefix: "https://land.philand.xyz/",
+      registerlink: "https://land.philand.xyz/",
       system: PlatformSystem.web3,
     },
   ],

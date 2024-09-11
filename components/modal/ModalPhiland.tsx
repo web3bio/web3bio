@@ -1,98 +1,122 @@
 import SVG from "react-inlinesvg";
-import { NFTAssetPlayer } from "../shared/NFTAssetPlayer";
 import Link from "next/link";
+import { PlatformType, SocialPlatformMapping } from "../utils/platform";
+import Image from "next/image";
 export default function PhilandModalContent({ data, onClose, profile }) {
   return (
     <>
-      <div id="nft-dialog" className="nft-preview">
-        <div className="preview-container">
-          <div
-            className="preview-overlay"
-            style={{
-              backgroundImage: "url(" + data.imageurl + ")",
-            }}
-            onClick={onClose}
-          ></div>
-          <div className="modal-actions">
-            <button className="btn btn-close" onClick={onClose}>
-              <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
-            </button>
-          </div>
-          <div className="preview-image">
-            <NFTAssetPlayer
-              className={"img-container"}
-              type={"image/png"}
-              src={data.imageurl}
-              alt={data.name}
-              placeholder={false}
+      <div className="modal-actions">
+        <button className="btn btn-close" onClick={onClose}>
+          <SVG src={"/icons/icon-close.svg"} width="20" height="20" />
+        </button>
+      </div>
+      <>
+        <div
+          className="modal-header"
+          style={{
+            ["--widget-primary-color" as string]: SocialPlatformMapping(
+              PlatformType.philand
+            ).color,
+          }}
+        >
+          <div className="modal-cover philand"></div>
+          <div className="platform-icon">
+            <SVG
+              src={`../${SocialPlatformMapping(PlatformType.philand).icon}`}
+              fill="#fff"
+              width={14}
+              height={14}
             />
           </div>
-          <div className="preview-main">
-            <div className="preview-content">
-              <div className="panel-section">
-                <div className="panel-section-content">
-                  <div
-                    className="nft-header-collection collection-title mb-4"
-                    style={{
-                      gap: ".25rem",
-                      alignItems: "center",
-                    }}
-                  >
-                    <SVG
-                      className="collection-logo"
-                      src="../icons/icon-phi.svg"
-                      fill={"#000"}
-                      width={24}
-                      height={32}
-                    />
-                    <div className="collection-name text-ellipsis">Phi</div>
-                  </div>
-                  <div className="nft-header-name h4">{profile.displayName} - Phi Land</div>
-                  <div className="btn-group mt-4">
-                    <Link
-                      href={`https://land.philand.xyz/${profile.identity}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn"
-                    >
-                      <SVG src={`../icons/icon-phi.svg`} fill="#121212" width={20} height={20} />
-                      <span className="ml-1">Visit Land</span>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-
-              {!!data?.links.length && (
-                <div className="panel-section">
-                  <div className="panel-section-title">
-                    Phi links
-                    <div className="divider"></div>
-                  </div>
-                  <div className="panel-section-content">
-                    <div className="panel-section-list">
-                      {data?.links?.map((x) => {
-                        return (
-                          <div key={x.url} className="widget-list-item">
-                            <div className="list-item-left text-bold">{x.title}</div>
-                            <Link
-                              href={x.url}
-                              target="_blank"
-                              className="list-item-right"
-                            >
-                              Link
-                              <SVG src={"/icons/icon-open.svg"} width="20" height="20" />
-                            </Link>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-              )}
+          <span className="modal-header-title">Phi Land</span>
+        </div>
+        <div className="modal-body">
+          {profile?.avatar && (
+            <Image
+              width={80}
+              height={80}
+              className="avatar avatar-xl"
+              alt={profile.identity}
+              src={profile?.avatar}
+            />
+          )}
+          <div
+            className="d-flex mt-2"
+            style={{ alignItems: "center", lineHeight: 1.25 }}
+          >
+            <strong className="h4 text-bold">{profile.displayName}</strong>
+          </div>
+          <div className="text-gray mt-1 mb-2">{profile.identity}</div>
+          <div className="mt-2 mb-2">{profile?.description}</div>
+          <div className="mt-4 mb-2">
+            <div className="feed-token feed-token-lg">
+              <span className="feed-token-emoji">🏝️</span>
+              <span className="feed-token-value">Phi Rank</span>
+              <span className="feed-token-value text-bold">
+                {data.phiRank.data.rank} # {data.phiRank.data.tokenid}
+              </span>
             </div>
           </div>
+
+          <img
+            className="img-responsive"
+            src={data.philandImage.imageurl}
+            alt=""
+          />
+
+          <div className="panel-section">
+            <div className="panel-section-title">
+              Claimed Quests
+              <div className="divider"></div>
+            </div>
+            {/* <div className="panel-section-content">
+                  {channelsData.data.map((x) => {
+                    return (
+                      <Link
+                        key={x.id}
+                        href={`https://warpcast.com/~/channel/${x.id}`}
+                        className="list-item"
+                        target="_blank"
+                      >
+                        <Image
+                          alt={x.name}
+                          width={40}
+                          height={40}
+                          src={x.image_url}
+                          className="list-item-icon"
+                        />
+                        <div className="list-item-body">
+                          <div className="list-item-title">
+                            <strong>{x.name}</strong>{" "}
+                            <span className="text-gray">/{x.id}</span>
+                          </div>
+                          <div className="list-item-subtitle">
+                            {x.description}
+                          </div>
+                          <div className="list-item-subtitle text-gray">
+                            {x.follower_count?.toLocaleString()} followers
+                          </div>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div> */}
+          </div>
         </div>
-      </div>
+        <div className="modal-footer">
+          <div className="btn-group btn-group-block">
+            <Link
+              href={"https://land.philand.xyz/" + profile.identity}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn"
+            >
+              <SVG src={"icons/icon-open.svg"} width={20} height={20} />
+              Open in Phi Land
+            </Link>
+          </div>
+        </div>
+      </>
     </>
   );
 }
