@@ -5,23 +5,26 @@ import Image from "next/image";
 import useSWR from "swr";
 import { ProfileFetcher } from "../utils/api";
 import { useEffect, useMemo } from "react";
+import { PHI_QUESTS_LIST } from "../utils/phiquests";
 export default function PhilandModalContent({ data, onClose, profile }) {
   // referer: https://quest.philand.xyz/?status=completed
   const { data: checkStatus } = useSWR(
     `https://utils-api.phi.blue/v1/philand/condition/check?address=${profile.address}`,
     ProfileFetcher
   );
+
   const claimedQuests = useMemo(() => {
     if (!data.listQuests.data || !checkStatus?.result) return [];
     return checkStatus?.result
       .map((x) => {
         const questDetail = data.listQuests.data.find((i) => i.TokenId == x);
+        console.log(questDetail.QuestURL.split("/")[4]);
         if (questDetail) return { ...questDetail };
       })
       .filter((x) => !!x);
   }, [checkStatus, data]);
-
-
+  
+  console.log(PHI_QUESTS_LIST,'list')
 
   return (
     <>
@@ -103,7 +106,9 @@ export default function PhilandModalContent({ data, onClose, profile }) {
                         alt={x.Name}
                         width={40}
                         height={40}
-                        src={''}
+                        src={`https://raw.githubusercontent.com/PHI-LABS-INC/phi-objects/main/assets/QuestObject/1x/${
+                          x.TokenId
+                        }_${encodeURIComponent(x.Name)}_eBoy_1x.png`}
                         className="list-item-icon"
                       />
                       <div className="list-item-body">
@@ -131,7 +136,7 @@ export default function PhilandModalContent({ data, onClose, profile }) {
               className="btn"
             >
               <SVG src={"icons/icon-open.svg"} width={20} height={20} />
-              Open in Phi Land
+              View {`${profile.identity}'s`} Phi Land
             </Link>
           </div>
         </div>

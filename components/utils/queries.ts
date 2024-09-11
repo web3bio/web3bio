@@ -117,23 +117,13 @@ export const QUERY_PHILAND_INFO = gql`
     philandImage(input: { name: $name, transparent: true }) {
       imageurl
     }
-    philandLink(input: { name: $name }) {
-      data {
-        title
-        url
-      }
-    }
     phiRank(input: { address: $address }) {
       data {
         rank
         tokenid
       }
     }
-    claimedStatus(input: { address: $address }) {
-      data
-      status
-    }
-    listQuests{
+    listQuests {
       data {
         Activities
         Condition
@@ -141,7 +131,6 @@ export const QUERY_PHILAND_INFO = gql`
         QuestURL
         Name
         TokenId
-        Value
       }
     }
   }
