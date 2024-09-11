@@ -133,8 +133,7 @@ export const QUERY_PHILAND_INFO = gql`
       data
       status
     }
-    listQuests(nextToken: "") {
-      nextToken
+    listQuests{
       data {
         Activities
         Condition

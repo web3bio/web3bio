@@ -2,7 +2,27 @@ import SVG from "react-inlinesvg";
 import Link from "next/link";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import Image from "next/image";
+import useSWR from "swr";
+import { ProfileFetcher } from "../utils/api";
+import { useEffect, useMemo } from "react";
 export default function PhilandModalContent({ data, onClose, profile }) {
+  // referer: https://quest.philand.xyz/?status=completed
+  const { data: checkStatus } = useSWR(
+    `https://utils-api.phi.blue/v1/philand/condition/check?address=${profile.address}`,
+    ProfileFetcher
+  );
+  const claimedQuests = useMemo(() => {
+    if (!data.listQuests.data || !checkStatus?.result) return [];
+    return checkStatus?.result
+      .map((x) => {
+        const questDetail = data.listQuests.data.find((i) => i.TokenId == x);
+        if (questDetail) return { ...questDetail };
+      })
+      .filter((x) => !!x);
+  }, [checkStatus, data]);
+
+
+
   return (
     <>
       <div className="modal-actions">
@@ -64,44 +84,43 @@ export default function PhilandModalContent({ data, onClose, profile }) {
             alt=""
           />
 
-          <div className="panel-section">
-            <div className="panel-section-title">
-              Claimed Quests
-              <div className="divider"></div>
-            </div>
-            {/* <div className="panel-section-content">
-                  {channelsData.data.map((x) => {
-                    return (
-                      <Link
-                        key={x.id}
-                        href={`https://warpcast.com/~/channel/${x.id}`}
-                        className="list-item"
-                        target="_blank"
-                      >
-                        <Image
-                          alt={x.name}
-                          width={40}
-                          height={40}
-                          src={x.image_url}
-                          className="list-item-icon"
-                        />
-                        <div className="list-item-body">
-                          <div className="list-item-title">
-                            <strong>{x.name}</strong>{" "}
-                            <span className="text-gray">/{x.id}</span>
-                          </div>
-                          <div className="list-item-subtitle">
-                            {x.description}
-                          </div>
-                          <div className="list-item-subtitle text-gray">
-                            {x.follower_count?.toLocaleString()} followers
-                          </div>
+          {claimedQuests?.length > 0 && (
+            <div className="panel-section">
+              <div className="panel-section-title">
+                Claimed Quests
+                <div className="divider"></div>
+              </div>
+              <div className="panel-section-content">
+                {claimedQuests.map((x) => {
+                  return (
+                    <Link
+                      key={x.TokenId}
+                      href={x.QuestURL}
+                      className="list-item"
+                      target="_blank"
+                    >
+                      <Image
+                        alt={x.Name}
+                        width={40}
+                        height={40}
+                        src={''}
+                        className="list-item-icon"
+                      />
+                      <div className="list-item-body">
+                        <div className="list-item-title">
+                          <strong>{x.Name}</strong>{" "}
+                          <span className="text-gray">#{x.Condition}</span>
                         </div>
-                      </Link>
-                    );
-                  })}
-                </div> */}
-          </div>
+                        <div className="list-item-subtitle text-gray">
+                          {JSON.parse(x.Activities)}
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
         <div className="modal-footer">
           <div className="btn-group btn-group-block">
