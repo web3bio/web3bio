@@ -4,7 +4,7 @@ import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import Image from "next/image";
 import useSWR from "swr";
 import { ProfileFetcher } from "../utils/api";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { PHI_QUESTS_LIST } from "../utils/phiquests";
 export default function PhilandModalContent({ data, onClose, profile }) {
   // referer: https://quest.philand.xyz/?status=completed
@@ -14,17 +14,14 @@ export default function PhilandModalContent({ data, onClose, profile }) {
   );
 
   const claimedQuests = useMemo(() => {
-    if (!data.listQuests.data || !checkStatus?.result) return [];
+    if (!checkStatus?.result) return [];
     return checkStatus?.result
       .map((x) => {
-        const questDetail = data.listQuests.data.find((i) => i.TokenId == x);
-        console.log(questDetail.QuestURL.split("/")[4]);
+        const questDetail = PHI_QUESTS_LIST.find((i) => i.tokenId === x);
         if (questDetail) return { ...questDetail };
       })
       .filter((x) => !!x);
-  }, [checkStatus, data]);
-  
-  console.log(PHI_QUESTS_LIST,'list')
+  }, [checkStatus]);
 
   return (
     <>
@@ -97,27 +94,25 @@ export default function PhilandModalContent({ data, onClose, profile }) {
                 {claimedQuests.map((x) => {
                   return (
                     <Link
-                      key={x.TokenId}
-                      href={x.QuestURL}
+                      key={x.tokenId}
+                      href={x.questUrl}
                       className="list-item"
                       target="_blank"
                     >
                       <Image
-                        alt={x.Name}
+                        alt={x.name}
                         width={40}
                         height={40}
-                        src={`https://raw.githubusercontent.com/PHI-LABS-INC/phi-objects/main/assets/QuestObject/1x/${
-                          x.TokenId
-                        }_${encodeURIComponent(x.Name)}_eBoy_1x.png`}
+                        src={x.imageUrl}
                         className="list-item-icon"
                       />
                       <div className="list-item-body">
                         <div className="list-item-title">
-                          <strong>{x.Name}</strong>{" "}
-                          <span className="text-gray">#{x.Condition}</span>
+                          <strong>{x.name}</strong>{" "}
+                          <span className="text-gray">#{x.condition}</span>
                         </div>
                         <div className="list-item-subtitle text-gray">
-                          {JSON.parse(x.Activities)}
+                          {x.activities?.[0]}
                         </div>
                       </div>
                     </Link>
