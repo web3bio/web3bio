@@ -84,7 +84,7 @@ function RenderFeedActionCard(props) {
 
       return (
         <div className={`feed-content media-gallery`}>
-          {attachments.media?.map((x) => {
+          {attachments.media?.map((x, idx) => {
             const idIndex = `${network}.${x.address}.${x.id}`;
             const infoItem = nftInfos?.find(
               (info) => info.nft_id === idIndex.toLowerCase()
@@ -96,7 +96,7 @@ function RenderFeedActionCard(props) {
 
             return (
               <NFTAssetPlayer
-                key={idIndex}
+                key={idIndex + idx}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
@@ -260,14 +260,13 @@ function RenderFeedActionCard(props) {
       () =>
         objects?.filter(Boolean).map((i, idx) => {
           const idIndex = `${network}.${i.address}.${i.name}`;
-  
           const infoItem = nftInfos?.find(
             (x) => x.nft_id === idIndex.toLowerCase()
           );
 
           return (
             <RenderObjects
-              key={idIndex}
+              key={idIndex + idx}
               nftInfo={infoItem}
               openModal={openModal}
               data={i}
