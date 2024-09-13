@@ -129,16 +129,6 @@ export const QUERY_PHILAND_INFO = gql`
         tokenid
       }
     }
-    listQuests {
-      data {
-        Activities
-        Condition
-        MetadataUrl
-        QuestURL
-        Name
-        TokenId
-      }
-    }
   }
 `;
 
