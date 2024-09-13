@@ -3,7 +3,7 @@ import urlcat from "urlcat";
 const MATCH_IPFS_CID_RAW =
   "Qm[1-9A-HJ-NP-Za-km-z]{44,}|b[2-7A-Za-z]{58,}|B[2-7A-Z]{58,}|z[1-9A-HJ-NP-Za-km-z]{48,}|F[\\dA-F]{50,}";
 const CORS_HOST = "https://cors-next.r2d2.to";
-const IPFS_GATEWAY_HOST = "https://cloudflare-ipfs.com";
+const IPFS_GATEWAY_HOST = "https://gateway.pinata.cloud";
 const MATCH_IPFS_DATA_RE = /ipfs\/(data:.*)$/;
 const MATCH_IPFS_CID_RE = new RegExp(MATCH_IPFS_CID_RAW);
 const MATCH_IPFS_CID_AT_STARTS_RE = new RegExp(
