@@ -34,10 +34,12 @@ async function fetchStamps(address: string): Promise<string[]> {
 }
 
 function calculateScore(detailsArr: any[]): number {
-  return detailsArr.reduce(
-    (total, cur) => BigNumber(total).plus(BigNumber(cur.weight)).toNumber(),
-    0
-  );
+  return detailsArr
+    .reduce(
+      (total, cur) => BigNumber(total).plus(BigNumber(cur.weight)).toNumber(),
+      0
+    )
+    .toFixed(1);
 }
 
 function createResponse(score: number, stamps: any[]): StampResponse {
@@ -60,7 +62,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
   const detailsArr = stamps.map(gitcoinPassportMapping).filter(Boolean);
   const score = calculateScore(detailsArr);
-  console.log(stamps.filter(x=>!gitcoinPassportMapping(x as any)))
 
   return respondWithCache(JSON.stringify(createResponse(score, detailsArr)));
 }
