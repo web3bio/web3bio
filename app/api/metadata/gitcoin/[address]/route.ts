@@ -21,7 +21,6 @@ async function fetchStamps(address: string): Promise<string[]> {
   );
   url.searchParams.append("limit", "1000");
   url.searchParams.append("include_metadata", "false");
-
   const res = await fetch(url, {
     headers: { "x-api-key": API_KEY },
   });
@@ -61,6 +60,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
   const detailsArr = stamps.map(gitcoinPassportMapping).filter(Boolean);
   const score = calculateScore(detailsArr);
+  console.log(stamps.filter(x=>!gitcoinPassportMapping(x as any)))
 
   return respondWithCache(JSON.stringify(createResponse(score, detailsArr)));
 }
