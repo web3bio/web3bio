@@ -513,23 +513,6 @@
         position: relative;
         transition: all .25s ease-in-out;
         width: 1.8rem;
-
-        .icon-verified {
-          animation: bounce-in 1s ease-in-out 1;
-          backdrop-filter: blur(.2rem);
-          border-radius: 50%;
-          bottom: -.4rem;
-          height: 1.2rem;
-          opacity: .9;
-          padding: .1rem;
-          position: absolute;
-          right: -.4rem;
-          width: 1.2rem;
-
-          svg {
-            filter: drop-shadow(0 .2rem .2rem rgba($dark-color, .2));
-          }
-        }
       }
 
       .platform-title {
@@ -538,9 +521,16 @@
       }
 
       .platform-handle {
+        display: flex;
+        align-items: center;
+        gap: .1rem;
         color: $gray-color;
         font-size: .6rem;
         width: 100%;
+        .icon-verified {
+          width: .8rem;
+          height: .8rem;
+        }
       }
 
       .platform-action {

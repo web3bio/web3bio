@@ -33,17 +33,6 @@ const WidgetItem = (props) => {
             height={20}
             title={"Social Icon"}
           />
-          {item.verified && (
-            <div className="icon-verified">
-              <SVG
-                src={`icons/icon-badge.svg`}
-                fill={"#fff"}
-                width={20}
-                height={20}
-                title={"Verified Social Link"}
-              />
-            </div>
-          )}
         </div>
 
         <div className="platform-content">
@@ -53,28 +42,37 @@ const WidgetItem = (props) => {
           <div className="platform-title">
             {SocialPlatformMapping(item.platform)?.label}
           </div>
-          <div className="platform-handle text-ellipsis">{item.handle}</div>
+          <div className="platform-handle text-ellipsis">
+            {item.verified && (
+              <div className="icon-verified">
+                <SVG
+                  src={`icons/icon-badge.svg`}
+                  fill={"#21acdf"}
+                  width={16}
+                  height={16}
+                  title={"Verified Social Link"}
+                />
+              </div>
+            )}
+            {item.handle}
+          </div>
         </div>
         <div className={`platform-action${item.hasDetail ? " active" : ""}`}>
           <div className="btn btn-sm btn-action">
-            {item.hasDetail ? 
+            {item.hasDetail ? (
               <SVG
                 src="../icons/icon-expand.svg"
                 width={20}
                 height={20}
                 className=""
               />
-              : 
+            ) : (
               <SVG
-                src={
-                  item.link
-                    ? "icons/icon-open.svg"
-                    : "icons/icon-copy.svg"
-                }
+                src={item.link ? "icons/icon-open.svg" : "icons/icon-copy.svg"}
                 width={20}
                 height={20}
               />
-            }
+            )}
           </div>
         </div>
       </>
