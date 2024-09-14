@@ -156,17 +156,13 @@ export default function TipModalContent(props) {
 
       emojiBlast({
         emojis: [tipEmoji],
+        emojiCount: 25,
         physics: {
-          fontSize: { max: 36, min: 24 },
-          gravity: 0.3,
-          initialVelocities: {
-            rotation: { max: -14, min: -20 },
-          },
-          rotationDeceleration: 1.01,
+          fontSize: { max: 40, min: 16 },
         },
         position: {
           x: innerWidth / 2,
-          y: innerHeight / 2,
+          y: innerHeight / 2 - 100,
         },
       });
     }
@@ -335,7 +331,7 @@ export default function TipModalContent(props) {
         <div className="modal-body">
           <div className="form">
             <div className="form-group form-hero">
-              <label style={{ fontSize: "64px", lineHeight: "64px" }}>
+              <label style={{ fontSize: "64px", lineHeight: "64px", position: "relative", zIndex: 999 }}>
                 {tipEmoji}
               </label>
               <div className="amount-selector">
@@ -446,7 +442,7 @@ export default function TipModalContent(props) {
                       </div>
                     </div>
                     <div className="chip-content">
-                      <div className="chip-title">...</div>
+                      <div className="chip-title text-gray">Token</div>
                       <div className="chip-subtitle text-gray">
                         Connect wallet to select token
                       </div>
@@ -460,8 +456,8 @@ export default function TipModalContent(props) {
       ) : (
         // Tips status
         <div className="modal-body">
-          <div className="empty">
-            <div className="empty-icon h1" style={{ fontSize: "64px", lineHeight: "64px" }}>
+          <div className="empty" id="fun">
+            <div className="empty-icon h1" style={{ fontSize: "64px", lineHeight: "64px", position: "relative", zIndex: 999 }}>
               {tipEmoji}
             </div>
             <p className="empty-title h4">
