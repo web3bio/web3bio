@@ -7,20 +7,22 @@ import ActionExternalMenu from "./ActionExternalMenu";
 import { ActivityTag, ActivityTypeMapping } from "../utils/activity";
 import RenderProfileBadge from "./RenderProfileBadge";
 import { formatDistanceToNow } from "date-fns";
-import { PlatformType } from "../utils/platform";
-import { NetworkMapping } from "../utils/network";
+import { PlatformType, SocialPlatformMapping } from "../utils/platform";
+import { networkByIdOrName, NetworkMapping } from "../utils/network";
 import { RenderFeedContent } from "./RenderFeedContent";
 
 const renderFeedBadge = (key) => {
+  const metaItem =
+    networkByIdOrName(0, key) || (SocialPlatformMapping(key) as any);
   return (
     <div
       className={`feed-icon-platform ${key}`}
-      style={{ backgroundColor: NetworkMapping(key).bgColor }}
-      title={NetworkMapping(key).label}
+      style={{ backgroundColor: metaItem.bgColor }}
+      title={metaItem.label}
     >
       <SVG
-        fill={NetworkMapping(key).primaryColor}
-        src={NetworkMapping(key).icon || ""}
+        fill={metaItem.primaryColor || metaItem.color}
+        src={metaItem.icon || ""}
       />
     </div>
   );
@@ -43,7 +45,7 @@ const RenderFeedItem = (props) => {
     [feed, identity, isOwner]
   );
   if (!actions?.length) return null;
-
+  console;
   return (
     <>
       <div className="feed-item-icon">
