@@ -131,10 +131,7 @@ export default function TalentModalContent({ onClose, data }) {
         <div className="modal-footer">
           <div className="btn-group btn-group-block">
             <Link
-              href={
-                "https://passport.talentprotocol.com/profile/" +
-                data.passport_id
-              }
+              href={`https://passport.talentprotocol.com/profile/${data.passport_id}?ref=web3.bio`}
               target="_blank"
               rel="noopener noreferrer"
               className="btn"

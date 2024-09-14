@@ -13,7 +13,11 @@ const RoleItem = ({ role, showMemberCount }) => (
         alt={role.name}
         width={20}
         height={20}
-        src={role.imageUrl.includes("/guildLogos/") ? `https://guild.xyz${role.imageUrl}` : role.imageUrl}
+        src={
+          role.imageUrl.includes("/guildLogos/")
+            ? `https://guild.xyz${role.imageUrl}`
+            : role.imageUrl
+        }
         className="role-item-icon feed-token-icon"
         style={{
           background: role.imageUrl.includes("/guildLogos/") ? "#000" : "unset",
@@ -50,7 +54,8 @@ export default function GuildModalContent({ onClose, guild, profile }) {
       revalidateOnReconnect: false,
     }
   );
-  const rolesAcquired = guildRoles?.filter((i) => guild.roleIds.includes(i.id)) || [];
+  const rolesAcquired =
+    guildRoles?.filter((i) => guild.roleIds.includes(i.id)) || [];
 
   // if (process.env.NODE_ENV !== "production") {
   //   console.log(
@@ -100,7 +105,10 @@ export default function GuildModalContent({ onClose, guild, profile }) {
             alt={guild.name}
             src={guild?.imageUrl}
           />
-          <div className="d-flex mt-2" style={{ alignItems: "center", lineHeight: 1.25 }}>
+          <div
+            className="d-flex mt-2"
+            style={{ alignItems: "center", lineHeight: 1.25 }}
+          >
             <strong className="h4 text-bold">{guild.name}</strong>
           </div>
           <div className="text-gray mt-1 mb-2">
@@ -166,7 +174,11 @@ export default function GuildModalContent({ onClose, guild, profile }) {
                 </div>
                 <div className="panel-section-content">
                   {guildRoles.map((role) => (
-                    <RoleItem key={role.id} role={role} showMemberCount={true} />
+                    <RoleItem
+                      key={role.id}
+                      role={role}
+                      showMemberCount={true}
+                    />
                   ))}
                 </div>
               </div>
@@ -182,7 +194,11 @@ export default function GuildModalContent({ onClose, guild, profile }) {
                 </div>
                 <div className="panel-section-content">
                   {rolesAcquired.map((role) => (
-                    <RoleItem key={role.id} role={role} showMemberCount={false} />
+                    <RoleItem
+                      key={role.id}
+                      role={role}
+                      showMemberCount={false}
+                    />
                   ))}
                 </div>
               </div>
@@ -192,7 +208,7 @@ export default function GuildModalContent({ onClose, guild, profile }) {
         <div className="modal-footer">
           <div className="btn-group btn-group-block">
             <Link
-              href={`https://guild.xyz/${guild.urlName}`}
+              href={`https://guild.xyz/${guild.urlName}?ref=web3.bio`}
               target="_blank"
               rel="noopener noreferrer"
               className="btn"
@@ -202,7 +218,7 @@ export default function GuildModalContent({ onClose, guild, profile }) {
             </Link>
             {guild?.eventSources?.LUMA && (
               <Link
-                href={guild?.eventSources?.LUMA}
+                href={`${guild?.eventSources?.LUMA}?ref=web3.bio`}
                 target="_blank"
                 className="btn"
               >

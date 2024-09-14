@@ -114,7 +114,7 @@ export default function SnapshotModalContent({ onClose, space, profile }) {
       <div className="modal-footer">
         <div className="btn-group btn-group-block">
           <Link
-            href={`https://snapshot.org/#/${space.id}`}
+            href={`https://snapshot.org/#/${space.id}?ref=web3.bio`}
             target="_blank"
             rel="noopener noreferrer"
             className="btn"

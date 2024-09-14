@@ -71,15 +71,20 @@ export default function FarcasterProfile(props) {
           <span className="modal-header-title">Farcaster Profile</span>
         </div>
         <div className="modal-body">
-          {_profile.avatar && <Avatar
-            width={80}
-            height={80}
-            className="avatar"
-            alt={handle}
-            src={_profile.avatar}
-            identity={handle}
-          />}
-          <div className="d-flex mt-2" style={{ alignItems: "center", lineHeight: 1.25 }}>
+          {_profile.avatar && (
+            <Avatar
+              width={80}
+              height={80}
+              className="avatar"
+              alt={handle}
+              src={_profile.avatar}
+              identity={handle}
+            />
+          )}
+          <div
+            className="d-flex mt-2"
+            style={{ alignItems: "center", lineHeight: 1.25 }}
+          >
             <strong className="h4 text-bold">{_profile.displayName}</strong>
             {socialCapital?.isFarcasterPowerUser ? (
               <div
@@ -108,28 +113,23 @@ export default function FarcasterProfile(props) {
             Followers
           </div>
           <div className="mt-2">{_profile.description}</div>
-          {_profile.location && <div className="mt-2 mb-2">
-            📍 {_profile.location}
-          </div>}
+          {_profile.location && (
+            <div className="mt-2 mb-2">📍 {_profile.location}</div>
+          )}
           {socialCapital?.socialCapital && (
             <div className="mt-4 mb-2">
               <div className="feed-token feed-token-lg">
                 <span className="feed-token-emoji">🪪</span>
-                <span className="feed-token-value">
-                  Social Capital Score
-                </span>
+                <span className="feed-token-value">Social Capital Score</span>
                 <span className="feed-token-value text-bold">
                   {Number(
                     socialCapital?.socialCapital.socialCapitalScore
                   ).toFixed(2)}
                 </span>
-              </div>
-              {" "}
+              </div>{" "}
               <div className="feed-token feed-token-lg">
                 <span className="feed-token-emoji">🏅</span>
-                <span className="feed-token-value">
-                  Social Rank
-                </span>
+                <span className="feed-token-value">Social Rank</span>
                 <span className="feed-token-value text-bold">
                   {socialCapital?.socialCapital.socialCapitalRank}
                 </span>
@@ -183,7 +183,7 @@ export default function FarcasterProfile(props) {
         <div className="modal-footer">
           <div className="btn-group btn-group-block">
             <Link
-              href={`https://warpcast.com/${handle}`}
+              href={`https://warpcast.com/${handle}?ref=web3.bio`}
               target="_blank"
               className="btn"
             >
@@ -191,7 +191,7 @@ export default function FarcasterProfile(props) {
               Open in Warpcast
             </Link>
             <Link
-              href={`https://firefly.mask.social/profile/${fid}?source=farcaster`}
+              href={`https://firefly.mask.social/profile/${fid}?source=farcaster&ref=web3.bio`}
               target="_blank"
               className="btn btn-primary"
             >

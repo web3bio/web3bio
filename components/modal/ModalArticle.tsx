@@ -62,7 +62,7 @@ export default function ArticleModalContent({
       <div className="modal-footer">
         <div className="btn-group btn-group-block">
           <Link
-            href={link}
+            href={`${link}?ref=web3.bio`}
             target="_blank"
             rel="noopener noreferrer"
             className="btn"

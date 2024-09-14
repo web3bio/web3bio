@@ -162,7 +162,7 @@ export default function PhilandModalContent({ data, onClose, profile }) {
         <div className="modal-footer">
           <div className="btn-group btn-group-block">
             <Link
-              href={"https://land.philand.xyz/" + profile.identity}
+              href={`https://land.philand.xyz/${profile.identity}?ref=web3.bio`}
               target="_blank"
               rel="noopener noreferrer"
               className="btn"
