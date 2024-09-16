@@ -21,7 +21,6 @@ async function fetchStamps(address: string): Promise<string[]> {
   );
   url.searchParams.append("limit", "1000");
   url.searchParams.append("include_metadata", "false");
-
   const res = await fetch(url, {
     headers: { "x-api-key": API_KEY },
   });
@@ -35,10 +34,12 @@ async function fetchStamps(address: string): Promise<string[]> {
 }
 
 function calculateScore(detailsArr: any[]): number {
-  return detailsArr.reduce(
-    (total, cur) => BigNumber(total).plus(BigNumber(cur.weight)).toNumber(),
-    0
-  );
+  return detailsArr
+    .reduce(
+      (total, cur) => BigNumber(total).plus(BigNumber(cur.weight)).toNumber(),
+      0
+    )
+    .toFixed(1);
 }
 
 function createResponse(score: number, stamps: any[]): StampResponse {

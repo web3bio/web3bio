@@ -46,15 +46,20 @@ export default function LensProfile(props) {
           <span className="modal-header-title">Lens Profile</span>
         </div>
         <div className="modal-body">
-          {_profile.avatar && <Avatar
-            width={80}
-            height={80}
-            className="avatar"
-            alt={handle}
-            src={_profile.avatar}
-            identity={handle}
-          />}
-          <div className="d-flex mt-2" style={{ alignItems: "center", lineHeight: 1.25 }}>
+          {_profile.avatar && (
+            <Avatar
+              width={80}
+              height={80}
+              className="avatar"
+              alt={handle}
+              src={_profile.avatar}
+              identity={handle}
+            />
+          )}
+          <div
+            className="d-flex mt-2"
+            style={{ alignItems: "center", lineHeight: 1.25 }}
+          >
             <strong className="h4 text-bold">{_profile.displayName}</strong>
             {data?.profile?.onchainIdentity?.proofOfHumanity && (
               <div className="profile-badge" title="Proof of Humanity">
@@ -86,7 +91,7 @@ export default function LensProfile(props) {
           <div className="mt-2 mb-2">
             {_profile.location ? `📍 ${_profile.location}` : ""}
           </div>
-          
+
           <div className="panel-section">
             <div className="panel-section-title">
               Stats
@@ -147,7 +152,7 @@ export default function LensProfile(props) {
         <div className="modal-footer">
           <div className="btn-group btn-group-block">
             <Link
-              href={`https://hey.xyz/u/${handle}`}
+              href={`https://hey.xyz/u/${handle}?ref=web3.bio`}
               target="_blank"
               className="btn"
             >
@@ -155,7 +160,7 @@ export default function LensProfile(props) {
               Open in Hey
             </Link>
             <Link
-              href={`https://firefly.mask.social/profile/${handle}?source=lens`}
+              href={`https://firefly.mask.social/profile/${handle}?source=lens&ref=web3.bio`}
               target="_blank"
               className="btn btn-primary"
             >

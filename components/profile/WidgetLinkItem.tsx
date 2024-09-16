@@ -33,17 +33,6 @@ const WidgetItem = (props) => {
             height={20}
             title={"Social Icon"}
           />
-          {item.verified && (
-            <div className="icon-verified">
-              <SVG
-                src={`icons/icon-badge.svg`}
-                fill={"#fff"}
-                width={20}
-                height={20}
-                title={"Verified Social Link"}
-              />
-            </div>
-          )}
         </div>
 
         <div className="platform-content">
@@ -52,29 +41,40 @@ const WidgetItem = (props) => {
           }`}</h3>
           <div className="platform-title">
             {SocialPlatformMapping(item.platform)?.label}
+            {item.verified && (
+              <div className="icon-verified" >
+                <SVG
+                  aria-hidden="true"
+                  className="svg-pride"
+                  fill={"#121212"}
+                  height={18}
+                  src={`icons/icon-badge.svg`}
+                  title={"Verified"}
+                  width={18}
+                />
+                <span className="text-assistive">Verified</span>
+              </div>
+            )}
           </div>
-          <div className="platform-handle text-ellipsis">{item.handle}</div>
+          <div className="platform-handle text-ellipsis">
+            {item.handle}
+          </div>
         </div>
         <div className={`platform-action${item.hasDetail ? " active" : ""}`}>
           <div className="btn btn-sm btn-action">
-            {item.hasDetail ? 
+            {item.hasDetail ? (
               <SVG
                 src="../icons/icon-expand.svg"
                 width={20}
                 height={20}
-                className=""
               />
-              : 
+            ) : (
               <SVG
-                src={
-                  item.link
-                    ? "icons/icon-open.svg"
-                    : "icons/icon-copy.svg"
-                }
+                src={item.link ? "icons/icon-open.svg" : "icons/icon-copy.svg"}
                 width={20}
                 height={20}
               />
-            }
+            )}
           </div>
         </div>
       </>

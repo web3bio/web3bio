@@ -73,6 +73,7 @@
   &.modal-nft-container,
   &.modal-media-container,
   &.modal-search-container {
+    animation: none;
     background: transparent;
     box-shadow: none;
     height: 100%;
@@ -121,6 +122,9 @@
     top: -2rem;
     z-index: -1;
 
+    &.philand{
+      background: linear-gradient(to top, rgba(#8283FF, 0) 0%, rgba(#8283FF, .35) 200%);
+    }
     &.talent {
       background: linear-gradient(to top, rgba(#7857ed, 0) 0%, rgba(#7857ed, .35) 200%);
     }

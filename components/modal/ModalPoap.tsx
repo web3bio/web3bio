@@ -80,7 +80,7 @@ export default function PoapModalContent({ onClose, asset }) {
         <div className="btn-group btn-group-block">
           {tokenId && (
             <Link
-              href={`https://collectors.poap.xyz/token/${tokenId}`}
+              href={`https://collectors.poap.xyz/token/${tokenId}?ref=web3.bio`}
               target="_blank"
               rel="noopener noreferrer"
               className="btn"
@@ -92,7 +92,7 @@ export default function PoapModalContent({ onClose, asset }) {
 
           {event.event_url && (
             <Link
-              href={event.event_url}
+              href={`${event.event_url}?ref=web3.bio`}
               target="_blank"
               rel="noopener noreferrer"
               className="btn"
