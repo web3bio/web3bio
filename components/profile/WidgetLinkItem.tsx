@@ -41,19 +41,22 @@ const WidgetItem = (props) => {
           }`}</h3>
           <div className="platform-title">
             {SocialPlatformMapping(item.platform)?.label}
-          </div>
-          <div className="platform-handle text-ellipsis">
             {item.verified && (
-              <div className="icon-verified">
+              <div className="icon-verified" >
                 <SVG
+                  aria-hidden="true"
+                  className="svg-pride"
+                  fill={"#121212"}
+                  height={18}
                   src={`icons/icon-badge.svg`}
-                  fill={"#21acdf"}
-                  width={16}
-                  height={16}
-                  title={"Verified Social Link"}
+                  title={"Verified"}
+                  width={18}
                 />
+                <span className="text-assistive">Verified</span>
               </div>
             )}
+          </div>
+          <div className="platform-handle text-ellipsis">
             {item.handle}
           </div>
         </div>
@@ -64,7 +67,6 @@ const WidgetItem = (props) => {
                 src="../icons/icon-expand.svg"
                 width={20}
                 height={20}
-                className=""
               />
             ) : (
               <SVG

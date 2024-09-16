@@ -60,12 +60,8 @@ export default function WidgetPhiland({ profile, openModal }) {
         <div className="profile-widget-footer">
           <div className="widget-score-title">
             {data.phiRank.data.rank}
-
-            <div className={`widget-score-label low-risk`}>
-              {data.phiRank.data.tokenid}
-            </div>
           </div>
-          <div className="widget-score-subtitle">Phi Rank </div>
+          <div className="widget-score-subtitle">Phi Rank</div>
         </div>
       </div>
     )

@@ -27,6 +27,7 @@ export const HomeFeatures = () => {
                 title={SocialPlatformMapping(PlatformType.ethereum).label || ""}
               />
             </div>
+            {" "}
             <div 
               className="home-title-icon" 
               style={{
@@ -45,6 +46,7 @@ export const HomeFeatures = () => {
                 title={SocialPlatformMapping(PlatformType.farcaster).label || ""}
               />
             </div>
+            {" "}
             <div 
               className="home-title-icon" 
               style={{
@@ -64,7 +66,7 @@ export const HomeFeatures = () => {
               />
             </div>
           </div>
-          <span>and{" "}</span><span>crypto domains{" "}</span>
+          <span>{" "}and{" "}</span><span>crypto domains{" "}</span>
           <div className="home-title-icons">
             <div 
               className="home-title-icon" 
@@ -87,6 +89,7 @@ export const HomeFeatures = () => {
                 title={SocialPlatformMapping(PlatformType.ens).label || ""}
               />
             </div>
+            {" "}
             <div 
               className="home-title-icon" 
               style={{
@@ -105,6 +108,7 @@ export const HomeFeatures = () => {
                 title={SocialPlatformMapping(PlatformType.basenames).label || ""}
               />
             </div>
+            {" "}
             <div 
               className="home-title-icon" 
               style={{
@@ -123,6 +127,7 @@ export const HomeFeatures = () => {
                 title={SocialPlatformMapping(PlatformType.unstoppableDomains).label || ""}
               />
             </div>
+            {" "}
             <div 
               className="home-title-icon" 
               style={{
@@ -141,6 +146,7 @@ export const HomeFeatures = () => {
                 title={SocialPlatformMapping(PlatformType.clusters).label || ""}
               />
             </div>
+            {" "}
             <div 
               className="home-title-icon" 
               style={{
@@ -159,6 +165,7 @@ export const HomeFeatures = () => {
                 title={SocialPlatformMapping(PlatformType.crossbell).label || ""}
               />
             </div>
+            {" "}
             <div 
               className="home-title-icon" 
               style={{
@@ -177,6 +184,7 @@ export const HomeFeatures = () => {
                 title={SocialPlatformMapping(PlatformType.space_id).label || ""}
               />
             </div>
+            {" "}
             <div 
               className="home-title-icon" 
               style={{
@@ -195,6 +203,7 @@ export const HomeFeatures = () => {
                 title={SocialPlatformMapping(PlatformType.dotbit).label || ""}
               />
             </div>
+            {" "}
             <div 
               className="home-title-icon" 
               style={{
@@ -217,11 +226,11 @@ export const HomeFeatures = () => {
           <span>{" "}in{" "}</span><span>{" "}a{" "}</span><span>{" "}whole{" "}</span><span>{" "}new{" "}</span><span>{" "}informative way.{" "}</span>
         </h3>  
       </div>
-      <div className="container grid-sm">
+      {/* <div className="container grid-sm">
         <h3 className="home-title">
           <span></span>
         </h3>
-      </div>
+      </div> */}
       <div className="container grid-sm">
         <h3 className="home-subtitle">With Web3.bio you can:</h3>
       </div>

@@ -281,7 +281,7 @@ export const PLATFORM_DATA: ReadonlyMap<
   [
     PlatformType.instagram,
     {
-      color: "#EA3377",
+      color: "#833AB4",
       icon: "icons/icon-instagram.svg",
       label: "Instagram",
       ensText: ["com.instagram"],
@@ -540,6 +540,7 @@ export const PLATFORM_DATA: ReadonlyMap<
     PlatformType.uniswap,
     {
       color: "#ff007a",
+      icon: "icons/icon-uniswap.svg",
       label: "Uniswap",
       urlPrefix: "https://uniswap.org/",
       system: PlatformSystem.web3,
@@ -965,9 +966,9 @@ export const PLATFORM_DATA: ReadonlyMap<
   [
     PlatformType.philand,
     {
-      color: "#8283FF",
-      icon: "icons/icon-philand.svg",
-      label: "Phi Land",
+      color: "#8080F7",
+      icon: "icons/icon-phi.svg",
+      label: "Phi",
       urlPrefix: "https://land.philand.xyz/",
       registerlink: "https://land.philand.xyz/",
       system: PlatformSystem.web3,

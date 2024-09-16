@@ -107,19 +107,27 @@ export default function PhilandModalContent({ data, onClose, profile }) {
           {socialLinks.length > 0 && renderSocialLinks()}
           <div className="mt-4 mb-2">
             <div className="feed-token feed-token-lg">
-              <span className="feed-token-emoji">🏝️</span>
-              <span className="feed-token-value">Phi Rank</span>
+              <span className="feed-token-emoji">👑</span>
+              <span className="feed-token-value">PhiRank</span>
               <span className="feed-token-value text-bold">
-                {data.phiRank.data.rank} # {data.phiRank.data.tokenid}
+                {data.phiRank.data.rank}
               </span>
             </div>
           </div>
 
-          <img
-            className="img-responsive"
-            src={data.philandImage.imageurl}
-            alt=""
-          />
+          {data.philandImage?.imageurl?.length > 0 && (
+            <div className="panel-section">
+              <div className="panel-section-title">
+                Phi Land
+                <div className="divider"></div>
+              </div>
+              <img
+                className="img-responsive"
+                src={data.philandImage.imageurl}
+                alt=""
+              />
+            </div>
+          )}
 
           {claimedQuests?.length > 0 && (
             <div className="panel-section">
@@ -145,11 +153,13 @@ export default function PhilandModalContent({ data, onClose, profile }) {
                       />
                       <div className="list-item-body">
                         <div className="list-item-title">
-                          <strong>{x.name}</strong>{" "}
-                          <span className="text-gray">#{x.condition}</span>
+                          <strong>{x.name}</strong>
+                        </div>
+                        <div className="list-item-subtitle">
+                          {x.activities?.[0]}
                         </div>
                         <div className="list-item-subtitle text-gray">
-                          {x.activities?.[0]}
+                          EXP: {x.EXP}
                         </div>
                       </div>
                     </Link>
@@ -168,7 +178,7 @@ export default function PhilandModalContent({ data, onClose, profile }) {
               className="btn"
             >
               <SVG src={"icons/icon-open.svg"} width={20} height={20} />
-              View {`${profile.identity}'s`} Phi Land
+              View Phi Land
             </Link>
           </div>
         </div>
