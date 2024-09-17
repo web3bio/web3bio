@@ -31,34 +31,34 @@ export default function PhilandModalContent({ data, onClose, profile }) {
     return data?.philandLink?.data?.filter((x) => x.url?.length > 0);
   }, [data.philandLink.data]);
 
-  const renderSocialLinks = () => (
-    <div className="btn-group mt-2 mb-2">
-      {socialLinks.map((x) => {
-        if (!x.url) return null;
-        const platformKey = x.title.toLowerCase();
-        const platformItem =
-          PLATFORM_DATA.get(platformKey) ||
-          SocialPlatformMapping(PlatformType.website);
-        return (
-          <Link
-            key={x.url + x.title}
-            href={x.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-sm"
-          >
-            <SVG
-              src={platformItem.icon as string}
-              fill="#121212"
-              width={18}
-              height={18}
-            />
-            <span>{x.title}</span>
-          </Link>
-        );
-      })}
-    </div>
-  );
+  // const renderSocialLinks = () => (
+  //   <div className="btn-group mt-2 mb-2">
+  //     {socialLinks.map((x) => {
+  //       if (!x.url) return null;
+  //       const platformKey = x.title.toLowerCase();
+  //       const platformItem =
+  //         PLATFORM_DATA.get(platformKey) ||
+  //         SocialPlatformMapping(PlatformType.website);
+  //       return (
+  //         <Link
+  //           key={x.url + x.title}
+  //           href={x.url}
+  //           target="_blank"
+  //           rel="noopener noreferrer"
+  //           className="btn btn-sm"
+  //         >
+  //           <SVG
+  //             src={platformItem.icon as string}
+  //             fill="#121212"
+  //             width={18}
+  //             height={18}
+  //           />
+  //           <span>{x.title}</span>
+  //         </Link>
+  //       );
+  //     })}
+  //   </div>
+  // );
   return (
     <>
       <div className="modal-actions">
@@ -104,7 +104,7 @@ export default function PhilandModalContent({ data, onClose, profile }) {
           </div>
           <div className="text-gray mt-1 mb-2">{profile.identity}</div>
           <div className="mt-2 mb-2">{profile?.description}</div>
-          {socialLinks.length > 0 && renderSocialLinks()}
+          {/* {socialLinks.length > 0 && renderSocialLinks()} */}
           <div className="mt-4 mb-2">
             <div className="feed-token feed-token-lg">
               <span className="feed-token-emoji">👑</span>
