@@ -56,7 +56,7 @@ function RenderFeedActionCard(props) {
                 ? {
                     media: _.uniqBy(
                       x.attachments.media,
-                      (i) => `${i.address}-${i.id}`
+                      (i) => `${i.address}-${i.id}`,
                     ),
                   }
                 : {
@@ -84,10 +84,10 @@ function RenderFeedActionCard(props) {
 
       return (
         <div className={`feed-content media-gallery`}>
-          {attachments.media?.map((x) => {
+          {attachments.media?.map((x, idx) => {
             const idIndex = `${network}.${x.address}.${x.id}`;
             const infoItem = nftInfos?.find(
-              (info) => info.nft_id === idIndex.toLowerCase()
+              (info) => info.nft_id === idIndex.toLowerCase(),
             );
             const nftImageUrl = infoItem?.previews?.image_medium_url;
 
@@ -96,7 +96,7 @@ function RenderFeedActionCard(props) {
 
             return (
               <NFTAssetPlayer
-                key={idIndex}
+                key={idIndex + idx}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
@@ -142,7 +142,7 @@ function RenderFeedActionCard(props) {
                 content: target.article.body,
                 baseURL: `https://${
                   regexDomain.exec(
-                    actions[idx].content_uri || actions[idx].related_urls[0]
+                    actions[idx].content_uri || actions[idx].related_urls[0],
                   )?.[1]
                 }`,
                 link: actions[idx].content_uri,
@@ -239,7 +239,9 @@ function RenderFeedActionCard(props) {
                         className="icon"
                       />
                     </div>
-                    <span className="feed-token-value">{x.address}</span>
+                    <span className="feed-token-value">
+                      {x.address.replace(/(^\w+:|^)\/\//, "")}
+                    </span>
                     <div className="feed-token-action">
                       <SVG src={"icons/icon-open.svg"} width={20} height={20} />
                     </div>
@@ -260,14 +262,13 @@ function RenderFeedActionCard(props) {
       () =>
         objects?.filter(Boolean).map((i, idx) => {
           const idIndex = `${network}.${i.address}.${i.name}`;
-  
           const infoItem = nftInfos?.find(
-            (x) => x.nft_id === idIndex.toLowerCase()
+            (x) => x.nft_id === idIndex.toLowerCase(),
           );
 
           return (
             <RenderObjects
-              key={idIndex}
+              key={idIndex + idx}
               nftInfo={infoItem}
               openModal={openModal}
               data={i}
@@ -275,7 +276,7 @@ function RenderFeedActionCard(props) {
             />
           );
         }),
-      [objects]
+      [objects],
     );
 
     const ProfilesRender = useMemo(
@@ -293,7 +294,7 @@ function RenderFeedActionCard(props) {
             ))}
           </div>
         ),
-      [attachments?.profiles]
+      [attachments?.profiles],
     );
 
     return (

@@ -91,7 +91,7 @@ const WidgetsInfoData: Readonly<Record<WidgetType, WidgetInfo>> = {
     icon: "🛠️",
     title: "Talent Passport",
     description: "A new type of resume, for the onchain era of the internet.",
-  },
+  }
 } as const;
 
 export const WidgetInfoMapping = (

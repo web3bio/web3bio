@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 const shareMap = [
   {
     platform: "twitter",
-    icon: "icons/icon-twitter.svg",
+    icon: "icons/icon-x.svg",
     shareURL: (url, name) =>
       `https://twitter.com/intent/tweet?url=${encodeURIComponent(
         url

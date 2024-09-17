@@ -3,7 +3,11 @@ import Image from "next/image";
 import { PlatformType, SocialPlatformMapping } from "../utils/platform";
 import Link from "next/link";
 
-export default function DegenscoreModalContent({ onClose, degenscore, profile }) {
+export default function DegenscoreModalContent({
+  onClose,
+  degenscore,
+  profile,
+}) {
   return (
     <>
       <div className="modal-actions">
@@ -39,26 +43,25 @@ export default function DegenscoreModalContent({ onClose, degenscore, profile })
           alt={profile.identity}
           src={profile?.avatar}
         />
-        <div className="d-flex mt-2" style={{ alignItems: "center", lineHeight: 1.25 }}>
+        <div
+          className="d-flex mt-2"
+          style={{ alignItems: "center", lineHeight: 1.25 }}
+        >
           <strong className="h4 text-bold">{profile.displayName}</strong>
         </div>
-        <div className="text-gray mt-1 mb-2">
-          {profile.identity}
-        </div>
+        <div className="text-gray mt-1 mb-2">{profile.identity}</div>
         <div className="mt-2 mb-2">{profile?.description}</div>
 
         <div className="mt-4 mb-2">
           <div className="feed-token feed-token-lg">
             <span className="feed-token-emoji">👾</span>
-            <span className="feed-token-value">
-              DegenScore
-            </span>
+            <span className="feed-token-value">DegenScore</span>
             <span className="feed-token-value text-bold">
               {degenscore.properties?.DegenScore}
             </span>
           </div>
         </div>
-        
+
         {degenscore.traits.actions?.metadata.actions.actions && (
           <>
             <div className="panel-section">
@@ -93,7 +96,7 @@ export default function DegenscoreModalContent({ onClose, degenscore, profile })
         <div className="modal-footer">
           <div className="btn-group btn-group-block">
             <Link
-              href={degenscore.external_url}
+              href={`${degenscore.external_url}?ref=web3.bio`}
               target="_blank"
               rel="noopener noreferrer"
               className="btn"

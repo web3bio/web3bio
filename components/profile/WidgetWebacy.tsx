@@ -38,7 +38,7 @@ export function WidgetWebacy({ address }) {
     <></>
   ) : (
     <Link
-      href={"https://dapp.webacy.com/web3bio/" + address}
+      href={`https://dapp.webacy.com/web3bio/${address}?ref=web3.bio`}
       className="profile-widget profile-widget-webacy"
       target="_blank"
     >

@@ -33,7 +33,7 @@ export default function ArticleModalContent({
         className="modal-header"
         style={{
           ["--widget-primary-color" as string]: SocialPlatformMapping(
-            platform as PlatformType
+            platform as PlatformType,
           )?.color,
         }}
       >
@@ -51,7 +51,7 @@ export default function ArticleModalContent({
         </span>
       </div>
       <div className="modal-body">
-        <h1 className="article-title">{title}</h1>
+        <h1 className="article-title">{title || "Untitled"}</h1>
         <div className="article-meta text-gray">
           Published on {new Date(published).toLocaleDateString()}
         </div>
@@ -62,7 +62,7 @@ export default function ArticleModalContent({
       <div className="modal-footer">
         <div className="btn-group btn-group-block">
           <Link
-            href={link}
+            href={`${link}?ref=web3.bio`}
             target="_blank"
             rel="noopener noreferrer"
             className="btn"

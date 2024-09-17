@@ -51,6 +51,7 @@
     gap: .5rem;
   }
 }
+
 .web3-profile-base {
   padding: .5rem .5rem 1rem .5rem;
   position: sticky;
@@ -512,26 +513,12 @@
         position: relative;
         transition: all .25s ease-in-out;
         width: 1.8rem;
-
-        .icon-verified {
-          animation: bounce-in 1s ease-in-out 1;
-          backdrop-filter: blur(.2rem);
-          border-radius: 50%;
-          bottom: -.4rem;
-          height: 1.2rem;
-          opacity: .9;
-          padding: .1rem;
-          position: absolute;
-          right: -.4rem;
-          width: 1.2rem;
-
-          svg {
-            filter: drop-shadow(0 .2rem .2rem rgba($dark-color, .2));
-          }
-        }
       }
 
       .platform-title {
+        align-items: center;
+        display: flex;
+        gap: .15rem;
         font-weight: 500;
         width: 100%;
       }
@@ -1004,13 +991,13 @@
           width: 3.2rem;
         }
 
-      &.space-item {
-        .img-container {
-          border: .05rem solid #ff9800;
-          box-shadow: 0 0 0 .1rem #ffe3ba;
-       
+        &.space-item {
+          .img-container {
+            border: .05rem solid #ff9800;
+            box-shadow: 0 0 0 .1rem #ffe3ba;
+
+          }
         }
-      }
 
         .img-responsive {
           border-radius: 50%;
@@ -1119,7 +1106,7 @@
           object-fit: cover;
           width: 100%;
 
-          & + .rss-item-title {
+          &+.rss-item-title {
             font-size: .7rem;
           }
         }
@@ -1247,6 +1234,7 @@
       }
     }
   }
+
   // Scores Widget
   .profile-widget-scores {
     position: relative;
@@ -1283,7 +1271,7 @@
           position: absolute;
           width: 100%;
         }
-    
+
         &:focus,
         &:hover {
           .profile-widget-hover {
@@ -1298,7 +1286,7 @@
           font-weight: 800;
           gap: .4rem;
         }
-    
+
         .widget-score-subtitle {
           font-size: .6rem;
         }
@@ -1355,7 +1343,9 @@
   }
 
   // Webacy Widget
-  .profile-widget-webacy {
+  // Phi Land Widget
+  .profile-widget-webacy,
+  .profile-widget-philand {
     background: linear-gradient(45deg, rgba(#556DD0, .1) 0, rgba(#fff, 1) 25%);
 
     .widget-score-title {
@@ -1405,6 +1395,7 @@
   .profile-widget-gitcoin {
     background: linear-gradient(45deg, rgba(#4A47D3, .15) 0, rgba(#fff, 1) 25%);
     cursor: pointer;
+
     .widget-trait-list {
       display: flex;
       flex-wrap: wrap;
