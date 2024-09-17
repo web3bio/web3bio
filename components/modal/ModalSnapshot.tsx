@@ -85,13 +85,18 @@ export default function SnapshotModalContent({ onClose, space, profile }) {
         <div className="d-flex mt-2" style={{ alignItems: "center", lineHeight: 1.25 }}>
           <strong className="h4 text-bold mr-1">{space.name}</strong>
           {space.verified && (
-            <SVG
-              src={`icons/icon-badge.svg`}
-              fill={"#121212"}
-              width={20}
-              height={20}
-              title={"Verified Snapshot Space"}
-            />
+            <div className="icon-verified">
+              <SVG
+                aria-hidden="true"
+                className="svg-verified-pride"
+                fill={"#121212"}
+                height={18}
+                src={`icons/icon-badge.svg`}
+                title={"Verified Snapshot Space"}
+                width={18}
+              />
+              <span className="text-assistive">Verified Snapshot Space</span>
+            </div>
           )}
         </div>
         <div className="text-gray mt-1 mb-2">#{space.id}</div>

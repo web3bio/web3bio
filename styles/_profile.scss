@@ -521,15 +521,6 @@
         gap: .15rem;
         font-weight: 500;
         width: 100%;
-
-        .icon-verified {
-          border-radius: 50%;
-          height: .9rem;
-          mask-image: conic-gradient(from 0deg, rgba(255, 255, 255, .85), rgba(255, 255, 255, .5));
-          mask-size: cover;
-          padding: 0;
-          width: .9rem;
-        }
       }
 
       .platform-handle {

@@ -30,8 +30,8 @@ export const initialState: WidgetState = {
       WidgetType.degenscore,
       WidgetType.gitcoin,
       WidgetType.talent,
-      WidgetType.philand,
       WidgetType.webacy,
+      WidgetType.philand,
     ],
   },
   [WidgetType.article]: { isEmpty: null, initLoading: true, loaded: false },
@@ -39,12 +39,6 @@ export const initialState: WidgetState = {
   [WidgetType.guild]: { isEmpty: null, initLoading: true, loaded: false },
   [WidgetType.snapshot]: { isEmpty: null, initLoading: true, loaded: false },
   [WidgetType.tally]: { isEmpty: null, initLoading: true, loaded: false },
-  [WidgetType.philand]: {
-    isEmpty: null,
-    initLoading: true,
-    loaded: false,
-    parent: WidgetType.scores,
-  },
   [WidgetType.degenscore]: {
     isEmpty: null,
     initLoading: true,
@@ -64,6 +58,12 @@ export const initialState: WidgetState = {
     parent: WidgetType.scores,
   },
   [WidgetType.webacy]: {
+    isEmpty: null,
+    initLoading: true,
+    loaded: false,
+    parent: WidgetType.scores,
+  },
+  [WidgetType.philand]: {
     isEmpty: null,
     initLoading: true,
     loaded: false,

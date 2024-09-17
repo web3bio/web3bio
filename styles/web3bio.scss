@@ -795,6 +795,15 @@ body {
   }
 }
 
+.icon-verified {
+  border-radius: 50%;
+  height: .9rem;
+  mask-image: conic-gradient(from 0deg, rgba(255, 255, 255, .85), rgba(255, 255, 255, .5));
+  mask-size: cover;
+  padding: 0;
+  width: .9rem;
+}
+
 .tooltip-copy {
   background: rgba($dark-color, .85);
   border-radius: .3rem;

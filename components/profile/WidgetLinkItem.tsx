@@ -42,10 +42,10 @@ const WidgetItem = (props) => {
           <div className="platform-title">
             {SocialPlatformMapping(item.platform)?.label}
             {item.verified && (
-              <div className="icon-verified" >
+              <div className="icon-verified">
                 <SVG
                   aria-hidden="true"
-                  className="svg-pride"
+                  className="svg-verified-pride"
                   fill={"#121212"}
                   height={18}
                   src={`icons/icon-badge.svg`}
