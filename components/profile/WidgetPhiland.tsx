@@ -61,7 +61,7 @@ export default function WidgetPhiland({ profile, openModal }) {
           <div className="widget-score-title">
             {data.phiRank.data.rank}
           </div>
-          <div className="widget-score-subtitle">Phi Rank</div>
+          <div className="widget-score-subtitle">PhiRank</div>
         </div>
       </div>
     )
