@@ -394,6 +394,7 @@ export default function TipModalContent(props) {
                       setCustomPrice(e.target?.value);
                     }}
                     onFocus={(e) => e.target.select()}
+                    autoComplete="off"
                   />
                   <label
                     className="input-price-label"
