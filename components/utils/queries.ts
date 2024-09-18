@@ -101,7 +101,6 @@ export const QUERY_FARCASTER_STATS = gql`
       }
     ) {
       Social {
-        isFarcasterPowerUser
         socialCapital {
           socialCapitalScore
           socialCapitalRank
