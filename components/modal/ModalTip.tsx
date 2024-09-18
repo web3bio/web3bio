@@ -7,10 +7,11 @@ import {
   useWaitForTransactionReceipt,
   useWriteContract,
   useSwitchChain,
+  useEnsName,
 } from "wagmi";
 import { useCurrencyAllowance } from "../hooks/useCurrency";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { erc20Abi, formatUnits, parseEther, parseUnits } from "viem";
+import { erc20Abi, formatUnits, parseEther, parseUnits, toHex } from "viem";
 import { chainIdToNetwork, networkByIdOrName } from "../utils/network";
 import { Loading } from "../shared/Loading";
 import { Avatar } from "../shared/Avatar";
@@ -68,7 +69,16 @@ export default function TipModalContent(props) {
     return Number((Number(donatePrice) / Number(token.price)).toFixed(5));
   }, [token, customPrice, selectPrice]);
   const customInput = useRef<HTMLInputElement>(null);
-
+  const tippersENS = useEnsName({
+    address: address,
+    chainId: 1,
+  });
+  const tipMessage = useMemo(() => {
+    if (!address) return "";
+    if (tippersENS?.data)
+      return `${tippersENS.data} (${address}) tipped ${amount} ${token?.symbol} via Web3.bio`;
+    return `${address} tipped ${amount} ${token?.symbol} via Web3.bio`;
+  }, [address, tippersENS, amount, token]);
   // config ---------- start
   const {
     sendTransaction,
@@ -78,7 +88,7 @@ export default function TipModalContent(props) {
   } = useSendTransaction();
 
   const {
-    writeContract: onCallApprove,
+    writeContract,
     data: approveTx,
     isPending: approvePrepareLoading,
     error: ApprovePrepareError,
@@ -92,7 +102,9 @@ export default function TipModalContent(props) {
   const { data: donateData, isLoading: donateLoading } =
     useWaitForTransactionReceipt({
       hash: donateTx,
+      chainId,
     });
+
   // config ---------- end
 
   // status ---------- start
@@ -209,17 +221,21 @@ export default function TipModalContent(props) {
         return sendTransaction({
           to: profile.address,
           value: parseEther(amount.toString()),
+          data: toHex(tipMessage),
         });
       if (isAllowanceLow)
-        return onCallApprove({
+        return writeContract({
           chainId: chainId,
           abi: erc20Abi,
           address: token?.id!,
           functionName: "approve",
-          args: [token?.id!, parseEther(amount.toString())],
+          args: [
+            token?.id!,
+            parseUnits(amount.toString(), token?.decimals || 18),
+          ],
         });
 
-      return onCallApprove({
+      return writeContract({
         chainId: chainId,
         abi: erc20Abi,
         address: token?.id!,
@@ -310,7 +326,7 @@ export default function TipModalContent(props) {
     donateLoading,
     donatePrepareLoading,
     approvePrepareLoading,
-    onCallApprove,
+    writeContract,
     sendTransaction,
     switchChainAsync,
     approveLoading,
@@ -331,7 +347,14 @@ export default function TipModalContent(props) {
         <div className="modal-body">
           <div className="form">
             <div className="form-group form-hero">
-              <label style={{ fontSize: "64px", lineHeight: "64px", position: "relative", zIndex: 999 }}>
+              <label
+                style={{
+                  fontSize: "64px",
+                  lineHeight: "64px",
+                  position: "relative",
+                  zIndex: 999,
+                }}
+              >
                 {tipEmoji}
               </label>
               <div className="amount-selector">
@@ -361,18 +384,24 @@ export default function TipModalContent(props) {
                     placeholder="Custom"
                     pattern="^\d*\.?\d*$"
                     onChange={(e) => {
-                      let value = e.target.value;
+                      let value = e.target?.value;
                       if (!/^[0-9]*\.?[0-9]*$/.test(value)) {
                         value = value.slice(0, -1);
                       }
                       if (!disablePriceBtn) {
                         setDisablePriceBtn(true);
                       }
-                      setCustomPrice(e.target.value);
+                      setCustomPrice(e.target?.value);
                     }}
                     onFocus={(e) => e.target.select()}
+                    autoComplete="off"
                   />
-                  <label className="input-price-label" htmlFor="input-price-custom">$</label>
+                  <label
+                    className="input-price-label"
+                    htmlFor="input-price-custom"
+                  >
+                    $
+                  </label>
                 </div>
               </div>
             </div>
@@ -457,21 +486,28 @@ export default function TipModalContent(props) {
         // Tips status
         <div className="modal-body">
           <div className="empty" id="fun">
-            <div className="empty-icon h1" style={{ fontSize: "64px", lineHeight: "64px", position: "relative", zIndex: 999 }}>
+            <div
+              className="empty-icon h1"
+              style={{
+                fontSize: "64px",
+                lineHeight: "64px",
+                position: "relative",
+                zIndex: 999,
+              }}
+            >
               {tipEmoji}
             </div>
             <p className="empty-title h4">
               {status === TipStatus.success
-              ? `Apperiate your ${tipObject}`
-              : `Something Went Wrong! `}
+                ? `Apperiate your ${tipObject}`
+                : `Something Went Wrong! `}
             </p>
             <p className="empty-subtitle">
               {status === TipStatus.success
-              ? `Successfully tipped ${profile.displayName} with ${amount} ${token?.symbol}!`
-              : `Please try again.`}
+                ? `Successfully tipped ${profile.displayName} with ${amount} ${token?.symbol}!`
+                : `Please try again.`}
             </p>
           </div>
-          
         </div>
       )}
       {status === TipStatus.common && (
