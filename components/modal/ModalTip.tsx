@@ -69,11 +69,13 @@ export default function TipModalContent(props) {
     return Number((Number(donatePrice) / Number(token.price)).toFixed(5));
   }, [token, customPrice, selectPrice]);
   const customInput = useRef<HTMLInputElement>(null);
-  const tippersENS = useEnsName({ address });
-
+  const tippersENS = useEnsName({
+    address: address,
+    chainId: 1,
+  });
   const tipMessage = useMemo(() => {
     if (!address) return "";
-    if (tippersENS)
+    if (tippersENS?.data)
       return `${tippersENS.data} (${address}) tipped ${amount} ${token?.symbol} via Web3.bio`;
     return `${address} tipped ${amount} ${token?.symbol} via Web3.bio`;
   }, [address, tippersENS, amount, token]);
@@ -86,7 +88,7 @@ export default function TipModalContent(props) {
   } = useSendTransaction();
 
   const {
-    writeContract: onCallApprove,
+    writeContract,
     data: approveTx,
     isPending: approvePrepareLoading,
     error: ApprovePrepareError,
@@ -100,7 +102,9 @@ export default function TipModalContent(props) {
   const { data: donateData, isLoading: donateLoading } =
     useWaitForTransactionReceipt({
       hash: donateTx,
+      chainId,
     });
+
   // config ---------- end
 
   // status ---------- start
@@ -220,15 +224,18 @@ export default function TipModalContent(props) {
           data: toHex(tipMessage),
         });
       if (isAllowanceLow)
-        return onCallApprove({
+        return writeContract({
           chainId: chainId,
           abi: erc20Abi,
           address: token?.id!,
           functionName: "approve",
-          args: [token?.id!, parseEther(amount.toString())],
+          args: [
+            token?.id!,
+            parseUnits(amount.toString(), token?.decimals || 18),
+          ],
         });
 
-      return onCallApprove({
+      return writeContract({
         chainId: chainId,
         abi: erc20Abi,
         address: token?.id!,
@@ -319,7 +326,7 @@ export default function TipModalContent(props) {
     donateLoading,
     donatePrepareLoading,
     approvePrepareLoading,
-    onCallApprove,
+    writeContract,
     sendTransaction,
     switchChainAsync,
     approveLoading,
