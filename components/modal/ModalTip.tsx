@@ -384,14 +384,14 @@ export default function TipModalContent(props) {
                     placeholder="Custom"
                     pattern="^\d*\.?\d*$"
                     onChange={(e) => {
-                      let value = e.target.value;
+                      let value = e.target?.value;
                       if (!/^[0-9]*\.?[0-9]*$/.test(value)) {
                         value = value.slice(0, -1);
                       }
                       if (!disablePriceBtn) {
                         setDisablePriceBtn(true);
                       }
-                      setCustomPrice(e.target.value);
+                      setCustomPrice(e.target?.value);
                     }}
                     onFocus={(e) => e.target.select()}
                   />
