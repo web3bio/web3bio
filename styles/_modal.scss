@@ -122,9 +122,10 @@
     top: -2rem;
     z-index: -1;
 
-    &.philand{
+    &.philand {
       background: linear-gradient(to top, rgba(#8283FF, 0) 0%, rgba(#8283FF, .35) 200%);
     }
+
     &.talent {
       background: linear-gradient(to top, rgba(#7857ed, 0) 0%, rgba(#7857ed, .35) 200%);
     }
@@ -457,29 +458,29 @@
             width: 4.5rem;
 
             &:focus {
-              & + .input-price-label {
+              &+.input-price-label {
                 color: $primary-color;
               }
             }
-  
+
             &:not(:placeholder-shown) {
               @include control-shadow();
               border-color: $primary-color;
 
-              & + .input-price-label {
+              &+.input-price-label {
                 color: $primary-color;
               }
-  
+
               &:invalid {
                 border-color: $error-color;
                 box-shadow: none;
-  
+
                 &:focus {
                   @include control-shadow($error-color);
                   background: lighten($error-color, 53%);
                 }
-  
-                & + .form-input-hint {
+
+                &+.form-input-hint {
                   color: $error-color;
                 }
               }
@@ -632,19 +633,6 @@
 
   // Modal Profile
   &.modal-profile-container {
-    .active-badge {
-      align-items: center;
-      background: #8a63d2;
-      border-radius: .5rem;
-      color: $light-color;
-      display: inline-flex;
-      height: .9rem;
-      justify-content: center;
-      line-height: 1rem;
-      margin: 0 .2rem;
-      width: .9rem;
-    }
-
     .profile-badge {
       align-items: center;
       background: #ffc800;
