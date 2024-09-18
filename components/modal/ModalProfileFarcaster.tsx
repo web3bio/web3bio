@@ -86,16 +86,6 @@ export default function FarcasterProfile(props) {
             style={{ alignItems: "center", lineHeight: 1.25 }}
           >
             <strong className="h4 text-bold">{_profile.displayName}</strong>
-            {socialCapital?.isFarcasterPowerUser ? (
-              <div
-                className="active-badge c-auto"
-                title="Power User of Farcaster"
-              >
-                ϟ
-              </div>
-            ) : (
-              ""
-            )}
           </div>
           <div className="text-gray mt-1 mb-2">
             @{_profile.identity}
