@@ -99,7 +99,7 @@ export default function TipModalContent(props) {
     isPending: transferPrepareLoading,
     error: transferPrepareError,
   } = useWriteContract();
-
+  // erc-20 token receipt
   const {
     isSuccess: transferConfirmed,
     isError: transferError,
@@ -107,6 +107,7 @@ export default function TipModalContent(props) {
   } = useWaitForTransactionReceipt({
     hash: transferTx,
   });
+  // approve receipt
   const {
     isSuccess: approveConfirmed,
     isError: approveError,
@@ -114,7 +115,7 @@ export default function TipModalContent(props) {
   } = useWaitForTransactionReceipt({
     hash: approveTx,
   });
-
+  // native token receipt
   const {
     isError: donateError,
     isSuccess: donateConfirmed,
