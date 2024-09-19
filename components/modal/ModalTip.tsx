@@ -88,28 +88,52 @@ export default function TipModalContent(props) {
   } = useSendTransaction();
 
   const {
-    writeContract,
+    writeContract: onCallApprove,
     data: approveTx,
     isPending: approvePrepareLoading,
     error: ApprovePrepareError,
   } = useWriteContract();
-
-  const { data: approveData, isLoading: approveLoading } =
-    useWaitForTransactionReceipt({
-      hash: approveTx,
-    });
-
-  const { data: donateData, isLoading: donateLoading } =
-    useWaitForTransactionReceipt({
-      hash: donateTx,
-      chainId,
-    });
+  const {
+    writeContract: onCallTransfer,
+    data: transferTx,
+    isPending: transferPrepareLoading,
+    error: transferPrepareError,
+  } = useWriteContract();
+  // erc-20 token receipt
+  const {
+    isSuccess: transferConfirmed,
+    isError: transferError,
+    isLoading: transferLoading,
+  } = useWaitForTransactionReceipt({
+    hash: transferTx,
+  });
+  // approve receipt
+  const {
+    isSuccess: approveConfirmed,
+    isError: approveError,
+    isLoading: approveLoading,
+  } = useWaitForTransactionReceipt({
+    hash: approveTx,
+  });
+  // native token receipt
+  const {
+    isError: donateError,
+    isSuccess: donateConfirmed,
+    isLoading: donateLoading,
+  } = useWaitForTransactionReceipt({
+    hash: donateTx,
+    chainId,
+  });
 
   // config ---------- end
 
   // status ---------- start
   useEffect(() => {
-    if (donatePrepareError || ApprovePrepareError) {
+    if (
+      [transferPrepareError, donatePrepareError, ApprovePrepareError].some(
+        Boolean
+      )
+    ) {
       toast.custom(
         <div className="toast">
           <SVG
@@ -122,11 +146,11 @@ export default function TipModalContent(props) {
         </div>
       );
     }
-  }, [donatePrepareError, ApprovePrepareError]);
+  }, [donatePrepareError, ApprovePrepareError, transferPrepareError]);
 
   useEffect(() => {
     if (status !== TipStatus.common) return;
-    if (approveData?.status === "success") {
+    if (approveConfirmed) {
       toast.custom(
         <div className="toast">
           <SVG
@@ -139,7 +163,7 @@ export default function TipModalContent(props) {
         </div>
       );
     }
-    if (approveData?.status === "reverted") {
+    if (approveError) {
       toast.custom(
         <div className="toast">
           <SVG
@@ -152,7 +176,7 @@ export default function TipModalContent(props) {
         </div>
       );
     }
-    if (donateData?.status === "success") {
+    if (donateConfirmed || transferConfirmed) {
       toast.custom(
         <div className="toast">
           <SVG
@@ -178,7 +202,7 @@ export default function TipModalContent(props) {
         },
       });
     }
-    if (donateData?.status === "reverted") {
+    if (donateError || transferError) {
       toast.custom(
         <div className="toast">
           <SVG
@@ -192,7 +216,15 @@ export default function TipModalContent(props) {
       );
       setStatus(TipStatus.failed);
     }
-  }, [status, donateData, approveData]);
+  }, [
+    status,
+    donateConfirmed,
+    donateError,
+    approveConfirmed,
+    approveError,
+    transferError,
+    transferConfirmed,
+  ]);
   // status ---------- end
 
   const { data: allowance } = useCurrencyAllowance(token?.id!);
@@ -205,6 +237,8 @@ export default function TipModalContent(props) {
       donatePrepareLoading ||
       approveLoading ||
       approvePrepareLoading ||
+      transferLoading ||
+      transferPrepareLoading ||
       isSwitchingChain;
 
     const shouldChangeNetwork =
@@ -224,7 +258,7 @@ export default function TipModalContent(props) {
           data: toHex(tipMessage),
         });
       if (isAllowanceLow)
-        return writeContract({
+        return onCallApprove({
           chainId: chainId,
           abi: erc20Abi,
           address: token?.id!,
@@ -235,7 +269,7 @@ export default function TipModalContent(props) {
           ],
         });
 
-      return writeContract({
+      return onCallTransfer({
         chainId: chainId,
         abi: erc20Abi,
         address: token?.id!,
@@ -250,8 +284,13 @@ export default function TipModalContent(props) {
       if (shouldChangeNetwork) return `Change Network`;
       if (!amount || amount <= 0) return "Invalid Amount";
       if (isBalanceLow) return "Insufficient Balance";
-      if (donateLoading || approveLoading) return "Waiting for Transaction...";
-      if (donatePrepareLoading || approvePrepareLoading)
+      if (donateLoading || approveLoading || transferLoading)
+        return "Waiting for Transaction...";
+      if (
+        donatePrepareLoading ||
+        approvePrepareLoading ||
+        transferPrepareLoading
+      )
         return "Confirm in Your Wallet...";
       if (!tokenList?.length) return "No Tokens Detected";
       if (!isNativeToken(token?.id) && isAllowanceLow)
@@ -326,7 +365,10 @@ export default function TipModalContent(props) {
     donateLoading,
     donatePrepareLoading,
     approvePrepareLoading,
-    writeContract,
+    transferLoading,
+    transferPrepareLoading,
+    onCallApprove,
+    onCallTransfer,
     sendTransaction,
     switchChainAsync,
     approveLoading,
