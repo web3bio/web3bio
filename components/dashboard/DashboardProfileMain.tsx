@@ -12,6 +12,7 @@ import Modal from "../modal/Modal";
 import { useRouter } from "next/navigation";
 import WalletButton from "../shared/WalletButton";
 import { DomainAvailableItem } from "../search/DomainAvailabilityItem";
+import WidgetBankless from "./WidgetBankless";
 
 export default function DashboardProfileMain(props) {
   const { data, domain } = props;
@@ -222,6 +223,12 @@ export default function DashboardProfileMain(props) {
                 />
               );
             })}
+          </div>
+          <div className="web3-section-widgets">
+            <WidgetBankless
+              openModal={openModal}
+              address={curProfile.address}
+            />
           </div>
         </div>
       </div>

@@ -12,6 +12,9 @@ export enum WidgetType {
   guild = "guild",
   snapshot = "snapshot",
   talent = "talent",
+
+  // dashboard
+  bankless = "bankless",
 }
 
 interface WidgetInfo {
@@ -91,7 +94,12 @@ const WidgetsInfoData: Readonly<Record<WidgetType, WidgetInfo>> = {
     icon: "🛠️",
     title: "Talent Passport",
     description: "A new type of resume, for the onchain era of the internet.",
-  }
+  },
+  [WidgetType.bankless]: {
+    icon: "🏦",
+    title: "Bankless",
+    description: "",
+  },
 } as const;
 
 export const WidgetInfoMapping = (

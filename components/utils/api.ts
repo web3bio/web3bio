@@ -23,7 +23,8 @@ export const SNAPSHOT_GRAPHQL_ENDPOINT = "https://hub.snapshot.org/graphql";
 export const TALENT_API_ENDPOINT = "https://api.talentprotocol.com/api/v2/";
 export const TALLY_GRAPHQL_ENDPOINT = "https://api.tally.xyz/query";
 export const WEBACY_API_ENDPOINT = "https://api.webacy.com";
-export const PHI_API_ENDPOINT = "https://graph-api.phi.blue/graphql"
+export const PHI_API_ENDPOINT = "https://graph-api.phi.blue/graphql";
+export const BANKLESS_API_ENDPOINT = "https://api.bankless.com";
 
 // Unified fetcher function
 export const customFetcher = async (config) => {
@@ -74,23 +75,23 @@ export const customFetcher = async (config) => {
 
 // API Fetchers
 export const ArticlesFetcher = (url) =>
-  customFetcher({ 
+  customFetcher({
     url,
-    logName: "Articles"
+    logName: "Articles",
   });
 
 export const DegenscoreFetcher = (url) =>
-  customFetcher({ 
-    url, 
-    logName: "DegenScore" 
+  customFetcher({
+    url,
+    logName: "DegenScore",
   });
 
 export const FireflyFetcher = ([url, body]) =>
-  customFetcher({ 
-    url, 
-    method: "POST", 
-    body, 
-    logName: "Firefly" 
+  customFetcher({
+    url,
+    method: "POST",
+    body,
+    logName: "Firefly",
   });
 
 export const GuildFetcher = (url) =>
@@ -110,10 +111,19 @@ export const POAPFetcher = (url) =>
   });
 
 export const ProfileFetcher = (url, options?) =>
-  customFetcher({ 
-    url, 
-    ...options, 
-    logName: "Profile" 
+  customFetcher({
+    url,
+    ...options,
+    logName: "Profile",
+  });
+export const BanklessFetcher = (url, options?) =>
+  customFetcher({
+    url,
+    headers: { accept: "application/json" },
+    apiKeyHeader: "X-BANKLESS-TOKEN",
+    apiKeyValue: process.env.NEXT_PUBLIC_BANKLESS_API_KEY,
+    ...options,
+    logName: "Bankless",
   });
 
 export const RSS3Fetcher = ([url, data]) =>
@@ -128,10 +138,10 @@ export const RSS3Fetcher = ([url, data]) =>
   });
 
 export const SimplehashFetcher = (url, options?) =>
-  customFetcher({ 
-    url, 
-    ...options, 
-    logName: "SimpleHash" 
+  customFetcher({
+    url,
+    ...options,
+    logName: "SimpleHash",
   });
 
 export const TalentFetcher = (url) =>
