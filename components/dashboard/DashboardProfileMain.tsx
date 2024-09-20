@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 import WalletButton from "../shared/WalletButton";
 import { DomainAvailableItem } from "../search/DomainAvailabilityItem";
 
-export default function WalletProfileMain(props) {
+export default function DashboardProfileMain(props) {
   const { data, domain } = props;
   const [isCopied, setIsCopied] = useState(false);
   const [curProfile, setCurProfile] = useState(data?.[0] || data);

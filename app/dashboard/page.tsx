@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { Loading } from "@/components/shared/Loading";
 import useSWR from "swr";
-import WalletProfileMain from "@/components/manage/WalletProfileMain";
+import DashboardProfileMain from "@/components/dashboard/DashboardProfileMain";
 import { DocumentNode, useLazyQuery } from "@apollo/client";
 import { PlatformType } from "@/components/utils/platform";
 import { getProfileQuery } from "@/components/utils/queries";
@@ -71,7 +71,7 @@ export default function WalletProfilePage() {
           <p className="mt-4">{text}</p>
         </div>
       ) : (
-        <WalletProfileMain data={resolvedData} />
+        <DashboardProfileMain data={resolvedData} />
       )}
     </>
   );
