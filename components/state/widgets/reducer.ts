@@ -69,9 +69,12 @@ export const initialState: WidgetState = {
     loaded: false,
     parent: WidgetType.scores,
   },
-
   // dashboard
-  [WidgetType.bankless]: { isEmpty: null, initLoading: true, loaded: false },
+  [WidgetType.bankless]: {
+    isEmpty: null,
+    initLoading: true,
+    loaded: false,
+  },
 };
 
 const updateWidget = createAction<{
@@ -120,6 +123,7 @@ export const updateTalentWidget = createAction<UpdateWidgetState>(
 );
 
 // dashboard
+
 export const updateBanklessWidget = createAction<UpdateWidgetState>(
   WidgetType.bankless
 );
