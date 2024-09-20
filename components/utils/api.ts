@@ -119,10 +119,6 @@ export const ProfileFetcher = (url, options?) =>
 export const BanklessFetcher = (url, options?) =>
   customFetcher({
     url,
-    headers: { accept: "application/json" },
-    apiKeyHeader: "X-BANKLESS-TOKEN",
-    apiKeyValue: process.env.NEXT_PUBLIC_BANKLESS_API_KEY,
-    ...options,
     logName: "Bankless",
   });
 
@@ -155,7 +151,5 @@ export const TalentFetcher = (url) =>
 export const WebacyFetcher = (url) =>
   customFetcher({
     url,
-    apiKeyHeader: "x-api-key",
-    apiKeyValue: process.env.NEXT_PUBLIC_WEBACY_API_KEY,
     logName: "Webacy",
   });

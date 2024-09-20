@@ -9,20 +9,16 @@ import { formatBalance } from "../utils/utils";
 import { WidgetInfoMapping, WidgetType } from "../utils/widgets";
 
 import useSWR from "swr";
-import { BANKLESS_API_ENDPOINT, BanklessFetcher } from "../utils/api";
+import {  BanklessFetcher } from "../utils/api";
 import { Loading } from "../shared/Loading";
 
 export default function WidgetBankless({ address, openModal }) {
   const [expand, setExpand] = useState(false);
 
   const { data, isLoading, error } = useSWR(
-    BANKLESS_API_ENDPOINT,
+    `/api/metadata/bankless/${address}`,
     BanklessFetcher
   );
-
-
-  console.log(data,'kkk')
-
   //   useEffect(() => {
 
   //     if (
