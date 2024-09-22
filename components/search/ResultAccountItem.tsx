@@ -161,7 +161,7 @@ const RenderAccountItem = (props) => {
                     {resolvedDisplayName}
                   </div>
                   <div className="content-subtitle text-gray">
-                    {profile?.displayName !== profile?.identity && (
+                    {profile?.displayName !== profile?.identity && profile?.identity !== rawIdentity && (
                       <>
                         <div className="address">{profile?.identity}</div>
                         <div className="ml-1 mr-1"> · </div>
