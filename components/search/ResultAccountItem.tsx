@@ -35,11 +35,16 @@ const RenderAccountItem = (props) => {
   const dispatch = useDispatch();
   const profiles = useProfiles();
   const getProfile = useCallback(
-    (uuid) => profiles.find((x) => x.uuid === uuid),
+    (uuid, platform) =>
+      [PlatformType.ens, PlatformType.sns, PlatformType.basenames].includes(
+        platform
+      )
+        ? null
+        : profiles.find((x) => x.uuid === uuid),
     [profiles]
   );
 
-  const profile = getProfile(identity.uuid);
+  const profile = getProfile(identity.uuid, identity.platform);
   const rawDisplayName =
     profile?.displayName || identity.displayName || identity.identity;
   const resolvedDisplayName = isWeb3Address(rawDisplayName)
@@ -102,6 +107,7 @@ const RenderAccountItem = (props) => {
       }
     };
   }, [visible, profile, dispatch]);
+
   switch (identity.platform) {
     case PlatformType.ens:
     case PlatformType.ethereum:
@@ -122,7 +128,10 @@ const RenderAccountItem = (props) => {
             ref={ref}
             className={`social-item ${identity.platform}${
               isChild ? " social-item-child" : ""
-            }${idx === 0 ? " first" : ""}`}
+            }`}
+            style={{
+              order: idx === 0 ? "-2" : "unset",
+            }}
           >
             <div className="social-main">
               <div className="social">
@@ -161,12 +170,13 @@ const RenderAccountItem = (props) => {
                     {resolvedDisplayName}
                   </div>
                   <div className="content-subtitle text-gray">
-                    {profile?.displayName !== profile?.identity && profile?.identity !== rawIdentity && (
-                      <>
-                        <div className="address">{profile?.identity}</div>
-                        <div className="ml-1 mr-1"> · </div>
-                      </>
-                    )}
+                    {profile?.displayName !== profile?.identity &&
+                      profile?.identity !== rawIdentity && (
+                        <>
+                          <div className="address">{profile?.identity}</div>
+                          <div className="ml-1 mr-1"> · </div>
+                        </>
+                      )}
                     <div className="address text-ellipsis">{rawIdentity}</div>
                     <Clipboard
                       component="div"

@@ -96,21 +96,42 @@ const RenderAccount = (props) => {
           !(x.platform === PlatformType.clusters && x.identity.includes("/"))
       );
     }
-
     if (
       domainSkipMap.some((x) => x.ns === platform) &&
       !_resolved.some((x) => x.displayName === graphTitle)
     ) {
-      const item = identityGraph.nodes
+      const child = identityGraph.nodes
         .filter((x) => domainSkipMap.some((i) => i.ns === x.platform))
         .find((x) => x.identity === graphTitle);
-      if (item) {
+
+      if (child) {
+        const parentItem = identityGraph.nodes.find((x) =>
+          x.nft?.some((i) => i.id === child.identity)
+        ) || {
+          identity: getNSAddress(child),
+          platform: domainSkipMap.find((x) => x.ns === child.platform)?.network,
+          displayName: getNSAddress(child),
+          reverse: true,
+        };
+
+        const idx = _resolved.findIndex(
+          (x) =>
+            x.identity === parentItem.identity &&
+            x.platform === parentItem.platform
+        );
+        if (idx !== -1) {
+          _resolved.splice(idx, 1);
+        }
         _resolved.unshift({
-          ...item,
-          platform: item.platform,
-          displayName: item.identity,
-          identity: getNSAddress(item),
-          reverse: false,
+          ...parentItem,
+          child: [
+            {
+              platform: child.platform,
+              displayName: child.identity,
+              identity: child.identity,
+              reverse: false,
+            },
+          ],
         });
       }
     } else {
@@ -124,12 +145,10 @@ const RenderAccount = (props) => {
 
       if (index !== -1) {
         const firstItem = JSON.parse(JSON.stringify(_resolved[index]));
-        console.log(firstItem,'kkk')
         _resolved.splice(index, 1);
         _resolved.unshift(firstItem);
       }
     }
-
     return _resolved;
   }, [identityGraph, platform, graphTitle]);
 
