@@ -56,7 +56,7 @@ function RenderFeedActionCard(props) {
                 ? {
                     media: _.uniqBy(
                       x.attachments.media,
-                      (i) => `${i.address}-${i.id}`,
+                      (i) => `${i.address}-${i.id}`
                     ),
                   }
                 : {
@@ -87,7 +87,7 @@ function RenderFeedActionCard(props) {
           {attachments.media?.map((x, idx) => {
             const idIndex = `${network}.${x.address}.${x.id}`;
             const infoItem = nftInfos?.find(
-              (info) => info.nft_id === idIndex.toLowerCase(),
+              (info) => info.nft_id === idIndex.toLowerCase()
             );
             const nftImageUrl = infoItem?.previews?.image_medium_url;
 
@@ -142,7 +142,7 @@ function RenderFeedActionCard(props) {
                 content: target.article.body,
                 baseURL: `https://${
                   regexDomain.exec(
-                    actions[idx].content_uri || actions[idx].related_urls[0],
+                    actions[idx].content_uri || actions[idx].related_urls[0]
                   )?.[1]
                 }`,
                 link: actions[idx].content_uri,
@@ -261,14 +261,13 @@ function RenderFeedActionCard(props) {
     const ObjectsRender = useMemo(
       () =>
         objects?.filter(Boolean).map((i, idx) => {
-          const idIndex = `${network}.${i.address}.${i.name}`;
+          const idIndex = `${network}.${i.address}.${i.id}`;
           const infoItem = nftInfos?.find(
-            (x) => x.nft_id === idIndex.toLowerCase(),
+            (x) => x.nft_id === idIndex.toLowerCase()
           );
-
           return (
             <RenderObjects
-              key={idIndex + idx}
+              key={idIndex + i.name}
               nftInfo={infoItem}
               openModal={openModal}
               data={i}
@@ -276,7 +275,7 @@ function RenderFeedActionCard(props) {
             />
           );
         }),
-      [objects],
+      [objects]
     );
 
     const ProfilesRender = useMemo(
@@ -294,7 +293,7 @@ function RenderFeedActionCard(props) {
             ))}
           </div>
         ),
-      [attachments?.profiles],
+      [attachments?.profiles]
     );
 
     return (
