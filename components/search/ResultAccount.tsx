@@ -124,6 +124,7 @@ const RenderAccount = (props) => {
 
       if (index !== -1) {
         const firstItem = JSON.parse(JSON.stringify(_resolved[index]));
+        console.log(firstItem,'kkk')
         _resolved.splice(index, 1);
         _resolved.unshift(firstItem);
       }

@@ -131,6 +131,19 @@ export default function ProfileMain(props) {
     }
   }, [domain, platform, identityGraph, getQuery, mounted, data?.links]);
 
+  useEffect(() => {
+    if (window.location.hash === "#tip") {
+      openModal(ModalType.tip, {
+        profile: {
+          ...data,
+          avatar: fallbackAvatar?.avatar,
+        },
+        tipEmoji,
+        tipObject,
+      });
+    }
+  }, [tipEmoji, tipObject]);
+
   const isEmptyProfile = useMemo(() => {
     const loadedWidgets = Object.values(profileWidgetStates).filter(
       (x) => x.loaded

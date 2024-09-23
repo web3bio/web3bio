@@ -12,7 +12,12 @@ import {
 import { useCurrencyAllowance } from "../hooks/useCurrency";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { erc20Abi, formatUnits, parseEther, parseUnits, toHex } from "viem";
-import { chainIdToNetwork, networkByIdOrName } from "../utils/network";
+import {
+  chainIdToNetwork,
+  Network,
+  networkByIdOrName,
+  NetworkMapping,
+} from "../utils/network";
 import { Loading } from "../shared/Loading";
 import { Avatar } from "../shared/Avatar";
 import toast from "react-hot-toast";
@@ -23,6 +28,7 @@ import { formatText } from "../utils/utils";
 import { FIREFLY_PROXY_DEBANK_ENDPOINT, ProfileFetcher } from "../utils/api";
 import WalletChip from "./TipWalletChip";
 import { emojiBlast } from "emoji-blast";
+import Link from "next/link";
 
 enum TipStatus {
   success = 1,
@@ -57,6 +63,7 @@ export default function TipModalContent(props) {
   const [disablePriceBtn, setDisablePriceBtn] = useState(false);
   const [customPrice, setCustomPrice] = useState("");
   const [selectPrice, setSelectPrice] = useState(3);
+  const [tx, setTx] = useState("");
   const chainId = useChainId();
   const { switchChainAsync, isPending: isSwitchingChain } = useSwitchChain();
   const [status, setStatus] = useState(TipStatus.common);
@@ -188,6 +195,11 @@ export default function TipModalContent(props) {
           Successfully tipped {profile.displayName} with {amount} {token.symbol}
         </div>
       );
+      if (donateConfirmed && donateTx) {
+        setTx(donateTx);
+      } else if (transferTx) {
+        setTx(transferTx);
+      }
       setStatus(TipStatus.success);
 
       emojiBlast({
@@ -549,6 +561,26 @@ export default function TipModalContent(props) {
                 ? `Successfully tipped ${profile.displayName} with ${amount} ${token?.symbol}.`
                 : `Please try again.`}
             </p>
+            {tx && (
+              <Link
+                className="empty-bottom-action"
+                href={
+                  NetworkMapping(chainIdToNetwork(chainId) as Network)
+                    ?.scanPrefix +
+                  "tx/" +
+                  tx
+                }
+              >
+                <div>
+                  View on{" "}
+                  {
+                    NetworkMapping(chainIdToNetwork(chainId) as Network)
+                      ?.scanLabel
+                  }
+                </div>
+                <SVG src="/icons/icon-search.svg" width={20} height={20} />
+              </Link>
+            )}
           </div>
         </div>
       )}

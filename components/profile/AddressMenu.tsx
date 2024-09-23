@@ -52,7 +52,9 @@ export default function AddressMenu({ profile }) {
         </li>
         <li className="menu-item dropdown-menu-item">
           <Link
-            href={NetworkMapping(network).scanPrefix + profile.address}
+            href={
+              NetworkMapping(network).scanPrefix + "address/" + profile.address
+            }
             target="_blank"
           >
             <SVG
