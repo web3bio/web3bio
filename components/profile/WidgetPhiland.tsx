@@ -38,7 +38,7 @@ export default function WidgetPhiland({ profile, openModal }) {
   return (
     !loading && (
       <div
-        className="profile-widget profile-widget-philand"
+        className="profile-widget profile-widget-philand profile-widget-hover"
         onClick={(e) => {
           openModal(ModalType.philand, {
             profile,

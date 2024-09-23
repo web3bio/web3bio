@@ -163,7 +163,6 @@ export default function SearchInput(props) {
         autoCorrect="off"
         autoComplete="off"
         spellCheck="false"
-        autoFocus
         id="searchbox"
       />
       <button

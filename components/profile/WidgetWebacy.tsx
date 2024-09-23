@@ -39,7 +39,7 @@ export function WidgetWebacy({ address }) {
   ) : (
     <Link
       href={`https://dapp.webacy.com/web3bio/${address}?ref=web3.bio`}
-      className="profile-widget profile-widget-webacy"
+      className="profile-widget profile-widget-webacy profile-widget-hover"
       target="_blank"
     >
       <div className="profile-widget-header">
@@ -72,7 +72,7 @@ export function WidgetWebacy({ address }) {
               : "Low Risk"}
           </div>
         </div>
-        <div className="widget-score-subtitle">Address Risk Score </div>
+        <div className="widget-score-subtitle">Address Risk Score</div>
       </div>
     </Link>
   );

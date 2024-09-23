@@ -482,6 +482,14 @@
       }
     }
 
+    &.profile-widget-hover {
+      &:focus,
+      &:hover {
+        box-shadow: 0 .4rem 1.6rem -.4rem rgba($dark-color, .15), 0 .1rem .2rem rgba($dark-color, .01);
+        cursor: pointer;
+      }
+    }
+
     // Link Widget
     &.profile-widget-link {
       cursor: pointer;
@@ -1211,30 +1219,6 @@
     }
   }
 
-  // Phi Widget
-  .profile-widget-philand {
-    background: #FDECCD;
-    overflow: hidden;
-    position: relative;
-    width: 100%;
-
-    &:hover {
-      box-shadow: 0 .4rem 1.6rem -.4rem rgba($dark-color, .15), 0 .1rem .2rem rgba($dark-color, .01);
-      cursor: pointer;
-    }
-
-    .profile-widget-body {
-      align-items: center;
-      display: flex;
-      height: 6rem;
-
-      .img-philand {
-        position: absolute;
-        right: -2rem;
-      }
-    }
-  }
-
   // Scores Widget
   .profile-widget-scores {
     position: relative;
@@ -1297,7 +1281,6 @@
 
   // DegenScore Widget
   .profile-widget-degenscore {
-    cursor: pointer;
     background: linear-gradient(45deg, rgba(#A381EB, .1) 0, rgba(#fff, 1) 25%);
 
     .widget-trait-list {
@@ -1343,9 +1326,7 @@
   }
 
   // Webacy Widget
-  // Phi Land Widget
-  .profile-widget-webacy,
-  .profile-widget-philand {
+  .profile-widget-webacy {
     background: linear-gradient(45deg, rgba(#556DD0, .1) 0, rgba(#fff, 1) 25%);
 
     .widget-score-title {
@@ -1373,6 +1354,11 @@
     }
   }
 
+  // Phi Land Widget
+  .profile-widget-philand {
+    background: linear-gradient(45deg, rgba(#8080F7, .1) 0, rgba(#fff, 1) 25%);
+  }
+
   // Talent Widget
   .profile-widget-talent {
     cursor: pointer;
@@ -1394,7 +1380,6 @@
   // Gitcoin Widget
   .profile-widget-gitcoin {
     background: linear-gradient(45deg, rgba(#4A47D3, .15) 0, rgba(#fff, 1) 25%);
-    cursor: pointer;
 
     .widget-trait-list {
       display: flex;

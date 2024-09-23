@@ -49,7 +49,7 @@ const RenderWidgetDegenScore = ({ profile, openModal }) => {
     <></>
   ) : (
     <div
-      className="profile-widget profile-widget-degenscore"
+      className="profile-widget profile-widget-degenscore profile-widget-hover"
       onClick={() => {
         openModal(ModalType.degenscore, {
           degenscore: data,

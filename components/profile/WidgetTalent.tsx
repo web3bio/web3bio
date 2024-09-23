@@ -59,7 +59,7 @@ const RenderWidgetTalent = ({ profile, openModal }) => {
     <></>
   ) : (
     <div
-      className="profile-widget profile-widget-talent"
+      className="profile-widget profile-widget-talent profile-widget-hover"
       onClick={(e) => {
         openModal(ModalType.talent, { data });
       }}

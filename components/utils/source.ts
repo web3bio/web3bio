@@ -24,6 +24,7 @@ export enum SourceType {
   firefly = "firefly",
   pfp = "pfp",
   manually_added = "manually_added",
+  basenames = "basenames",
 }
 
 interface SourceInfo {
@@ -65,7 +66,7 @@ export const SOURCE_DATA: Readonly<Record<SourceType, SourceInfo>> = {
     description: "Ethereum address ranking",
   },
   [SourceType.the_graph]: {
-    name: "Ethereum Onchain",
+    name: "Ethereum",
     description: "via The Graph indexing protocol",
   },
   [SourceType.rpc_server]: {
@@ -127,6 +128,10 @@ export const SOURCE_DATA: Readonly<Record<SourceType, SourceInfo>> = {
   [SourceType.manually_added]: {
     name: "Manually Added",
     description: "Information added manually",
+  },
+  [SourceType.basenames]: {
+    name: "Basenames",
+    description: "The domain system on Base",
   },
 } as const;
 
