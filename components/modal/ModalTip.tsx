@@ -546,7 +546,7 @@ export default function TipModalContent(props) {
             </p>
             <p className="empty-subtitle">
               {status === TipStatus.success
-                ? `Successfully tipped ${profile.displayName} with ${amount} ${token?.symbol}!`
+                ? `Successfully tipped ${profile.displayName} with ${amount} ${token?.symbol}.`
                 : `Please try again.`}
             </p>
           </div>

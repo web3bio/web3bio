@@ -46,7 +46,7 @@ const RenderWidgetGitcoin = ({ profile, openModal }) => {
     <></>
   ) : (
     <div
-      className="profile-widget profile-widget-gitcoin"
+      className="profile-widget profile-widget-gitcoin profile-widget-hover"
       onClick={() => {
         openModal(ModalType.gitcoin, {
           profile,

@@ -66,7 +66,7 @@ export const SOURCE_DATA: Readonly<Record<SourceType, SourceInfo>> = {
     description: "Ethereum address ranking",
   },
   [SourceType.the_graph]: {
-    name: "Ethereum Onchain",
+    name: "Ethereum",
     description: "via The Graph indexing protocol",
   },
   [SourceType.rpc_server]: {
