@@ -128,7 +128,7 @@ const RenderAccount = (props) => {
             {
               platform: child.platform,
               displayName: child.identity,
-              identity: child.identity,
+              identity: getNSAddress(child),
               reverse: false,
             },
           ],
