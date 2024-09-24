@@ -52,6 +52,7 @@ export async function generateMetadata({
     }
   }
   const { data, platform } = res;
+  if(!data?.length) return notFound()
   const profile =
     data?.find(
       (x) => x.platform === platform && x.identity === prettify(domain)

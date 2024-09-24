@@ -20,6 +20,20 @@ const getNSAddress = (item) => {
     item.identity
   );
 };
+export const domainSkipMap = [
+  {
+    network: PlatformType.ethereum,
+    ns: PlatformType.ens,
+  },
+  {
+    network: PlatformType.solana,
+    ns: PlatformType.sns,
+  },
+  {
+    network: Network.base,
+    ns: PlatformType.basenames,
+  },
+];
 
 const RenderAccount = (props) => {
   const { identityGraph, graphTitle, platform } = props;
@@ -28,20 +42,7 @@ const RenderAccount = (props) => {
 
   const resolvedListData = useMemo(() => {
     if (!identityGraph?.nodes) return [];
-    const domainSkipMap = [
-      {
-        network: PlatformType.ethereum,
-        ns: PlatformType.ens,
-      },
-      {
-        network: PlatformType.solana,
-        ns: PlatformType.sns,
-      },
-      {
-        network: Network.base,
-        ns: PlatformType.basenames,
-      },
-    ];
+
     const _identityGraph = JSON.parse(JSON.stringify(identityGraph));
     _identityGraph.nodes
       .filter((x) => domainSkipMap.some((i) => i.ns === x.platform))
@@ -96,21 +97,47 @@ const RenderAccount = (props) => {
           !(x.platform === PlatformType.clusters && x.identity.includes("/"))
       );
     }
-
     if (
       domainSkipMap.some((x) => x.ns === platform) &&
       !_resolved.some((x) => x.displayName === graphTitle)
     ) {
-      const item = identityGraph.nodes
+      const child = identityGraph.nodes
         .filter((x) => domainSkipMap.some((i) => i.ns === x.platform))
         .find((x) => x.identity === graphTitle);
-      if (item) {
+
+      if (child) {
+        const parentItem = identityGraph.nodes.find((x) =>
+          x.nft?.some((i) => i.id === child.identity)
+        ) || {
+          identity: getNSAddress(child),
+          platform: domainSkipMap.find((x) => x.ns === child.platform)?.network,
+          displayName: getNSAddress(child),
+          reverse: true,
+        };
+
+        const idx = _resolved.findIndex(
+          (x) =>
+            x.identity === parentItem.identity &&
+            x.platform === parentItem.platform
+        );
+        if (idx !== -1) {
+          _resolved.splice(idx, 1);
+        }
         _resolved.unshift({
-          ...item,
-          platform: item.platform,
-          displayName: item.identity,
-          identity: getNSAddress(item),
-          reverse: false,
+          ...parentItem,
+          child: [
+            {
+              platform: child.platform,
+              displayName: child.identity,
+              identity:
+                child.resolveAddress?.find(
+                  (x) =>
+                    x.chain ===
+                    domainSkipMap.find((i) => i.ns === child.platform)?.network
+                )?.[0] || "",
+              reverse: false,
+            },
+          ],
         });
       }
     } else {
@@ -128,7 +155,6 @@ const RenderAccount = (props) => {
         _resolved.unshift(firstItem);
       }
     }
-
     return _resolved;
   }, [identityGraph, platform, graphTitle]);
 
@@ -145,15 +171,55 @@ const RenderAccount = (props) => {
   );
 
   const handleVisualize = useCallback(() => {
+    let data = {
+      nodes: new Array(),
+      edges: new Array(),
+      root: resolvedListData[0],
+      title: graphTitle,
+    };
+    if (identityGraph?.nodes?.length > 0) {
+      data.nodes = identityGraph.nodes?.map((x) => ({
+        ...x,
+        profile: [
+          PlatformType.ens,
+          PlatformType.sns,
+          PlatformType.basenames,
+        ].includes(x.platform)
+          ? null
+          : profiles.find((i) => i?.uuid === x.uuid),
+      }));
+      data.edges = identityGraph.edges;
+    }
+
+    if (
+      data.nodes.length === 1 &&
+      data.nodes[0].platform === PlatformType.ens
+    ) {
+      data.nodes = [
+        {
+          ...resolvedListData[0],
+          id: `${resolvedListData[0].platform},${resolvedListData[0].identity}`,
+          nft: [
+            {
+              ...data.nodes[0],
+              id: data.nodes[0].displayName,
+            },
+          ],
+          profile: profiles.find(
+            (x) =>
+              x.address === resolvedListData[0].identity &&
+              x.platform ===
+                resolvedListData[0].platform.replaceAll(
+                  PlatformType.ethereum,
+                  PlatformType.ens
+                )
+          ),
+        },
+      ];
+    }
     openModal(ModalType.graph, {
       disableBack: true,
-      data: {
-        nodes: identityGraph.nodes?.map((x) => ({
-          ...x,
-          profile: profiles.find((i) => i?.uuid === x.uuid),
-        })),
-        edges: identityGraph.edges,
-      },
+      data,
       root: resolvedListData[0],
       title: graphTitle,
     });

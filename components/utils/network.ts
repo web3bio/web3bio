@@ -49,7 +49,7 @@ const NETWORK_DATA: { [key in Network]: NetworkMetaData } = {
     label: "Ethereum",
     primaryColor: "#3741ba",
     bgColor: "#ebecf8",
-    scanPrefix: "https://etherscan.io/address/",
+    scanPrefix: "https://etherscan.io/",
     scanLabel: "Etherscan.io",
     short: "eth",
   },
@@ -61,6 +61,7 @@ const NETWORK_DATA: { [key in Network]: NetworkMetaData } = {
     primaryColor: "#7a4add",
     bgColor: "#ece5fa",
     scanPrefix: "https://polygonscan.com/",
+    scanLabel: "Polygonscan.com",
     short: "matic",
   },
   [Network.avalanche]: {
@@ -88,6 +89,7 @@ const NETWORK_DATA: { [key in Network]: NetworkMetaData } = {
     primaryColor: "#2949d4",
     bgColor: "#eaedfb",
     scanPrefix: "https://arbiscan.io/",
+    scanLabel: "Arbitrum Explorer",
     short: "arb",
   },
   [Network.arbitrum_one]: {
@@ -98,6 +100,7 @@ const NETWORK_DATA: { [key in Network]: NetworkMetaData } = {
     primaryColor: "#2949d4",
     bgColor: "#eaedfb",
     scanPrefix: "https://arbiscan.io/",
+    scanLabel: "Arbitrum One Explorer",
     short: "arb",
   },
   [Network.arbitrum_nova]: {
@@ -108,6 +111,7 @@ const NETWORK_DATA: { [key in Network]: NetworkMetaData } = {
     primaryColor: "#ee7c31",
     bgColor: "#fdf2ea",
     scanPrefix: "https://nova.arbiscan.io/",
+    scanLabel: "Arbitrum Nova Explorer",
     short: "arb",
   },
   [Network.arweave]: {
@@ -136,6 +140,7 @@ const NETWORK_DATA: { [key in Network]: NetworkMetaData } = {
     primaryColor: "#2151f5",
     bgColor: "#e9eefe",
     scanPrefix: "https://basescan.org/",
+    scanLabel: "Base Explorer",
     short: "base",
   },
   [Network.flow]: {
@@ -190,6 +195,7 @@ const NETWORK_DATA: { [key in Network]: NetworkMetaData } = {
     primaryColor: "#ea3431",
     bgColor: "#fdebea",
     scanPrefix: "https://optimistic.etherscan.io/",
+    scanLabel: "OP Mainnet Explorer",
   },
   [Network.zksync_era]: {
     key: Network.zksync_era,
@@ -237,6 +243,7 @@ const NETWORK_DATA: { [key in Network]: NetworkMetaData } = {
     primaryColor: "#141414",
     bgColor: "#efefef",
     scanPrefix: "https://explorer.zora.energy/",
+    scanLabel: "Zora Mainnet Explorer",
   },
   [Network.mastodon]: {
     key: Network.mastodon,
@@ -346,5 +353,7 @@ export const NetworkMapping = (network: Network) => {
 
 export const chainIdToNetwork = (chainId?: number, useShort?: boolean) => {
   if (!chainId) return null;
-  return networkByIdOrName(Number(chainId))?.[useShort ? "short" : "key"] || null;
+  return (
+    networkByIdOrName(Number(chainId))?.[useShort ? "short" : "key"] || null
+  );
 };
