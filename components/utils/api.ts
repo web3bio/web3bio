@@ -7,14 +7,15 @@ export const articleAPIBaseURL = "https://article-api.web3.bio";
 export const AIRSTACK_GRAPHQL_ENDPOINT = "https://api.airstack.xyz/gql";
 export const DEGENSCORE_ENDPOINT = "https://beacon.degenscore.com/v2/beacon/";
 export const FIREFLY_ENDPOINT = "https://api.firefly.land";
-export const FIREFLY_PROXY_DEBANK_ENDPOINT = "https://debank-proxy.r2d2.to";
+export const FIREFLY_PROXY_DEBANK_ENDPOINT =
+  process.env.NEXT_PUBLIC_DEBANK_PROXY_ENDPOINT;
 export const GUILD_XYZ_ENDPOINT = "https://api.guild.xyz/v2";
 export const PHI_GRAPHQL_END_POINT = "https://graph-api.phi.blue/graphql";
 export const POAP_ENDPOINT = "https://api.poap.tech/actions/scan/";
 export const POAP_TOKEN_ENDPOINT = "https://api.poap.tech/token/";
 export const RSS3_ENDPOINT = "https://gi.rss3.io";
 
-export const SIMPLEHASH_URL = "https://simplehash-proxy.r2d2.to";
+export const SIMPLEHASH_URL = process.env.NEXT_PUBLIC_SIMPLEHASH_PROXY_ENDPOINT;
 export const SIMPLEHASH_CHAINS =
   "ethereum,polygon,base,bsc,arbitrum,scroll,linea,optimism,zora,solana";
 export const SIMPLEHASH_PAGE_SIZE = 40;
@@ -23,9 +24,8 @@ export const SNAPSHOT_GRAPHQL_ENDPOINT = "https://hub.snapshot.org/graphql";
 export const TALENT_API_ENDPOINT = "https://api.talentprotocol.com/api/v2/";
 export const TALLY_GRAPHQL_ENDPOINT = "https://api.tally.xyz/query";
 export const WEBACY_API_ENDPOINT = "https://api.webacy.com";
-export const PHI_API_ENDPOINT = "https://graph-api.phi.blue/graphql"
+export const PHI_API_ENDPOINT = "https://graph-api.phi.blue/graphql";
 
-// Unified fetcher function
 export const customFetcher = async (config) => {
   const {
     url,
@@ -74,23 +74,23 @@ export const customFetcher = async (config) => {
 
 // API Fetchers
 export const ArticlesFetcher = (url) =>
-  customFetcher({ 
+  customFetcher({
     url,
-    logName: "Articles"
+    logName: "Articles",
   });
 
 export const DegenscoreFetcher = (url) =>
-  customFetcher({ 
-    url, 
-    logName: "DegenScore" 
+  customFetcher({
+    url,
+    logName: "DegenScore",
   });
 
 export const FireflyFetcher = ([url, body]) =>
-  customFetcher({ 
-    url, 
-    method: "POST", 
-    body, 
-    logName: "Firefly" 
+  customFetcher({
+    url,
+    method: "POST",
+    body,
+    logName: "Firefly",
   });
 
 export const GuildFetcher = (url) =>
@@ -110,10 +110,10 @@ export const POAPFetcher = (url) =>
   });
 
 export const ProfileFetcher = (url, options?) =>
-  customFetcher({ 
-    url, 
-    ...options, 
-    logName: "Profile" 
+  customFetcher({
+    url,
+    ...options,
+    logName: "Profile",
   });
 
 export const RSS3Fetcher = ([url, data]) =>
@@ -128,10 +128,10 @@ export const RSS3Fetcher = ([url, data]) =>
   });
 
 export const SimplehashFetcher = (url, options?) =>
-  customFetcher({ 
-    url, 
-    ...options, 
-    logName: "SimpleHash" 
+  customFetcher({
+    url,
+    ...options,
+    logName: "SimpleHash",
   });
 
 export const TalentFetcher = (url) =>
