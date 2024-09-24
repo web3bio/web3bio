@@ -192,7 +192,7 @@ export default function TipModalContent(props) {
             height={24}
             className="action mr-2"
           />
-          Successfully tipped {profile.displayName} with {amount} {token.symbol}
+          Tipped {amount} {token.symbol} to {profile.displayName} 
         </div>
       );
       if (donateConfirmed && donateTx) {
@@ -558,28 +558,30 @@ export default function TipModalContent(props) {
             </p>
             <p className="empty-subtitle">
               {status === TipStatus.success
-                ? `Successfully tipped ${profile.displayName} with ${amount} ${token?.symbol}.`
+                ? `Tipped ${amount} ${token?.symbol} to ${profile.displayName}.`
                 : `Please try again.`}
             </p>
             {tx && (
-              <Link
-                className="empty-bottom-action"
-                href={
-                  NetworkMapping(chainIdToNetwork(chainId) as Network)
-                    ?.scanPrefix +
-                  "tx/" +
-                  tx
-                }
-              >
-                <div>
-                  View on{" "}
-                  {
+              <div className="empty-action">
+                <Link
+                  className="btn"
+                  href={
                     NetworkMapping(chainIdToNetwork(chainId) as Network)
-                      ?.scanLabel
+                      ?.scanPrefix +
+                    "tx/" +
+                    tx
                   }
-                </div>
-                <SVG src="/icons/icon-search.svg" width={20} height={20} />
-              </Link>
+                >
+                  <div>
+                    View in{" "}
+                    {
+                      NetworkMapping(chainIdToNetwork(chainId) as Network)
+                        ?.scanLabel
+                    }
+                  </div>
+                  
+                </Link>
+              </div>
             )}
           </div>
         </div>
