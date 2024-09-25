@@ -48,6 +48,7 @@ import WidgetGuild from "./WidgetGuild";
 import WidgetSnapshot from "./WidgetSnapshot";
 import WidgetTally from "./WidgetTally";
 import toast from "react-hot-toast";
+import WidgetEFP from "./WidgetEFP";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
@@ -392,6 +393,14 @@ export default function ProfileMain(props) {
                   </button>
                 </div>
               </div>
+            )}
+            {isEthereum && (
+              <WidgetEFP
+                profile={data}
+                avatar={fallbackAvatar?.avatar}
+                openModal={openModal}
+                pageTitle={pageTitle}
+              />
             )}
           </div>
         </div>

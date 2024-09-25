@@ -107,6 +107,7 @@ export enum PlatformType {
   tomo = "tomo",
   ailayer = "ailayer",
   philand = "philand",
+  efp = "efp",
 }
 
 export const PLATFORM_DATA: ReadonlyMap<
@@ -971,6 +972,17 @@ export const PLATFORM_DATA: ReadonlyMap<
       label: "Phi",
       urlPrefix: "https://land.philand.xyz/",
       registerlink: "https://land.philand.xyz/",
+      system: PlatformSystem.web3,
+    },
+  ],
+  [
+    PlatformType.efp,
+    {
+      color: "#8080F7",
+      icon: "icons/icon-efp.svg",
+      label: "Ethereum Follow Protocol",
+      urlPrefix: "https://ethfollow.xyz/",
+      registerlink: "https://ethfollow.xyz/",
       system: PlatformSystem.web3,
     },
   ],

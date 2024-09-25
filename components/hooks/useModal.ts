@@ -17,6 +17,7 @@ export enum ModalType {
   gitcoin = "gitcoin",
   degenscore = "degenscore",
   talent = "talent",
+  efp = 'efp'
 }
 
 interface ModalState {
