@@ -7,14 +7,15 @@ export const articleAPIBaseURL = "https://article-api.web3.bio";
 export const AIRSTACK_GRAPHQL_ENDPOINT = "https://api.airstack.xyz/gql";
 export const DEGENSCORE_ENDPOINT = "https://beacon.degenscore.com/v2/beacon/";
 export const FIREFLY_ENDPOINT = "https://api.firefly.land";
-export const FIREFLY_PROXY_DEBANK_ENDPOINT = "https://debank-proxy.r2d2.to";
+export const FIREFLY_PROXY_DEBANK_ENDPOINT =
+  process.env.NEXT_PUBLIC_DEBANK_PROXY_ENDPOINT;
 export const GUILD_XYZ_ENDPOINT = "https://api.guild.xyz/v2";
 export const PHI_GRAPHQL_END_POINT = "https://graph-api.phi.blue/graphql";
 export const POAP_ENDPOINT = "https://api.poap.tech/actions/scan/";
 export const POAP_TOKEN_ENDPOINT = "https://api.poap.tech/token/";
 export const RSS3_ENDPOINT = "https://gi.rss3.io";
 
-export const SIMPLEHASH_URL = "https://simplehash-proxy.r2d2.to";
+export const SIMPLEHASH_URL = process.env.NEXT_PUBLIC_SIMPLEHASH_PROXY_ENDPOINT;
 export const SIMPLEHASH_CHAINS =
   "ethereum,polygon,base,bsc,arbitrum,scroll,linea,optimism,zora,solana";
 export const SIMPLEHASH_PAGE_SIZE = 40;
@@ -26,7 +27,6 @@ export const WEBACY_API_ENDPOINT = "https://api.webacy.com";
 export const PHI_API_ENDPOINT = "https://graph-api.phi.blue/graphql";
 export const EFP_ENDPOINT = "https://api.ethfollow.xyz/api";
 
-// Unified fetcher function
 export const customFetcher = async (config) => {
   const {
     url,

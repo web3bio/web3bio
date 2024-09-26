@@ -2,9 +2,17 @@ import { useEffect, useState } from "react";
 
 const TIPS = [
   { text: "Coffee", emoji: "☕️" },
+  { text: "Tea", emoji: "🍵" },
+  { text: "Boba Tea", emoji: "🧋" },
+  { text: "Drumstick", emoji: "🍗" },
+  { text: "Lollipop", emoji: "🍭" },
+  { text: "Cupcake", emoji: "🧁" },
+  { text: "Donut", emoji: "🍩" },
+  { text: "Pizza", emoji: "🍕" },
+  { text: "Cookie", emoji: "🍪" },
   { text: "Beer", emoji: "🍺" },
-  { text: "Gift", emoji: "🎁" },
   { text: "Flower", emoji: "🌹" },
+  { text: "Gem", emoji: "💎" },
   { text: "Rocket", emoji: "🚀" },
 ] as const;
 

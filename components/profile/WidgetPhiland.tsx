@@ -36,7 +36,8 @@ export default function WidgetPhiland({ profile, openModal }) {
   // }
 
   return (
-    !loading && (
+    !loading &&
+    !error && (
       <div
         className="profile-widget profile-widget-philand profile-widget-hover"
         onClick={(e) => {
@@ -58,9 +59,7 @@ export default function WidgetPhiland({ profile, openModal }) {
         <div className="profile-widget-body"></div>
 
         <div className="profile-widget-footer">
-          <div className="widget-score-title">
-            {data.phiRank.data.rank}
-          </div>
+          <div className="widget-score-title">{data?.phiRank?.data?.rank}</div>
           <div className="widget-score-subtitle">PhiRank</div>
         </div>
       </div>
