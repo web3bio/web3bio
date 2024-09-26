@@ -221,6 +221,22 @@
   }
 
   .profile-actions {
+    .follower-avatars{
+      flex: 1;
+      display: flex;
+      align-items: center;
+      .avatar-item {
+        &:not(:first-child) {
+          margin-left: -.5rem;
+        }
+      }
+    }
+    .follower-text{
+      width: 65%;
+      display: flex;
+      flex-wrap: wrap;
+    }
+  
     align-items: center;
     color: $gray-color-dark;
     display: flex;
@@ -483,6 +499,7 @@
     }
 
     &.profile-widget-hover {
+
       &:focus,
       &:hover {
         box-shadow: 0 .4rem 1.6rem -.4rem rgba($dark-color, .15), 0 .1rem .2rem rgba($dark-color, .01);

@@ -49,6 +49,8 @@ import WidgetSnapshot from "./WidgetSnapshot";
 import WidgetTally from "./WidgetTally";
 import toast from "react-hot-toast";
 import WidgetEFP from "./WidgetEFP";
+import { useAccount } from "wagmi";
+import ButtonFollow from "./ButtonFollow";
 
 export default function ProfileMain(props) {
   const { data, pageTitle, platform, relations, domain, fallbackAvatar } =
@@ -66,6 +68,8 @@ export default function ProfileMain(props) {
   );
   const dispatch = useDispatch();
   const { isOpen, type, closeModal, openModal, params } = useModal();
+  const { address } = useAccount();
+
   const [mounted, setMounted] = useState(false);
   const isEthereum = useMemo(() => {
     return isValidEthereumAddress(data.address);
@@ -373,35 +377,27 @@ export default function ProfileMain(props) {
 
             {isEthereum && tipEmoji && (
               <div className="profile-actions">
-                <div className="btn-group">
-                  <button
-                    className={`profile-tip btn btn-lg`}
-                    title={`Tip ${pageTitle}`}
-                    onClick={() => {
-                      openModal(ModalType.tip, {
-                        profile: {
-                          ...data,
-                          avatar: fallbackAvatar?.avatar,
-                        },
-                        tipEmoji,
-                        tipObject,
-                      });
-                    }}
-                  >
-                    <span className="btn-emoji mr-1">{tipEmoji}</span>
-                    Tip
-                  </button>
-                </div>
+                <button
+                  className={`profile-tip btn btn-lg`}
+                  title={`Tip ${pageTitle}`}
+                  onClick={() => {
+                    openModal(ModalType.tip, {
+                      profile: {
+                        ...data,
+                        avatar: fallbackAvatar?.avatar,
+                      },
+                      tipEmoji,
+                      tipObject,
+                    });
+                  }}
+                >
+                  <span className="btn-emoji mr-1">{tipEmoji}</span>
+                  Tip
+                </button>
+                <ButtonFollow profile={data} pageTitle={pageTitle} />
               </div>
             )}
-            {isEthereum && (
-              <WidgetEFP
-                profile={data}
-                avatar={fallbackAvatar?.avatar}
-                openModal={openModal}
-                pageTitle={pageTitle}
-              />
-            )}
+            {isEthereum && <WidgetEFP profile={data} openModal={openModal} />}
           </div>
         </div>
         <div className="column col-7 col-lg-12">

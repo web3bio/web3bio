@@ -7,11 +7,11 @@ interface Avatar extends AssetPlayerProps {
 }
 
 export const Avatar = (props: Avatar) => {
-  const { src, width, height, alt, identity, itemProp, style } = props;
+  const { src, width, height, alt, identity, itemProp, style, className } = props;
   const profileAvatarAPIURL = profileAPIBaseURL + `/avatar/svg?handle=${identity}`;
   return (
     <Image
-      className="avatar"
+      className={`avatar ${className}`}
       style={{
         width: width ? width : "100%",
         height: height ? height : "auto",
