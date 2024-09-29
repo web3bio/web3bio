@@ -15,6 +15,7 @@ import GitcoinModalContent from "./ModalGitcoin";
 import DegenscoreModalContent from "./ModalDegenscore";
 import TalentModalContent from "./ModalTalent";
 import PhilandModalContent from "./ModalPhiland";
+import EFPModalContent from "./ModalEFP";
 
 const createModalContentMap = () => ({
   [ModalType.share]: ShareModalContent,
@@ -32,6 +33,7 @@ const createModalContentMap = () => ({
   [ModalType.degenscore]: DegenscoreModalContent,
   [ModalType.talent]: TalentModalContent,
   [ModalType.philand]: PhilandModalContent,
+  [ModalType.efp]: EFPModalContent,
 });
 
 export default function Modal(props) {

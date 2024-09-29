@@ -390,6 +390,23 @@ export default function ProfileMain(props) {
                     <span className="btn-emoji mr-1">{tipEmoji}</span>
                     Tip
                   </button>
+                  <button
+                    className={`profile-follow btn btn-lg`}
+                    title="Follow this profile"
+                    onClick={() => {
+                      openModal(ModalType.efp, {
+                        profile: {
+                          ...data,
+                          avatar: fallbackAvatar?.avatar,
+                        },
+                        tipEmoji,
+                        tipObject,
+                      });
+                    }}
+                  >
+                    <span className="btn-emoji mr-1">🤝</span>
+                    Follow
+                  </button>
                 </div>
               </div>
             )}
