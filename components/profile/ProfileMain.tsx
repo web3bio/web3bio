@@ -391,10 +391,10 @@ export default function ProfileMain(props) {
                     Tip
                   </button>
                   <button
-                    className={`profile-share btn btn-lg btn-link`}
+                    className={`profile-follow btn btn-lg`}
                     title="Follow this profile"
                     onClick={() => {
-                      openModal(ModalType.tip, {
+                      openModal(ModalType.efp, {
                         profile: {
                           ...data,
                           avatar: fallbackAvatar?.avatar,
