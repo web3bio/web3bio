@@ -57,7 +57,10 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json(createResponse(0, []));
   }
 
-  const stamps = await fetchStamps(address);
+  // Normalize address to lower-case with 0x prefix
+  const safeAddress = "0x" + address.replace(/^0x/i, "").toLowerCase();
+
+  const stamps = await fetchStamps(safeAddress);
   if (!stamps.length) return NextResponse.json(createResponse(0, []));
 
   const detailsArr = stamps.map(gitcoinPassportMapping).filter(Boolean);
